@@ -1,2 +1,3 @@
 Copyright (C) Veridu Ltd.
-All Rights Reserved
+
+All Rights Reserved.
