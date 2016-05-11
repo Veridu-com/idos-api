@@ -1,0 +1,6 @@
+phinx.yml
+sftp-config.json
+*.sublime-project
+*.sublime-workspace
+*.log
+*.bak

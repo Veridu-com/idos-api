@@ -1,0 +1,27 @@
+{
+    "name": "veridu/api",
+    "description": "Veridu IDOS API Project.",
+    "license": "Proprietary",
+    "type": "project",
+    "keywords": [],
+    "authors": [
+        {
+            "name": "Flavio Heleno",
+            "email": "flavio@veridu.com"
+        }
+    ],
+    "require": {
+        "robmorgan/phinx": "0.5.*",
+        "roave/security-advisories": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable",
+        "phpunit/dbunit": "@stable",
+        "phpmd/phpmd" : "@stable",
+        "phploc/phploc": "@stable",
+        "sebastian/phpcpd": "@stable"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
