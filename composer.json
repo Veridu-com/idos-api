@@ -48,7 +48,8 @@
         "friendsofphp/php-cs-fixer": "@stable",
         "psy/psysh": "@stable",
         "theseer/phpdox": "@stable",
-        "ovr/phpsa": "*"
+        "ovr/phpsa": "*",
+        "ext-xsl": "*"
     },
     "config": {
         "optimize-autoloader": false
