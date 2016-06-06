@@ -1,5 +1,7 @@
 # EndPoint Cheat Sheet
 
+[GET /1.0/](listAll.md)
+
 ## Profiles API
 
 ### Profiles
