@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="true"
+		 backupStaticAttributes="false"
+		 bootstrap="test/bootstrap.php"
+		 colors="false"
+		 convertErrorsToExceptions="true"
+		 convertNoticesToExceptions="true"
+		 convertWarningsToExceptions="true"
+		 forceCoversAnnotation="false"
+		 mapTestClassNameToCoveredClassName="false"
+		 processIsolation="true"
+		 stopOnError="false"
+		 stopOnFailure="false"
+		 stopOnIncomplete="false"
+		 stopOnSkipped="false"
+		 testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+		 verbose="false">
+	<testsuites>
+		<testsuite name="Unit">
+			<directory>test</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist>
+			<directory suffix=".php">app/</directory>
+			<exclude>
+				<directory suffix=".php">app/Exception/</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+	<php>
+		<var name="DB_DSN" value="" />
+		<var name="DB_USER" value="" />
+		<var name="DB_PASS" value="" />
+		<var name="DB_NAME" value="" />
+	</php>
+</phpunit>

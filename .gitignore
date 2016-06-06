@@ -1,6 +1,9 @@
-phinx.yml
-sftp-config.json
+*.bak
+*.log
 *.sublime-project
 *.sublime-workspace
-*.log
-*.bak
+.php_cs
+phinx.yml
+phpdox.xml
+phpunit.xml
+sftp-config.json
