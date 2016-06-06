@@ -4,11 +4,10 @@ pipelines:
   default:
     - step:
         script:
-          - composer self-update
-          - apt-get update
-          - apt-get -y install php5-xsl
+          - docker-php-ext-install xsl
           - php --version
           - composer --version
           - phpunit --version
+          - composer self-update
           - composer install
           - phpunit --coverage-text --configuration phpunit.xml.dist
