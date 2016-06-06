@@ -4,6 +4,9 @@ pipelines:
   default:
     - step:
         script:
+          - composer self-update
+          - php --version
           - composer --version
           - phpunit --version
           - composer install
+          - phpunit --coverage-text --configuration phpunit.xml.dist
