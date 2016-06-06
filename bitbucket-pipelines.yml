@@ -5,6 +5,7 @@ pipelines:
     - step:
         script:
           - composer self-update
+          - apt-get -y install php5-xsl
           - php --version
           - composer --version
           - phpunit --version
