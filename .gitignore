@@ -3,6 +3,7 @@
 *.sublime-project
 *.sublime-workspace
 .php_cs
+environment.php
 phinx.yml
 phpdox.xml
 phpunit.xml
