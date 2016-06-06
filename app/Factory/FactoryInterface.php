@@ -1,0 +1,30 @@
+<?php
+/**
+ * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
+ * All rights reserved.
+ */
+
+namespace App\Factory;
+
+/**
+ * Factory Interface.
+ */
+interface FactoryInterface {
+    /**
+     * Register a custom name to class mapping.
+     *
+     * @param string $name
+     * @param string $class
+     *
+     * @return App\Factory\FactoryInterface
+     */
+    public function register($name, $class);
+    /**
+     * Builds and returns objects.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function create($name);
+}

@@ -1,0 +1,195 @@
+<?php
+/**
+ * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
+ * All rights reserved.
+ */
+
+namespace App\Controller;
+
+use App\Factory\Command;
+use App\Repository\CredentialInterface;
+use League\Tactician\CommandBus;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+/**
+ * Handles requests to /companies/{companySlug}/credentials and /companies/{companySlug}/credentials.
+ */
+class Credentials implements ControllerInterface {
+    /**
+     * Credential Repository instance.
+     *
+     * @var App\Repository\CredentialInterface
+     */
+    private $repository;
+    /**
+     * Command Bus instance.
+     *
+     * @var \League\Tactician\CommandBus
+     */
+    private $commandBus;
+    /**
+     * Command Factory instance.
+     *
+     * @var App\Factory\Command
+     */
+    private $commandFactory;
+
+    /**
+     * Class constructor.
+     *
+     * @param App\Repository\CredentialInterface $repository
+     * @param \League\Tactician\CommandBus       $commandBus
+     * @param App\Factory\Command                $commandFactory
+     *
+     * @return void
+     */
+    public function __construct(
+        CredentialInterface $repository,
+        CommandBus $commandBus,
+        Command $commandFactory
+    ) {
+        $this->repository     = $repository;
+        $this->commandBus     = $commandBus;
+        $this->commandFactory = $commandFactory;
+    }
+
+    /**
+     * Lists all Credentials that belongs to the Target Company.
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+
+        $credentials = $this->repository->getAllByCompanyId($targetCompany->id);
+
+        $body = [
+            'status'  => true,
+            'data'    => $credentials->toArray(),
+            'updated' => (
+                $credentials->isEmpty() ? time() : strtotime($credentials->max('updated_at'))
+            )
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response, $body]);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Creates a new Credential for the Target Company.
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+
+        $command    = $this->commandFactory->create('CreateCredential', [$request, $targetCompany->id]);
+        $credential = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => true,
+            'data'   => $credential
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response, $body, 201]);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Deletes all Credentials that belongs to the Target Company.
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+
+        $command = $this->commandFactory->create('DeleteAllCredentials', [$targetCompany->id]);
+        $this->commandBus->handle($command);
+
+        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response]);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Retrieves one Credential of the Target Company based on the Credential's Public Key.
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
+
+        $body = [
+            'data'    => $credential->toArray(),
+            'updated' => strtotime($credential->updated_at)
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response, $body]);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Updates one Credential of the Target Company based on the Credential's Public Key.
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
+
+        $command    = $this->commandFactory->create('UpdateCredential', [$request, $credential->id]);
+        $credential = $this->commandBus->handle($command);
+
+        $body = [
+            'data'    => $credential->toArray(),
+            'updated' => strtotime($credential->updated_at)
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response, $body]);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Deletes one Credential of the Target Company based on the Credential's Public Key.
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
+
+        $command = $this->commandFactory->create('DeleteCredential', [$request, $credential->id]);
+        $this->commandBus->handle($command);
+
+        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response]);
+
+        return $this->commandBus->handle($command);
+    }
+}

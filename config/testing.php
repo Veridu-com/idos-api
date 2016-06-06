@@ -1,0 +1,48 @@
+<?php
+/**
+ * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
+ * All rights reserved.
+ */
+$appSettings = [
+    'debug'                             => false,
+    'displayErrorDetails'               => false,
+    'determineRouteBeforeAppMiddleware' => true,
+    'db'                                => [
+        'driver'    => 'pgsql',
+        'host'      => 'localhost',
+        'port'      => 5432,
+        'database'  => 'apiFlavio',
+        'username'  => 'apiUser',
+        'password'  => 'apiPassword',
+        'charset'   => 'utf8',
+        'collation' => 'utf8_unicode_ci',
+        'prefix'    => '',
+        'options'   => [
+            \PDO::ATTR_PERSISTENT => true
+        ]
+    ],
+    'log'                               => [
+        'path'  => sprintf('%s/../log/testing-%04d%02d%02d.log', __DIR__, date('Y'), date('m'), date('d')),
+        'level' => Monolog\Logger::DEBUG
+    ],
+    'cache'                             => [
+        'driver' => 'ephemeral'
+    ],
+    'gearman'                           => [
+        'timeout' => 1000,
+        'servers' => [
+            ['localhost', 4730]
+        ]
+    ],
+    'mongo'                             => [
+        'dsn' => 'mongodb:///tmp/mongodb-27017.sock'
+    ],
+    'optimus'                           => [
+        'prime'   => 0,
+        'inverse' => 0,
+        'random'  => 0
+    ],
+    'strategy'                          => [
+        'repository' => 'array'
+    ]
+];
