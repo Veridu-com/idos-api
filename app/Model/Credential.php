@@ -13,6 +13,25 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Credentials Model.
+ *
+ * @apiEntity Credential
+ * @apiEntityRequiredProperty string name
+ * @apiEntityProperty string slug
+ * @apiEntityProperty bool production
+ * @apiEntityProperty string public
+ * @apiEntityProperty int created
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property bool $production
+ * @property int $company_id
+ * @property string $public
+ * @property string $private
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string $deleted_at
+ * @property int $created
  */
 class Credential extends Model {
     use SoftDeletes, CreatedUnixTimestamp;

@@ -12,6 +12,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Users Model.
+ *
+ * @apiEntity User
+ * @apiEntityRequiredProperty string username
+ * @apiEntityProperty int created
+ *
+ * @property int $id
+ * @property string $username
+ * @property int $credential_id
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string $deleted_at
+ * @property int $created
  */
 class User extends Model {
     use SoftDeletes, CreatedUnixTimestamp;

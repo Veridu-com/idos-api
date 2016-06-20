@@ -20,7 +20,9 @@ class Credential implements ValidatorInterface {
      * @return void
      */
     public function assertName($name) {
-        Validator::prnt()->length(1, 15)->assert($name);
+        Validator::prnt()
+            ->length(1, 15)
+            ->assert($name);
     }
 
     /**
@@ -31,7 +33,9 @@ class Credential implements ValidatorInterface {
      * @return void
      */
     public function assertSlug($slug) {
-        Validator::slug()->length(1, 15)->assert($slug);
+        Validator::slug()
+            ->length(1, 15)
+            ->assert($slug);
     }
 
     /**
@@ -42,7 +46,8 @@ class Credential implements ValidatorInterface {
      * @return void
      */
     public function assertProduction($production) {
-        Validator::boolVal()->assert($production);
+        Validator::boolVal()
+            ->assert($production);
     }
 
     /**
@@ -51,6 +56,7 @@ class Credential implements ValidatorInterface {
      * @return bool
      */
     public function productionValue($production) {
-        return Validator::trueVal()->validate($production);
+        return Validator::trueVal()
+            ->validate($production);
     }
 }

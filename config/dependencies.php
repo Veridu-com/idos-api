@@ -64,12 +64,14 @@ $container['errorHandler'] = function (ContainerInterface $container) {
         $log = $container->get('log');
 
         if ($exception instanceof AppException) {
-            $log('API')->info(sprintf(
-                '%s [%s:%d]',
-                $exception->getMessage(),
-                $exception->getFile(),
-                $exception->getLine()
-            ));
+            $log('API')->info(
+                sprintf(
+                    '%s [%s:%d]',
+                    $exception->getMessage(),
+                    $exception->getFile(),
+                    $exception->getLine()
+                )
+            );
 
             $body = [
                 'status' => false,
@@ -94,29 +96,34 @@ $container['errorHandler'] = function (ContainerInterface $container) {
             return $container->get('commandBus')->handle($command);
         }
 
-        $log('Foundation')->error(sprintf(
-            '%s [%s:%d]',
-            $exception->getMessage(),
-            $exception->getFile(),
-            $exception->getLine()
-        ));
+        $log('Foundation')->error(
+            sprintf(
+                '%s [%s:%d]',
+                $exception->getMessage(),
+                $exception->getFile(),
+                $exception->getLine()
+            )
+        );
         $log('Foundation')->error($exception->getTraceAsString());
 
         $settings = $container->get('settings');
         if ($settings['debug']) {
             $prettyPageHandler = new PrettyPageHandler();
             // Add more information to the PrettyPageHandler
-            $prettyPageHandler->addDataTable('Request', [
-                'Accept Charset'  => $request->getHeader('ACCEPT_CHARSET') ?: '<none>',
-                'Content Charset' => $request->getContentCharset() ?: '<none>',
-                'Path'            => $request->getUri()->getPath(),
-                'Query String'    => $request->getUri()->getQuery() ?: '<none>',
-                'HTTP Method'     => $request->getMethod(),
-                'Base URL'        => (string) $request->getUri(),
-                'Scheme'          => $request->getUri()->getScheme(),
-                'Port'            => $request->getUri()->getPort(),
-                'Host'            => $request->getUri()->getHost()
-            ]);
+            $prettyPageHandler->addDataTable(
+                'Request',
+                [
+                    'Accept Charset'  => $request->getHeader('ACCEPT_CHARSET') ?: '<none>',
+                    'Content Charset' => $request->getContentCharset() ?: '<none>',
+                    'Path'            => $request->getUri()->getPath(),
+                    'Query String'    => $request->getUri()->getQuery() ?: '<none>',
+                    'HTTP Method'     => $request->getMethod(),
+                    'Base URL'        => (string) $request->getUri(),
+                    'Scheme'          => $request->getUri()->getScheme(),
+                    'Port'            => $request->getUri()->getPort(),
+                    'Host'            => $request->getUri()->getHost()
+                ]
+            );
 
             $whoops = new Whoops\Run();
             $whoops->pushHandler($prettyPageHandler);
@@ -219,12 +226,14 @@ $container['cache'] = function (ContainerInterface $container) {
     if ($driver instanceof Ephemeral)
         $pool = new Pool($driver);
     else {
-        $composite = new Composite([
-            'drivers' => [
-                new Ephemeral(),
-                $driver
+        $composite = new Composite(
+            [
+                'drivers' => [
+                    new Ephemeral(),
+                    $driver
+                ]
             ]
-        ]);
+        );
         $pool = new Pool($composite);
     }
 
@@ -272,13 +281,15 @@ $container['commandBus'] = function (ContainerInterface $container) {
     else
         $formatter = new ClassNameFormatter();
 
-    return new CommandBus([
-        new LoggerMiddleware(
-            $formatter,
-            $logger
-        ),
-        $handlerMiddleware
-    ]);
+    return new CommandBus(
+        [
+            new LoggerMiddleware(
+                $formatter,
+                $logger
+            ),
+            $handlerMiddleware
+        ]
+    );
 };
 
 // App Command Factory

@@ -13,6 +13,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Companies Model.
+ *
+ * @apiEntity Company
+ * @apiEntityRequiredProperty string name Company name
+ * @apiEntityProperty string slug Slug based on company's name
+ * @apiEntityProperty string public_key Public Key for management calls
+ * @apiEntityProperty int created Company creation Unixtimestamp
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $slug
+ * @property string $public_key
+ * @property string $private_key
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string $deleted_at
+ * @property int $created
  */
 class Company extends Model {
     use SoftDeletes, CreatedUnixTimestamp;

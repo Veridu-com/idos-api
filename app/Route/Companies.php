@@ -13,7 +13,9 @@ use Slim\App;
 /**
  * Companies routing definitions.
  *
- * @apiRoute /companies
+ * @link docs/companies/overview.md
+ *
+ * @see App\Controller\Companies
  */
 class Companies implements RouteInterface {
     /**
@@ -46,117 +48,177 @@ class Companies implements RouteInterface {
         $container      = $app->getContainer();
         $authMiddleware = $container->get('authMiddleware');
 
-        // [GET /1.0/companies](companies/listAll.md)
-        /**
-         * List all Companies
-         *
-         * Retrieve a complete list of all child companies that belong to the current requesting company.
-         *
-         * @apiEndpoint GET /companies
-         * @apiAuth CompanyPrivKey Company's Private Key
-         *
-         * @see App\Controller\Companies::listAll
-         */
+        self::listAll($app, $authMiddleware);
+        self::createNew($app, $authMiddleware);
+        self::deleteAll($app, $authMiddleware);
+        self::getOne($app, $authMiddleware);
+        self::updateOne($app, $authMiddleware);
+        self::deleteOne($app, $authMiddleware);
+    }
+
+    /**
+     * List all Companies
+     *
+     * Retrieve a complete list of all child companies that belong to the requesting company.
+     *
+     * @apiEndpoint GET /companies
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/companies/listAll.md
+     *
+     * @see App\Controller\Companies::listAll
+     */
+    private static function listAll(App $app, callable $auth) {
         $app
             ->get(
                 '/companies',
                 'App\Controller\Companies:listAll'
             )
-            ->add($authMiddleware(Auth::CompanyPrivKey))
+            ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:listAll');
+    }
 
-        // [POST /1.0/companies](companies/createNew.md)
-        /**
-         * Create new Company
-         *
-         * Create a new child company for the current requesting company.
-         *
-         * @apiEndpoint POST /companies
-         * @apiAuth CompanyPrivKey Company's Private Key
-         *
-         * @see App\Controller\Companies::createNew
-         */
+    /**
+     * Create new Company
+     *
+     * Create a new child company for the requesting company.
+     *
+     * @apiEndpoint POST /companies
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/companies/createNew.md
+     *
+     * @see App\Controller\Companies::createNew
+     */
+    private static function createNew(App $app, callable $auth) {
         $app
             ->post(
                 '/companies',
                 'App\Controller\Companies:createNew'
             )
-            ->add($authMiddleware(Auth::CompanyPrivKey))
+            ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:createNew');
+    }
 
-        // [DELETE /1.0/companies](companies/deleteAll.md)
-        /**
-         * Delete all Companies
-         *
-         * Delete all child companies that belong to the current requesting company.
-         *
-         * @apiEndpoint DELETE /companies
-         * @apiAuth CompanyPrivKey Company's Private Key
-         *
-         * @see App\Controller\Companies::deleteAll
-         */
+    /**
+     * Delete all Companies
+     *
+     * Delete all child companies that belong to the requesting company.
+     *
+     * @apiEndpoint DELETE /companies
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/companies/deleteAll.md
+     *
+     * @see App\Controller\Companies::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth) {
         $app
             ->delete(
                 '/companies',
                 'App\Controller\Companies:deleteAll'
             )
-            ->add($authMiddleware(Auth::CompanyPrivKey))
+            ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:deleteAll');
+    }
 
-        // [GET /1.0/companies/:companySlug](companies/getCompany.md)
-        /**
-         * Retrieve a single Company
-         *
-         * Retrieves all public information from a Company
-         *
-         * @apiEndpoint GET /companies/:companySlug
-         *
-         * @see App\Controller\Companies::getOne
-         */
+    /**
+     * Retrieve a single Company
+     *
+     * Retrieves all public information from a Company
+     *
+     * @apiEndpoint GET /companies/{companySlug}
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/companies/getOne.md
+     *
+     * @see App\Controller\Companies::getOne
+     */
+    private static function getOne(App $app, callable $auth) {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Companies:getOne'
             )
-            ->add($authMiddleware(Auth::None))
+            ->add($auth(Auth::NONE))
             ->setName('companies:getOne');
+    }
 
-        // [POST /1.0/companies/:companySlug](companies/updateCompany.md)
-        /**
-         * Update a single Company
-         *
-         * Updates Company's specific information
-         *
-         * @apiEndpoint POST /companies/:companySlug
-         * @apiAuth CompanyPrivKey Company's Private Key
-         *
-         * @see App\Controller\Companies::updateOne
-         */
+    /**
+     * Update a single Company
+     *
+     * Updates Company's specific information
+     *
+     * @apiEndpoint POST /companies/:companySlug
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/companies/updateOne.md
+     *
+     * @see App\Controller\Companies::updateOne
+     */
+    private static function updateOne(App $app, callable $auth) {
         $app
             ->post(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Companies:updateOne'
             )
-            ->add($authMiddleware(Auth::CompanyPrivKey))
+            ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:updateOne');
+    }
 
-        // [DELETE /1.0/companies/:companySlug](companies/deleteCompany.md)
-        /**
-         * Deletes a single Company
-         *
-         * Deletes the current requesting company or a child company that belongs to it.
-         *
-         * @apiEndpoint DELETE /companies/:companySlug
-         * @apiAuth CompanyPrivKey Company's Private Key
-         *
-         * @see App\Controller\Companies::deleteOne
-         */
+    /**
+     * Deletes a single Company
+     *
+     * Deletes the requesting company or a child company that belongs to it.
+     *
+     * @apiEndpoint DELETE /companies/:companySlug
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/companies/deleteOne.md
+     *
+     * @see App\Controller\Companies::deleteOne
+     */
+    private static function deleteOne(App $app, callable $auth) {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Companies:deleteOne'
             )
-            ->add($authMiddleware(Auth::CompanyPrivKey))
+            ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:deleteOne');
     }
 }
