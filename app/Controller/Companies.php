@@ -60,10 +60,11 @@ class Companies implements ControllerInterface {
     /**
      * List all child Companies that belongs to the Acting Company.
      *
-     * @apiOptionalQueryParam int after Initial Company creation date (lower bound)
-     * @apiOptionalQueryParam int before Final Company creation date (upper bound)
-     * @apiOptionalQueryParam int page Current page
-     * @apiReturnCode 200 List of companies
+     * @apiEndpointParam query int after Initial Company creation date (lower bound)
+     * @apiEndpointParam query int before Final Company creation date (upper bound)
+     * @apiEndpointParam query int page
+     * @apiEndpointResponse 200 Company[]
+     * @apiEndpointRequiredParam path int companyId
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -93,6 +94,8 @@ class Companies implements ControllerInterface {
 
     /**
      * Creates a new child Company for the Acting Company.
+     *
+     * @apiEndpointResponse 201 Company
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -126,6 +129,8 @@ class Companies implements ControllerInterface {
     /**
      * Deletes all child Companies that belongs to the Acting Company.
      *
+     * @apiEndpointResponse 200 -
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
@@ -147,6 +152,9 @@ class Companies implements ControllerInterface {
 
     /**
      * Retrieves the Target Company, a child of the Acting Company.
+     *
+     * @apiRequiredParam path string companySlug
+     * @apiEndpointResponse 200 Company
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -174,6 +182,8 @@ class Companies implements ControllerInterface {
 
     /**
      * Updates the Target Company, a child of the Acting Company.
+     *
+     * @apiEndpointResponse 200 Company
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -207,6 +217,9 @@ class Companies implements ControllerInterface {
 
     /**
      * Deletes the Target Company, a child of the Acting Company.
+     *
+     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointResponse 200 -
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

@@ -11,6 +11,10 @@ use Slim\App;
 
 /**
  * Root routing definitions.
+ *
+ * @link docs/overview.md
+ *
+ * @see App\Controller\Main
  */
 class Main implements RouteInterface {
     /**
@@ -32,7 +36,25 @@ class Main implements RouteInterface {
             );
         };
 
-        // [GET /1.0/](listAll.md)
+        self::listAll($app);
+    }
+
+    /**
+     * List all Endpoints
+     *
+     * Retrieve a complete list of all public endpoints.
+     *
+     * @apiEndpoint GET /
+     *
+     * @param \Slim\App $app
+     *
+     * @return void
+     *
+     * @link docs/listAll.md
+     *
+     * @see App\Controller\Main::listAll
+     */
+    private static function listAll(App $app) {
         $app
             ->get(
                 '/',

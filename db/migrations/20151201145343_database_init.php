@@ -3,6 +3,7 @@
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
 use Phinx\Migration\AbstractMigration;
 
 class DatabaseInit extends AbstractMigration {
@@ -19,9 +20,33 @@ class DatabaseInit extends AbstractMigration {
         $identities
             ->addColumn('public_key', 'text', ['null' => false])
             ->addColumn('private_key', 'text', ['null' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('public_key')
             ->create();
 
@@ -34,9 +59,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('private_key', 'text', ['null' => false])
             ->addColumn('personal', 'boolean', ['null' => false, 'default' => false])
             ->addColumn('parent_id', 'integer', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('public_key')
             ->addIndex('slug', ['unique' => true])
             ->addForeignKey('parent_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -54,9 +103,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('identity_id')
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -66,7 +139,15 @@ class DatabaseInit extends AbstractMigration {
         $flags
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
             ->addIndex('identity_id')
             ->addIndex('name')
             ->addIndex(['identity_id', 'name'], ['unique' => true])
@@ -79,7 +160,15 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('pass', 'boolean', ['null' => false, 'default' => 'FALSE'])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
             ->addIndex('identity_id')
             ->addIndex('name')
             ->addIndex(['identity_id', 'name'], ['unique' => true])
@@ -92,7 +181,15 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
             ->addIndex('identity_id')
             ->addIndex('name')
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -105,9 +202,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('role', 'text', ['null' => false])
             ->addColumn('resource', 'text', ['null' => true])
             ->addColumn('access', 'boolean', ['null' => false, 'default' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('identity_id')
             ->addIndex('role')
             ->addIndex('resource')
@@ -128,9 +249,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('attribute_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'float', ['null' => false, 'default' => 0.0])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('attribute_id')
             ->addForeignKey('attribute_id', 'attributes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -149,9 +294,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('secret', 'binary', ['null' => false])
             ->addColumn('version', 'text', ['null' => true])
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => 'TRUE'])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('company_id')
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -162,9 +331,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('category', 'text', ['null' => false])
             ->addColumn('property', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('company_id')
             ->addIndex(['company_id', 'category', 'property'], ['unique' => true])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -175,9 +368,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('company_id', 'integer', ['null' => false])
             ->addColumn('fqdn', 'boolean', ['null' => false, 'default' => false])
             ->addColumn('value', 'binary', ['null' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('company_id')
             ->addIndex(['company_id', 'value'], ['unique' => true])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -192,9 +409,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('public', 'text', ['null' => false])
             ->addColumn('private', 'text', ['null' => false])
             ->addColumn('production', 'boolean', ['null' => false, 'default' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('company_id')
             ->addIndex('slug')
             ->addIndex('public', ['unique' => true])
@@ -213,9 +454,33 @@ class DatabaseInit extends AbstractMigration {
         $services
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('name', ['unique' => true])
             ->create();
 
@@ -238,9 +503,33 @@ class DatabaseInit extends AbstractMigration {
         $companyServiceHandlers
             ->addColumn('handler_id', 'integer', ['null' => false])
             ->addColumn('company_id', 'integer', ['null' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('company_id')
             ->addForeignKey('handler_id', 'service_handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -257,9 +546,33 @@ class DatabaseInit extends AbstractMigration {
         $processes
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('name', ['unique' => true])
             ->create();
 
@@ -284,9 +597,33 @@ class DatabaseInit extends AbstractMigration {
         $companyProcessHandlers
             ->addColumn('handler_id', 'integer', ['null' => false])
             ->addColumn('company_id', 'integer', ['null' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('company_id')
             ->addForeignKey('handler_id', 'process_handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -304,8 +641,24 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('credential_id', 'integer', ['null' => false])
             ->addColumn('identity_id', 'integer', ['null' => true, 'default' => null])
             ->addColumn('username', 'binary', ['null' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex(['credential_id', 'username'], ['unique' => true])
             ->addIndex('credential_id')
             ->addIndex('identity_id')
@@ -320,9 +673,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('trigger', 'text', ['null' => false])
             ->addColumn('url', 'binary', ['null' => false])
             ->addColumn('subscribed', 'boolean', ['null' => false, 'default' => 'TRUE'])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('credential_id')
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -334,9 +711,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('credential_id', 'integer', ['null' => false])
             ->addColumn('fqdn', 'boolean', ['null' => false, 'default' => false])
             ->addColumn('value', 'binary', ['null' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('credential_id')
             ->addIndex(['credential_id', 'value'], ['unique' => true])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -354,8 +755,24 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('hook_id', 'integer', ['null' => false])
             ->addColumn('payload', 'binary', ['null' => false])
             ->addColumn('error', 'binary', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('hook_id')
             ->addForeignKey('hook_id', 'hooks', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -373,9 +790,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('type', 'text', ['null' => false])
             ->addColumn('valid', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addColumn('ipaddr', 'text', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('user_id')
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -388,9 +829,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('map', 'integer', ['null' => false, 'default' => -1])
             ->addColumn('feature', 'integer', ['null' => false, 'default' => -1])
             ->addColumn('score', 'integer', ['null' => false, 'default' => -1])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->create();
 
         $userAccess = $this->table('user_access');
@@ -399,9 +864,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('resource', 'text', ['null' => true])
             ->addColumn('access', 'boolean', ['null' => false, 'default' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('identity_id')
             ->addIndex('user_id')
             ->addIndex('resource')
@@ -426,9 +915,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('application_id', 'integer', ['null' => true])
             ->addColumn('sso', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addColumn('ipaddr', 'text', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('source_id')
             ->addIndex('application_id')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -443,9 +956,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('verified', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addColumn('expires', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('ipaddr', 'text', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('source_id')
             ->addIndex('email')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -459,9 +996,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('verified', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addColumn('expires', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
             ->addColumn('ipaddr', 'text', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('source_id')
             ->addIndex('phone')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -476,9 +1037,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('verified', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addColumn('voided', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addColumn('ipaddr', 'text', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('source_id')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -490,9 +1075,33 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('running', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addColumn('success', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addColumn('message', 'binary', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->addIndex('source_id')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -502,7 +1111,15 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('source_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
             ->addIndex('source_id')
             ->addIndex('name')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -513,7 +1130,15 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('source_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
             ->addIndex('source_id')
             ->addIndex('name')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -536,8 +1161,24 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('city', 'text', ['null' => true])
             ->addColumn('state', 'text', ['null' => true])
             ->addColumn('country', 'text', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
             ->addIndex('reference')
             ->addIndex('postcode')
             ->create();
@@ -551,7 +1192,15 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('level', 'text', ['null' => false])
             ->addColumn('message', 'text', ['null' => false])
             ->addColumn('context', 'binary', ['null' => true])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
             ->addColumn('ipaddr', 'text', ['null' => true])
             ->addIndex('company_id')
             ->addIndex('credential_id')
@@ -563,9 +1212,33 @@ class DatabaseInit extends AbstractMigration {
         $metrics
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'float', ['null' => false])
-            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('updated_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('deleted_at', 'timestamp', ['null' => true, 'timezone' => false, 'default' => null])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null' => false,
+                    'timezone' => false,
+                    'default' => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'deleted_at',
+                'timestamp',
+                [
+                    'null' => true,
+                    'timezone' => false,
+                    'default' => null
+                ]
+            )
             ->create();
 
         /*
@@ -639,5 +1312,4 @@ class DatabaseInit extends AbstractMigration {
             ->create();
 
     }
-
 }

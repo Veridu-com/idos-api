@@ -11,7 +11,7 @@ namespace App\Extension;
  */
 trait CreatedUnixTimestamp {
     /**
-     * Get the created_at in UnixTimestamp.
+     * Get the created_at in UnixTimestamp format.
      *
      * @return int
      */

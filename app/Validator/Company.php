@@ -20,7 +20,8 @@ class Company implements ValidatorInterface {
      * @return void
      */
     public function assertId($id) {
-        Validator::digit()->assert($id);
+        Validator::digit()
+            ->assert($id);
     }
 
     /**
@@ -31,7 +32,9 @@ class Company implements ValidatorInterface {
      * @return void
      */
     public function assertName($name) {
-        Validator::prnt()->length(1, 15)->assert($name);
+        Validator::prnt()
+            ->length(1, 15)
+            ->assert($name);
     }
 
     /**
@@ -42,7 +45,9 @@ class Company implements ValidatorInterface {
      * @return void
      */
     public function assertSlug($slug) {
-        Validator::slug()->length(1, 15)->assert($slug);
+        Validator::slug()
+            ->length(1, 15)
+            ->assert($slug);
     }
 
     /**

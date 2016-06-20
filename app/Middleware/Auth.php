@@ -70,65 +70,65 @@ class Auth {
      * Public access
      * Scope: Public.
      *
-     * @const None No authorization
+     * @const NONE No authorization
      */
-    const None = 0x00;
+    const NONE = 0x00;
     /**
      * Company performing public and private actions on a User's behalf
      * Scope: Integration.
      *
-     * @const UserToken User Token
+     * @const USER_TOKEN User Token
      */
-    const UserToken = 0x01;
+    const USER_TOKEN = 0x01;
     /**
      * User performing public actions
      * Scope: System.
      *
-     * @const UserPubKey User Public Key
+     * @const USER_PUBKEY User Public Key
      */
-    const UserPubKey = 0x02;
+    const USER_PUBKEY = 0x02;
     /**
      * User performing User Management actions
      * Scope: System.
      *
-     * @const UserPrivKey User Private Key
+     * @const USER_PRIVKEY User Private Key
      */
-    const UserPrivKey = 0x04;
+    const USER_PRIVKEY = 0x04;
     /**
      * Company performing public actions
      * Scope: System.
      *
-     * @const CompanyPubKey Company Public Key
+     * @const COMP_PUBKEY Company Public Key
      */
-    const CompanyPubKey = 0x08;
+    const COMP_PUBKEY = 0x08;
     /**
      * Company performing Company Management actions
      * Scope: System.
      *
-     * @const CompanyPrivKey Company Private Key
+     * @const COMP_PRIVKEY Company Private Key
      */
-    const CompanyPrivKey = 0x10;
+    const COMP_PRIVKEY = 0x10;
     /**
      * Credential performing public and private actions on a Credential's behalf
      * Scope: Integration.
      *
-     * @const CredentialToken Credential Token
+     * @const CRED_TOKEN Credential Token
      */
-    const CredentialToken = 0x20;
+    const CRED_TOKEN = 0x20;
     /**
      * Credential performing public actions
      * Scope: Integration.
      *
-     * @const CredentialPubKey Credential Public Key
+     * @const CRED_PUBKEY Credential Public Key
      */
-    const CredentialPubKey = 0x30;
+    const CRED_PUBKEY = 0x30;
     /**
      * Credential performing private actions
      * Scope: Integration.
      *
-     * @const CredentialPrivKey Credential Private Key
+     * @const CRED_PRIVKEY Credential Private Key
      */
-    const CredentialPrivKey = 0x40;
+    const CRED_PRIVKEY = 0x40;
 
     /**
      * Returns an authorization setup array based on available
@@ -138,42 +138,42 @@ class Auth {
      */
     private function authorizationSetup() {
         return [
-            self::UserToken => [
+            self::USER_TOKEN => [
                 'name'    => 'UserToken',
                 'label'   => 'User Token',
                 'handler' => 'handleUserToken'
             ],
-            self::UserPubKey => [
+            self::USER_PUBKEY => [
                 'name'    => 'UserPubKey',
                 'label'   => 'User Public Key',
                 'handler' => 'handleUserPubKey'
             ],
-            self::UserPrivKey => [
+            self::USER_PRIVKEY => [
                 'name'    => 'UserPrivKey',
                 'label'   => 'User Private Key',
                 'handler' => 'handleUserPrivKey'
             ],
-            self::CompanyPubKey => [
+            self::COMP_PUBKEY => [
                 'name'    => 'CompanyPubKey',
                 'label'   => 'Company Public Key',
                 'handler' => 'handleCompanyPubKey'
             ],
-            self::CompanyPrivKey => [
+            self::COMP_PRIVKEY => [
                 'name'    => 'CompanyPrivKey',
                 'label'   => 'Company Private Key',
                 'handler' => 'handleCompanyPrivKey'
             ],
-            self::CredentialToken => [
+            self::CRED_TOKEN => [
                 'name'    => 'CredentialToken',
                 'label'   => 'Credential Token',
                 'handler' => 'handleCredentialToken'
             ],
-            self::CredentialPubKey => [
+            self::CRED_PUBKEY => [
                 'name'    => 'CredentialPubKey',
                 'label'   => 'Credential Public Key',
                 'handler' => 'handleCredentialPubKey'
             ],
-            self::CredentialPrivKey => [
+            self::CRED_PRIVKEY => [
                 'name'    => 'CredentialPrivKey',
                 'label'   => 'Credential Private Key',
                 'handler' => 'handleCredentialPrivKey'
@@ -446,7 +446,7 @@ class Auth {
         JWTParser $jwtParser,
         JWTValidation $jwtValidation,
         JWTSigner $jwtSigner,
-        $authorizationRequirement = self::None
+        $authorizationRequirement = self::NONE
     ) {
         $this->credentialRepository = $credentialRepository;
         $this->userRepository       = $userRepository;
@@ -477,7 +477,7 @@ class Auth {
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
 
-        $hasAuthorization   = ($this->authorizationRequirement == self::None);
+        $hasAuthorization   = ($this->authorizationRequirement == self::NONE);
         $validAuthorization = [];
 
         // Authorization Handling Loop
@@ -538,7 +538,7 @@ class Auth {
                     if (empty($targetCompany))
                         throw new \Exception('InvalidCompanyNameReference');
                     // Checks if access hierarchy is respected (Parent to Child or Company to itself)
-                    if ($this->authorizationRequirement != self::None) {
+                    if ($this->authorizationRequirement != self::NONE) {
                         $actingCompany = $request->getAttribute('actingCompany');
                         if (($actingCompany->id != $targetCompany->id) && ($actingCompany->id != $targetCompany->parent_id))
                             throw new \Exception('AccessDenied');

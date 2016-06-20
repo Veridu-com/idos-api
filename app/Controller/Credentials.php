@@ -57,6 +57,11 @@ class Credentials implements ControllerInterface {
     /**
      * Lists all Credentials that belongs to the Target Company.
      *
+     * @apiEndpointParam query int after Initial Credential creation date (lower bound)
+     * @apiEndpointParam query int before Final Credential creation date (upper bound)
+     * @apiEndpointParam query int page Current page
+     * @apiEndpointResponse 200 Credential[]
+     *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
@@ -83,6 +88,8 @@ class Credentials implements ControllerInterface {
     /**
      * Creates a new Credential for the Target Company.
      *
+     * @apiEndpointResponse 201 Credential
+     *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
@@ -107,6 +114,8 @@ class Credentials implements ControllerInterface {
     /**
      * Deletes all Credentials that belongs to the Target Company.
      *
+     * @apiEndpointResponse 200 -
+     *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
@@ -125,6 +134,8 @@ class Credentials implements ControllerInterface {
 
     /**
      * Retrieves one Credential of the Target Company based on the Credential's Public Key.
+     *
+     * @apiEndpointResponse 200 Credential
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -148,6 +159,8 @@ class Credentials implements ControllerInterface {
 
     /**
      * Updates one Credential of the Target Company based on the Credential's Public Key.
+     *
+     * @apiEndpointResponse 200 Credential
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -174,6 +187,8 @@ class Credentials implements ControllerInterface {
 
     /**
      * Deletes one Credential of the Target Company based on the Credential's Public Key.
+     *
+     * @apiEndpointResponse 200 -
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
