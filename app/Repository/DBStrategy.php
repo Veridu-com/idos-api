@@ -6,28 +6,40 @@
 
 namespace App\Repository;
 
-use App\Factory\Model;
+use App\Factory\Entity;
+use Illuminate\Database\Connection;
 
 /**
  * Database-based Repository Strategy.
  */
 class DBStrategy implements RepositoryStrategyInterface {
     /**
-     * Model Factory.
+     * Entity Factory.
      *
-     * @var App\Model\ModelFactory
+     * @var App\Entity\EntityFactory
      */
-    private $modelFactory;
+    private $entityFactory;
+    /**
+     * DB Connection.
+     *
+     * @var \Illuminate\Database\Connection
+     */
+    protected $connection;
 
     /**
      * Class constructor.
      *
-     * @param App\Factory\Model $modelFactory
+     * @param App\Factory\Entity $entityFactory
+     * @param \Illuminate\Database\Connection $connection
      *
      * @return void
      */
-    public function __construct(Model $modelFactory) {
-        $this->modelFactory = $modelFactory;
+    public function __construct(
+        Entity $entityFactory,
+        Connection $connection
+    ) {
+        $this->entityFactory = $entityFactory;
+        $this->connection = $connection;
     }
 
     /**
@@ -40,7 +52,7 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * {@inheritDoc}
      */
-    public function build($className, $repositoryName) {
-        return new $className($this->modelFactory->create($repositoryName));
+    public function build($className) {
+        return new $className($this->entityFactory, $this->connection);
     }
 }

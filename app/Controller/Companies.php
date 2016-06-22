@@ -64,7 +64,6 @@ class Companies implements ControllerInterface {
      * @apiEndpointParam query int before Final Company creation date (upper bound)
      * @apiEndpointParam query int page
      * @apiEndpointResponse 200 Company[]
-     * @apiEndpointRequiredParam path int companyId
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

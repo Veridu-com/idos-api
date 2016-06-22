@@ -6,79 +6,165 @@
 
 namespace App\Repository;
 
-use App\Exception\NotFound;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Entity\EntityInterface;
+use App\Factory\Entity;
+use Illuminate\Database\ConnectionInterface;
 
 /**
  * Abstract Database-based Repository.
  */
 abstract class AbstractDBRepository extends AbstractRepository {
     /**
+     * Entity Factory.
+     *
+     * @var App\Factory\Entity
+     */
+    protected $entityFactory;
+
+    /**
+     * DB Table Name.
+     *
+     * @var string
+     */
+    protected $tableName = null;
+    /**
+     * Entity Name.
+     *
+     * @var string
+     */
+    protected $entityName = null;
+    /**
+     * DB Connection.
+     *
+     * @var \Illuminate\Database\ConnectionInterface
+     */
+    protected $dbConnection;
+
+    /**
+     * Begin a fluent query against a database table.
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected function query() {
+        $this->dbConnection->setFetchMode(
+            \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
+            $this->getEntityName()
+        );
+        return $this->dbConnection->table($this->getTableName());
+    }
+
+    /**
+     * Get the table name.
+     *
+     * @return string
+     */
+    protected function getTableName() {
+        if (empty($this->tableName))
+            return str_replace(__NAMESPACE__, '', __CLASS__);
+        return $this->tableName;
+    }
+
+    /**
+     * Get the entity name.
+     *
+     * @return string
+     */
+    protected function getEntityName() {
+        if (empty($this->entityName))
+            return str_replace(__NAMESPACE__, '\\App\\Entity\\', __CLASS__);
+        return $this->entityName;
+    }
+
+    /**
+     * Class constructor.
+     *
+     * @param App\Factory\Entity                       $entityFactory
+     * @param \Illuminate\Database\ConnectionInterface $dbConnection
+     *
+     * @return void
+     */
+    public function __construct(
+        Entity $entityFactory,
+        ConnectionInterface $dbConnection
+    ) {
+        parent::__construct($entityFactory);
+        $this->dbConnection = $dbConnection;
+    }
+
+    /**
      * {@inheritDoc}
      */
-    public function save(Model $model) {
-        $model->saveOrFail();
+    public function create(array $attributes) {
+        return $this->entityFactory->create(
+            $this->getEntityName(),
+            $attributes
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function save(EntityInterface &$entity) {
+        $id = $this->query()
+            ->insertGetId($entity->serialize());
+        $entity = $this->create(array_merge(['id' => $id], $entity->toArray()));
     }
 
     /**
      * {@inheritDoc}
      */
     public function find($id) {
-        try {
-            return $this->model->findOrFail($id);
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
-        }
+        $result = $this->query()
+            ->find($id);
+        if (empty($result))
+            throw new NotFound();
+        return $result;
     }
 
     /**
      * {@inheritDoc}
      */
     public function findByKey($key, $value) {
-        try {
-            $this->model->where($key, $value)->firstOrFail();
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
-        }
+        $result = $this->query()
+            ->where($key, $value)
+            ->first();
+        if (empty($result))
+            throw new NotFound();
+        return $result;
     }
 
     /**
      * {@inheritDoc}
      */
     public function delete($id) {
-        try {
-            $this->model->find($id)->delete();
-        } catch (ModelNotFoundException $exception) {
-        }
+        return $this->query()
+            ->delete($id);
     }
 
     /**
      * {@inheritDoc}
      */
     public function deleteByKey($key, $value) {
-        try {
-            $this->model->where($key, $value)->delete();
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
-        }
+        return $this->query()
+            ->where($key, $value)
+            ->delete();
     }
 
     /**
      * {@inheritDoc}
      */
     public function getAllByKey($key, $value) {
-        try {
-            $this->model->where($key, $value)->get();
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
-        }
+        return new Collection(
+            $this->query()
+                ->where($key, $value)
+                ->get()
+        );
     }
 
     /**
      * {@inheritDoc}
      */
     public function getAll() {
-        return $this->model->all();
+        return new Collection($this->query()->all());
     }
 }

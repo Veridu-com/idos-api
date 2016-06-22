@@ -19,17 +19,17 @@ interface EntityInterface {
      */
     public function hydrate(array $attributes = []);
     /**
-     * Convert the entity instance to an array.
+     * Convert the entity instance to an array that can be safely exposed.
      *
      * @return array
      */
     public function toArray();
     /**
-     * Convert the entity instance to an array that can safely be exposed.
+     * Serialize the entity instance to an array.
      *
      * @return array
      */
-    public function toPublicArray();
+    public function serialize();
     /**
      * Determine if the entity exists on the repository.
      *

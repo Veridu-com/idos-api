@@ -6,13 +6,15 @@
 
 namespace App\Entity;
 
+use Illuminate\Contracts\Support\Arrayable;
+
 /**
  * Abstract Entity Implementation.
  * Heavily inspired on Eloquent's Model.
  *
  * @link https://github.com/illuminate/database/blob/master/Eloquent/Model.php
  */
-abstract class AbstractEntity implements EntityInterface {
+abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * Entity attribute values.
      *
@@ -157,8 +159,11 @@ abstract class AbstractEntity implements EntityInterface {
      * {@inheritDoc}
      */
     public function toArray() {
+        if (empty($this->visible))
+            return $this->toArray();
+
         $return = [];
-        foreach (array_keys($this->attributes) as $attribute)
+        foreach ($this->visible as $attribute)
             $return[$attribute] = $this->getAttribute($attribute);
         return $return;
     }
@@ -166,12 +171,9 @@ abstract class AbstractEntity implements EntityInterface {
     /**
      * {@inheritDoc}
      */
-    public function toPublicArray() {
-        if (empty($this->visible))
-            return $this->toArray();
-
+    public function serialize() {
         $return = [];
-        foreach ($this->visible as $attribute)
+        foreach (array_keys($this->attributes) as $attribute)
             $return[$attribute] = $this->getAttribute($attribute);
         return $return;
     }

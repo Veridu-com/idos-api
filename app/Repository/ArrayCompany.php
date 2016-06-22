@@ -7,23 +7,12 @@
 namespace App\Repository;
 
 use App\Exception\NotFound;
-use App\Model\Company;
+use Illuminate\Support\Collection;
 
 /**
  * Array-based Company Repository Implementation.
  */
 class ArrayCompany extends AbstractArrayRepository implements CompanyInterface {
-    /**
-     * Class constructor.
-     *
-     * @param App\Model\Company $model
-     *
-     * @return void
-     */
-    public function __construct(Company $model) {
-        $this->model = $model;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -31,7 +20,7 @@ class ArrayCompany extends AbstractArrayRepository implements CompanyInterface {
         foreach ($this->storage as $item)
             if ($item->slug === $slug)
                 return $item;
-        throw new NotFound(get_class($this->model));
+        throw new NotFound();
     }
 
     /**
@@ -41,7 +30,7 @@ class ArrayCompany extends AbstractArrayRepository implements CompanyInterface {
         foreach ($this->storage as $item)
             if ($item->public_key === $pubKey)
                 return $item;
-        throw new NotFound(get_class($this->model));
+        throw new NotFound();
     }
 
     /**
@@ -51,7 +40,7 @@ class ArrayCompany extends AbstractArrayRepository implements CompanyInterface {
         foreach ($this->storage as $item)
             if ($item->private_key === $privKey)
                 return $item;
-        throw new NotFound(get_class($this->model));
+        throw new NotFound();
     }
 
     /**
@@ -63,7 +52,7 @@ class ArrayCompany extends AbstractArrayRepository implements CompanyInterface {
             if ($item->parent_id === $parentId)
                 $return[] = $item;
 
-        return $this->model->newCollection($return);
+        return new Collection($return);
     }
 
     /**

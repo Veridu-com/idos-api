@@ -7,23 +7,12 @@
 namespace App\Repository;
 
 use App\Exception\NotFound;
-use App\Model\Credential;
+use Illuminate\Support\Collection;
 
 /**
  * Array-based Credential Repository Implementation.
  */
 class ArrayCredential extends AbstractArrayRepository implements CredentialInterface {
-    /**
-     * Class constructor.
-     *
-     * @param App\Model\Credential $model
-     *
-     * @return void
-     */
-    public function __construct(Credential $model) {
-        $this->model = $model;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -31,7 +20,7 @@ class ArrayCredential extends AbstractArrayRepository implements CredentialInter
         foreach ($this->storage as $item)
             if ($item->public_key === $pubKey)
                 return $item;
-        throw new NotFound(get_class($this->model));
+        throw new NotFound();
     }
 
     /**
@@ -43,6 +32,6 @@ class ArrayCredential extends AbstractArrayRepository implements CredentialInter
             if ($item->company_id === $companyId)
                 $return[] = $item;
 
-        return $this->model->newCollection($return);
+        return new Collection($return);
     }
 }

@@ -491,7 +491,7 @@ class Auth {
                     $validAuthorization[] = $authorizationInfo['label'];
                 else {
                     // Handles Authorization validation and Request Argument creation
-                    $request = $this->$authorizationInfo['handler']($request, $authorization);
+                    $request = $this->{$authorizationInfo['handler']}($request, $authorization);
                     // Authorization has been found and validated
                     $hasAuthorization = true;
                 }

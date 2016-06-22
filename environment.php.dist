@@ -5,4 +5,4 @@
  */
 
 if (!defined('__VERSION__'))
-	define('__VERSION__', '1.0');
+    define('__VERSION__', '1.0');

@@ -7,68 +7,82 @@
 namespace App\Repository;
 
 use App\Exception\NotFound;
-use App\Model\Company;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Entity\Company;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Company Repository Implementation.
  */
 class DBCompany extends AbstractDBRepository implements CompanyInterface {
     /**
-     * Class constructor.
+     * The table associated with the repository.
      *
-     * @param App\Model\Company $model
-     *
-     * @return void
+     * @var string
      */
-    public function __construct(Company $model) {
-        $this->model = $model;
-    }
+    protected $tableName = 'companies';
+    /**
+     * The entity associated with the repository.
+     *
+     * @var string
+     */
+    protected $entityName = Company::class;
 
     /**
      * {@inheritDoc}
      */
     public function findBySlug($slug) {
-        try {
-            return $this->model->where('slug', $slug)->firstOrFail();
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
-        }
+        $result = $this->query()
+            ->where('slug', $slug)
+            ->first();
+        if (empty($result))
+            throw new NotFound();
+
+        return $result;
     }
 
     /**
      * {@inheritDoc}
      */
     public function findByPubKey($pubKey) {
-        try {
-            return $this->model->where('public_key', $pubKey)->firstOrFail();
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
-        }
+        $result = $this->query()
+            ->where('public_key', $pubKey)
+            ->first();
+        if (empty($result))
+            throw new NotFound();
+
+        return $result;
     }
 
     /**
      * {@inheritDoc}
      */
     public function findByPrivKey($privKey) {
-        try {
-            return $this->model->where('private_key', $privKey)->firstOrFail();
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
-        }
+        $result = $this->query()
+            ->where('private_key', $privKey)
+            ->first();
+        if (empty($result))
+            throw new NotFound();
+
+        return $result;
     }
 
     /**
      * {@inheritDoc}
      */
     public function getAllByParentId($parentId) {
-        return $this->model->where('parent_id', $parentId)->get();
+        return new Collection(
+            $this->query()
+                ->where('parent_id', $parentId)
+                ->get()
+        );
     }
 
     /**
      * {@inheritDoc}
      */
     public function deleteByParentId($parentId) {
-        $this->model->where('parent_id', $parentId)->delete();
+        return $this->query()
+            ->where('parent_id', $parentId)
+            ->delete();
     }
 }

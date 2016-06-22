@@ -7,35 +7,36 @@
 namespace App\Repository;
 
 use App\Exception\NotFound;
-use App\Model\User;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Entity\User;
 
 /**
  * Database-based User Repository Implementation.
  */
 class DBUser extends AbstractDBRepository implements UserInterface {
     /**
-     * Class constructor.
+     * The table associated with the repository.
      *
-     * @param App\Model\User $model
-     *
-     * @return void
+     * @var string
      */
-    public function __construct(User $model) {
-        $this->model = $model;
-    }
+    protected $tableName = 'users';
+    /**
+     * The entity associated with the repository.
+     *
+     * @var string
+     */
+    protected $entityName = User::class;
 
     /**
      * {@inheritDoc}
      */
     public function findByUserName($userName, $credentialId) {
-        try {
-            return $this->model
-                ->where('username', $userName)
-                ->where('credential_id', $credentialId)
-                ->firstOrFail();
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
-        }
+        $result = $this->query()
+            ->where('username', $userName)
+            ->where('credential_id', $credentialId)
+            ->first();
+        if (empty($result))
+            throw new NotFound();
+
+        return $result;
     }
 }
