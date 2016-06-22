@@ -31,23 +31,13 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
      * {@inheritDoc}
      */
     public function findByPubKey($pubKey) {
-        $result = $this->query()
-            ->where('public', $pubKey)
-            ->first();
-        if (empty($result))
-            throw new NotFound();
-
-        return $result;
+        return $this->findByKey('public', $pubKey);
     }
 
     /**
      * {@inheritDoc}
      */
     public function getAllByCompanyId($companyId) {
-        return new Collection(
-            $this->query()
-                ->where('company_id', $companyId)
-                ->get()
-        );
+        return $this->getAllByKey('company_id', $companyId);
     }
 }

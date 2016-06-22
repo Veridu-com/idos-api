@@ -31,58 +31,34 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
      * {@inheritDoc}
      */
     public function findBySlug($slug) {
-        $result = $this->query()
-            ->where('slug', $slug)
-            ->first();
-        if (empty($result))
-            throw new NotFound();
-
-        return $result;
+        return $this->findByKey('slug', $slug);
     }
 
     /**
      * {@inheritDoc}
      */
     public function findByPubKey($pubKey) {
-        $result = $this->query()
-            ->where('public_key', $pubKey)
-            ->first();
-        if (empty($result))
-            throw new NotFound();
-
-        return $result;
+        return $this->findByKey('public_key', $pubKey);
     }
 
     /**
      * {@inheritDoc}
      */
     public function findByPrivKey($privKey) {
-        $result = $this->query()
-            ->where('private_key', $privKey)
-            ->first();
-        if (empty($result))
-            throw new NotFound();
-
-        return $result;
+        return $this->findByKey('private_key', $privKey);
     }
 
     /**
      * {@inheritDoc}
      */
     public function getAllByParentId($parentId) {
-        return new Collection(
-            $this->query()
-                ->where('parent_id', $parentId)
-                ->get()
-        );
+        return $this->getAllByKey('parent_id', $parentId);
     }
 
     /**
      * {@inheritDoc}
      */
     public function deleteByParentId($parentId) {
-        return $this->query()
-            ->where('parent_id', $parentId)
-            ->delete();
+        return $this->deleteByKey('parent_id', $parentId);
     }
 }

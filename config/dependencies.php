@@ -155,7 +155,6 @@ $container['notFoundHandler'] = function (ContainerInterface $container) {
         ServerRequestInterface $request,
         ResponseInterface $response
     ) use ($container) {
-        //return $response->write('notFoundHandler');
         throw new \Exception('not found');
     };
 };
@@ -169,8 +168,7 @@ $container['notAllowedHandler'] = function (ContainerInterface $container) {
     ) use ($container) {
         if ($request->isOptions())
             return $response->withStatus(204);
-        // throw new \Exception('notAllowedHandler');
-        return $response->write('notAllowedHandler');
+        throw new \Exception('notAllowedHandler');
     };
 };
 
@@ -195,23 +193,25 @@ $container['cache'] = function (ContainerInterface $container) {
         $settings['cache']['driver'] = 'ephemeral';
 
     if (empty($settings['cache']['options']))
-        $settings['cache']['options'] = [];
+        $cacheOptions = [];
+    else
+        $cacheOptions = $settings['cache']['options'];
 
     switch ($settings['cache']['driver']) {
         case 'filesystem':
-            $driver = new FileSystem($settings['cache']['options']);
+            $driver = new FileSystem($cacheOptions);
             break;
         case 'sqlite':
-            $driver = new Sqlite($settings['cache']['options']);
+            $driver = new Sqlite($cacheOptions);
             break;
         case 'apc':
-            $driver = new Apc($settings['cache']['options']);
+            $driver = new Apc($cacheOptions);
             break;
         case 'memcache':
-            $driver = new Memcache($settings['cache']['options']);
+            $driver = new Memcache($cacheOptions);
             break;
         case 'redis':
-            $driver = new Redis($settings['cache']['options']);
+            $driver = new Redis($cacheOptions);
             break;
         case 'ephemeral':
         default:
@@ -319,16 +319,16 @@ $container['authMiddleware'] = function (ContainerInterface $container) {
 $container['repositoryFactory'] = function (ContainerInterface $container) {
     $settings = $container->get('settings');
     switch ($settings['repository']['strategy']) {
-        case 'array':
-            $strategy = new Repository\ArrayStrategy($container->get('entityFactory'));
-            break;
-        case 'cached':
-            $strategy = new Repository\CachedStrategy($container->get('entityFactory'), $container->get('cache'));
-            break;
         case 'db':
         default:
             $strategy = new Repository\DBStrategy($container->get('entityFactory'), $container->get('db'));
     }
+
+    if ($settings['repository']['cached'])
+        $strategy = new Repository\CachedStrategy(
+            new Factory\Repository($strategy),
+            $container->get('cache')
+        );
 
     return new Factory\Repository($strategy);
 };

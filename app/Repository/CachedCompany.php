@@ -6,9 +6,6 @@
 
 namespace App\Repository;
 
-use App\Exception\NotFound;
-use App\Entity\Company;
-use Stash\Interfaces\PoolInterface;
 use Stash\Invalidation;
 
 /**
@@ -16,54 +13,58 @@ use Stash\Invalidation;
  */
 class CachedCompany extends AbstractCachedRepository implements CompanyInterface {
     /**
-     * Class constructor.
-     *
-     * @param App\Entity\Company              $entity
-     * @param \Stash\Interfaces\PoolInterface $cachePool
-     *
-     * @return void
+     * {@inheritDoc}
      */
-    public function __construct(Company $entity, PoolInterface $cachePool) {
-        $this->entity     = $entity;
-        $this->cachePool = $cachePool;
+    public function find($id) {
+        return $this->respository->find($id);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findBySlug($slug) {
-        $item = $this->cachePool->getItem(sprintf('/Company/%s', $slug));
-        $data = $item->get(Invalidation::PRECOMPUTE, 300);
-        if ($item->isMiss()) {
-            $item->lock();
-            $data = parent::findBySlug($slug);
-            $item->set($data, self::CACHE_TTL);
-        }
+    public function delete($id) {
+        return $this->repository->delete($id);
+    }
 
-        return $data;
+    /**
+     * {@inheritDoc}
+     */
+    public function getAll() {
+        return $this->repository->getAll();
     }
 
     /**
      * {@inheritDoc}
      */
     public function findByPubKey($pubKey) {
+        return $this->repository->findByPubKey($pubKey);
     }
 
     /**
      * {@inheritDoc}
      */
     public function findByPrivKey($privKey) {
+        return $this->repository->findByPrivKey($privKey);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function findByParentId($parentId) {
+    public function findBySlug($slug) {
+        return $this->repository->findBySlug($slug);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAllByParentId($parentId) {
+        return $this->repository->getAllByParentId($parentId);
     }
 
     /**
      * {@inheritDoc}
      */
     public function deleteByParentId($parentId) {
+        return $this->repository->deleteByParentId($parentId);
     }
 }
