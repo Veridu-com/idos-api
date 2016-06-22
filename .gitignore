@@ -9,3 +9,4 @@ phpdox.xml
 phpunit.xml
 sftp-config.json
 config/settings.php
+vendor/

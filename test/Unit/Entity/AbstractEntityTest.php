@@ -28,7 +28,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase {
         $reflection_property->setValue($object, $value);
     }
 
-    public function testToArray() {
+    public function testSerialize() {
         $array = [
             'id' => 0,
             'name' => 'abc'
@@ -37,10 +37,10 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase {
             ->setMethods(null)
             ->setConstructorArgs(['attributes' => $array])
             ->getMockForAbstractClass();
-        $this->assertSame($array, $abstractMock->toArray());
+        $this->assertSame($array, $abstractMock->serialize());
     }
 
-    public function testToPublicArray() {
+    public function testToArray() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(null)
             ->setConstructorArgs(
@@ -54,7 +54,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase {
             ->getMockForAbstractClass();
         $this->setProtectedProperty($abstractMock, 'visible', ['name']);
 
-        $this->assertSame(['name' => 'abc'], $abstractMock->toPublicArray());
+        $this->assertSame(['name' => 'abc'], $abstractMock->toArray());
     }
 
     public function testExists() {
