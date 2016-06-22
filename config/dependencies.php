@@ -3,6 +3,7 @@
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
 use App\Command;
 use App\Exception\AppException;
 use App\Factory;
@@ -43,12 +44,6 @@ if (! isset($app))
     die('$app is not set!');
 
 $container = $app->getContainer();
-
-// Database Abstract
-$capsule = new Manager();
-$capsule->addConnection($container['settings']['db']);
-// $capsule->setAsGlobal();
-$capsule->bootEloquent();
 
 // Slim Error Handling
 $container['errorHandler'] = function (ContainerInterface $container) {
@@ -297,9 +292,9 @@ $container['commandFactory'] = function (ContainerInterface $container) {
     return new Factory\Command();
 };
 
-// App Model Factory
-$container['modelFactory'] = function (ContainerInterface $container) {
-    return new Factory\Model();
+// App Entity Factory
+$container['entityFactory'] = function (ContainerInterface $container) {
+    return new Factory\Entity();
 };
 
 // Auth Middleware
@@ -323,26 +318,19 @@ $container['authMiddleware'] = function (ContainerInterface $container) {
 // App Repository Factory
 $container['repositoryFactory'] = function (ContainerInterface $container) {
     $settings = $container->get('settings');
-    switch ($settings['strategy']['repository']) {
+    switch ($settings['repository']['strategy']) {
         case 'array':
-            $strategy = new Repository\ArrayStrategy($container->get('modelFactory'));
+            $strategy = new Repository\ArrayStrategy($container->get('entityFactory'));
             break;
         case 'cached':
-            $strategy = new Repository\CachedStrategy($container->get('modelFactory'), $container->get('cache'));
+            $strategy = new Repository\CachedStrategy($container->get('entityFactory'), $container->get('cache'));
             break;
         case 'db':
         default:
-            $strategy = new Repository\DBStrategy($container->get('modelFactory'));
+            $strategy = new Repository\DBStrategy($container->get('entityFactory'), $container->get('db'));
     }
 
     return new Factory\Repository($strategy);
-};
-
-// Mongo DB
-$container['mongo'] = function (ContainerInterface $container) {
-    $settings = $container->get('settings');
-
-    return new MongoClient($settings['mongo']['dsn'], $settings['mongo']['options']);
 };
 
 // JSON Web Token
@@ -359,6 +347,13 @@ $container['jwt'] = function (ContainerInterface $container) {
                 return new JWT\Signer\Hmac\Sha256();
         }
     };
+};
+
+// DB Access
+$container['db'] = function (ContainerInterface $container) {
+    $capsule = new Manager();
+    $capsule->addConnection($container['settings']['db']);
+    return $capsule->getConnection();
 };
 
 // Respect Validator

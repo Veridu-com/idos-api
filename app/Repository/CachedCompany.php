@@ -7,8 +7,7 @@
 namespace App\Repository;
 
 use App\Exception\NotFound;
-use App\Model\Company;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Entity\Company;
 use Stash\Interfaces\PoolInterface;
 use Stash\Invalidation;
 
@@ -19,13 +18,13 @@ class CachedCompany extends AbstractCachedRepository implements CompanyInterface
     /**
      * Class constructor.
      *
-     * @param App\Model\Company               $model
+     * @param App\Entity\Company              $entity
      * @param \Stash\Interfaces\PoolInterface $cachePool
      *
      * @return void
      */
-    public function __construct(Company $model, PoolInterface $cachePool) {
-        $this->model     = $model;
+    public function __construct(Company $entity, PoolInterface $cachePool) {
+        $this->entity     = $entity;
         $this->cachePool = $cachePool;
     }
 
@@ -33,19 +32,15 @@ class CachedCompany extends AbstractCachedRepository implements CompanyInterface
      * {@inheritDoc}
      */
     public function findBySlug($slug) {
-        try {
-            $item = $this->cachePool->getItem(sprintf('/Company/%s', $slug));
-            $data = $item->get(Invalidation::PRECOMPUTE, 300);
-            if ($item->isMiss()) {
-                $item->lock();
-                $data = $this->model->where('slug', $slug)->firstOrFail();
-                $item->set($data, self::CACHE_TTL);
-            }
-
-            return $data;
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
+        $item = $this->cachePool->getItem(sprintf('/Company/%s', $slug));
+        $data = $item->get(Invalidation::PRECOMPUTE, 300);
+        if ($item->isMiss()) {
+            $item->lock();
+            $data = parent::findBySlug($slug);
+            $item->set($data, self::CACHE_TTL);
         }
+
+        return $data;
     }
 
     /**

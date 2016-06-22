@@ -6,34 +6,35 @@
 
 namespace App\Repository;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Factory\Entity;
 
 /**
  * Abstract Generic Repository.
  */
 abstract class AbstractRepository implements RepositoryInterface {
     /**
-     * Model Instance.
+     * Entity Factory.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var App\Factory\Entity
      */
-    protected $model;
+    protected $entityFactory;
 
     /**
      * Class constructor.
      *
-     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param App\Factory\Entity $entityFactory
      *
      * @return void
      */
-    public function __construct(Model $model) {
-        $this->model = $model;
+    public function __construct(Entity $entityFactory) {
+        $this->entityFactory = $entityFactory;
     }
 
     /**
      * {@inheritDoc}
      */
     public function create(array $attributes) {
-        return $this->model->newInstance($attributes);
+        $name = sre_replace(__NAMESPACE__, '', __CLASS__);
+        return $this->entityFactory->create($name, $attributes);
     }
 }

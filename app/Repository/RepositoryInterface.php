@@ -6,7 +6,7 @@
 
 namespace App\Repository;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Entity\EntityInterface;
 
 /**
  * Repository Interface.
@@ -17,18 +17,18 @@ interface RepositoryInterface {
      *
      * @param array $attributes
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return App\Entity\EntityInterface
      */
     public function create(array $attributes);
 
     /**
      * Saves a new entity.
      *
-     * @param \Illuminate\Database\Eloquent\Model
+     * @param App\Entity\EntityInterface $entity
      *
      * @return void
      */
-    public function save(Model $model);
+    public function save(EntityInterface &$entity);
 
     /**
      * Find an entity by id.
@@ -37,7 +37,7 @@ interface RepositoryInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return App\Entity\EntityInterface
      */
     public function find($id);
 
@@ -49,7 +49,7 @@ interface RepositoryInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return App\Entity\EntityInterface
      */
     public function findByKey($key, $value);
 
@@ -58,7 +58,7 @@ interface RepositoryInterface {
      *
      * @param int $id
      *
-     * @return void
+     * @return int
      */
     public function delete($id);
 
@@ -68,24 +68,24 @@ interface RepositoryInterface {
      * @param string $key
      * @param mixed  $value
      *
-     * @return void
+     * @return int
      */
     public function deleteByKey($key, $value);
 
     /**
-     * Return all entities that a key matches a value.
+     * Return an entity collection with all entities that a key matches a value.
      *
      * @param string $key
      * @param mixed  $value
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllByKey($key, $value);
 
     /**
-     * Return all entities.
+     * Return an entity collection.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAll();
 }

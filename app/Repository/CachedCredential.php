@@ -7,8 +7,7 @@
 namespace App\Repository;
 
 use App\Exception\NotFound;
-use App\Model\Credential;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Entity\Credential;
 use Stash\Interfaces\PoolInterface;
 use Stash\Invalidation;
 
@@ -19,13 +18,13 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
     /**
      * Class constructor.
      *
-     * @param App\Model\Credential            $model
+     * @param App\Entity\Credential           $entity
      * @param \Stash\Interfaces\PoolInterface $cachePool
      *
      * @return void
      */
-    public function __construct(Credential $model, PoolInterface $cachePool) {
-        $this->model     = $model;
+    public function __construct(Credential $entity, PoolInterface $cachePool) {
+        $this->entity    = $entity;
         $this->cachePool = $cachePool;
     }
 
@@ -33,18 +32,14 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
      * {@inheritDoc}
      */
     public function findByPubKey($pubKey) {
-        try {
-            $item = $this->cachePool->getItem(sprintf('/Key/PubKey/%s', $pubKey));
-            $data = $item->get(Invalidation::PRECOMPUTE, 300);
-            if ($item->isMiss()) {
-                $item->lock();
-                $data = $this->model->where('public', $pubKey)->firstOrFail();
-                $item->set($data, self::CACHE_TTL);
-            }
-
-            return $data;
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
+        $item = $this->cachePool->getItem(sprintf('/Key/PubKey/%s', $pubKey));
+        $data = $item->get(Invalidation::PRECOMPUTE, 300);
+        if ($item->isMiss()) {
+            $item->lock();
+            $data = parent::findByPubKey($pubKey);
+            $item->set($data, self::CACHE_TTL);
         }
+
+        return $data;
     }
 }

@@ -7,7 +7,7 @@
 namespace App\Repository;
 
 use App\Exception\NotFound;
-use App\Model\User;
+use App\Entity\User;
 
 /**
  * Array-based User Repository Implementation.
@@ -16,12 +16,12 @@ class ArrayUser extends AbstractArrayRepository implements UserInterface {
     /**
      * Class constructor.
      *
-     * @param App\Model\User $model
+     * @param App\Entity\User $entity
      *
      * @return void
      */
-    public function __construct(User $model) {
-        $this->model = $model;
+    public function __construct(User $entity) {
+        $this->entity = $entity;
     }
 
     /**
@@ -31,6 +31,6 @@ class ArrayUser extends AbstractArrayRepository implements UserInterface {
         foreach ($this->storage[$credentialId] as $item)
             if ($item->username === $userName)
                 return $item;
-        throw new NotFound(get_class($this->model));
+        throw new NotFound(get_class($this->entity));
     }
 }

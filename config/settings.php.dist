@@ -30,7 +30,7 @@ $appSettings = [
     ],
     'log' => [
         'path' => sprintf('%s/../log/api-%d%d%d.log', __DIR__, date('Y'), date('m'), date('d')),
-        'level' => Logger::DEBUG
+        'level' => Monolog\Logger::DEBUG
     ],
     'cache' => [
         'driver' => 'redis',
@@ -47,15 +47,12 @@ $appSettings = [
             ['localhost', 4730]
         ]
     ],
-    'mongo' => [
-        'dsn' => 'mongodb:///tmp/mongodb-27017.sock'
-    ],
     'optimus' => [
         'prime' => 0,
         'inverse' => 0,
         'random' => 0
     ],
-    'strategy' => [
-        'repository' => 'db'
+    'repository' => [
+        'strategy' => 'db'
     ]
 ];

@@ -6,28 +6,28 @@
 
 namespace App\Repository;
 
-use App\Factory\Model;
+use App\Factory\Entity;
 
 /**
  * Array-based Repository Strategy.
  */
 class ArrayStrategy implements RepositoryStrategyInterface {
     /**
-     * Model Factory.
+     * Entity Factory.
      *
-     * @var App\Factory\Model
+     * @var App\Factory\Entity
      */
-    private $modelFactory;
+    private $entityFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Factory\Model $modelFactory
+     * @param App\Factory\Entity $entityFactory
      *
      * @return void
      */
-    public function __construct(Model $modelFactory) {
-        $this->modelFactory = $modelFactory;
+    public function __construct(Entity $entityFactory) {
+        $this->entityFactory = $entityFactory;
     }
 
     /**
@@ -40,7 +40,7 @@ class ArrayStrategy implements RepositoryStrategyInterface {
     /**
      * {@inheritDoc}
      */
-    public function build($className, $repositoryName) {
-        return new $className($this->modelFactory->create($repositoryName));
+    public function build($className) {
+        return new $className($this->entityFactory);
     }
 }

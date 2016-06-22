@@ -7,39 +7,47 @@
 namespace App\Repository;
 
 use App\Exception\NotFound;
-use App\Model\Credential;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Entity\Credential;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Credential Repository Implementation.
  */
 class DBCredential extends AbstractDBRepository implements CredentialInterface {
     /**
-     * Class constructor.
+     * The table associated with the repository.
      *
-     * @param App\Model\Credential $model
-     *
-     * @return void
+     * @var string
      */
-    public function __construct(Credential $model) {
-        $this->model = $model;
-    }
+    protected $tableName = 'credentials';
+    /**
+     * The entity associated with the repository.
+     *
+     * @var string
+     */
+    protected $entityName = Credential::class;
 
     /**
      * {@inheritDoc}
      */
     public function findByPubKey($pubKey) {
-        try {
-            return $this->model->where('public', $pubKey)->firstOrFail();
-        } catch (ModelNotFoundException $exception) {
-            throw new NotFound(get_class($this->model));
-        }
+        $result = $this->query()
+            ->where('public', $pubKey)
+            ->first();
+        if (empty($result))
+            throw new NotFound();
+
+        return $result;
     }
 
     /**
      * {@inheritDoc}
      */
     public function getAllByCompanyId($companyId) {
-        return $this->model->where('company_id', $companyId)->get();
+        return new Collection(
+            $this->query()
+                ->where('company_id', $companyId)
+                ->get()
+        );
     }
 }

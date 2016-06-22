@@ -16,4 +16,22 @@ class Entity extends AbstractFactory {
     protected function getNamespace() {
         return '\\App\\Entity\\';
     }
+
+    /**
+     * Creates new entity instances.
+     *
+     * @param string $name
+     *
+     * @throws \RuntimeException
+     *
+     * @return mixed
+     */
+    public function create($name, array $attributes = []) {
+        $class = $this->getClassName($name);
+
+        if (class_exists($class))
+            return new $class($attributes);
+
+        throw new \RuntimeException(sprintf('"%s" (%s) not found.', $name, $class));
+    }
 }

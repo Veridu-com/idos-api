@@ -23,9 +23,8 @@ interface RepositoryStrategyInterface {
      * Builds a new repository.
      *
      * @param string $className
-     * @param string $repositoryName
      *
      * @return App\Repository\RepositoryInterface
      */
-    public function build($className, $repositoryName);
+    public function build($className);
 }

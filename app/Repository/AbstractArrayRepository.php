@@ -7,7 +7,8 @@
 namespace App\Repository;
 
 use App\Exception\NotFound;
-use Illuminate\Database\Eloquent\Model;
+use App\Entity\EntityInterface;
+use Illuminate\Support\Collection;
 
 /**
  * Abstract Array-based Repository.
@@ -23,9 +24,10 @@ abstract class AbstractArrayRepository extends AbstractRepository {
     /**
      * {@inheritDoc}
      */
-    public function save(Model $model) {
-        $model->created_at = time();
-        $this->storage[]   = $model;
+    public function save(EntityInterface $entity) {
+        $entity->id         = count($this->storage) + 1;
+        $entity->created_at = time();
+        $this->storage[]    = $entity;
     }
 
     /**
@@ -34,7 +36,7 @@ abstract class AbstractArrayRepository extends AbstractRepository {
     public function find($id) {
         if (isset($this->storage[$id]))
             return $this->storage[$id];
-        throw new NotFound(get_class($this->model));
+        throw new NotFound();
     }
 
     /**
@@ -44,7 +46,7 @@ abstract class AbstractArrayRepository extends AbstractRepository {
         foreach ($this->storage as $item)
             if ($item->{$key} === $value)
                 return $item;
-        throw new NotFound(get_class($this->model));
+        throw new NotFound();
     }
 
     /**
@@ -73,13 +75,13 @@ abstract class AbstractArrayRepository extends AbstractRepository {
             if ($item->{$key} === $value)
                 $return[] = $item;
 
-        return $this->model->newCollection($return);
+        return new Collection($return);
     }
 
     /**
      * {@inheritDoc}
      */
     public function getAll() {
-        return $this->model->newCollection(array_values($this->storage));
+        return new Collection(array_values($this->storage));
     }
 }
