@@ -38,15 +38,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('public_key')
             ->create();
 
@@ -75,15 +66,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('public_key')
@@ -119,15 +101,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('identity_id')
@@ -220,15 +193,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('identity_id')
             ->addIndex('role')
             ->addIndex('resource')
@@ -267,15 +231,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('attribute_id')
             ->addForeignKey('attribute_id', 'attributes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -312,15 +267,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('company_id')
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -349,15 +295,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('company_id')
             ->addIndex(['company_id', 'category', 'property'], ['unique' => true])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -384,15 +321,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('company_id')
@@ -425,15 +353,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('company_id')
@@ -470,15 +389,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('name', ['unique' => true])
@@ -521,15 +431,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('company_id')
             ->addForeignKey('handler_id', 'service_handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -562,15 +463,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('name', ['unique' => true])
@@ -615,15 +507,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('company_id')
             ->addForeignKey('handler_id', 'process_handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -648,15 +531,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex(['credential_id', 'username'], ['unique' => true])
@@ -691,15 +565,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('credential_id')
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -729,15 +594,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('credential_id')
             ->addIndex(['credential_id', 'value'], ['unique' => true])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -762,15 +618,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('hook_id')
@@ -808,15 +655,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('user_id')
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -847,15 +685,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->create();
 
         $userAccess = $this->table('user_access');
@@ -880,15 +709,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('identity_id')
@@ -933,15 +753,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('source_id')
             ->addIndex('application_id')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -974,15 +785,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('source_id')
             ->addIndex('email')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -1012,15 +814,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('source_id')
@@ -1055,15 +848,6 @@ class DatabaseInit extends AbstractMigration {
                     'default' => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
-                ]
-            )
             ->addIndex('source_id')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
@@ -1091,15 +875,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->addIndex('source_id')
@@ -1228,15 +1003,6 @@ class DatabaseInit extends AbstractMigration {
                     'null' => false,
                     'timezone' => false,
                     'default' => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'deleted_at',
-                'timestamp',
-                [
-                    'null' => true,
-                    'timezone' => false,
-                    'default' => null
                 ]
             )
             ->create();
