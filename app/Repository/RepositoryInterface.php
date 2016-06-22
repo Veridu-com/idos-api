@@ -42,18 +42,6 @@ interface RepositoryInterface {
     public function find($id);
 
     /**
-     * Find the first entity that a key matches value.
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\EntityInterface
-     */
-    public function findByKey($key, $value);
-
-    /**
      * Delete an entitiy by id.
      *
      * @param int $id
@@ -61,26 +49,6 @@ interface RepositoryInterface {
      * @return int
      */
     public function delete($id);
-
-    /**
-     * Delete all entities that a key matches a value.
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return int
-     */
-    public function deleteByKey($key, $value);
-
-    /**
-     * Return an entity collection with all entities that a key matches a value.
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getAllByKey($key, $value);
 
     /**
      * Return an entity collection.

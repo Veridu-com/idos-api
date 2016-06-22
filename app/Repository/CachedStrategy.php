@@ -6,7 +6,7 @@
 
 namespace App\Repository;
 
-use App\Factory\Entity;
+use App\Factory\Repository;
 use Stash\Interfaces\PoolInterface;
 
 /**
@@ -14,12 +14,11 @@ use Stash\Interfaces\PoolInterface;
  */
 class CachedStrategy implements RepositoryStrategyInterface {
     /**
-     * Entity Factory.
+     * Repository Factory.
      *
-     * @var App\Factory\Entity
+     * @var App\Factory\Repository
      */
-    private $entityFactory;
-
+    private $repositoryFactory;
     /**
      * Cache Pool.
      *
@@ -30,14 +29,14 @@ class CachedStrategy implements RepositoryStrategyInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity              $entityFactory
+     * @param App\Factory\Repository          $repositoryFactory
      * @param \Stash\Interfaces\PoolInterface $cachePool
      *
      * @return void
      */
-    public function __construct(Entity $entityFactory, PoolInterface $cachePool) {
-        $this->entityFactory = $entityFactory;
-        $this->cachePool     = $cachePool;
+    public function __construct(Repository $repositoryFactory, PoolInterface $cachePool) {
+        $this->repositoryFactory = $repositoryFactory;
+        $this->cachePool         = $cachePool;
     }
 
     /**
@@ -51,6 +50,10 @@ class CachedStrategy implements RepositoryStrategyInterface {
      * {@inheritDoc}
      */
     public function build($className) {
-        return new $className($this->entityFactory, $this->cachePool);
+        $repositoryName = preg_replace('/^.*?Cached/', '', $className);
+        return new $className(
+            $this->repositoryFactory->create($repositoryName),
+            $this->cachePool
+        );
     }
 }

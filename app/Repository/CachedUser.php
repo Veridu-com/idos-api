@@ -9,9 +9,9 @@ namespace App\Repository;
 use Stash\Invalidation;
 
 /**
- * Cache-based Credential Repository Implementation.
+ * Cache-based User Repository Implementation.
  */
-class CachedCredential extends AbstractCachedRepository implements CredentialInterface {
+class CachedUser extends AbstractCachedRepository implements UserInterface {
     /**
      * {@inheritDoc}
      */
@@ -36,14 +36,7 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
     /**
      * {@inheritDoc}
      */
-    public function findByPubKey($pubKey) {
-        return $this->repository->findByPubKey($pubKey);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getAllByCompanyId($companyId) {
-        return $this->getAllByCompanyId($companyId);
+    public function findByUserName($userName, $credentialId) {
+        return $this->findByUserName($userName, $credentialId);
     }
 }

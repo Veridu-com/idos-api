@@ -9,6 +9,7 @@ namespace App\Repository;
 use App\Entity\EntityInterface;
 use App\Factory\Entity;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Support\Collection;
 
 /**
  * Abstract Database-based Repository.
@@ -61,6 +62,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     protected function getTableName() {
         if (empty($this->tableName))
             return str_replace(__NAMESPACE__, '', __CLASS__);
+
         return $this->tableName;
     }
 
@@ -72,6 +74,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     protected function getEntityName() {
         if (empty($this->entityName))
             return str_replace(__NAMESPACE__, '\\App\\Entity\\', __CLASS__);
+
         return $this->entityName;
     }
 
@@ -107,7 +110,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     public function save(EntityInterface &$entity) {
         $id = $this->query()
             ->insertGetId($entity->serialize());
-        $entity = $this->create(array_merge(['id' => $id], $entity->toArray()));
+        $entity = $this->create(array_merge(['id' => $id], $entity->serialize()));
     }
 
     /**
@@ -118,18 +121,27 @@ abstract class AbstractDBRepository extends AbstractRepository {
             ->find($id);
         if (empty($result))
             throw new NotFound();
+
         return $result;
     }
 
     /**
-     * {@inheritDoc}
+     * Find the first entity that a key matches value.
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @throws App\Exception\NotFound
+     *
+     * @return App\Entity\EntityInterface
      */
-    public function findByKey($key, $value) {
+    protected function findByKey($key, $value) {
         $result = $this->query()
             ->where($key, $value)
             ->first();
         if (empty($result))
             throw new NotFound();
+
         return $result;
     }
 
@@ -142,18 +154,28 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
-     * {@inheritDoc}
+     * Delete all entities that a key matches a value.
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return int
      */
-    public function deleteByKey($key, $value) {
+    protected function deleteByKey($key, $value) {
         return $this->query()
             ->where($key, $value)
             ->delete();
     }
 
     /**
-     * {@inheritDoc}
+     * Return an entity collection with all entities that a key matches a value.
+     *
+     * @param string $key
+     * @param mixed  $value
+     *
+     * @return \Illuminate\Support\Collection
      */
-    public function getAllByKey($key, $value) {
+    protected function getAllByKey($key, $value) {
         return new Collection(
             $this->query()
                 ->where($key, $value)

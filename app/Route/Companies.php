@@ -72,6 +72,7 @@ class Companies implements RouteInterface {
      *
      * @link docs/companies/listAll.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -100,6 +101,7 @@ class Companies implements RouteInterface {
      *
      * @link docs/companies/createNew.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -128,6 +130,7 @@ class Companies implements RouteInterface {
      *
      * @link docs/companies/deleteAll.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -182,6 +185,7 @@ class Companies implements RouteInterface {
      *
      * @link docs/companies/updateOne.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -210,6 +214,7 @@ class Companies implements RouteInterface {
      *
      * @link docs/companies/deleteOne.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {
