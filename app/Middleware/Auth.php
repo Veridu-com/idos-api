@@ -473,6 +473,8 @@ class Auth {
      * @param \Psr\Http\Message\ResponseInterface      $response
      * @param callable                                 $next
      *
+     * @throws \Exception
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {

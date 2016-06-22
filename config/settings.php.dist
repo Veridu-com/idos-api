@@ -9,31 +9,37 @@ $appSettings = [
     'displayErrorDetails' => true,
     'determineRouteBeforeAppMiddleware' => true,
     'db' => [
-        'driver' => 'pgsql',
+        'driver'    => 'pgsql',
         // 'read' => [
-        //  'host' => 'localhost'
+        //     'host' => 'localhost'
         // ],
         // 'write' => [
-        //  'host' => 'localhost'
+        //     'host' => 'localhost'
         // ],
-        'host' => 'localhost',
-        'port' => 5432,
-        'database' => 'apiFlavio',
-        'username' => 'apiUser',
-        'password' => 'apiPassword',
-        'charset' => 'utf8',
+        'host'      => 'localhost',
+        'port'      => 5432,
+        'database'  => 'apiFlavio',
+        'username'  => 'apiUser',
+        'password'  => 'apiPassword',
+        'charset'   => 'utf8',
         'collation' => 'utf8_unicode_ci',
-        'prefix' => '',
-        'options' => [
+        'prefix'    => '',
+        'options'   => [
             \PDO::ATTR_PERSISTENT => true
         ]
     ],
     'log' => [
-        'path' => sprintf('%s/../log/api-%d%d%d.log', __DIR__, date('Y'), date('m'), date('d')),
+        'path'  => sprintf(
+            '%s/../log/api-%04d%02d%02d.log',
+            __DIR__,
+            date('Y'),
+            date('m'),
+            date('d')
+        ),
         'level' => Monolog\Logger::DEBUG
     ],
     'cache' => [
-        'driver' => 'redis',
+        'driver'  => 'redis',
         'options' => [
             'servers' => [
                 ['localhost', 6379]
@@ -48,11 +54,12 @@ $appSettings = [
         ]
     ],
     'optimus' => [
-        'prime' => 0,
+        'prime'   => 0,
         'inverse' => 0,
-        'random' => 0
+        'random'  => 0
     ],
     'repository' => [
-        'strategy' => 'db'
+        'strategy' => 'db',
+        'cached'   => false
     ]
 ];
