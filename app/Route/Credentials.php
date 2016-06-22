@@ -72,6 +72,7 @@ class Credentials implements RouteInterface {
      *
      * @link docs/companies/credentials/listAll.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -100,6 +101,7 @@ class Credentials implements RouteInterface {
      *
      * @link docs/companies/credentials/createNew.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -128,6 +130,7 @@ class Credentials implements RouteInterface {
      *
      * @link docs/companies/credentials/deleteAll.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -154,6 +157,7 @@ class Credentials implements RouteInterface {
      *
      * @link docs/companies/credentials/getOne.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::getOne
      */
     private static function getOne(App $app, callable $auth) {
@@ -180,6 +184,7 @@ class Credentials implements RouteInterface {
      *
      * @link docs/companies/credentials/updateOne.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -208,6 +213,7 @@ class Credentials implements RouteInterface {
      *
      * @link docs/companies/credentials/deleteOne.md
      *
+     * @uses App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {
