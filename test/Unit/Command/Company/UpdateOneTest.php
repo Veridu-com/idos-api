@@ -6,16 +6,16 @@
 
 namespace Test\Command;
 
-use App\Command\CompanyUpdateOne;
+use App\Command\Company\UpdateOne;
 
-class CompanyUpdateOneTest extends \PHPUnit_Framework_TestCase {
+class OneTest extends \PHPUnit_Framework_TestCase {
     public function testSetParameters() {
-        $command = new CompanyUpdateOne();
+        $command = new UpdateOne();
         $this->assertNull($command->newName);
         $this->assertNull($command->companyId);
 
         $this->assertInstanceOf(
-            CompanyUpdateOne::class,
+            UpdateOne::class,
             $command->setParameters([])
         );
         $this->assertNull($command->newName);

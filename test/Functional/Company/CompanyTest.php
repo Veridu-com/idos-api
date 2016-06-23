@@ -7,15 +7,15 @@
 namespace Test\Functional\Validator;
 
 class CompanyTest extends \PHPUnit_Framework_TestCase {
-    public function testCreateCompany() {
-    }
+    // public function testCreateCompany() {
+    // }
 
-    public function testGetCompany() {
-    }
+    // public function testGetCompany() {
+    // }
 
-    public function testUpdateCompany() {
-    }
+    // public function testUpdateCompany() {
+    // }
 
-    public function testDeleteCompany() {
-    }
+    // public function testDeleteCompany() {
+    // }
 }

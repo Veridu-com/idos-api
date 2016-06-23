@@ -7,59 +7,197 @@
 namespace Test\Unit\Repository;
 
 use App\Exception\NotFound;
-use App\Model\Company;
+use App\Entity\Company as EntityCompany;
 use App\Repository\DBCompany;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Factory\Entity;
+use Illuminate\Database\Connection;
 
 class DBCompanyTest extends \PHPUnit_Framework_TestCase {
     public function testFindBySlugNotFound() {
-        $modelMock = $this->getMockBuilder(Company::class)
+        $factory = new Entity();
+        $factory->create("Company", []);
+        $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'firstOrFail'])
+            ->setMethods(['where', 'first'])
             ->getMock();
-        $modelMock
+        $queryMock
             ->method('where')
-            ->willReturn($modelMock);
-        $modelMock
-            ->method('firstOrFail')
-            ->will($this->throwException(new ModelNotFoundException(CompanyModel::class)));
-
+            ->will($this->returnValue($queryMock));
+        $queryMock
+            ->method('first')
+            ->will($this->returnValue([]));
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
+        $dbCompany = new DBCompany($factory, $connectionMock);
         $this->setExpectedException(NotFound::class);
-        $repository = new DBCompany($modelMock);
-        $repository->findBySlug('');
+        $dbCompany->findBySlug('');
     }
+
+    public function testFindBySlug() {
+        $array = [
+            'slug' => 'slug',
+            'id' => 0,
+            'name' => 'company',
+            'public_key' => 'public_key'
+        ];
+
+        $factory = new Entity();
+        $factory->create("Company", []);
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['where', 'first'])
+            ->getMock();
+        $queryMock
+            ->method('where')
+            ->will($this->returnValue($queryMock));
+        $queryMock
+            ->method('first')
+            ->will($this->returnValue($array));
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
+        $dbCompany = new DBCompany($factory, $connectionMock);
+        $this->assertSame($array, $dbCompany->findBySlug('slug'));
+    }
+
 
     public function testFindByPubKeyNotFound() {
-        $modelMock = $this->getMockBuilder(Company::class)
+        $factory = new Entity();
+        $factory->create("Company", []);
+        $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'firstOrFail'])
+            ->setMethods(['where', 'first'])
             ->getMock();
-        $modelMock
+        $queryMock
             ->method('where')
-            ->willReturn($modelMock);
-        $modelMock
-            ->method('firstOrFail')
-            ->will($this->throwException(new ModelNotFoundException(CompanyModel::class)));
-
+            ->will($this->returnValue($queryMock));
+        $queryMock
+            ->method('first')
+            ->will($this->returnValue([]));
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
+        $dbCompany = new DBCompany($factory, $connectionMock);
         $this->setExpectedException(NotFound::class);
-        $repository = new DBCompany($modelMock);
-        $repository->findByPubKey('');
+        $dbCompany->findByPubKey('');
     }
 
-    public function testFindByPrivKeyNotFound() {
-        $modelMock = $this->getMockBuilder(Company::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['where', 'firstOrFail'])
-            ->getMock();
-        $modelMock
-            ->method('where')
-            ->willReturn($modelMock);
-        $modelMock
-            ->method('firstOrFail')
-            ->will($this->throwException(new ModelNotFoundException(CompanyModel::class)));
+    public function testFindbyPubKey() {
+        $array = [
+            'public_key' => 'public_key',
+            'slug' => 'slug',
+            'id' => 0,
+            'name' => 'company'
+         ];
 
+        $factory = new Entity();
+        $factory->create("Company", []);
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['where', 'first'])
+            ->getMock();
+        $queryMock
+            ->method('where')
+            ->will($this->returnValue($queryMock));
+        $queryMock
+            ->method('first')
+            ->will($this->returnValue($array));
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
+         $dbCompany = new DBCompany($factory, $connectionMock);
+         $this->assertSame($array, $dbCompany->findByPubKey('public_key'));
+    }
+
+
+    public function testFindByPrivKeyNotFound() {
+        $factory = new Entity();
+        $factory->create("Company", []);
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['where', 'first'])
+            ->getMock();
+        $queryMock
+            ->method('where')
+            ->will($this->returnValue($queryMock));
+        $queryMock
+            ->method('first')
+            ->will($this->returnValue([]));
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
+        $dbCompany = new DBCompany($factory, $connectionMock);
         $this->setExpectedException(NotFound::class);
-        $repository = new DBCompany($modelMock);
-        $repository->findByPrivKey('');
+        $dbCompany->findByPrivKey('');
+    }
+
+    public function testFindByPrivKey() {
+        $array = [
+            'public_key' => 'public_key',
+            'slug' => 'slug',
+            'id' => 0,
+            'name' => 'company'
+        ];
+
+        $factory = new Entity();
+        $factory->create("Company", []);
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['where', 'first'])
+            ->getMock();
+        $queryMock
+            ->method('where')
+            ->will($this->returnValue($queryMock));
+        $queryMock
+            ->method('first')
+            ->will($this->returnValue($array));
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
+         $dbCompany = new DBCompany($factory, $connectionMock);
+         $this->assertSame($array, $dbCompany->findByPrivKey('private_key'));
     }
 }

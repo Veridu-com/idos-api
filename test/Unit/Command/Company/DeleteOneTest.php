@@ -6,15 +6,15 @@
 
 namespace Test\Command;
 
-use App\Command\CompanyDeleteOne;
+use App\Command\Company\DeleteOne;
 
-class CompanyDeleteOneTest extends \PHPUnit_Framework_TestCase {
+class DeleteOneTest extends \PHPUnit_Framework_TestCase {
     public function testSetParameters() {
-        $command = new CompanyDeleteOne();
+        $command = new DeleteOne();
         $this->assertNull($command->companyId);
 
         $this->assertInstanceOf(
-            CompanyDeleteOne::class,
+            DeleteOne::class,
             $command->setParameters([])
         );
         $this->assertNull($command->companyId);
