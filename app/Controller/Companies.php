@@ -104,7 +104,7 @@ class Companies implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
         $actingCompany = $request->getAttribute('actingCompany');
 
-        $command = $this->commandFactory->create('CreateNew');
+        $command = $this->commandFactory->create('Company\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('parentId', $actingCompany->id);
@@ -138,7 +138,7 @@ class Companies implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
         $actingCompany = $request->getAttribute('actingCompany');
 
-        $command = $this->commandFactory->create('DeleteAll', [$actingCompany->id]);
+        $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
         $this->commandBus->handle($command);
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -194,7 +194,7 @@ class Companies implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('UpdateOne');
+        $command = $this->commandFactory->create('Company\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('companyId', $targetCompany->id);
@@ -230,7 +230,7 @@ class Companies implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('DeleteOne');
+        $command = $this->commandFactory->create('Company\\DeleteOne');
         $command
             ->setParameter('companyId', $targetCompany->id);
         $this->commandBus->handle($command);

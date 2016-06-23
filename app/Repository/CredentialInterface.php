@@ -11,7 +11,7 @@ namespace App\Repository;
  */
 interface CredentialInterface extends RepositoryInterface {
     /**
-     * Finds an entity based on its Public Key.
+     * Finds a Credential based on its Public Key.
      *
      * @param string $pubKey
      *
@@ -21,11 +21,19 @@ interface CredentialInterface extends RepositoryInterface {
      */
     public function findByPubKey($pubKey);
     /**
-     * Gets all entities based on their Company Id.
+     * Gets all Credentials based on their Company Id.
      *
      * @param int $companyId
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllByCompanyId($companyId);
+    /**
+     * Deletes all Credentials based on their Company Id.
+     *
+     * @param int $companyId
+     *
+     * @return int
+     */
+    public function deleteByCompanyId($companyId);
 }

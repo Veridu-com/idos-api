@@ -40,4 +40,11 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
     public function getAllByCompanyId($companyId) {
         return $this->getAllByKey('company_id', $companyId);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteByCompanyId($companyId) {
+        return $this->deleteByKey('company_id', $companyId);
+    }
 }

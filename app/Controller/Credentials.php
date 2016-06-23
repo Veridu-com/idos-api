@@ -98,7 +98,7 @@ class Credentials implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command    = $this->commandFactory->create('CreateNew', [$request, $targetCompany->id]);
+        $command    = $this->commandFactory->create('Credential\\CreateNew', [$request, $targetCompany->id]);
         $credential = $this->commandBus->handle($command);
 
         $body = [
@@ -124,7 +124,7 @@ class Credentials implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('DeleteAllCredentials', [$targetCompany->id]);
+        $command = $this->commandFactory->create('Credential\\DeleteAll', [$targetCompany->id]);
         $this->commandBus->handle($command);
 
         $command = $this->commandFactory->create('ResponseDispatch', [$request, $response]);
@@ -172,7 +172,7 @@ class Credentials implements ControllerInterface {
 
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
 
-        $command    = $this->commandFactory->create('UpdateCredential', [$request, $credential->id]);
+        $command    = $this->commandFactory->create('Credential\\UpdateOne', [$request, $credential->id]);
         $credential = $this->commandBus->handle($command);
 
         $body = [
@@ -200,7 +200,7 @@ class Credentials implements ControllerInterface {
 
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
 
-        $command = $this->commandFactory->create('DeleteCredential', [$request, $credential->id]);
+        $command = $this->commandFactory->create('Credential\\DeleteOne', [$request, $credential->id]);
         $this->commandBus->handle($command);
 
         $command = $this->commandFactory->create('ResponseDispatch', [$request, $response]);

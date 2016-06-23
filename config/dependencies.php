@@ -266,7 +266,11 @@ $container['commandBus'] = function (ContainerInterface $container) {
                 Command\Company\DeleteOne::class    => Handler\Company::class,
                 Command\Company\UpdateOne::class    => Handler\Company::class,
                 Command\Credential\CreateNew::class => Handler\Credential::class,
-                Command\ResponseDispatch::class    => Handler\Response::class
+                Command\Credential\DeleteAll::class => Handler\Credential::class,
+                Command\Credential\DeleteOne::class => Handler\Credential::class,
+                Command\Credential\UpdateOne::class => Handler\Credential::class,
+                Command\Credential\CreateNew::class => Handler\Credential::class,
+                Command\ResponseDispatch::class     => Handler\Response::class
             ]
         ),
         new HandleClassNameInflector()

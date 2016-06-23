@@ -4,27 +4,27 @@
  * All rights reserved.
  */
 
-namespace App\Command\Company;
+namespace App\Command\Credential;
 
 use App\Command\AbstractCommand;
 
 /**
- * Company "Delete One" Command.
+ * Credential "Delete One" Command.
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Company Id to be deleted.
+     * Credential Id.
      *
      * @var int
      */
-    public $companyId;
+    public $credentialId;
 
     /**
      * {@inheritDoc}
      */
     public function setParameters(array $parameters) {
-        if (isset($parameters['companyId']))
-            $this->companyId = $parameters['companyId'];
+        if (isset($parameters['credentialId']))
+            $this->credentialId = $parameters['credentialId'];
 
         return $this;
     }

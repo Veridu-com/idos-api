@@ -6,6 +6,8 @@
 
 namespace App\Command\Company;
 
+use App\Command\AbstractCommand;
+
 /**
  * Company "Create New" Command.
  */

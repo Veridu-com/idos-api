@@ -11,7 +11,7 @@ namespace App\Repository;
  */
 interface CompanyInterface extends RepositoryInterface {
     /**
-     * Finds an entity based on its Public Key.
+     * Finds a Company based on its Public Key.
      *
      * @param string $pubKey
      *
@@ -21,7 +21,7 @@ interface CompanyInterface extends RepositoryInterface {
      */
     public function findByPubKey($pubKey);
     /**
-     * Finds an entity based on its Private Key.
+     * Finds a Company based on its Private Key.
      *
      * @param string $privKey
      *
@@ -31,7 +31,7 @@ interface CompanyInterface extends RepositoryInterface {
      */
     public function findByPrivKey($privKey);
     /**
-     * Finds an entity based on its Slug.
+     * Finds a Company based on its Slug.
      *
      * @param string $slug
      *
@@ -41,7 +41,7 @@ interface CompanyInterface extends RepositoryInterface {
      */
     public function findBySlug($slug);
     /**
-     * Gets all entities based on their Parent Id.
+     * Gets all Companies based on their Parent Id.
      *
      * @param int $parentId
      *
@@ -49,11 +49,11 @@ interface CompanyInterface extends RepositoryInterface {
      */
     public function getAllByParentId($parentId);
     /**
-     * Deletes all entities based on their Parent Id.
+     * Deletes all Companies based on their Parent Id.
      *
      * @param int $parentId
      *
-     * @return void
+     * @return int
      */
     public function deleteByParentId($parentId);
 }

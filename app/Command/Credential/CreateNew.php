@@ -6,6 +6,8 @@
 
 namespace App\Command\Credential;
 
+use App\Command\AbstractCommand;
+
 /**
  * Credential "Create New" Command.
  */
