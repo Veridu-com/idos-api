@@ -11,7 +11,7 @@ namespace App\Command\Company;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Company Id.
+     * Company Id to be deleted.
      *
      * @var int
      */

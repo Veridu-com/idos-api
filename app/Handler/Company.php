@@ -5,14 +5,15 @@
  */
 
 namespace App\Handler;
+
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
-use Defuse\Crypto\Key;
 use App\Repository\CompanyInterface;
-use Interop\Container\ContainerInterface;
 use App\Validator\Company as CompanyValidator;
+use Defuse\Crypto\Key;
+use Interop\Container\ContainerInterface;
 
 /**
  * Handles Company commands.
@@ -131,6 +132,6 @@ class Company implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) {
         $this->validator->assertId($command->parentId);
 
-        $this->repository->deleteByKey('parent_id', $command->parentId);
+        $this->repository->deleteByParentId($command->parentId);
     }
 }
