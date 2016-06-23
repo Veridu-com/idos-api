@@ -14,9 +14,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies and /companies/{companySlug}.
+ * Handles requests to /settings and /settings/{companySlug}.
  */
-class Companies implements ControllerInterface {
+class Settings implements ControllerInterface {
     /**
      * Company Repository instance.
      *
@@ -58,7 +58,7 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * List all child Companies that belongs to the Acting Company.
+     * List all child Settings that belongs to the Acting Company.
      *
      * @apiEndpointParam query int after Initial Company creation date (lower bound)
      * @apiEndpointParam query int before Final Company creation date (upper bound)
@@ -73,12 +73,12 @@ class Companies implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
         $actingCompany = $request->getAttribute('actingCompany');
 
-        $companies = $this->repository->getAllByParentId($actingCompany->id);
+        $settings = $this->repository->getAllByParentId($actingCompany->id);
 
         $body = [
-            'data'    => $companies->toArray(),
+            'data'    => $settings->toArray(),
             'updated' => (
-                $companies->isEmpty() ? time() : strtotime($companies->max('updated_at'))
+                $settings->isEmpty() ? time() : strtotime($settings->max('updated_at'))
             )
         ];
 
@@ -104,7 +104,7 @@ class Companies implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
         $actingCompany = $request->getAttribute('actingCompany');
 
-        $command = $this->commandFactory->create('CreateNew');
+        $command = $this->commandFactory->create('CompanyCreateNew');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('parentId', $actingCompany->id);
@@ -126,7 +126,7 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Deletes all child Companies that belongs to the Acting Company.
+     * Deletes all child Settings that belongs to the Acting Company.
      *
      * @apiEndpointResponse 200 -
      *
@@ -138,7 +138,7 @@ class Companies implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
         $actingCompany = $request->getAttribute('actingCompany');
 
-        $command = $this->commandFactory->create('DeleteAll', [$actingCompany->id]);
+        $command = $this->commandFactory->create('CompanyDeleteAll', [$actingCompany->id]);
         $this->commandBus->handle($command);
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -194,7 +194,7 @@ class Companies implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('UpdateOne');
+        $command = $this->commandFactory->create('CompanyUpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('companyId', $targetCompany->id);
@@ -230,7 +230,7 @@ class Companies implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('DeleteOne');
+        $command = $this->commandFactory->create('CompanyDeleteOne');
         $command
             ->setParameter('companyId', $targetCompany->id);
         $this->commandBus->handle($command);

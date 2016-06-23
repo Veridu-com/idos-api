@@ -8,8 +8,8 @@ environments:
     development:
         adapter: pgsql
         host: localhost
-        name: api
-        user: apiuser
-        pass: ''
+        name: veridu-api
+        user: veridu-api
+        pass: 'veridu-api'
         port: 5432
         charset: utf8

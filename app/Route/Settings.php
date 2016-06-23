@@ -11,25 +11,25 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Companies routing definitions.
+ * Settings routing definitions.
  *
- * @link docs/companies/overview.md
+ * @link docs/settings/overview.md
  *
- * @see App\Controller\Companies
+ * @see App\Controller\Settings
  */
-class Companies implements RouteInterface {
+class Settings implements RouteInterface {
 
     /**
      * {@inheritDoc}
      */
     public static function getPublicNames() {
         return [
-            'companies:listAll',
-            'companies:createNew',
-            'companies:deleteAll',
-            'companies:getOne',
-            'companies:updateOne',
-            'companies:deleteOne'
+            'settings:listAll',
+            'settings:createNew',
+            'settings:deleteAll',
+            'settings:getOne',
+            'settings:updateOne',
+            'settings:deleteOne'
         ];
     }
 
@@ -37,8 +37,8 @@ class Companies implements RouteInterface {
      * {@inheritDoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Companies::class] = function (ContainerInterface $container) {
-            return new \App\Controller\Companies(
+        $app->getContainer()[\App\Controller\Settings::class] = function (ContainerInterface $container) {
+            return new \App\Controller\Settings(
                 $container->get('repositoryFactory')->create('Company'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
@@ -58,11 +58,11 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * List all Companies
+     * List all Settings
      *
-     * Retrieve a complete list of all child companies that belong to the requesting company.
+     * Retrieve a complete list of all child settings that belong to the requesting company.
      *
-     * @apiEndpoint GET /companies
+     * @apiEndpoint GET /settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -71,18 +71,18 @@ class Companies implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/listAll.md
+     * @link docs/settings/listAll.md
      *
-     * @see App\Controller\Companies::listAll
+     * @see App\Controller\Settings::listAll
      */
     private static function listAll(App $app, callable $auth) {
         $app
             ->get(
-                '/companies',
-                'App\Controller\Companies:listAll'
+                '/settings',
+                'App\Controller\Settings:listAll'
             )
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:listAll');
+            ->setName('settings:listAll');
     }
 
     /**
@@ -90,7 +90,7 @@ class Companies implements RouteInterface {
      *
      * Create a new child company for the requesting company.
      *
-     * @apiEndpoint POST /companies
+     * @apiEndpoint POST /settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -99,26 +99,26 @@ class Companies implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/createNew.md
+     * @link docs/settings/createNew.md
      *
-     * @see App\Controller\Companies::createNew
+     * @see App\Controller\Settings::createNew
      */
     private static function createNew(App $app, callable $auth) {
         $app
             ->post(
-                '/companies',
-                'App\Controller\Companies:createNew'
+                '/settings',
+                'App\Controller\Settings:createNew'
             )
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:createNew');
+            ->setName('settings:createNew');
     }
 
     /**
-     * Delete all Companies
+     * Delete all Settings
      *
-     * Delete all child companies that belong to the requesting company.
+     * Delete all child settings that belong to the requesting company.
      *
-     * @apiEndpoint DELETE /companies
+     * @apiEndpoint DELETE /settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -127,18 +127,18 @@ class Companies implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/deleteAll.md
+     * @link docs/settings/deleteAll.md
      *
-     * @see App\Controller\Companies::deleteAll
+     * @see App\Controller\Settings::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
         $app
             ->delete(
-                '/companies',
-                'App\Controller\Companies:deleteAll'
+                '/settings',
+                'App\Controller\Settings:deleteAll'
             )
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:deleteAll');
+            ->setName('settings:deleteAll');
     }
 
     /**
@@ -146,25 +146,25 @@ class Companies implements RouteInterface {
      *
      * Retrieves all public information from a Company
      *
-     * @apiEndpoint GET /companies/{companySlug}
+     * @apiEndpoint GET /settings/{companySlug}
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/getOne.md
+     * @link docs/settings/getOne.md
      *
-     * @see App\Controller\Companies::getOne
+     * @see App\Controller\Settings::getOne
      */
     private static function getOne(App $app, callable $auth) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}',
-                'App\Controller\Companies:getOne'
+                '/settings/{companySlug:[a-zA-Z0-9_-]+}',
+                'App\Controller\Settings:getOne'
             )
             ->add($auth(Auth::NONE))
-            ->setName('companies:getOne');
+            ->setName('settings:getOne');
     }
 
     /**
@@ -172,7 +172,7 @@ class Companies implements RouteInterface {
      *
      * Updates Company's specific information
      *
-     * @apiEndpoint POST /companies/:companySlug
+     * @apiEndpoint POST /settings/:companySlug
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -181,18 +181,18 @@ class Companies implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/updateOne.md
+     * @link docs/settings/updateOne.md
      *
-     * @see App\Controller\Companies::updateOne
+     * @see App\Controller\Settings::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
         $app
             ->post(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}',
-                'App\Controller\Companies:updateOne'
+                '/settings/{companySlug:[a-zA-Z0-9_-]+}',
+                'App\Controller\Settings:updateOne'
             )
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:updateOne');
+            ->setName('settings:updateOne');
     }
 
     /**
@@ -200,7 +200,7 @@ class Companies implements RouteInterface {
      *
      * Deletes the requesting company or a child company that belongs to it.
      *
-     * @apiEndpoint DELETE /companies/:companySlug
+     * @apiEndpoint DELETE /settings/:companySlug
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -209,17 +209,17 @@ class Companies implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/deleteOne.md
+     * @link docs/settings/deleteOne.md
      *
-     * @see App\Controller\Companies::deleteOne
+     * @see App\Controller\Settings::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}',
-                'App\Controller\Companies:deleteOne'
+                '/settings/{companySlug:[a-zA-Z0-9_-]+}',
+                'App\Controller\Settings:deleteOne'
             )
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:deleteOne');
+            ->setName('settings:deleteOne');
     }
 }

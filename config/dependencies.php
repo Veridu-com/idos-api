@@ -261,11 +261,11 @@ $container['commandBus'] = function (ContainerInterface $container) {
         new ContainerLocator(
             $container,
             [
-                Command\CompanyCreateNew::class    => Handler\Company::class,
-                Command\CompanyDeleteAll::class    => Handler\Company::class,
-                Command\CompanyDeleteOne::class    => Handler\Company::class,
-                Command\CompanyUpdateOne::class    => Handler\Company::class,
-                Command\CredentialCreateNew::class => Handler\Credential::class,
+                Command\Company\CreateNew::class    => Handler\Company::class,
+                Command\Company\DeleteAll::class    => Handler\Company::class,
+                Command\Company\DeleteOne::class    => Handler\Company::class,
+                Command\Company\UpdateOne::class    => Handler\Company::class,
+                Command\Credential\CreateNew::class => Handler\Credential::class,
                 Command\ResponseDispatch::class    => Handler\Response::class
             ]
         ),
