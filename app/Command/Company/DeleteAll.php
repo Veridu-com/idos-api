@@ -20,7 +20,7 @@ class DeleteAll extends AbstractCommand {
     public $parentId;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setParameters(array $parameters) {
         if (isset($parameters['parentId']))

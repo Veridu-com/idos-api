@@ -31,10 +31,11 @@ abstract class AbstractRepository implements RepositoryInterface {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function create(array $attributes) {
         $name = sre_replace(__NAMESPACE__, '', __CLASS__);
+
         return $this->entityFactory->create($name, $attributes);
     }
 }

@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Whitelist Middleware
+ * Whitelist Middleware.
  *
  * IP-based (whitelist) access control.
  */

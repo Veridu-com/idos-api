@@ -13,11 +13,11 @@ namespace App\Exception;
  */
 class AppException extends \Exception {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $code = 500;
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $message = 'Application Internal Error.';
 }

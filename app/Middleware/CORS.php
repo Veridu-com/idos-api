@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * CORS Middleware
+ * CORS Middleware.
  *
  * Cross Origin Resource Sharing header control.
  *

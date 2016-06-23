@@ -13,7 +13,7 @@ use Respect\Validation\Validator;
 use Slim\HttpCache\CacheProvider;
 
 /**
- * Handles HTTP Responses
+ * Handles HTTP Responses.
  */
 class Response implements HandlerInterface {
     private $httpCache;

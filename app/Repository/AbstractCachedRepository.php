@@ -40,7 +40,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      * @return string
      */
     protected function getCacheKey($key) {
-        $item = $this->cachePool->getItem(sprintf('/keys/%s', $key));
+        $item     = $this->cachePool->getItem(sprintf('/keys/%s', $key));
         $cacheKey = $item->get(Invalidation::PRECOMPUTE, 300);
         if ($item->isMiss()) {
             $item->lock();
@@ -74,7 +74,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      * Class constructor.
      *
      * @param App\Repository\RepositoryInterface $repository
-     * @param \Stash\Interfaces\PoolInterface $cachePool
+     * @param \Stash\Interfaces\PoolInterface    $cachePool
      *
      * @return void
      */
@@ -87,7 +87,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function save(EntityInterface &$entity) {
         $this->repository->save($entity);

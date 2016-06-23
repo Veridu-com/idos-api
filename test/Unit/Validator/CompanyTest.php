@@ -13,7 +13,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
     protected $validator;
 
     protected function setUp() {
-        $this->validator = new Company;
+        $this->validator = new Company();
     }
 
     public function testAssertIdEmpty() {

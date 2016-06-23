@@ -36,7 +36,7 @@ class ResponseDispatch extends AbstractCommand {
     public $statusCode = 200;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setParameters(array $parameters) {
         if (isset($parameters['request']))

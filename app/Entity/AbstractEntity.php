@@ -48,10 +48,11 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return string
      */
     private function toCamelCase($string) {
-        $words = explode('_', strtolower($string));
+        $words  = explode('_', strtolower($string));
         $return = '';
         foreach ($words as $word)
             $return .= ucfirst(trim($word));
+
         return $return;
     }
 
@@ -93,19 +94,21 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * Set a given attribute on the entity.
      *
      * @param string $key
-     * @param mixed $value
-     *
-     * @return App\Entity\EntityInterface
+     * @param mixed  $value
      *
      * @throws \RuntimeException
+     *
+     * @return App\Entity\EntityInterface
      */
     private function setAttribute($key, $value) {
         if ($this->hasSetMutator($key)) {
             $method = sprintf('set%sAttribute', $this->toCamelCase($key));
+
             return $this->{$method}($value);
         }
 
         $this->attributes[$key] = $value;
+
         return $this;
     }
 
@@ -114,9 +117,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @param string $key
      *
-     * @return mixed|null
-     *
      * @throws \RuntimeException
+     *
+     * @return mixed|null
      */
     private function getAttribute($key) {
         $value = null;
@@ -125,6 +128,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         if ($this->hasGetMutator($key)) {
             $method = sprintf('get%sAttribute', $this->toCamelCase($key));
+
             return $this->{$method}($value);
         }
 
@@ -147,16 +151,17 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function hydrate(array $attributes = []) {
         foreach ($attributes as $key => $value)
             $this->setAttribute($key, $value);
+
         return $this;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function toArray() {
         if (empty($this->visible))
@@ -165,28 +170,30 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($this->visible as $attribute)
             $return[$attribute] = $this->getAttribute($attribute);
+
         return $return;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function serialize() {
         $return = [];
         foreach (array_keys($this->attributes) as $attribute)
             $return[$attribute] = $this->getAttribute($attribute);
+
         return $return;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function exists() {
         return $this->exists;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isDirty() {
         return $this->dirty;
@@ -197,9 +204,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @param string $key
      *
-     * @return mixed
-     *
      * @throws \RuntimeException
+     *
+     * @return mixed
      */
     public function __get($key) {
         return $this->getAttribute($key);
@@ -209,11 +216,11 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * Dynamically set values on the entity.
      *
      * @param string $key
-     * @param mixed $value
-     *
-     * @return void
+     * @param mixed  $value
      *
      * @throws \RuntimeException
+     *
+     * @return void
      */
     public function __set($key, $value) {
         $this->setAttribute($key, $value);
@@ -225,9 +232,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @param string $key
      *
-     * @return bool
-     *
      * @throws \RuntimeException
+     *
+     * @return bool
      */
     public function __isset($key) {
         return ! is_null($this->getAttribute($key));
@@ -237,9 +244,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @param string $key
      *
-     * @return void
-     *
      * @throws \RuntimeException
+     *
+     * @return void
      */
     public function __unset($key) {
         $this->setAttribute($key, null);

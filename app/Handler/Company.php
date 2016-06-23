@@ -33,7 +33,7 @@ class Company implements HandlerInterface {
     protected $validator;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) {
         $container[self::class] = function (ContainerInterface $container) {

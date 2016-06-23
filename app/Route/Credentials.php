@@ -14,12 +14,11 @@ use Slim\App;
  * Credentials routing definitions.
  *
  * @link docs/companies/credentials/overview.md
- *
  * @see App\Controller\Companies
  */
 class Credentials implements RouteInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getPublicNames() {
         return [
@@ -33,7 +32,7 @@ class Credentials implements RouteInterface {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Credentials::class] = function (ContainerInterface $container) {
@@ -57,7 +56,7 @@ class Credentials implements RouteInterface {
     }
 
     /**
-     * List all Credentials
+     * List all Credentials.
      *
      * Retrieve a complete list of all credentials that belong to the requesting company.
      *
@@ -73,6 +72,7 @@ class Credentials implements RouteInterface {
      * @link docs/companies/credentials/listAll.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Credentials::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -86,7 +86,7 @@ class Credentials implements RouteInterface {
     }
 
     /**
-     * Create new Credential
+     * Create new Credential.
      *
      * Create a new credential for the requesting company.
      *
@@ -102,6 +102,7 @@ class Credentials implements RouteInterface {
      * @link docs/companies/credentials/createNew.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Credentials::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -115,7 +116,7 @@ class Credentials implements RouteInterface {
     }
 
     /**
-     * Delete All Credentials
+     * Delete All Credentials.
      *
      * Delete all credentials that belong to the requesting company.
      *
@@ -131,6 +132,7 @@ class Credentials implements RouteInterface {
      * @link docs/companies/credentials/deleteAll.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Credentials::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -144,7 +146,7 @@ class Credentials implements RouteInterface {
     }
 
     /**
-     * Retrieve a single Credential
+     * Retrieve a single Credential.
      *
      * Retrieves all public information from a Credential
      *
@@ -158,6 +160,7 @@ class Credentials implements RouteInterface {
      * @link docs/companies/credentials/getOne.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Credentials::getOne
      */
     private static function getOne(App $app, callable $auth) {
@@ -171,7 +174,7 @@ class Credentials implements RouteInterface {
     }
 
     /**
-     * Update a single Credential
+     * Update a single Credential.
      *
      * Updates Credential's specific information
      *
@@ -185,6 +188,7 @@ class Credentials implements RouteInterface {
      * @link docs/companies/credentials/updateOne.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Credentials::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -198,7 +202,7 @@ class Credentials implements RouteInterface {
     }
 
     /**
-     * Deletes a single Credential
+     * Deletes a single Credential.
      *
      * Deletes a single Credential that belongs to the requesting company.
      *
@@ -214,6 +218,7 @@ class Credentials implements RouteInterface {
      * @link docs/companies/credentials/deleteOne.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Credentials::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {

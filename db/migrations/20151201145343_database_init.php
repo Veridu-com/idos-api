@@ -3,7 +3,6 @@
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
-
 use Phinx\Migration\AbstractMigration;
 
 class DatabaseInit extends AbstractMigration {
@@ -24,18 +23,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('public_key')
@@ -54,18 +53,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('public_key')
@@ -89,18 +88,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('identity_id')
@@ -116,9 +115,9 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('identity_id')
@@ -137,9 +136,9 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('identity_id')
@@ -158,9 +157,9 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('identity_id')
@@ -179,18 +178,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('identity_id')
@@ -217,18 +216,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('attribute_id')
@@ -253,18 +252,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('company_id')
@@ -281,18 +280,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('company_id')
@@ -309,18 +308,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('company_id')
@@ -341,18 +340,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('company_id')
@@ -377,18 +376,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('name', ['unique' => true])
@@ -417,18 +416,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('company_id')
@@ -451,18 +450,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('name', ['unique' => true])
@@ -493,18 +492,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('company_id')
@@ -528,9 +527,9 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex(['credential_id', 'username'], ['unique' => true])
@@ -551,18 +550,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('credential_id')
@@ -580,18 +579,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('credential_id')
@@ -615,9 +614,9 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('hook_id')
@@ -641,18 +640,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('user_id')
@@ -671,18 +670,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->create();
@@ -697,18 +696,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('identity_id')
@@ -739,18 +738,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('source_id')
@@ -771,18 +770,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('source_id')
@@ -802,18 +801,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('source_id')
@@ -834,18 +833,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('source_id')
@@ -863,18 +862,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('source_id')
@@ -890,9 +889,9 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('source_id')
@@ -909,9 +908,9 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('source_id')
@@ -940,18 +939,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addIndex('reference')
@@ -971,9 +970,9 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn('ipaddr', 'text', ['null' => true])
@@ -991,18 +990,18 @@ class DatabaseInit extends AbstractMigration {
                 'created_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->addColumn(
                 'updated_at',
                 'timestamp',
                 [
-                    'null' => false,
+                    'null'     => false,
                     'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP'
+                    'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
             ->create();

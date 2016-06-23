@@ -91,7 +91,7 @@ class Credential extends Model {
     }
 
     /**
-     * Get the owner company
+     * Get the owner company.
      *
      * @return App\Model\Company
      */

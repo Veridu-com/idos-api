@@ -14,13 +14,11 @@ use Slim\App;
  * Companies routing definitions.
  *
  * @link docs/companies/overview.md
- *
  * @see App\Controller\Companies
  */
 class Companies implements RouteInterface {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getPublicNames() {
         return [
@@ -34,7 +32,7 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Companies::class] = function (ContainerInterface $container) {
@@ -58,7 +56,7 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * List all Companies
+     * List all Companies.
      *
      * Retrieve a complete list of all child companies that belong to the requesting company.
      *
@@ -74,6 +72,7 @@ class Companies implements RouteInterface {
      * @link docs/companies/listAll.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Companies::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -87,7 +86,7 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * Create new Company
+     * Create new Company.
      *
      * Create a new child company for the requesting company.
      *
@@ -103,6 +102,7 @@ class Companies implements RouteInterface {
      * @link docs/companies/createNew.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Companies::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -116,7 +116,7 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * Delete all Companies
+     * Delete all Companies.
      *
      * Delete all child companies that belong to the requesting company.
      *
@@ -132,6 +132,7 @@ class Companies implements RouteInterface {
      * @link docs/companies/deleteAll.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Companies::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -145,7 +146,7 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * Retrieve a single Company
+     * Retrieve a single Company.
      *
      * Retrieves all public information from a Company
      *
@@ -157,7 +158,6 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/getOne.md
-     *
      * @see App\Controller\Companies::getOne
      */
     private static function getOne(App $app, callable $auth) {
@@ -171,7 +171,7 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * Update a single Company
+     * Update a single Company.
      *
      * Updates Company's specific information
      *
@@ -187,6 +187,7 @@ class Companies implements RouteInterface {
      * @link docs/companies/updateOne.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Companies::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -200,7 +201,7 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * Deletes a single Company
+     * Deletes a single Company.
      *
      * Deletes the requesting company or a child company that belongs to it.
      *
@@ -216,6 +217,7 @@ class Companies implements RouteInterface {
      * @link docs/companies/deleteOne.md
      *
      * @uses App\Middleware\Auth::__invoke
+     *
      * @see App\Controller\Companies::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {

@@ -9,15 +9,14 @@ namespace Test\Unit\Entity;
 use App\Entity\Company;
 
 class CompanyTest extends \PHPUnit_Framework_TestCase {
-
     public function testSerialize() {
         $array = [
-            'id' => 0,
-            'name' => 'My Co',
-            'public_key' => 'pkey',
+            'id'          => 0,
+            'name'        => 'My Co',
+            'public_key'  => 'pkey',
             'private_key' => 'privkey',
-            'created_at' => time(),
-            'updated_at' => time()
+            'created_at'  => time(),
+            'updated_at'  => time()
         ];
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
@@ -46,12 +45,12 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
             ->setConstructorArgs(
                 [
                     'attributes' => [
-                        'id' => 0,
-                        'name' => 'My Co',
-                        'public_key' => 'pkey',
+                        'id'          => 0,
+                        'name'        => 'My Co',
+                        'public_key'  => 'pkey',
                         'private_key' => 'privkey',
-                        'created_at' => time(),
-                        'updated_at' => time()
+                        'created_at'  => time(),
+                        'updated_at'  => time()
                     ]
                 ]
             )

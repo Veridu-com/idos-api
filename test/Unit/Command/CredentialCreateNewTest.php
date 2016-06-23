@@ -9,7 +9,6 @@ namespace Test\Command;
 use App\Command\CredentialCreateNew;
 
 class CredentialCreateNewTest extends \PHPUnit_Framework_TestCase {
-
     public function testSetParameters() {
         $command = new CredentialCreateNew();
         $this->assertNull($command->name);

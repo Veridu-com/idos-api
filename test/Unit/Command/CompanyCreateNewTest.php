@@ -9,7 +9,6 @@ namespace Test\Command;
 use App\Command\CompanyCreateNew;
 
 class CompanyCreateNewTest extends \PHPUnit_Framework_TestCase {
-
     public function testSetParameters() {
         $command = new CompanyCreateNew();
         $this->assertNull($command->name);

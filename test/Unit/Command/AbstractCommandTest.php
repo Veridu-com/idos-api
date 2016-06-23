@@ -5,7 +5,6 @@ namespace Test\Command;
 use App\Command\AbstractCommand;
 
 class AbstractCommandTest extends \PHPUnit_Framework_TestCase {
-
     public function testSetParameter() {
         $abstractMock = $this->getMockBuilder(AbstractCommand::class)
             ->getMockForAbstractClass();

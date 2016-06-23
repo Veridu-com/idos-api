@@ -51,6 +51,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
             $this->getEntityName()
         );
+
         return $this->dbConnection->table($this->getTableName());
     }
 
@@ -95,7 +96,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function create(array $attributes) {
         return $this->entityFactory->create(
@@ -105,7 +106,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function save(EntityInterface &$entity) {
         $id = $this->query()
@@ -114,7 +115,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function find($id) {
         $result = $this->query()
@@ -146,7 +147,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($id) {
         return $this->query()
@@ -184,7 +185,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAll() {
         return new Collection($this->query()->all());

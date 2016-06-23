@@ -15,11 +15,11 @@ namespace App\Exception;
  */
 class NotFound extends AppException {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $code = 404;
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $message = 'Item not found.';
 }

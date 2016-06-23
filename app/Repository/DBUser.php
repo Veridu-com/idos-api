@@ -6,8 +6,8 @@
 
 namespace App\Repository;
 
-use App\Exception\NotFound;
 use App\Entity\User;
+use App\Exception\NotFound;
 
 /**
  * Database-based User Repository Implementation.
@@ -27,7 +27,7 @@ class DBUser extends AbstractDBRepository implements UserInterface {
     protected $entityName = User::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByUserName($userName, $credentialId) {
         $result = $this->query()

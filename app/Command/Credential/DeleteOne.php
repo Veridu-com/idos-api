@@ -20,7 +20,7 @@ class DeleteOne extends AbstractCommand {
     public $credentialId;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setParameters(array $parameters) {
         if (isset($parameters['credentialId']))

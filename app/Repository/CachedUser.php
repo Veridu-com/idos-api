@@ -6,35 +6,33 @@
 
 namespace App\Repository;
 
-use Stash\Invalidation;
-
 /**
  * Cache-based User Repository Implementation.
  */
 class CachedUser extends AbstractCachedRepository implements UserInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function find($id) {
         return $this->repository->find($id);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($id) {
         return $this->repository->delete($id);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAll() {
         return $this->repository->getAll();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByUserName($userName, $credentialId) {
         return $this->findByUserName($userName, $credentialId);

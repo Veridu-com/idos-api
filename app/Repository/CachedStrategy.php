@@ -40,17 +40,18 @@ class CachedStrategy implements RepositoryStrategyInterface {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFormattedName($repositoryName) {
         return sprintf('Cached%s', ucfirst($repositoryName));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function build($className) {
         $repositoryName = preg_replace('/^.*?Cached/', '', $className);
+
         return new $className(
             $this->repositoryFactory->create($repositoryName),
             $this->cachePool

@@ -12,9 +12,8 @@ use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Company;
 use App\Model\Company as CompanyModel;
-use App\Repository\ArrayCompany;
-use App\Repository\DBCompany;
 use App\Repository\CompanyInterface;
+use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
 use Slim\Container;
 
