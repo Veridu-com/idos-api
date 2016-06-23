@@ -68,7 +68,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getTableName() {
         if (empty($this->tableName))
-            return str_replace(__NAMESPACE__, '', __CLASS__);
+            throw new \RuntimeException('$tableName property not set in ' . get_class($this));
 
         return $this->tableName;
     }
@@ -80,7 +80,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getEntityName() {
         if (empty($this->entityName))
-            return str_replace(__NAMESPACE__, '\\App\\Entity\\', __CLASS__);
+            throw new \RuntimeException('$entityName property not set in ' . get_class($this));
 
         return $this->entityName;
     }
