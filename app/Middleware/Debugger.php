@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Debugger Middleware
+ * Debugger Middleware.
  *
  * Allows requests to force a specific error response for development.
  */

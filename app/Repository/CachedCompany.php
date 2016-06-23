@@ -6,63 +6,61 @@
 
 namespace App\Repository;
 
-use Stash\Invalidation;
-
 /**
  * Cache-based Company Repository Implementation.
  */
 class CachedCompany extends AbstractCachedRepository implements CompanyInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function find($id) {
         return $this->respository->find($id);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($id) {
         return $this->repository->delete($id);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAll() {
         return $this->repository->getAll();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByPubKey($pubKey) {
         return $this->repository->findByPubKey($pubKey);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByPrivKey($privKey) {
         return $this->repository->findByPrivKey($privKey);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findBySlug($slug) {
         return $this->repository->findBySlug($slug);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllByParentId($parentId) {
         return $this->repository->getAllByParentId($parentId);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function deleteByParentId($parentId) {
         return $this->repository->deleteByParentId($parentId);

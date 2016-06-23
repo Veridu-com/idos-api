@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Stash\Item;
 
 /**
- * Limit Middleware
+ * Limit Middleware.
  *
  * Enforces request limits and adds usage details to response headers.
  */

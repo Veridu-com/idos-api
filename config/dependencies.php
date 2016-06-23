@@ -3,7 +3,6 @@
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
-
 use App\Command;
 use App\Exception\AppException;
 use App\Factory;
@@ -357,6 +356,7 @@ $container['jwt'] = function (ContainerInterface $container) {
 $container['db'] = function (ContainerInterface $container) {
     $capsule = new Manager();
     $capsule->addConnection($container['settings']['db']);
+
     return $capsule->getConnection();
 };
 

@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Authorization Middleware
+ * Authorization Middleware.
  *
  * Extracts authorization from request and stores Acting/Target
  * Subjects (User and/or Company) to request.
@@ -200,7 +200,7 @@ class Auth {
         if (isset($queryParams[$name]))
             return $queryParams[$name];
 
-        return null;
+        return;
     }
 
     /**

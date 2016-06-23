@@ -7,9 +7,6 @@
 namespace App\Handler;
 
 use App\Command\Credential\CreateNew;
-use App\Command\Credential\DeleteAll;
-use App\Command\Credential\DeleteOne;
-use App\Command\Credential\UpdateOne;
 use App\Repository\CredentialInterface;
 use App\Validator\Credential as CredentialValidator;
 use Defuse\Crypto\Key;
@@ -33,7 +30,7 @@ class Credential implements HandlerInterface {
     protected $validator;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) {
         $container[self::class] = function (ContainerInterface $container) {
@@ -125,7 +122,7 @@ class Credential implements HandlerInterface {
     }
 
     /**
-     * Deletes all credentials ($command->companyId)
+     * Deletes all credentials ($command->companyId).
      *
      * @param App\Command\CredentialDeleteAll $command
      *

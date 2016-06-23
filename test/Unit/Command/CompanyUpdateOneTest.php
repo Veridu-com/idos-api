@@ -9,7 +9,6 @@ namespace Test\Command;
 use App\Command\CompanyUpdateOne;
 
 class CompanyUpdateOneTest extends \PHPUnit_Framework_TestCase {
-
     public function testSetParameters() {
         $command = new CompanyUpdateOne();
         $this->assertNull($command->newName);

@@ -29,7 +29,7 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity $entityFactory
+     * @param App\Factory\Entity              $entityFactory
      * @param \Illuminate\Database\Connection $connection
      *
      * @return void
@@ -39,18 +39,18 @@ class DBStrategy implements RepositoryStrategyInterface {
         Connection $connection
     ) {
         $this->entityFactory = $entityFactory;
-        $this->connection = $connection;
+        $this->connection    = $connection;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFormattedName($repositoryName) {
         return sprintf('DB%s', ucfirst($repositoryName));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function build($className) {
         return new $className($this->entityFactory, $this->connection);

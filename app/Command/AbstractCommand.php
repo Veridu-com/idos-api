@@ -11,7 +11,7 @@ namespace App\Command;
  */
 abstract class AbstractCommand implements CommandInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setParameter($name, $value) {
         if (property_exists($this, $name)) {

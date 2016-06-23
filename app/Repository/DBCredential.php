@@ -6,9 +6,7 @@
 
 namespace App\Repository;
 
-use App\Exception\NotFound;
 use App\Entity\Credential;
-use Illuminate\Support\Collection;
 
 /**
  * Database-based Credential Repository Implementation.
@@ -28,21 +26,21 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
     protected $entityName = Credential::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByPubKey($pubKey) {
         return $this->findByKey('public', $pubKey);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllByCompanyId($companyId) {
         return $this->getAllByKey('company_id', $companyId);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function deleteByCompanyId($companyId) {
         return $this->deleteByKey('company_id', $companyId);

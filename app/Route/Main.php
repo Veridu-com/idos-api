@@ -13,19 +13,18 @@ use Slim\App;
  * Root routing definitions.
  *
  * @link docs/overview.md
- *
  * @see App\Controller\Main
  */
 class Main implements RouteInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getPublicNames() {
         return [];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Main::class] = function (ContainerInterface $container) {
@@ -40,7 +39,7 @@ class Main implements RouteInterface {
     }
 
     /**
-     * List all Endpoints
+     * List all Endpoints.
      *
      * Retrieve a complete list of all public endpoints.
      *
@@ -51,7 +50,6 @@ class Main implements RouteInterface {
      * @return void
      *
      * @link docs/listAll.md
-     *
      * @see App\Controller\Main::listAll
      */
     private static function listAll(App $app) {

@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Watcher Middleware
+ * Watcher Middleware.
  *
  * I'm yet to figure out what this is.
  */
@@ -22,7 +22,7 @@ class Watcher {
         $this->container = $container;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {        
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
         $response = $next($request, $response);
 
         return $response->withHeader('X-Watcher', 'was-here');

@@ -14,13 +14,11 @@ use Slim\App;
  * Settings routing definitions.
  *
  * @link docs/settings/overview.md
- *
  * @see App\Controller\Settings
  */
 class Settings implements RouteInterface {
-
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getPublicNames() {
         return [
@@ -34,7 +32,7 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Settings::class] = function (ContainerInterface $container) {
@@ -58,7 +56,7 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * List all Settings
+     * List all Settings.
      *
      * Retrieve a complete list of all child settings that belong to the requesting company.
      *
@@ -72,7 +70,6 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/listAll.md
-     *
      * @see App\Controller\Settings::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -86,7 +83,7 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * Create new Company
+     * Create new Company.
      *
      * Create a new child company for the requesting company.
      *
@@ -100,7 +97,6 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/createNew.md
-     *
      * @see App\Controller\Settings::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -114,7 +110,7 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * Delete all Settings
+     * Delete all Settings.
      *
      * Delete all child settings that belong to the requesting company.
      *
@@ -128,7 +124,6 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/deleteAll.md
-     *
      * @see App\Controller\Settings::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -142,7 +137,7 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * Retrieve a single Company
+     * Retrieve a single Company.
      *
      * Retrieves all public information from a Company
      *
@@ -154,7 +149,6 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/getOne.md
-     *
      * @see App\Controller\Settings::getOne
      */
     private static function getOne(App $app, callable $auth) {
@@ -168,7 +162,7 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * Update a single Company
+     * Update a single Company.
      *
      * Updates Company's specific information
      *
@@ -182,7 +176,6 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/updateOne.md
-     *
      * @see App\Controller\Settings::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -196,7 +189,7 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * Deletes a single Company
+     * Deletes a single Company.
      *
      * Deletes the requesting company or a child company that belongs to it.
      *
@@ -210,7 +203,6 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/deleteOne.md
-     *
      * @see App\Controller\Settings::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {

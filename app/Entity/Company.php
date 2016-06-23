@@ -11,7 +11,7 @@ use App\Helper\Utils;
 /**
  * Companies Entity.
  *
-* @apiEntity Company
+ * @apiEntity Company
  * @apiEntityRequiredProperty string name Company name
  * @apiEntityProperty string slug Slug based on company's name
  * @apiEntityProperty string public_key Public Key for management calls
@@ -28,7 +28,7 @@ use App\Helper\Utils;
  */
 class Company extends AbstractEntity {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $visible = ['name', 'slug', 'public_key', 'created_at'];
 

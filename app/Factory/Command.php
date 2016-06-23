@@ -11,7 +11,7 @@ namespace App\Factory;
  */
 class Command extends AbstractFactory {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getNamespace() {
         return '\\App\\Command\\';

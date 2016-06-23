@@ -7,7 +7,7 @@
 namespace App\Helper;
 
 /**
- * Utilities Class
+ * Utilities Class.
  */
 class Utils {
     // http://stackoverflow.com/questions/2955251/php-function-to-make-slug-url-string

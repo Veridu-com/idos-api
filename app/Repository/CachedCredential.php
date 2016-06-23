@@ -6,42 +6,40 @@
 
 namespace App\Repository;
 
-use Stash\Invalidation;
-
 /**
  * Cache-based Credential Repository Implementation.
  */
 class CachedCredential extends AbstractCachedRepository implements CredentialInterface {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function find($id) {
         return $this->repository->find($id);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($id) {
         return $this->repository->delete($id);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAll() {
         return $this->repository->getAll();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByPubKey($pubKey) {
         return $this->repository->findByPubKey($pubKey);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllByCompanyId($companyId) {
         return $this->getAllByCompanyId($companyId);

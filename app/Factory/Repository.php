@@ -20,14 +20,14 @@ class Repository extends AbstractFactory {
     protected $strategy;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getNamespace() {
         return '\\App\\Repository\\';
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getFormattedName($name) {
         return $this->strategy->getFormattedName($name);
@@ -45,7 +45,7 @@ class Repository extends AbstractFactory {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function create($name) {
         $class = $this->getClassName($name);

@@ -6,9 +6,7 @@
 
 namespace App\Repository;
 
-use App\Exception\NotFound;
 use App\Entity\Company;
-use Illuminate\Support\Collection;
 
 /**
  * Database-based Company Repository Implementation.
@@ -28,35 +26,35 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
     protected $entityName = Company::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findBySlug($slug) {
         return $this->findByKey('slug', $slug);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByPubKey($pubKey) {
         return $this->findByKey('public_key', $pubKey);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByPrivKey($privKey) {
         return $this->findByKey('private_key', $privKey);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllByParentId($parentId) {
         return $this->getAllByKey('parent_id', $parentId);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function deleteByParentId($parentId) {
         return $this->deleteByKey('parent_id', $parentId);
