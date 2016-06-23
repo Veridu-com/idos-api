@@ -327,7 +327,7 @@ $container['repositoryFactory'] = function (ContainerInterface $container) {
             $strategy = new Repository\DBStrategy($container->get('entityFactory'), $container->get('db'));
     }
 
-    if ($settings['repository']['cached'])
+    if ((isset($settings['repository']['cached'])) && ($settings['repository']['cached']))
         $strategy = new Repository\CachedStrategy(
             new Factory\Repository($strategy),
             $container->get('cache')

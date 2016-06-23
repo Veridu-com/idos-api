@@ -7,6 +7,9 @@
 namespace App\Handler;
 
 use App\Command\Credential\CreateNew;
+use App\Command\Credential\DeleteAll;
+use App\Command\Credential\DeleteOne;
+use App\Command\Credential\UpdateOne;
 use App\Repository\CredentialInterface;
 use App\Validator\Credential as CredentialValidator;
 use Defuse\Crypto\Key;
@@ -92,11 +95,11 @@ class Credential implements HandlerInterface {
     /**
      * Updates a Credential.
      *
-     * @param App\Command\CredentialUpdateOne $command
+     * @param App\Command\Credential\UpdateOne $command
      *
      * @return array
      */
-    public function handleCredentialUpdateOne(CredentialUpdateOne $command) {
+    public function handleUpdateOne(UpdateOne $command) {
         $this->validator->assertId($command->credentialId);
         $this->validator->assertName($command->newName);
 
@@ -111,11 +114,11 @@ class Credential implements HandlerInterface {
     /**
      * Deletes a Credential.
      *
-     * @param App\Command\CredentialDeleteOne $command
+     * @param App\Command\Credential\DeleteOne $command
      *
      * @return void
      */
-    public function handleCredentialDeleteOne(CredentialDeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) {
         $this->validator->assertId($command->credentialId);
 
         $this->repository->deleteById($command->credentialId);
@@ -124,11 +127,11 @@ class Credential implements HandlerInterface {
     /**
      * Deletes all credentials ($command->companyId).
      *
-     * @param App\Command\CredentialDeleteAll $command
+     * @param App\Command\Credential\DeleteAll $command
      *
      * @return void
      */
-    public function handleCredentialDeleteAll(CredentialDeleteAll $command) {
+    public function handleDeleteAll(DeleteAll $command) {
         $this->validator->assertId($command->companyId);
 
         $this->repository->deleteByCompanyId($command->companyId);
