@@ -4,26 +4,26 @@
  * All rights reserved.
  */
 
-namespace App\Command\Company;
+namespace App\Command\Credential;
 
 use App\Command\AbstractCommand;
 
 /**
- * Company "Update One" Command.
+ * Credential "Delete One" Command.
  */
-class UpdateOne extends AbstractCommand {
+class DeleteOne extends AbstractCommand {
     /**
-     * Company's new name.
+     * Credential's new name.
      *
      * @var string
      */
     public $newName;
     /**
-     * Company Id.
+     * Credential Id.
      *
      * @var int
      */
-    public $companyId;
+    public $credentialId;
 
     /**
      * {@inheritDoc}
@@ -32,8 +32,8 @@ class UpdateOne extends AbstractCommand {
         if (isset($parameters['newName']))
             $this->newName = $parameters['newName'];
 
-        if (isset($parameters['companyId']))
-            $this->companyId = $parameters['companyId'];
+        if (isset($parameters['credentialId']))
+            $this->credentialId = $parameters['credentialId'];
 
         return $this;
     }
