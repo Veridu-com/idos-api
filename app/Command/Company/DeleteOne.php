@@ -4,18 +4,12 @@
  * All rights reserved.
  */
 
-namespace App\Command;
+namespace App\Command\Company;
 
 /**
- * Company "Update One" Command.
+ * Company "Delete One" Command.
  */
-class CompanyUpdateOne extends AbstractCommand {
-    /**
-     * Company's new name.
-     *
-     * @var string
-     */
-    public $newName;
+class DeleteOne extends AbstractCommand {
     /**
      * Company Id.
      *
@@ -27,9 +21,6 @@ class CompanyUpdateOne extends AbstractCommand {
      * {@inheritDoc}
      */
     public function setParameters(array $parameters) {
-        if (isset($parameters['newName']))
-            $this->newName = $parameters['newName'];
-
         if (isset($parameters['companyId']))
             $this->companyId = $parameters['companyId'];
 
