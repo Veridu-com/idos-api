@@ -32,6 +32,6 @@ class Entity extends AbstractFactory {
         if (class_exists($class))
             return new $class($attributes);
 
-        throw new \RuntimeException(sprintf('"%s" (%s) not found.', $name, $class));
+        throw new \RuntimeException(sprintf('Class (%s) not found.', $class));
     }
 }

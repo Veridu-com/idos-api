@@ -23,8 +23,7 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
      *
      * @var string
      */
-    protected $entityName = Company::class;
-
+    protected $entityName = 'Company';
     /**
      * {@inheritdoc}
      */

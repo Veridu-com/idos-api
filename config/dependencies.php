@@ -295,6 +295,11 @@ $container['commandFactory'] = function (ContainerInterface $container) {
     return new Factory\Command();
 };
 
+// Validator Factory
+$container['validatorFactory'] = function (ContainerInterface $container) {
+    return new Factory\Validator();
+};
+
 // App Entity Factory
 $container['entityFactory'] = function (ContainerInterface $container) {
     return new Factory\Entity();

@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/credentials and /companies/{companySlug}/credentials.
+ * Handles requests to /companies/{companySlug}/credentials.
  */
 class Credentials implements ControllerInterface {
     /**

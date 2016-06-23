@@ -10,6 +10,7 @@ use App\Entity\EntityInterface;
 use App\Factory\Entity;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
+use App\Exception\NotFound;
 
 /**
  * Abstract Database-based Repository.
@@ -35,6 +36,12 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected $entityName = null;
     /**
+     * Entity Name.
+     *
+     * @var string
+     */
+    protected $entityClassName = null;
+    /**
      * DB Connection.
      *
      * @var \Illuminate\Database\ConnectionInterface
@@ -49,9 +56,8 @@ abstract class AbstractDBRepository extends AbstractRepository {
     protected function query() {
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
-            $this->getEntityName()
+            $this->getEntityClassName()
         );
-
         return $this->dbConnection->table($this->getTableName());
     }
 
@@ -77,6 +83,15 @@ abstract class AbstractDBRepository extends AbstractRepository {
             return str_replace(__NAMESPACE__, '\\App\\Entity\\', __CLASS__);
 
         return $this->entityName;
+    }
+
+    /**
+     * Get the entity class name.
+     *
+     * @return string
+     */
+    protected function getEntityClassName() {
+        return "\\App\\Entity\\" . $this->getEntityName();
     }
 
     /**
