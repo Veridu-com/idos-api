@@ -80,7 +80,11 @@ class Credentials implements ControllerInterface {
             )
         ];
 
-        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response, $body]);
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
     }
@@ -98,7 +102,11 @@ class Credentials implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command    = $this->commandFactory->create('Credential\\CreateNew', [$request, $targetCompany->id]);
+        $command = $this->commandFactory->create('Credential\\CreateNew');
+        $command
+            ->setParameters($request->getParsedBody())
+            ->setParameter('companyId', $targetCompany->id);
+
         $credential = $this->commandBus->handle($command);
 
         $body = [
@@ -106,7 +114,12 @@ class Credentials implements ControllerInterface {
             'data'   => $credential
         ];
 
-        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response, $body, 201]);
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+        
 
         return $this->commandBus->handle($command);
     }
@@ -152,7 +165,11 @@ class Credentials implements ControllerInterface {
             'updated' => strtotime($credential->updated_at)
         ];
 
-        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response, $body]);
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
     }
@@ -172,7 +189,12 @@ class Credentials implements ControllerInterface {
 
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
 
-        $command    = $this->commandFactory->create('Credential\\UpdateOne', [$request, $credential->id]);
+        $command = $this->commandFactory->create('Credential\\UpdateOne');
+        $command
+            ->setParameters($request->getParsedBody())
+            ->setParameter('companyId', $targetCompany->id)
+            ->setParameter('credentialId', $credential->id);
+
         $credential = $this->commandBus->handle($command);
 
         $body = [
@@ -180,7 +202,11 @@ class Credentials implements ControllerInterface {
             'updated' => strtotime($credential->updated_at)
         ];
 
-        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response, $body]);
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
     }
@@ -200,10 +226,20 @@ class Credentials implements ControllerInterface {
 
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
 
-        $command = $this->commandFactory->create('Credential\\DeleteOne', [$request, $credential->id]);
-        $this->commandBus->handle($command);
+        $command = $this->commandFactory->create('Credential\\DeleteOne');
+        $command
+            ->setParameter('credentialId', $credential->id);
 
-        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response]);
+        $body = [
+            'deleted' => $this->commandBus->handle($command)
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+            
 
         return $this->commandBus->handle($command);
     }

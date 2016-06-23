@@ -268,7 +268,7 @@
 
 [GET /1.0/companies/:companyId](companies/getCompany.md)
 
-[POST /1.0/companies/:companyId](companies/updateCompany.md)
+[PUT /1.0/companies/:companyId](companies/updateCompany.md)
 
 [DELETE /1.0/companies/:companyId](companies/deleteCompany.md)
 

@@ -11,13 +11,19 @@ use App\Command\AbstractCommand;
 /**
  * Credential "Delete One" Command.
  */
-class DeleteOne extends AbstractCommand {
+class UpdateOne extends AbstractCommand {
     /**
      * Credential's new name.
      *
      * @var string
      */
-    public $newName;
+    public $name;
+    /**
+     * Company Id.
+     *
+     * @var int
+     */
+    public $companyId;
     /**
      * Credential Id.
      *
@@ -29,8 +35,11 @@ class DeleteOne extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) {
-        if (isset($parameters['newName']))
-            $this->newName = $parameters['newName'];
+        if (isset($parameters['name']))
+            $this->name = $parameters['name'];
+
+        if (isset($parameters['companyId']))
+            $this->companyId = $parameters['companyId'];
 
         if (isset($parameters['credentialId']))
             $this->credentialId = $parameters['credentialId'];

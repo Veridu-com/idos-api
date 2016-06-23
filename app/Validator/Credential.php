@@ -51,6 +51,30 @@ class Credential implements ValidatorInterface {
     }
 
     /**
+     * Asserts a valid company id, integer.
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertCompanyId($id) {
+        Validator::digit()
+            ->assert($id);
+    }
+
+    /**
+     * Asserts a valid id, integer.
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertId($id) {
+        Validator::digit()
+            ->assert($id);
+    }
+
+    /**
      * Validates a production flag value.
      *
      * @return bool

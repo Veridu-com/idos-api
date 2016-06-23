@@ -99,10 +99,10 @@ class Company implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) {
         $this->validator->assertId($command->companyId);
-        $this->validator->assertName($command->newName);
+        $this->validator->assertName($command->name);
 
-        $company       = $this->repository->findById($command->companyId);
-        $company->name = $command->newName;
+        $company       = $this->repository->find($command->companyId);
+        $company->name = $command->name;
 
         $this->repository->save($company);
 
@@ -118,8 +118,7 @@ class Company implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         $this->validator->assertId($command->companyId);
-
-        $this->repository->deleteById($command->companyId);
+        return $this->repository->deleteById($command->companyId);
     }
 
     /**

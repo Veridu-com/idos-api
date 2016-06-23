@@ -17,7 +17,7 @@ class UpdateOne extends AbstractCommand {
      *
      * @var string
      */
-    public $newName;
+    public $name;
     /**
      * Company Id.
      *
@@ -29,8 +29,8 @@ class UpdateOne extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) {
-        if (isset($parameters['newName']))
-            $this->newName = $parameters['newName'];
+        if (isset($parameters['name']))
+            $this->name = $parameters['name'];
 
         if (isset($parameters['companyId']))
             $this->companyId = $parameters['companyId'];

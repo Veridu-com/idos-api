@@ -124,9 +124,20 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function save(EntityInterface &$entity) {
-        $id = $this->query()
-            ->insertGetId($entity->serialize());
-        $entity = $this->create(array_merge(['id' => $id], $entity->serialize()));
+        $serialized = $entity->serialize();
+        $id = $entity->id;
+
+        if (! $entity->id) {
+            $id = $this->query()->insertGetId($serialized);
+        } else {
+            unset($serialized['id']);
+            $affectedRows = $this->query()->where('id', $entity->id)->update($serialized);
+            if (! $affectedRows) {
+                throw new Exception("No rows were updated when saving " . get_class($entity));
+            }
+        }
+
+        return $this->create(array_merge(['id' => $id], $entity->serialize()));
     }
 
     /**

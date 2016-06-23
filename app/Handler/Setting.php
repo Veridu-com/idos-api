@@ -99,10 +99,10 @@ class Setting implements HandlerInterface {
      */
     public function handleSettingUpdateOne(SettingUpdateOne $command) {
         $this->validator->assertId($command->companyId);
-        $this->validator->assertName($command->newName);
+        $this->validator->assertName($command->name);
 
-        $company       = $this->repository->findById($command->companyId);
-        $company->name = $command->newName;
+        $company       = $this->repository->find($command->companyId);
+        $company->name = $command->name;
 
         $this->repository->save($company);
 
