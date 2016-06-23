@@ -3,10 +3,11 @@
 *.sublime-project
 *.sublime-workspace
 .php_cs
+composer.lock
+config/settings.php
 environment.php
 phinx.yml
 phpdox.xml
 phpunit.xml
 sftp-config.json
-config/settings.php
 vendor/
