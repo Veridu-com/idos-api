@@ -5,29 +5,30 @@
  */
 
 namespace App\Handler;
-use App\Command\Company\CreateNew;
-use App\Command\Company\DeleteAll;
-use App\Command\Company\DeleteOne;
-use App\Command\Company\UpdateOne;
+
+use App\Command\SettingCreateNew;
+use App\Command\SettingDeleteAll;
+use App\Command\SettingDeleteOne;
+use App\Command\SettingUpdateOne;
+use App\Repository\SettingInterface;
+use App\Validator\Setting as SettingValidator;
 use Defuse\Crypto\Key;
-use App\Repository\CompanyInterface;
 use Interop\Container\ContainerInterface;
-use App\Validator\Company as CompanyValidator;
 
 /**
- * Handles Company commands.
+ * Handles Setting commands.
  */
-class Company implements HandlerInterface {
+class Setting implements HandlerInterface {
     /**
-     * Company Repository instance.
+     * Setting Repository instance.
      *
-     * @var App\Repository\CompanyInterface
+     * @var App\Repository\SettingInterface
      */
     protected $repository;
     /**
-     * Company Validator instance.
+     * Setting Validator instance.
      *
-     * @var App\Validator\Company
+     * @var App\Validator\Setting
      */
     protected $validator;
 
@@ -36,13 +37,13 @@ class Company implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) {
         $container[self::class] = function (ContainerInterface $container) {
-            return new \App\Handler\Company(
+            return new \App\Handler\Setting(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Company'),
+                    ->create('Setting'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Company')
+                    ->create('Setting')
             );
         };
     }
@@ -50,27 +51,27 @@ class Company implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CompanyInterface
-     * @param App\Validator\Company
+     * @param App\Repository\SettingInterface
+     * @param App\Validator\Setting
      *
      * @return void
      */
     public function __construct(
-        CompanyInterface $repository,
-        CompanyValidator $validator
+        SettingInterface $repository,
+        SettingValidator $validator
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
     }
 
     /**
-     * Creates a new child Company ($command->parentId).
+     * Creates a new child Setting ($command->parentId).
      *
-     * @param App\Command\Company\CreateNew $command
+     * @param App\Command\SettingCreateNew $command
      *
      * @return array
      */
-    public function handleCreateNew(CreateNew $command) {
+    public function handleSettingCreateNew(SettingCreateNew $command) {
         $this->validator->assertName($command->name);
         $this->validator->assertParentId($command->parentId);
 
@@ -90,13 +91,13 @@ class Company implements HandlerInterface {
     }
 
     /**
-     * Updates a Company.
+     * Updates a Setting.
      *
-     * @param App\Command\Company\UpdateOne $command
+     * @param App\Command\SettingUpdateOne $command
      *
      * @return array
      */
-    public function handleUpdateOne(UpdateOne $command) {
+    public function handleSettingUpdateOne(SettingUpdateOne $command) {
         $this->validator->assertId($command->companyId);
         $this->validator->assertName($command->newName);
 
@@ -109,26 +110,26 @@ class Company implements HandlerInterface {
     }
 
     /**
-     * Deletes a Company.
+     * Deletes a Setting.
      *
-     * @param App\Command\Company\DeleteOne $command
+     * @param App\Command\SettingDeleteOne $command
      *
      * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleSettingDeleteOne(SettingDeleteOne $command) {
         $this->validator->assertId($command->companyId);
 
         $this->repository->deleteById($command->companyId);
     }
 
     /**
-     * Deletes all child Company ($command->parentId).
+     * Deletes all child Setting ($command->parentId).
      *
-     * @param App\Command\Company\DeleteAll $command
+     * @param App\Command\DeleteSetting $command
      *
      * @return void
      */
-    public function handleDeleteAll(DeleteAll $command) {
+    public function handleSettingDeleteAll(SettingDeleteAll $command) {
         $this->validator->assertId($command->parentId);
 
         $this->repository->deleteByKey('parent_id', $command->parentId);

@@ -6,7 +6,7 @@
 
 namespace App\Handler;
 
-use App\Command\CreateCredential;
+use App\Command\Credential\CreateNew;
 use App\Repository\CredentialInterface;
 use App\Validator\Credential as CredentialValidator;
 use Defuse\Crypto\Key;
@@ -64,11 +64,11 @@ class Credential implements HandlerInterface {
     /**
      * Creates a new child Credential ($command->companyId).
      *
-     * @param App\Command\CreateCredential $command
+     * @param App\Command\Credential\CreateNew $command
      *
      * @return array
      */
-    public function handleCreateCredential(CreateCredential $command) {
+    public function handleCreateNew(CreateNew $command) {
         $this->validator->assertName($command->name);
         $this->validator->assertProduction($command->production);
         $this->validator->assertCompanyId($command->companyId);

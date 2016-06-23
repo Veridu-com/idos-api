@@ -98,7 +98,7 @@ class Credentials implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $command    = $this->commandFactory->create('CreateCredential', [$request, $targetCompany->id]);
+        $command    = $this->commandFactory->create('CreateNew', [$request, $targetCompany->id]);
         $credential = $this->commandBus->handle($command);
 
         $body = [

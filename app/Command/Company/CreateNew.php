@@ -4,14 +4,20 @@
  * All rights reserved.
  */
 
-namespace App\Command;
+namespace App\Command\Company;
 
 /**
- * Company "Delete All" Command.
+ * Company "Create New" Command.
  */
-class CompanyDeleteAll extends AbstractCommand {
+class CreateNew extends AbstractCommand {
     /**
-     * All child companies to this Parent Id will be deleted.
+     * Company Name.
+     *
+     * @var string
+     */
+    public $name;
+    /**
+     * Company's Parent Id.
      *
      * @var int
      */
@@ -21,6 +27,9 @@ class CompanyDeleteAll extends AbstractCommand {
      * {@inheritDoc}
      */
     public function setParameters(array $parameters) {
+        if (isset($parameters['name']))
+            $this->name = $parameters['name'];
+
         if (isset($parameters['parentId']))
             $this->parentId = $parameters['parentId'];
 

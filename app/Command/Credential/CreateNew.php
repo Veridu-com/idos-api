@@ -4,12 +4,12 @@
  * All rights reserved.
  */
 
-namespace App\Command;
+namespace App\Command\Credential;
 
 /**
  * Credential "Create New" Command.
  */
-class CredentialCreateNew extends AbstractCommand {
+class CreateNew extends AbstractCommand {
     /**
      * Credential Name.
      *
