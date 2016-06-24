@@ -139,12 +139,17 @@ class Companies implements ControllerInterface {
         $actingCompany = $request->getAttribute('actingCompany');
 
         $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
-        $this->commandBus->handle($command);
+        $deleted = $this->commandBus->handle($command);
+
+        $body = [
+            'deleted' => $deleted
+        ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('request', $request)
-            ->setParameter('response', $response);
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
     }
@@ -231,14 +236,18 @@ class Companies implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Company\\DeleteOne');
-        $command
-            ->setParameter('companyId', $targetCompany->id);
-        $this->commandBus->handle($command);
+        $command->setParameter('companyId', $targetCompany->id);
+        $deleted = $this->commandBus->handle($command);
+
+        $body = [
+            'deleted' => $deleted
+        ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('request', $request)
-            ->setParameter('response', $response);
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
     }

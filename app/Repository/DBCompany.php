@@ -23,8 +23,7 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
      *
      * @var string
      */
-    protected $entityName = Company::class;
-
+    protected $entityName = 'Company';
     /**
      * {@inheritdoc}
      */
@@ -58,5 +57,12 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
      */
     public function deleteByParentId($parentId) {
         return $this->deleteByKey('parent_id', $parentId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteById($id) {
+        return $this->deleteByKey('id', $id);
     }
 }

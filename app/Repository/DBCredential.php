@@ -23,7 +23,7 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
      *
      * @var string
      */
-    protected $entityName = Credential::class;
+    protected $entityName = 'Credential';
 
     /**
      * {@inheritdoc}
@@ -44,5 +44,11 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
      */
     public function deleteByCompanyId($companyId) {
         return $this->deleteByKey('company_id', $companyId);
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByPubKey($pubKey) {
+        return $this->deleteByKey('public', $pubKey);
     }
 }

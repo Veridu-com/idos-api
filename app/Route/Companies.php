@@ -175,7 +175,7 @@ class Companies implements RouteInterface {
      *
      * Updates Company's specific information
      *
-     * @apiEndpoint POST /companies/:companySlug
+     * @apiEndpoint PUT /companies/:companySlug
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -192,7 +192,7 @@ class Companies implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth) {
         $app
-            ->post(
+            ->put(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Companies:updateOne'
             )

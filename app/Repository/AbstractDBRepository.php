@@ -10,6 +10,7 @@ use App\Entity\EntityInterface;
 use App\Factory\Entity;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
+use App\Exception\NotFound;
 
 /**
  * Abstract Database-based Repository.
@@ -49,9 +50,8 @@ abstract class AbstractDBRepository extends AbstractRepository {
     protected function query() {
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
-            $this->getEntityName()
+            $this->getEntityClassName()
         );
-
         return $this->dbConnection->table($this->getTableName());
     }
 
@@ -62,7 +62,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getTableName() {
         if (empty($this->tableName))
-            return str_replace(__NAMESPACE__, '', __CLASS__);
+            throw new \RuntimeException(sprintf('$tableName property not set in %s', get_class($this)));
 
         return $this->tableName;
     }
@@ -74,9 +74,18 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getEntityName() {
         if (empty($this->entityName))
-            return str_replace(__NAMESPACE__, '\\App\\Entity\\', __CLASS__);
+            throw new \RuntimeException(sprintf('$entityName property not set in %s', get_class($this)));
 
         return $this->entityName;
+    }
+
+    /**
+     * Get the entity class name.
+     *
+     * @return string
+     */
+    protected function getEntityClassName() {
+        return sprintf('\\App\\Entity\\%s', $this->getEntityName());
     }
 
     /**
@@ -109,9 +118,20 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function save(EntityInterface &$entity) {
-        $id = $this->query()
-            ->insertGetId($entity->serialize());
-        $entity = $this->create(array_merge(['id' => $id], $entity->serialize()));
+        $serialized = $entity->serialize();
+
+        if (! $entity->id) {
+            $id = $this->query()->insertGetId($serialized);
+        } else {
+            $id = $entity->id;
+            unset($serialized['id']);
+            $affectedRows = $this->query()->where('id', $entity->id)->update($serialized);
+            if (! $affectedRows) {
+                throw new Exception("No rows were updated when saving " . get_class($entity));
+            }
+        }
+
+        return $this->create(array_merge(['id' => $id], $entity->serialize()));
     }
 
     /**
