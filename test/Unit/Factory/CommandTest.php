@@ -15,10 +15,10 @@ class CommandTest extends \PHPUnit_Framework_TestCase {
 
     public function testCorrectInterface() {
         $commands = [
-            'CompanyCreateNew',
-            'CompanyDeleteAll',
-            'CompanyDeleteOne',
-            'CompanyUpdateOne'
+            'Company\CreateNew',
+            'Company\DeleteAll',
+            'Company\DeleteOne',
+            'Company\UpdateOne'
         ];
         foreach ($commands as $command)
             $this->assertInstanceOf(

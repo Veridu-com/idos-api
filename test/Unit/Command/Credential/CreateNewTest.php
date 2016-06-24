@@ -4,19 +4,19 @@
  * All rights reserved.
  */
 
-namespace Test\Command;
+namespace Test\Command\Credential;
 
-use App\Command\CredentialCreateNew;
+use App\Command\Credential\CreateNew;
 
-class CredentialCreateNewTest extends \PHPUnit_Framework_TestCase {
+class CreateNewTest extends \PHPUnit_Framework_TestCase {
     public function testSetParameters() {
-        $command = new CredentialCreateNew();
+        $command = new CreateNew();
         $this->assertNull($command->name);
         $this->assertFalse($command->production);
         $this->assertNull($command->companyId);
 
         $this->assertInstanceOf(
-            CredentialCreateNew::class,
+            CreateNew::class,
             $command->setParameters([])
         );
         $this->assertNull($command->name);
