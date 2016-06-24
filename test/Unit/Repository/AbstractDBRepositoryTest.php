@@ -33,6 +33,7 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
         $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $getTableName = $this->setProtectedMethod($abstractMock, 'getTableName');
         $this->setExpectedException(\RuntimeException::class);
         $getTableName->invoke($abstractMock);
@@ -42,6 +43,7 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
         $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->setProtectedProperty($abstractMock, 'tableName', 'AbstractDBRepository');
         $getTableName = $this->setProtectedMethod($abstractMock, 'getTableName');
         $this->assertSame('AbstractDBRepository', $getTableName->invoke($abstractMock));
@@ -52,6 +54,7 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
         $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $getEntityName = $this->setProtectedMethod($abstractMock, 'getEntityName');
         $this->setExpectedException(\RuntimeException::class);
         $getEntityName->invoke($abstractMock);
@@ -71,6 +74,7 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
         $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $getEntityClassName = $this->setProtectedMethod($abstractMock, 'getEntityClassName');
         $this->setExpectedException(\RuntimeException::class);
         $getEntityClassName->invoke($abstractMock);
@@ -93,7 +97,10 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
         $entityMock = $this->getMockBuilder(Entity::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $connectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
+
+        $connectionMock = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
+
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['find'])
@@ -114,11 +121,47 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
         $abstractMock->find(0);
     }
 
+    public function testFind() {
+        $array = [
+            'name' => 'AbstractDBCompany',
+            'slug' => 'slug',
+            'public_key' => 'public_key',
+            'created_at' => 'date'
+        ];
+
+        $entityMock = $this->getMockBuilder(Entity::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $connectionMock = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
+
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['find'])
+            ->getMock();
+        $queryMock
+            ->method('find')
+            ->will($this->returnValue($array));
+
+        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+            ->setConstructorArgs([$entityMock, $connectionMock])
+            ->setMethods(['query'])
+            ->getMockForAbstractClass();
+        $abstractMock
+            ->method('query')
+            ->will($this->returnValue($queryMock));
+
+        $this->assertSame($array, $abstractMock->find(0));
+    }
+
     public function testFindByKeyNotFound() {
         $entityMock = $this->getMockBuilder(Entity::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $connectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
+        $connectionMock = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
+
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'first'])
@@ -141,5 +184,42 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
         $this->setExpectedException(NotFound::class);
         $findByKey = $this->setProtectedMethod($abstractMock, 'findByKey');
         $findByKey->invoke($abstractMock, 'key', 'value');
+    }
+
+
+    public function testFindByKey() {
+        $array = [
+            'name' => 'AbstractDBCompany',
+            'slug' => 'slug',
+            'public_key' => 'public_key',
+            'created_at' => 'date'
+        ];
+        $entityMock = $this->getMockBuilder(Entity::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $connectionMock = $this->getMockBuilder(ConnectionInterface::class)
+            ->getMock();
+
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['where', 'first'])
+            ->getMock();
+        $queryMock
+            ->method('where')
+            ->will($this->returnValue($queryMock));
+        $queryMock
+            ->method('first')
+            ->will($this->returnValue($array));
+
+        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+            ->setConstructorArgs([$entityMock, $connectionMock])
+            ->setMethods(['query'])
+            ->getMockForAbstractClass();
+        $abstractMock
+            ->method('query')
+            ->will($this->returnValue($queryMock));
+
+        $findByKey = $this->setProtectedMethod($abstractMock, 'findByKey');
+        $this->assertSame($array, $findByKey->invoke($abstractMock, 'key', 'value'));
     }
 }

@@ -12,132 +12,136 @@ use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Company;
 use App\Entity\Company as CompanyEntity;
+use App\Factory\Entity as EntityFactory;
 use App\Repository\CompanyInterface;
 use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
 use Slim\Container;
 
 class CompanyTest extends \PHPUnit_Framework_TestCase {
-    // public function testConstructCorrectInterface() {
-    //     $repositoryMock = $this
-    //         ->getMockBuilder(CompanyInterface::class)
-    //         ->getMock();
-    //     $validatorMock = $this
-    //         ->getMockBuilder(CompanyValidator::class)
-    //         ->getMock();
+    public function testConstructCorrectInterface() {
+        $repositoryMock = $this
+            ->getMockBuilder(CompanyInterface::class)
+            ->getMock();
+        $validatorMock = $this
+            ->getMockBuilder(CompanyValidator::class)
+            ->getMock();
 
-    //     $this->assertInstanceOf(
-    //         'App\\Handler\\HandlerInterface',
-    //         new Company(
-    //             $repositoryMock,
-    //             $validatorMock
-    //         )
-    //     );
-    // }
+        $this->assertInstanceOf(
+            'App\\Handler\\HandlerInterface',
+            new Company(
+                $repositoryMock,
+                $validatorMock
+            )
+        );
+    }
 
-    // public function testRegister() {
-    //     $container = new Container();
+    public function testRegister() {
+        $container = new Container();
 
-    //     $repositoryMock = $this
-    //         ->getMockBuilder(CompanyInterface::class)
-    //         ->getMock();
+        $repositoryMock = $this
+            ->getMockBuilder(CompanyInterface::class)
+            ->getMock();
 
-    //     $repositoryFactoryMock = $this
-    //         ->getMockBuilder(Repository::class)
-    //         ->disableOriginalConstructor()
-    //         ->getMock();
-    //     $repositoryFactoryMock
-    //         ->method('create')
-    //         ->willReturn($repositoryMock);
+        $repositoryFactoryMock = $this
+            ->getMockBuilder(Repository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repositoryFactoryMock
+            ->method('create')
+            ->willReturn($repositoryMock);
 
-    //     $container['repositoryFactory'] = function () use ($repositoryFactoryMock) {
-    //         return $repositoryFactoryMock;
-    //     };
+        $container['repositoryFactory'] = function () use ($repositoryFactoryMock) {
+            return $repositoryFactoryMock;
+        };
 
-    //     $validatorMock = $this
-    //         ->getMockBuilder(CompanyValidator::class)
-    //         ->getMock();
+        $validatorMock = $this
+            ->getMockBuilder(CompanyValidator::class)
+            ->getMock();
 
-    //     $validatorFactoryMock = $this
-    //         ->getMockBuilder(Validator::class)
-    //         ->disableOriginalConstructor()
-    //         ->getMock();
-    //     $validatorFactoryMock
-    //         ->method('create')
-    //         ->willReturn($validatorMock);
+        $validatorFactoryMock = $this
+            ->getMockBuilder(Validator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $validatorFactoryMock
+            ->method('create')
+            ->willReturn($validatorMock);
 
-    //     $container['validatorFactory'] = function () use ($validatorFactoryMock) {
-    //         return $validatorFactoryMock;
-    //     };
+        $container['validatorFactory'] = function () use ($validatorFactoryMock) {
+            return $validatorFactoryMock;
+        };
 
-    //     Company::register($container);
-    //     $this->assertInstanceOf(Company::class, $container[Company::class]);
-    // }
+        Company::register($container);
+        $this->assertInstanceOf(Company::class, $container[Company::class]);
+    }
 
-    // public function testHandleCreateNewInvalidCompanyName() {
-    //     $repositoryMock = $this
-    //         ->getMockBuilder(CompanyInterface::class)
-    //         ->getMock();
+    public function testHandleCreateNewInvalidCompanyName() {
+        $repositoryMock = $this
+            ->getMockBuilder(CompanyInterface::class)
+            ->getMock();
 
-    //     $handler = new Company(
-    //         $repositoryMock,
-    //         new CompanyValidator()
-    //     );
-    //     $this->setExpectedException('InvalidArgumentException');
+        $handler = new Company(
+            $repositoryMock,
+            new CompanyValidator()
+        );
+        $this->setExpectedException('InvalidArgumentException');
 
-    //     $commandMock = $this
-    //         ->getMockBuilder(CreateNew::class)
-    //         ->disableOriginalConstructor()
-    //         ->getMock();
-    //     $commandMock->name = '';
+        $commandMock = $this
+            ->getMockBuilder(CreateNew::class)
+            ->getMock();
+        $commandMock->name = '';
 
-    //     $handler->handleCreateNew($commandMock);
-    // }
+        $handler->handleCreateNew($commandMock);
+    }
 
-    // public function testHandleCreateNew() {
+    public function testHandleCreateNew() {
+        $dbConnectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
 
-    //     $companyRepository = $this->getMockBuilder(DBCompany::class)
-    //         ->setMethods(['save'])
-    //         ->setConstructorArgs([new CompanyEntity()])
-    //         ->getMock();
-    //     $companyRepository
-    //         ->expects($this->once())
-    //         ->method('save')
-    //         ->willReturn(true);
+        $entityFactory = new EntityFactory();
+        $entityFactory->create("Company");
 
-    //     $handler = new Company(
-    //         $companyRepository,
-    //         new CompanyValidator()
-    //     );
+        $companyRepository = $this->getMockBuilder(DBCompany::class)
+            ->setMethods(['save'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMock();
+        $companyRepository
+            ->expects($this->once())
+            ->method('save')
+            ->willReturn(true);
 
-    //     $command           = new CreateNew();
-    //     $command->name     = 'valid co';
-    //     $command->parentId = 1;
+        $handler = new Company(
+            $companyRepository,
+            new CompanyValidator()
+        );
 
-    //     $result = $handler->handleCreateNew($command);
-    //     $this->assertSame('valid co', $result['name']);
-    //     $this->assertSame('valid-co', $result['slug']);
-    //     $this->assertNotEmpty($result['public_key']);
-    // }
+        $command           = new CreateNew();
+        $command->name     = 'valid co';
+        $command->parentId = 1;
 
-    // public function testHandleDeleteOneInvalidCompanySlug() {
-    //     $repositoryMock = $this
-    //         ->getMockBuilder(CompanyInterface::class)
-    //         ->getMock();
+        $result = $handler->handleCreateNew($command);
+        $this->assertSame('valid co', $result['name']);
+        $this->assertSame('valid-co', $result['slug']);
+        $this->assertNotEmpty($result['public_key']);
+    }
 
-    //     $handler = new Company(
-    //         $repositoryMock,
-    //         new CompanyValidator()
-    //     );
+    public function testHandleDeleteOneInvalidCompanySlug() {
+        $repositoryMock = $this
+            ->getMockBuilder(CompanyInterface::class)
+            ->getMock();
 
-    //     $this->setExpectedException('InvalidArgumentException');
+        $handler = new Company(
+            $repositoryMock,
+            new CompanyValidator()
+        );
 
-    //     $commandMock = $this
-    //         ->getMockBuilder(CompanyDeleteOne::class)
-    //         ->disableOriginalConstructor()
-    //         ->getMock();
-    //     $commandMock->companySlug = '';
+        $this->setExpectedException('InvalidArgumentException');
 
-    //     $handler->handleDeleteOne($commandMock);
-    // }
+        $commandMock = $this
+            ->getMockBuilder(DeleteOne::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $commandMock->companySlug = '';
+
+        $handler->handleDeleteOne($commandMock);
+    }
 }
