@@ -193,7 +193,7 @@ class Credentials implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth) {
         $app
-            ->post(
+            ->put(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:updateOne'
             )

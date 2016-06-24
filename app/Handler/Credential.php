@@ -87,7 +87,7 @@ class Credential implements HandlerInterface {
         $credential->public  = Key::createNewRandomKey()->saveToAsciiSafeString();
         $credential->private = Key::createNewRandomKey()->saveToAsciiSafeString();
 
-        $credential->saveOrFail();
+        $credential = $this->repository->save($credential);
 
         return $credential->toArray();
     }
@@ -101,14 +101,14 @@ class Credential implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) {
         $this->validator->assertId($command->credentialId);
-        $this->validator->assertName($command->newName);
+        $this->validator->assertName($command->name);
 
-        $credential       = $this->repository->findById($command->credentialId);
-        $credential->name = $command->newName;
+        $credential = $this->repository->find($command->credentialId);
+        $credential->name = $command->name;
 
-        $this->repository->save($credential);
+        $credential = $this->repository->save($credential);
 
-        return $credential->toArray();
+        return $credential;
     }
 
     /**
@@ -120,8 +120,7 @@ class Credential implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         $this->validator->assertId($command->credentialId);
-
-        $this->repository->deleteById($command->credentialId);
+        return $this->repository->delete($command->credentialId);
     }
 
     /**

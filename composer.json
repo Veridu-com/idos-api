@@ -36,7 +36,8 @@
         "jenssegers/optimus": "^0.2",
         "defuse/php-encryption": "^2.0",
         "giggsey/libphonenumber-for-php": "^7.3",
-        "roave/security-advisories": "dev-master"
+        "roave/security-advisories": "dev-master",
+        "raveren/kint": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
@@ -51,7 +52,6 @@
         "ovr/phpsa": "*",
         "ext-xsl": "*"
     },
-    "minimum-stability": "dev",
     "config": {
         "optimize-autoloader": false
     }

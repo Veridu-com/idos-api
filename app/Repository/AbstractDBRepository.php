@@ -35,7 +35,10 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @var string
      */
     protected $entityName = null;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 516a3b8c855828b128238d575f4671c8fc7278ef
     /**
      * DB Connection.
      *
@@ -65,7 +68,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getTableName() {
         if (empty($this->tableName))
-            throw new \RuntimeException('$tableName property not set in ' . get_class($this));
+            throw new \RuntimeException(sprintf('$tableName property not set in %s', get_class($this)));
 
         return $this->tableName;
     }
@@ -79,7 +82,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getEntityName() {
         if (empty($this->entityName))
-            throw new \RuntimeException('$entityName property not set in ' . get_class($this));
+            throw new \RuntimeException(sprintf('$entityName property not set in %s', get_class($this)));
 
         return $this->entityName;
     }
@@ -92,7 +95,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @return string
      */
     protected function getEntityClassName() {
-        return "\\App\\Entity\\" . $this->getEntityName();
+        return sprintf('\\App\\Entity\\%s', $this->getEntityName());
     }
 
     /**
@@ -125,9 +128,20 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function save(EntityInterface &$entity) {
-        $id = $this->query()
-            ->insertGetId($entity->serialize());
-        $entity = $this->create(array_merge(['id' => $id], $entity->serialize()));
+        $serialized = $entity->serialize();
+
+        if (! $entity->id) {
+            $id = $this->query()->insertGetId($serialized);
+        } else {
+            $id = $entity->id;
+            unset($serialized['id']);
+            $affectedRows = $this->query()->where('id', $entity->id)->update($serialized);
+            if (! $affectedRows) {
+                throw new Exception("No rows were updated when saving " . get_class($entity));
+            }
+        }
+
+        return $this->create(array_merge(['id' => $id], $entity->serialize()));
     }
 
     /**
