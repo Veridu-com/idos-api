@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/credentials and /companies/{companySlug}/credentials/{pubKey}.
+ * Handles requests to /companies and /companies/{companySlug}.
  */
 class Companies implements ControllerInterface {
     /**
