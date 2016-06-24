@@ -69,7 +69,7 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\CreateNew $command
      *
-     * @return array
+     * @return App\Entity\Company
      */
     public function handleCreateNew(CreateNew $command) {
         $this->validator->assertName($command->name);
@@ -87,7 +87,7 @@ class Company implements HandlerInterface {
 
         $this->repository->save($company);
 
-        return $company->toArray();
+        return $company;
     }
 
     /**
@@ -95,7 +95,7 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\UpdateOne $command
      *
-     * @return array
+     * @return App\Entity\Company
      */
     public function handleUpdateOne(UpdateOne $command) {
         $this->validator->assertId($command->companyId);
@@ -106,7 +106,7 @@ class Company implements HandlerInterface {
 
         $this->repository->save($company);
 
-        return $company->toArray();
+        return $company;
     }
 
     /**
@@ -114,10 +114,11 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\DeleteOne $command
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteOne(DeleteOne $command) {
         $this->validator->assertId($command->companyId);
+
         return $this->repository->deleteById($command->companyId);
     }
 
@@ -126,11 +127,11 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\DeleteAll $command
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteAll(DeleteAll $command) {
         $this->validator->assertId($command->parentId);
 
-        $this->repository->deleteByParentId($command->parentId);
+        return $this->repository->deleteByParentId($command->parentId);
     }
 }
