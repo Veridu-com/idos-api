@@ -111,7 +111,7 @@ class Companies implements ControllerInterface {
         $company = $this->commandBus->handle($command);
 
         $body = [
-            'data' => $company
+            'data' => $company->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -206,7 +206,7 @@ class Companies implements ControllerInterface {
         $targetCompany = $this->commandBus->handle($command);
 
         $body = [
-            'data'    => $targetCompany,
+            'data'    => $targetCompany->toArray(),
             'updated' => time()
         ];
 

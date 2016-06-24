@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/credentials and /companies/{companySlug}/credentials/{pubKey}
+ * Handles requests to /companies/{companySlug}/credentials and /companies/{companySlug}/credentials/{pubKey}.
  */
 class Credentials implements ControllerInterface {
     /**
@@ -110,8 +110,7 @@ class Credentials implements ControllerInterface {
         $credential = $this->commandBus->handle($command);
 
         $body = [
-            'status' => true,
-            'data'   => $credential
+            'data'   => $credential->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -119,7 +118,6 @@ class Credentials implements ControllerInterface {
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
-        
 
         return $this->commandBus->handle($command);
     }
@@ -138,9 +136,17 @@ class Credentials implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Credential\\DeleteAll', [$targetCompany->id]);
-        $this->commandBus->handle($command);
+        $deleted = $this->commandBus->handle($command);
 
-        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response]);
+        $body = [
+            'deleted' => $deleted
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
     }
@@ -186,7 +192,7 @@ class Credentials implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
+        $credential    = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
 
         $command = $this->commandFactory->create('Credential\\UpdateOne');
         $command
@@ -237,7 +243,6 @@ class Credentials implements ControllerInterface {
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
-            
 
         return $this->commandBus->handle($command);
     }
