@@ -35,10 +35,6 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @var string
      */
     protected $entityName = null;
-<<<<<<< HEAD
-
-=======
->>>>>>> 516a3b8c855828b128238d575f4671c8fc7278ef
     /**
      * DB Connection.
      *
@@ -62,8 +58,6 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * Get the table name.
      *
-     * @throws \RuntimeException
-     *
      * @return string
      */
     protected function getTableName() {
@@ -76,8 +70,6 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * Get the entity name.
      *
-     * @throws \RuntimeException
-     *
      * @return string
      */
     protected function getEntityName() {
@@ -89,8 +81,6 @@ abstract class AbstractDBRepository extends AbstractRepository {
 
     /**
      * Get the entity class name.
-     *
-     * @throws \RuntimeException
      *
      * @return string
      */
