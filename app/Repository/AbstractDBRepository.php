@@ -36,12 +36,6 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected $entityName = null;
     /**
-     * Entity Name.
-     *
-     * @var string
-     */
-    protected $entityClassName = null;
-    /**
      * DB Connection.
      *
      * @var \Illuminate\Database\ConnectionInterface
@@ -68,7 +62,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getTableName() {
         if (empty($this->tableName))
-            throw new \RuntimeException('$tableName property not set in ' . get_class($this));
+            throw new \RuntimeException(sprintf('$tableName property not set in %s', get_class($this)));
 
         return $this->tableName;
     }
@@ -80,7 +74,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getEntityName() {
         if (empty($this->entityName))
-            throw new \RuntimeException('$entityName property not set in ' . get_class($this));
+            throw new \RuntimeException(sprintf('$entityName property not set in %s', get_class($this)));
 
         return $this->entityName;
     }
@@ -91,7 +85,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @return string
      */
     protected function getEntityClassName() {
-        return "\\App\\Entity\\" . $this->getEntityName();
+        return sprintf('\\App\\Entity\\%s', $this->getEntityName());
     }
 
     /**
@@ -125,11 +119,11 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     public function save(EntityInterface &$entity) {
         $serialized = $entity->serialize();
-        $id = $entity->id;
 
         if (! $entity->id) {
             $id = $this->query()->insertGetId($serialized);
         } else {
+            $id = $entity->id;
             unset($serialized['id']);
             $affectedRows = $this->query()->where('id', $entity->id)->update($serialized);
             if (! $affectedRows) {

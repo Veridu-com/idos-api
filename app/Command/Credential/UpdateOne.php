@@ -19,12 +19,6 @@ class UpdateOne extends AbstractCommand {
      */
     public $name;
     /**
-     * Company Id.
-     *
-     * @var int
-     */
-    public $companyId;
-    /**
      * Credential Id.
      *
      * @var int
@@ -37,9 +31,6 @@ class UpdateOne extends AbstractCommand {
     public function setParameters(array $parameters) {
         if (isset($parameters['name']))
             $this->name = $parameters['name'];
-
-        if (isset($parameters['companyId']))
-            $this->companyId = $parameters['companyId'];
 
         if (isset($parameters['credentialId']))
             $this->credentialId = $parameters['credentialId'];

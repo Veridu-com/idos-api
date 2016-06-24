@@ -163,12 +163,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * {@inheritdoc}
      */
-    public function toArray() {        
+    public function toArray() {
         if (empty($this->visible))
             return $this->serialize();
 
         $return = [];
-        foreach ($this->visible as $attribute) 
+        foreach ($this->visible as $attribute)
             $return[$attribute] = $this->getAttribute($attribute);
 
         return $return;

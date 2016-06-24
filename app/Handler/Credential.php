@@ -101,7 +101,6 @@ class Credential implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) {
         $this->validator->assertId($command->credentialId);
-        $this->validator->assertId($command->companyId);
         $this->validator->assertName($command->name);
 
         $credential = $this->repository->find($command->credentialId);

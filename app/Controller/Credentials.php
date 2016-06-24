@@ -186,13 +186,11 @@ class Credentials implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
 
         $command = $this->commandFactory->create('Credential\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetCompany->id)
             ->setParameter('credentialId', $credential->id);
 
         $credential = $this->commandBus->handle($command);

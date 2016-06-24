@@ -52,7 +52,6 @@
         "ovr/phpsa": "*",
         "ext-xsl": "*"
     },
-    "minimum-stability": "dev",
     "config": {
         "optimize-autoloader": false
     }
