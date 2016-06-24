@@ -9,7 +9,7 @@ namespace App\Command\Credential;
 use App\Command\AbstractCommand;
 
 /**
- * Credential "Delete One" Command.
+ * Credential "Update One" Command.
  */
 class UpdateOne extends AbstractCommand {
     /**
