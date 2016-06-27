@@ -205,6 +205,21 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
+     * Return an entity collection with all entities that has where constraints (AND)
+     *
+     * @param array $wheres
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getAllByWhereConstraints(array $wheres = []) {
+        $qb = $this->query();
+        foreach ($wheres as $key => $value) {
+            $qb = $qb->where($key, $value);
+        }
+        return new Collection($qb->get());
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getAll() {

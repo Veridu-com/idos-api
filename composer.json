@@ -37,7 +37,8 @@
         "defuse/php-encryption": "^2.0",
         "giggsey/libphonenumber-for-php": "^7.3",
         "roave/security-advisories": "dev-master",
-        "raveren/kint": "^1.0"
+        "raveren/kint": "^1.0",
+        "fzaninotto/faker": "^1.6"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",

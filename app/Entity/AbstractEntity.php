@@ -179,8 +179,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     public function serialize() {
         $return = [];
-        foreach (array_keys($this->attributes) as $attribute)
-            $return[$attribute] = $this->getAttribute($attribute);
+        foreach ($this->attributes as $key => $value)
+            $return[$key] = $this->getAttribute($key);
 
         return $return;
     }

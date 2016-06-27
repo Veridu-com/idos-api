@@ -273,7 +273,7 @@ class DatabaseInit extends AbstractMigration {
         $settings = $this->table('settings');
         $settings
             ->addColumn('company_id', 'integer', ['null' => false])
-            ->addColumn('category', 'text', ['null' => false])
+            ->addColumn('section', 'text', ['null' => false])
             ->addColumn('property', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => false])
             ->addColumn(
@@ -295,7 +295,7 @@ class DatabaseInit extends AbstractMigration {
                 ]
             )
             ->addIndex('company_id')
-            ->addIndex(['company_id', 'category', 'property'], ['unique' => true])
+            ->addIndex(['company_id', 'section', 'property'], ['unique' => true])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
