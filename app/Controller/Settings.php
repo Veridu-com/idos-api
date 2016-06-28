@@ -60,8 +60,8 @@ class Settings implements ControllerInterface {
      * @apiEndpointParam query int page Current page
      * @apiEndpointResponse 200 Setting[]
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -93,8 +93,8 @@ class Settings implements ControllerInterface {
      * @apiEndpointParam query int page Current page
      * @apiEndpointResponse 200 Setting[]
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -124,8 +124,8 @@ class Settings implements ControllerInterface {
      *
      * @apiEndpointResponse 201 Setting
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -161,8 +161,8 @@ class Settings implements ControllerInterface {
      * @apiEndpointRequiredParam path string property
      * @apiEndpointResponse 200 Setting
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -194,8 +194,8 @@ class Settings implements ControllerInterface {
      * @apiEndpointRequiredParam path string property
      * @apiEndpointResponse 200 Setting
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -235,8 +235,8 @@ class Settings implements ControllerInterface {
      * @apiEndpointRequiredParam path string property
      * @apiEndpointResponse 200 -
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -269,8 +269,8 @@ class Settings implements ControllerInterface {
      *
      * @apiEndpointResponse 200 -
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
