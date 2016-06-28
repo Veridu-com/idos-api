@@ -165,22 +165,22 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
-       $actingCompany = $request->getAttribute('actingCompany');
+        $actingCompany = $request->getAttribute('actingCompany');
 
-       $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
-       $deleted = $this->commandBus->handle($command);
+        $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
+        $deleted = $this->commandBus->handle($command);
 
-       $body = [
+        $body = [
            'deleted' => $deleted
-       ];
+        ];
 
-       $command = $this->commandFactory->create('ResponseDispatch');
-       $command
-           ->setParameter('request', $request)
-           ->setParameter('response', $response)
-           ->setParameter('body', $body);
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
-       return $this->commandBus->handle($command);
+        return $this->commandBus->handle($command);
     }
 
     /**
@@ -215,7 +215,7 @@ class Companies implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-    
+
     /**
      * Updates the Target Company, a child of the Acting Company.
      *
