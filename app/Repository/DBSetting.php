@@ -53,9 +53,10 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
         }
 
         return $row;
-    }    
+    }  
+
     /**
-     * Save one setting
+     * Updates one setting
      *
      * @param int    companyId setting's company_id
      * @param string section   setting's section
@@ -78,8 +79,13 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     public function getAllByCompanyId($companyId) {
         return $this->getAllByKey('company_id', $companyId);
     }
+
     /**
-     * {@inheritdoc}
+     * Retrieves all settings from company that has the given section 
+     *
+     * @param int    companyId setting's company_id
+     * @param string section   setting's section
+     *
      */
     public function getAllByCompanyIdAndSection($companyId, $section) {
         return $this->getAllByWhereConstraints([
@@ -88,6 +94,13 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
         ]);
     }
 
+
+    /**
+     * Deletes one settings from company that has the given section 
+     *
+     * @param int    companyId setting's company_id
+     * @param string section   setting's section
+     */
     public function deleteOne($companyId, $section, $property) {
         return $this->query()
             ->where('company_id', $companyId)

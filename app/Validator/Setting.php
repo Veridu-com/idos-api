@@ -13,7 +13,7 @@ use Respect\Validation\Validator;
  */
 class Setting implements ValidatorInterface {
     /**
-     * Asserts a valid name, 1-15 chars long.
+     * Asserts a valid name.
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
@@ -25,7 +25,7 @@ class Setting implements ValidatorInterface {
     }
 
     /**
-     * Asserts a valid slug, 1-15 chars long.
+     * Asserts a valid name.
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *

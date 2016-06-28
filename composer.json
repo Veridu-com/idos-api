@@ -26,6 +26,7 @@
         "monolog/monolog": "^1.13",
         "tedivm/stash": "^0.14",
         "illuminate/database": "^5.2",
+        "illuminate/pagination": "^5.2",
         "robmorgan/phinx": "^0.5",
         "respect/validation": "^1.0",
         "filp/whoops": "^2.0",

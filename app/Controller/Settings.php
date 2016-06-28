@@ -57,8 +57,6 @@ class Settings implements ControllerInterface {
     /**
      * Lists all Settings that belongs to the Target Company.
      *
-     * @apiEndpointParam query int after Initial Setting creation date (lower bound)
-     * @apiEndpointParam query int before Final Setting creation date (upper bound)
      * @apiEndpointParam query int page Current page
      * @apiEndpointResponse 200 Setting[]
      *
@@ -89,10 +87,10 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Lists all Settings that belongs to the Target Company and has the given "section"
+     * Lists all Settings that belongs to the Target Company and has the given section
      *
-     * @apiEndpointParam query int after Initial Setting creation date (lower bound)
-     * @apiEndpointParam query int before Final Setting creation date (upper bound)
+     * @apiEndpointRequiredParam path string section
+     *
      * @apiEndpointParam query int page Current page
      * @apiEndpointResponse 200 Setting[]
      *
@@ -105,7 +103,6 @@ class Settings implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $section = $request->getAttribute('section');
         $settings = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
-
 
         $body = [
             'status'  => true,
@@ -160,29 +157,11 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Deletes all Settings that belongs to the Target Company.
+     * Retrieves one Setting of the Target Company based on path paramaters section and property.
      *
-     * @apiEndpointResponse 200 -
-     *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetCompany = $request->getAttribute('targetCompany');
-
-        $command = $this->commandFactory->create('Setting\\DeleteAll', [$targetCompany->id]);
-        $this->commandBus->handle($command);
-
-        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response]);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Retrieves one Setting of the Target Company based on the Setting's Public Key.
-     *
+     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string section
+     * @apiEndpointRequiredParam path string property
      * @apiEndpointResponse 200 Setting
      *
      * @param \Psr\ServerRequestInterface $request
@@ -211,8 +190,11 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Updates one Setting of the Target Company based on the Setting's Public Key.
+     * Updates one Setting of the Target Company based on path paramaters section and property.
      *
+     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string section
+     * @apiEndpointRequiredParam path string property
      * @apiEndpointResponse 200 Setting
      *
      * @param \Psr\ServerRequestInterface $request
@@ -249,8 +231,11 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Deletes one Setting of the Target Company based on the Setting's Public Key.
+     * Deletes one Setting of the Target Company based on path paramaters section and property.
      *
+     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string section
+     * @apiEndpointRequiredParam path string property
      * @apiEndpointResponse 200 -
      *
      * @param \Psr\ServerRequestInterface $request

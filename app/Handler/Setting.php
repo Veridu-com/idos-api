@@ -65,7 +65,7 @@ class Setting implements HandlerInterface {
     }
 
     /**
-     * Creates a new child Setting ($command->parentId).
+     * Creates a new child Setting.
      *
      * @param App\Command\Setting\CreateNew $command
      *
@@ -104,7 +104,7 @@ class Setting implements HandlerInterface {
 
         $setting = $this->repository->findOne($command->companyId, $command->sectionNameId, $command->propNameId);
 
-        // @TODO dicuss with flavio if we are accepting section & property name changes by user request
+        // @TODO: dicuss with flavio if we are accepting section & property name changes by user request
         // if ($command->section) {
         //     $setting->section = $command->section;
         // }
@@ -137,16 +137,4 @@ class Setting implements HandlerInterface {
         return $this->repository->deleteOne($command->companyId, $command->section, $command->property);
     }
 
-    /**
-     * Deletes all child Setting ($command->parentId).
-     *
-     * @param App\Command\Setting\DeleteAll $command
-     *
-     * @return void
-     */
-    public function handleDeleteAll(DeleteAll $command) {
-        $this->validator->assertId($command->parentId);
-
-        $this->repository->deleteByParentId($command->parentId);
-    }
 }

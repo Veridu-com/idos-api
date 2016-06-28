@@ -25,7 +25,6 @@ class Settings implements RouteInterface {
             'settings:listAll',
             'settings:listAllFromSection',
             'settings:createNew',
-            'settings:deleteAll',
             'settings:getOne',
             'settings:updateOne',
             'settings:deleteOne'
@@ -51,7 +50,6 @@ class Settings implements RouteInterface {
         self::listAll($app, $authMiddleware);
         self::listAllFromSection($app, $authMiddleware);
         self::createNew($app, $authMiddleware);
-        self::deleteAll($app, $authMiddleware);
         self::getOne($app, $authMiddleware);
         self::updateOne($app, $authMiddleware);
         self::deleteOne($app, $authMiddleware);
@@ -147,41 +145,11 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * Delete All Settings.
-     *
-     * Delete all settings that belong to the requesting company.
-     *
-     * @apiEndpoint DELETE /companies/:companySlug/settings
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     *
-     * @return void
-     *
-     * @link docs/companies/settings/deleteAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
-     * @see App\Controller\Settings::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth) {
-        $app
-            ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
-                'App\Controller\Settings:deleteAll'
-            )
-            ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('settings:deleteAll');
-    }
-
-    /**
      * Retrieve a single Setting.
      *
      * Retrieves all public information from a Setting
      *
-     * @apiEndpoint GET /companies/:companySlug/settings/:pubKey
+     * @apiEndpoint GET /companies/:companySlug/settings/:section/:property
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -209,7 +177,7 @@ class Settings implements RouteInterface {
      *
      * Updates Setting's specific information
      *
-     * @apiEndpoint POST /companies/:companySlug/settings/:pubKey
+     * @apiEndpoint PUT /companies/:companySlug/settings/:section/:property
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -237,7 +205,7 @@ class Settings implements RouteInterface {
      *
      * Deletes a single Setting that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/:companySlug/settings/:pubKey
+     * @apiEndpoint DELETE /companies/:companySlug/settings/:section/:property
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
