@@ -42,17 +42,11 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
      * 
      */
     public function findOne($companyId, $section, $propName) {
-        $row = $this->getAllByWhereConstraints([
+        return $this->getOneByWhereConstraints([
             'company_id' => $companyId, 
             'section' => $section,
             'property' => $propName
-        ])->first();
-
-        if (! $row) {
-            throw new NotFound("Setting not found");
-        }
-
-        return $row;
+        ]);
     }  
 
     /**

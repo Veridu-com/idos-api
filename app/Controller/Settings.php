@@ -70,7 +70,6 @@ class Settings implements ControllerInterface {
         $settings = $this->repository->getAllByCompanyId($targetCompany->id);
 
         $body = [
-            'status'  => true,
             'data'    => $settings->toArray(),
             'updated' => (
                 $settings->isEmpty() ? time() : strtotime($settings->max('updated_at'))
@@ -105,7 +104,6 @@ class Settings implements ControllerInterface {
         $settings = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
 
         $body = [
-            'status'  => true,
             'data'    => $settings->toArray(),
             'updated' => (
                 $settings->isEmpty() ? time() : strtotime($settings->max('updated_at'))
@@ -264,6 +262,36 @@ class Settings implements ControllerInterface {
             ->setParameter('response', $response)
             ->setParameter('body', $body);
             
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Deletes all Settings that belongs to the Target Company.
+     *
+     * @apiEndpointResponse 200 -
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+
+        $command = $this->commandFactory->create('Setting\\DeleteAll');
+        $command->setParameter('companyId', $targetCompany->id);
+
+        $body = [
+            'deleted' => $this->commandBus->handle($command)
+        ];
+        
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
 
         return $this->commandBus->handle($command);
     }

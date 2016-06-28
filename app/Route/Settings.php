@@ -14,7 +14,7 @@ use Slim\App;
  * Settings routing definitions.
  *
  * @link docs/companies/settings/overview.md
- * @see App\Controller\Companies
+ * @see App\Controller\Settings
  */
 class Settings implements RouteInterface {
     /**
@@ -24,6 +24,7 @@ class Settings implements RouteInterface {
         return [
             'settings:listAll',
             'settings:listAllFromSection',
+            'settings:deleteAll',
             'settings:createNew',
             'settings:getOne',
             'settings:updateOne',
@@ -49,6 +50,7 @@ class Settings implements RouteInterface {
 
         self::listAll($app, $authMiddleware);
         self::listAllFromSection($app, $authMiddleware);
+        self::deleteAll($app, $authMiddleware);
         self::createNew($app, $authMiddleware);
         self::getOne($app, $authMiddleware);
         self::updateOne($app, $authMiddleware);
@@ -142,6 +144,36 @@ class Settings implements RouteInterface {
             )
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:createNew');
+    }
+
+    /**
+     * Deletes all settings.
+     *
+     * Deletes all settings that belongs to the requesting company.
+     *
+     * @apiEndpoint DELETE /companies/:companySlug/settings
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/companies/settings/deleteAll.md
+     *
+     * @uses App\Middleware\Auth::__invoke
+     *
+     * @see App\Controller\Settings::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth) {
+        $app
+            ->delete(
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
+                'App\Controller\Settings:deleteAll'
+            )
+            ->add($auth(Auth::COMP_PRIVKEY))
+            ->setName('settings:deleteAll');
     }
 
     /**

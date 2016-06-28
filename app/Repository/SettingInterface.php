@@ -17,7 +17,7 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \App\Entity\Setting
      */
     public function findByPubKey($pubKey);
     /**

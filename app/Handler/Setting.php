@@ -91,6 +91,18 @@ class Setting implements HandlerInterface {
     }
 
     /**
+     * Deletes all settings ($command->companyId).
+     *
+     * @param App\Command\Setting\DeleteAll $command
+     *
+     * @return void
+     */
+    public function handleDeleteAll(DeleteAll $command) {
+        $this->validator->assertId($command->companyId);
+        return $this->repository->deleteByCompanyId($command->companyId);
+    }
+
+    /**
      * Updates a Setting.
      *
      * @param App\Command\Setting\UpdateOne $command
@@ -103,15 +115,6 @@ class Setting implements HandlerInterface {
         $this->validator->assertSectionName($command->sectionNameId);
 
         $setting = $this->repository->findOne($command->companyId, $command->sectionNameId, $command->propNameId);
-
-        // @TODO: dicuss with flavio if we are accepting section & property name changes by user request
-        // if ($command->section) {
-        //     $setting->section = $command->section;
-        // }
-        // if ($command->property) {
-        //     $setting->property = $command->property;
-        // }
-
 
         if ($command->value) {
             $setting->value = $command->value;
