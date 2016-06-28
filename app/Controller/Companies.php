@@ -215,7 +215,7 @@ class Companies implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-    
+
     /**
      * Updates the Target Company, a child of the Acting Company.
      *
