@@ -175,7 +175,7 @@ class Companies implements RouteInterface {
      *
      * Updates Company's specific information
      *
-     * @apiEndpoint PUT /companies/:companySlug
+     * @apiEndpoint PUT /companies/{companySlug}
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -205,7 +205,7 @@ class Companies implements RouteInterface {
      *
      * Deletes the requesting company or a child company that belongs to it.
      *
-     * @apiEndpoint DELETE /companies/:companySlug
+     * @apiEndpoint DELETE /companies/{companySlug}
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *

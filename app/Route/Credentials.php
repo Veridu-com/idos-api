@@ -60,7 +60,7 @@ class Credentials implements RouteInterface {
      *
      * Retrieve a complete list of all credentials that belong to the requesting company.
      *
-     * @apiEndpoint GET /companies/:companySlug/credentials
+     * @apiEndpoint GET /companies/{companySlug}/credentials
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -90,7 +90,7 @@ class Credentials implements RouteInterface {
      *
      * Create a new credential for the requesting company.
      *
-     * @apiEndpoint POST /companies/:companySlug/credentials
+     * @apiEndpoint POST /companies/{companySlug}/credentials
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -120,7 +120,7 @@ class Credentials implements RouteInterface {
      *
      * Delete all credentials that belong to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/:companySlug/credentials
+     * @apiEndpoint DELETE /companies/{companySlug}/credentials
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -150,7 +150,7 @@ class Credentials implements RouteInterface {
      *
      * Retrieves all public information from a Credential
      *
-     * @apiEndpoint GET /companies/:companySlug/credentials/:pubKey
+     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -178,7 +178,7 @@ class Credentials implements RouteInterface {
      *
      * Updates Credential's specific information
      *
-     * @apiEndpoint POST /companies/:companySlug/credentials/:pubKey
+     * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -206,7 +206,7 @@ class Credentials implements RouteInterface {
      *
      * Deletes a single Credential that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/:companySlug/credentials/:pubKey
+     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
