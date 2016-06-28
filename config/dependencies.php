@@ -255,22 +255,25 @@ $container['commandBus'] = function (ContainerInterface $container) {
         ->pushProcessor(new UidProcessor())
         ->pushProcessor(new WebProcessor())
         ->pushHandler(new StreamHandler($settings['log']['path'], $settings['log']['level']));
-    $handlerMiddleware = new CommandHandlerMiddleware(
+
+    $commandPaths = glob(__DIR__ . '/../app/Command/*/*.php');
+    $commands     = [];
+    foreach ($commandPaths as $commandPath) {
+        $matches = [];
+        preg_match_all('/.*Command\/(.*)\/(.*).php/', $commandPath, $matches);
+
+        $resource = $matches[1][0];
+        $command  = $matches[2][0];
+
+        $commands[sprintf('App\\Command\\%s\\%s', $resource, $command)] = sprintf('App\\Handler\\%s', $resource);
+    }
+
+    $commands[Command\ResponseDispatch::class] = Handler\Response::class;
+    $handlerMiddleware                         = new CommandHandlerMiddleware(
         new ClassNameExtractor(),
         new ContainerLocator(
             $container,
-            [
-                Command\Company\CreateNew::class    => Handler\Company::class,
-                Command\Company\DeleteAll::class    => Handler\Company::class,
-                Command\Company\DeleteOne::class    => Handler\Company::class,
-                Command\Company\UpdateOne::class    => Handler\Company::class,
-                Command\Credential\CreateNew::class => Handler\Credential::class,
-                Command\Credential\DeleteAll::class => Handler\Credential::class,
-                Command\Credential\DeleteOne::class => Handler\Credential::class,
-                Command\Credential\UpdateOne::class => Handler\Credential::class,
-                Command\Credential\CreateNew::class => Handler\Credential::class,
-                Command\ResponseDispatch::class     => Handler\Response::class
-            ]
+            $commands
         ),
         new HandleClassNameInflector()
     );

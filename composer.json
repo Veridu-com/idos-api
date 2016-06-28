@@ -26,6 +26,7 @@
         "monolog/monolog": "^1.13",
         "tedivm/stash": "^0.14",
         "illuminate/database": "^5.2",
+        "illuminate/pagination": "^5.2",
         "robmorgan/phinx": "^0.5",
         "respect/validation": "^1.0",
         "filp/whoops": "^2.0",
@@ -38,7 +39,8 @@
         "giggsey/libphonenumber-for-php": "^7.3",
         "roave/security-advisories": "dev-master",
         "raveren/kint": "^1.0",
-        "justinrainbow/json-schema": "^2.0"
+        "justinrainbow/json-schema": "^2.0",
+        "fzaninotto/faker": "^1.6"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
