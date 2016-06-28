@@ -62,8 +62,8 @@ class Credentials implements ControllerInterface {
      * @apiEndpointParam query int page Current page
      * @apiEndpointResponse 200 Credential[]
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -90,41 +90,12 @@ class Credentials implements ControllerInterface {
     }
 
     /**
-     * Retrieves one Credential of the Target Company based on the Credential's Public Key.
-     *
-     * @apiEndpointResponse 200 Credential
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetCompany = $request->getAttribute('targetCompany');
-
-        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
-
-        $body = [
-            'data'    => $credential->toArray(),
-            'updated' => strtotime($credential->updated_at)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Creates a new Credential for the Target Company.
      *
      * @apiEndpointResponse 201 Credential
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -157,8 +128,8 @@ class Credentials implements ControllerInterface {
      *
      * @apiEndpointResponse 200 -
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -174,26 +145,23 @@ class Credentials implements ControllerInterface {
     }
 
     /**
-     * Deletes one Credential of the Target Company based on the Credential's Public Key.
+     * Retrieves one Credential of the Target Company based on the Credential's Public Key.
      *
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 Credential
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
 
-        $command = $this->commandFactory->create('Credential\\DeleteOne');
-        $command
-            ->setParameter('credentialId', $credential->id);
-
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'data'    => $credential->toArray(),
+            'updated' => strtotime($credential->updated_at)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -210,8 +178,8 @@ class Credentials implements ControllerInterface {
      *
      * @apiEndpointResponse 200 Credential
      *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -229,6 +197,38 @@ class Credentials implements ControllerInterface {
         $body = [
             'data'    => $credential->toArray(),
             'updated' => strtotime($credential->updated_at)
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Deletes one Credential of the Target Company based on the Credential's Public Key.
+     *
+     * @apiEndpointResponse 200 -
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
+
+        $command = $this->commandFactory->create('Credential\\DeleteOne');
+        $command
+            ->setParameter('credentialId', $credential->id);
+
+        $body = [
+            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
