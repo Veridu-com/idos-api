@@ -257,19 +257,19 @@ $container['commandBus'] = function (ContainerInterface $container) {
         ->pushHandler(new StreamHandler($settings['log']['path'], $settings['log']['level']));
 
     $commandPaths = glob(__DIR__ . '/../app/Command/*/*.php');
-    $commands = [];
+    $commands     = [];
     foreach ($commandPaths as $commandPath) {
         $matches = [];
         preg_match_all('/.*Command\/(.*)\/(.*).php/', $commandPath, $matches);
-        
+
         $resource = $matches[1][0];
-        $command = $matches[2][0];
-    
+        $command  = $matches[2][0];
+
         $commands[sprintf('App\\Command\\%s\\%s', $resource, $command)] = sprintf('App\\Handler\\%s', $resource);
     }
 
     $commands[Command\ResponseDispatch::class] = Handler\Response::class;
-    $handlerMiddleware = new CommandHandlerMiddleware(
+    $handlerMiddleware                         = new CommandHandlerMiddleware(
         new ClassNameExtractor(),
         new ContainerLocator(
             $container,

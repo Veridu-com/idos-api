@@ -6,14 +6,13 @@
 use Phinx\Seed\AbstractSeed;
 
 class SettingsSeed extends AbstractSeed {
-
     public function run() {
         $faker = Faker\Factory::create();
 
         $data = [];
-        $now = date('Y-m-d H:i:s');
+        $now  = date('Y-m-d H:i:s');
 
-        for ($i=0; $i < 30; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             $data[] = [
                 'company_id'    => mt_rand(1, 2),
                 'section'       => $faker->word,
@@ -21,7 +20,7 @@ class SettingsSeed extends AbstractSeed {
                 'value'         => $faker->colorName,
                 'created_at'    => $now,
                 'updated_at'    => $now
-            ]; 
+            ];
         }
 
         $settings = $this->table('settings');

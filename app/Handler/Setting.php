@@ -12,7 +12,6 @@ use App\Command\Setting\DeleteOne;
 use App\Command\Setting\UpdateOne;
 use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
-use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 
 /**
@@ -99,6 +98,7 @@ class Setting implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) {
         $this->validator->assertId($command->companyId);
+
         return $this->repository->deleteByCompanyId($command->companyId);
     }
 
@@ -121,7 +121,7 @@ class Setting implements HandlerInterface {
         }
 
         $success = $this->repository->update($setting);
-        
+
         return $success ? $setting : false;
     }
 

@@ -6,8 +6,6 @@
 
 namespace App\Entity;
 
-use App\Helper\Utils;
-
 /**
  * Settings Entity.
  *
@@ -16,7 +14,6 @@ use App\Helper\Utils;
  * @apiEntityRequiredProperty 	string 	section 	setting's section name
  * @apiEntityRequiredProperty 	string 	property 	setting property name
  * @apiEntityRequiredProperty 	string 	value  		setting value
- *
  *
  * @property int 	$id
  * @property int 	$company_id
@@ -31,6 +28,6 @@ class Setting extends AbstractEntity {
     protected $visible = ['section', 'property', 'value', 'created_at'];
 
     public function getValueAttribute($value) {
-    	return  is_string($value) ? $value : stream_get_contents($value, -1, 0);
+        return  is_string($value) ? $value : stream_get_contents($value, -1, 0);
     }
 }

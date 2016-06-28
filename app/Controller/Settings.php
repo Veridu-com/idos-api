@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/settings
+ * Handles requests to /companies/{companySlug}/settings.
  */
 class Settings implements ControllerInterface {
     /**
@@ -39,8 +39,8 @@ class Settings implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\SettingInterface $repository
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command                $commandFactory
+     * @param \League\Tactician\CommandBus    $commandBus
+     * @param App\Factory\Command             $commandFactory
      *
      * @return void
      */
@@ -67,7 +67,7 @@ class Settings implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $settings = $this->repository->getAllByCompanyId($targetCompany->id);
+        $settings      = $this->repository->getAllByCompanyId($targetCompany->id);
 
         $body = [
             'data'    => $settings->toArray(),
@@ -86,7 +86,7 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Lists all Settings that belongs to the Target Company and has the given section
+     * Lists all Settings that belongs to the Target Company and has the given section.
      *
      * @apiEndpointRequiredParam path string section
      *
@@ -100,8 +100,8 @@ class Settings implements ControllerInterface {
      */
     public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $section = $request->getAttribute('section');
-        $settings = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
+        $section       = $request->getAttribute('section');
+        $settings      = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
 
         $body = [
             'data'    => $settings->toArray(),
@@ -149,7 +149,6 @@ class Settings implements ControllerInterface {
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
-        
 
         return $this->commandBus->handle($command);
     }
@@ -169,9 +168,9 @@ class Settings implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $section = $request->getAttribute('section');
-        $propName = $request->getAttribute('property');
-        $setting = $this->repository->findOne($targetCompany->id, $section, $propName);
+        $section       = $request->getAttribute('section');
+        $propName      = $request->getAttribute('property');
+        $setting       = $this->repository->findOne($targetCompany->id, $section, $propName);
 
         $body = [
             'data'    => $setting->toArray(),
@@ -202,8 +201,8 @@ class Settings implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $section = $request->getAttribute('section');
-        $propName = $request->getAttribute('property');
+        $section       = $request->getAttribute('section');
+        $propName      = $request->getAttribute('property');
 
         $command = $this->commandFactory->create('Setting\\UpdateOne');
         $command
@@ -243,8 +242,8 @@ class Settings implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $section = $request->getAttribute('section');
-        $property = $request->getAttribute('property');
+        $section       = $request->getAttribute('section');
+        $property      = $request->getAttribute('property');
 
         $command = $this->commandFactory->create('Setting\\DeleteOne');
         $command
@@ -261,7 +260,6 @@ class Settings implements ControllerInterface {
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
-            
 
         return $this->commandBus->handle($command);
     }
@@ -285,13 +283,12 @@ class Settings implements ControllerInterface {
         $body = [
             'deleted' => $this->commandBus->handle($command)
         ];
-        
+
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
-
 
         return $this->commandBus->handle($command);
     }

@@ -103,7 +103,7 @@ class Credential implements HandlerInterface {
         $this->validator->assertId($command->credentialId);
         $this->validator->assertName($command->name);
 
-        $credential = $this->repository->find($command->credentialId);
+        $credential       = $this->repository->find($command->credentialId);
         $credential->name = $command->name;
 
         $credential = $this->repository->save($credential);
@@ -120,6 +120,7 @@ class Credential implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         $this->validator->assertId($command->credentialId);
+
         return $this->repository->delete($command->credentialId);
     }
 

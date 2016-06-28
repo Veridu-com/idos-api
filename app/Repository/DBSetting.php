@@ -6,9 +6,9 @@
 
 namespace App\Repository;
 
-use App\Entity\Setting;
 use App\Entity\EntityInterface;
-use App\Exception\NotFound;
+use App\Entity\Setting;
+
 /**
  * Database-based Setting Repository Implementation.
  */
@@ -34,28 +34,26 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     }
 
     /**
-     * Find one setting given its identifiers
+     * Find one setting given its identifiers.
      *
      * @param int    companyId setting's company_id
      * @param string section   setting's section
      * @param string propName  setting's propName
-     * 
      */
     public function findOne($companyId, $section, $propName) {
         return $this->getOneByWhereConstraints([
-            'company_id' => $companyId, 
-            'section' => $section,
-            'property' => $propName
+            'company_id' => $companyId,
+            'section'    => $section,
+            'property'   => $propName
         ]);
-    }  
+    }
 
     /**
-     * Updates one setting
+     * Updates one setting.
      *
      * @param int    companyId setting's company_id
      * @param string section   setting's section
      * @param string propName  setting's propName
-     * 
      */
     public function update(EntityInterface &$entity) {
         $serialized = $entity->serialize();
@@ -75,22 +73,20 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     }
 
     /**
-     * Retrieves all settings from company that has the given section 
+     * Retrieves all settings from company that has the given section.
      *
      * @param int    companyId setting's company_id
      * @param string section   setting's section
-     *
      */
     public function getAllByCompanyIdAndSection($companyId, $section) {
         return $this->getAllByWhereConstraints([
-            'company_id' => $companyId, 
-            'section' => $section
+            'company_id' => $companyId,
+            'section'    => $section
         ]);
     }
 
-
     /**
-     * Deletes one settings from company that has the given section 
+     * Deletes one settings from company that has the given section.
      *
      * @param int    companyId setting's company_id
      * @param string section   setting's section

@@ -7,10 +7,10 @@
 namespace App\Repository;
 
 use App\Entity\EntityInterface;
+use App\Exception\NotFound;
 use App\Factory\Entity;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
-use App\Exception\NotFound;
 
 /**
  * Abstract Database-based Repository.
@@ -52,6 +52,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
             $this->getEntityClassName()
         );
+
         return $this->dbConnection->table($this->getTableName());
     }
 
@@ -127,7 +128,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
             unset($serialized['id']);
             $affectedRows = $this->query()->where('id', $entity->id)->update($serialized);
             if (! $affectedRows) {
-                throw new Exception("No rows were updated when saving " . get_class($entity));
+                throw new Exception('No rows were updated when saving ' . get_class($entity));
             }
         }
 
@@ -205,7 +206,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
-     * Return an entity collection with all entities that has where constraints (AND)
+     * Return an entity collection with all entities that has where constraints (AND).
      *
      * @param array $constraints
      *
@@ -216,11 +217,12 @@ abstract class AbstractDBRepository extends AbstractRepository {
         foreach ($constraints as $key => $value) {
             $qb = $qb->where($key, $value);
         }
+
         return new Collection($qb->get());
     }
 
     /**
-     * Return an entity with all entities that has where constraints (AND)
+     * Return an entity with all entities that has where constraints (AND).
      *
      * @param array $constraints
      *
@@ -231,6 +233,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
         if (! $entity) {
             throw new NotFound();
         }
+
         return $entity;
     }
 

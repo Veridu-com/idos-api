@@ -222,4 +222,33 @@ class Companies implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
+
+    /**
+     * Deletes all child Companies that belongs to the Acting Company.
+     *
+     * @apiEndpointResponse 200 -
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+       $actingCompany = $request->getAttribute('actingCompany');
+
+       $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
+       $deleted = $this->commandBus->handle($command);
+
+       $body = [
+           'deleted' => $deleted
+       ];
+
+       $command = $this->commandFactory->create('ResponseDispatch');
+       $command
+           ->setParameter('request', $request)
+           ->setParameter('response', $response)
+           ->setParameter('body', $body);
+
+       return $this->commandBus->handle($command);
+    }
 }

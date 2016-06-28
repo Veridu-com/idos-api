@@ -87,7 +87,7 @@ class Settings implements RouteInterface {
             ->setName('settings:listAll');
     }
     /**
-     * List all Settings from section
+     * List all Settings from section.
      *
      * Retrieve a complete list of all settings that belong to the requesting company and has the given section
      *

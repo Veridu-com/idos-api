@@ -118,6 +118,7 @@ class Company implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         $this->validator->assertId($command->companyId);
+
         return $this->repository->deleteById($command->companyId);
     }
 
