@@ -56,7 +56,6 @@ class Companies implements ControllerInterface {
         $this->commandFactory = $commandFactory;
         $this->optimus        = $optimus;
     }
-
     /**
      * List all child Companies that belongs to the Acting Company.
      *
@@ -80,6 +79,36 @@ class Companies implements ControllerInterface {
             'updated' => (
                 $companies->isEmpty() ? time() : strtotime($companies->max('updated_at'))
             )
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Retrieves the Target Company, a child of the Acting Company.
+     *
+     * @apiRequiredParam path string companySlug
+     * @apiEndpointResponse 200 Company
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @throws App\Exception\NotFound
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+
+        $body = [
+            'data'    => $targetCompany->toArray(),
+            'updated' => strtotime($targetCompany->updated_at)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -126,68 +155,32 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Retrieves the Target Company, a child of the Acting Company.
+     * Deletes all child Companies that belongs to the Acting Company.
      *
-     * @apiRequiredParam path string companySlug
-     * @apiEndpointResponse 200 Company
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetCompany = $request->getAttribute('targetCompany');
-
-        $body = [
-            'data'    => $targetCompany->toArray(),
-            'updated' => strtotime($targetCompany->updated_at)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Updates the Target Company, a child of the Acting Company.
-     *
-     * @apiEndpointResponse 200 Company
+     * @apiEndpointResponse 200 -
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
-     *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetCompany = $request->getAttribute('targetCompany');
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+       $actingCompany = $request->getAttribute('actingCompany');
 
-        $command = $this->commandFactory->create('Company\\UpdateOne');
-        $command
-            ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetCompany->id);
-        $targetCompany = $this->commandBus->handle($command);
+       $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
+       $deleted = $this->commandBus->handle($command);
 
-        $body = [
-            'data'    => $targetCompany,
-            'updated' => time()
-        ];
+       $body = [
+           'deleted' => $deleted
+       ];
 
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
+       $command = $this->commandFactory->create('ResponseDispatch');
+       $command
+           ->setParameter('request', $request)
+           ->setParameter('response', $response)
+           ->setParameter('body', $body);
 
-        return $this->commandBus->handle($command);
+       return $this->commandBus->handle($command);
     }
 
     /**
@@ -222,33 +215,39 @@ class Companies implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-
+    
     /**
-     * Deletes all child Companies that belongs to the Acting Company.
+     * Updates the Target Company, a child of the Acting Company.
      *
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 Company
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @throws App\Exception\NotFound
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
-       $actingCompany = $request->getAttribute('actingCompany');
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
 
-       $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
-       $deleted = $this->commandBus->handle($command);
+        $command = $this->commandFactory->create('Company\\UpdateOne');
+        $command
+            ->setParameters($request->getParsedBody())
+            ->setParameter('companyId', $targetCompany->id);
+        $targetCompany = $this->commandBus->handle($command);
 
-       $body = [
-           'deleted' => $deleted
-       ];
+        $body = [
+            'data'    => $targetCompany,
+            'updated' => time()
+        ];
 
-       $command = $this->commandFactory->create('ResponseDispatch');
-       $command
-           ->setParameter('request', $request)
-           ->setParameter('response', $response)
-           ->setParameter('body', $body);
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
-       return $this->commandBus->handle($command);
+        return $this->commandBus->handle($command);
     }
 }

@@ -120,6 +120,39 @@ class Settings implements ControllerInterface {
     }
 
     /**
+     * Retrieves one Setting of the Target Company based on path paramaters section and property.
+     *
+     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string section
+     * @apiEndpointRequiredParam path string property
+     * @apiEndpointResponse 200 Setting
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+        $section       = $request->getAttribute('section');
+        $propName      = $request->getAttribute('property');
+        $setting       = $this->repository->findOne($targetCompany->id, $section, $propName);
+
+        $body = [
+            'data'    => $setting->toArray(),
+            'updated' => strtotime($setting->updated_at)
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
      * Creates a new Setting for the Target Company.
      *
      * @apiEndpointResponse 201 Setting
@@ -154,68 +187,23 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Retrieves one Setting of the Target Company based on path paramaters section and property.
+     * Deletes all Settings that belongs to the Target Company.
      *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string section
-     * @apiEndpointRequiredParam path string property
-     * @apiEndpointResponse 200 Setting
+     * @apiEndpointResponse 200 -
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
-        $propName      = $request->getAttribute('property');
-        $setting       = $this->repository->findOne($targetCompany->id, $section, $propName);
+
+        $command = $this->commandFactory->create('Setting\\DeleteAll');
+        $command->setParameter('companyId', $targetCompany->id);
 
         $body = [
-            'data'    => $setting->toArray(),
-            'updated' => strtotime($setting->updated_at)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Updates one Setting of the Target Company based on path paramaters section and property.
-     *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string section
-     * @apiEndpointRequiredParam path string property
-     * @apiEndpointResponse 200 Setting
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
-        $propName      = $request->getAttribute('property');
-
-        $command = $this->commandFactory->create('Setting\\UpdateOne');
-        $command
-            ->setParameters($request->getParsedBody())
-            ->setParameter('sectionNameId', $section)
-            ->setParameter('propNameId', $propName)
-            ->setParameter('companyId', $targetCompany->id);
-
-        $setting = $this->commandBus->handle($command);
-
-        $body = [
-            'data'    => $setting->toArray(),
-            'updated' => strtotime($setting->updated_at)
+            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -263,25 +251,37 @@ class Settings implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-
+    
     /**
-     * Deletes all Settings that belongs to the Target Company.
+     * Updates one Setting of the Target Company based on path paramaters section and property.
      *
-     * @apiEndpointResponse 200 -
+     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string section
+     * @apiEndpointRequiredParam path string property
+     * @apiEndpointResponse 200 Setting
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
+        $section       = $request->getAttribute('section');
+        $propName      = $request->getAttribute('property');
 
-        $command = $this->commandFactory->create('Setting\\DeleteAll');
-        $command->setParameter('companyId', $targetCompany->id);
+        $command = $this->commandFactory->create('Setting\\UpdateOne');
+        $command
+            ->setParameters($request->getParsedBody())
+            ->setParameter('sectionNameId', $section)
+            ->setParameter('propNameId', $propName)
+            ->setParameter('companyId', $targetCompany->id);
+
+        $setting = $this->commandBus->handle($command);
 
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'data'    => $setting->toArray(),
+            'updated' => strtotime($setting->updated_at)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -292,4 +292,5 @@ class Settings implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
+
 }
