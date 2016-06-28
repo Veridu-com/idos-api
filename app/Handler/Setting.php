@@ -6,13 +6,12 @@
 
 namespace App\Handler;
 
-use App\Command\SettingCreateNew;
-use App\Command\SettingDeleteAll;
-use App\Command\SettingDeleteOne;
-use App\Command\SettingUpdateOne;
+use App\Command\Setting\CreateNew;
+use App\Command\Setting\DeleteAll;
+use App\Command\Setting\DeleteOne;
+use App\Command\Setting\UpdateOne;
 use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
-use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 
 /**
@@ -65,73 +64,80 @@ class Setting implements HandlerInterface {
     }
 
     /**
-     * Creates a new child Setting ($command->parentId).
+     * Creates a new child Setting.
      *
-     * @param App\Command\SettingCreateNew $command
+     * @param App\Command\Setting\CreateNew $command
      *
      * @return array
      */
-    public function handleSettingCreateNew(SettingCreateNew $command) {
-        $this->validator->assertName($command->name);
-        $this->validator->assertParentId($command->parentId);
+    public function handleCreateNew(CreateNew $command) {
+        $this->validator->assertSectionName($command->section);
+        $this->validator->assertPropName($command->property);
+        $this->validator->assertId($command->companyId);
 
-        $company = $this->repository->create(
+        $setting = $this->repository->create(
             [
-                'name'      => $command->name,
-                'parent_id' => $command->parentId
+                'section'    => $command->section,
+                'property'   => $command->property,
+                'value'      => $command->value,
+                'company_id' => $command->companyId
             ]
         );
 
-        $company->public_key  = Key::createNewRandomKey()->saveToAsciiSafeString();
-        $company->private_key = Key::createNewRandomKey()->saveToAsciiSafeString();
+        $this->repository->save($setting);
 
-        $this->repository->save($company);
+        return $setting;
+    }
 
-        return $company->toArray();
+    /**
+     * Deletes all settings ($command->companyId).
+     *
+     * @param App\Command\Setting\DeleteAll $command
+     *
+     * @return void
+     */
+    public function handleDeleteAll(DeleteAll $command) {
+        $this->validator->assertId($command->companyId);
+
+        return $this->repository->deleteByCompanyId($command->companyId);
     }
 
     /**
      * Updates a Setting.
      *
-     * @param App\Command\SettingUpdateOne $command
+     * @param App\Command\Setting\UpdateOne $command
      *
      * @return array
      */
-    public function handleSettingUpdateOne(SettingUpdateOne $command) {
+    public function handleUpdateOne(UpdateOne $command) {
         $this->validator->assertId($command->companyId);
-        $this->validator->assertName($command->name);
+        $this->validator->assertPropName($command->propNameId);
+        $this->validator->assertSectionName($command->sectionNameId);
 
-        $company       = $this->repository->find($command->companyId);
-        $company->name = $command->name;
+        $setting = $this->repository->findOne($command->companyId, $command->sectionNameId, $command->propNameId);
 
-        $this->repository->save($company);
+        if ($command->value) {
+            $setting->value = $command->value;
+        }
 
-        return $company->toArray();
+        $success = $this->repository->update($setting);
+
+        return $success ? $setting : false;
     }
 
     /**
      * Deletes a Setting.
      *
-     * @param App\Command\SettingDeleteOne $command
+     * @param App\Command\Setting\DeleteOne $command
      *
      * @return void
      */
-    public function handleSettingDeleteOne(SettingDeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) {
         $this->validator->assertId($command->companyId);
+        $this->validator->assertPropName($command->property);
+        $this->validator->assertSectionName($command->section);
 
-        $this->repository->deleteById($command->companyId);
+        return $this->repository->deleteOne($command->companyId, $command->section, $command->property);
     }
 
-    /**
-     * Deletes all child Setting ($command->parentId).
-     *
-     * @param App\Command\DeleteSetting $command
-     *
-     * @return void
-     */
-    public function handleSettingDeleteAll(SettingDeleteAll $command) {
-        $this->validator->assertId($command->parentId);
-
-        $this->repository->deleteByKey('parent_id', $command->parentId);
-    }
 }

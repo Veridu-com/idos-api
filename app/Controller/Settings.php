@@ -7,20 +7,19 @@
 namespace App\Controller;
 
 use App\Factory\Command;
-use App\Repository\CompanyInterface;
-use Jenssegers\Optimus\Optimus;
+use App\Repository\SettingInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /settings and /settings/{companySlug}.
+ * Handles requests to /companies/{companySlug}/settings.
  */
 class Settings implements ControllerInterface {
     /**
-     * Company Repository instance.
+     * Setting Repository instance.
      *
-     * @var App\Repository\CompanyInterface
+     * @var App\Repository\SettingInterface
      */
     private $repository;
     /**
@@ -39,31 +38,27 @@ class Settings implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CompanyInterface $repository
+     * @param App\Repository\SettingInterface $repository
      * @param \League\Tactician\CommandBus    $commandBus
      * @param App\Factory\Command             $commandFactory
      *
      * @return void
      */
     public function __construct(
-        CompanyInterface $repository,
+        SettingInterface $repository,
         CommandBus $commandBus,
-        Command $commandFactory,
-        Optimus $optimus
+        Command $commandFactory
     ) {
         $this->repository     = $repository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
-        $this->optimus        = $optimus;
     }
 
     /**
-     * List all child Settings that belongs to the Acting Company.
+     * Lists all Settings that belongs to the Target Company.
      *
-     * @apiEndpointParam query int after Initial Company creation date (lower bound)
-     * @apiEndpointParam query int before Final Company creation date (upper bound)
-     * @apiEndpointParam query int page
-     * @apiEndpointResponse 200 Company[]
+     * @apiEndpointParam query int page Current page
+     * @apiEndpointResponse 200 Setting[]
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -71,9 +66,8 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
-        $actingCompany = $request->getAttribute('actingCompany');
-
-        $settings = $this->repository->getAllByParentId($actingCompany->id);
+        $targetCompany = $request->getAttribute('targetCompany');
+        $settings      = $this->repository->getAllByCompanyId($targetCompany->id);
 
         $body = [
             'data'    => $settings->toArray(),
@@ -92,9 +86,76 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Creates a new child Company for the Acting Company.
+     * Lists all Settings that belongs to the Target Company and has the given section.
      *
-     * @apiEndpointResponse 201 Company
+     * @apiEndpointRequiredParam path string section
+     *
+     * @apiEndpointParam query int page Current page
+     * @apiEndpointResponse 200 Setting[]
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+        $section       = $request->getAttribute('section');
+        $settings      = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
+
+        $body = [
+            'data'    => $settings->toArray(),
+            'updated' => (
+                $settings->isEmpty() ? time() : strtotime($settings->max('updated_at'))
+            )
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Retrieves one Setting of the Target Company based on path paramaters section and property.
+     *
+     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string section
+     * @apiEndpointRequiredParam path string property
+     * @apiEndpointResponse 200 Setting
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+        $section       = $request->getAttribute('section');
+        $propName      = $request->getAttribute('property');
+        $setting       = $this->repository->findOne($targetCompany->id, $section, $propName);
+
+        $body = [
+            'data'    => $setting->toArray(),
+            'updated' => strtotime($setting->updated_at)
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Creates a new Setting for the Target Company.
+     *
+     * @apiEndpointResponse 201 Setting
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -102,31 +163,31 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
-        $actingCompany = $request->getAttribute('actingCompany');
+        $targetCompany = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('CompanyCreateNew');
+        $command = $this->commandFactory->create('Setting\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('parentId', $actingCompany->id);
-        $company = $this->commandBus->handle($command);
+            ->setParameter('companyId', $targetCompany->id);
+
+        $setting = $this->commandBus->handle($command);
 
         $body = [
-            'data' => $company
+            'status' => true,
+            'data'   => $setting->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('request', $request)
             ->setParameter('response', $response)
-            ->setParameter('body', $body)
-            ->setParameter('statusCode', 201);
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
-
     }
 
     /**
-     * Deletes all child Settings that belongs to the Acting Company.
+     * Deletes all Settings that belongs to the Target Company.
      *
      * @apiEndpointResponse 200 -
      *
@@ -136,38 +197,13 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
-        $actingCompany = $request->getAttribute('actingCompany');
-
-        $command = $this->commandFactory->create('CompanyDeleteAll', [$actingCompany->id]);
-        $this->commandBus->handle($command);
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Retrieves the Target Company, a child of the Acting Company.
-     *
-     * @apiRequiredParam path string companySlug
-     * @apiEndpointResponse 200 Company
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
 
+        $command = $this->commandFactory->create('Setting\\DeleteAll');
+        $command->setParameter('companyId', $targetCompany->id);
+
         $body = [
-            'data'    => $targetCompany->toArray(),
-            'updated' => strtotime($targetCompany->updated_at)
+            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -180,66 +216,81 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Updates the Target Company, a child of the Acting Company.
-     *
-     * @apiEndpointResponse 200 Company
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetCompany = $request->getAttribute('targetCompany');
-
-        $command = $this->commandFactory->create('CompanyUpdateOne');
-        $command
-            ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetCompany->id);
-        $targetCompany = $this->commandBus->handle($command);
-
-        $body = [
-            'data'    => $targetCompany,
-            'updated' => time()
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes the Target Company, a child of the Acting Company.
+     * Deletes one Setting of the Target Company based on path paramaters section and property.
      *
      * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string section
+     * @apiEndpointRequiredParam path string property
      * @apiEndpointResponse 200 -
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
-     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
+        $section       = $request->getAttribute('section');
+        $property      = $request->getAttribute('property');
 
-        $command = $this->commandFactory->create('CompanyDeleteOne');
+        $command = $this->commandFactory->create('Setting\\DeleteOne');
         $command
-            ->setParameter('companyId', $targetCompany->id);
-        $this->commandBus->handle($command);
+            ->setParameter('companyId', $targetCompany->id)
+            ->setParameter('section', $section)
+            ->setParameter('property', $property);
+
+        $body = [
+            'deleted' => $this->commandBus->handle($command)
+        ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('request', $request)
-            ->setParameter('response', $response);
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
     }
+    
+    /**
+     * Updates one Setting of the Target Company based on path paramaters section and property.
+     *
+     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string section
+     * @apiEndpointRequiredParam path string property
+     * @apiEndpointResponse 200 Setting
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
+        $targetCompany = $request->getAttribute('targetCompany');
+        $section       = $request->getAttribute('section');
+        $propName      = $request->getAttribute('property');
+
+        $command = $this->commandFactory->create('Setting\\UpdateOne');
+        $command
+            ->setParameters($request->getParsedBody())
+            ->setParameter('sectionNameId', $section)
+            ->setParameter('propNameId', $propName)
+            ->setParameter('companyId', $targetCompany->id);
+
+        $setting = $this->commandBus->handle($command);
+
+        $body = [
+            'data'    => $setting->toArray(),
+            'updated' => strtotime($setting->updated_at)
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
 }

@@ -55,7 +55,7 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $app = $this->getApp();
         $app->process($request, $response);
 
-        $body = json_decode($response->getBody(), true);
+        $body = $response->getParsedBody();
 
         $this->assertNotEmpty($body);
 
@@ -68,7 +68,10 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testListCompaniesMissingAuthorization() {
+        $environment = Environment::m
         $environment = Environment::mock(
+            [
+                'SCRIPT_NAME'    => '/index.php',ock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
