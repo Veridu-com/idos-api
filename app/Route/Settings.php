@@ -151,7 +151,7 @@ class Settings implements RouteInterface {
      *
      * Deletes all settings that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/companySlug/settings
+     * @apiEndpoint DELETE /companies/{companySlug}/settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
