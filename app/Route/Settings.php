@@ -89,7 +89,7 @@ class Settings implements RouteInterface {
     /**
      * List all Settings from section.
      *
-     * Retrieve a complete list of all settings that belong to the requesting company and has the given section
+     * Retrieve a complete list of all settings that belong to the requesting company and has the given section.
      *
      * @apiEndpoint GET /companies/{companySlug}/settings/:section
      * @apiAuth header key compPrivKey Company's Private Key
@@ -179,7 +179,7 @@ class Settings implements RouteInterface {
     /**
      * Retrieve a single Setting.
      *
-     * Retrieves all public information from a Setting
+     * Retrieves all public information from a Setting.
      *
      * @apiEndpoint GET /companies/:companySlug/settings/{section}/{property}
      *
@@ -207,7 +207,7 @@ class Settings implements RouteInterface {
     /**
      * Update a single Setting.
      *
-     * Updates Setting's specific information
+     * Updates Setting's specific information.
      *
      * @apiEndpoint PUT /companies/{companySlug}/settings/{section}/{property}
      *

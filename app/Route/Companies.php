@@ -148,7 +148,7 @@ class Companies implements RouteInterface {
     /**
      * Retrieve a single Company.
      *
-     * Retrieves all public information from a Company
+     * Retrieves all public information from a Company.
      *
      * @apiEndpoint GET /companies/{companySlug}
      *
@@ -173,7 +173,7 @@ class Companies implements RouteInterface {
     /**
      * Update a single Company.
      *
-     * Updates Company's specific information
+     * Updates Company's specific information.
      *
      * @apiEndpoint PUT /companies/{companySlug}
      * @apiAuth header key compPrivKey Company's Private Key
