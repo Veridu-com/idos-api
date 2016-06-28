@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Validator;
+namespace Test\Functional\Company;
 
 class CompanyTest extends \PHPUnit_Framework_TestCase {
     public function testCreateCompany() {

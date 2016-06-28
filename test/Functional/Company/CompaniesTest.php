@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Validator;
+namespace Test\Functional\Company;
 
 use App\Boot\Middleware;
 use Slim\App;
@@ -15,7 +15,17 @@ use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 
+//Schema validator
+use JsonSchema\RefResolver;
+use JsonSchema\Uri\UriResolver;
+use JsonSchema\Uri\UriRetriever;
+use JsonSchema\Validator;
+
 class CompaniesTest extends \PHPUnit_Framework_TestCase {
+
+    protected function setUp() {
+    }
+
     protected function getApp() {
         $app = new App(
             ['settings' => $GLOBALS['appSettings']]
@@ -32,13 +42,32 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         return $app;
     }
 
+    protected function validateSchema($schemaName, $bodyResponse) {
+        $resolver = new RefResolver(new UriRetriever(), new UriResolver());
+        $schema = $resolver->resolve(
+            sprintf(
+                'file://' . __DIR__ .'/../Schemas/Company/%s.json',
+                $schemaName
+            )
+        );
+        $validator = new Validator();
+
+        $validator->check(
+            $bodyResponse,
+            $schema
+        );
+
+        return $validator->isValid();
+    }
+
+
     public function testListCompanies() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
                 'REQUEST_METHOD' => 'GET',
-                'QUERY_STRING'   => 'companyPrivKey=testCompanyPrivKey'
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
         );
 
@@ -65,6 +94,16 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('data', $body);
         $this->assertNotEmpty($body['data']);
         $this->assertArrayHasKey('updated', $body);
+
+        /*
+         * Validates Json Schema against Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'listAllCompanies',
+                json_decode($response->getBody())
+            )
+        );
     }
 
     public function testListCompaniesMissingAuthorization() {
@@ -73,6 +112,7 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
                 'REQUEST_METHOD' => 'GET',
+                'QUERY_STRING' => ''
             ]
         );
 
@@ -101,12 +141,70 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('message', $body['error']);
     }
 
-    public function testDeleteCompanies() {
+
+    public function testCreateCompany() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
+                'REQUEST_METHOD' => 'POST',
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
+            ]
+        );
+
+        $body = new RequestBody();
+
+        $body->write(json_encode(['name' => 'Melan Ltd.']));
+
+        $request = new Request(
+            'POST',
+            Uri::createFromEnvironment($environment),
+            Headers::createFromEnvironment($environment),
+            [],
+            $environment->all(),
+            $body
+        );
+
+        $response = new Response();
+
+        $app = $this->getApp();
+
+        $this->response = $app($request->withHeader('Content-Type', 'application/json'), $response);
+
+        $body = json_decode($this->response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $body);
+        $this->assertTrue($body['status']);
+        $this->assertArrayHasKey('data', $body);
+        $this->assertArrayHasKey('name', $body['data']);
+        $this->assertArrayHasKey('slug', $body['data']);
+        $this->assertArrayHasKey('public_key', $body['data']);
+        $this->assertArrayHasKey('created_at', $body['data']);
+        $this->assertSame('Melan Ltd.', $body['data']['name']);
+        $this->assertSame('melan-ltd', $body['data']['slug']);
+
+        /*
+         * Validates Json Schema against Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'createCompany',
+                json_decode($response->getBody())
+            )
+        );
+    }
+
+
+    public function testDeleteCompany() {
+        $environment = Environment::mock(
+            [
+                'SCRIPT_NAME'    => '/index.php',
+                'REQUEST_URI'    => '/1.0/companies/melan-ltd',
                 'REQUEST_METHOD' => 'DELETE',
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
         );
 
@@ -130,5 +228,125 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('status', $body);
         $this->assertTrue($body['status']);
+        $this->assertArrayHasKey('deleted', $body);
+        $this->assertEquals(1, $body['deleted']);
+
+        /*
+         * Validates Json Schema with Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'deleteCompany',
+                json_decode($response->getBody())
+            )
+        );
+    }
+
+    public function testGetCompany() {
+        $environment = Environment::mock(
+            [
+                'SCRIPT_NAME'    => '/index.php',
+                'REQUEST_URI'    => '/1.0/companies/veridu-ltd',
+                'REQUEST_METHOD' => 'GET',
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
+            ]
+        );
+
+        $request = new Request(
+            'GET',
+            Uri::createFromEnvironment($environment),
+            Headers::createFromEnvironment($environment),
+            [],
+            $environment->all(),
+            new RequestBody()
+        );
+        $response = new Response();
+
+        $app = $this->getApp();
+        $app->process($request, $response);
+
+        $body = json_decode($response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $body);
+        $this->assertTrue($body['status']);
+        $this->assertArrayHasKey('name', $body['data']);
+        $this->assertArrayHasKey('slug', $body['data']);
+        $this->assertArrayHasKey('public_key', $body['data']);
+        $this->assertArrayHasKey('created_at', $body['data']);
+        $this->assertArrayHasKey('updated', $body);
+        $this->assertSame('Veridu Ltd', $body['data']['name']);
+        $this->assertSame('veridu-ltd', $body['data']['slug']);
+
+        /*
+         * Validates Json Schema with Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'getCompany',
+                json_decode($response->getBody())
+            )
+        );
+
+    }
+
+    public function testUpdateCompany() {
+        $environment = Environment::mock(
+            [
+                'SCRIPT_NAME'    => '/index.php',
+                'REQUEST_URI'    => '/1.0/companies/veridu-ltd',
+                'REQUEST_METHOD' => 'PUT',
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
+            ]
+        );
+
+        $body = new RequestBody();
+
+        $body->write(json_encode(['name' => 'Veridu Ltd.']));
+
+        $request = new Request(
+            'PUT',
+            Uri::createFromEnvironment($environment),
+            Headers::createFromEnvironment($environment),
+            [],
+            $environment->all(),
+            $body
+        );
+
+        $response = new Response();
+
+        $app = $this->getApp();
+
+        $this->response = $app($request->withHeader('Content-Type', 'application/json'), $response);
+
+        $body = json_decode($this->response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertArrayHasKey('status', $body);
+        $this->assertTrue($body['status']);
+        $this->assertArrayHasKey('data', $body);
+        $this->assertArrayHasKey('updated', $body);
+        $this->assertArrayHasKey('name', $body['data']);
+        $this->assertArrayHasKey('slug', $body['data']);
+        $this->assertArrayHasKey('public_key', $body['data']);
+        $this->assertArrayHasKey('created_at', $body['data']);
+        $this->assertSame('Veridu Ltd.', $body['data']['name']);
+
+        /*
+         * Validates Json Schema with Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'updateCompany',
+                json_decode($response->getBody())
+            )
+        );
+    }
+
+    protected function tearDown() {
     }
 }

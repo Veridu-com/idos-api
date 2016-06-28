@@ -1,0 +1,42 @@
+{
+    "$schema" : "http://json-schema.org/draft-04/schema#",
+    "title": "updateCompany",
+    "description": "updateCompany() endpoint response schema",
+    "type": "object",
+    "properties": {
+        "status": {
+          "type": "boolean"
+        },
+        "data": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "slug": {
+                    "type": "string"
+                },
+                "public_key": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "slug",
+                "public_key",
+                "created_at"
+            ]
+        },
+        "updated": {
+          "type": "integer"
+        }
+    },
+    "required": [
+        "status",
+        "data",
+        "updated"
+    ]
+}

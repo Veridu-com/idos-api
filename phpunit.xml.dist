@@ -28,6 +28,10 @@
 			</exclude>
 		</whitelist>
 	</filter>
+	<listeners>
+        <listener class="Test\Bootstrap" file="test/Bootstrap.php">
+        </listener>
+    </listeners>
 	<php>
 		<var name="DB_DSN" value="" />
 		<var name="DB_USER" value="" />
