@@ -116,14 +116,14 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'create',
+                'createNew',
                 json_decode($response->getBody())
             )
         );
     }
 
 
-    public function testDeleteCompany() {
+    public function testDeleteOneCompany() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -159,7 +159,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'delete',
+                'deleteOne',
                 json_decode($response->getBody())
             )
         );
@@ -202,7 +202,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'get',
+                'getOne',
                 json_decode($response->getBody())
             )
         );
@@ -251,7 +251,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'update',
+                'updateOne',
                 json_decode($response->getBody())
             )
         );
