@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Validator;
+namespace Test\Functional\Company;
 
 use App\Boot\Middleware;
 use Slim\App;
@@ -15,7 +15,29 @@ use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 
+//Schema validator
+use JsonSchema\RefResolver;
+use JsonSchema\Uri\UriResolver;
+use JsonSchema\Uri\UriRetriever;
+use JsonSchema\Validator;
+
+//Phinx Migration and Seed
+use Phinx\Console\PhinxApplication;
+use Phinx\Wrapper\TextWrapper;
+
 class CompaniesTest extends \PHPUnit_Framework_TestCase {
+
+    public static function setUpBeforeClass() {
+        $phinxApp = new PhinxApplication();
+        $phinxTextWrapper = new TextWrapper($phinxApp);
+        $phinxTextWrapper->setOption('configuration', 'phinx.yml');
+        $phinxTextWrapper->setOption('parser', 'YAML');
+        $phinxTextWrapper->setOption('environment', 'development');
+        $phinxTextWrapper->getRollback('development', 0);
+        $phinxTextWrapper->getMigrate();
+        $phinxTextWrapper->getSeed();
+    }
+
     protected function getApp() {
         $app = new App(
             ['settings' => $GLOBALS['appSettings']]
@@ -32,13 +54,30 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         return $app;
     }
 
+    protected function validateSchema($schemaName, $bodyResponse) {
+        $resolver = new RefResolver(new UriRetriever(), new UriResolver());
+        $schema = $resolver->resolve(
+            sprintf(
+                'file://' . __DIR__ .'/../../../schema/company/%s.json',
+                $schemaName
+            )
+        );
+        $validator = new Validator();
+
+        $validator->check(
+            $bodyResponse,
+            $schema
+        );
+    }
+
+
     public function testListCompanies() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
                 'REQUEST_METHOD' => 'GET',
-                'QUERY_STRING'   => 'companyPrivKey=testCompanyPrivKey'
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
         );
 
@@ -55,27 +94,30 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $app = $this->getApp();
         $app->process($request, $response);
 
-        $body = $response->getParsedBody();
+        $body = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
         $this->assertTrue($body['status']);
-        $this->assertArrayHasKey('data', $body);
-        $this->assertNotEmpty($body['data']);
-        $this->assertArrayHasKey('updated', $body);
+
+        /*
+         * Validates Json Schema against Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'listAll',
+                json_decode($response->getBody())
+            )
+        );
     }
 
     public function testListCompaniesMissingAuthorization() {
-        $environment = Environment::m
         $environment = Environment::mock(
-            [
-                'SCRIPT_NAME'    => '/index.php',ock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
                 'REQUEST_METHOD' => 'GET',
+                'QUERY_STRING' => 'companyPrivKey=invalidprivatekey'
             ]
         );
 
@@ -97,41 +139,15 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($body);
 
         $this->assertEquals(403, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
         $this->assertFalse($body['status']);
-        $this->assertArrayHasKey('error', $body);
-        $this->assertArrayHasKey('code', $body['error']);
-        $this->assertArrayHasKey('message', $body['error']);
     }
 
-    public function testDeleteCompanies() {
-        $environment = Environment::mock(
-            [
-                'SCRIPT_NAME'    => '/index.php',
-                'REQUEST_URI'    => '/1.0/companies',
-                'REQUEST_METHOD' => 'DELETE',
-            ]
-        );
-
-        $request = new Request(
-            'DELETE',
-            Uri::createFromEnvironment($environment),
-            Headers::createFromEnvironment($environment),
-            [],
-            $environment->all(),
-            new RequestBody()
-        );
-        $response = new Response();
-
-        $app = $this->getApp();
-        $app->process($request, $response);
-
-        $body = json_decode($response->getBody(), true);
-
-        $this->assertNotEmpty($body);
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
-        $this->assertTrue($body['status']);
+    public static function tearDownAfterClass() {
+        $phinxApp = new PhinxApplication();
+        $phinxTextWrapper = new TextWrapper($phinxApp);
+        $phinxTextWrapper->setOption('configuration', 'phinx.yml');
+        $phinxTextWrapper->setOption('parser', 'YAML');
+        $phinxTextWrapper->setOption('environment', 'development');
+        $phinxTextWrapper->getRollback('development', 0);
     }
 }

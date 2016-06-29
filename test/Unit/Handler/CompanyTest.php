@@ -119,9 +119,9 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $command->parentId = 1;
 
         $result = $handler->handleCreateNew($command);
-        $this->assertSame('valid co', $result['name']);
-        $this->assertSame('valid-co', $result['slug']);
-        $this->assertNotEmpty($result['public_key']);
+        $this->assertSame('valid co', $result->name);
+        $this->assertSame('valid-co', $result->slug);
+        $this->assertNotEmpty($result->public_key);
     }
 
     public function testHandleDeleteOneInvalidCompanySlug() {
