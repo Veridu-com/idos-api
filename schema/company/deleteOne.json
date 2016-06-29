@@ -1,6 +1,6 @@
 {
     "$schema" : "http://json-schema.org/draft-04/schema#",
-    "title": "DELETE /companies",
+    "title": "DELETE /companies/{slug}",
     "description": "deleteCompany() endpoint response schema",
     "type": "object",
     "properties": {
