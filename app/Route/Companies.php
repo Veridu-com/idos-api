@@ -61,6 +61,7 @@ class Companies implements RouteInterface {
      * Retrieve a complete list of all child companies that belong to the requesting company.
      *
      * @apiEndpoint GET /companies
+     * @apiGroup Company
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -91,6 +92,7 @@ class Companies implements RouteInterface {
      * Create a new child company for the requesting company.
      *
      * @apiEndpoint POST /companies
+     * @apiGroup Company
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -121,6 +123,7 @@ class Companies implements RouteInterface {
      * Delete all child companies that belong to the requesting company.
      *
      * @apiEndpoint DELETE /companies
+     * @apiGroup Company
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -151,6 +154,7 @@ class Companies implements RouteInterface {
      * Retrieves all public information from a Company.
      *
      * @apiEndpoint GET /companies/{companySlug}
+     * @apiGroup Company
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -176,6 +180,7 @@ class Companies implements RouteInterface {
      * Updates Company's specific information.
      *
      * @apiEndpoint PUT /companies/{companySlug}
+     * @apiGroup Company
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -206,6 +211,7 @@ class Companies implements RouteInterface {
      * Deletes the requesting company or a child company that belongs to it.
      *
      * @apiEndpoint DELETE /companies/{companySlug}
+     * @apiGroup Company
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *

@@ -61,6 +61,7 @@ class Credentials implements RouteInterface {
      * Retrieve a complete list of all credentials that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials
+     * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -91,6 +92,7 @@ class Credentials implements RouteInterface {
      * Create a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials
+     * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -121,6 +123,7 @@ class Credentials implements RouteInterface {
      * Delete all credentials that belong to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials
+     * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -151,6 +154,9 @@ class Credentials implements RouteInterface {
      * Retrieves all public information from a Credential
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}
+     * @apiGroup Company Credentials
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -179,6 +185,9 @@ class Credentials implements RouteInterface {
      * Updates Credential's specific information
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}
+     * @apiGroup Company Credentials
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -207,6 +216,7 @@ class Credentials implements RouteInterface {
      * Deletes a single Credential that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}
+     * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *

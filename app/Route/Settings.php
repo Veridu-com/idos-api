@@ -63,6 +63,7 @@ class Settings implements RouteInterface {
      * Retrieve a complete list of all settings that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/settings
+     * @apiGroup Company Settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -92,6 +93,7 @@ class Settings implements RouteInterface {
      * Retrieve a complete list of all settings that belong to the requesting company and has the given section.
      *
      * @apiEndpoint GET /companies/{companySlug}/settings/{section}
+     * @apiGroup Company Settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -122,6 +124,7 @@ class Settings implements RouteInterface {
      * Create a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/settings
+     * @apiGroup Company Settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -152,6 +155,7 @@ class Settings implements RouteInterface {
      * Deletes all settings that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/settings
+     * @apiGroup Company Settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -182,6 +186,9 @@ class Settings implements RouteInterface {
      * Retrieves all public information from a Setting.
      *
      * @apiEndpoint GET /companies/{companySlug}/settings/{section}/{property}
+     * @apiGroup Company Settings
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -210,6 +217,9 @@ class Settings implements RouteInterface {
      * Updates Setting's specific information.
      *
      * @apiEndpoint PUT /companies/{companySlug}/settings/{section}/{property}
+     * @apiGroup Company Settings
+     * @apiAuth header key compPrivKey Company's Private Key
+     * @apiAuth query key compPrivKey Company's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -238,6 +248,7 @@ class Settings implements RouteInterface {
      * Deletes a single Setting that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/settings/{section}/{property}
+     * @apiGroup Company Settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
