@@ -35,6 +35,7 @@
 			<directory>db</directory>
 			<directory>docs</directory>
 			<directory>ideas</directory>
+			<directory>resources</directory>
 			<directory>log</directory>
 			<directory>public</directory>
 			<directory>vendor</directory>

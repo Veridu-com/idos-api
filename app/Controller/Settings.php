@@ -251,7 +251,7 @@ class Settings implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-    
+
     /**
      * Updates one Setting of the Target Company based on path paramaters section and property.
      *
