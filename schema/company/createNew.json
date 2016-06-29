@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /companies",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "",
+            "type": "boolean"
+        },
+        "data": {
+            "type": "object",
+            "$ref": "companyEntity.json",
+            "uniqueItems": true
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

@@ -34,6 +34,7 @@
 		<blacklist>
 			<directory>db</directory>
 			<directory>docs</directory>
+			<directory>ideas</directory>
 			<directory>resources</directory>
 			<directory>log</directory>
 			<directory>public</directory>
@@ -41,10 +42,10 @@
 		</blacklist>
 	</filter>
 	<php>
-		<var name="DB_HOST" value="" />
-		<var name="DB_PORT" value="" />
-		<var name="DB_USER" value="" />
-		<var name="DB_PASS" value="" />
-		<var name="DB_NAME" value="" />
+		<var name="DB_HOST" value=""/>
+		<var name="DB_PORT" value=""/>
+		<var name="DB_USER" value=""/>
+		<var name="DB_PASS" value=""/>
+		<var name="DB_NAME" value=""/>
 	</php>
 </phpunit>
