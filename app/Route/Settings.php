@@ -91,7 +91,7 @@ class Settings implements RouteInterface {
      *
      * Retrieve a complete list of all settings that belong to the requesting company and has the given section.
      *
-     * @apiEndpoint GET /companies/{companySlug}/settings/:section
+     * @apiEndpoint GET /companies/{companySlug}/settings/{section}
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -151,7 +151,7 @@ class Settings implements RouteInterface {
      *
      * Deletes all settings that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/companySlug/settings
+     * @apiEndpoint DELETE /companies/{companySlug}/settings
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -181,7 +181,7 @@ class Settings implements RouteInterface {
      *
      * Retrieves all public information from a Setting.
      *
-     * @apiEndpoint GET /companies/:companySlug/settings/{section}/{property}
+     * @apiEndpoint GET /companies/{companySlug}/settings/{section}/{property}
      *
      * @param \Slim\App $app
      * @param \callable $auth
