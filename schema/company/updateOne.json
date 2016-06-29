@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "UPDATE /companies/{slug}",
+    "title": "UPDATE /companies/{companySlug}",
     "type": "object",
     "properties": {
         "status": {
