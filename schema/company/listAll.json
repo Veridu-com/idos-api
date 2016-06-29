@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /companies",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "",
+            "type": "boolean"
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "$ref": "companyEntity.json",
+                "minItems": 0,
+                "uniqueItems": true
+            }
+        },
+        "updated": {
+            "description": "",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "status",
+        "data",
+        "updated"
+    ]
+}

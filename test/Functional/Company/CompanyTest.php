@@ -21,14 +21,19 @@ use JsonSchema\Uri\UriResolver;
 use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
 
+//Phinx Migration and Seed
+use Phinx\Console\PhinxApplication;
+use Phinx\Wrapper\TextWrapper;
+
 class CompanyTest extends \PHPUnit_Framework_TestCase {
 
     public static function setUpBeforeClass() {
-        $phinxApp = new \Phinx\Console\PhinxApplication();
-        $phinxTextWrapper = new \Phinx\Wrapper\TextWrapper($phinxApp);
+        $phinxApp = new PhinxApplication();
+        $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
         $phinxTextWrapper->setOption('environment', 'development');
+        $phinxTextWrapper->getRollback('development', 0);
         $phinxTextWrapper->getMigrate();
         $phinxTextWrapper->getSeed();
     }
@@ -53,7 +58,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $resolver = new RefResolver(new UriRetriever(), new UriResolver());
         $schema = $resolver->resolve(
             sprintf(
-                'file://' . __DIR__ .'/../Schemas/Company/%s.json',
+                'file://' . __DIR__ .'/../../../schema/company/%s.json',
                 $schemaName
             )
         );
@@ -80,7 +85,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
 
         $body = new RequestBody();
 
-        $body->write(json_encode(['name' => 'Melan Ltd.']));
+        $body->write(json_encode(['name' => 'NewCompany Ltd.']));
 
         $request = new Request(
             'POST',
@@ -102,22 +107,16 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($body);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
         $this->assertTrue($body['status']);
-        $this->assertArrayHasKey('data', $body);
-        $this->assertArrayHasKey('name', $body['data']);
-        $this->assertArrayHasKey('slug', $body['data']);
-        $this->assertArrayHasKey('public_key', $body['data']);
-        $this->assertArrayHasKey('created_at', $body['data']);
-        $this->assertSame('Melan Ltd.', $body['data']['name']);
-        $this->assertSame('melan-ltd', $body['data']['slug']);
+        $this->assertSame('NewCompany Ltd.', $body['data']['name']);
+        $this->assertSame('newcompany-ltd', $body['data']['slug']);
 
         /*
          * Validates Json Schema against Json Response
          */
         $this->assertTrue(
             $this->validateSchema(
-                'createCompany',
+                'create',
                 json_decode($response->getBody())
             )
         );
@@ -128,7 +127,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
-                'REQUEST_URI'    => '/1.0/companies/melan-ltd',
+                'REQUEST_URI'    => '/1.0/companies/app-deck',
                 'REQUEST_METHOD' => 'DELETE',
                 'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
@@ -152,9 +151,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($body);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
         $this->assertTrue($body['status']);
-        $this->assertArrayHasKey('deleted', $body);
         $this->assertEquals(1, $body['deleted']);
 
         /*
@@ -162,7 +159,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'deleteCompany',
+                'delete',
                 json_decode($response->getBody())
             )
         );
@@ -196,13 +193,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($body);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
         $this->assertTrue($body['status']);
-        $this->assertArrayHasKey('name', $body['data']);
-        $this->assertArrayHasKey('slug', $body['data']);
-        $this->assertArrayHasKey('public_key', $body['data']);
-        $this->assertArrayHasKey('created_at', $body['data']);
-        $this->assertArrayHasKey('updated', $body);
         $this->assertSame('Veridu Ltd', $body['data']['name']);
         $this->assertSame('veridu-ltd', $body['data']['slug']);
 
@@ -211,7 +202,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'getCompany',
+                'get',
                 json_decode($response->getBody())
             )
         );
@@ -252,14 +243,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($body);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
         $this->assertTrue($body['status']);
-        $this->assertArrayHasKey('data', $body);
-        $this->assertArrayHasKey('updated', $body);
-        $this->assertArrayHasKey('name', $body['data']);
-        $this->assertArrayHasKey('slug', $body['data']);
-        $this->assertArrayHasKey('public_key', $body['data']);
-        $this->assertArrayHasKey('created_at', $body['data']);
         $this->assertSame('Veridu Ltd.', $body['data']['name']);
 
         /*
@@ -267,15 +251,15 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'updateCompany',
+                'update',
                 json_decode($response->getBody())
             )
         );
     }
 
     public static function tearDownAfterClass() {
-        $phinxApp = new \Phinx\Console\PhinxApplication();
-        $phinxTextWrapper = new \Phinx\Wrapper\TextWrapper($phinxApp);
+        $phinxApp = new PhinxApplication();
+        $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
         $phinxTextWrapper->setOption('environment', 'development');
