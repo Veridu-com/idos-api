@@ -45,6 +45,7 @@ class Main implements RouteInterface {
      *
      * @apiEndpoint GET /
      * @apiGroup General
+     * @apiEndpointResponse 200 schema/listAll.json
      *
      * @param \Slim\App $app
      *

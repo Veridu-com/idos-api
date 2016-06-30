@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Response payload",
+            "type": "array",
+            "items": {
+                "$ref": "endpointEntity.json",
+                "minItems": 0,
+                "uniqueItems": true
+            }
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

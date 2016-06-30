@@ -20,11 +20,30 @@ class CORS {
     private $methods;
 
     public function __construct(array $methods = []) {
-        if (! in_array('OPTIONS', $methods))
+        if (! in_array('OPTIONS', $methods)) {
             $methods[] = 'OPTIONS';
+        }
+
         $this->methods = $methods;
     }
 
+    /**
+     * Middleware execution, adds Cross-origin Resource Sharing (CORS)
+     * Headers to responses.
+     *
+     * @apiEndpointRespHeader Access-Control-Allow-Origin *
+     * @apiEndpointRespHeader Access-Control-Max-Age 3628800
+     * @apiEndpointRespHeader Access-Control-Allow-Credentials true
+     * @apiEndpointRespHeader Access-Control-Allow-Methods ...
+     * @apiEndpointRespHeader Access-Control-Allow-Headers Authorization, Content-Type, If-Modified-Since, If-None-Match, X-Requested-With
+     * @apiEndpointRespHeader Access-Control-Expose-Headers ETag, X-Rate-Limit-Limit, X-Rate-Limit-Remaining, X-Rate-Limit-Reset
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param callable                                 $next
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
         if (! empty($request->getHeaderLine('Origin')))
             $response = $response

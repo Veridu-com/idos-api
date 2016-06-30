@@ -12,7 +12,6 @@ use App\Entity\Company as EntityCompany;
 use App\Factory\Command;
 use App\Repository\DBCompany;
 use Illuminate\Support\Collection;
-//commands
 use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Slim\Http\Request;

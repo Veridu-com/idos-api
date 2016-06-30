@@ -6,6 +6,7 @@
 
 namespace App\Middleware;
 
+use App\Exception\AppException;
 use Interop\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -32,6 +33,21 @@ class Limit {
         $this->limitType = $limitType;
     }
 
+    /**
+     * Middleware execution, forces request limitting based on usage.
+     *
+     * @apiEndpointRespHeader X-Rate-Limit-Limit 1
+     * @apiEndpointRespHeader X-Rate-Limit-Remaining 1
+     * @apiEndpointRespHeader X-Rate-Limit-Reset 1
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param callable                                 $next
+     *
+     * @throws App\Exception\AppException
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
         $key = $request->getAttribute('key');
         if ($this->limitType == self::KEYLIMIT)
@@ -88,7 +104,7 @@ class Limit {
                     $this->limitType
                 )
             );
-            throw new \Exception('429 Too Many Requests');
+            throw new AppException('429 Too Many Requests');
         }
 
         // Above soft limit requests are logged only

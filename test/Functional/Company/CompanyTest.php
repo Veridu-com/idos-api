@@ -14,12 +14,10 @@ use JsonSchema\Validator;
 use Phinx\Console\PhinxApplication;
 use Phinx\Wrapper\TextWrapper;
 use Slim\App;
-//Schema validator
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
-//Phinx Migration and Seed
 use Slim\Http\Response;
 use Slim\Http\Uri;
 
@@ -33,6 +31,15 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $phinxTextWrapper->getRollback('testing', 0);
         $phinxTextWrapper->getMigrate();
         $phinxTextWrapper->getSeed();
+    }
+
+    public static function tearDownAfterClass() {
+        $phinxApp         = new PhinxApplication();
+        $phinxTextWrapper = new TextWrapper($phinxApp);
+        $phinxTextWrapper->setOption('configuration', 'phinx.yml');
+        $phinxTextWrapper->setOption('parser', 'YAML');
+        $phinxTextWrapper->setOption('environment', 'testing');
+        $phinxTextWrapper->getRollback();
     }
 
     protected function getApp() {
@@ -51,12 +58,13 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         return $app;
     }
 
-    protected function validateSchema($schemaName, $bodyResponse) {
-        $resolver = new RefResolver(new UriRetriever(), new UriResolver());
-        $schema   = $resolver->resolve(
+    protected function validateSchema($schemaFile, $bodyResponse) {
+        $schemaFile = ltrim($schemaFile, '/');
+        $resolver   = new RefResolver(new UriRetriever(), new UriResolver());
+        $schema     = $resolver->resolve(
             sprintf(
-                'file://' . __DIR__ . '/../../../schema/company/%s.json',
-                $schemaName
+                'file://' . __DIR__ . '/../../../schema/%s',
+                $schemaFile
             )
         );
         $validator = new Validator();
@@ -112,9 +120,10 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'createNew',
+                'company/createNew.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 
@@ -154,9 +163,10 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'deleteOne',
+                'company/deleteOne.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 
@@ -197,9 +207,10 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'getOne',
+                'company/getOne.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
 
     }
@@ -246,18 +257,10 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'updateOne',
+                'company/updateOne.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
-    }
-
-    public static function tearDownAfterClass() {
-        $phinxApp         = new PhinxApplication();
-        $phinxTextWrapper = new TextWrapper($phinxApp);
-        $phinxTextWrapper->setOption('configuration', 'phinx.yml');
-        $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->setOption('environment', 'testing');
-        $phinxTextWrapper->getRollback();
     }
 }
