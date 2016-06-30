@@ -7,25 +7,24 @@
 namespace Test\Unit\Repository;
 
 use App\Exception\NotFound;
-use App\Repository\AbstractDBRepository;
 use App\Factory\Entity;
-use Illuminate\Database\Connection;
-use Illuminate\Database\ConnectionInterface;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Database\Connection\Query\Builder;
+use Illuminate\Database\ConnectionInterface;
 
 class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
-
     private function setProtectedProperty($object, $property, $value) {
-        $reflection = new \ReflectionClass($object);
+        $reflection          = new \ReflectionClass($object);
         $reflection_property = $reflection->getProperty($property);
         $reflection_property->setAccessible(true);
         $reflection_property->setValue($object, $value);
     }
 
     private function setProtectedMethod($object, $method) {
-        $reflection = new \ReflectionClass($object);
+        $reflection        = new \ReflectionClass($object);
         $reflection_method = $reflection->getMethod($method);
         $reflection_method->setAccessible(true);
+
         return $reflection_method;
     }
 
@@ -107,7 +106,7 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
             ->getMock();
         $queryMock
             ->method('find')
-            ->will($this->returnValue(""));
+            ->will($this->returnValue(''));
 
         $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
             ->setConstructorArgs([$entityMock, $connectionMock])
@@ -123,8 +122,8 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
 
     public function testFind() {
         $array = [
-            'name' => 'AbstractDBCompany',
-            'slug' => 'slug',
+            'name'       => 'AbstractDBCompany',
+            'slug'       => 'slug',
             'public_key' => 'public_key',
             'created_at' => 'date'
         ];
@@ -171,7 +170,7 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('first')
-            ->will($this->returnValue(""));
+            ->will($this->returnValue(''));
 
         $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
             ->setConstructorArgs([$entityMock, $connectionMock])
@@ -186,11 +185,10 @@ class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
         $findByKey->invoke($abstractMock, 'key', 'value');
     }
 
-
     public function testFindByKey() {
         $array = [
-            'name' => 'AbstractDBCompany',
-            'slug' => 'slug',
+            'name'       => 'AbstractDBCompany',
+            'slug'       => 'slug',
             'public_key' => 'public_key',
             'created_at' => 'date'
         ];

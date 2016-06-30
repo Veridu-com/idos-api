@@ -7,28 +7,25 @@
 namespace Test\Functional\Company;
 
 use App\Boot\Middleware;
-use Slim\App;
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
-use Slim\Http\Response;
-use Slim\Http\Uri;
-
-//Schema validator
 use JsonSchema\RefResolver;
 use JsonSchema\Uri\UriResolver;
 use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
-
-//Phinx Migration and Seed
 use Phinx\Console\PhinxApplication;
 use Phinx\Wrapper\TextWrapper;
+use Slim\App;
+//Schema validator
+use Slim\Http\Environment;
+use Slim\Http\Headers;
+use Slim\Http\Request;
+use Slim\Http\RequestBody;
+//Phinx Migration and Seed
+use Slim\Http\Response;
+use Slim\Http\Uri;
 
 class CompaniesTest extends \PHPUnit_Framework_TestCase {
-
     public static function setUpBeforeClass() {
-        $phinxApp = new PhinxApplication();
+        $phinxApp         = new PhinxApplication();
         $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
@@ -56,9 +53,9 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
 
     protected function validateSchema($schemaName, $bodyResponse) {
         $resolver = new RefResolver(new UriRetriever(), new UriResolver());
-        $schema = $resolver->resolve(
+        $schema   = $resolver->resolve(
             sprintf(
-                'file://' . __DIR__ .'/../../../schema/company/%s.json',
+                'file://' . __DIR__ . '/../../../schema/company/%s.json',
                 $schemaName
             )
         );
@@ -69,7 +66,6 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
             $schema
         );
     }
-
 
     public function testListCompanies() {
         $environment = Environment::mock(
@@ -117,7 +113,7 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
                 'REQUEST_METHOD' => 'GET',
-                'QUERY_STRING' => 'companyPrivKey=invalidprivatekey'
+                'QUERY_STRING'   => 'companyPrivKey=invalidprivatekey'
             ]
         );
 
@@ -184,9 +180,8 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
-
     public static function tearDownAfterClass() {
-        $phinxApp = new PhinxApplication();
+        $phinxApp         = new PhinxApplication();
         $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');

@@ -2,28 +2,23 @@
 
 namespace Test\Controller;
 
-use App\Controller\Companies;
-
-use App\Factory\Command;
-use App\Repository\CompanyInterface;
-use Jenssegers\Optimus\Optimus;
-use League\Tactician\CommandBus;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Illuminate\Support\Collection;
-use App\Entity\Company as EntityCompany;
-use App\Repository\DBCompany;
-use Slim\Http\Request;
-use Slim\Http\Response;
-use App\Command\ResponseDispatch;
-//commands
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
+use App\Command\ResponseDispatch;
+use App\Controller\Companies;
+use App\Entity\Company as EntityCompany;
+use App\Factory\Command;
+use App\Repository\DBCompany;
+use Illuminate\Support\Collection;
+//commands
+use Jenssegers\Optimus\Optimus;
+use League\Tactician\CommandBus;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class CompaniesTest extends \PHPUnit_Framework_TestCase {
-
     public function testListAll() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
@@ -169,7 +164,7 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityCompany, $responseMock));
+            ->will($this->onConsecutiveCalls(new EntityCompany(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -222,7 +217,7 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityCompany, $responseMock));
+            ->will($this->onConsecutiveCalls(new EntityCompany(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -275,7 +270,7 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityCompany, $responseMock));
+            ->will($this->onConsecutiveCalls(new EntityCompany(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -333,7 +328,7 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityCompany, $responseMock));
+            ->will($this->onConsecutiveCalls(new EntityCompany(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
