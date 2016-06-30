@@ -142,6 +142,49 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($body['status']);
     }
 
+    public function testDeleteAll() {
+        $environment = Environment::mock(
+            [
+                'SCRIPT_NAME'    => '/index.php',
+                'REQUEST_URI'    => '/1.0/companies/veridu-ltd',
+                'REQUEST_METHOD' => 'DELETE',
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
+            ]
+        );
+
+        $request = new Request(
+            'DELETE',
+            Uri::createFromEnvironment($environment),
+            Headers::createFromEnvironment($environment),
+            [],
+            $environment->all(),
+            new RequestBody()
+        );
+        $response = new Response();
+
+        $app = $this->getApp();
+        $app->process($request, $response);
+
+        $body = json_decode($response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertTrue($body['status']);
+        $this->assertEquals(1, $body['deleted']);
+
+        /*
+         * Validates Json Schema with Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'deleteAll',
+                json_decode($response->getBody())
+            )
+        );
+    }
+
+
     public static function tearDownAfterClass() {
         $phinxApp = new PhinxApplication();
         $phinxTextWrapper = new TextWrapper($phinxApp);

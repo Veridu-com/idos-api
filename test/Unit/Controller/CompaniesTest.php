@@ -16,7 +16,11 @@ use App\Repository\DBCompany;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Command\ResponseDispatch;
+//commands
 use App\Command\Company\CreateNew;
+use App\Command\Company\DeleteAll;
+use App\Command\Company\DeleteOne;
+use App\Command\Company\UpdateOne;
 
 class CompaniesTest extends \PHPUnit_Framework_TestCase {
 
@@ -141,14 +145,14 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
             ->will(
                 $this->returnValue(
                     new EntityCompany(
-                        ['id' => 0]
+                        ['id' => 1]
                     )
                 )
             );
         $requestMock
             ->expects($this->once())
             ->method('getParsedBody')
-            ->will($this->returnValue('request'));
+            ->will($this->returnValue(['request']));
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -156,48 +160,25 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
 
         $dbCompanyMock = $this->getMockBuilder(DBCompany::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getAllByParentId'])
             ->getMock();
-        $dbCompanyMock
-            ->method('getAllByParentId')
-            ->will($this->returnValue(new Collection(['id' => 0])));
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()
-            ->setMethods([])
+            ->setMethods(['handle'])
             ->getMock();
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will(
-                $this->returnValueMap(
-                    [
-                        [CreateNew::class, new EntityCompany()],
-                        [ResponseInterface::class, $responseMock]
-                    ]
-                )
-            );
+            ->will($this->onConsecutiveCalls(new EntityCompany, $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
             ->setMethods(['create'])
             ->getMock();
-
         $commandFactory
             ->expects($this->exactly(2))
             ->method('create')
-            ->will(
-                $this->returnValueMap(
-                    [
-                        'Company\\CreateNew',
-                        new CreateNew()
-                    ],
-                    [
-                        'ResponseDispatch',
-                        ResponseInterface::class
-                    ]
-                )
-            );
+            ->will($this->onConsecutiveCalls(new CreateNew(), new ResponseDispatch()));
 
         $optimus = $this->getMockBuilder(Optimus::class)
             ->disableOriginalConstructor()
@@ -212,14 +193,166 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testDeleteAll() {
+        $requestMock = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getAttribute'])
+            ->getMock();
+        $requestMock
+            ->expects($this->once())
+            ->method('getAttribute')
+            ->will(
+                $this->returnValue(
+                    new EntityCompany(
+                        ['id' => 0]
+                    )
+                )
+            );
+        $responseMock = $this->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
+        $dbCompanyMock = $this->getMockBuilder(DBCompany::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandBus = $this->getMockBuilder(CommandBus::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['handle'])
+            ->getMock();
+        $commandBus
+            ->expects($this->exactly(2))
+            ->method('handle')
+            ->will($this->onConsecutiveCalls(new EntityCompany, $responseMock));
+
+        $commandFactory = $this->getMockBuilder(Command::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['create'])
+            ->getMock();
+        $commandFactory
+            ->expects($this->exactly(2))
+            ->method('create')
+            ->will($this->onConsecutiveCalls(new DeleteAll(), new ResponseDispatch()));
+
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $companyMock = $this->getMockBuilder(Companies::class)
+            ->setConstructorArgs([$dbCompanyMock, $commandBus, $commandFactory, $optimus])
+            ->setMethods(null)
+            ->getMock();
+
+        $this->assertSame($responseMock, $companyMock->deleteAll($requestMock, $responseMock));
     }
 
     public function testDeleteOne() {
+        $requestMock = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getAttribute'])
+            ->getMock();
+        $requestMock
+            ->expects($this->once())
+            ->method('getAttribute')
+            ->will(
+                $this->returnValue(
+                    new EntityCompany(
+                        ['id' => 0]
+                    )
+                )
+            );
+        $responseMock = $this->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
+        $dbCompanyMock = $this->getMockBuilder(DBCompany::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandBus = $this->getMockBuilder(CommandBus::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['handle'])
+            ->getMock();
+        $commandBus
+            ->expects($this->exactly(2))
+            ->method('handle')
+            ->will($this->onConsecutiveCalls(new EntityCompany, $responseMock));
+
+        $commandFactory = $this->getMockBuilder(Command::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['create'])
+            ->getMock();
+        $commandFactory
+            ->expects($this->exactly(2))
+            ->method('create')
+            ->will($this->onConsecutiveCalls(new DeleteOne(), new ResponseDispatch()));
+
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $companyMock = $this->getMockBuilder(Companies::class)
+            ->setConstructorArgs([$dbCompanyMock, $commandBus, $commandFactory, $optimus])
+            ->setMethods(null)
+            ->getMock();
+
+        $this->assertSame($responseMock, $companyMock->deleteOne($requestMock, $responseMock));
     }
 
     public function testUpdateOne() {
+        $requestMock = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getAttribute', 'getParsedBody'])
+            ->getMock();
+        $requestMock
+            ->expects($this->once())
+            ->method('getAttribute')
+            ->will(
+                $this->returnValue(
+                    new EntityCompany(
+                        ['id' => 0]
+                    )
+                )
+            );
+        $requestMock
+            ->expects($this->once())
+            ->method('getParsedBody')
+            ->will($this->returnValue(['request']));
 
+        $responseMock = $this->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $dbCompanyMock = $this->getMockBuilder(DBCompany::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandBus = $this->getMockBuilder(CommandBus::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['handle'])
+            ->getMock();
+        $commandBus
+            ->expects($this->exactly(2))
+            ->method('handle')
+            ->will($this->onConsecutiveCalls(new EntityCompany, $responseMock));
+
+        $commandFactory = $this->getMockBuilder(Command::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['create'])
+            ->getMock();
+        $commandFactory
+            ->expects($this->exactly(2))
+            ->method('create')
+            ->will($this->onConsecutiveCalls(new UpdateOne(), new ResponseDispatch()));
+
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $companyMock = $this->getMockBuilder(Companies::class)
+            ->setConstructorArgs([$dbCompanyMock, $commandBus, $commandFactory, $optimus])
+            ->setMethods(null)
+            ->getMock();
+
+        $this->assertSame($responseMock, $companyMock->updateOne($requestMock, $responseMock));
     }
 }
