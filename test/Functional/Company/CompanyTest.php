@@ -7,28 +7,25 @@
 namespace Test\Functional\Company;
 
 use App\Boot\Middleware;
-use Slim\App;
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
-use Slim\Http\Response;
-use Slim\Http\Uri;
-
-//Schema validator
 use JsonSchema\RefResolver;
 use JsonSchema\Uri\UriResolver;
 use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
-
-//Phinx Migration and Seed
 use Phinx\Console\PhinxApplication;
 use Phinx\Wrapper\TextWrapper;
+use Slim\App;
+//Schema validator
+use Slim\Http\Environment;
+use Slim\Http\Headers;
+use Slim\Http\Request;
+use Slim\Http\RequestBody;
+//Phinx Migration and Seed
+use Slim\Http\Response;
+use Slim\Http\Uri;
 
 class CompanyTest extends \PHPUnit_Framework_TestCase {
-
     public static function setUpBeforeClass() {
-        $phinxApp = new PhinxApplication();
+        $phinxApp         = new PhinxApplication();
         $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
@@ -56,9 +53,9 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
 
     protected function validateSchema($schemaName, $bodyResponse) {
         $resolver = new RefResolver(new UriRetriever(), new UriResolver());
-        $schema = $resolver->resolve(
+        $schema   = $resolver->resolve(
             sprintf(
-                'file://' . __DIR__ .'/../../../schema/company/%s.json',
+                'file://' . __DIR__ . '/../../../schema/company/%s.json',
                 $schemaName
             )
         );
@@ -71,7 +68,6 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
 
         return $validator->isValid();
     }
-
 
     public function testCreateCompany() {
         $environment = Environment::mock(
@@ -121,7 +117,6 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
             )
         );
     }
-
 
     public function testDeleteOneCompany() {
         $environment = Environment::mock(
@@ -258,7 +253,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
     }
 
     public static function tearDownAfterClass() {
-        $phinxApp = new PhinxApplication();
+        $phinxApp         = new PhinxApplication();
         $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
