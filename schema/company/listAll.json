@@ -4,10 +4,11 @@
     "type": "object",
     "properties": {
         "status": {
-            "description": "",
+            "description": "Response status flag",
             "type": "boolean"
         },
         "data": {
+            "description": "Company response payload",
             "type": "array",
             "items": {
                 "$ref": "companyEntity.json",
@@ -16,7 +17,7 @@
             }
         },
         "updated": {
-            "description": "",
+            "description": "Unixtime of the last update",
             "type": "integer"
         }
     },

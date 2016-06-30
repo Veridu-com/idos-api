@@ -4,29 +4,29 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Company;
+namespace Test\Command\Credential;
 
-use App\Command\Company\CreateNew;
+use App\Command\Credential\UpdateOne;
 
-class CreateNewTest extends \PHPUnit_Framework_TestCase {
+class UpdateOneTest extends \PHPUnit_Framework_TestCase {
     public function testSetParameters() {
-        $command = new CreateNew();
+        $command = new UpdateOne();
         $this->assertNull($command->name);
-        $this->assertNull($command->parentId);
+        $this->assertNull($command->credentialId);
 
         $this->assertInstanceOf(
-            CreateNew::class,
+            UpdateOne::class,
             $command->setParameters([])
         );
         $this->assertNull($command->name);
-        $this->assertNull($command->parentId);
+        $this->assertNull($command->credentialId);
 
         $command->setParameters(['name' => 'a']);
         $this->assertSame('a', $command->name);
-        $this->assertNull($command->parentId);
+        $this->assertNull($command->credentialId);
 
-        $command->setParameters(['parentId' => 1]);
+        $command->setParameters(['credentialId' => 1]);
         $this->assertSame('a', $command->name);
-        $this->assertSame(1, $command->parentId);
+        $this->assertSame(1, $command->credentialId);
     }
 }

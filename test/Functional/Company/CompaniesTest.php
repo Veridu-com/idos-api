@@ -29,8 +29,8 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->setOption('environment', 'development');
-        $phinxTextWrapper->getRollback('development', 0);
+        $phinxTextWrapper->setOption('environment', 'testing');
+        $phinxTextWrapper->getRollback('testing', 0);
         $phinxTextWrapper->getMigrate();
         $phinxTextWrapper->getSeed();
     }
@@ -65,6 +65,8 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
             $bodyResponse,
             $schema
         );
+
+        return $validator->isValid();
     }
 
     public function testListCompanies() {
@@ -142,7 +144,7 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
-                'REQUEST_URI'    => '/1.0/companies/veridu-ltd',
+                'REQUEST_URI'    => '/1.0/companies',
                 'REQUEST_METHOD' => 'DELETE',
                 'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
@@ -185,7 +187,7 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->setOption('environment', 'development');
-        $phinxTextWrapper->getRollback('development', 0);
+        $phinxTextWrapper->setOption('environment', 'testing');
+        $phinxTextWrapper->getRollback('testing', 0);
     }
 }

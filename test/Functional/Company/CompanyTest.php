@@ -29,8 +29,8 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->setOption('environment', 'development');
-        $phinxTextWrapper->getRollback('development', 0);
+        $phinxTextWrapper->setOption('environment', 'testing');
+        $phinxTextWrapper->getRollback('testing', 0);
         $phinxTextWrapper->getMigrate();
         $phinxTextWrapper->getSeed();
     }
@@ -257,7 +257,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->setOption('environment', 'development');
+        $phinxTextWrapper->setOption('environment', 'testing');
         $phinxTextWrapper->getRollback();
     }
 }

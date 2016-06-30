@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Command;
+namespace Test\Command\Company;
 
 use App\Command\Company\DeleteAll;
 

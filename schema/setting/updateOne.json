@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "PUT /companies/{companySlug}",
+    "title": "PUT /companies/{companySlug}/settings/{section}/{property}",
     "type": "object",
     "properties": {
         "status": {
@@ -8,9 +8,9 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Company response payload",
+            "description": "Settings response payload",
             "type": "object",
-            "$ref": "companyEntity.json"
+            "$ref": "settingEntity.json"
         },
         "updated": {
             "description": "Unixtime of the last update",

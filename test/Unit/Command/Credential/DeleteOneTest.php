@@ -4,22 +4,22 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Company;
+namespace Test\Command\Credential;
 
-use App\Command\Company\DeleteOne;
+use App\Command\Credential\DeleteOne;
 
 class DeleteOneTest extends \PHPUnit_Framework_TestCase {
     public function testSetParameters() {
         $command = new DeleteOne();
-        $this->assertNull($command->companyId);
+        $this->assertNull($command->credentialId);
 
         $this->assertInstanceOf(
             DeleteOne::class,
             $command->setParameters([])
         );
-        $this->assertNull($command->companyId);
+        $this->assertNull($command->credentialId);
 
-        $command->setParameters(['companyId' => 1]);
-        $this->assertSame(1, $command->companyId);
+        $command->setParameters(['credentialId' => 1]);
+        $this->assertSame(1, $command->credentialId);
     }
 }

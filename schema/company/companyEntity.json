@@ -20,7 +20,7 @@
             "pattern": "[a-zA-Z0-9]{16}"
         },
         "created_at": {
-            "description": "Company's creation unixtimestamp",
+            "description": "Company's creation unixtime",
             "type": "integer"
         }
     },
