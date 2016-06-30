@@ -22,6 +22,10 @@
             "description": "Property value",
             "type": "string",
             "pattern": ""
+        },
+        "created_at": {
+            "description": "Company's creation unixtimestamp",
+            "type": "integer"
         }
     },
     "required": [

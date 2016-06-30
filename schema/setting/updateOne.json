@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "PUT /companies/{companySlug}",
+    "title": "PUT /companies/{companySlug}/settings/{section}/{property}",
     "type": "object",
     "properties": {
         "status": {
@@ -9,7 +9,7 @@
         },
         "data": {
             "type": "object",
-            "$ref": "companyEntity.json",
+            "$ref": "settingEntity.json",
             "uniqueItems": true
         },
         "updated": {

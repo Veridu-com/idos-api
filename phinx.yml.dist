@@ -13,3 +13,11 @@ environments:
         pass: 'veridu-api'
         port: 5432
         charset: utf8
+    testing:
+        adapter: pgsql
+        host: localhost
+        name: veridu-api
+        user: veridu-api
+        pass: 'veridu-api'
+        port: 5432
+        charset: utf8

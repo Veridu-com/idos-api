@@ -14,12 +14,12 @@ use App\Helper\Utils;
  * @apiEntity schema/credential/credentialEntity.json
  *
  * @property int $id
- * @property string company_id
- * @property string name
- * @property string slug
- * @property string public
- * @property string private
- * @property string production
+ * @property string $company_id
+ * @property string $name
+ * @property string $slug
+ * @property string $public
+ * @property string $private
+ * @property string $production
  * @property string $created_at
  * @property string $updated_at
  */
