@@ -8,11 +8,10 @@ namespace Test\Unit\Handler;
 
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteOne;
+use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Company;
-use App\Entity\Company as CompanyEntity;
-use App\Factory\Entity as EntityFactory;
 use App\Repository\CompanyInterface;
 use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
@@ -98,7 +97,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $dbConnectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
 
         $entityFactory = new EntityFactory();
-        $entityFactory->create("Company");
+        $entityFactory->create('Company');
 
         $companyRepository = $this->getMockBuilder(DBCompany::class)
             ->setMethods(['save'])

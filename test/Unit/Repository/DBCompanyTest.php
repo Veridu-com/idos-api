@@ -7,15 +7,14 @@
 namespace Test\Unit\Repository;
 
 use App\Exception\NotFound;
-use App\Entity\Company as EntityCompany;
-use App\Repository\DBCompany;
 use App\Factory\Entity;
+use App\Repository\DBCompany;
 use Illuminate\Database\Connection;
 
 class DBCompanyTest extends \PHPUnit_Framework_TestCase {
     public function testFindBySlugNotFound() {
         $factory = new Entity();
-        $factory->create("Company", []);
+        $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'first'])
@@ -43,14 +42,14 @@ class DBCompanyTest extends \PHPUnit_Framework_TestCase {
 
     public function testFindBySlug() {
         $array = [
-            'slug' => 'slug',
-            'id' => 0,
-            'name' => 'company',
+            'slug'       => 'slug',
+            'id'         => 0,
+            'name'       => 'company',
             'public_key' => 'public_key'
         ];
 
         $factory = new Entity();
-        $factory->create("Company", []);
+        $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'first'])
@@ -75,10 +74,9 @@ class DBCompanyTest extends \PHPUnit_Framework_TestCase {
         $this->assertSame($array, $dbCompany->findBySlug('slug'));
     }
 
-
     public function testFindByPubKeyNotFound() {
         $factory = new Entity();
-        $factory->create("Company", []);
+        $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'first'])
@@ -107,13 +105,13 @@ class DBCompanyTest extends \PHPUnit_Framework_TestCase {
     public function testFindbyPubKey() {
         $array = [
             'public_key' => 'public_key',
-            'slug' => 'slug',
-            'id' => 0,
-            'name' => 'company'
+            'slug'       => 'slug',
+            'id'         => 0,
+            'name'       => 'company'
          ];
 
         $factory = new Entity();
-        $factory->create("Company", []);
+        $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'first'])
@@ -138,10 +136,9 @@ class DBCompanyTest extends \PHPUnit_Framework_TestCase {
          $this->assertSame($array, $dbCompany->findByPubKey('public_key'));
     }
 
-
     public function testFindByPrivKeyNotFound() {
         $factory = new Entity();
-        $factory->create("Company", []);
+        $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'first'])
@@ -170,13 +167,13 @@ class DBCompanyTest extends \PHPUnit_Framework_TestCase {
     public function testFindByPrivKey() {
         $array = [
             'public_key' => 'public_key',
-            'slug' => 'slug',
-            'id' => 0,
-            'name' => 'company'
+            'slug'       => 'slug',
+            'id'         => 0,
+            'name'       => 'company'
         ];
 
         $factory = new Entity();
-        $factory->create("Company", []);
+        $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'first'])
