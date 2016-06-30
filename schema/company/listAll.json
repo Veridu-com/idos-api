@@ -4,13 +4,13 @@
     "type": "object",
     "properties": {
         "status": {
-            "description": "Boolean status",
+            "description": "Response status flag",
             "type": "boolean"
         },
         "data": {
+            "description": "Company response payload",
             "type": "array",
             "items": {
-                "description": "Company Entity data",
                 "$ref": "companyEntity.json",
                 "minItems": 0,
                 "uniqueItems": true

@@ -4,14 +4,13 @@
     "type": "object",
     "properties": {
         "status": {
-            "description": "Boolean status",
+            "description": "Response status flag",
             "type": "boolean"
         },
         "data": {
-            "description": "Settings data",
+            "description": "Settings response payload",
             "type": "object",
-            "$ref": "settingEntity.json",
-            "uniqueItems": true
+            "$ref": "settingEntity.json"
         },
         "updated": {
             "description": "Unixtime of the last update",

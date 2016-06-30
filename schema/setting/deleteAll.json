@@ -4,7 +4,7 @@
     "type": "object",
     "properties": {
         "status": {
-            "description": "Boolean status",
+            "description": "Response status flag",
             "type": "boolean"
         },
         "deleted": {

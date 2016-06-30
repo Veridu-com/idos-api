@@ -4,12 +4,12 @@
     "type": "object",
     "properties": {
         "status": {
-           "description": "Boolean status",
-           "type": "boolean"
+            "description": "Response status flag",
+            "type": "boolean"
         },
         "data": {
+            "description": "Company response payload",
             "type": "object",
-            "description": "Company entity data",
             "$ref": "companyEntity.json"
         },
         "updated": {
