@@ -62,8 +62,9 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -71,9 +72,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/listAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -93,8 +92,9 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -102,9 +102,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/createNew.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -124,8 +122,9 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -133,9 +132,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/deleteAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -155,8 +152,10 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -164,9 +163,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/getOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::getOne
      */
     private static function getOne(App $app, callable $auth) {
@@ -186,8 +183,10 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -195,9 +194,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/updateOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -217,8 +214,10 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -226,9 +225,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/deleteOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {

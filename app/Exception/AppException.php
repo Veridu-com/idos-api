@@ -9,7 +9,7 @@ namespace App\Exception;
 /**
  * Base Application Exception.
  *
- * @apiStatusCode 500 Application Internal Error
+ * @apiEndpointResponse 500 schema/error.json
  */
 class AppException extends \Exception {
     /**

@@ -57,10 +57,10 @@ class Credentials implements ControllerInterface {
     /**
      * Lists all Credentials that belongs to the Target Company.
      *
-     * @apiEndpointParam query int after Initial Credential creation date (lower bound)
-     * @apiEndpointParam query int before Final Credential creation date (upper bound)
-     * @apiEndpointParam query int page Current page
-     * @apiEndpointResponse 200 Credential[]
+     * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Credential creation date (lower bound)
+     * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Credential creation date (upper bound)
+     * @apiEndpointParam query int page 10|1 Current page
+     * @apiEndpointResponse 200 schema/credential/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -92,7 +92,9 @@ class Credentials implements ControllerInterface {
     /**
      * Creates a new Credential for the Target Company.
      *
-     * @apiEndpointResponse 201 Credential
+     * @apiEndpointRequiredParam body string name My-Credential Credential name
+     * @apiEndpointRequiredParam body bool production false Production flag
+     * @apiEndpointResponse 201 schema/credential/createNew.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -125,7 +127,7 @@ class Credentials implements ControllerInterface {
     /**
      * Deletes all Credentials that belongs to the Target Company.
      *
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 schema/credential/deleteAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -154,7 +156,7 @@ class Credentials implements ControllerInterface {
     /**
      * Retrieves one Credential of the Target Company based on the Credential's Public Key.
      *
-     * @apiEndpointResponse 200 Credential
+     * @apiEndpointResponse 200 schema/credential/getOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -183,7 +185,8 @@ class Credentials implements ControllerInterface {
     /**
      * Updates one Credential of the Target Company based on the Credential's Public Key.
      *
-     * @apiEndpointResponse 200 Credential
+     * @apiEndpointRequiredParam body string name New-Name New Credential name
+     * @apiEndpointResponse 200 schema/credential/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -218,7 +221,7 @@ class Credentials implements ControllerInterface {
     /**
      * Deletes one Credential of the Target Company based on the Credential's Public Key.
      *
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 schema/credential/deleteOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response

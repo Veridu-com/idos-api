@@ -57,6 +57,8 @@ class Main implements ControllerInterface {
     /**
      * Lists all public endpoints.
      *
+     * @apiEndpointResponse 200 schema/main/listAll.json
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
@@ -65,7 +67,8 @@ class Main implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
         $classList = [
             'Companies',
-            'Credentials'
+            'Credentials',
+            'Settings'
         ];
         $routeList    = [];
         $publicRoutes = [];

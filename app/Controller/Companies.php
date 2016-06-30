@@ -59,10 +59,10 @@ class Companies implements ControllerInterface {
     /**
      * List all child Companies that belongs to the Acting Company.
      *
-     * @apiEndpointParam query int after Initial Company creation date (lower bound)
-     * @apiEndpointParam query int before Final Company creation date (upper bound)
-     * @apiEndpointParam query int page
-     * @apiEndpointResponse 200 Company[]
+     * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Company creation date (lower bound)
+     * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Company creation date (upper bound)
+     * @apiEndpointParam query int page 10|1 Current page
+     * @apiEndpointResponse 200 schema/company/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -93,8 +93,7 @@ class Companies implements ControllerInterface {
     /**
      * Retrieves the Target Company, a child of the Acting Company.
      *
-     * @apiRequiredParam path string companySlug
-     * @apiEndpointResponse 200 Company
+     * @apiEndpointResponse 200 schema/company/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -123,7 +122,8 @@ class Companies implements ControllerInterface {
     /**
      * Creates a new child Company for the Acting Company.
      *
-     * @apiEndpointResponse 201 Company
+     * @apiEndpointRequiredParam body string name NewCo. Company name
+     * @apiEndpointResponse 201 schema/company/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -157,7 +157,7 @@ class Companies implements ControllerInterface {
     /**
      * Deletes all child Companies that belongs to the Acting Company.
      *
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 schema/company/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -171,7 +171,7 @@ class Companies implements ControllerInterface {
         $deleted = $this->commandBus->handle($command);
 
         $body = [
-           'deleted' => $deleted
+            'deleted' => $deleted
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -186,8 +186,7 @@ class Companies implements ControllerInterface {
     /**
      * Deletes the Target Company, a child of the Acting Company.
      *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 schema/company/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -219,7 +218,8 @@ class Companies implements ControllerInterface {
     /**
      * Updates the Target Company, a child of the Acting Company.
      *
-     * @apiEndpointResponse 200 Company
+     * @apiEndpointRequiredParam body string name NewName New Company name
+     * @apiEndpointResponse 200 schema/company/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -227,6 +227,8 @@ class Companies implements ControllerInterface {
      * @throws App\Exception\NotFound
      *
      * @return \Psr\Http\Message\ResponseInterface
+     *
+     * @see App\Command\Company\UpdateOne
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');

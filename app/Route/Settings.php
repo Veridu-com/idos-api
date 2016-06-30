@@ -64,8 +64,9 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/settings
      * @apiGroup Company Settings
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -73,9 +74,7 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/companies/settings/listAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Settings::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -94,8 +93,10 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/settings/{section}
      * @apiGroup Company Settings
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string section lookup
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -103,9 +104,7 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/companies/settings/listAllFromSection.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Settings::listAllFromSection
      */
     private static function listAllFromSection(App $app, callable $auth) {
@@ -125,8 +124,9 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint POST /companies/{companySlug}/settings
      * @apiGroup Company Settings
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -134,9 +134,7 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/companies/settings/createNew.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Settings::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -156,8 +154,9 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}/settings
      * @apiGroup Company Settings
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -165,9 +164,7 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/companies/settings/deleteAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Settings::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -187,8 +184,11 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/settings/{section}/{property}
      * @apiGroup Company Settings
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string section lookup
+     * @apiEndpointURIFragment string property username
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -196,9 +196,7 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/companies/settings/getOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Settings::getOne
      */
     private static function getOne(App $app, callable $auth) {
@@ -218,8 +216,11 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint PUT /companies/{companySlug}/settings/{section}/{property}
      * @apiGroup Company Settings
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string section lookup
+     * @apiEndpointURIFragment string property username
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -227,9 +228,7 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/companies/settings/updateOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Settings::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -249,8 +248,11 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}/settings/{section}/{property}
      * @apiGroup Company Settings
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string section lookup
+     * @apiEndpointURIFragment string property username
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -258,9 +260,7 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/companies/settings/deleteOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Settings::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {
