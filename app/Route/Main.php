@@ -44,6 +44,7 @@ class Main implements RouteInterface {
      * Retrieve a complete list of all public endpoints.
      *
      * @apiEndpoint GET /
+     * @apiGroup General
      *
      * @param \Slim\App $app
      *

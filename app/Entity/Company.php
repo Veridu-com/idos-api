@@ -11,11 +11,7 @@ use App\Helper\Utils;
 /**
  * Companies Entity.
  *
- * @apiEntity Company
- * @apiEntityRequiredProperty string name Company name
- * @apiEntityProperty string slug Slug based on company's name
- * @apiEntityProperty string public_key Public Key for management calls
- * @apiEntityProperty int created Company creation Unixtimestamp
+ * @apiEntity schema/company/companyEntity.json
  *
  * @property int $id
  * @property string $name

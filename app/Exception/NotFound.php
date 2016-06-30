@@ -9,7 +9,7 @@ namespace App\Exception;
 /**
  * Model Not Found Exception.
  *
- * @apiEndpointResponse 404 Error
+ * @apiEndpointResponse 404 schema/error.json
  *
  * @see App\Exception\AppException
  */

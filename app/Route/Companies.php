@@ -61,8 +61,9 @@ class Companies implements RouteInterface {
      * Retrieve a complete list of all child companies that belong to the requesting company.
      *
      * @apiEndpoint GET /companies
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiGroup Company
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -70,9 +71,7 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/listAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -91,8 +90,9 @@ class Companies implements RouteInterface {
      * Create a new child company for the requesting company.
      *
      * @apiEndpoint POST /companies
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiGroup Company
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -100,9 +100,7 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/createNew.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -121,8 +119,9 @@ class Companies implements RouteInterface {
      * Delete all child companies that belong to the requesting company.
      *
      * @apiEndpoint DELETE /companies
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiGroup Company
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -130,9 +129,7 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/deleteAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -151,6 +148,8 @@ class Companies implements RouteInterface {
      * Retrieves all public information from a Company.
      *
      * @apiEndpoint GET /companies/{companySlug}
+     * @apiGroup Company
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -176,8 +175,10 @@ class Companies implements RouteInterface {
      * Updates Company's specific information.
      *
      * @apiEndpoint PUT /companies/{companySlug}
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiGroup Company
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -185,9 +186,7 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/updateOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -206,8 +205,10 @@ class Companies implements RouteInterface {
      * Deletes the requesting company or a child company that belongs to it.
      *
      * @apiEndpoint DELETE /companies/{companySlug}
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiGroup Company
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -215,9 +216,7 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/deleteOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Companies::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {

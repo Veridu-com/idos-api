@@ -9,11 +9,7 @@ namespace App\Entity;
 /**
  * Settings Entity.
  *
- * @apiEntity Setting
- * @apiEntityRequiredProperty 	int 	company_id 	Company owner of the Setting
- * @apiEntityRequiredProperty 	string 	section 	setting's section name
- * @apiEntityRequiredProperty 	string 	property 	setting property name
- * @apiEntityRequiredProperty 	string 	value  		setting value
+ * @apiEntity schema/setting/settingEntity.json
  *
  * @property int 	$id
  * @property int 	$company_id

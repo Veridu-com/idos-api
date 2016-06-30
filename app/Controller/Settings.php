@@ -57,8 +57,8 @@ class Settings implements ControllerInterface {
     /**
      * Lists all Settings that belongs to the Target Company.
      *
-     * @apiEndpointParam query int page Current page
-     * @apiEndpointResponse 200 Setting[]
+     * @apiEndpointParam query int page 10|1 Current page
+     * @apiEndpointResponse 200 schema/setting/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -88,10 +88,8 @@ class Settings implements ControllerInterface {
     /**
      * Lists all Settings that belongs to the Target Company and has the given section.
      *
-     * @apiEndpointRequiredParam path string section
-     *
-     * @apiEndpointParam query int page Current page
-     * @apiEndpointResponse 200 Setting[]
+     * @apiEndpointParam query int page 10|1 Current page
+     * @apiEndpointResponse 200 schema/setting/listAllFromSection.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -122,10 +120,7 @@ class Settings implements ControllerInterface {
     /**
      * Retrieves one Setting of the Target Company based on path paramaters section and property.
      *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string section
-     * @apiEndpointRequiredParam path string property
-     * @apiEndpointResponse 200 Setting
+     * @apiEndpointResponse 200 schema/setting/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -155,7 +150,10 @@ class Settings implements ControllerInterface {
     /**
      * Creates a new Setting for the Target Company.
      *
-     * @apiEndpointResponse 201 Setting
+     * @apiEndpointRequiredParam body string section XXX Section name
+     * @apiEndpointRequiredParam body string property YYY Property name
+     * @apiEndpointRequiredParam body string value ZZZ Property value
+     * @apiEndpointResponse 201 schema/setting/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -189,7 +187,7 @@ class Settings implements ControllerInterface {
     /**
      * Deletes all Settings that belongs to the Target Company.
      *
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 schema/setting/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -218,10 +216,7 @@ class Settings implements ControllerInterface {
     /**
      * Deletes one Setting of the Target Company based on path paramaters section and property.
      *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string section
-     * @apiEndpointRequiredParam path string property
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 schema/setting/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -255,10 +250,8 @@ class Settings implements ControllerInterface {
     /**
      * Updates one Setting of the Target Company based on path paramaters section and property.
      *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string section
-     * @apiEndpointRequiredParam path string property
-     * @apiEndpointResponse 200 Setting
+     * @apiEndpointRequiredParam body string value ZZZ Property value
+     * @apiEndpointResponse 200 schema/setting/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -292,5 +285,4 @@ class Settings implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-
 }
