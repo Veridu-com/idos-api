@@ -74,12 +74,16 @@ class Main implements ControllerInterface {
         $publicRoutes = [];
 
         foreach ($this->router->getRoutes() as $route)
-            $routeList[$route->getName()] = $route->getPattern();
+            $routeList[$route->getName()] = [
+                'name'    => $route->getName(),
+                'uri'     => $route->getPattern(),
+                'methods' => $route->getMethods()
+            ];
 
         foreach ($classList as $className) {
             $routeClass = sprintf('\\App\\Route\\%s', $className);
             foreach ($routeClass::getPublicNames() as $routeName)
-                $publicRoutes[$routeName] = $routeList[$routeName];
+                $publicRoutes[] = $routeList[$routeName];
         }
 
         $command = $this->commandFactory->create('ResponseDispatch');
