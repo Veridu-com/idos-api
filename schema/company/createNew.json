@@ -4,13 +4,13 @@
     "type": "object",
     "properties": {
         "status": {
-            "description": "",
+            "description": "Boolean status",
             "type": "boolean"
         },
         "data": {
+            "description": "Company entity data",
             "type": "object",
-            "$ref": "companyEntity.json",
-            "uniqueItems": true
+            "$ref": "companyEntity.json"
         }
     },
     "required": [

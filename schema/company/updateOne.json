@@ -4,16 +4,16 @@
     "type": "object",
     "properties": {
         "status": {
-            "description": "",
-            "type": "boolean"
+           "description": "Boolean status",
+           "type": "boolean"
         },
         "data": {
             "type": "object",
-            "$ref": "companyEntity.json",
-            "uniqueItems": true
+            "description": "Company entity data",
+            "$ref": "companyEntity.json"
         },
         "updated": {
-            "description": "",
+            "description": "Unixtime of the last update",
             "type": "integer"
         }
     },

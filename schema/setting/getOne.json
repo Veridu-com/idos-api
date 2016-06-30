@@ -4,15 +4,17 @@
     "type": "object",
     "properties": {
         "status": {
-            "description": "",
+            "description": "Boolean status",
             "type": "boolean"
         },
         "data": {
+            "description": "Settings data",
             "type": "object",
             "$ref": "settingEntity.json",
             "uniqueItems": true
         },
         "updated": {
+            "description": "Unixtime of the last update",
             "type": "integer"
         }
     },

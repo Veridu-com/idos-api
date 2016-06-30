@@ -4,19 +4,20 @@
     "type": "object",
     "properties": {
         "status": {
-            "description": "",
+            "description": "Boolean status",
             "type": "boolean"
         },
         "data": {
             "type": "array",
             "items": {
+                "description": "Company Entity data",
                 "$ref": "companyEntity.json",
                 "minItems": 0,
                 "uniqueItems": true
             }
         },
         "updated": {
-            "description": "",
+            "description": "Unixtime of the last update",
             "type": "integer"
         }
     },

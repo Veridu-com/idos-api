@@ -6,8 +6,6 @@
 
 namespace Test\Unit\Entity;
 
-use App\Entity\Credential;
-
 class CredentialTest extends \PHPUnit_Framework_TestCase {
     public function testSerialize() {
     }
