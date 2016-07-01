@@ -6,10 +6,11 @@
 
 namespace Test\Unit\Validator;
 
+use Test\Unit\AbstractUnit;
 use App\Validator\Company;
 use Respect\Validation\Exceptions\ExceptionInterface;
 
-class CompanyTest extends \PHPUnit_Framework_TestCase {
+class CompanyTest extends AbstractUnit {
     protected $validator;
 
     protected function setUp() {

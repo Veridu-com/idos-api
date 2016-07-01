@@ -4,11 +4,12 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Company;
+namespace Test\Unit\Command\Company;
 
+use Test\Unit\AbstractUnit;
 use App\Command\Company\UpdateOne;
 
-class UpdateOneTest extends \PHPUnit_Framework_TestCase {
+class UpdateOneTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new UpdateOne();
         $this->assertNull($command->name);

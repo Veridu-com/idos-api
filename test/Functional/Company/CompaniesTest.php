@@ -6,7 +6,7 @@
 
 namespace Test\Functional\Company;
 
-use Test\Functional\AbstractFunctionalClass;
+use Test\Functional\AbstractFunctional;
 
 use App\Boot\Middleware;
 use Slim\Http\Environment;
@@ -16,7 +16,7 @@ use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 
-class CompaniesTest extends AbstractFunctionalClass {
+class CompaniesTest extends AbstractFunctional {
 
     public function testListCompanies() {
         $environment = Environment::mock(
@@ -55,7 +55,7 @@ class CompaniesTest extends AbstractFunctionalClass {
                 'company/listAll.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 
@@ -97,7 +97,7 @@ class CompaniesTest extends AbstractFunctionalClass {
                 'error.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 
@@ -140,7 +140,7 @@ class CompaniesTest extends AbstractFunctionalClass {
                 'company/deleteAll.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 }

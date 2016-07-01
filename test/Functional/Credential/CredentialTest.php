@@ -6,8 +6,7 @@
 
 namespace Test\Functional\Credential;
 
-use Test\Functional\Credential\AbstractCredentialClass;
-use Test\Functional\AbstractFunctionalClass;
+use Test\Functional\AbstractFunctional;
 
 use App\Boot\Middleware;
 use Slim\Http\Environment;
@@ -17,9 +16,7 @@ use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 
-class CredentialTest extends AbstractFunctionalClass {
-    protected $publicKey;
-    protected $response;
+class CredentialTest extends AbstractFunctional {
 
     public function testCreateCredential() {
         $environment = Environment::mock(
@@ -74,7 +71,7 @@ class CredentialTest extends AbstractFunctionalClass {
                 'credential/createNew.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 
@@ -115,7 +112,7 @@ class CredentialTest extends AbstractFunctionalClass {
                 'error.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 
@@ -164,7 +161,7 @@ class CredentialTest extends AbstractFunctionalClass {
                 'credential/updateOne.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 
@@ -207,7 +204,7 @@ class CredentialTest extends AbstractFunctionalClass {
                 'credential/deleteOne.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 

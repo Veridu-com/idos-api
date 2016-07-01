@@ -6,6 +6,7 @@
 
 namespace Test\Unit\Handler;
 
+use Test\Unit\AbstractUnit;
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteOne;
 use App\Factory\Entity as EntityFactory;
@@ -17,7 +18,7 @@ use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
 use Slim\Container;
 
-class CompanyTest extends \PHPUnit_Framework_TestCase {
+class CompanyTest extends AbstractUnit {
     public function testConstructCorrectInterface() {
         $repositoryMock = $this
             ->getMockBuilder(CompanyInterface::class)

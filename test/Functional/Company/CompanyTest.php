@@ -6,7 +6,7 @@
 
 namespace Test\Functional\Company;
 
-use Test\Functional\AbstractFunctionalClass;
+use Test\Functional\AbstractFunctional;
 
 use App\Boot\Middleware;
 use Slim\Http\Environment;
@@ -16,7 +16,7 @@ use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 
-class CompanyTest extends AbstractFunctionalClass {
+class CompanyTest extends AbstractFunctional {
 
 
     public function testCreateCompany() {
@@ -65,7 +65,7 @@ class CompanyTest extends AbstractFunctionalClass {
                 'company/createNew.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 
@@ -108,7 +108,7 @@ class CompanyTest extends AbstractFunctionalClass {
                 'company/deleteOne.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 
@@ -152,7 +152,7 @@ class CompanyTest extends AbstractFunctionalClass {
                 'company/getOne.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
 
     }
@@ -202,7 +202,7 @@ class CompanyTest extends AbstractFunctionalClass {
                 'company/updateOne.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 }

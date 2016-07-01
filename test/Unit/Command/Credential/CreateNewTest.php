@@ -4,11 +4,12 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Credential;
+namespace Test\Unit\Command\Credential;
 
+use Test\Unit\AbstractUnit;
 use App\Command\Credential\CreateNew;
 
-class CreateNewTest extends \PHPUnit_Framework_TestCase {
+class CreateNewTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new CreateNew();
         $this->assertNull($command->name);

@@ -4,11 +4,12 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Company;
+namespace Test\Unit\Command\Company;
 
+use Test\Unit\AbstractUnit;
 use App\Command\Company\DeleteOne;
 
-class DeleteOneTest extends \PHPUnit_Framework_TestCase {
+class DeleteOneTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new DeleteOne();
         $this->assertNull($command->companyId);

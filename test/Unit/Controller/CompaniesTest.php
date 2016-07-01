@@ -1,7 +1,8 @@
 <?php
 
-namespace Test\Controller;
+namespace Test\Unit\Controller;
 
+use Test\Unit\AbstractUnit;
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
@@ -17,7 +18,7 @@ use League\Tactician\CommandBus;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class CompaniesTest extends \PHPUnit_Framework_TestCase {
+class CompaniesTest extends AbstractUnit {
     public function testListAll() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()

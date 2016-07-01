@@ -6,9 +6,10 @@
 
 namespace Test\Unit\Factory;
 
+use Test\Unit\AbstractUnit;
 use App\Factory\Command;
 
-class CommandTest extends \PHPUnit_Framework_TestCase {
+class CommandTest extends AbstractUnit {
     public function setUp() {
         $this->factory = new Command();
     }

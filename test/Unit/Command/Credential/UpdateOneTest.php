@@ -4,11 +4,12 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Credential;
+namespace Test\Unit\Command\Credential;
 
+use Test\Unit\AbstractUnit;
 use App\Command\Credential\UpdateOne;
 
-class UpdateOneTest extends \PHPUnit_Framework_TestCase {
+class UpdateOneTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new UpdateOne();
         $this->assertNull($command->name);

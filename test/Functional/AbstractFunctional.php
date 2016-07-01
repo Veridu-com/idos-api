@@ -9,13 +9,13 @@ namespace Test\Functional;
 use Phinx\Console\PhinxApplication;
 use Phinx\Wrapper\TextWrapper;
 use Slim\App;
-//schema
 use JsonSchema\RefResolver;
 use JsonSchema\Uri\UriResolver;
 use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
 
-abstract class AbstractFunctionalClass extends \PHPUnit_Framework_TestCase {
+abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
+    protected $schemaErrors;
 
  	public static function setUpBeforeClass() {
         $phinxApp         = new PhinxApplication();
@@ -76,7 +76,8 @@ abstract class AbstractFunctionalClass extends \PHPUnit_Framework_TestCase {
     }
 
     protected function getSchemaErrors($validator) {
+        $this->schemaErrors = null;
         foreach ($validator->getErrors() as $error)
-            print_r(sprintf("[%s] %s\n", $error['property'], $error['message']));
+            $this->schemaErrors .= sprintf("[%s] %s\n", $error['property'], $error['message']);
     }
 }
