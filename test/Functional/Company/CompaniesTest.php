@@ -18,7 +18,7 @@ use Slim\Http\Uri;
 
 class CompaniesTest extends AbstractFunctionalClass {
 
-    public function testListAll() {
+    public function testListCompanies() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -52,10 +52,10 @@ class CompaniesTest extends AbstractFunctionalClass {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'company',
-                'listAll',
+                'company/listAll.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 
@@ -88,9 +88,20 @@ class CompaniesTest extends AbstractFunctionalClass {
 
         $this->assertEquals(403, $response->getStatusCode());
         $this->assertFalse($body['status']);
+
+        /*
+         * Validates Json Schema against Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode($response->getBody())
+            ),
+            'Schema validation failed!'
+        );
     }
 
-    public function testDeleteAll() {
+    public function testDeleteAllCompanies() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -122,16 +133,14 @@ class CompaniesTest extends AbstractFunctionalClass {
         $this->assertEquals(1, $body['deleted']);
 
         /*
-         * Validates Json Schema with Json Response
-         * Params: entity schema, method, data
+         * Validates Json Schema against Json Response
          */
         $this->assertTrue(
             $this->validateSchema(
-                'company',
-                'deleteAll',
+                'company/deleteAll.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
-
 }

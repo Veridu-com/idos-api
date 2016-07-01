@@ -18,7 +18,8 @@ use Slim\Http\Uri;
 
 class CompanyTest extends AbstractFunctionalClass {
 
-    public function testCreateNew() {
+
+    public function testCreateCompany() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -61,10 +62,10 @@ class CompanyTest extends AbstractFunctionalClass {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'company',
-                'createNew',
+                'company/createNew.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 
@@ -104,10 +105,10 @@ class CompanyTest extends AbstractFunctionalClass {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'company',
-                'deleteOne',
+                'company/deleteOne.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 
@@ -148,10 +149,10 @@ class CompanyTest extends AbstractFunctionalClass {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'company',
-                'getOne',
+                'company/getOne.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
 
     }
@@ -198,10 +199,10 @@ class CompanyTest extends AbstractFunctionalClass {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'company',
-                'updateOne',
+                'company/updateOne.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 }

@@ -21,7 +21,7 @@ class CredentialTest extends AbstractFunctionalClass {
     protected $publicKey;
     protected $response;
 
-    public function testCreateNew() {
+    public function testCreateCredential() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -71,20 +71,19 @@ class CredentialTest extends AbstractFunctionalClass {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'credential',
-                'createNew',
+                'credential/createNew.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 
-    public function testGetOne() {
+    public function testGetCredential() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961',
-                'REQUEST_METHOD' => 'GET',
-                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
+                'REQUEST_METHOD' => 'GET'
             ]
         );
 
@@ -105,24 +104,22 @@ class CredentialTest extends AbstractFunctionalClass {
 
         $this->assertNotEmpty($body);
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertTrue($body['status']);
-        $this->assertSame('My Test Key', $body['data']['name']);
-        $this->assertSame('my-test-key', $body['data']['slug']);
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Json Schema against Json Response
          */
         $this->assertTrue(
             $this->validateSchema(
-                'credential',
-                'getOne',
+                'error.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 
-    public function testUpdateOne() {
+    public function testUpdateCredential() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -164,14 +161,14 @@ class CredentialTest extends AbstractFunctionalClass {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'credential',
-                'updateOne',
+                'credential/updateOne.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 
-    public function testDeleteOne() {
+    public function testDeleteCredential() {
     	$environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -207,10 +204,10 @@ class CredentialTest extends AbstractFunctionalClass {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'credential',
-                'deleteOne',
+                'credential/deleteOne.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 

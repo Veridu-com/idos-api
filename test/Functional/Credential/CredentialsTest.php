@@ -52,10 +52,52 @@ class CredentialsTest extends AbstractFunctionalClass {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'credential',
-                'listAll',
+                'credential/listAll.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
+        );
+
+    }
+
+    public function testListAllMissingAuthorization() {
+        $environment = Environment::mock(
+            [
+                'SCRIPT_NAME'    => '/index.php',
+                'REQUEST_URI'    => '/1.0/companies/veridu-ltd/credentials',
+                'REQUEST_METHOD' => 'GET',
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
+            ]
+        );
+
+        $request = new Request(
+            'GET',
+            Uri::createFromEnvironment($environment),
+            Headers::createFromEnvironment($environment),
+            [],
+            $environment->all(),
+            new RequestBody()
+        );
+        $response = new Response();
+
+        $app = $this->getApp();
+        $app->process($request, $response);
+
+        $body = json_decode($response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertTrue($body['status']);
+
+        /*
+         * Validates Json Schema against Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'credential/listAll.json',
+                json_decode($response->getBody())
+            ),
+            'Schema validation failed!'
         );
 
     }
@@ -93,14 +135,13 @@ class CredentialsTest extends AbstractFunctionalClass {
 
         /*
          * Validates Json Schema with Json Response
-         * Params: entity schema, method, data
          */
         $this->assertTrue(
             $this->validateSchema(
-                'credentials',
-                'deleteAll',
+                'credentials/deleteAll.json',
                 json_decode($response->getBody())
-            )
+            ),
+            'Schema validation failed!'
         );
     }
 

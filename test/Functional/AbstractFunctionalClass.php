@@ -53,13 +53,13 @@ abstract class AbstractFunctionalClass extends \PHPUnit_Framework_TestCase {
         return $app;
     }
 
-    protected function validateSchema($entity, $schemaName, $bodyResponse) {
-        $resolver = new RefResolver(new UriRetriever(), new UriResolver());
-        $schema   = $resolver->resolve(
+    protected function validateSchema($schemaFile, $bodyResponse) {
+        $schemaFile = ltrim($schemaFile, '/');
+        $resolver   = new RefResolver(new UriRetriever(), new UriResolver());
+        $schema     = $resolver->resolve(
             sprintf(
-                'file://' . __DIR__ . '/../../schema/%s/%s.json',
-                strtolower($entity),
-                $schemaName
+                'file://' . __DIR__ . '/../../schema/%s',
+                $schemaFile
             )
         );
         $validator = new Validator();
