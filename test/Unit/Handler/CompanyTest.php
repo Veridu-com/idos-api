@@ -6,7 +6,6 @@
 
 namespace Test\Unit\Handler;
 
-use Test\Unit\AbstractUnit;
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteOne;
 use App\Factory\Entity as EntityFactory;
@@ -17,6 +16,7 @@ use App\Repository\CompanyInterface;
 use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
 use Slim\Container;
+use Test\Unit\AbstractUnit;
 
 class CompanyTest extends AbstractUnit {
     public function testConstructCorrectInterface() {

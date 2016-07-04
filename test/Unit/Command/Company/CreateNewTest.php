@@ -6,8 +6,8 @@
 
 namespace Test\Unit\Command\Company;
 
-use Test\Unit\AbstractUnit;
 use App\Command\Company\CreateNew;
+use Test\Unit\AbstractUnit;
 
 class CreateNewTest extends AbstractUnit {
     public function testSetParameters() {

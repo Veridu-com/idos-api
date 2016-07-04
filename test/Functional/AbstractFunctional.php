@@ -6,18 +6,18 @@
 
 namespace Test\Functional;
 
-use Phinx\Console\PhinxApplication;
-use Phinx\Wrapper\TextWrapper;
-use Slim\App;
 use JsonSchema\RefResolver;
 use JsonSchema\Uri\UriResolver;
 use JsonSchema\Uri\UriRetriever;
 use JsonSchema\Validator;
+use Phinx\Console\PhinxApplication;
+use Phinx\Wrapper\TextWrapper;
+use Slim\App;
 
 abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     protected $schemaErrors;
 
- 	public static function setUpBeforeClass() {
+    public static function setUpBeforeClass() {
         $phinxApp         = new PhinxApplication();
         $phinxTextWrapper = new TextWrapper($phinxApp);
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
@@ -69,7 +69,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
             $schema
         );
 
-        if(!$validator->isValid())
+        if(! $validator->isValid())
             $this->getSchemaErrors($validator);
 
         return $validator->isValid();

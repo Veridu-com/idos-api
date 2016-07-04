@@ -6,9 +6,9 @@
 
 namespace Test\Unit\Validator;
 
-use Test\Unit\AbstractUnit;
 use App\Validator\Company;
 use Respect\Validation\Exceptions\ExceptionInterface;
+use Test\Unit\AbstractUnit;
 
 class CompanyTest extends AbstractUnit {
     protected $validator;

@@ -6,11 +6,11 @@
 
 namespace Test\Unit\Repository;
 
-use Test\Unit\AbstractUnit;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBCompany;
 use Illuminate\Database\Connection;
+use Test\Unit\AbstractUnit;
 
 class DBCompanyTest extends AbstractUnit {
     public function testFindBySlugNotFound() {

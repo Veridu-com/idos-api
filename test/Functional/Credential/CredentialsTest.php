@@ -6,20 +6,17 @@
 
 namespace Test\Functional\Credential;
 
-use Test\Functional\AbstractFunctional;
-
-use App\Boot\Middleware;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Test\Functional\AbstractFunctional;
 
 class CredentialsTest extends AbstractFunctional {
-
     public function testListAll() {
-    	$environment = Environment::mock(
+        $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies/veridu-ltd/credentials',
@@ -103,7 +100,7 @@ class CredentialsTest extends AbstractFunctional {
     }
 
     public function testDeleteAll() {
-		$environment = Environment::mock(
+        $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies/veridu-ltd/credentials',

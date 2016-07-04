@@ -6,12 +6,12 @@
 
 namespace Test\Unit\Repository;
 
-use Test\Unit\AbstractUnit;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\AbstractDBRepository;
 use Illuminate\Database\Connection\Query\Builder;
 use Illuminate\Database\ConnectionInterface;
+use Test\Unit\AbstractUnit;
 
 class AbstractDBRepositoryTest extends AbstractUnit {
     private function setProtectedProperty($object, $property, $value) {

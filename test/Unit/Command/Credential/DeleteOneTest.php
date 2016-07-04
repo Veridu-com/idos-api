@@ -5,8 +5,9 @@
  */
 
 namespace Test\Unit\Command\Credential;
-use Test\Unit\AbstractUnit;
+
 use App\Command\Credential\DeleteOne;
+use Test\Unit\AbstractUnit;
 
 class DeleteOneTest extends AbstractUnit {
     public function testSetParameters() {

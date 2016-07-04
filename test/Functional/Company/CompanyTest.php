@@ -6,19 +6,15 @@
 
 namespace Test\Functional\Company;
 
-use Test\Functional\AbstractFunctional;
-
-use App\Boot\Middleware;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Test\Functional\AbstractFunctional;
 
 class CompanyTest extends AbstractFunctional {
-
-
     public function testCreateCompany() {
         $environment = Environment::mock(
             [

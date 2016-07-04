@@ -6,8 +6,8 @@
 
 namespace Test\Unit\Command\Credential;
 
-use Test\Unit\AbstractUnit;
 use App\Command\Credential\UpdateOne;
+use Test\Unit\AbstractUnit;
 
 class UpdateOneTest extends AbstractUnit {
     public function testSetParameters() {

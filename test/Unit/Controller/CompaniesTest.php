@@ -2,7 +2,6 @@
 
 namespace Test\Unit\Controller;
 
-use Test\Unit\AbstractUnit;
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
@@ -17,6 +16,7 @@ use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Test\Unit\AbstractUnit;
 
 class CompaniesTest extends AbstractUnit {
     public function testListAll() {

@@ -6,8 +6,8 @@
 
 namespace Test\Unit\Command\Company;
 
-use Test\Unit\AbstractUnit;
 use App\Command\Company\DeleteAll;
+use Test\Unit\AbstractUnit;
 
 class DeleteAllTest extends AbstractUnit {
     public function testSetParameters() {

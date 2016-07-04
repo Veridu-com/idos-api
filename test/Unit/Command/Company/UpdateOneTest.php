@@ -6,8 +6,8 @@
 
 namespace Test\Unit\Command\Company;
 
-use Test\Unit\AbstractUnit;
 use App\Command\Company\UpdateOne;
+use Test\Unit\AbstractUnit;
 
 class UpdateOneTest extends AbstractUnit {
     public function testSetParameters() {

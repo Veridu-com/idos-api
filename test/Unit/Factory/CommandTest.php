@@ -6,8 +6,8 @@
 
 namespace Test\Unit\Factory;
 
-use Test\Unit\AbstractUnit;
 use App\Factory\Command;
+use Test\Unit\AbstractUnit;
 
 class CommandTest extends AbstractUnit {
     public function setUp() {

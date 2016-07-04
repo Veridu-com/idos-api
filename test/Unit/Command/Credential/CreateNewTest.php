@@ -6,8 +6,8 @@
 
 namespace Test\Unit\Command\Credential;
 
-use Test\Unit\AbstractUnit;
 use App\Command\Credential\CreateNew;
+use Test\Unit\AbstractUnit;
 
 class CreateNewTest extends AbstractUnit {
     public function testSetParameters() {
