@@ -85,9 +85,7 @@ class Company implements HandlerInterface {
         $company->public_key  = Key::createNewRandomKey()->saveToAsciiSafeString();
         $company->private_key = Key::createNewRandomKey()->saveToAsciiSafeString();
 
-        $this->repository->save($company);
-
-        return $company;
+        return $this->repository->save($company);
     }
 
     /**
@@ -104,9 +102,7 @@ class Company implements HandlerInterface {
         $company       = $this->repository->find($command->companyId);
         $company->name = $command->name;
 
-        $this->repository->save($company);
-
-        return $company;
+        return $this->repository->save($company);
     }
 
     /**

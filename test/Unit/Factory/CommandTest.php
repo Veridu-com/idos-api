@@ -19,7 +19,11 @@ class CommandTest extends AbstractUnit {
             'Company\CreateNew',
             'Company\DeleteAll',
             'Company\DeleteOne',
-            'Company\UpdateOne'
+            'Company\UpdateOne',
+            'Credential\CreateNew',
+            'Credential\DeleteAll',
+            'Credential\DeleteOne',
+            'Credential\UpdateOne'
         ];
         foreach ($commands as $command)
             $this->assertInstanceOf(
