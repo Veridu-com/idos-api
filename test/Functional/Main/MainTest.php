@@ -6,15 +6,13 @@
 
 namespace Test\Functional\Company;
 
-use Test\Functional\AbstractFunctional;
-use App\Boot\Middleware;
-use Slim\App;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Test\Functional\AbstractFunctional;
 
 class MainTest extends AbstractFunctional {
     public function testListEndpoints() {
