@@ -6,55 +6,15 @@
 
 namespace Test\Functional\Company;
 
-use App\Boot\Middleware;
-use JsonSchema\RefResolver;
-use JsonSchema\Uri\UriResolver;
-use JsonSchema\Uri\UriRetriever;
-use JsonSchema\Validator;
-use Slim\App;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Test\Functional\AbstractFunctional;
 
-class MainTest extends \PHPUnit_Framework_TestCase {
-    protected function getApp() {
-        $app = new App(
-            ['settings' => $GLOBALS['appSettings']]
-        );
-
-        require_once __ROOT__ . '/../config/dependencies.php';
-
-        require_once __ROOT__ . '/../config/middleware.php';
-
-        require_once __ROOT__ . '/../config/handlers.php';
-
-        require_once __ROOT__ . '/../config/routes.php';
-
-        return $app;
-    }
-
-    protected function validateSchema($schemaFile, $bodyResponse) {
-        $schemaFile = ltrim($schemaFile, '/');
-        $resolver   = new RefResolver(new UriRetriever(), new UriResolver());
-        $schema     = $resolver->resolve(
-            sprintf(
-                'file://' . __DIR__ . '/../../../schema/%s',
-                $schemaFile
-            )
-        );
-        $validator = new Validator();
-
-        $validator->check(
-            $bodyResponse,
-            $schema
-        );
-
-        return $validator->isValid();
-    }
-
+class MainTest extends AbstractFunctional {
     public function testListEndpoints() {
         $environment = Environment::mock(
             [
