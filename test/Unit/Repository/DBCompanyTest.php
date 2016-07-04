@@ -10,8 +10,9 @@ use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBCompany;
 use Illuminate\Database\Connection;
+use Test\Unit\AbstractUnit;
 
-class DBCompanyTest extends \PHPUnit_Framework_TestCase {
+class DBCompanyTest extends AbstractUnit {
     public function testFindBySlugNotFound() {
         $factory = new Entity();
         $factory->create('Company', []);

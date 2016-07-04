@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Company;
+namespace Test\Functional\Credential;
 
 use Slim\Http\Environment;
 use Slim\Http\Headers;
@@ -14,12 +14,12 @@ use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 
-class CompaniesTest extends AbstractFunctional {
-    public function testListCompanies() {
+class CredentialsTest extends AbstractFunctional {
+    public function testListAll() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
-                'REQUEST_URI'    => '/1.0/companies',
+                'REQUEST_URI'    => '/1.0/companies/veridu-ltd/credentials',
                 'REQUEST_METHOD' => 'GET',
                 'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
@@ -49,20 +49,21 @@ class CompaniesTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'company/listAll.json',
+                'credential/listAll.json',
                 json_decode($response->getBody())
             ),
             $this->schemaErrors
         );
+
     }
 
     public function testListAllMissingAuthorization() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
-                'REQUEST_URI'    => '/1.0/companies',
+                'REQUEST_URI'    => '/1.0/companies/veridu-ltd/credentials',
                 'REQUEST_METHOD' => 'GET',
-                'QUERY_STRING'   => 'companyPrivKey=invalidprivatekey'
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
         );
 
@@ -82,27 +83,27 @@ class CompaniesTest extends AbstractFunctional {
         $body = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(403, $response->getStatusCode());
-        $this->assertFalse($body['status']);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertTrue($body['status']);
 
         /*
          * Validates Json Schema against Json Response
          */
         $this->assertTrue(
             $this->validateSchema(
-                'error.json',
+                'credential/listAll.json',
                 json_decode($response->getBody())
             ),
             $this->schemaErrors
         );
+
     }
 
-    public function testDeleteAllCompanies() {
+    public function testDeleteAll() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
-                'REQUEST_URI'    => '/1.0/companies',
+                'REQUEST_URI'    => '/1.0/companies/veridu-ltd/credentials',
                 'REQUEST_METHOD' => 'DELETE',
                 'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
@@ -130,14 +131,15 @@ class CompaniesTest extends AbstractFunctional {
         $this->assertEquals(1, $body['deleted']);
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Json Schema with Json Response
          */
         $this->assertTrue(
             $this->validateSchema(
-                'company/deleteAll.json',
+                'credentials/deleteAll.json',
                 json_decode($response->getBody())
             ),
             $this->schemaErrors
         );
     }
+
 }

@@ -4,11 +4,12 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Company;
+namespace Test\Unit\Command\Company;
 
 use App\Command\Company\DeleteAll;
+use Test\Unit\AbstractUnit;
 
-class DeleteAllTest extends \PHPUnit_Framework_TestCase {
+class DeleteAllTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new DeleteAll();
         $this->assertNull($command->parentId);

@@ -6,77 +6,15 @@
 
 namespace Test\Functional\Company;
 
-use App\Boot\Middleware;
-use JsonSchema\RefResolver;
-use JsonSchema\Uri\UriResolver;
-use JsonSchema\Uri\UriRetriever;
-use JsonSchema\Validator;
-use Phinx\Console\PhinxApplication;
-use Phinx\Wrapper\TextWrapper;
-use Slim\App;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Test\Functional\AbstractFunctional;
 
-class CompanyTest extends \PHPUnit_Framework_TestCase {
-    public static function setUpBeforeClass() {
-        $phinxApp         = new PhinxApplication();
-        $phinxTextWrapper = new TextWrapper($phinxApp);
-        $phinxTextWrapper->setOption('configuration', 'phinx.yml');
-        $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->setOption('environment', 'testing');
-        $phinxTextWrapper->getRollback('testing', 0);
-        $phinxTextWrapper->getMigrate();
-        $phinxTextWrapper->getSeed();
-    }
-
-    public static function tearDownAfterClass() {
-        $phinxApp         = new PhinxApplication();
-        $phinxTextWrapper = new TextWrapper($phinxApp);
-        $phinxTextWrapper->setOption('configuration', 'phinx.yml');
-        $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->setOption('environment', 'testing');
-        $phinxTextWrapper->getRollback();
-    }
-
-    protected function getApp() {
-        $app = new App(
-            ['settings' => $GLOBALS['appSettings']]
-        );
-
-        require_once __ROOT__ . '/../config/dependencies.php';
-
-        require_once __ROOT__ . '/../config/middleware.php';
-
-        require_once __ROOT__ . '/../config/handlers.php';
-
-        require_once __ROOT__ . '/../config/routes.php';
-
-        return $app;
-    }
-
-    protected function validateSchema($schemaFile, $bodyResponse) {
-        $schemaFile = ltrim($schemaFile, '/');
-        $resolver   = new RefResolver(new UriRetriever(), new UriResolver());
-        $schema     = $resolver->resolve(
-            sprintf(
-                'file://' . __DIR__ . '/../../../schema/%s',
-                $schemaFile
-            )
-        );
-        $validator = new Validator();
-
-        $validator->check(
-            $bodyResponse,
-            $schema
-        );
-
-        return $validator->isValid();
-    }
-
+class CompanyTest extends AbstractFunctional {
     public function testCreateCompany() {
         $environment = Environment::mock(
             [
@@ -123,11 +61,11 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
                 'company/createNew.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 
-    public function testDeleteOneCompany() {
+    public function testDeleteOne() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -166,11 +104,11 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
                 'company/deleteOne.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 
-    public function testGetCompany() {
+    public function testGetOne() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -210,12 +148,12 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
                 'company/getOne.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
 
     }
 
-    public function testUpdateCompany() {
+    public function testUpdateOne() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
@@ -260,7 +198,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
                 'company/updateOne.json',
                 json_decode($response->getBody())
             ),
-            'Schema validation failed!'
+            $this->schemaErrors
         );
     }
 }

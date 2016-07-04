@@ -4,11 +4,12 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Company;
+namespace Test\Unit\Command\Company;
 
 use App\Command\Company\CreateNew;
+use Test\Unit\AbstractUnit;
 
-class CreateNewTest extends \PHPUnit_Framework_TestCase {
+class CreateNewTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new CreateNew();
         $this->assertNull($command->name);

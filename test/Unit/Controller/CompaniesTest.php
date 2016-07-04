@@ -1,6 +1,6 @@
 <?php
 
-namespace Test\Controller;
+namespace Test\Unit\Controller;
 
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteAll;
@@ -16,8 +16,9 @@ use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Test\Unit\AbstractUnit;
 
-class CompaniesTest extends \PHPUnit_Framework_TestCase {
+class CompaniesTest extends AbstractUnit {
     public function testListAll() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()

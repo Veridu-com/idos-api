@@ -4,11 +4,12 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Credential;
+namespace Test\Unit\Command\Credential;
 
 use App\Command\Credential\DeleteAll;
+use Test\Unit\AbstractUnit;
 
-class DeleteAllTest extends \PHPUnit_Framework_TestCase {
+class DeleteAllTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new DeleteAll();
         $this->assertNull($command->companyId);

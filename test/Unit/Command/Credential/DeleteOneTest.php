@@ -4,11 +4,12 @@
  * All rights reserved.
  */
 
-namespace Test\Command\Credential;
+namespace Test\Unit\Command\Credential;
 
 use App\Command\Credential\DeleteOne;
+use Test\Unit\AbstractUnit;
 
-class DeleteOneTest extends \PHPUnit_Framework_TestCase {
+class DeleteOneTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new DeleteOne();
         $this->assertNull($command->credentialId);

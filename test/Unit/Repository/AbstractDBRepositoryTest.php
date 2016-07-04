@@ -11,8 +11,9 @@ use App\Factory\Entity;
 use App\Repository\AbstractDBRepository;
 use Illuminate\Database\Connection\Query\Builder;
 use Illuminate\Database\ConnectionInterface;
+use Test\Unit\AbstractUnit;
 
-class AbstractDBRepositoryTest extends \PHPUnit_Framework_TestCase {
+class AbstractDBRepositoryTest extends AbstractUnit {
     private function setProtectedProperty($object, $property, $value) {
         $reflection          = new \ReflectionClass($object);
         $reflection_property = $reflection->getProperty($property);

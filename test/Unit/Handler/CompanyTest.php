@@ -16,8 +16,9 @@ use App\Repository\CompanyInterface;
 use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
 use Slim\Container;
+use Test\Unit\AbstractUnit;
 
-class CompanyTest extends \PHPUnit_Framework_TestCase {
+class CompanyTest extends AbstractUnit {
     public function testConstructCorrectInterface() {
         $repositoryMock = $this
             ->getMockBuilder(CompanyInterface::class)
