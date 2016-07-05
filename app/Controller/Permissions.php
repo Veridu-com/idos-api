@@ -71,8 +71,10 @@ class Permissions implements ControllerInterface {
 
         $body = [
             'data'    => $permissions->toArray(),
+            // TODO: Discuss with Flavio if this "updated" makes sense. 
+            // Should a deletion refresh it? How?
             'updated' => (
-                $permissions->isEmpty() ? time() : strtotime($permissions->max('updated_at'))
+                $permissions->isEmpty() ? time() : strtotime($permissions->max('created_at'))
             )
         ];
 
@@ -120,11 +122,10 @@ class Permissions implements ControllerInterface {
     }
 
     /**
-     * Retrieves one Permission of the Target Company based on path paramaters section and property.
+     * Retrieves one Permission of the Target Company based on path paramaters routeName.
      *
      * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string section
-     * @apiEndpointRequiredParam path string property
+     * @apiEndpointRequiredParam path string routeName
      * @apiEndpointResponse 200 Permission
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -134,13 +135,13 @@ class Permissions implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
-        $propName      = $request->getAttribute('property');
-        $permission       = $this->repository->findOne($targetCompany->id, $section, $propName);
+        $routeName     = $request->getAttribute('routeName');
+        $permission    = $this->repository->findOne($targetCompany->id, $routeName);
+
 
         $body = [
             'data'    => $permission->toArray(),
-            'updated' => strtotime($permission->updated_at)
+            'updated' => strtotime($permission->created_at)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -216,11 +217,10 @@ class Permissions implements ControllerInterface {
     }
 
     /**
-     * Deletes one Permission of the Target Company based on path paramaters section and property.
+     * Deletes one Permission of the Target Company based on path paramater routeName.
      *
      * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string section
-     * @apiEndpointRequiredParam path string property
+     * @apiEndpointRequiredParam path string routeName
      * @apiEndpointResponse 200 -
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -230,14 +230,12 @@ class Permissions implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
-        $property      = $request->getAttribute('property');
+        $routeName = $request->getAttribute('routeName');
 
         $command = $this->commandFactory->create('Permission\\DeleteOne');
         $command
             ->setParameter('companyId', $targetCompany->id)
-            ->setParameter('section', $section)
-            ->setParameter('property', $property);
+            ->setParameter('routeName', $routeName);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

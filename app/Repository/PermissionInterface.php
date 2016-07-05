@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -31,4 +31,17 @@ interface PermissionInterface extends RepositoryInterface {
      * @return \App\Entity\Permission
      */
     public function deleteByCompanyId($companyId);
+
+    /**
+     * Finds a Permission based on its company_id and route_name.
+     *
+     * @param string $companyId
+     *
+     * @param string $routeName
+     *
+     * @throws App\Exception\NotFound
+     *
+     * @return \App\Entity\Permission
+     */
+    public function findOne($companyId, $routeName);
 }

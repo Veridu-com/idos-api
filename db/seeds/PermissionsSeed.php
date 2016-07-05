@@ -15,7 +15,13 @@ class PermissionsSeed extends AbstractSeed {
             'companies:deleteAll',
             'companies:getOne',
             'companies:updateOne',
-            'companies:deleteOne'
+            'companies:deleteOne',
+            'settings:listAll',
+            'settings:createNew',
+            'settings:deleteAll',
+            'settings:getOne',
+            'settings:updateOne',
+            'settings:deleteOne',
         ];
 
         $data = [];

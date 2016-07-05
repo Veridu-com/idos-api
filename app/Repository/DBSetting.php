@@ -26,19 +26,9 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
      */
     protected $entityName = 'Setting';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByPubKey($pubKey) {
-        return $this->findByKey('public', $pubKey);
-    }
 
     /**
-     * Find one setting given its identifiers.
-     *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
-     * @param string propName  setting's propName
+     * {@inheritdoc}
      */
     public function findOne($companyId, $section, $propName) {
         return $this->getOneByWhereConstraints([
@@ -49,11 +39,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     }
 
     /**
-     * Updates one setting.
-     *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
-     * @param string propName  setting's propName
+     * {@inheritdoc}
      */
     public function update(EntityInterface &$entity) {
         $serialized = $entity->serialize();
@@ -73,10 +59,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     }
 
     /**
-     * Retrieves all settings from company that has the given section.
-     *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
+     * {@inheritdoc}
      */
     public function getAllByCompanyIdAndSection($companyId, $section) {
         return $this->getAllByWhereConstraints([

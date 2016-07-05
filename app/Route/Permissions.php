@@ -23,11 +23,9 @@ class Permissions implements RouteInterface {
     public static function getPublicNames() {
         return [
             'permissions:listAll',
-            'permissions:listAllFromSection',
             'permissions:deleteAll',
             'permissions:createNew',
             'permissions:getOne',
-            'permissions:updateOne',
             'permissions:deleteOne'
         ];
     }
@@ -49,11 +47,9 @@ class Permissions implements RouteInterface {
         $authMiddleware = $container->get('authMiddleware');
 
         self::listAll($app, $authMiddleware);
-        self::listAllFromSection($app, $authMiddleware);
         self::deleteAll($app, $authMiddleware);
         self::createNew($app, $authMiddleware);
         self::getOne($app, $authMiddleware);
-        self::updateOne($app, $authMiddleware);
         self::deleteOne($app, $authMiddleware);
     }
 
@@ -85,35 +81,6 @@ class Permissions implements RouteInterface {
             )
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:listAll');
-    }
-    /**
-     * List all Permissions from section.
-     *
-     * Retrieve a complete list of all permissions that belong to the requesting company and has the given section.
-     *
-     * @apiEndpoint GET /companies/{companySlug}/permissions/{section}
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     *
-     * @return void
-     *
-     * @link docs/companies/permissions/listAllFromSection.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
-     * @see App\Controller\Permissions::listAllFromSection
-     */
-    private static function listAllFromSection(App $app, callable $auth) {
-        $app
-            ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{section:[a-zA-Z0-9_-]+}',
-                'App\Controller\Permissions:listAllFromSection'
-            )
-            ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('permissions:listAllFromSection');
     }
 
     /**
@@ -181,7 +148,7 @@ class Permissions implements RouteInterface {
      *
      * Retrieves all public information from a Permission.
      *
-     * @apiEndpoint GET /companies/{companySlug}/permissions/{section}/{property}
+     * @apiEndpoint GET /companies/{companySlug}/permissions/{routeName}
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -197,7 +164,8 @@ class Permissions implements RouteInterface {
     private static function getOne(App $app, callable $auth) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
+                // TODO: Regex that matches route:Names
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
                 'App\Controller\Permissions:getOne'
             )
             ->add($auth(Auth::COMP_PRIVKEY))
@@ -205,39 +173,11 @@ class Permissions implements RouteInterface {
     }
 
     /**
-     * Update a single Permission.
-     *
-     * Updates Permission's specific information.
-     *
-     * @apiEndpoint PUT /companies/{companySlug}/permissions/{section}/{property}
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     *
-     * @return void
-     *
-     * @link docs/companies/permissions/updateOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
-     * @see App\Controller\Permissions::updateOne
-     */
-    private static function updateOne(App $app, callable $auth) {
-        $app
-            ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
-                'App\Controller\Permissions:updateOne'
-            )
-            ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('permissions:updateOne');
-    }
-
-    /**
      * Deletes a single Permission.
      *
      * Deletes a single Permission that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/permissions/{section}/{property}
+     * @apiEndpoint DELETE /companies/{companySlug}/permissions/{routeName}
      * @apiAuth header key compPrivKey Company's Private Key
      * @apiAuth query key compPrivKey Company's Private Key
      *
@@ -255,7 +195,7 @@ class Permissions implements RouteInterface {
     private static function deleteOne(App $app, callable $auth) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
                 'App\Controller\Permissions:deleteOne'
             )
             ->add($auth(Auth::COMP_PRIVKEY))

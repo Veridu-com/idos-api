@@ -11,16 +11,6 @@ namespace App\Repository;
  */
 interface SettingInterface extends RepositoryInterface {
     /**
-     * Finds a Setting based on its Public Key.
-     *
-     * @param string $pubKey
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return \App\Entity\Setting
-     */
-    public function findByPubKey($pubKey);
-    /**
      * Gets all Settings based on their Company Id.
      *
      * @param int $companyId
@@ -36,4 +26,33 @@ interface SettingInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByCompanyId($companyId);
+    /**
+     * Find one setting based on their companyId, section and property name
+     *
+     * @param int    $companyId
+     * @param string $section
+     * @param string $propName
+     *
+     * @return App\Entity\Setting
+     */
+    public function findOne($companyId, $section, $propName);
+    /**
+     * Retrieves all settings from company that has the given section.
+     *
+     * @param int    companyId setting's company_id
+     * @param string section   setting's section
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllByCompanyIdAndSection($companyId, $section);
+    /**
+     * Updates one setting.
+     *
+     * @param int    companyId setting's company_id
+     * @param string section   setting's section
+     * @param string propName  setting's propName
+     *
+     * @return int
+     */
+    public function update(\App\Entity\EntityInterface &$entity);
 }

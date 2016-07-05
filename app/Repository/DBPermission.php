@@ -53,7 +53,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
      * @param int    companyId permission's company_id
      * @param string routeName   permission's routeName
      */
-    public function deleteOne($companyId, $routeName, $property) {
+    public function deleteOne($companyId, $routeName) {
         return $this->query()
             ->where('company_id', $companyId)
             ->where('route_name', $routeName)
