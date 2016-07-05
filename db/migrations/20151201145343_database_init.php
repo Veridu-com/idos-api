@@ -299,6 +299,25 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
+
+        $permissions = $this->table('permissions');
+        $permissions
+            ->addColumn('company_id', 'integer', ['null' => false])
+            ->addColumn('route_name', 'text', ['null' => false])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addIndex('company_id')
+            ->addIndex(['company_id', 'route_name'], ['unique' => true])
+            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         $companyWhiteList = $this->table('company_whitelist');
         $companyWhiteList
             ->addColumn('company_id', 'integer', ['null' => false])
