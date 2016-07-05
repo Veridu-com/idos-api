@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -76,7 +76,7 @@ class Credentials implements ControllerInterface {
             'status'  => true,
             'data'    => $credentials->toArray(),
             'updated' => (
-                $credentials->isEmpty() ? time() : strtotime($credentials->max('updated_at'))
+                $credentials->isEmpty() ? time() : $credentials->max('updated_at')
             )
         ];
 
@@ -170,7 +170,7 @@ class Credentials implements ControllerInterface {
 
         $body = [
             'data'    => $credential->toArray(),
-            'updated' => strtotime($credential->updated_at)
+            'updated' => $credential->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -206,7 +206,7 @@ class Credentials implements ControllerInterface {
 
         $body = [
             'data'    => $credential->toArray(),
-            'updated' => strtotime($credential->updated_at)
+            'updated' => $credential->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

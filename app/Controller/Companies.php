@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -77,7 +77,7 @@ class Companies implements ControllerInterface {
         $body = [
             'data'    => $companies->toArray(),
             'updated' => (
-                $companies->isEmpty() ? time() : strtotime($companies->max('updated_at'))
+                $companies->isEmpty() ? time() : $companies->max('updated_at')
             )
         ];
 
@@ -107,7 +107,7 @@ class Companies implements ControllerInterface {
 
         $body = [
             'data'    => $targetCompany->toArray(),
-            'updated' => strtotime($targetCompany->updated_at)
+            'updated' => $targetCompany->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -15,10 +15,10 @@
             "description": "List of valid HTTP Methods for this Endpoint",
             "type": "array",
             "items": {
-                "enum": ["GET", "POST", "DELETE", "PUT"],
-                "minItems": 1,
-                "uniqueItems": true
-            }
+                "enum": ["GET", "POST", "DELETE", "PUT"]
+            },
+            "minItems": 1,
+            "uniqueItems": true
         }
     },
     "required": [

@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -57,7 +57,7 @@ class Main implements ControllerInterface {
     /**
      * Lists all public endpoints.
      *
-     * @apiEndpointResponse 200 schema/main/listAll.json
+     * @apiEndpointResponse 200 schema/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
