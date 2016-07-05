@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -57,6 +57,8 @@ class Main implements ControllerInterface {
     /**
      * Lists all public endpoints.
      *
+     * @apiEndpointResponse 200 schema/listAll.json
+     *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
@@ -65,18 +67,23 @@ class Main implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
         $classList = [
             'Companies',
-            'Credentials'
+            'Credentials',
+            'Settings'
         ];
         $routeList    = [];
         $publicRoutes = [];
 
         foreach ($this->router->getRoutes() as $route)
-            $routeList[$route->getName()] = $route->getPattern();
+            $routeList[$route->getName()] = [
+                'name'    => $route->getName(),
+                'uri'     => $route->getPattern(),
+                'methods' => $route->getMethods()
+            ];
 
         foreach ($classList as $className) {
             $routeClass = sprintf('\\App\\Route\\%s', $className);
             foreach ($routeClass::getPublicNames() as $routeName)
-                $publicRoutes[$routeName] = $routeList[$routeName];
+                $publicRoutes[] = $routeList[$routeName];
         }
 
         $command = $this->commandFactory->create('ResponseDispatch');

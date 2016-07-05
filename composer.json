@@ -39,6 +39,7 @@
         "giggsey/libphonenumber-for-php": "^7.3",
         "roave/security-advisories": "dev-master",
         "raveren/kint": "^1.0",
+        "justinrainbow/json-schema": "^2.0",
         "fzaninotto/faker": "^1.6"
     },
     "require-dev": {

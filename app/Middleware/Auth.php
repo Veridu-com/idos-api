@@ -1,11 +1,12 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
 namespace App\Middleware;
 
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\CompanyInterface;
 use App\Repository\CredentialInterface;
@@ -217,21 +218,21 @@ class Auth {
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
         if (! $token->validate($this->jwtvalidation))
-            throw new \Exception('Token Validation Failed');
+            throw new AppException('Token Validation Failed');
 
         // Retrieves JWT Issuer
         $pubKey     = $token->getClaim('iss');
         $credential = $this->credentialRepository->findByPubKey($pubKey);
         if ($credential->isEmpty())
-            throw new \Exception('Invalid Credential');
+            throw new AppException('Invalid Credential');
 
         // JWT Signature Verification
         if (! $token->verify($this->jwtSigner, $credential->private_key))
-            throw new \Exception('Token Verification Failed');
+            throw new AppException('Token Verification Failed');
 
         // Retrieves JWT Subject
         if (! $token->hasClaim('sub'))
-            throw new \Exception('Missing Subject Claim');
+            throw new AppException('Missing Subject Claim');
         $userName = $token->getClaim('sub');
 
         // If it's a new user, creates it
@@ -262,7 +263,7 @@ class Auth {
     private function handleUserPubKey(ServerRequestInterface $request, $reqKey) {
         $targetUser = $this->userRepository->findByPubKey($reqKey);
         if ($targetUser->isEmpty())
-            throw new \Exception('Invalid Credential');
+            throw new AppException('Invalid Credential');
 
         return $request
             // Stores Target User for future use
@@ -280,7 +281,7 @@ class Auth {
     private function handleUserPrivKey(ServerRequestInterface $request, $reqKey) {
         $actingUser = $this->userRepository->findByPrivKey($reqKey);
         if ($actingUser->isEmpty())
-            throw new \Exception('Invalid Credential');
+            throw new AppException('Invalid Credential');
 
         return $request
             // Stores Acting User for future use
@@ -298,7 +299,7 @@ class Auth {
     private function handleCompanyPubKey(ServerRequestInterface $request, $reqKey) {
         $actingCompany = $this->companyRepository->findByPubKey($reqKey);
         if ($actingCompany->isEmpty())
-            throw new \Exception('Invalid Credential');
+            throw new AppException('Invalid Credential');
 
         return $request
             // Stores Acting Company for future use
@@ -321,7 +322,7 @@ class Auth {
                 // Stores Acting Company for future use
                 ->withAttribute('actingCompany', $actingCompany);
         } catch (NotFound $exception) {
-            throw new \Exception('Invalid Credential');
+            throw new AppException('Invalid Credential');
         }
     }
 
@@ -339,27 +340,27 @@ class Auth {
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
         if (! $token->validate($this->jwtvalidation))
-            throw new \Exception('Token Validation Failed');
+            throw new AppException('Token Validation Failed');
 
         // Retrieves JWT Issuer
         $issuerKey        = $token->getClaim('iss');
         $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
 
         if ($issuerCredential->isEmpty())
-            throw new \Exception('Invalid Issuer Credential');
+            throw new AppException('Invalid Issuer Credential');
 
         // JWT Signature Verification
         if (! $token->verify($this->jwtSigner, $issuerCredential->private_key))
-            throw new \Exception('Token Verification Failed');
+            throw new AppException('Token Verification Failed');
 
         // Retrieves JWT Subject
         if (! $token->hasClaim('sub'))
-            throw new \Exception('Missing Subject Claim');
+            throw new AppException('Missing Subject Claim');
         $subjectKey        = $token->getClaim('sub');
         $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
 
         if ($subjectCredential->isEmpty())
-            throw new \Exception('Invalid Subject Credential');
+            throw new AppException('Invalid Subject Credential');
 
         // Retrieves Issuer Credential's owner
         $actingCompany = $this->companyRepository->findById($issuerCredential->company_id);
@@ -389,7 +390,7 @@ class Auth {
     private function handleCredentialPubKey(ServerRequestInterface $request, $reqKey) {
         $credential = $this->credentialRepository->findByPubKey($reqKey);
         if ($credential->isEmpty())
-            throw new \Exception('Invalid Credential');
+            throw new AppException('Invalid Credential');
 
         // Retrieves Credential's owner
         $actingCompany = $this->companyRepository->findById($credential->company_id);
@@ -413,7 +414,7 @@ class Auth {
     private function handleCredentialPrivKey(ServerRequestInterface $request, $reqKey) {
         $credential = $this->credentialRepository->findByPrivKey($reqKey);
         if ($credential->isEmpty())
-            throw new \Exception('Invalid Credential');
+            throw new AppException('Invalid Credential');
 
         // Retrieves Credential's owner
         $actingCompany = $this->companyRepository->findById($credential->company_id);
@@ -473,7 +474,7 @@ class Auth {
      * @param \Psr\Http\Message\ResponseInterface      $response
      * @param callable                                 $next
      *
-     * @throws \Exception
+     * @throws App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -511,14 +512,14 @@ class Auth {
                     // Self Reference for User Token / User Private Key
                     $user = $request->getAttribute('actingUser');
                     if (empty($user))
-                        throw new \Exception('InvalidUserNameReference');
+                        throw new AppException('InvalidUserNameReference');
                 } else {
                     // Load User
                     $company = $request->getAttribute('targetCompany');
                     if (empty($company))
                         $company = $request->getAttribute('actingCompany');
                     if (empty($company))
-                        throw new \Exception('InvalidRequest');
+                        throw new AppException('InvalidRequest');
                     $user = $this->userRepository->findOrCreate($routeInfo[2]['userName'], $company->id);
                 }
 
@@ -533,17 +534,17 @@ class Auth {
                     // Self Reference for Credential Token / Compamny Private Key
                     $targetCompany = $request->getAttribute('actingCompany');
                     if (empty($targetCompany))
-                        throw new \Exception('InvalidCompanyNameReference');
+                        throw new AppException('InvalidCompanyNameReference');
                 } else {
                     // Load Company
                     $targetCompany = $this->companyRepository->findBySlug($routeInfo[2]['companySlug']);
                     if (empty($targetCompany))
-                        throw new \Exception('InvalidCompanyNameReference');
+                        throw new AppException('InvalidCompanyNameReference');
                     // Checks if access hierarchy is respected (Parent to Child or Company to itself)
                     if ($this->authorizationRequirement != self::NONE) {
                         $actingCompany = $request->getAttribute('actingCompany');
                         if (($actingCompany->id != $targetCompany->id) && ($actingCompany->id != $targetCompany->parent_id))
-                            throw new \Exception('AccessDenied');
+                            throw new AppException('AccessDenied');
                     }
                 }
 
@@ -554,6 +555,6 @@ class Auth {
             return $next($request, $response);
         }
 
-        throw new \Exception('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
+        throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
     }
 }

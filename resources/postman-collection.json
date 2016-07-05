@@ -373,7 +373,7 @@
 					"helperAttributes": {},
 					"time": 1467663810870,
 					"name": "Settings | get One",
-					"description": "GET /companies/{companySlug}/segttings/{section}/{property}",
+					"description": "GET /companies/{companySlug}/settings/{section}/{property}",
 					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
 					"responses": []
 				},
@@ -449,7 +449,7 @@
 					"helperAttributes": {},
 					"time": 1467663801316,
 					"name": "Settings | get All from section",
-					"description": "GET /companies/{companySlug}/segttings/{section}",
+					"description": "GET /companies/{companySlug}/settings/{section}",
 					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
 					"responses": []
 				},

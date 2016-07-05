@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /companies",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Settings response payload",
+            "type": "object",
+            "$ref": "companyEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

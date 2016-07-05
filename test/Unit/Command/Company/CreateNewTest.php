@@ -1,21 +1,22 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
-namespace Test\Command;
+namespace Test\Unit\Command\Company;
 
-use App\Command\CompanyCreateNew;
+use App\Command\Company\CreateNew;
+use Test\Unit\AbstractUnit;
 
-class CompanyCreateNewTest extends \PHPUnit_Framework_TestCase {
+class CreateNewTest extends AbstractUnit {
     public function testSetParameters() {
-        $command = new CompanyCreateNew();
+        $command = new CreateNew();
         $this->assertNull($command->name);
         $this->assertNull($command->parentId);
 
         $this->assertInstanceOf(
-            CompanyCreateNew::class,
+            CreateNew::class,
             $command->setParameters([])
         );
         $this->assertNull($command->name);

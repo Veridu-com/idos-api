@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -9,7 +9,7 @@ namespace App\Exception;
 /**
  * Base Application Exception.
  *
- * @apiStatusCode 500 Application Internal Error
+ * @apiEndpointResponse 500 schema/error.json
  */
 class AppException extends \Exception {
     /**

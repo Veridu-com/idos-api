@@ -1,0 +1,20 @@
+{
+    "$schema" : "http://json-schema.org/draft-04/schema#",
+    "title": "DELETE /companies/{companySlug}",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "deleted": {
+          "description": "Number of sucessfully deleted companies",
+          "type": "integer",
+          "minimum": 0
+        }
+    },
+    "required": [
+        "status",
+        "deleted"
+    ]
+}

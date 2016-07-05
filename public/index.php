@@ -1,8 +1,9 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
 date_default_timezone_set('UTC');
 setlocale(LC_ALL, 'en_US.UTF8');
 mb_http_output('UTF-8');

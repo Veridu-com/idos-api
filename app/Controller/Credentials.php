@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -57,10 +57,10 @@ class Credentials implements ControllerInterface {
     /**
      * Lists all Credentials that belongs to the Target Company.
      *
-     * @apiEndpointParam query int after Initial Credential creation date (lower bound)
-     * @apiEndpointParam query int before Final Credential creation date (upper bound)
-     * @apiEndpointParam query int page Current page
-     * @apiEndpointResponse 200 Credential[]
+     * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Credential creation date (lower bound)
+     * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Credential creation date (upper bound)
+     * @apiEndpointParam query int page 10|1 Current page
+     * @apiEndpointResponse 200 schema/credential/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -76,7 +76,7 @@ class Credentials implements ControllerInterface {
             'status'  => true,
             'data'    => $credentials->toArray(),
             'updated' => (
-                $credentials->isEmpty() ? time() : strtotime($credentials->max('updated_at'))
+                $credentials->isEmpty() ? time() : $credentials->max('updated_at')
             )
         ];
 
@@ -92,7 +92,9 @@ class Credentials implements ControllerInterface {
     /**
      * Creates a new Credential for the Target Company.
      *
-     * @apiEndpointResponse 201 Credential
+     * @apiEndpointRequiredParam body string name My-Credential Credential name
+     * @apiEndpointRequiredParam body bool production false Production flag
+     * @apiEndpointResponse 201 schema/credential/createNew.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -110,8 +112,7 @@ class Credentials implements ControllerInterface {
         $credential = $this->commandBus->handle($command);
 
         $body = [
-            'status' => true,
-            'data'   => $credential
+            'data'   => $credential->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -126,7 +127,7 @@ class Credentials implements ControllerInterface {
     /**
      * Deletes all Credentials that belongs to the Target Company.
      *
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 schema/credential/deleteAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -137,9 +138,17 @@ class Credentials implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Credential\\DeleteAll', [$targetCompany->id]);
-        $this->commandBus->handle($command);
+        $deleted = $this->commandBus->handle($command);
 
-        $command = $this->commandFactory->create('ResponseDispatch', [$request, $response]);
+        $body = [
+            'deleted' => $deleted
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
     }
@@ -147,7 +156,7 @@ class Credentials implements ControllerInterface {
     /**
      * Retrieves one Credential of the Target Company based on the Credential's Public Key.
      *
-     * @apiEndpointResponse 200 Credential
+     * @apiEndpointResponse 200 schema/credential/getOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -161,7 +170,7 @@ class Credentials implements ControllerInterface {
 
         $body = [
             'data'    => $credential->toArray(),
-            'updated' => strtotime($credential->updated_at)
+            'updated' => $credential->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -176,7 +185,8 @@ class Credentials implements ControllerInterface {
     /**
      * Updates one Credential of the Target Company based on the Credential's Public Key.
      *
-     * @apiEndpointResponse 200 Credential
+     * @apiEndpointRequiredParam body string name New-Name New Credential name
+     * @apiEndpointResponse 200 schema/credential/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -196,7 +206,7 @@ class Credentials implements ControllerInterface {
 
         $body = [
             'data'    => $credential->toArray(),
-            'updated' => strtotime($credential->updated_at)
+            'updated' => $credential->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -211,7 +221,7 @@ class Credentials implements ControllerInterface {
     /**
      * Deletes one Credential of the Target Company based on the Credential's Public Key.
      *
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 schema/credential/deleteOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response

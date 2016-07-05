@@ -1,44 +1,27 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
-namespace Test\Functional\Validator;
+namespace Test\Functional\Company;
 
-use App\Boot\Middleware;
-use Slim\App;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Test\Functional\AbstractFunctional;
 
-class CompaniesTest extends \PHPUnit_Framework_TestCase {
-    protected function getApp() {
-        $app = new App(
-            ['settings' => $GLOBALS['appSettings']]
-        );
-
-        require_once __ROOT__ . '/../config/dependencies.php';
-
-        require_once __ROOT__ . '/../config/middleware.php';
-
-        require_once __ROOT__ . '/../config/handlers.php';
-
-        require_once __ROOT__ . '/../config/routes.php';
-
-        return $app;
-    }
-
+class CompaniesTest extends AbstractFunctional {
     public function testListCompanies() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
                 'REQUEST_METHOD' => 'GET',
-                'QUERY_STRING'   => 'companyPrivKey=testCompanyPrivKey'
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
         );
 
@@ -55,27 +38,31 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $app = $this->getApp();
         $app->process($request, $response);
 
-        $body = $response->getParsedBody();
+        $body = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
         $this->assertTrue($body['status']);
-        $this->assertArrayHasKey('data', $body);
-        $this->assertNotEmpty($body['data']);
-        $this->assertArrayHasKey('updated', $body);
+
+        /*
+         * Validates Json Schema against Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'company/listAll.json',
+                json_decode($response->getBody())
+            ),
+            $this->schemaErrors
+        );
     }
 
-    public function testListCompaniesMissingAuthorization() {
-        $environment = Environment::m
+    public function testListAllMissingAuthorization() {
         $environment = Environment::mock(
-            [
-                'SCRIPT_NAME'    => '/index.php',ock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
                 'REQUEST_METHOD' => 'GET',
+                'QUERY_STRING'   => 'companyPrivKey=invalidprivatekey'
             ]
         );
 
@@ -97,19 +84,27 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($body);
 
         $this->assertEquals(403, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
         $this->assertFalse($body['status']);
-        $this->assertArrayHasKey('error', $body);
-        $this->assertArrayHasKey('code', $body['error']);
-        $this->assertArrayHasKey('message', $body['error']);
+
+        /*
+         * Validates Json Schema against Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode($response->getBody())
+            ),
+            $this->schemaErrors
+        );
     }
 
-    public function testDeleteCompanies() {
+    public function testDeleteAllCompanies() {
         $environment = Environment::mock(
             [
                 'SCRIPT_NAME'    => '/index.php',
                 'REQUEST_URI'    => '/1.0/companies',
                 'REQUEST_METHOD' => 'DELETE',
+                'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
             ]
         );
 
@@ -131,7 +126,18 @@ class CompaniesTest extends \PHPUnit_Framework_TestCase {
         $this->assertNotEmpty($body);
 
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertArrayHasKey('status', $body);
         $this->assertTrue($body['status']);
+        $this->assertEquals(1, $body['deleted']);
+
+        /*
+         * Validates Json Schema against Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'company/deleteAll.json',
+                json_decode($response->getBody())
+            ),
+            $this->schemaErrors
+        );
     }
 }

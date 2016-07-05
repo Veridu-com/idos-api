@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -69,7 +69,7 @@ class Credential implements HandlerInterface {
      *
      * @param App\Command\Credential\CreateNew $command
      *
-     * @return array
+     * @return App\Entity\Credential
      */
     public function handleCreateNew(CreateNew $command) {
         $this->validator->assertName($command->name);
@@ -89,7 +89,7 @@ class Credential implements HandlerInterface {
 
         $credential = $this->repository->save($credential);
 
-        return $credential->toArray();
+        return $credential;
     }
 
     /**
@@ -97,7 +97,7 @@ class Credential implements HandlerInterface {
      *
      * @param App\Command\Credential\UpdateOne $command
      *
-     * @return array
+     * @return App\Entity\Credential
      */
     public function handleUpdateOne(UpdateOne $command) {
         $this->validator->assertId($command->credentialId);
@@ -116,7 +116,7 @@ class Credential implements HandlerInterface {
      *
      * @param App\Command\Credential\DeleteOne $command
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteOne(DeleteOne $command) {
         $this->validator->assertId($command->credentialId);
@@ -129,11 +129,11 @@ class Credential implements HandlerInterface {
      *
      * @param App\Command\Credential\DeleteAll $command
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteAll(DeleteAll $command) {
         $this->validator->assertId($command->companyId);
 
-        $this->repository->deleteByCompanyId($command->companyId);
+        return $this->repository->deleteByCompanyId($command->companyId);
     }
 }

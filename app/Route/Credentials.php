@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -61,8 +61,10 @@ class Credentials implements RouteInterface {
      * Retrieve a complete list of all credentials that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiGroup Company Credentials
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -70,9 +72,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/listAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -91,8 +91,10 @@ class Credentials implements RouteInterface {
      * Create a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiGroup Company Credentials
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -100,9 +102,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/createNew.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -121,8 +121,10 @@ class Credentials implements RouteInterface {
      * Delete all credentials that belong to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiGroup Company Credentials
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -130,9 +132,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/deleteAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -151,6 +151,11 @@ class Credentials implements RouteInterface {
      * Retrieves all public information from a Credential
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}
+     * @apiGroup Company Credentials
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -158,9 +163,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/getOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::getOne
      */
     private static function getOne(App $app, callable $auth) {
@@ -178,7 +181,12 @@ class Credentials implements RouteInterface {
      *
      * Updates Credential's specific information
      *
-     * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}
+     * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}
+     * @apiGroup Company Credentials
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -186,9 +194,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/updateOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -207,8 +213,11 @@ class Credentials implements RouteInterface {
      * Deletes a single Credential that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiGroup Company Credentials
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -216,9 +225,7 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/deleteOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
      * @see App\Controller\Credentials::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {

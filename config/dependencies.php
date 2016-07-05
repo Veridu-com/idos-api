@@ -1,8 +1,9 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
 use App\Command;
 use App\Exception\AppException;
 use App\Factory;
@@ -39,8 +40,9 @@ use Stash\Driver\Sqlite;
 use Stash\Pool;
 use Whoops\Handler\PrettyPageHandler;
 
-if (! isset($app))
+if (! isset($app)) {
     die('$app is not set!');
+}
 
 $container = $app->getContainer();
 
@@ -165,8 +167,10 @@ $container['notAllowedHandler'] = function (ContainerInterface $container) {
         ResponseInterface $response,
         array $methods
     ) use ($container) {
-        if ($request->isOptions())
+        if ($request->isOptions()) {
             return $response->withStatus(204);
+        }
+
         throw new \Exception('notAllowedHandler');
     };
 };
@@ -188,13 +192,15 @@ $container['log'] = function (ContainerInterface $container) {
 // Stash Cache
 $container['cache'] = function (ContainerInterface $container) {
     $settings = $container->get('settings');
-    if (empty($settings['cache']['driver']))
+    if (empty($settings['cache']['driver'])) {
         $settings['cache']['driver'] = 'ephemeral';
+    }
 
-    if (empty($settings['cache']['options']))
+    if (empty($settings['cache']['options'])) {
         $cacheOptions = [];
-    else
+    } else {
         $cacheOptions = $settings['cache']['options'];
+    }
 
     switch ($settings['cache']['driver']) {
         case 'filesystem':
@@ -217,9 +223,9 @@ $container['cache'] = function (ContainerInterface $container) {
             $driver = new Ephemeral();
     }
 
-    if ($driver instanceof Ephemeral)
+    if ($driver instanceof Ephemeral) {
         $pool = new Pool($driver);
-    else {
+    } else {
         $composite = new Composite(
             [
                 'drivers' => [
@@ -277,10 +283,11 @@ $container['commandBus'] = function (ContainerInterface $container) {
         ),
         new HandleClassNameInflector()
     );
-    if ($settings['debug'])
+    if ($settings['debug']) {
         $formatter = new ClassPropertiesFormatter();
-    else
+    } else {
         $formatter = new ClassNameFormatter();
+    }
 
     return new CommandBus(
         [
@@ -335,11 +342,12 @@ $container['repositoryFactory'] = function (ContainerInterface $container) {
             $strategy = new Repository\DBStrategy($container->get('entityFactory'), $container->get('db'));
     }
 
-    if ((isset($settings['repository']['cached'])) && ($settings['repository']['cached']))
+    if ((isset($settings['repository']['cached'])) && ($settings['repository']['cached'])) {
         $strategy = new Repository\CachedStrategy(
             new Factory\Repository($strategy),
             $container->get('cache')
         );
+    }
 
     return new Factory\Repository($strategy);
 };

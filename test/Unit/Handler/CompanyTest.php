@@ -1,23 +1,24 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
 namespace Test\Unit\Handler;
 
-use App\Command\CompanyCreateNew;
-use App\Command\CompanyDeleteOne;
+use App\Command\Company\CreateNew;
+use App\Command\Company\DeleteOne;
+use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Company;
-use App\Model\Company as CompanyModel;
 use App\Repository\CompanyInterface;
 use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
 use Slim\Container;
+use Test\Unit\AbstractUnit;
 
-class CompanyTest extends \PHPUnit_Framework_TestCase {
+class CompanyTest extends AbstractUnit {
     public function testConstructCorrectInterface() {
         $repositoryMock = $this
             ->getMockBuilder(CompanyInterface::class)
@@ -74,7 +75,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $this->assertInstanceOf(Company::class, $container[Company::class]);
     }
 
-    public function testHandleCompanyCreateNewInvalidCompanyName() {
+    public function testHandleCreateNewInvalidCompanyName() {
         $repositoryMock = $this
             ->getMockBuilder(CompanyInterface::class)
             ->getMock();
@@ -86,19 +87,22 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $this->setExpectedException('InvalidArgumentException');
 
         $commandMock = $this
-            ->getMockBuilder(CompanyCreateNew::class)
-            ->disableOriginalConstructor()
+            ->getMockBuilder(CreateNew::class)
             ->getMock();
         $commandMock->name = '';
 
-        $handler->handleCompanyCreateNew($commandMock);
+        $handler->handleCreateNew($commandMock);
     }
 
-    public function testHandleCompanyCreateNew() {
+    public function testHandleCreateNew() {
+        $dbConnectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
+
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Company');
 
         $companyRepository = $this->getMockBuilder(DBCompany::class)
             ->setMethods(['save'])
-            ->setConstructorArgs([new CompanyModel()])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
             ->getMock();
         $companyRepository
             ->expects($this->once())
@@ -110,17 +114,17 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
             new CompanyValidator()
         );
 
-        $command           = new CompanyCreateNew();
+        $command           = new CreateNew();
         $command->name     = 'valid co';
         $command->parentId = 1;
 
-        $result = $handler->handleCompanyCreateNew($command);
-        $this->assertSame('valid co', $result['name']);
-        $this->assertSame('valid-co', $result['slug']);
-        $this->assertNotEmpty($result['public_key']);
+        $result = $handler->handleCreateNew($command);
+        $this->assertSame('valid co', $result->name);
+        $this->assertSame('valid-co', $result->slug);
+        $this->assertNotEmpty($result->public_key);
     }
 
-    public function testHandleCompanyDeleteOneInvalidCompanySlug() {
+    public function testHandleDeleteOneInvalidCompanySlug() {
         $repositoryMock = $this
             ->getMockBuilder(CompanyInterface::class)
             ->getMock();
@@ -133,11 +137,11 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $this->setExpectedException('InvalidArgumentException');
 
         $commandMock = $this
-            ->getMockBuilder(CompanyDeleteOne::class)
+            ->getMockBuilder(DeleteOne::class)
             ->disableOriginalConstructor()
             ->getMock();
         $commandMock->companySlug = '';
 
-        $handler->handleCompanyDeleteOne($commandMock);
+        $handler->handleDeleteOne($commandMock);
     }
 }

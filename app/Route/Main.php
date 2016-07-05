@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -44,6 +44,8 @@ class Main implements RouteInterface {
      * Retrieve a complete list of all public endpoints.
      *
      * @apiEndpoint GET /
+     * @apiGroup General
+     * @apiEndpointResponse 200 schema/listAll.json
      *
      * @param \Slim\App $app
      *

@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Endpoint name",
+            "type": "string"
+        },
+        "uri": {
+            "description": "Endpoint URI",
+            "type": "string"
+        },
+        "methods": {
+            "description": "List of valid HTTP Methods for this Endpoint",
+            "type": "array",
+            "items": {
+                "enum": ["GET", "POST", "DELETE", "PUT"]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+        }
+    },
+    "required": [
+        "name",
+        "uri",
+        "methods"
+    ]
+}

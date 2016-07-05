@@ -1,22 +1,23 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
-namespace Test\Command;
+namespace Test\Unit\Command\Credential;
 
-use App\Command\CredentialCreateNew;
+use App\Command\Credential\CreateNew;
+use Test\Unit\AbstractUnit;
 
-class CredentialCreateNewTest extends \PHPUnit_Framework_TestCase {
+class CreateNewTest extends AbstractUnit {
     public function testSetParameters() {
-        $command = new CredentialCreateNew();
+        $command = new CreateNew();
         $this->assertNull($command->name);
         $this->assertFalse($command->production);
         $this->assertNull($command->companyId);
 
         $this->assertInstanceOf(
-            CredentialCreateNew::class,
+            CreateNew::class,
             $command->setParameters([])
         );
         $this->assertNull($command->name);

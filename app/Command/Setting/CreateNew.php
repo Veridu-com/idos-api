@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -41,12 +41,6 @@ class CreateNew extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) {
-        if (isset($parameters['sectionNameId']))
-            $this->sectionNameId = $parameters['sectionNameId'];
-
-        if (isset($parameters['propNameId']))
-            $this->propNameId = $parameters['propNameId'];
-
         if (isset($parameters['section']))
             $this->section = $parameters['section'];
 

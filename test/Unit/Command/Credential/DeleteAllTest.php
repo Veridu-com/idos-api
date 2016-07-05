@@ -1,20 +1,21 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
-namespace Test\Command;
+namespace Test\Unit\Command\Credential;
 
-use App\Command\CompanyDeleteOne;
+use App\Command\Credential\DeleteAll;
+use Test\Unit\AbstractUnit;
 
-class CompanyDeleteOneTest extends \PHPUnit_Framework_TestCase {
+class DeleteAllTest extends AbstractUnit {
     public function testSetParameters() {
-        $command = new CompanyDeleteOne();
+        $command = new DeleteAll();
         $this->assertNull($command->companyId);
 
         $this->assertInstanceOf(
-            CompanyDeleteOne::class,
+            DeleteAll::class,
             $command->setParameters([])
         );
         $this->assertNull($command->companyId);
