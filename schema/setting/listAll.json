@@ -11,10 +11,10 @@
             "description": "Settings response payload",
             "type": "array",
             "items": {
-                "$ref": "settingEntity.json",
-                "minItems": 0,
-                "uniqueItems": true
-            }
+                "$ref": "settingEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
         },
         "updated": {
             "description": "Unixtime of the last update",

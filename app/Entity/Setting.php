@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -16,12 +16,18 @@ namespace App\Entity;
  * @property string $section
  * @property string $property
  * @property string $value
+ * @property int    $created_at
+ * @property int    $updated_at
  */
 class Setting extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
     protected $visible = ['section', 'property', 'value', 'created_at'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $dates = ['created_at', 'updated_at'];
 
     public function getValueAttribute($value) {
         return  is_string($value) ? $value : stream_get_contents($value, -1, 0);

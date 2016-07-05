@@ -11,10 +11,10 @@
             "description": "Response payload",
             "type": "array",
             "items": {
-                "$ref": "endpointEntity.json",
-                "minItems": 0,
-                "uniqueItems": true
-            }
+                "$ref": "endpointEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
         }
     },
     "required": [

@@ -11,10 +11,10 @@
             "description": "Company response payload",
             "type": "array",
             "items": {
-                "$ref": "companyEntity.json",
-                "minItems": 0,
-                "uniqueItems": true
-            }
+                "$ref": "companyEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
         },
         "updated": {
             "description": "Unixtime of the last update",

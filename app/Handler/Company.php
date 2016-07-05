@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -77,8 +77,9 @@ class Company implements HandlerInterface {
 
         $company = $this->repository->create(
             [
-                'name'      => $command->name,
-                'parent_id' => $command->parentId
+                'name'       => $command->name,
+                'parent_id'  => $command->parentId,
+                'created_at' => time()
             ]
         );
 

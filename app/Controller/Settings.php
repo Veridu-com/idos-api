@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -72,7 +72,7 @@ class Settings implements ControllerInterface {
         $body = [
             'data'    => $settings->toArray(),
             'updated' => (
-                $settings->isEmpty() ? time() : strtotime($settings->max('updated_at'))
+                $settings->isEmpty() ? time() : $settings->max('updated_at')
             )
         ];
 
@@ -104,7 +104,7 @@ class Settings implements ControllerInterface {
         $body = [
             'data'    => $settings->toArray(),
             'updated' => (
-                $settings->isEmpty() ? time() : strtotime($settings->max('updated_at'))
+                $settings->isEmpty() ? time() : $settings->max('updated_at')
             )
         ];
 
@@ -135,7 +135,7 @@ class Settings implements ControllerInterface {
 
         $body = [
             'data'    => $setting->toArray(),
-            'updated' => strtotime($setting->updated_at)
+            'updated' => $setting->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -274,7 +274,7 @@ class Settings implements ControllerInterface {
 
         $body = [
             'data'    => $setting->toArray(),
-            'updated' => strtotime($setting->updated_at)
+            'updated' => $setting->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
