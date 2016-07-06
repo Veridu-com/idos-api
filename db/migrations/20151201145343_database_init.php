@@ -300,7 +300,6 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-
         $permissions = $this->table('permissions');
         $permissions
             ->addColumn('company_id', 'integer', ['null' => false])

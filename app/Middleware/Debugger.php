@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * Allows requests to force a specific error response for development.
  */
-class Debugger {
+class Debugger implements MiddlewareInterface {
     private function protectedException($class) {
         $class = str_replace('\\App\\Exception\\', '', $class);
 
@@ -24,7 +24,7 @@ class Debugger {
         );
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
         $queryParams = $request->getQueryParams();
         if (empty($queryParams['forcedError']))
             return $next($request, $response);

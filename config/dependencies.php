@@ -8,7 +8,8 @@ use App\Command;
 use App\Exception\AppException;
 use App\Factory;
 use App\Handler;
-use App\Middleware\Auth;
+use App\Middleware as Middleware;
+use App\Middleware\Auth; // TODO: Why not use folder identifiers instead of using so many declarations?
 use App\Repository;
 use Illuminate\Database\Capsule\Manager;
 use Interop\Container\ContainerInterface;
@@ -333,6 +334,13 @@ $container['authMiddleware'] = function (ContainerInterface $container) {
     };
 };
 
+// Permission Middleware
+$container['permissionMiddleware'] = function (ContainerInterface $container) {
+    return function ($permissionType) use ($container) {
+        return new Middleware\Permission($container, $permissionType);
+    };
+};
+
 // App Repository Factory
 $container['repositoryFactory'] = function (ContainerInterface $container) {
     $settings = $container->get('settings');
@@ -391,3 +399,8 @@ $container['optimus'] = function (ContainerInterface $container) {
         $settings['optimus']['random']
     );
 };
+
+$container['globFiles'] = [
+    'routes'    => glob(__DIR__ . '/../app/Route/*.php'),
+    'handlers'  => glob(__DIR__ . '/../app/Handler/*.php')
+];

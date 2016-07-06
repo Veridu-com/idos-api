@@ -9,6 +9,7 @@ namespace App\Repository;
 /**
  * Cache-based Setting Repository Implementation.
  */
+// TODO: Talk with Flavio to understand how this is working
 class CachedSetting extends AbstractCachedRepository implements SettingInterface {
     /**
      * {@inheritdoc}

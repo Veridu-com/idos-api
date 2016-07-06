@@ -11,37 +11,37 @@ namespace App\Repository;
  */
 interface PermissionInterface extends RepositoryInterface {
     /**
-     * Finds permissions based on their company_id.
+     * Gets all Permissions based on their Company Id.
      *
-     * @param string $companyId
+     * @param int $companyId
      *
-     * @throws App\Exception\NotFound
-     *
-     * @return \App\Entity\Permission
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllByCompanyId($companyId);
-
     /**
-     * Delete Permissions based on their company_id.
+     * Deletes all Permissions based on their Company Id.
      *
-     * @param string $companyId
+     * @param int $companyId
      *
-     * @throws App\Exception\NotFound
-     *
-     * @return \App\Entity\Permission
+     * @return int
      */
     public function deleteByCompanyId($companyId);
-
     /**
-     * Finds a Permission based on its company_id and route_name.
+     * Find one permission based on their companyId, routeName.
      *
-     * @param string $companyId
-     *
+     * @param int    $companyId
      * @param string $routeName
      *
-     * @throws App\Exception\NotFound
-     *
-     * @return \App\Entity\Permission
+     * @return App\Entity\Permission
      */
     public function findOne($companyId, $routeName);
+    /**
+     * Deletes one permission based on their companyId, routeName.
+     *
+     * @param int    $companyId
+     * @param string $routeName
+     *
+     * @return App\Entity\Permission
+     */
+    public function deleteOne($companyId, $routeName);
 }

@@ -6,7 +6,6 @@
 
 namespace App\Repository;
 
-use App\Entity\EntityInterface;
 use App\Entity\Permission;
 
 /**
@@ -48,7 +47,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
     }
 
     /**
-     * Deletes one permissions from company
+     * Deletes one permissions from company.
      *
      * @param int    companyId permission's company_id
      * @param string routeName   permission's routeName

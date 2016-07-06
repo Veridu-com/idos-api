@@ -7,6 +7,7 @@
 namespace App\Route;
 
 use App\Middleware\Auth;
+use App\Middleware\Permission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -43,14 +44,15 @@ class Permissions implements RouteInterface {
             );
         };
 
-        $container      = $app->getContainer();
-        $authMiddleware = $container->get('authMiddleware');
+        $container            = $app->getContainer();
+        $authMiddleware       = $container->get('authMiddleware');
+        $permissionMiddleware = $container->get('permissionMiddleware');
 
-        self::listAll($app, $authMiddleware);
-        self::deleteAll($app, $authMiddleware);
-        self::createNew($app, $authMiddleware);
-        self::getOne($app, $authMiddleware);
-        self::deleteOne($app, $authMiddleware);
+        self::listAll($app, $authMiddleware, $permissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
+        self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -68,17 +70,17 @@ class Permissions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/permissions/listAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Permissions::listAll
      */
-    private static function listAll(App $app, callable $auth) {
+    private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:listAll'
             )
+            ->add($permission(Permission::PUBLIC_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:listAll');
     }
@@ -98,17 +100,17 @@ class Permissions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/permissions/createNew.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Permissions::createNew
      */
-    private static function createNew(App $app, callable $auth) {
+    private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:createNew'
             )
+            ->add($permission(Permission::PUBLIC_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:createNew');
     }
@@ -128,17 +130,17 @@ class Permissions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/permissions/deleteAll.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Permissions::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:deleteAll'
             )
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:deleteAll');
     }
@@ -156,18 +158,18 @@ class Permissions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/permissions/getOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Permissions::getOne
      */
-    private static function getOne(App $app, callable $auth) {
+    private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
                 // TODO: Regex that matches route:Names
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
                 'App\Controller\Permissions:getOne'
             )
+            ->add($permission(Permission::PUBLIC_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:getOne');
     }
@@ -187,17 +189,17 @@ class Permissions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/permissions/deleteOne.md
-     *
-     * @uses App\Middleware\Auth::__invoke
-     *
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Permissions::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
                 'App\Controller\Permissions:deleteOne'
             )
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:deleteOne');
     }

@@ -7,35 +7,30 @@ use Phinx\Seed\AbstractSeed;
 
 class PermissionsSeed extends AbstractSeed {
     public function run() {
-        $faker = Faker\Factory::create();
+        $faker      = Faker\Factory::create();
+        $routeFiles = glob(__DIR__ . '/../../app/Route/*.php');
 
-        $routes = [
-            'companies:listAll',
-            'companies:createNew',
-            'companies:deleteAll',
-            'companies:getOne',
-            'companies:updateOne',
-            'companies:deleteOne',
-            'settings:listAll',
-            'settings:createNew',
-            'settings:deleteAll',
-            'settings:getOne',
-            'settings:updateOne',
-            'settings:deleteOne',
-        ];
+        $names = [];
+        foreach ($routeFiles as $file) {
+            $classname =  sprintf('App\\Route\\%s', basename($file, '.php'));
+            if (strpos($classname, 'Interface') === false) {
+                foreach ($classname::getPublicNames() as $name) {
+                    $names[] = $name;
+                }
+            }
+        }
 
         $data = [];
         $now  = date('Y-m-d H:i:s');
-        $size = sizeof($routes) - 1;
+        $size = sizeof($names) - 1;
 
-        foreach ($routes as $route) {
+        foreach ($names as $routeName) {
             $data[] = [
-                'company_id'    => mt_rand(1, 2),
-                'route_name'    => $route,
+                'company_id'    => 1,           // Company #2 wont have any permssion
+                'route_name'    => $routeName,
                 'created_at'    => $now
             ];
         }
-
 
         $permissions = $this->table('permissions');
         $permissions

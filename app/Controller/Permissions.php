@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -39,8 +39,8 @@ class Permissions implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\PermissionInterface $repository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param \League\Tactician\CommandBus       $commandBus
+     * @param App\Factory\Command                $commandFactory
      *
      * @return void
      */
@@ -66,7 +66,7 @@ class Permissions implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $targetCompany    = $request->getAttribute('targetCompany');
         $permissions      = $this->repository->getAllByCompanyId($targetCompany->id);
 
         $body = [
@@ -101,8 +101,8 @@ class Permissions implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
+        $targetCompany    = $request->getAttribute('targetCompany');
+        $section          = $request->getAttribute('section');
         $permissions      = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
 
         $body = [
@@ -137,7 +137,6 @@ class Permissions implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $routeName     = $request->getAttribute('routeName');
         $permission    = $this->repository->findOne($targetCompany->id, $routeName);
-
 
         $body = [
             'data'    => $permission->toArray(),
@@ -230,7 +229,7 @@ class Permissions implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $routeName = $request->getAttribute('routeName');
+        $routeName     = $request->getAttribute('routeName');
 
         $command = $this->commandFactory->create('Permission\\DeleteOne');
         $command

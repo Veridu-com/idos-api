@@ -26,7 +26,6 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
      */
     protected $entityName = 'Setting';
 
-
     /**
      * {@inheritdoc}
      */
@@ -69,10 +68,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     }
 
     /**
-     * Deletes one settings from company that has the given section.
-     *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
+     * {@inheritdoc}
      */
     public function deleteOne($companyId, $section, $property) {
         return $this->query()
@@ -88,10 +84,5 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     public function deleteByCompanyId($companyId) {
         return $this->deleteByKey('company_id', $companyId);
     }
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteByPubKey($pubKey) {
-        return $this->deleteByKey('public', $pubKey);
-    }
+
 }

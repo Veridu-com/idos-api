@@ -5,6 +5,7 @@
  */
 
 use App\Middleware\Debugger;
+use App\Middleware\GateKeeper;
 use App\Middleware\Watcher;
 use Slim\HttpCache\Cache;
 
@@ -13,6 +14,7 @@ if (! isset($app)) {
 }
 
 $app
+    ->add(new GateKeeper($app->getContainer()))
     ->add(new Watcher($app->getContainer()))
     ->add(new Cache('private, no-cache, no-store', 0, true))
     ->add(new Debugger());

@@ -11,11 +11,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Watcher Middleware.
- *
- * I'm yet to figure out what this is.
+ * App Middleware
+ * This middleware is responsible to throw an Exception if any route is not being analysed by the "Permission Middleware".
+ * Whether it is public or not the Route Middleware "Permission" must be run.
  */
-class Watcher implements MiddlewareInterface {
+class GateKeeper implements MiddlewareInterface {
     private $container;
 
     public function __construct(ContainerInterface $container) {
@@ -25,6 +25,11 @@ class Watcher implements MiddlewareInterface {
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
         $response = $next($request, $response);
 
-        return $response->withHeader('X-Watcher', 'was-here');
+        if (! $response->hasHeader('Allowed')) {
+            // Unauthorizes requests that doesn't have the 'Allowed' header
+            throw new \Exception("'Allowed' header not found, add the Permission Middleware to this Route");
+        }
+
+        return $response;
     }
 }

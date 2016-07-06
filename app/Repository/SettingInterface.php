@@ -27,7 +27,7 @@ interface SettingInterface extends RepositoryInterface {
      */
     public function deleteByCompanyId($companyId);
     /**
-     * Find one setting based on their companyId, section and property name
+     * Find one setting based on their companyId, section and property name.
      *
      * @param int    $companyId
      * @param string $section
@@ -36,6 +36,16 @@ interface SettingInterface extends RepositoryInterface {
      * @return App\Entity\Setting
      */
     public function findOne($companyId, $section, $propName);
+    /**
+     * Deletes one setting based on their companyId, section and property name.
+     *
+     * @param int    $companyId
+     * @param string $section
+     * @param string $propName
+     *
+     * @return App\Entity\Setting
+     */
+    public function deleteOne($companyId, $section, $propName);
     /**
      * Retrieves all settings from company that has the given section.
      *

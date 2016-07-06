@@ -31,7 +31,7 @@ class CreateNew extends AbstractCommand {
     public function setParameters(array $parameters) {
         if (isset($parameters['routeName']))
             $this->routeName = $parameters['routeName'];
-        
+
         if (isset($parameters['companyId']))
             $this->companyId = $parameters['companyId'];
 
