@@ -69,6 +69,18 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     }
 
     /**
+     * Formats a CamelCase string to snake_case.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    private function toSnakeCase($string) {
+        $words = preg_split('/[A-Z]/', $string);
+        return strtolower(implode('_', $words));
+    }
+
+    /**
      * Determine if a set mutator exists for an attribute.
      *
      * @param string $key
@@ -230,7 +242,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return mixed
      */
     public function __get($key) {
-        return $this->getAttribute($key);
+        return $this->getAttribute($this->toSnakeCase($key));
     }
 
     /**
@@ -244,7 +256,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __set($key, $value) {
-        $this->setAttribute($key, $value);
+        $this->setAttribute($this->toSnakeCase($key), $value);
         $this->dirty = true;
     }
 
@@ -258,7 +270,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return bool
      */
     public function __isset($key) {
-        return ! is_null($this->getAttribute($key));
+        return ($this->getAttribute($this->toSnakeCase($key)) !== null);
     }
     /**
      * Unset an attribute on the entity.
@@ -270,7 +282,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __unset($key) {
-        $this->setAttribute($key, null);
+        $this->setAttribute($this->toSnakeCase($key), null);
         $this->dirty = true;
     }
 }
