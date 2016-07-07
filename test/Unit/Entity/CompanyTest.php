@@ -13,7 +13,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
 
         $created = time();
         $updated = time();
-        $array = [
+        $array   = [
             'id'          => 0,
             'name'        => 'My Co',
             'public_key'  => 'pkey',

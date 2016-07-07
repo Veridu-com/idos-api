@@ -23,7 +23,7 @@ class DeleteOneTest extends AbstractUnit {
         $command->setParameters(['companyId' => 1]);
         $this->assertSame(1, $command->companyId);
         $this->assertNull($command->routeName);
-        
+
         $command->setParameters(['routeName' => 1]);
         $this->assertSame(1, $command->routeName);
     }

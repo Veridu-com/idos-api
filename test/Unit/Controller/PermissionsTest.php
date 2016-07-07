@@ -9,7 +9,6 @@ namespace Test\Unit\Controller;
 use App\Command\Permission\CreateNew;
 use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
-use App\Command\Permission\UpdateOne;
 use App\Command\ResponseDispatch;
 use App\Controller\Permissions;
 use App\Entity\Permission as EntityPermission;
@@ -110,11 +109,10 @@ class PermissionsTest extends AbstractUnit {
         $dbPermissionMock
             ->method('findOne')
             ->will($this->returnValue(new EntityPermission([
-                'id' => 0,
+                'id'         => 0,
                 'created_at' => (new \DateTime())->format('YYYY-MM-DD')
                 ])
             ));
-
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()

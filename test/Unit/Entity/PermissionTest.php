@@ -28,7 +28,7 @@ class PermissionTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertArrayHasKey('routeName', $array);
         $this->assertSame('companies:listAll', $array['routeName']);
-        
+
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($array['created_at']));
     }
@@ -40,7 +40,7 @@ class PermissionTest extends \PHPUnit_Framework_TestCase {
                 [
                     'attributes' => [
                         'id'          => 0,
-                        'routeName' => 'settings:listAll',
+                        'routeName'   => 'settings:listAll',
                         'created_at'  => time()
                     ]
                 ]

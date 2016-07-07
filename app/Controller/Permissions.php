@@ -137,7 +137,7 @@ class Permissions implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $routeName     = $request->getAttribute('routeName');
         $permission    = $this->repository->findOne($targetCompany->id, $routeName);
-        
+
         $body = [
             'data'    => $permission->toArray(),
             'updated' => strtotime($permission->created_at)

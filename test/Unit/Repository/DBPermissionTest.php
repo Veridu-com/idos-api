@@ -11,10 +11,8 @@ use App\Factory\Entity;
 use App\Repository\DBPermission;
 use Illuminate\Database\Connection;
 use Test\Unit\AbstractUnit;
-use Illuminate\Support\Collection;
 
 class DBPermissionTest extends AbstractUnit {
-    
     public function testFindOneNotFound() {
         $factory = new Entity();
         $factory->create('Permission', []);
@@ -53,7 +51,7 @@ class DBPermissionTest extends AbstractUnit {
         ];
 
         $factory = new Entity();
-        $entity = $factory->create('Permission', $array);
+        $entity  = $factory->create('Permission', $array);
 
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()

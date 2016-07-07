@@ -5,6 +5,7 @@
  */
 
 namespace App\Repository;
+
 use App\Entity\Permission;
 use Illuminate\Support\Collection;
 

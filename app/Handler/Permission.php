@@ -9,10 +9,10 @@ namespace App\Handler;
 use App\Command\Permission\CreateNew;
 use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
+use App\Entity\Permission as PermissionEntity;
 use App\Repository\PermissionInterface;
 use App\Validator\Permission as PermissionValidator;
 use Interop\Container\ContainerInterface;
-use App\Entity\Permission as PermissionEntity;
 
 /**
  * Handles Permission commands.

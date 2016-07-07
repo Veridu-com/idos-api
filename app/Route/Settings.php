@@ -278,7 +278,7 @@ class Settings implements RouteInterface {
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission ) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',

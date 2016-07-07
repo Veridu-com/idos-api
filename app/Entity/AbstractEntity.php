@@ -77,6 +77,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     private function toSnakeCase($string) {
         $words = preg_split('/[A-Z]/', $string);
+
         return strtolower(implode('_', $words));
     }
 
@@ -161,6 +162,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         if ($this->hasGetMutator($key)) {
             $method = sprintf('get%sAttribute', $this->toCamelCase($key));
+
             return $this->{$method}($value);
         }
 
@@ -269,7 +271,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return bool
      */
     public function __isset($key) {
-        return ($this->getAttribute($this->toSnakeCase($key)) !== null);
+        return $this->getAttribute($this->toSnakeCase($key)) !== null;
     }
     /**
      * Unset an attribute on the entity.
