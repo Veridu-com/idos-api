@@ -28,6 +28,16 @@ class CompaniesSeed extends AbstractSeed {
                 'parent_id'   => 1,
                 'created_at'  => date('Y-m-d H:i:s'),
                 'updated_at'  => date('Y-m-d H:i:s')
+            ],
+            [
+                'name'        => 'Another company',
+                'slug'        => 'another-company',
+                'public_key'  => md5('another-company'),
+                'private_key' => md5('an-co'),
+                'personal'    => 0,
+                'parent_id'   => null,
+                'created_at'  => date('Y-m-d H:i:s'),
+                'updated_at'  => date('Y-m-d H:i:s')
             ]
         ];
 

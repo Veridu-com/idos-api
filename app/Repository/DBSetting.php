@@ -29,17 +29,6 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) {
-        return $this->findByKey('public', $pubKey);
-    }
-
-    /**
-     * Find one setting given its identifiers.
-     *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
-     * @param string propName  setting's propName
-     */
     public function findOne($companyId, $section, $propName) {
         return $this->getOneByWhereConstraints([
             'company_id' => $companyId,
@@ -49,11 +38,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     }
 
     /**
-     * Updates one setting.
-     *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
-     * @param string propName  setting's propName
+     * {@inheritdoc}
      */
     public function update(EntityInterface &$entity) {
         $serialized = $entity->serialize();
@@ -73,10 +58,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     }
 
     /**
-     * Retrieves all settings from company that has the given section.
-     *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
+     * {@inheritdoc}
      */
     public function getAllByCompanyIdAndSection($companyId, $section) {
         return $this->getAllByWhereConstraints([
@@ -86,10 +68,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     }
 
     /**
-     * Deletes one settings from company that has the given section.
-     *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
+     * {@inheritdoc}
      */
     public function deleteOne($companyId, $section, $property) {
         return $this->query()
@@ -105,10 +84,5 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     public function deleteByCompanyId($companyId) {
         return $this->deleteByKey('company_id', $companyId);
     }
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteByPubKey($pubKey) {
-        return $this->deleteByKey('public', $pubKey);
-    }
+
 }

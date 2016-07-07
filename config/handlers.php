@@ -8,9 +8,9 @@ if (! isset($app)) {
     die('$app is not set!');
 }
 
-$container = $app->getContainer();
+$handlers = $app->getContainer()->globFiles['handlers'];
 
-foreach (glob(__DIR__ . '/../app/Handler/*.php') as $file) {
+foreach ($handlers as $file) {
     if (preg_match('/(Abstract|Interface)/', $file)) {
         continue;
     }

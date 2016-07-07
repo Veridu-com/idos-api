@@ -233,6 +233,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getOneByWhereConstraints(array $constraints = []) {
         $entity = $this->getAllByWhereConstraints($constraints)->first();
+
         if (! $entity) {
             throw new NotFound();
         }

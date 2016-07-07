@@ -17,7 +17,7 @@ use Stash\Item;
  *
  * Enforces request limits and adds usage details to response headers.
  */
-class Limit {
+class Limit implements MiddlewareInterface {
     private $container;
     private $softLimit;
     private $hardLimit;
@@ -48,7 +48,7 @@ class Limit {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
         $key = $request->getAttribute('key');
         if ($this->limitType == self::KEYLIMIT)
             // The limit is based on the key / route identifier

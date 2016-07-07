@@ -75,6 +75,7 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/listAll.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::listAll
      */
     private static function listAll(App $app, callable $auth) {
@@ -105,6 +106,7 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/listAllFromSection.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::listAllFromSection
      */
     private static function listAllFromSection(App $app, callable $auth) {
@@ -135,6 +137,7 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/createNew.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::createNew
      */
     private static function createNew(App $app, callable $auth) {
@@ -165,6 +168,7 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/deleteAll.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::deleteAll
      */
     private static function deleteAll(App $app, callable $auth) {
@@ -197,6 +201,7 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/getOne.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::getOne
      */
     private static function getOne(App $app, callable $auth) {
@@ -229,6 +234,7 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/updateOne.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::updateOne
      */
     private static function updateOne(App $app, callable $auth) {
@@ -261,6 +267,7 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/deleteOne.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::deleteOne
      */
     private static function deleteOne(App $app, callable $auth) {

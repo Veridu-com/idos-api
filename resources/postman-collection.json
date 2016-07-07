@@ -1,444 +1,399 @@
 {
-	"version": 1,
-	"collections": [
+	"variables": [],
+	"info": {
+		"name": "idOS",
+		"_postman_id": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
 		{
-			"id": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-			"name": "idOS",
+			"name": "Company",
 			"description": "",
-			"order": [],
-			"folders": [
+			"item": [
 				{
-					"id": "fea16137-0ac4-aedd-36da-c812838fad7c",
-					"name": "Company",
-					"description": "",
-					"write": true,
-					"order": [
-						"6195b080-8e81-3c69-61ce-7ddbd5908e07",
-						"e6b2bc08-8f24-acad-87aa-d9c47ba689f8",
-						"09cc247b-5a70-4b01-bcde-9e851803b2e2",
-						"9cc89ba3-993a-3b26-3e89-e293b203abdd",
-						"3bacd77e-cb08-9c59-5572-df2edd132946"
-					],
-					"collection": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"owner": "730315",
-					"collection_id": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21"
-				},
-				{
-					"id": "cfd9b133-68c9-eb87-530a-7da087834c04",
-					"name": "Company\\Credential",
-					"description": "",
-					"write": true,
-					"order": [
-						"40eb0a96-47fc-f27a-af3f-4387c458deb5",
-						"3ba691b9-e683-f994-2d31-cdc814cceb37",
-						"67435709-fe21-8f2e-9048-d460325a1a2e",
-						"67cc2fee-e5f3-fb93-a0ef-6c908835046a",
-						"424bd881-477b-e46e-216a-dc2f2e679180"
-					],
-					"collection": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"owner": "730315",
-					"collection_id": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21"
-				},
-				{
-					"id": "0ff6fa02-466e-bbd2-44ab-6c8f0c25f53f",
-					"name": "Company\\Settings",
-					"description": "",
-					"write": true,
-					"order": [
-						"593f235f-d6e0-bf20-fbbe-65d6f8748409",
-						"e5405875-31e8-5343-2fe7-4f6930d891c2",
-						"77be090e-78a9-d713-51ed-a0ac034bb4e0",
-						"677e6fed-2297-4637-ce22-7807483cce11",
-						"1f20b646-21a7-497a-6887-8688912aedc8",
-						"b3f4003a-0814-bd7b-0d3c-31a2342e9774",
-						"b5e5f907-a563-9d48-c9af-9f5be58fdd7c"
-					],
-					"collection": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"owner": "730315",
-					"collection_id": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21"
-				}
-			],
-			"timestamp": 1466630804855,
-			"synced": false,
-			"remote_id": 0,
-			"owner": "730315",
-			"subscribed": false,
-			"remoteLink": "",
-			"public": false,
-			"createdAt": 1466630804881,
-			"updatedAt": 1467138113414,
-			"write": true,
-			"published": false,
-			"favorite": false,
-			"permissions": {},
-			"syncedPermissions": {},
-			"requests": [
-				{
-					"id": "09cc247b-5a70-4b01-bcde-9e851803b2e2",
-					"headers": "Content-Type: application/json\n",
-					"url": "http://localhost:8000/index.php/1.0/companies?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n    \"name\": \"Melan Ltd.\"\n}",
-					"dataMode": "raw",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1466707116360,
-					"name": "Company | createNew",
-					"description": "POST /companies/",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "1f20b646-21a7-497a-6887-8688912aedc8",
-					"headers": "Content-Type: application/json\n",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/settings/velit/quaerat?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "PUT",
-					"data": "{\n    \"value\": \"New Prop value\"\n}",
-					"dataMode": "raw",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1467038387488,
-					"name": "Settings | updateOne",
-					"description": "PUT /companies/{companySlug}/settings/{section}/{property}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "3ba691b9-e683-f994-2d31-cdc814cceb37",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "GET",
-					"data": null,
-					"dataMode": "params",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1466779364939,
-					"name": "Credential | getOne",
-					"description": "GET /companies/{companySlug}/credentials/{credentialPubKey}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "3bacd77e-cb08-9c59-5572-df2edd132946",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/melan-ltd?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "DELETE",
-					"data": null,
-					"dataMode": "params",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1466711327305,
-					"name": "Company | deleteOne",
-					"description": "DELETE /companies/{companySlug}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "40eb0a96-47fc-f27a-af3f-4387c458deb5",
-					"owner": "730315",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/credentials?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "GET",
-					"data": null,
-					"dataMode": "params",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": "{}",
-					"time": 1466711765078,
-					"name": "Credential | listAll",
-					"description": "GET /companies/{companySlug}/credentials    ",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": [],
-					"folder": "cfd9b133-68c9-eb87-530a-7da087834c04",
-					"timestamp": null,
-					"collection": "f0fd9007-59fa-532f-ff34-4ea173a79e21"
-				},
-				{
-					"id": "424bd881-477b-e46e-216a-dc2f2e679180",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/credentials/def0000092611a1c6c975c8ef5496e9e38c4db2277e3a23ea06e61e3942af1339bdf9afd894d8883ecc18b23a64ce0a171bde8919a6ae193390f36efccf54a572150e6c9?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "DELETE",
-					"data": "",
-					"dataMode": "raw",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1466779562064,
-					"name": "Credential | deleteOne",
-					"description": "DELETE /companies/{companySlug}/credentials/{credentialPubKey}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "593f235f-d6e0-bf20-fbbe-65d6f8748409",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/settings?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "GET",
-					"data": null,
-					"dataMode": "params",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1466962933371,
-					"name": "Settings | listAll",
-					"description": "GET /companies/{companySlug}/settings    ",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "6195b080-8e81-3c69-61ce-7ddbd5908e07",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"pathVariables": {},
-					"preRequestScript": null,
-					"method": "GET",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"data": null,
-					"dataMode": "params",
 					"name": "Company | listAll",
-					"description": "GET /companies/",
-					"descriptionFormat": "html",
-					"time": 1466630804854,
-					"version": 2,
-					"responses": [],
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"synced": true,
-					"folder": "fea16137-0ac4-aedd-36da-c812838fad7c"
+					"request": {
+						"url": "{{URL}}companies?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET /companies/"
+					},
+					"response": []
 				},
 				{
-					"id": "67435709-fe21-8f2e-9048-d460325a1a2e",
-					"headers": "Content-Type: application/json\n",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/credentials?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n    \"name\": \"Very Secure\",\n    \"production\": false\n}",
-					"dataMode": "raw",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1466713754320,
-					"name": "Credential | createNew",
-					"description": "POST /companies/{companySlug}/credentials",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "677e6fed-2297-4637-ce22-7807483cce11",
-					"headers": "Content-Type: application/json\n",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/settings?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "POST",
-					"data": "{\n    \"section\": \"velit\",\n    \"property\": \"bicxuito\",\n    \"value\": \"biscuit\"\n}",
-					"dataMode": "raw",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1467079820303,
-					"name": "Settings | createNew",
-					"description": "POST /companies/{companySlug}/settings",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "67cc2fee-e5f3-fb93-a0ef-6c908835046a",
-					"headers": "Content-Type: application/json\n",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "PUT",
-					"data": "{\n    \"name\": \"My Test Key\"\n}",
-					"dataMode": "raw",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1466779545183,
-					"name": "Credential | updateOne",
-					"description": "PUT /companies/{companySlug}/credentials/{credentialPubKey}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "77be090e-78a9-d713-51ed-a0ac034bb4e0",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/settings/velit/bicxuito?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "GET",
-					"data": null,
-					"dataMode": "params",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1467118384687,
-					"name": "Settings | get One",
-					"description": "GET /companies/{companySlug}/settings/{section}/{property}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "9cc89ba3-993a-3b26-3e89-e293b203abdd",
-					"owner": "730315",
-					"headers": "Content-Type: application/json\n",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "PUT",
-					"data": "{\n    \"name\": \"Veridu Ltd.\"\n}",
-					"dataMode": "raw",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": "{}",
-					"time": 1466711316958,
-					"name": "Company | updateOne",
-					"description": "PUT /companies/{companySlug}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": [],
-					"folder": "fea16137-0ac4-aedd-36da-c812838fad7c",
-					"timestamp": null,
-					"collection": "f0fd9007-59fa-532f-ff34-4ea173a79e21"
-				},
-				{
-					"id": "b3f4003a-0814-bd7b-0d3c-31a2342e9774",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/settings/velit/quaerat?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "DELETE",
-					"data": "",
-					"dataMode": "raw",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1467053203145,
-					"name": "Settings | deleteOne",
-					"description": "DELETE /companies/{companySlug}/settings/{section}/{property}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "b5e5f907-a563-9d48-c9af-9f5be58fdd7c",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/settings?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "DELETE",
-					"data": "",
-					"dataMode": "raw",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1467138149781,
-					"name": "Settings | deleteAll",
-					"description": "DELETE /companies/{companySlug}/settings",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "e5405875-31e8-5343-2fe7-4f6930d891c2",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd/settings/velit?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "GET",
-					"data": null,
-					"dataMode": "params",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1466966116413,
-					"name": "Settings | get All from section",
-					"description": "GET /companies/{companySlug}/settings/{section}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
-				},
-				{
-					"id": "e6b2bc08-8f24-acad-87aa-d9c47ba689f8",
-					"headers": "",
-					"url": "http://localhost:8000/index.php/1.0/companies/veridu-ltd?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
-					"preRequestScript": null,
-					"pathVariables": {},
-					"method": "GET",
-					"data": null,
-					"dataMode": "params",
-					"version": 2,
-					"tests": null,
-					"currentHelper": "normal",
-					"helperAttributes": {},
-					"time": 1466716378755,
 					"name": "Company | getOne",
-					"description": "GET /companies/{companySlug}",
-					"collectionId": "f0fd9007-59fa-532f-ff34-4ea173a79e21",
-					"responses": []
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET /companies/{companySlug}"
+					},
+					"response": []
+				},
+				{
+					"name": "Company | createNew",
+					"request": {
+						"url": "{{URL}}companies?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Melan Ltd.\"\n}"
+						},
+						"description": "POST /companies/"
+					},
+					"response": []
+				},
+				{
+					"name": "Company | updateOne",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Veridu Ltd.\"\n}"
+						},
+						"description": "PUT /companies/{companySlug}"
+					},
+					"response": []
+				},
+				{
+					"name": "Company | deleteOne",
+					"request": {
+						"url": "{{URL}}companies/app-deck?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "DELETE /companies/{companySlug}"
+					},
+					"response": []
 				}
 			]
-		}
-	],
-	"environments": [],
-	"headerPresets": [],
-	"globals": [
-		{
-			"key": "echo_digest_realm",
-			"type": "text",
-			"value": "Users",
-			"enabled": true,
-			"overridden": false,
-			"hovered": false
 		},
 		{
-			"key": "echo_digest_nonce",
-			"type": "text",
-			"value": "xkVmN0rOy8AYTY6Uh4a69TBQLBu1r31b",
-			"enabled": true,
-			"overridden": false,
-			"hovered": false
+			"name": "Company\\Credential",
+			"description": "",
+			"item": [
+				{
+					"name": "Credential | listAll",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/credentials?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET /companies/{companySlug}/credentials    "
+					},
+					"response": []
+				},
+				{
+					"name": "Credential | getOne",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET /companies/{companySlug}/credentials/{credentialPubKey}"
+					},
+					"response": []
+				},
+				{
+					"name": "Credential | createNew",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/credentials?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Very Secure\",\n    \"production\": false\n}"
+						},
+						"description": "POST /companies/{companySlug}/credentials"
+					},
+					"response": []
+				},
+				{
+					"name": "Credential | updateOne",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/credentials/def000002fd40ba783c1737a31ffd9024482c2b90cce9c720b6e24b5cec191166e8feb3a72dec2f15329fcafc8f543f310f21c354ab52c4e77a704ed6a54befc8856312c?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"My Test Key\"\n}"
+						},
+						"description": "PUT /companies/{companySlug}/credentials/{credentialPubKey}"
+					},
+					"response": []
+				},
+				{
+					"name": "Credential | deleteOne",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/credentials/def000002fd40ba783c1737a31ffd9024482c2b90cce9c720b6e24b5cec191166e8feb3a72dec2f15329fcafc8f543f310f21c354ab52c4e77a704ed6a54befc8856312c?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "DELETE /companies/{companySlug}/credentials/{credentialPubKey}"
+					},
+					"response": []
+				}
+			]
 		},
 		{
-			"key": "URL",
-			"type": "text",
-			"value": "http://localhost:8000/index.php/1.0/",
-			"enabled": true,
-			"overridden": false,
-			"hovered": false
+			"name": "Company\\Permissions",
+			"description": "",
+			"item": [
+				{
+					"name": "Permissions | listAll",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/permissions?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET /companies/{companySlug}/permissions    "
+					},
+					"response": []
+				},
+				{
+					"name": "Permissions | get One",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/permissions/companies:createNew?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET /companies/{companySlug}/permissions/{routeName}"
+					},
+					"response": []
+				},
+				{
+					"name": "Permissions | createNew",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/permissions?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"routeName\": \"credential:getOne\"\n}"
+						},
+						"description": "POST /companies/{companySlug}/permissions"
+					},
+					"response": []
+				},
+				{
+					"name": "Permissions | deleteOne",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/permissions/credential:getOne?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "DELETE /companies/{companySlug}/permissions/{routeName}"
+					},
+					"response": []
+				},
+				{
+					"name": "Permissions | deleteAll",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/permissions?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "DELETE /companies/{companySlug}/permissions"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Company\\Settings",
+			"description": "",
+			"item": [
+				{
+					"name": "Settings | listAll",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/settings?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET /companies/{companySlug}/settings    "
+					},
+					"response": []
+				},
+				{
+					"name": "Settings | get All from section",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/settings/et?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET /companies/{companySlug}/segttings/{section}"
+					},
+					"response": []
+				},
+				{
+					"name": "Settings | get One",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/settings/et/minima?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"description": "GET /companies/{companySlug}/segttings/{section}/{property}"
+					},
+					"response": []
+				},
+				{
+					"name": "Settings | createNew",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/settings?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"section\": \"velita\",\n    \"property\": \"bicxuitoa\",\n    \"value\": \"biscuit\"\n}"
+						},
+						"description": "POST /companies/{companySlug}/settings"
+					},
+					"response": []
+				},
+				{
+					"name": "Settings | updateOne",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/settings/et/minima?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value\": \"New Prop value\"\n}"
+						},
+						"description": "PUT /companies/{companySlug}/settings/{section}/{property}"
+					},
+					"response": []
+				},
+				{
+					"name": "Settings | deleteOne",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/settings/et/minima?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "DELETE /companies/{companySlug}/settings/{section}/{property}"
+					},
+					"response": []
+				},
+				{
+					"name": "Settings | deleteAll",
+					"request": {
+						"url": "{{URL}}companies/veridu-ltd/settings?companyPrivKey=4e37dae79456985ae0d27a67639cf335",
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": "DELETE /companies/{companySlug}/settings"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Endpoints",
+			"request": {
+				"url": "{{URL}}",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "GET /"
+			},
+			"response": []
 		}
 	]
 }
