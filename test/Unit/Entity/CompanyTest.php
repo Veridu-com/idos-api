@@ -10,13 +10,16 @@ use App\Entity\Company;
 
 class CompanyTest extends \PHPUnit_Framework_TestCase {
     public function testSerialize() {
+
+        $created = time();
+        $updated = time();
         $array = [
             'id'          => 0,
             'name'        => 'My Co',
             'public_key'  => 'pkey',
             'private_key' => 'privkey',
-            'created_at'  => time(),
-            'updated_at'  => time()
+            'created_at'  => $created,
+            'updated_at'  => $updated
         ];
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
@@ -34,9 +37,9 @@ class CompanyTest extends \PHPUnit_Framework_TestCase {
         $this->assertArrayHasKey('private_key', $array);
         $this->assertSame('privkey', $array['private_key']);
         $this->assertArrayHasKey('created_at', $array);
-        $this->assertTrue(is_int($array['created_at']));
+        $this->assertSame($created, strtotime($array['created_at']));
         $this->assertArrayHasKey('updated_at', $array);
-        $this->assertTrue(is_int($array['updated_at']));
+        $this->assertSame($updated, strtotime($array['updated_at']));
     }
 
     public function testToArray() {
