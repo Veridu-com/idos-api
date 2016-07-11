@@ -20,7 +20,7 @@ class Permission implements ValidatorInterface {
      * @return void
      */
     public function assertRouteName($value) {
-        Validator::length(5, 25)
+        Validator::length(1, 25)
             ->assert($value);
     }
 
