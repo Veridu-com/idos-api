@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /companies/{companySlug}/permissions",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Permissions response payload",
+            "type": "array",
+            "items": {
+                "$ref": "permissionEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "status",
+        "data",
+        "updated"
+    ]
+}
+
