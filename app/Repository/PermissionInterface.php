@@ -6,6 +6,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Permission;
+use Illuminate\Support\Collection;
+
 /**
  * Permission Repository Interface.
  */
@@ -17,7 +20,7 @@ interface PermissionInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByCompanyId($companyId);
+    public function getAllByCompanyId(int $companyId) : Collection;
     /**
      * Deletes all Permissions based on their Company Id.
      *
@@ -25,7 +28,7 @@ interface PermissionInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteByCompanyId($companyId);
+    public function deleteByCompanyId(int $companyId) : int;
     /**
      * Find one permission based on their companyId, routeName.
      *
@@ -34,7 +37,7 @@ interface PermissionInterface extends RepositoryInterface {
      *
      * @return App\Entity\Permission
      */
-    public function findOne($companyId, $routeName);
+    public function findOne(int $companyId, string $routeName) : Permission;
     /**
      * Deletes one permission based on their companyId, routeName.
      *
@@ -43,5 +46,5 @@ interface PermissionInterface extends RepositoryInterface {
      *
      * @return App\Entity\Permission
      */
-    public function deleteOne($companyId, $routeName);
+    public function deleteOne(int $companyId, string $routeName) : int;
 }

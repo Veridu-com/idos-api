@@ -7,6 +7,7 @@
 namespace App\Repository;
 
 use App\Entity\Permission;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Permission Repository Implementation.
@@ -26,13 +27,9 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
     protected $entityName = 'Permission';
 
     /**
-     * Find one permission given its identifiers.
-     *
-     * @param int    companyId permission's company_id
-     * @param string section   permission's section
-     * @param string propName  permission's propName
+     * {@inheritdoc}
      */
-    public function findOne($companyId, $routeName) {
+    public function findOne(int $companyId, string $routeName) : Permission {
         return $this->getOneByWhereConstraints([
             'company_id' => $companyId,
             'route_name' => $routeName
@@ -42,7 +39,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId($companyId) {
+    public function getAllByCompanyId(int $companyId) : Collection{
         return $this->getAllByKey('company_id', $companyId);
     }
 
@@ -52,7 +49,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
      * @param int    companyId permission's company_id
      * @param string routeName   permission's routeName
      */
-    public function deleteOne($companyId, $routeName) {
+    public function deleteOne(int $companyId, string $routeName) : int {
         return $this->query()
             ->where('company_id', $companyId)
             ->where('route_name', $routeName)
@@ -62,7 +59,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteByCompanyId($companyId) {
+    public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
 

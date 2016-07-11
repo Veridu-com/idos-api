@@ -15,16 +15,30 @@ class CommandTest extends AbstractUnit {
     }
 
     public function testCorrectInterface() {
-        $commands = [
-            'Company\CreateNew',
-            'Company\DeleteAll',
-            'Company\DeleteOne',
-            'Company\UpdateOne'
-        ];
-        foreach ($commands as $command)
+        $commands = $this->getCommandNames();
+
+        foreach ($commands as $command) {
             $this->assertInstanceOf(
                 'App\\Command\\CommandInterface',
                 $this->factory->create($command)
             );
+        }
+    }
+
+    private function getCommandNames()
+    {
+        $commandPaths = glob(__DIR__ . '/../../../app/Command/*/*.php');
+        $commands     = [];
+        foreach ($commandPaths as $commandPath) {
+            $matches = [];
+            preg_match_all('/.*Command\/(.*)\/(.*).php/', $commandPath, $matches);
+
+            $resource = $matches[1][0];
+            $command  = $matches[2][0];
+
+            $commands[] = sprintf('%s\\%s', $resource, $command);
+        }
+
+        return $commands;
     }
 }

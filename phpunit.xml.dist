@@ -19,7 +19,7 @@
 		<testsuite name="Unit">
 			<directory>test/Unit</directory>
 		</testsuite>
-		<testsuite name="Functional">
+ 		<testsuite name="Functional">
 			<directory>test/Functional</directory>
 		</testsuite>
 	</testsuites>

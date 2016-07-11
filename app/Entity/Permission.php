@@ -11,19 +11,16 @@ namespace App\Entity;
  *
  * @apiEntity Permission
  * @apiEntityRequiredProperty 	int 	company_id 	Company owner of the Permission
- * @apiEntityRequiredProperty 	string 	route_name 	permission's route's name associated
+ * @apiEntityRequiredProperty 	string 	routeName 	permission's route's name associated
  *
  * @property int 	$id
  * @property int 	$company_id
- * @property string $route_name
+ * @property string $routeName
  */
 class Permission extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['route_name'];
+    protected $visible = ['route_name', 'created_at'];
 
-    public function getValueAttribute($value) {
-        return  is_string($value) ? $value : stream_get_contents($value, -1, 0);
-    }
 }
