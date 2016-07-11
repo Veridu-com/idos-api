@@ -7,8 +7,9 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\Company;
+use Test\Unit\AbstractUnit;
 
-class CompanyTest extends \PHPUnit_Framework_TestCase {
+class CompanyTest extends AbstractUnit {
     public function testSerialize() {
 
         $created = time();

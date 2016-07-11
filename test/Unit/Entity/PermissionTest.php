@@ -7,8 +7,9 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\Permission;
+use Test\Unit\AbstractUnit;
 
-class PermissionTest extends \PHPUnit_Framework_TestCase {
+class PermissionTest extends AbstractUnit {
     public function testSerialize() {
         $array = [
             'id'          => 0,
