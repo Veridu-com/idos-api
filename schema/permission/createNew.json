@@ -8,9 +8,9 @@
           "type": "boolean"
         },
         "data": {
-            "description": "Credential response payload",
+            "description": "Permission response payload",
             "type": "object",
-            "$ref": "credentialEntity.json"
+            "$ref": "permissionEntity.json"
         }
     },
     "required": [
