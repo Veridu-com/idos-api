@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Permission;
+namespace Test\Functional\Credential;
 
 use Slim\Http\Environment;
 use Slim\Http\Headers;
