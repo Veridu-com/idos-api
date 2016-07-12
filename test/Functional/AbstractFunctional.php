@@ -114,7 +114,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
 
     protected function getRandomEntity($index = false) {
         if (! $this->entities) {
-            throw new \Exception('Test instance not populated, call populate() method before calling getRandomEntity() method.');
+            throw new \RuntimeException('Test instance not populated, call populate() method before calling getRandomEntity() method.');
         }
         if ($index === false) {
             $index = mt_rand(0, (sizeof($this->entities) - 1));
