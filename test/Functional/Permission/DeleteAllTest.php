@@ -14,13 +14,13 @@ class DeleteAllTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri = '/1.0/companies/veridu-ltd/permissions';
+        $this->uri        = '/1.0/companies/veridu-ltd/permissions';
         $this->populate($this->uri);
     }
 
     public function testSuccess() {
         // gets the number of related permissions
-        $totalNumberOfEntities   = sizeof($this->populate($this->uri));  
+        $totalNumberOfEntities   = sizeof($this->populate($this->uri));
 
         // then creates the DELETE request
         $request    = $this->createRequest($this->createEnvironment());
@@ -47,5 +47,5 @@ class DeleteAllTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-    
+
 }

@@ -237,11 +237,11 @@ class Permissions implements ControllerInterface {
             ->setParameter('routeName', $routeName);
 
         $deleted = $this->commandBus->handle($command);
-        $body = [
+        $body    = [
             'status'  => $deleted === 1,
             'deleted' => $deleted
         ];
-        
+
         $statusCode = $body['deleted'] ? 200 : 404;
 
         $command = $this->commandFactory->create('ResponseDispatch');

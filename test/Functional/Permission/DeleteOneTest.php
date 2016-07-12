@@ -13,7 +13,7 @@ class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
 
     /**
-     * Deleted endpoint property, initialized setUp()
+     * Deleted endpoint property, initialized setUp().
      */
     private $deletedEndpoint;
 
@@ -24,7 +24,7 @@ class DeleteOneTest extends AbstractFunctional {
             'delete_uri' => '/1.0/companies/veridu-ltd/permissions/companies:listAll'
         ];
         $this->httpMethod = 'DELETE';
-        $this->uri = $this->deletedEndpoint['delete_uri'];
+        $this->uri        = $this->deletedEndpoint['delete_uri'];
     }
 
     public function testSuccess() {
@@ -55,7 +55,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     /**
-     * Tries to assert forbidden access to given $uri, $method
+     * Tries to assert forbidden access to given $uri, $method.
      *
      * @param string $uri URI of the route
      * @param string method HTTP method of the route
@@ -73,10 +73,9 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     /**
-     * Tries to assert current entity does not exist after the deletion
+     * Tries to assert current entity does not exist after the deletion.
      */
-    public function checkEntityDoesNotExist()
-    {
+    public function checkEntityDoesNotExist() {
         // tries to fetch the deleted entity to ensure it was successfully deleted 
         $getOneEnvironment = $this->createEnvironment(
             [
@@ -92,7 +91,7 @@ class DeleteOneTest extends AbstractFunctional {
         // error assertions
         $this->assertNotEmpty($getOneBody);
         $this->assertEquals(404, $getOneResponse->getStatusCode());
-        
+
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',

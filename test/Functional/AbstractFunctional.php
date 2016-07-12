@@ -13,37 +13,38 @@ use JsonSchema\Validator;
 use Phinx\Console\PhinxApplication;
 use Phinx\Wrapper\TextWrapper;
 use Slim\App;
-use Slim\Http\Uri;
+use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
-use Slim\Http\Response;
 use Slim\Http\RequestBody;
-use Slim\Http\Environment;
+use Slim\Http\Response;
+use Slim\Http\Uri;
 
 abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
-    private     $app;
-    protected   $schemaErrors;
+    private $app;
+    protected $schemaErrors;
 
     /**
-     * entities populated via populate() method
+     * entities populated via populate() method.
+     *
      * @see self::populate()
      */
-    protected   $entities;
+    protected $entities;
 
     /**
-     * entity property of the test
+     * entity property of the test.
      */
-    protected   $entity;
+    protected $entity;
 
     /**
-     *  http method of the test
+     *  http method of the test.
      */
-    protected   $httpMethod;
+    protected $httpMethod;
 
     /**
-     *  uri property of the test
+     *  uri property of the test.
      */
-    protected   $uri;
+    protected $uri;
 
     public static function setUpBeforeClass() {
         $phinxApp         = new PhinxApplication();
@@ -85,11 +86,11 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     protected function process($request) {
-        return $this->getApp()->process($request, new Response);
+        return $this->getApp()->process($request, new Response());
     }
 
     /**
-     *  Populates the $entities property of the instance querying the given URI 
+     *  Populates the $entities property of the instance querying the given URI.
      *  
      *  @param string $uri URI to be queried
      *  @param string $method URI to be queried
@@ -113,7 +114,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
 
     protected function getRandomEntity($index = false) {
         if (! $this->entities) {
-            throw new \Exception("Test instance not populated, call populate() method before calling getRandomEntity() method.");
+            throw new \Exception('Test instance not populated, call populate() method before calling getRandomEntity() method.');
         }
         if ($index === false) {
             $index = mt_rand(0, (sizeof($this->entities) - 1));
@@ -129,7 +130,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
             'SCRIPT_NAME'    => '/index.php',
             'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
         ];
-        
+
         return Environment::mock(array_merge($defaults, $options));
     }
 

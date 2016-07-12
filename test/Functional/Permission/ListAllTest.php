@@ -14,7 +14,7 @@ class ListAllTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri = '/1.0/companies/veridu-ltd/permissions';
+        $this->uri        = '/1.0/companies/veridu-ltd/permissions';
     }
 
     public function testSuccess() {
@@ -37,5 +37,5 @@ class ListAllTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-    
+
 }

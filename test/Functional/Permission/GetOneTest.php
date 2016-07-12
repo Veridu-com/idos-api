@@ -16,7 +16,7 @@ class GetOneTest extends AbstractFunctional {
         $this->httpMethod = 'GET';
         $this->populate('/1.0/companies/veridu-ltd/permissions');
         $this->entity = $this->getRandomEntity();
-        $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', $this->entity['route_name']);
+        $this->uri    = sprintf('/1.0/companies/veridu-ltd/permissions/%s', $this->entity['route_name']);
     }
 
     public function testSuccess() {
@@ -41,7 +41,6 @@ class GetOneTest extends AbstractFunctional {
         );
 
     }
-
 
     public function testNotFound() {
         $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
