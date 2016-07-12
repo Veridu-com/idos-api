@@ -12,11 +12,19 @@ use Test\Functional\Traits\HasAuthMiddleware;
 class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
 
+    /**
+     * Deleted endpoint property, initialized setUp()
+     */
+    private $deletedEndpoint;
+
     protected function setUp() {
+        $this->deletedEndpoint = [
+            'uri'        => '/1.0/companies',
+            'httpMethod' => 'GET',
+            'delete_uri' => '/1.0/companies/veridu-ltd/permissions/companies:listAll'
+        ];
         $this->httpMethod = 'DELETE';
-        $this->populate('/1.0/companies/veridu-ltd/permissions');
-        $this->entity = $this->getRandomEntity();
-        $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', $this->entity['route_name']);
+        $this->uri = $this->deletedEndpoint['delete_uri'];
     }
 
     public function testSuccess() {
@@ -31,6 +39,44 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertEquals(1, $body['deleted']); // checks if one was deleted
 
+        /*
+         * Validates Json Schema with Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'permission/deleteOne.json',
+                json_decode($response->getBody())
+            ),
+            $this->schemaErrors
+        );
+
+        $this->checkEntityDoesNotExist();
+        $this->checkForbiddenAccessTo($this->deletedEndpoint['uri'], $this->deletedEndpoint['httpMethod']);
+    }
+
+    /**
+     * Tries to assert forbidden access to given $uri, $method
+     *
+     * @param string $uri URI of the route
+     * @param string method HTTP method of the route
+     */
+    public function checkForbiddenAccessTo(string $uri, string $method) {
+        $this->httpMethod   = $method;
+        $this->uri          = sprintf($uri, $this->entity['route_name']);
+        $request            = $this->createRequest($this->createEnvironment());
+        $response           = $this->process($request);
+        $body               = json_decode($response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertFalse($body['status']);
+    }
+
+    /**
+     * Tries to assert current entity does not exist after the deletion
+     */
+    public function checkEntityDoesNotExist()
+    {
         // tries to fetch the deleted entity to ensure it was successfully deleted 
         $getOneEnvironment = $this->createEnvironment(
             [
@@ -46,18 +92,7 @@ class DeleteOneTest extends AbstractFunctional {
         // error assertions
         $this->assertNotEmpty($getOneBody);
         $this->assertEquals(404, $getOneResponse->getStatusCode());
-
-        /*
-         * Validates Json Schema with Json Response
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'permission/deleteOne.json',
-                json_decode($response->getBody())
-            ),
-            $this->schemaErrors
-        );
-
+        
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
