@@ -46,8 +46,8 @@ class DBPermissionTest extends AbstractUnit {
 
     public function testFindOne() {
         $array = [
-            'routeName'     => 'companies:listAll',
-            'created_at'    => null
+            'route_name'     => 'companies:listAll',
+            'created_at'    => time()
         ];
 
         $factory = new Entity();

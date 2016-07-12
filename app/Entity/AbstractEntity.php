@@ -151,6 +151,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return mixed|null
      */
     private function getAttribute($key) {
+        $key = $this->toSnakeCase($key);
+        
         $value = null;
         if (isset($this->attributes[$key])) {
             $value = $this->attributes[$key];
