@@ -14,7 +14,7 @@ use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 
-class CredentialTest extends AbstractFunctional {
+class CredentialsTest extends AbstractFunctional {
     public function testListAll() {
         $environment = Environment::mock(
             [
