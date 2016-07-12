@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -28,6 +28,18 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $visible = [];
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [];
+    /**
+     * The storage format of the model's date columns.
+     *
+     * @var string
+     */
+    protected $dateFormat = 'Y-m-d H:i:s';
+    /**
      * Indicates if the entity exists on the repository.
      *
      * @var bool
@@ -54,6 +66,19 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $return .= ucfirst(trim($word));
 
         return $return;
+    }
+
+    /**
+     * Formats a CamelCase string to snake_case.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    private function toSnakeCase($string) {
+        $words = preg_split('/[A-Z]/', $string);
+
+        return strtolower(implode('_', $words));
     }
 
     /**
@@ -107,6 +132,10 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             return $this->{$method}($value);
         }
 
+        if ((in_array($key, $this->dates)) && (is_int($value))) {
+            $value = date($this->dateFormat, $value);
+        }
+
         $this->attributes[$key] = $value;
 
         return $this;
@@ -123,8 +152,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     private function getAttribute($key) {
         $value = null;
-        if (isset($this->attributes[$key]))
+        if (isset($this->attributes[$key])) {
             $value = $this->attributes[$key];
+        }
+
+        if (in_array($key, $this->dates)) {
+            $value = strtotime($value);
+        }
 
         if ($this->hasGetMutator($key)) {
             $method = sprintf('get%sAttribute', $this->toCamelCase($key));
@@ -164,12 +198,16 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * {@inheritdoc}
      */
     public function toArray() {
-        if (empty($this->visible))
-            return $this->serialize();
+        if (empty($this->visible)) {
+            $attributes = array_keys($this->attributes);
+        } else {
+            $attributes = $this->visible;
+        }
 
         $return = [];
-        foreach ($this->visible as $attribute)
+        foreach ($attributes as $attribute) {
             $return[$attribute] = $this->getAttribute($attribute);
+        }
 
         return $return;
     }
@@ -178,11 +216,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * {@inheritdoc}
      */
     public function serialize() {
-        $return = [];
-        foreach (array_keys($this->attributes) as $attribute)
-            $return[$attribute] = $this->getAttribute($attribute);
-
-        return $return;
+        return $this->attributes;
     }
 
     /**
@@ -209,7 +243,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return mixed
      */
     public function __get($key) {
-        return $this->getAttribute($key);
+        return $this->getAttribute($this->toSnakeCase($key));
     }
 
     /**
@@ -223,7 +257,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __set($key, $value) {
-        $this->setAttribute($key, $value);
+        $this->setAttribute($this->toSnakeCase($key), $value);
         $this->dirty = true;
     }
 
@@ -237,7 +271,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return bool
      */
     public function __isset($key) {
-        return ! is_null($this->getAttribute($key));
+        return $this->getAttribute($this->toSnakeCase($key)) !== null;
     }
     /**
      * Unset an attribute on the entity.
@@ -249,7 +283,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __unset($key) {
-        $this->setAttribute($key, null);
+        $this->setAttribute($this->toSnakeCase($key), null);
         $this->dirty = true;
     }
 }

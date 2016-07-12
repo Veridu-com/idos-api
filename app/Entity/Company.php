@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -18,15 +18,18 @@ use App\Helper\Utils;
  * @property string $slug
  * @property string $public_key
  * @property string $private_key
- * @property string $created_at
- * @property string $updated_at
- * @property int $created
+ * @property int    $created_at
+ * @property int    $updated_at
  */
 class Company extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
     protected $visible = ['name', 'slug', 'public_key', 'created_at'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $dates = ['created_at', 'updated_at'];
 
     public function setNameAttribute($value) {
         $this->attributes['name'] = $value;

@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * @link https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
  */
-class CORS {
+class CORS implements MiddlewareInterface{
     private $methods;
 
     public function __construct(array $methods = []) {
@@ -44,7 +44,7 @@ class CORS {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface{
         if (! empty($request->getHeaderLine('Origin')))
             $response = $response
                 ->withHeader(

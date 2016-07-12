@@ -1,8 +1,9 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
 use Phinx\Seed\AbstractSeed;
 
 class CompaniesSeed extends AbstractSeed {
@@ -25,6 +26,16 @@ class CompaniesSeed extends AbstractSeed {
                 'private_key' => md5('kced-ppa'), // c8dc9b7ba43297d44b0a8776018feb5a
                 'personal'    => 0,
                 'parent_id'   => 1,
+                'created_at'  => date('Y-m-d H:i:s'),
+                'updated_at'  => date('Y-m-d H:i:s')
+            ],
+            [
+                'name'        => 'Another company',
+                'slug'        => 'another-company',
+                'public_key'  => md5('another-company'),
+                'private_key' => md5('an-co'),
+                'personal'    => 0,
+                'parent_id'   => null,
                 'created_at'  => date('Y-m-d H:i:s'),
                 'updated_at'  => date('Y-m-d H:i:s')
             ]

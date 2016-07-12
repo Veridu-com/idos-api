@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -15,14 +15,14 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * I'm yet to figure out what this is.
  */
-class Watcher {
+class Watcher implements MiddlewareInterface {
     private $container;
 
     public function __construct(ContainerInterface $container) {
         $this->container = $container;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
         $response = $next($request, $response);
 
         return $response->withHeader('X-Watcher', 'was-here');

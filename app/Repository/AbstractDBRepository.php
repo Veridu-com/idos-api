@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -122,11 +122,14 @@ abstract class AbstractDBRepository extends AbstractRepository {
         $serialized = $entity->serialize();
 
         if (! $entity->id) {
-            $id = $this->query()->insertGetId($serialized);
+            $id = $this->query()
+                ->insertGetId($serialized);
         } else {
             $id = $entity->id;
             unset($serialized['id']);
-            $affectedRows = $this->query()->where('id', $entity->id)->update($serialized);
+            $affectedRows = $this->query()
+                ->where('id', $entity->id)
+                ->update($serialized);
             if (! $affectedRows) {
                 throw new Exception('No rows were updated when saving ' . get_class($entity));
             }
@@ -230,6 +233,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     protected function getOneByWhereConstraints(array $constraints = []) {
         $entity = $this->getAllByWhereConstraints($constraints)->first();
+
         if (! $entity) {
             throw new NotFound();
         }

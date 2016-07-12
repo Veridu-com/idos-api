@@ -240,22 +240,6 @@
 
 [DELETE /1.0/access/companies/:companyId/users/:userName](access/companies/users/deleteUser.md)
 
-## Permissions API
-
-[GET /1.0/permissions](permissions/listAll.md)
-
-[GET /1.0/permissions/:companyId](permissions/getCompany.md)
-
-[DELETE /1.0/permissions/:companyId](permissions/deleteCompany.md)
-
-### Endpoint Permission
-
-[GET /1.0/permissions/:companyId/:endpointName](permissions/getCompanyEndpoint.md)
-
-[POST /1.0/permissions/:companyId/:endpointName](permissions/updateCompanyEndpoint.md)
-
-[DELETE /1.0/permissions/:companyId/:endpointName](permissions/deleteCompanyEndpoint.md)
-
 ## Companies API
 
 ### Companies
@@ -271,6 +255,20 @@
 [PUT /1.0/companies/:companyId](companies/updateCompany.md)
 
 [DELETE /1.0/companies/:companyId](companies/deleteCompany.md)
+
+### Company Permissions
+
+[GET /1.0/commpanies/:companyId/permissions](companies/permissions/listAll.md)
+
+[POST /1.0/companies/:companyId/permissions](companies/permissions/createNew.md)
+
+[DELETE /1.0/companies/:companyId/permissions](companies/permissions/deleteAll.md)
+
+[GET /1.0/companies/:companyId/permissions/:endpointName](companies/permissions/getOne.md)
+
+[PUT /1.0/companies/:companyId/permissions/:endpointName](companies/permissions/updateOne.md)
+
+[DELETE /1.0/companies/:companyId/permissions/:endpointName](companies/permissions/deleteOne.md)
 
 ### Company Credentials
 

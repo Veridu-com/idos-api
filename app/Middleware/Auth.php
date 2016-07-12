@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -23,7 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * Extracts authorization from request and stores Acting/Target
  * Subjects (User and/or Company) to request.
  */
-class Auth {
+class Auth implements MiddlewareInterface {
     /**
      * Credential Repository.
      *
@@ -478,7 +478,7 @@ class Auth {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) {
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
 
         $hasAuthorization   = ($this->authorizationRequirement == self::NONE);
         $validAuthorization = [];

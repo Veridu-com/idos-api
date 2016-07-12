@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -7,6 +7,7 @@
 namespace App\Route;
 
 use App\Middleware\Auth;
+use App\Middleware\Permission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -45,16 +46,17 @@ class Settings implements RouteInterface {
             );
         };
 
-        $container      = $app->getContainer();
-        $authMiddleware = $container->get('authMiddleware');
+        $container              = $app->getContainer();
+        $authMiddleware         = $container->get('authMiddleware');
+        $permissionMiddleware   = $container->get('permissionMiddleware');
 
-        self::listAll($app, $authMiddleware);
-        self::listAllFromSection($app, $authMiddleware);
-        self::deleteAll($app, $authMiddleware);
-        self::createNew($app, $authMiddleware);
-        self::getOne($app, $authMiddleware);
-        self::updateOne($app, $authMiddleware);
-        self::deleteOne($app, $authMiddleware);
+        self::listAll($app, $authMiddleware, $permissionMiddleware);
+        self::listAllFromSection($app, $authMiddleware, $permissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
+        self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::updateOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -75,14 +77,16 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/listAll.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::listAll
      */
-    private static function listAll(App $app, callable $auth) {
+    private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
                 'App\Controller\Settings:listAll'
             )
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:listAll');
     }
@@ -105,14 +109,16 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/listAllFromSection.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::listAllFromSection
      */
-    private static function listAllFromSection(App $app, callable $auth) {
+    private static function listAllFromSection(App $app, callable $auth, callable $permission) {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}',
                 'App\Controller\Settings:listAllFromSection'
             )
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:listAllFromSection');
     }
@@ -135,14 +141,16 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/createNew.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::createNew
      */
-    private static function createNew(App $app, callable $auth) {
+    private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
                 'App\Controller\Settings:createNew'
             )
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:createNew');
     }
@@ -165,14 +173,16 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/deleteAll.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
                 'App\Controller\Settings:deleteAll'
             )
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:deleteAll');
     }
@@ -197,14 +207,16 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/getOne.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::getOne
      */
-    private static function getOne(App $app, callable $auth) {
+    private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
                 'App\Controller\Settings:getOne'
             )
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:getOne');
     }
@@ -229,14 +241,16 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/updateOne.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::updateOne
      */
-    private static function updateOne(App $app, callable $auth) {
+    private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
                 'App\Controller\Settings:updateOne'
             )
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:updateOne');
     }
@@ -261,14 +275,16 @@ class Settings implements RouteInterface {
      *
      * @link docs/companies/settings/deleteOne.md
      * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
                 'App\Controller\Settings:deleteOne'
             )
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:deleteOne');
     }

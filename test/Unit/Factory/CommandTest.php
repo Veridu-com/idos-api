@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
@@ -25,10 +25,31 @@ class CommandTest extends AbstractUnit {
             'Credential\DeleteOne',
             'Credential\UpdateOne'
         ];
-        foreach ($commands as $command)
+
+        $commands = $this->getCommandNames();
+
+        foreach ($commands as $command) {
             $this->assertInstanceOf(
                 'App\\Command\\CommandInterface',
                 $this->factory->create($command)
             );
+        }
+    }
+
+    private function getCommandNames()
+    {
+        $commandPaths = glob(__DIR__ . '/../../../app/Command/*/*.php');
+        $commands     = [];
+        foreach ($commandPaths as $commandPath) {
+            $matches = [];
+            preg_match_all('/.*Command\/(.*)\/(.*).php/', $commandPath, $matches);
+
+            $resource = $matches[1][0];
+            $command  = $matches[2][0];
+
+            $commands[] = sprintf('%s\\%s', $resource, $command);
+        }
+
+        return $commands;
     }
 }
