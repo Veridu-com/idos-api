@@ -12,3 +12,4 @@ phpdox.xml
 phpunit.xml
 sftp-config.json
 vendor/
+resources/postman/npm-debug*

@@ -23,4 +23,9 @@ class Permission extends AbstractEntity {
      */
     protected $visible = ['route_name', 'created_at'];
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $dates = ['created_at'];
+
 }

@@ -6,6 +6,7 @@
 
 namespace Test\Unit\Repository;
 
+use App\Entity\Permission;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBPermission;
@@ -46,8 +47,8 @@ class DBPermissionTest extends AbstractUnit {
 
     public function testFindOne() {
         $array = [
-            'routeName'     => 'companies:listAll',
-            'created_at'    => null
+            'route_name'     => 'companies:listAll',
+            'created_at'     => time()
         ];
 
         $factory = new Entity();
@@ -78,7 +79,11 @@ class DBPermissionTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbPermission = new DBPermission($factory, $connectionMock);
 
-        $this->assertSame($array, $dbPermission->findOne(0, 'companies:listAll')->toArray());
+        // fetches entity 
+        $entity = $dbPermission->findOne(0, 'companies:listAll');
+
+        $this->assertInstanceOf(Permission::class, $entity);
+        $this->assertSame($array, $entity->toArray());
     }
 
 }
