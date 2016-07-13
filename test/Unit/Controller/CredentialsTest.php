@@ -8,8 +8,8 @@ use App\Command\Credential\DeleteOne;
 use App\Command\Credential\UpdateOne;
 use App\Command\ResponseDispatch;
 use App\Controller\Credentials;
-use App\Entity\Credential as CredentialEntity;
 use App\Entity\Company;
+use App\Entity\Credential as CredentialEntity;
 use App\Factory\Command;
 use App\Repository\DBCredential;
 use Illuminate\Support\Collection;
@@ -289,7 +289,7 @@ class CreentialsTest extends AbstractUnit {
                 $this->returnValue(
                     new CredentialEntity(
                         [
-                            'id' => 0,
+                            'id'         => 0,
                             'updated_at' => 'date'
                         ]
                     )
@@ -313,7 +313,6 @@ class CreentialsTest extends AbstractUnit {
             ->expects($this->exactly(2))
             ->method('create')
             ->will($this->onConsecutiveCalls(new UpdateOne(), new ResponseDispatch()));
-
 
         $optimus = $this->getMockBuilder(Optimus::class)
             ->disableOriginalConstructor()
@@ -358,7 +357,7 @@ class CreentialsTest extends AbstractUnit {
                 $this->returnValue(
                     new CredentialEntity(
                         [
-                            'id' => 0,
+                            'id'         => 0,
                             'updated_at' => 'date'
                         ]
                     )
@@ -382,7 +381,6 @@ class CreentialsTest extends AbstractUnit {
             ->expects($this->exactly(2))
             ->method('create')
             ->will($this->onConsecutiveCalls(new DeleteOne(), new ResponseDispatch()));
-
 
         $optimus = $this->getMockBuilder(Optimus::class)
             ->disableOriginalConstructor()

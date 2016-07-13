@@ -12,11 +12,11 @@ class CredentialTest extends \PHPUnit_Framework_TestCase {
     public function testSerialize() {
         $array = [
             'id'          => 0,
-            'companyId' => '0',
+            'companyId'   => '0',
             'name'        => 'My Credential',
-            'public'  => 'public',
-            'private' => 'private',
-            'production' => false,
+            'public'      => 'public',
+            'private'     => 'private',
+            'production'  => false,
             'created_at'  => time(),
             'updated_at'  => time()
         ];
@@ -27,8 +27,8 @@ class CredentialTest extends \PHPUnit_Framework_TestCase {
         $array = $abstractMock->serialize();
         $this->assertArrayHasKey('id', $array);
         $this->assertSame(0, $array['id']);
-        $this->assertArrayHasKey('companyId', $array);
-        $this->assertSame('0', $array['companyId']);
+        $this->assertArrayHasKey('company_id', $array);
+        $this->assertSame('0', $array['company_id']);
         $this->assertArrayHasKey('name', $array);
         $this->assertSame('My Credential', $array['name']);
         $this->assertArrayHasKey('slug', $array);
@@ -48,11 +48,11 @@ class CredentialTest extends \PHPUnit_Framework_TestCase {
     public function testToArray() {
         $array = [
             'id'          => 0,
-            'companyId' => '0',
+            'companyId'   => '0',
             'name'        => 'My Credential',
-            'public'  => 'public',
-            'private' => 'private',
-            'production' => false,
+            'public'      => 'public',
+            'private'     => 'private',
+            'production'  => false,
             'created_at'  => time(),
             'updated_at'  => time()
         ];
