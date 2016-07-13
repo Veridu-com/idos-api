@@ -4,10 +4,6 @@
     "title": "Permission",
     "type": "object",
     "properties": {
-        "company_id": {
-            "description": "Company owner of the Permission",
-            "type": "integer"
-        },
         "route_name": {
             "description": "Permission's route name",
             "type": "string",

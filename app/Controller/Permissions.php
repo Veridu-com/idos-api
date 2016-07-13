@@ -238,8 +238,7 @@ class Permissions implements ControllerInterface {
 
         $deleted = $this->commandBus->handle($command);
         $body    = [
-            'status'  => $deleted === 1,
-            'deleted' => $deleted
+            'status'  => $deleted === 1
         ];
 
         $statusCode = $body['deleted'] ? 200 : 404;
