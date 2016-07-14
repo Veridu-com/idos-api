@@ -241,7 +241,7 @@ class Permissions implements ControllerInterface {
             'status'  => $deleted === 1
         ];
 
-        $statusCode = $body['deleted'] ? 200 : 404;
+        $statusCode = $body['status'] ? 200 : 404;
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
