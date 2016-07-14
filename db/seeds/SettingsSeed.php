@@ -13,11 +13,11 @@ class SettingsSeed extends AbstractSeed {
         $data = [];
         $now  = date('Y-m-d H:i:s');
 
-        for ($i = 0; $i < 30; $i++) {
+        for ($i = 0; $i < 35; $i++) {
             $data[] = [
                 'company_id'    => mt_rand(1, 2),
-                'section'       => $faker->word,
-                'property'      => $faker->word,
+                'section'       => $faker->countryCode,
+                'property'      => $faker->word . ' ' . $i,
                 'value'         => $faker->colorName,
                 'created_at'    => $now,
                 'updated_at'    => $now

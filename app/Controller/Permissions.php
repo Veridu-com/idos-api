@@ -74,7 +74,7 @@ class Permissions implements ControllerInterface {
             // TODO: Discuss with Flavio if this "updated" makes sense. 
             // Should a deletion refresh it? How?
             'updated' => (
-                $permissions->isEmpty() ? time() : strtotime($permissions->max('created_at'))
+                $permissions->isEmpty() ? time() : $permissions->max('created_at')
             )
         ];
 
@@ -139,8 +139,7 @@ class Permissions implements ControllerInterface {
         $permission    = $this->repository->findOne($targetCompany->id, $routeName);
 
         $body = [
-            'data'    => $permission->toArray(),
-            'updated' => strtotime($permission->created_at)
+            'data'    => $permission->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -179,6 +178,7 @@ class Permissions implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
+            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -236,12 +236,16 @@ class Permissions implements ControllerInterface {
             ->setParameter('companyId', $targetCompany->id)
             ->setParameter('routeName', $routeName);
 
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
+        $deleted = $this->commandBus->handle($command);
+        $body    = [
+            'status'  => $deleted === 1
         ];
+
+        $statusCode = $body['deleted'] ? 200 : 404;
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
+            ->setParameter('statusCode', $statusCode)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

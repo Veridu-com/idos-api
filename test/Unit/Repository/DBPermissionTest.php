@@ -79,8 +79,11 @@ class DBPermissionTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbPermission = new DBPermission($factory, $connectionMock);
 
-        $this->assertInstanceOf(Permission::class, $dbPermission->findOne(0, 'companies:listAll'));
-        $this->assertSame($array, $dbPermission->findOne(0, 'companies:listAll')->toArray());
+        // fetches entity
+        $entity = $dbPermission->findOne(0, 'companies:listAll');
+
+        $this->assertInstanceOf(Permission::class, $entity);
+        $this->assertSame($array, $entity->toArray());
     }
 
 }

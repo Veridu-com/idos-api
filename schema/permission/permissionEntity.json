@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/permission/permissionEntity.json",
+    "title": "Permission",
+    "type": "object",
+    "properties": {
+        "route_name": {
+            "description": "Permission's route name",
+            "type": "string",
+            "pattern": ""
+        },
+        "created_at": {
+            "description": "Permission's creation unixtimestamp",
+            "type": "integer"
+        }
+    },
+    "dependencies": {},
+    "required": [
+        "route_name",
+        "created_at"
+    ]
+}
