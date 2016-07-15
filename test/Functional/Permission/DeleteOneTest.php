@@ -37,7 +37,6 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
-        $this->assertEquals(1, $body['deleted']); // checks if one was deleted
 
         /*
          * Validates Json Schema with Json Response
@@ -103,7 +102,6 @@ class DeleteOneTest extends AbstractFunctional {
 
     public function testNotFound() {
         $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
-
         $request            = $this->createRequest($this->createEnvironment());
         $response           = $this->process($request);
         $body               = json_decode($response->getBody(), true);
@@ -112,7 +110,6 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
-        $this->assertEquals(0, $body['deleted']); // checks if one was deleted
 
         /*
          * Validates Json Schema with Json Response
