@@ -26,9 +26,9 @@ class PermissionTest extends AbstractUnit {
         $this->validator->assertRouteName('');
     }
 
-    public function testAssertRouteNameLessThanFiveChars() {
+    public function testAssertRouteNameLessThanOneChar() {
         $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertRouteName('aaaa');
+        $this->validator->assertRouteName('');
     }
 
     public function testAssertRouteNameThirdyChars() {
