@@ -22,6 +22,7 @@ use Slim\Http\Uri;
 
 abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     private $app;
+    
     protected $schemaErrors;
 
     /**
