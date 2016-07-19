@@ -134,7 +134,10 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return Environment::mock(array_merge($defaults, $options));
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2fe61c12bf2a37dfbee55c310822220c03b1d54d
     protected function createRequest(Environment $environment, $body = null) : Request {
         $requestBody = new RequestBody();
 

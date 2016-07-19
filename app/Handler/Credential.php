@@ -80,7 +80,8 @@ class Credential implements HandlerInterface {
             [
                 'name'       => $command->name,
                 'production' => $this->validator->productionValue($command->production),
-                'company_id' => $command->companyId
+                'company_id' => $command->companyId,
+                'created_at' => time()
             ]
         );
 
