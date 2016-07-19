@@ -77,7 +77,8 @@ class Permission implements HandlerInterface {
         $permission = $this->repository->create(
             [
                 'route_name' => $command->routeName,
-                'company_id' => $command->companyId
+                'company_id' => $command->companyId,
+                'created_at' => time()
             ]
         );
 

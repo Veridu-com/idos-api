@@ -134,15 +134,23 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return Environment::mock(array_merge($defaults, $options));
     }
 
-    protected function createRequest(Environment $environment) {
-        return new Request(
+    protected function createRequest(Environment $environment, $body = null) : Request {
+        $requestBody = new RequestBody();
+
+        if ($body) {
+            $requestBody->write($body);
+        }
+
+        $request = new Request(
             $environment->get('REQUEST_METHOD'),
             Uri::createFromEnvironment($environment),
             Headers::createFromEnvironment($environment),
             [],
             $environment->all(),
-            new RequestBody()
+            $requestBody
         );
+
+        return $request;
     }
 
     protected function validateSchema($schemaFile, $bodyResponse) {

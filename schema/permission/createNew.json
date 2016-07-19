@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "POST /companies/{companySlug}/credentials",
+    "title": "POST /companies/{companySlug}/permissions",
     "type": "object",
     "properties": {
         "status": {
