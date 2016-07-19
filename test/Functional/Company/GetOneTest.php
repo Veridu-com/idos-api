@@ -7,13 +7,11 @@
 namespace Test\Functional\Company;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
 
 class GetOneTest extends AbstractFunctional {
-
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri    = '/1.0/companies/veridu-ltd';
+        $this->uri        = '/1.0/companies/veridu-ltd';
     }
 
     public function testSuccess() {

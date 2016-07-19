@@ -12,10 +12,8 @@ use App\Repository\DBSetting;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Collection;
 use Test\Unit\AbstractUnit;
-use App\Entity\Setting as SettingEntity;
 
 class DBSettingTest extends AbstractUnit {
-
     public function testFindOneNotFound() {
         $factory = new Entity();
         $factory->create('Setting', []);
@@ -42,7 +40,7 @@ class DBSettingTest extends AbstractUnit {
         $dbSetting = new DBSetting($factory, $connectionMock);
 
         $this->setExpectedException(NotFound::class);
-        $dbSetting->findOne('','', '');
+        $dbSetting->findOne('', '', '');
     }
 
     public function testGetAllByCompanyIdEmpty() {
@@ -160,9 +158,9 @@ class DBSettingTest extends AbstractUnit {
                 $this->returnValue(
                     [
                         'companyId' => 1,
-                        'section' => 'section',
-                        'property' => 'property',
-                        'value' => 'value'
+                        'section'   => 'section',
+                        'property'  => 'property',
+                        'value'     => 'value'
                     ]
                 )
             );

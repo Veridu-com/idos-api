@@ -6,27 +6,23 @@
 
 namespace Test\Functional\Setting;
 
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteOneTest extends AbstractFunctional {
-	use HasAuthMiddleware;
+    use HasAuthMiddleware;
 
-	protected function setUp() {
+    protected function setUp() {
         $this->httpMethod = 'DELETE';
-		$this->populate('/1.0/companies/veridu-ltd/settings');
+        $this->populate('/1.0/companies/veridu-ltd/settings');
         $this->entity = $this->getRandomEntity();
         $this->uri    = sprintf('/1.0/companies/veridu-ltd/settings/%s/%s', $this->entity['section'], $this->entity['property']);
     }
 
     public function testSuccess() {
-    	$request    = $this->createRequest($this->createEnvironment());
+        $request    = $this->createRequest($this->createEnvironment());
         $response   = $this->process($request);
         $body       = json_decode($response->getBody(), true);
 
@@ -46,10 +42,10 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFoundSlug() {
-		$this->uri    = '/1.0/companies/dummy-ltd/settings/dummy/property';
-    	$request    = $this->createRequest($this->createEnvironment());
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $this->uri    = '/1.0/companies/dummy-ltd/settings/dummy/property';
+        $request      = $this->createRequest($this->createEnvironment());
+        $response     = $this->process($request);
+        $body         = json_decode($response->getBody(), true);
 
         // success assertions
         $this->assertNotEmpty($body);
@@ -68,8 +64,8 @@ class DeleteOneTest extends AbstractFunctional {
         );
     }
 
-	public function testInvalidSectionProperty() {
-        $this->uri = '/1.0/companies/veridu-ltd/settings/section/property';
+    public function testInvalidSectionProperty() {
+        $this->uri  = '/1.0/companies/veridu-ltd/settings/section/property';
         $request    = $this->createRequest($this->createEnvironment());
         $response   = $this->process($request);
         $body       = json_decode($response->getBody(), true);
@@ -81,7 +77,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertEquals(0, $body['deleted']);
 
-		/*
+        /*
          * Validates Json Schema with Json Response
          */
         $this->assertTrue(

@@ -6,10 +6,6 @@
 
 namespace Test\Functional\Setting;
 
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
@@ -51,7 +47,7 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-    	$this->uri = sprintf('/1.0/companies/veridu-ltd/settings/%s/%s', 'dummy', $this->entity['property']);
+        $this->uri   = sprintf('/1.0/companies/veridu-ltd/settings/%s/%s', 'dummy', $this->entity['property']);
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json'

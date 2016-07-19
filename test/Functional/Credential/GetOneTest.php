@@ -7,13 +7,11 @@
 namespace Test\Functional\Credential;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
 
 class GetOneTest extends AbstractFunctional {
-
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri    = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961';
+        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961';
     }
 
     public function testSuccess() {

@@ -13,4 +13,4 @@
 
 ```
 
-This is the code repository for the brand new idOS API.
+This is the code repository for idOS API.
