@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 # updates docker project
 if [ -d "docker" ]; then
     cd docker/
@@ -18,6 +16,9 @@ make build-all
 cd -
 
 # builds infra/postgresql
+if [ ! -d "docker/infra/postgresql/docker-init.d/" ]; then
+    mkdir docker/infra/postgresql/docker-init.d/;
+fi
 cp conf.d/*.sql docker/infra/postgresql/docker-init.d/
 cd docker/infra/postgresql
 make clean
