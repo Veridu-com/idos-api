@@ -6,20 +6,17 @@
 
 namespace Test\Functional\Company;
 
-use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
-use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
-use Slim\Http\Headers;
-use Slim\Http\Request;
+use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
     use HasAuthMiddleware;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
-        $this->uri    = '/1.0/companies';
+        $this->uri        = '/1.0/companies';
     }
 
     public function testSuccess() {

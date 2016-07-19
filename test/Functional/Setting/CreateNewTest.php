@@ -6,10 +6,6 @@
 
 namespace Test\Functional\Setting;
 
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
@@ -20,7 +16,7 @@ class CreateNewTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'POST';
-        $this->uri = '/1.0/companies/veridu-ltd/settings';
+        $this->uri        = '/1.0/companies/veridu-ltd/settings';
     }
 
     public function testSuccess() {
@@ -34,9 +30,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'section' => 'velit',
-			    	'property' => 'bicxuito',
-			    	'value' => 'biscuit'
+                    'section'  => 'velit',
+                    'property' => 'bicxuito',
+                    'value'    => 'biscuit'
                 ]
             )
         );
@@ -66,7 +62,7 @@ class CreateNewTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-    	$this->uri = '/1.0/companies/dummy-ltd/settings';
+        $this->uri   = '/1.0/companies/dummy-ltd/settings';
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json'
@@ -77,9 +73,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'section' => 'velit',
-			    	'property' => 'bicxuito',
-			    	'value' => 'biscuit'
+                    'section'  => 'velit',
+                    'property' => 'bicxuito',
+                    'value'    => 'biscuit'
                 ]
             )
         );

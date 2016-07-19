@@ -41,7 +41,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/companies/dummy-ltd');
+        $this->uri          = sprintf('/1.0/companies/dummy-ltd');
         $request            = $this->createRequest($this->createEnvironment());
         $response           = $this->process($request);
         $body               = json_decode($response->getBody(), true);

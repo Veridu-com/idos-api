@@ -6,26 +6,22 @@
 
 namespace Test\Functional\Setting;
 
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteAllTest extends AbstractFunctional {
-	use HasAuthMiddleware;
-	
-	protected function setUp() {
+    use HasAuthMiddleware;
+
+    protected function setUp() {
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/companies/veridu-ltd/settings';
-		$this->populate($this->uri);
+        $this->populate($this->uri);
     }
 
     public function testSuccess() {
-    	$request    = $this->createRequest($this->createEnvironment());
+        $request    = $this->createRequest($this->createEnvironment());
         $response   = $this->process($request);
         $body       = json_decode($response->getBody(), true);
 
@@ -51,10 +47,10 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-		$this->uri        = '/1.0/companies/dummy-ltd/settings';
-    	$request    = $this->createRequest($this->createEnvironment());
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $this->uri        = '/1.0/companies/dummy-ltd/settings';
+        $request          = $this->createRequest($this->createEnvironment());
+        $response         = $this->process($request);
+        $body             = json_decode($response->getBody(), true);
 
         // success assertions
         $this->assertNotEmpty($body);

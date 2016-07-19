@@ -6,8 +6,8 @@
 
 namespace Test\Unit\Entity;
 
-use Test\Unit\AbstractUnit;
 use App\Entity\Credential;
+use Test\Unit\AbstractUnit;
 
 class CredentialTest extends AbstractUnit {
     public function testSerialize() {

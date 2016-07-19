@@ -7,15 +7,15 @@
 namespace Test\Unit\Handler;
 
 use App\Command\Setting\CreateNew;
+use App\Command\Setting\DeleteAll;
 use App\Command\Setting\DeleteOne;
 use App\Command\Setting\UpdateOne;
-use App\Command\Setting\DeleteAll;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Setting;
-use App\Repository\SettingInterface;
 use App\Repository\DBSetting;
+use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
@@ -93,9 +93,9 @@ class SettingTest extends AbstractUnit {
             ->getMock();
         $commandMock->setParameters(
             [
-                'section' => 'section',
-                'property' => 'property',
-                'value' => '',
+                'section'    => 'section',
+                'property'   => 'property',
+                'value'      => '',
                 'company_id' => 1
             ]
         );
@@ -123,11 +123,11 @@ class SettingTest extends AbstractUnit {
             new SettingValidator()
         );
 
-        $command           = new CreateNew();
+        $command              = new CreateNew();
         $command->section     = 'section';
-        $command->property = 'property';
-        $command->value = 'value';
-        $command->companyId = 1;
+        $command->property    = 'property';
+        $command->value       = 'value';
+        $command->companyId   = 1;
 
         $result = $handler->handleCreateNew($command);
         $this->assertSame('section', $result->section);
@@ -175,15 +175,14 @@ class SettingTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $commandMock->section = 'section';
-        $commandMock->property = 'property';
-        $commandMock->value = '';
+        $commandMock->section   = 'section';
+        $commandMock->property  = 'property';
+        $commandMock->value     = '';
         $commandMock->companyId = 1;
 
         $handler->handleUpdateOne($commandMock);
 
     }
-
 
     public function testHandleDeleteOneInvalidSettingSlug() {
         $repositoryMock = $this
@@ -203,8 +202,8 @@ class SettingTest extends AbstractUnit {
             ->getMock();
 
         $commandMock->companyId = 1;
-        $commandMock->section = '';
-        $commandMock->property = 'property';
+        $commandMock->section   = '';
+        $commandMock->property  = 'property';
 
         $handler->handleDeleteOne($commandMock);
     }

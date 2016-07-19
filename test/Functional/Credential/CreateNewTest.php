@@ -6,14 +6,10 @@
 
 namespace Test\Functional\Credential;
 
-use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
     use HasAuthMiddleware;
@@ -64,7 +60,7 @@ class CreateNewTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/dummy-ltd/credentials';
+        $this->uri   = '/1.0/companies/dummy-ltd/credentials';
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json'
@@ -86,7 +82,6 @@ class CreateNewTest extends AbstractFunctional {
         $body = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-
 
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
