@@ -6,9 +6,10 @@
 
 namespace Test\Unit\Entity;
 
+use Test\Unit\AbstractUnit;
 use App\Entity\Credential;
 
-class CredentialTest extends \PHPUnit_Framework_TestCase {
+class CredentialTest extends AbstractUnit {
     public function testSerialize() {
         $array = [
             'id'          => 0,
