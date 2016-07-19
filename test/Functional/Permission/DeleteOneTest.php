@@ -101,7 +101,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
+        $this->uri          = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
         $request            = $this->createRequest($this->createEnvironment());
         $response           = $this->process($request);
         $body               = json_decode($response->getBody(), true);

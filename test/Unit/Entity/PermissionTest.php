@@ -31,7 +31,9 @@ class PermissionTest extends AbstractUnit {
         $this->assertSame('companies:listAll', $array['route_name']);
 
         $this->assertArrayHasKey('created_at', $array);
-        $this->assertTrue(is_int($array['created_at']));
+
+        $this->assertTrue(is_string($array['created_at']));
+        $this->assertTrue(is_int($abstractMock->createdAt));
     }
 
     public function testToArray() {
