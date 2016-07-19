@@ -1,0 +1,32 @@
+version: '2'
+services:
+  api:
+    container_name: srv-app
+    image: veridu/cli-php:latest
+    command: ["-S", "0.0.0.0:8080", "-t", "/app/public/", "/app/public/index.php"]
+    ports:
+     - "8080:8080"
+    volumes:
+     - ../:/app
+    depends_on:
+     - postgresql
+    networks:
+      infra_net:
+        ipv4_address: 172.16.238.10
+  postgresql:
+    container_name: srv-db
+    image: veridu/postgresql:latest
+    networks:
+      infra_net:
+        ipv4_address: 172.16.238.11
+
+networks:
+  infra_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1
