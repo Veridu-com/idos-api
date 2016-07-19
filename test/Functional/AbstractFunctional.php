@@ -53,6 +53,75 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return $app;
     }
 
+    protected function process($request) {
+        return $this->getApp()->process($request, new Response());
+    }
+
+    /**
+     *  Populates the $entities property of the instance querying the given URI.
+     *  
+     *  @param string $uri URI to be queried
+     *  @param string $method URI to be queried
+     *
+     *  @return array $entities
+     */
+    protected function populate(string $uri, string $method = 'GET') : array {
+        $environment = $this->createEnvironment([
+            'REQUEST_URI'    => $uri,
+            'REQUEST_METHOD' => $method
+        ]);
+
+        $request    = $this->createRequest($environment);
+        $response   = $this->process($request);
+        $body       = json_decode($response->getBody(), true);
+
+        $this->entities = $body['data'];
+
+        return $this->entities;
+    }
+
+    protected function getRandomEntity($index = false) {
+        if (! $this->entities) {
+            throw new \RuntimeException('Test instance not populated, call populate() method before calling getRandomEntity() method.');
+        }
+        if ($index === false) {
+            $index = mt_rand(0, (sizeof($this->entities) - 1));
+        }
+
+        return $this->entities[$index];
+    }
+
+    protected function createEnvironment(array $options = []) {
+        $defaults = [
+            'REQUEST_URI'    => $this->uri,
+            'REQUEST_METHOD' => $this->httpMethod,
+            'SCRIPT_NAME'    => '/index.php',
+            'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
+        ];
+
+        return Environment::mock(array_merge($defaults, $options));
+    }
+
+    protected function createRequest(Environment $environment, $body = null) : Request {
+        $requestBody = new RequestBody();
+
+        if ($body) {
+            $requestBody->write($body);
+        }
+
+        $request = new Request(
+            $environment->get('REQUEST_METHOD'),
+            Uri::createFromEnvironment($environment),
+            Headers::createFromEnvironment($environment),
+            [],
+            $environment->all(),
+            $requestBody
+        );
+
+        return $request;
+    }
+
+>>>>>>> Stashed changes
     protected function validateSchema($schemaFile, $bodyResponse) {
         $schemaFile = ltrim($schemaFile, '/');
         $resolver   = new RefResolver(new UriRetriever(), new UriResolver());

@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /companies/{companySlug}/permissions",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Permission response payload",
+            "type": "object",
+            "$ref": "permissionEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

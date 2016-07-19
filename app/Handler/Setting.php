@@ -80,7 +80,8 @@ class Setting implements HandlerInterface {
                 'section'    => $command->section,
                 'property'   => $command->property,
                 'value'      => $command->value,
-                'company_id' => $command->companyId
+                'company_id' => $command->companyId,
+                'created_at' => time()
             ]
         );
 
