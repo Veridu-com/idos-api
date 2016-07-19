@@ -76,8 +76,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return string
      */
     private function toSnakeCase($string) {
-        $words = preg_split('/[A-Z]/', $string);
-        return strtolower(implode('_', $words));
+        return strtolower(preg_replace('/([A-Z])/', '_$1', $string));
     }
 
     /**
@@ -125,6 +124,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return App\Entity\EntityInterface
      */
     private function setAttribute($key, $value) {
+        $key = $this->toSnakeCase($key);
+
         if ($this->hasSetMutator($key)) {
             $method = sprintf('set%sAttribute', $this->toCamelCase($key));
 
@@ -150,6 +151,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return mixed|null
      */
     private function getAttribute($key) {
+        $key = $this->toSnakeCase($key);
+
         $value = null;
         if (isset($this->attributes[$key])) {
             $value = $this->attributes[$key];
@@ -205,7 +208,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         $return = [];
         foreach ($attributes as $attribute) {
-            $return[$attribute] = $this->getAttribute($attribute);
+            $return[$attribute] = $this->getAttribute($this->toSnakeCase($attribute));
         }
 
         return $return;
@@ -215,7 +218,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * {@inheritdoc}
      */
     public function serialize() {
-        return $this->attributes;
+        $attributes = array_keys($this->attributes);
+        $return     = [];
+        foreach ($attributes as $attribute) {
+            $return[$this->toSnakeCase($attribute)] = $this->attributes[$attribute];
+        }
+
+        return $return;
     }
 
     /**
@@ -270,7 +279,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return bool
      */
     public function __isset($key) {
-        return ($this->getAttribute($this->toSnakeCase($key)) !== null);
+        return $this->getAttribute($this->toSnakeCase($key)) !== null;
     }
     /**
      * Unset an attribute on the entity.

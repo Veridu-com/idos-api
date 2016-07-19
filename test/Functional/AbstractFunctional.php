@@ -13,9 +13,38 @@ use JsonSchema\Validator;
 use Phinx\Console\PhinxApplication;
 use Phinx\Wrapper\TextWrapper;
 use Slim\App;
+use Slim\Http\Environment;
+use Slim\Http\Headers;
+use Slim\Http\Request;
+use Slim\Http\RequestBody;
+use Slim\Http\Response;
+use Slim\Http\Uri;
 
 abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
+    private $app;
     protected $schemaErrors;
+
+    /**
+     * entities populated via populate() method.
+     *
+     * @see self::populate()
+     */
+    protected $entities;
+
+    /**
+     * entity property of the test.
+     */
+    protected $entity;
+
+    /**
+     *  http method of the test.
+     */
+    protected $httpMethod;
+
+    /**
+     *  uri property of the test.
+     */
+    protected $uri;
 
     public static function setUpBeforeClass() {
         $phinxApp         = new PhinxApplication();
@@ -38,17 +67,20 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     protected function getApp() {
+        if ($this->app) {
+            return $this->app;
+        }
+
         $app = new App(
             ['settings' => $GLOBALS['appSettings']]
         );
 
         require_once __ROOT__ . '/../config/dependencies.php';
-
         require_once __ROOT__ . '/../config/middleware.php';
-
         require_once __ROOT__ . '/../config/handlers.php';
-
         require_once __ROOT__ . '/../config/routes.php';
+
+        $this->app = $app;
 
         return $app;
     }
@@ -121,7 +153,6 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return $request;
     }
 
->>>>>>> Stashed changes
     protected function validateSchema($schemaFile, $bodyResponse) {
         $schemaFile = ltrim($schemaFile, '/');
         $resolver   = new RefResolver(new UriRetriever(), new UriResolver());

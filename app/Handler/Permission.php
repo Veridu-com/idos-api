@@ -9,6 +9,7 @@ namespace App\Handler;
 use App\Command\Permission\CreateNew;
 use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
+use App\Entity\Permission as PermissionEntity;
 use App\Repository\PermissionInterface;
 use App\Validator\Permission as PermissionValidator;
 use Interop\Container\ContainerInterface;
@@ -69,7 +70,7 @@ class Permission implements HandlerInterface {
      *
      * @return array
      */
-    public function handleCreateNew(CreateNew $command) {
+    public function handleCreateNew(CreateNew $command) : PermissionEntity {
         $this->validator->assertRouteName($command->routeName);
         $this->validator->assertId($command->companyId);
 
@@ -93,7 +94,7 @@ class Permission implements HandlerInterface {
      *
      * @return void
      */
-    public function handleDeleteAll(DeleteAll $command) {
+    public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->companyId);
 
         return $this->repository->deleteByCompanyId($command->companyId);
@@ -106,7 +107,7 @@ class Permission implements HandlerInterface {
      *
      * @return array
      */
-    public function handleUpdateOne(UpdateOne $command) {
+    public function handleUpdateOne(UpdateOne $command) : int {
         $this->validator->assertId($command->companyId);
         $this->validator->assertPropName($command->propNameId);
         $this->validator->assertSectionName($command->sectionNameId);
@@ -119,7 +120,7 @@ class Permission implements HandlerInterface {
 
         $success = $this->repository->update($permission);
 
-        return $success ? $permission : false;
+        return $success ? $permission : 0;
     }
 
     /**
@@ -129,7 +130,7 @@ class Permission implements HandlerInterface {
      *
      * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->companyId);
         $this->validator->assertRouteName($command->routeName);
 

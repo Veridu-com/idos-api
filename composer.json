@@ -27,7 +27,7 @@
         "tedivm/stash": "^0.14",
         "illuminate/database": "^5.2",
         "illuminate/pagination": "^5.2",
-        "robmorgan/phinx": "^0.5",
+        "robmorgan/phinx": "0.*",
         "respect/validation": "^1.0",
         "filp/whoops": "^2.0",
         "lcobucci/jwt": "^3.1",
