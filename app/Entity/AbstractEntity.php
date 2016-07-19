@@ -127,7 +127,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $key = $this->toSnakeCase($key);
 
         if ($this->hasSetMutator($key)) {
-            $method = sprintf('set%sAttribute', $key);
+            $method = sprintf('set%sAttribute', $this->toCamelCase($key));
 
             return $this->{$method}($value);
         }
