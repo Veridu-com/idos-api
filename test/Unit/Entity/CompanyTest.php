@@ -38,9 +38,9 @@ class CompanyTest extends AbstractUnit {
         $this->assertArrayHasKey('private_key', $array);
         $this->assertSame('privkey', $array['private_key']);
         $this->assertArrayHasKey('created_at', $array);
-        $this->assertSame($created, strtotime($array['created_at']));
+        $this->assertSame($created, $array['created_at']);
         $this->assertArrayHasKey('updated_at', $array);
-        $this->assertSame($updated, strtotime($array['updated_at']));
+        $this->assertSame($updated, $array['updated_at']);
     }
 
     public function testToArray() {

@@ -22,6 +22,7 @@ use Slim\Http\Uri;
 
 abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     private $app;
+
     protected $schemaErrors;
 
     /**
@@ -91,7 +92,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
 
     /**
      *  Populates the $entities property of the instance querying the given URI.
-     *  
+     *
      *  @param string $uri URI to be queried
      *  @param string $method URI to be queried
      *

@@ -88,9 +88,7 @@ class Credential implements HandlerInterface {
         $credential->public  = Key::createNewRandomKey()->saveToAsciiSafeString();
         $credential->private = Key::createNewRandomKey()->saveToAsciiSafeString();
 
-        $credential = $this->repository->save($credential);
-
-        return $credential;
+        return $this->repository->save($credential);
     }
 
     /**
@@ -107,9 +105,7 @@ class Credential implements HandlerInterface {
         $credential       = $this->repository->find($command->credentialId);
         $credential->name = $command->name;
 
-        $credential = $this->repository->save($credential);
-
-        return $credential;
+        return $this->repository->save($credential);
     }
 
     /**
