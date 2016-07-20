@@ -9,8 +9,14 @@ else
     git clone git@bitbucket.org:veridu/docker.git
 fi
 
-# builds tools/cli-php
-cd docker/tools/cli-php
+# builds idos/api/nginx
+cd docker/idos/api/nginx
+make clean
+make build-all
+cd -
+
+# builds idos/api/php-fpm
+cd docker/idos/api/php-fpm
 make clean
 make build-all
 cd -
