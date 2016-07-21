@@ -24,6 +24,13 @@ In case you need, internal IP addresses for each server:
 - **srv-php**: 172.16.238.11, 172.16.239.11
 - **srv-db**: 172.16.239.12
 
+### Database
+
+There are two database available:
+
+- **idos-api** (user: **idos-api** / password: **idos-api**)
+- **idos-test** (user: **idos-test** / password: **idos-test**)
+
 ## Building
 
 Either on your first usage or whenever you want to update your containers with upstream changes, you may run `make build`, it will fetch/update the docker project with all required image definitions and then build the containers.
