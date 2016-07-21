@@ -2,8 +2,14 @@ WEBSRV=srv-web
 PHPSRV=srv-php
 DBSRV=srv-db
 
+rename: clean
+	cat Makefile | sed s/srv-web/${WEBSRV}/ | sed s/srv-php/${PHPSRV}/ | sed s/srv-db/${DBSRV}/ > /tmp/Makefile && mv /tmp/Makefile Makefile
+	cat docker-compose.yml | sed s/srv-web/${WEBSRV}/ | sed s/srv-php/${PHPSRV}/ | sed s/srv-db/${DBSRV}/ > /tmp/docker-compose.yml && mv /tmp/docker-compose.yml docker-compose.yml
+	@echo You must run $(tput bold) \> make reset \< $(tput sgr0) to start your containers
+
 build: clean
 	./build.sh
+	docker-compose up
 
 up:
 	docker-compose start
@@ -38,6 +44,9 @@ db-bash:
 
 db-log:
 	docker logs ${DBSRV}
+
+logs:
+	docker-compose logs --follow
 
 dependencies:
 	docker exec --interactive --tty ${PHPSRV} /usr/local/bin/composer update
