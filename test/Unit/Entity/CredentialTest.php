@@ -41,9 +41,11 @@ class CredentialTest extends AbstractUnit {
         $this->assertArrayHasKey('production', $array);
         $this->assertFalse($array['production']);
         $this->assertArrayHasKey('created_at', $array);
-        $this->assertTrue(is_int($array['created_at']));
+        $this->assertTrue(is_string($array['created_at']));
+        $this->assertTrue(is_int($abstractMock->createdAt));
         $this->assertArrayHasKey('updated_at', $array);
-        $this->assertTrue(is_int($array['updated_at']));
+        $this->assertTrue(is_string($array['updated_at']));
+        $this->assertTrue(is_int($abstractMock->updatedAt));
     }
 
     public function testToArray() {

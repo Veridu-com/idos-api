@@ -96,7 +96,7 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $dbConnectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
+        $dbConnectionMock = $this->createMock('Illuminate\Database\ConnectionInterface');
 
         $entityFactory = new EntityFactory();
         $entityFactory->create('Permission');

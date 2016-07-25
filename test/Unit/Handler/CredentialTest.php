@@ -153,7 +153,7 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testHandleDeleteOne() {
-        $dbConnectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
+        $dbConnectionMock = $this->createMock('Illuminate\Database\ConnectionInterface');
 
         $entityFactory = new EntityFactory();
         $entityFactory->create('Credential');
@@ -178,7 +178,7 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testHandleDeleteAll() {
-        $dbConnectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
+        $dbConnectionMock = $this->createMock('Illuminate\Database\ConnectionInterface');
 
         $entityFactory = new EntityFactory();
         $entityFactory->create('Credential');

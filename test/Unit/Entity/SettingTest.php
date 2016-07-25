@@ -11,16 +11,14 @@ use Test\Unit\AbstractUnit;
 
 class SettingTest extends AbstractUnit {
     public function testSerialize() {
-        $created = time();
         $updated = time();
-
         $array = [
             'id'             => 1,
             'companyId'      => 0,
             'section'        => 'A Section',
             'property'       => 'property',
             'value'          => 'value',
-            'created_at'     => $created,
+            'created_at'     => time(),
             'updated_at'     => $updated
         ];
 
@@ -41,9 +39,11 @@ class SettingTest extends AbstractUnit {
         $this->assertArrayHasKey('value', $array);
         $this->assertSame('value', $array['value']);
         $this->assertArrayHasKey('created_at', $array);
-        $this->assertSame($created, $array['created_at']);
+        $this->assertTrue(is_string($array['created_at']));
+        $this->assertTrue(is_int($abstractMock->createdAt));
         $this->assertArrayHasKey('updated_at', $array);
-        $this->assertSame($updated, $array['updated_at']);
+        $this->assertTrue(is_string($array['updated_at']));
+        $this->assertTrue(is_int($abstractMock->updatedAt));
     }
 
     public function testToArray() {

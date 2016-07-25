@@ -1,0 +1,12 @@
+{
+    "source": {
+        "directories": [
+            "app/"
+        ]
+    },
+    "timeout": 30,
+    "logs": {
+        "text": "humbuglog.txt",
+        "json": "humbuglog.json"
+    }
+}

@@ -57,7 +57,8 @@
         "psy/psysh": "@stable",
         "theseer/phpdox": "@stable",
         "ovr/phpsa": "*",
-        "ext-xsl": "*"
+        "ext-xsl": "*",
+	"humbug/humbug": "dev-master"	
     },
     "config": {
         "optimize-autoloader": false
