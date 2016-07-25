@@ -25,7 +25,12 @@ class Company extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'public_key', 'created_at'];
+    const CACHE_PREFIX = 'Company';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $visible = ['name', 'slug', 'public_key', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
@@ -34,5 +39,26 @@ class Company extends AbstractEntity {
     public function setNameAttribute($value) {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Utils::slugify($value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheKeys() : array {
+        return [
+            sprintf('%s.id.%s', self::CACHE_PREFIX, $this->id),
+            sprintf('%s.slug.%s', self::CACHE_PREFIX, $this->slug),
+            sprintf('%s.private_key.%s', self::CACHE_PREFIX, $this->private_key),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceCacheKeys() : array {
+        return array_merge([
+            sprintf('%s.by.parent_id.%s', self::CACHE_PREFIX, $this->parentId)
+        ],
+        $this->getCacheKeys());
     }
 }

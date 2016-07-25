@@ -14,6 +14,7 @@ use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Company commands.
@@ -31,6 +32,12 @@ class Company implements HandlerInterface {
      * @var App\Validator\Company
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -43,7 +50,9 @@ class Company implements HandlerInterface {
                     ->create('Company'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Company')
+                    ->create('Company'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -58,10 +67,12 @@ class Company implements HandlerInterface {
      */
     public function __construct(
         CompanyInterface $repository,
-        CompanyValidator $validator
+        CompanyValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -86,7 +97,12 @@ class Company implements HandlerInterface {
         $company->public_key  = Key::createNewRandomKey()->saveToAsciiSafeString();
         $company->private_key = Key::createNewRandomKey()->saveToAsciiSafeString();
 
-        return $this->repository->save($company);
+        if ($this->repository->save($company)) {
+            $event = new \App\Event\Company\Created($company);
+            $this->emitter->emit($event);
+        }
+
+        return $company;
     }
 
     /**
@@ -100,8 +116,9 @@ class Company implements HandlerInterface {
         $this->validator->assertId($command->companyId);
         $this->validator->assertName($command->name);
 
-        $company       = $this->repository->find($command->companyId);
-        $company->name = $command->name;
+        $company            = $this->repository->find($command->companyId);
+        $company->name      = $command->name;
+        $company->updatedAt = time();
 
         return $this->repository->save($company);
     }
@@ -116,7 +133,7 @@ class Company implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) {
         $this->validator->assertId($command->companyId);
 
-        return $this->repository->deleteById($command->companyId);
+        return $this->repository->delete($command->companyId);
     }
 
     /**

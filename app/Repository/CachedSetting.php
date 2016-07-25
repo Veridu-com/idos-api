@@ -6,43 +6,71 @@
 
 namespace App\Repository;
 
+use App\Entity\EntityInterface;
+
 /**
  * Cache-based Setting Repository Implementation.
  */
-// TODO: Talk with Flavio to understand how this is working
 class CachedSetting extends AbstractCachedRepository implements SettingInterface {
     /**
+     * The entity associated with the repository.
+     *
+     * @var string
+     */
+    protected $entityName = 'Setting';
+
+    /**
      * {@inheritdoc}
      */
-    public function find($id) {
-        return $this->repository->find($id);
+    public function findOne($companyId, $section, $propName) {
+        return $this->findOneBy([
+            'company_id' => $companyId,
+            'section'    => $section,
+            'property'   => $propName
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function delete($id) {
-        return $this->repository->delete($id);
+    public function deleteOne($companyId, $section, $propName) {
+        return $this->deleteBy([
+            'company_id' => $companyId,
+            'section'    => $section,
+            'property'   => $propName
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAll() {
-        return $this->repository->getAll();
+    public function getAllByCompanyIdAndSection($companyId, $section) {
+        return $this->findBy([
+            'company_id' => $companyId,
+            'section'    => $section
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) {
-        return $this->repository->findByPubKey($pubKey);
+    public function update(EntityInterface &$entity) {
+        $this->deleteEntityCache($entity);
+
+        return $this->repository->update($entity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByCompanyId($companyId) {
+        return $this->deleteBy(['company_id' => $companyId]);
     }
 
     /**
      * {@inheritdoc}
      */
     public function getAllByCompanyId($companyId) {
-        return $this->getAllByCompanyId($companyId);
+        return $this->findBy(['company_id' => $companyId]);
     }
 }

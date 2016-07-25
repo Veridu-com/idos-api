@@ -30,7 +30,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
      * {@inheritdoc}
      */
     public function findOne(int $companyId, string $routeName) : Permission {
-        return $this->getOneByWhereConstraints([
+        return $this->findOneBy([
             'company_id' => $companyId,
             'route_name' => $routeName
         ]);
@@ -40,7 +40,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
      * {@inheritdoc}
      */
     public function getAllByCompanyId(int $companyId) : Collection{
-        return $this->getAllByKey('company_id', $companyId);
+        return $this->findBy(['company_id' => $companyId]);
     }
 
     /**

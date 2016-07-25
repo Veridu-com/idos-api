@@ -102,8 +102,9 @@ class Credential implements HandlerInterface {
         $this->validator->assertId($command->credentialId);
         $this->validator->assertName($command->name);
 
-        $credential       = $this->repository->find($command->credentialId);
-        $credential->name = $command->name;
+        $credential            = $this->repository->find($command->credentialId);
+        $credential->name      = $command->name;
+        $credential->updatedAt = time();
 
         return $this->repository->save($credential);
     }
