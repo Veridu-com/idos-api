@@ -30,7 +30,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
      * {@inheritdoc}
      */
     public function findOne($companyId, $section, $propName) {
-        return $this->finOneBy([
+        return $this->findOneBy([
             'company_id' => $companyId,
             'section'    => $section,
             'property'   => $propName
