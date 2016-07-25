@@ -29,14 +29,14 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
      * {@inheritdoc}
      */
     public function findByPubKey($pubKey) {
-        return $this->findByKey('public', $pubKey);
+        return $this->findOneBy(['public' => $pubKey]);
     }
 
     /**
      * {@inheritdoc}
      */
     public function getAllByCompanyId($companyId) {
-        return $this->getAllByKey('company_id', $companyId);
+        return $this->findBy(['company_id' => $companyId]);
     }
 
     /**
@@ -45,6 +45,7 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
     public function deleteByCompanyId($companyId) {
         return $this->deleteByKey('company_id', $companyId);
     }
+
     /**
      * {@inheritdoc}
      */

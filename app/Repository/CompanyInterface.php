@@ -55,5 +55,5 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteByParentId($parentId);
+    public function deleteByParentId(int $parentId) : int;
 }

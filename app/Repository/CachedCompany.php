@@ -6,63 +6,47 @@
 
 namespace App\Repository;
 
+use Illuminate\Support\Collection;
+
 /**
  * Cache-based Company Repository Implementation.
  */
 class CachedCompany extends AbstractCachedRepository implements CompanyInterface {
     /**
+     * The entity associated with the repository.
+     *
+     * @var string
+     */
+    protected $entityName = 'Company';
+    /**
      * {@inheritdoc}
      */
-    public function find($id) {
-        return $this->respository->find($id);
+    public function findByPubKey($publicKey) {
+        return $this->findOneBy(['public_key' => $publicKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function delete($id) {
-        return $this->repository->delete($id);
+    public function findByPrivKey($privateKey) {
+        return $this->findOneBy(['private_key' => $privateKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAll() {
-        return $this->repository->getAll();
+    public function getAllByParentId($parentId) : Collection {
+        return $this->findBy(['parent_id' => $parentId]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) {
-        return $this->repository->findByPubKey($pubKey);
-    }
+    public function deleteByParentId(int $parentId) : int {
+        $entities = $this->findBy(['parent_id' => $parentId]);
+        $this->deleteEntitiesFromCache($entities);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByPrivKey($privKey) {
-        return $this->repository->findByPrivKey($privKey);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findBySlug($slug) {
-        return $this->repository->findBySlug($slug);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllByParentId($parentId) {
-        return $this->repository->getAllByParentId($parentId);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteByParentId($parentId) {
         return $this->repository->deleteByParentId($parentId);
     }
+
 }

@@ -71,8 +71,7 @@ class Companies implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
         $actingCompany = $request->getAttribute('actingCompany');
-
-        $companies = $this->repository->getAllByParentId($actingCompany->id);
+        $companies     = $this->repository->getAllByParentId($actingCompany->id);
 
         $body = [
             'data'    => $companies->toArray(),

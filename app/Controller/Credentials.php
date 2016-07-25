@@ -196,7 +196,7 @@ class Credentials implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetCompany = $request->getAttribute('targetCompany');
-        $credential    = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
+        $credential    = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
         $command = $this->commandFactory->create('Credential\\UpdateOne');
         $command
@@ -207,7 +207,7 @@ class Credentials implements ControllerInterface {
 
         $body = [
             'data'    => $credential->toArray(),
-            'updated' => $credential->updated_at
+            'updated' => $credential->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
