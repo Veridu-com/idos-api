@@ -272,7 +272,7 @@ class Settings implements ControllerInterface {
             ->setParameter('companyId', $targetCompany->id);
 
         $setting = $this->commandBus->handle($command);
-        
+
         $body = [
             'data'    => $setting->toArray(),
             'updated' => $setting->updated_at

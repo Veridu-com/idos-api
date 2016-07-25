@@ -10,15 +10,14 @@ use League\Event\EventInterface;
 use Monolog\Logger;
 
 class LogFiredEventListener extends AbstractListener {
+    private $logger;
 
-	private $logger;
-
-	public function __construct(Logger $logger) {
-		$this->logger  = $logger;
-	}
+    public function __construct(Logger $logger) {
+        $this->logger  = $logger;
+    }
 
     public function handle(EventInterface $event) {
-    	$this->logger->debug(sprintf('%s was fired', $event->getName()));
+        $this->logger->debug(sprintf('%s was fired', $event->getName()));
     }
 
 }

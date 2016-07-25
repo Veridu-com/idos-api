@@ -6,8 +6,8 @@
 
 namespace App\Repository;
 
-use App\Factory\Repository;
 use Apix\Cache\PsrCache\TaggablePool;
+use App\Factory\Repository;
 
 /**
  * Cache-based Repository Strategy.
@@ -29,7 +29,7 @@ class CachedStrategy implements RepositoryStrategyInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Repository          $repositoryFactory
+     * @param App\Factory\Repository            $repositoryFactory
      * @param \Apix\Cache\PsrCache\TaggablePool $cache
      *
      * @return void

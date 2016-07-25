@@ -4,17 +4,20 @@
  * All rights reserved.
  */
 
+use Apix\Cache;
 use App\Command;
+use App\Event\ListenerProvider;
 use App\Exception\AppException;
 use App\Factory;
-use App\Handler;
+use App\Handler; // TODO: Why not use folder identifiers instead of using so many declarations?
 use App\Middleware as Middleware;
-use App\Middleware\Auth; // TODO: Why not use folder identifiers instead of using so many declarations?
+use App\Middleware\Auth;
 use App\Repository;
 use Illuminate\Database\Capsule\Manager;
 use Interop\Container\ContainerInterface;
 use Jenssegers\Optimus\Optimus;
 use Lcobucci\JWT;
+use League\Event\Emitter;
 use League\Tactician\CommandBus;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
@@ -31,18 +34,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
 use Slim\HttpCache\CacheProvider;
-use Stash\Driver\Apc;
-use Stash\Driver\Composite;
-use Stash\Driver\Ephemeral;
 use Stash\Driver\FileSystem;
-use Stash\Driver\Memcache;
 use Stash\Driver\Redis;
-use Stash\Driver\Sqlite;
-use Stash\Pool;
 use Whoops\Handler\PrettyPageHandler;
-use League\Event\Emitter;
-use Apix\Cache;
-use App\Event\ListenerProvider;
 
 if (! isset($app)) {
     die('$app is not set!');
@@ -193,7 +187,6 @@ $container['log'] = function (ContainerInterface $container) {
     };
 };
 
-
 // Stash Cache
 $container['cache'] = function (ContainerInterface $container) {
     $settings = $container->get('settings');
@@ -205,11 +198,11 @@ $container['cache'] = function (ContainerInterface $container) {
     switch ($settings['cache']['driver']) {
         case 'filesystem':
             $options = array_merge($settings['cache']['default'], $settings['cache']['directory']);
-            $pool = Cache\Factory::getTaggablePool(new Cache\Directory, $options);
+            $pool    = Cache\Factory::getTaggablePool(new Cache\Directory(), $options);
             break;
         case 'redis':
             $options = array_merge($settings['cache']['default'], $settings['cache']['redis']);
-            $redis = new \Redis;
+            $redis   = new \Redis();
             $redis->connect($settings['cache']['redis']['host'], $settings['cache']['redis']['port']);
             $pool = Cache\Factory::getTaggablePool($redis, $options);
             break;
@@ -375,8 +368,8 @@ $container['optimus'] = function (ContainerInterface $container) {
 // App files
 $container['globFiles'] = function () {
     return [
-        'routes'    => glob(__DIR__ . '/../app/Route/*.php'),
-        'handlers'  => glob(__DIR__ . '/../app/Handler/*.php'),
+        'routes'             => glob(__DIR__ . '/../app/Route/*.php'),
+        'handlers'           => glob(__DIR__ . '/../app/Handler/*.php'),
         'listenerProviders'  => glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
     ];
 };
@@ -392,6 +385,6 @@ $container['eventEmitter'] = function (ContainerInterface $container) {
     foreach ($providers as $provider) {
         $emitter->useListenerProvider(new $provider($container));
     }
-    
+
     return $emitter;
 };

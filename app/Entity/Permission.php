@@ -41,7 +41,7 @@ class Permission extends AbstractEntity {
             sprintf('%s.public.%s', self::CACHE_PREFIX, $this->public)
         ];
     }
-    
+
     /**
      * {@inheritdoc}
      */

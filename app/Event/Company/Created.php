@@ -6,18 +6,16 @@
 
 namespace App\Event\Company;
 
-use League\Event\EventInterface;
 use App\Entity\Company;
 use App\Event\AbstractEvent;
 
 /**
- * Created event
+ * Created event.
  */
 class Created extends AbstractEvent {
+    public $company;
 
-	public $company;
-
-	public function __construct(Company $company) {
-		$this->company = $company;
-	}
+    public function __construct(Company $company) {
+        $this->company = $company;
+    }
 }

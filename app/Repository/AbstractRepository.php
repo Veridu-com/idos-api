@@ -6,9 +6,9 @@
 
 namespace App\Repository;
 
-use App\Factory\Entity;
 use App\Entity\EntityInterface;
 use App\Exception\NotFound;
+use App\Factory\Entity;
 
 /**
  * Abstract Generic Repository.
@@ -61,16 +61,16 @@ abstract class AbstractRepository implements RepositoryInterface {
     protected function getEntityClassName() {
         return sprintf('\\App\\Entity\\%s', $this->getEntityName());
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function findOneBy(array $constraints) : EntityInterface {
         $entity = $this->findBy($constraints)->first();
         if (! $entity) {
-            throw new NotFound;
+            throw new NotFound();
         }
-        
+
         return $entity;
     }
 }

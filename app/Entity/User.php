@@ -15,7 +15,6 @@ use App\Helper\Utils;
  *
  * @property int $id
  * @FIXME
- * 
  */
 class User extends AbstractEntity {
     /**

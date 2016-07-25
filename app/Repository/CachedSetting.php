@@ -18,15 +18,15 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
      * @var string
      */
     protected $entityName = 'Setting';
-    
+
     /**
      * {@inheritdoc}
      */
-    public function findOne($companyId, $section, $propName){
+    public function findOne($companyId, $section, $propName) {
         return $this->findOneBy([
             'company_id' => $companyId,
-            'section' => $section,
-            'property' => $propName
+            'section'    => $section,
+            'property'   => $propName
         ]);
     }
 
@@ -36,8 +36,8 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
     public function deleteOne($companyId, $section, $propName) {
         return $this->deleteBy([
             'company_id' => $companyId,
-            'section' => $section,
-            'property' => $propName
+            'section'    => $section,
+            'property'   => $propName
         ]);
     }
 
@@ -47,7 +47,7 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
     public function getAllByCompanyIdAndSection($companyId, $section) {
         return $this->findBy([
             'company_id' => $companyId,
-            'section' => $section
+            'section'    => $section
         ]);
     }
 
@@ -56,6 +56,7 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
      */
     public function update(EntityInterface &$entity) {
         $this->deleteEntityCache($entity);
+
         return $this->repository->update($entity);
     }
 

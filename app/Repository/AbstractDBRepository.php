@@ -163,7 +163,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
         if (! sizeof($constraints)) {
             throw new \RuntimeException(sprintf('%s@deleteBy method was called without constraints.', get_class($this)));
         }
-        
+
         $q = $this->query();
         foreach ($constraints as $key => $value) {
             $q = $q->where($key, $value);

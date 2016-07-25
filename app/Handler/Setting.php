@@ -118,7 +118,7 @@ class Setting implements HandlerInterface {
         $setting = $this->repository->findOne($command->companyId, $command->sectionNameId, $command->propNameId);
 
         if ($command->value) {
-            $setting->value = $command->value;
+            $setting->value     = $command->value;
             $setting->updatedAt = time();
         }
 

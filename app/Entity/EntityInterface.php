@@ -20,7 +20,7 @@ interface EntityInterface {
     public function hydrate(array $attributes = []);
 
     /**
-     * Gets the entity cache keys
+     * Gets the entity cache keys.
      *
      * @return array
      */
@@ -28,7 +28,7 @@ interface EntityInterface {
 
     /**
      * Gets the entity cache tags
-     * Think on it like a pub-sub channels
+     * Think on it like a pub-sub channels.
      * 
      * It is a merge between 
      * #1 The entity cache keys - will delete where it was listed already

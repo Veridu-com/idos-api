@@ -173,7 +173,7 @@ class DatabaseInit extends AbstractMigration {
         $features = $this->table('roles');
         $features
             ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('created_at', 'timestamp', [ 'null' => false, 'timezone' => false, 'default'  => 'CURRENT_TIMESTAMP' ])
+            ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default'  => 'CURRENT_TIMESTAMP'])
             ->addIndex('name', ['unique' => true])
             ->create();
 

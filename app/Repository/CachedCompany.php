@@ -5,8 +5,8 @@
  */
 
 namespace App\Repository;
+
 use Illuminate\Support\Collection;
-use App\Entity\EntityInterface;
 
 /**
  * Cache-based Company Repository Implementation.
@@ -45,6 +45,7 @@ class CachedCompany extends AbstractCachedRepository implements CompanyInterface
     public function deleteByParentId(int $parentId) : int {
         $entities = $this->findBy(['parent_id' => $parentId]);
         $this->deleteEntitiesFromCache($entities);
+
         return $this->repository->deleteByParentId($parentId);
     }
 

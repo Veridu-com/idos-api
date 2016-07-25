@@ -6,28 +6,26 @@
 
 namespace App\Listener;
 
-use Interop\Container\ContainerInterface;
 use League\Event\ListenerAcceptorInterface;
 use League\Event\ListenerProviderInterface;
 
 abstract class AbstractListenerProvider implements ListenerProviderInterface {
-
     /**
      * Associative array defining events and their listeners
-     * initialized on constructor
+     * initialized on constructor.
      *
      * @format array [ 'event' => [ 'listener1', 'listener2'] ]
-     */ 
+     */
     protected $events = [];
 
     public function provideListeners(ListenerAcceptorInterface $acceptor) {
-    	foreach ($this->events as $eventName => $listeners) {
+        foreach ($this->events as $eventName => $listeners) {
             if (sizeof($listeners)) {
                 foreach ($listeners as $listener) {
-        	        $acceptor->addListener($eventName, $listener);
+                    $acceptor->addListener($eventName, $listener);
                 }
             }
-    	}
+        }
     }
 
 }

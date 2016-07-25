@@ -116,10 +116,9 @@ class Company implements HandlerInterface {
         $this->validator->assertId($command->companyId);
         $this->validator->assertName($command->name);
 
-        $company       = $this->repository->find($command->companyId);
-        $company->name = $command->name;
+        $company            = $this->repository->find($command->companyId);
+        $company->name      = $command->name;
         $company->updatedAt = time();
-
 
         $this->repository->save($company);
 

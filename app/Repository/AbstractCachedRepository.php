@@ -6,10 +6,9 @@
 
 namespace App\Repository;
 
+use Apix\Cache\PsrCache\TaggablePool;
 use App\Entity\EntityInterface;
 use Illuminate\Support\Collection;
-use Apix\Cache\PsrCache\TaggablePool;
-use Stash\Invalidation;
 
 /**
  * Abstract Cache-based Repository.
@@ -36,7 +35,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     protected $cache;
 
     /**
-     * Cache prefix
+     * Cache prefix.
      */
     protected $cachePrefix;
 
@@ -73,8 +72,8 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      * @return void
      */
     public function cacheEntity(EntityInterface $entity) {
-        $keys = $entity->getCacheKeys();
-        $tags = array_merge($keys, [$this->cachePrefix]);
+        $keys       = $entity->getCacheKeys();
+        $tags       = array_merge($keys, [$this->cachePrefix]);
         $serialized = $entity->serialize();
 
         foreach ($keys as $key) {
@@ -133,6 +132,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      */
     public function delete(int $id, string $key = 'id') : int {
         $this->deleteEntityCache($this->find($id));
+
         return $this->repository->delete($id);
     }
 
@@ -145,9 +145,10 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      */
     public function deleteBy(array $constraints) : int {
         $this->deleteEntityCache($this->findOneBy($constraints));
+
         return $this->repository->deleteBy($constraints);
     }
-    
+
     /**
      * Invalidates cache content for a tag.
      *
@@ -174,7 +175,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      * Class constructor.
      *
      * @param App\Repository\RepositoryInterface $repository
-     * @param \Apix\Cache\PsrCache\TaggablePool    $cache
+     * @param \Apix\Cache\PsrCache\TaggablePool  $cache
      *
      * @return void
      */
@@ -182,8 +183,8 @@ abstract class AbstractCachedRepository extends AbstractRepository {
         RepositoryInterface $repository,
         TaggablePool $cache
     ) {
-        $this->repository = $repository;
-        $this->cache  = $cache;
+        $this->repository  = $repository;
+        $this->cache       = $cache;
         $this->cachePrefix = $this->entityName;
     }
 
@@ -203,13 +204,13 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function find($id) : EntityInterface {
-        $cacheKey = sprintf('%s.id.%s', $this->cachePrefix, $id);        
-        $entity = $this->load($cacheKey);
+        $cacheKey = sprintf('%s.id.%s', $this->cachePrefix, $id);
+        $entity   = $this->load($cacheKey);
 
         if ($entity->isHit()) {
             return $entity->get();
         }
-        
+
         $entity = $this->repository->findOneBy(['id' => $id]);
         $this->cacheEntity($entity);
 
@@ -220,9 +221,9 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function getAll() : Collection {
-        $cacheKey = sprintf('%s/all', $this->cachePrefix);
-        $cacheTags = [ $this->cachePrefix ];
-        
+        $cacheKey  = sprintf('%s/all', $this->cachePrefix);
+        $cacheTags = [$this->cachePrefix];
+
         $entities = $this->load($cacheKey);
 
         if ($entities) {
@@ -259,34 +260,35 @@ abstract class AbstractCachedRepository extends AbstractRepository {
             $constraintsKey .= sprintf('.%s.%s', $key, $value);
         }
 
-        $cacheKey = sprintf('%s.%s', $this->cachePrefix, $constraintsKey);
-        $cacheTags = [ $this->cachePrefix ];
-        
+        $cacheKey  = sprintf('%s.%s', $this->cachePrefix, $constraintsKey);
+        $cacheTags = [$this->cachePrefix];
+
         $entities = $this->load($cacheKey);
 
         if ($entities->isHit()) {
             return $entities->get();
         }
-        
+
         $entities = $this->repository->findBy($constraints);
 
         // tags the query with all related entities
         foreach ($entities as $entity) {
             foreach ($entity->getCacheKeys() as $key) {
-                $cacheTags[] = $key; 
+                $cacheTags[] = $key;
             }
         }
 
-        $this->set($cacheKey, $entities, $cacheTags);        
+        $this->set($cacheKey, $entities, $cacheTags);
         $this->cacheEntities($entities);
 
         return $entities;
     }
 
     /**
-     * Tries to load "key" from the cache
+     * Tries to load "key" from the cache.
      * 
      * @param string $key
+     *
      * @return mixed | null
      */
     public function load(string $key) {
@@ -294,16 +296,17 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     }
 
     /**
-     * Set a pair key:value into the cache 
+     * Set a pair key:value into the cache.
      * 
      * @param string $key
      * @param $value
-     * @param array  $tags
+     * @param array $tags
      */
     public function set(string $key, $value, array $tags = []) {
         $item = $this->cache->getItem($key);
         $item->setTags($tags);
         $item->set($value);
+
         return $this->cache->save($item);
     }
 

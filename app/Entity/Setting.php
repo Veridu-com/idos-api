@@ -21,9 +21,8 @@ namespace App\Entity;
  */
 class Setting extends AbstractEntity {
     /**
-     * Cache prefix
-     *
-     */    
+     * Cache prefix.
+     */
     const CACHE_PREFIX = 'Setting';
 
     /**
@@ -41,8 +40,9 @@ class Setting extends AbstractEntity {
     }
 
     public function setValueAttribute($value) {
-        $value = is_string($value) ? $value : stream_get_contents($value, -1, 0);
+        $value                     = is_string($value) ? $value : stream_get_contents($value, -1, 0);
         $this->attributes['value'] = $value;
+
         return $this;
     }
 

@@ -16,7 +16,7 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
      * @var string
      */
     protected $entityName = 'Credential';
-    
+
     /**
      * {@inheritdoc}
      */

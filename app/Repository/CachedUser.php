@@ -6,8 +6,6 @@
 
 namespace App\Repository;
 
-use App\Entity\EntityInterface;
-
 /**
  * Cache-based User Repository Implementation.
  */
@@ -18,7 +16,7 @@ class CachedUser extends AbstractCachedRepository implements UserInterface {
      * @var string
      */
     protected $entityName = 'User';
-    
+
     /**
      * {@inheritdoc}
      */

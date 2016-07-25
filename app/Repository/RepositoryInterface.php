@@ -52,7 +52,7 @@ interface RepositoryInterface {
      * @return App\Entity\EntityInterface
      */
     public function findOneBy(array $constraints) : EntityInterface;
-    
+
     /**
      * Find entities by keys.
      *

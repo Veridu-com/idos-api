@@ -52,7 +52,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $dirty = false;
     /**
-     * Cache prefix
+     * Cache prefix.
      *
      * @var bool
      */
@@ -186,7 +186,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     public function __construct(array $attributes = []) {
         $this->cachePrefix = str_replace('App\\Entity\\', '', get_class($this));
-        
+
         if (! empty($attributes)) {
             $this
                 ->hydrate($attributes)
