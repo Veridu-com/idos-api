@@ -14,13 +14,6 @@ use Illuminate\Database\ConnectionInterface;
 use Test\Unit\AbstractUnit;
 
 class AbstractDBRepositoryTest extends AbstractUnit {
-    private function setProtectedProperty($object, $property, $value) {
-        $reflection          = new \ReflectionClass($object);
-        $reflection_property = $reflection->getProperty($property);
-        $reflection_property->setAccessible(true);
-        $reflection_property->setValue($object, $value);
-    }
-
     private function setProtectedMethod($object, $method) {
         $reflection        = new \ReflectionClass($object);
         $reflection_method = $reflection->getMethod($method);

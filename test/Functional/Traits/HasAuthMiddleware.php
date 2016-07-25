@@ -6,7 +6,7 @@
 
 namespace Test\Functional\Traits;
 
-trait HasAuthMiddleware{
+trait HasAuthMiddleware {
     public function testMissingCredentials() {
         $environment = $this->createEnvironment(
             [

@@ -42,7 +42,7 @@ abstract class AbstractFactory implements FactoryInterface {
      *
      * @return string
      */
-    public function getClassName($name) {
+    protected function getClassName($name) {
         $name = $this->getFormattedName($name);
 
         if (isset($this->classMap[$name]))

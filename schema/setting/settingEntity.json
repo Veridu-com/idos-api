@@ -29,9 +29,9 @@
         }
     },
     "required": [
-        "name",
-        "slug",
-        "public_key",
+        "section",
+        "property",
+        "value",
         "created_at"
     ]
 }

@@ -12,6 +12,10 @@
         {
             "name": "Rafael Campanari",
             "email": "rafael@veridu.com"
+        },
+        {
+            "name": "Caue Lorenzato",
+            "email": "caue@veridu.com"
         }
     ],
     "autoload": {

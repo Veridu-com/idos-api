@@ -79,7 +79,7 @@ class DBPermissionTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbPermission = new DBPermission($factory, $connectionMock);
 
-        // fetches entity 
+        // fetches entity
         $entity = $dbPermission->findOne(0, 'companies:listAll');
 
         $this->assertInstanceOf(Permission::class, $entity);

@@ -120,9 +120,7 @@ class Company implements HandlerInterface {
         $company->name      = $command->name;
         $company->updatedAt = time();
 
-        $this->repository->save($company);
-
-        return $company;
+        return $this->repository->save($company);
     }
 
     /**
