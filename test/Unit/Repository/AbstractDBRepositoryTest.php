@@ -182,11 +182,11 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $this->setExpectedException(NotFound::class);
-        $findByKey = $this->setProtectedMethod($abstractMock, 'findByKey');
-        $findByKey->invoke($abstractMock, 'key', 'value');
+        $findBy = $this->setProtectedMethod($abstractMock, 'findBy');
+        $findBy->invoke($abstractMock, ['key' => 'value']);
     }
 
-    public function testFindByKey() {
+    public function testFindBy() {
         $array = [
             'name'       => 'AbstractDBCompany',
             'slug'       => 'slug',
@@ -218,7 +218,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('query')
             ->will($this->returnValue($queryMock));
 
-        $findByKey = $this->setProtectedMethod($abstractMock, 'findByKey');
-        $this->assertSame($array, $findByKey->invoke($abstractMock, 'key', 'value'));
+        $findBy = $this->setProtectedMethod($abstractMock, 'findBy');
+        $this->assertSame($array, $findBy->invoke($abstractMock, ['key' => 'value']));
     }
 }

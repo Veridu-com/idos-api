@@ -11,37 +11,30 @@ namespace App\Repository;
  */
 class CachedCredential extends AbstractCachedRepository implements CredentialInterface {
     /**
-     * {@inheritdoc}
+     * The entity associated with the repository.
+     *
+     * @var string
      */
-    public function find($id) {
-        return $this->repository->find($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($id) {
-        return $this->repository->delete($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAll() {
-        return $this->repository->getAll();
-    }
-
+    protected $entityName = 'Credential';
+    
     /**
      * {@inheritdoc}
      */
     public function findByPubKey($pubKey) {
-        return $this->repository->findByPubKey($pubKey);
+        return $this->repository->findOneBy(['public' => $pubKey]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByCompanyId($companyId) {
+        return $this->repository->deleteByKey('company_id', $companyId);
     }
 
     /**
      * {@inheritdoc}
      */
     public function getAllByCompanyId($companyId) {
-        return $this->getAllByCompanyId($companyId);
+        return $this->findBy(['company_id' => $companyId]);
     }
 }

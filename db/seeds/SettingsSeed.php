@@ -17,7 +17,7 @@ class SettingsSeed extends AbstractSeed {
             $data[] = [
                 'company_id'    => mt_rand(1, 2),
                 'section'       => $faker->countryCode,
-                'property'      => $faker->word . ' ' . $i,
+                'property'      => $faker->word . '' . $i,
                 'value'         => $faker->colorName,
                 'created_at'    => $now,
                 'updated_at'    => $now

@@ -7,6 +7,7 @@
 namespace App\Repository;
 
 use App\Entity\EntityInterface;
+use Illuminate\Support\Collection;
 
 /**
  * Repository Interface.
@@ -19,7 +20,7 @@ interface RepositoryInterface {
      *
      * @return App\Entity\EntityInterface
      */
-    public function create(array $attributes);
+    public function create(array $attributes) : EntityInterface;
 
     /**
      * Saves a new entity.
@@ -28,7 +29,7 @@ interface RepositoryInterface {
      *
      * @return void
      */
-    public function save(EntityInterface &$entity);
+    public function save(EntityInterface &$entity) : EntityInterface;
 
     /**
      * Find an entity by id.
@@ -39,21 +40,43 @@ interface RepositoryInterface {
      *
      * @return App\Entity\EntityInterface
      */
-    public function find($id);
+    public function find($id) : EntityInterface;
+
+    /**
+     * Find an entity by a key.
+     *
+     * @param associative array $constraints ['key' => 'value']
+     *
+     * @throws App\Exception\NotFound
+     *
+     * @return App\Entity\EntityInterface
+     */
+    public function findOneBy(array $constraints) : EntityInterface;
+    
+    /**
+     * Find entities by keys.
+     *
+     * @param associative array $constraints ['key' => 'value']
+     *
+     * @throws App\Exception\NotFound
+     *
+     * @return Illuminate\Support\Collection
+     */
+    public function findBy(array $constraints) : Collection;
 
     /**
      * Delete an entitiy by id.
      *
      * @param int $id
      *
-     * @return int
+     * @return int number of affected rows
      */
-    public function delete($id);
+    public function delete(int $id, string $key = 'id') : int;
 
     /**
      * Return an entity collection.
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getAll();
+    public function getAll() : Collection;
 }

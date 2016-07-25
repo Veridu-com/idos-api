@@ -7,6 +7,8 @@
 namespace App\Repository;
 
 use App\Factory\Entity;
+use App\Entity\EntityInterface;
+use App\Exception\NotFound;
 
 /**
  * Abstract Generic Repository.
@@ -33,9 +35,42 @@ abstract class AbstractRepository implements RepositoryInterface {
     /**
      * {@inheritdoc}
      */
-    public function create(array $attributes) {
-        $name = sre_replace(__NAMESPACE__, '', __CLASS__);
+    public function create(array $attributes) : EntityInterface {
+        $name = str_replace(__NAMESPACE__, '', __CLASS__);
 
         return $this->entityFactory->create($name, $attributes);
+    }
+
+    /**
+     * Get the entity name.
+     *
+     * @return string
+     */
+    protected function getEntityName() {
+        if (empty($this->entityName))
+            throw new \RuntimeException(sprintf('$entityName property not set in %s', get_class($this)));
+
+        return $this->entityName;
+    }
+
+    /**
+     * Get the entity class name.
+     *
+     * @return string
+     */
+    protected function getEntityClassName() {
+        return sprintf('\\App\\Entity\\%s', $this->getEntityName());
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneBy(array $constraints) : EntityInterface {
+        $entity = $this->findBy($constraints)->first();
+        if (! $entity) {
+            throw new NotFound;
+        }
+        
+        return $entity;
     }
 }

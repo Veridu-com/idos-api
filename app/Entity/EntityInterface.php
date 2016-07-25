@@ -18,24 +18,47 @@ interface EntityInterface {
      * @return App\Entity\EntityInterface
      */
     public function hydrate(array $attributes = []);
+
+    /**
+     * Gets the entity cache keys
+     *
+     * @return array
+     */
+    public function getCacheKeys() : array;
+
+    /**
+     * Gets the entity cache tags
+     * Think on it like a pub-sub channels
+     * 
+     * It is a merge between 
+     * #1 The entity cache keys - will delete where it was listed already
+     * #2 The cache keys that should deleted so those places will miss the cache and get fresh data on the next
+     * 
+     * @return array
+     */
+    public function getReferenceCacheKeys() : array;
+
     /**
      * Convert the entity instance to an array that can be safely exposed.
      *
      * @return array
      */
     public function toArray();
+
     /**
      * Serialize the entity instance to an array.
      *
      * @return array
      */
     public function serialize();
+
     /**
      * Determine if the entity exists on the repository.
      *
      * @return bool
      */
     public function exists();
+
     /**
      * Determine if the entity have been modified.
      *

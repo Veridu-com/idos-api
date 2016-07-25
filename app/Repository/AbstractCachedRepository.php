@@ -7,7 +7,8 @@
 namespace App\Repository;
 
 use App\Entity\EntityInterface;
-use Stash\Interfaces\PoolInterface;
+use Illuminate\Support\Collection;
+use Apix\Cache\PsrCache\TaggablePool;
 use Stash\Invalidation;
 
 /**
@@ -15,17 +16,29 @@ use Stash\Invalidation;
  */
 abstract class AbstractCachedRepository extends AbstractRepository {
     /**
+     * The entity associated with the repository.
+     *
+     * @var string
+     */
+    protected $entityName;
+
+    /**
      * Repository Instance.
      *
      * @var App\Repository\RepositoryInterface
      */
     protected $repository;
     /**
-     * Cache Pool Instance.
+     * Cache Instance.
      *
-     * @var Stash\Interfaces\PoolInterface
+     * @var Apix\Cache\PsrCache\TaggablePool
      */
-    protected $cachePool;
+    protected $cache;
+
+    /**
+     * Cache prefix
+     */
+    protected $cachePrefix;
 
     /**
      * @const CACHE_TTL Cache TTL
@@ -33,63 +46,271 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     const CACHE_TTL = 3600;
 
     /**
-     * Gets the cache key for a key.
-     *
-     * @param string $key
-     *
-     * @return string
-     */
-    protected function getCacheKey($key) {
-        $item     = $this->cachePool->getItem(sprintf('/keys/%s', $key));
-        $cacheKey = $item->get(Invalidation::PRECOMPUTE, 300);
-        if ($item->isMiss()) {
-            $item->lock();
-            $cacheKey = sprintf('_%s', time());
-            $item->set($cacheKey);
-            $item->expiresAfter(self::CACHE_TTL);
-            $this->cachePool->save($item);
-        }
-
-        return $cacheKey;
-    }
-
-    /**
      * Invalidates cache content for a key.
      *
      * @param string $key
      *
+     * @return Apix\Cache\PsrCache\TaggablePool
+     */
+    protected function invalidateCacheKey(string $key) : TaggablePool {
+        return $this->cache->deleteItem($key);
+    }
+
+    /**
+     * Invalidates cache content for the given keys.
+     *
+     * @param array $keys
+     *
+     * @return Apix\Cache\PsrCache\TaggablePool
+     */
+    protected function invalidateCacheKeys(array $keys) : TaggablePool {
+        return $this->cache->deleteItems($keys);
+    }
+
+    /**
+     * Saves an entity on the cache.
+     *
      * @return void
      */
-    protected function invalidateCache($key) {
-        $item = $this->cachePool->getItem(sprintf('/keys/%s', $key));
-        if (! $item->isMiss()) {
-            $item->lock();
-            $item->set(sprintf('_%s', time()));
-            $item->expiresAfter(self::CACHE_TTL);
-            $this->cachePool->save($item);
+    public function cacheEntity(EntityInterface $entity) {
+        $keys = $entity->getCacheKeys();
+        $tags = array_merge($keys, [$this->cachePrefix]);
+        $serialized = $entity->serialize();
+
+        foreach ($keys as $key) {
+            $this->set($key, $entity, $tags);
         }
+    }
+
+    /**
+     * Saves entities on the cache.
+     *
+     * @return void
+     */
+    public function cacheEntities(Collection $entities) {
+        foreach ($entities as $entity) {
+            $this->cacheEntity($entity);
+        }
+    }
+
+    /**
+     * Deletes an entity from the cache.
+     *
+     * @return void
+     */
+    public function deleteEntityCache(EntityInterface $entity) {
+        $keys = $entity->getReferenceCacheKeys();
+        $tags = $entity->getCacheKeys();
+
+        $this->invalidateCacheTags($keys);
+        $this->invalidateCacheKeys($keys);
+    }
+
+    /**
+     * Deletes entities from the cache.
+     *
+     * @return void
+     */
+    public function deleteEntitiesFromCache(Collection $entities) {
+        foreach ($entities as $entity) {
+            $this->deleteEntityCache($entities);
+        }
+    }
+
+    /**
+     * Clean the cache of the current repository.
+     *
+     * @return void
+     */
+    public function purge() : int {
+        return $this->invalidateCacheTag($this->cachePrefix);
+    }
+
+    /**
+     * Removes entity from cache then deletes an entity.
+     * 
+     * @return int number of affected rows
+     */
+    public function delete(int $id, string $key = 'id') : int {
+        $this->deleteEntityCache($this->find($id));
+        return $this->repository->delete($id);
+    }
+
+    /**
+     * Removes entity from cache then deletes an entity.
+     * 
+     * @param array constraints
+     *
+     * @return int number of affected rows
+     */
+    public function deleteBy(array $constraints) : int {
+        $this->deleteEntityCache($this->findOneBy($constraints));
+        return $this->repository->deleteBy($constraints);
+    }
+    
+    /**
+     * Invalidates cache content for a tag.
+     *
+     * @param string $tag
+     *
+     * @return void
+     */
+    protected function invalidateCacheTag(string $tag) {
+        return $this->cache->clearByTags([$tag]);
+    }
+
+    /**
+     * Invalidates cache content for the given tags.
+     *
+     * @param array $tags
+     *
+     * @return void
+     */
+    protected function invalidateCacheTags(array $tags) {
+        return $this->cache->clearByTags($tags);
     }
 
     /**
      * Class constructor.
      *
      * @param App\Repository\RepositoryInterface $repository
-     * @param \Stash\Interfaces\PoolInterface    $cachePool
+     * @param \Apix\Cache\PsrCache\TaggablePool    $cache
      *
      * @return void
      */
     public function __construct(
         RepositoryInterface $repository,
-        PoolInterface $cachePool
+        TaggablePool $cache
     ) {
         $this->repository = $repository;
-        $this->cachePool  = $cachePool;
+        $this->cache  = $cache;
+        $this->cachePrefix = $this->entityName;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function save(EntityInterface &$entity) {
-        $this->repository->save($entity);
+    public function save(EntityInterface &$entity) : EntityInterface {
+        $entity = $this->repository->save($entity);
+
+        $this->deleteEntityCache($entity);
+        $this->cacheEntity($entity);
+
+        return $entity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function find($id) : EntityInterface {
+        $cacheKey = sprintf('%s.id.%s', $this->cachePrefix, $id);        
+        $entity = $this->load($cacheKey);
+
+        if ($entity->isHit()) {
+            return $entity->get();
+        }
+        
+        $entity = $this->repository->findOneBy(['id' => $id]);
+        $this->cacheEntity($entity);
+
+        return $entity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAll() : Collection {
+        $cacheKey = sprintf('%s/all', $this->cachePrefix);
+        $cacheTags = [ $this->cachePrefix ];
+        
+        $entities = $this->load($cacheKey);
+
+        if ($entities) {
+            return $entities;
+        }
+
+        $entities = $this->repository->getAll();
+
+        foreach ($entities as $entity) {
+            if ($entity->id) {
+                $entityCacheKey = sprintf('%s/one/%s', $this->cachePrefix, $entity->id);
+                $this->set($entityCacheKey, $entity, $cacheTags); // same tags
+            }
+        }
+
+        $this->set($cacheKey, $entities, $cacheTags);
+
+        return $entities;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findBySlug($slug) : EntityInterface {
+        return $this->findOneBy(['slug' => $slug]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findBy(array $constraints) : Collection {
+        $constraintsKey = 'by';
+        foreach ($constraints as $key => $value) {
+            $constraintsKey .= sprintf('.%s.%s', $key, $value);
+        }
+
+        $cacheKey = sprintf('%s.%s', $this->cachePrefix, $constraintsKey);
+        $cacheTags = [ $this->cachePrefix ];
+        
+        $entities = $this->load($cacheKey);
+
+        if ($entities->isHit()) {
+            return $entities->get();
+        }
+        
+        $entities = $this->repository->findBy($constraints);
+
+        // tags the query with all related entities
+        foreach ($entities as $entity) {
+            foreach ($entity->getCacheKeys() as $key) {
+                $cacheTags[] = $key; 
+            }
+        }
+
+        $this->set($cacheKey, $entities, $cacheTags);        
+        $this->cacheEntities($entities);
+
+        return $entities;
+    }
+
+    /**
+     * Tries to load "key" from the cache
+     * 
+     * @param string $key
+     * @return mixed | null
+     */
+    public function load(string $key) {
+        return $this->cache->getItem($key);
+    }
+
+    /**
+     * Set a pair key:value into the cache 
+     * 
+     * @param string $key
+     * @param $value
+     * @param array  $tags
+     */
+    public function set(string $key, $value, array $tags = []) {
+        $item = $this->cache->getItem($key);
+        $item->setTags($tags);
+        $item->set($value);
+        return $this->cache->save($item);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function create(array $attributes) : EntityInterface {
+        return $this->repository->create($attributes);
     }
 }

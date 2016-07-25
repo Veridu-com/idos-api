@@ -30,7 +30,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
      * {@inheritdoc}
      */
     public function findOne($companyId, $section, $propName) {
-        return $this->getOneByWhereConstraints([
+        return $this->finOneBy([
             'company_id' => $companyId,
             'section'    => $section,
             'property'   => $propName
@@ -54,14 +54,14 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
      * {@inheritdoc}
      */
     public function getAllByCompanyId($companyId) {
-        return $this->getAllByKey('company_id', $companyId);
+        return $this->findBy(['company_id' => $companyId]);
     }
 
     /**
      * {@inheritdoc}
      */
     public function getAllByCompanyIdAndSection($companyId, $section) {
-        return $this->getAllByWhereConstraints([
+        return $this->findBy([
             'company_id' => $companyId,
             'section'    => $section
         ]);

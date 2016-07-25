@@ -100,12 +100,13 @@ class Credential implements HandlerInterface {
      *
      * @return App\Entity\Credential
      */
-    public function handleUpdateOne(UpdateOne $command) {
+    public function handleUpdateOne(UpdateOne $command) {        
         $this->validator->assertId($command->credentialId);
         $this->validator->assertName($command->name);
 
         $credential       = $this->repository->find($command->credentialId);
         $credential->name = $command->name;
+        $credential->updatedAt = time();
 
         $credential = $this->repository->save($credential);
 

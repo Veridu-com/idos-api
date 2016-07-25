@@ -40,6 +40,9 @@ use Stash\Driver\Redis;
 use Stash\Driver\Sqlite;
 use Stash\Pool;
 use Whoops\Handler\PrettyPageHandler;
+use League\Event\Emitter;
+use Apix\Cache;
+use App\Event\ListenerProvider;
 
 if (! isset($app)) {
     die('$app is not set!');
@@ -190,61 +193,30 @@ $container['log'] = function (ContainerInterface $container) {
     };
 };
 
+
 // Stash Cache
 $container['cache'] = function (ContainerInterface $container) {
     $settings = $container->get('settings');
-    if (empty($settings['cache']['driver'])) {
-        $settings['cache']['driver'] = 'ephemeral';
-    }
 
-    if (empty($settings['cache']['options'])) {
-        $cacheOptions = [];
-    } else {
-        $cacheOptions = $settings['cache']['options'];
+    if (empty($settings['cache']['driver'])) {
+        $settings['cache']['driver'] = 'filesystem';
     }
 
     switch ($settings['cache']['driver']) {
         case 'filesystem':
-            $driver = new FileSystem($cacheOptions);
-            break;
-        case 'sqlite':
-            $driver = new Sqlite($cacheOptions);
-            break;
-        case 'apc':
-            $driver = new Apc($cacheOptions);
-            break;
-        case 'memcache':
-            $driver = new Memcache($cacheOptions);
+            $options = array_merge($settings['cache']['default'], $settings['cache']['directory']);
+            $pool = Cache\Factory::getTaggablePool(new Cache\Directory, $options);
             break;
         case 'redis':
-            $driver = new Redis($cacheOptions);
+            $options = array_merge($settings['cache']['default'], $settings['cache']['redis']);
+            $redis = new \Redis;
+            $redis->connect($settings['cache']['redis']['host'], $settings['cache']['redis']['port']);
+            $pool = Cache\Factory::getTaggablePool($redis, $options);
             break;
-        case 'ephemeral':
-        default:
-            $driver = new Ephemeral();
     }
 
-    if ($driver instanceof Ephemeral) {
-        $pool = new Pool($driver);
-    } else {
-        $composite = new Composite(
-            [
-                'drivers' => [
-                    new Ephemeral(),
-                    $driver
-                ]
-            ]
-        );
-        $pool = new Pool($composite);
-    }
-
-    $logger = new Logger('Cache');
-    $logger
-        ->pushProcessor(new UidProcessor())
-        ->pushProcessor(new WebProcessor())
-        ->pushHandler(new StreamHandler($settings['log']['path'], $settings['log']['level']));
-    $pool->setLogger($logger);
-    $pool->setNamespace('API');
+    // var_dump(get_class_methods($pool));
+    // $pool->clear();
 
     return $pool;
 };
@@ -400,7 +372,26 @@ $container['optimus'] = function (ContainerInterface $container) {
     );
 };
 
-$container['globFiles'] = [
-    'routes'    => glob(__DIR__ . '/../app/Route/*.php'),
-    'handlers'  => glob(__DIR__ . '/../app/Handler/*.php')
-];
+// App files
+$container['globFiles'] = function () {
+    return [
+        'routes'    => glob(__DIR__ . '/../app/Route/*.php'),
+        'handlers'  => glob(__DIR__ . '/../app/Handler/*.php'),
+        'listenerProviders'  => glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
+    ];
+};
+
+// Register Event emitter & Event listeners
+$container['eventEmitter'] = function (ContainerInterface $container) {
+    $emitter = new Emitter();
+
+    $providers = array_map(function ($providerFile) {
+        return preg_replace('/.*?Listener\/(.*)\/ListenerProvider.php/', 'App\\Listener\\\$1\\ListenerProvider', $providerFile);
+    }, $container->get('globFiles')['listenerProviders']);
+
+    foreach ($providers as $provider) {
+        $emitter->useListenerProvider(new $provider($container));
+    }
+    
+    return $emitter;
+};

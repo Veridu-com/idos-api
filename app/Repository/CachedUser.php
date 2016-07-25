@@ -6,31 +6,19 @@
 
 namespace App\Repository;
 
+use App\Entity\EntityInterface;
+
 /**
  * Cache-based User Repository Implementation.
  */
 class CachedUser extends AbstractCachedRepository implements UserInterface {
     /**
-     * {@inheritdoc}
+     * The entity associated with the repository.
+     *
+     * @var string
      */
-    public function find($id) {
-        return $this->repository->find($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($id) {
-        return $this->repository->delete($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAll() {
-        return $this->repository->getAll();
-    }
-
+    protected $entityName = 'User';
+    
     /**
      * {@inheritdoc}
      */

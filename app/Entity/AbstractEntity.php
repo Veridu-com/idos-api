@@ -51,6 +51,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var bool
      */
     protected $dirty = false;
+    /**
+     * Cache prefix
+     *
+     * @var bool
+     */
+    protected $cachePrefix;
 
     /**
      * Formats a snake_case string to CamelCase.
@@ -179,6 +185,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __construct(array $attributes = []) {
+        $this->cachePrefix = str_replace('App\\Entity\\', '', get_class($this));
+        
         if (! empty($attributes)) {
             $this
                 ->hydrate($attributes)
@@ -220,6 +228,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     public function serialize() {
         $attributes = array_keys($this->attributes);
         $return     = [];
+
         foreach ($attributes as $attribute) {
             $return[$this->toSnakeCase($attribute)] = $this->attributes[$attribute];
         }

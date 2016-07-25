@@ -38,6 +38,7 @@ class DatabaseInit extends AbstractMigration {
                     'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
+            // TODO: Discover why no index on the "private_key"
             ->addIndex('public_key')
             ->create();
 
@@ -168,13 +169,21 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
+        // Roles
+        $features = $this->table('roles');
+        $features
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('created_at', 'timestamp', [ 'null' => false, 'timezone' => false, 'default'  => 'CURRENT_TIMESTAMP' ])
+            ->addIndex('name', ['unique' => true])
+            ->create();
+
         // Roles for rights management
         $roleAccess = $this->table('role_access');
         $roleAccess
             ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('role', 'text', ['null' => false])
+            ->addColumn('role', 'text', ['null' => true])
             ->addColumn('resource', 'text', ['null' => true])
-            ->addColumn('access', 'boolean', ['null' => false, 'default' => true])
+            ->addColumn('access', 'text', ['null' => true, 'default' => null])
             ->addColumn(
                 'created_at',
                 'timestamp',
@@ -197,6 +206,7 @@ class DatabaseInit extends AbstractMigration {
             ->addIndex('role')
             ->addIndex('resource')
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
             ->create();
 
         $roleLogs = $this->table('role_logs');
@@ -540,6 +550,7 @@ class DatabaseInit extends AbstractMigration {
         $users = $this->table('users');
         $users
             ->addColumn('credential_id', 'integer', ['null' => false])
+            ->addColumn('role', 'text', ['null' => true])
             ->addColumn('identity_id', 'integer', ['null' => true, 'default' => null])
             ->addColumn('username', 'binary', ['null' => false])
             ->addColumn(
@@ -557,6 +568,7 @@ class DatabaseInit extends AbstractMigration {
             ->addIndex('username')
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
             ->create();
 
         $hooks = $this->table('hooks');

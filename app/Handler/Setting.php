@@ -119,6 +119,7 @@ class Setting implements HandlerInterface {
 
         if ($command->value) {
             $setting->value = $command->value;
+            $setting->updatedAt = time();
         }
 
         $success = $this->repository->update($setting);
