@@ -32,7 +32,6 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertEquals($totalNumberOfEntities, $body['deleted']); // checks if listAll retrived the number of deleted objects
-
         $this->populate($this->uri); // refreshes the $entities prop
         $this->assertEquals(0, sizeof($this->entities)); // checks if all entities were deleted
 

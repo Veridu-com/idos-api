@@ -19,6 +19,7 @@ use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
+use App\Entity\Setting as SettingEntity;
 
 class SettingTest extends AbstractUnit {
     public function testConstructCorrectInterface() {
@@ -104,7 +105,10 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $dbConnectionMock = $this->createMock('Illuminate\Database\ConnectionInterface');
+        $settingEntity = new SettingEntity([]);
+
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
 
         $entityFactory = new EntityFactory();
         $entityFactory->create('Setting');
@@ -116,7 +120,7 @@ class SettingTest extends AbstractUnit {
         $SettingRepository
             ->expects($this->once())
             ->method('save')
-            ->willReturn(true);
+            ->willReturn($settingEntity);
 
         $handler = new Setting(
             $SettingRepository,

@@ -17,6 +17,7 @@ use App\Repository\PermissionInterface;
 use App\Validator\Permission as PermissionValidator;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
+use App\Entity\Permission as PermissionEntity;
 
 class PermissionTest extends AbstractUnit {
     public function testConstructCorrectInterface() {
@@ -96,7 +97,10 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $dbConnectionMock = $this->createMock('Illuminate\Database\ConnectionInterface');
+        $permissionEntity = new PermissionEntity([]);
+
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
 
         $entityFactory = new EntityFactory();
         $entityFactory->create('Permission');
@@ -108,7 +112,7 @@ class PermissionTest extends AbstractUnit {
         $permissionRepository
             ->expects($this->once())
             ->method('save')
-            ->willReturn(true);
+            ->willReturn($permissionEntity);
 
         $handler = new Permission(
             $permissionRepository,
@@ -121,7 +125,6 @@ class PermissionTest extends AbstractUnit {
 
         $result = $handler->handleCreateNew($command);
 
-        // TODO: Understand how to map route_name to routeName
         $this->assertSame('companies:listAll', $result->route_name);
         $this->assertSame(1, $result->company_id);
     }

@@ -12,6 +12,7 @@ use App\Factory\Entity;
 use App\Repository\DBPermission;
 use Illuminate\Database\Connection;
 use Test\Unit\AbstractUnit;
+use Illuminate\Support\Collection;
 
 class DBPermissionTest extends AbstractUnit {
     public function testFindOneNotFound() {
@@ -19,17 +20,14 @@ class DBPermissionTest extends AbstractUnit {
         $factory->create('Permission', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'first', 'get'])
+            ->setMethods(['where', 'get'])
             ->getMock();
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue([]));
-        $queryMock
-            ->method('first')
-            ->will($this->returnValue([]));
+            ->will($this->returnValue(new Collection([])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -56,17 +54,15 @@ class DBPermissionTest extends AbstractUnit {
 
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'first', 'get'])
+            ->setMethods(['where', 'get'])
             ->getMock();
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue([$entity]));
-        $queryMock
-            ->method('first')
-            ->will($this->returnValue($array));
+            ->will($this->returnValue(new Collection([$entity])));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])

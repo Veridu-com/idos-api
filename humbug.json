@@ -4,7 +4,7 @@
             "app/"
         ]
     },
-    "timeout": 30,
+    "timeout": 60,
     "logs": {
         "text": "humbuglog.txt",
         "json": "humbuglog.json"

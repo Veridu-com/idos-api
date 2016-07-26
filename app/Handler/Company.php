@@ -15,7 +15,7 @@ use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
-
+use App\Event\Company\Created;
 /**
  * Handles Company commands.
  */
@@ -98,7 +98,7 @@ class Company implements HandlerInterface {
         $company->private_key = Key::createNewRandomKey()->saveToAsciiSafeString();
 
         if ($this->repository->save($company)) {
-            $event = new \App\Event\Company\Created($company);
+            $event = new Created($company);
             $this->emitter->emit($event);
         }
 

@@ -50,6 +50,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
+	"phpunit/php-code-coverage": "^3.0.0",
         "phpunit/dbunit": "@stable",
         "phpmd/phpmd" : "@stable",
         "phploc/phploc": "@stable",

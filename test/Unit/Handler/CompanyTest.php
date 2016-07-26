@@ -17,6 +17,9 @@ use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
+use League\Event\Emitter;
+use App\Event\Company\Created;
+use App\Entity\Company as CompanyEntity;
 
 class CompanyTest extends AbstractUnit {
     public function testConstructCorrectInterface() {
@@ -26,12 +29,16 @@ class CompanyTest extends AbstractUnit {
         $validatorMock = $this
             ->getMockBuilder(CompanyValidator::class)
             ->getMock();
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
 
         $this->assertInstanceOf(
             'App\\Handler\\HandlerInterface',
             new Company(
                 $repositoryMock,
-                $validatorMock
+                $validatorMock,
+                $emitterMock
             )
         );
     }
@@ -51,8 +58,16 @@ class CompanyTest extends AbstractUnit {
             ->method('create')
             ->willReturn($repositoryMock);
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $container['repositoryFactory'] = function () use ($repositoryFactoryMock) {
             return $repositoryFactoryMock;
+        };
+
+        $container['eventEmitter'] = function () use ($emitterMock) {
+            return $emitterMock;
         };
 
         $validatorMock = $this
@@ -80,9 +95,14 @@ class CompanyTest extends AbstractUnit {
             ->getMockBuilder(CompanyInterface::class)
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Company(
             $repositoryMock,
-            new CompanyValidator()
+            new CompanyValidator(),
+            $emitterMock
         );
         $this->setExpectedException('InvalidArgumentException');
 
@@ -95,7 +115,18 @@ class CompanyTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $dbConnectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
+        $companyEntity = new CompanyEntity([]);
+
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->setMethods(['emit'])
+            ->getMock();
+        $emitterMock
+            ->method('emit')
+            ->will($this->returnValue(new Created($companyEntity)));
 
         $entityFactory = new EntityFactory();
         $entityFactory->create('Company');
@@ -107,11 +138,12 @@ class CompanyTest extends AbstractUnit {
         $companyRepository
             ->expects($this->once())
             ->method('save')
-            ->willReturn(true);
+            ->willReturn($companyEntity);
 
         $handler = new Company(
             $companyRepository,
-            new CompanyValidator()
+            new CompanyValidator(),
+            $emitterMock
         );
 
         $command           = new CreateNew();
@@ -119,7 +151,7 @@ class CompanyTest extends AbstractUnit {
         $command->parentId = 1;
 
         $result = $handler->handleCreateNew($command);
-        // $this->assertSame('valid co', $result->name);
+        $this->assertSame('valid co', $result->name);
         $this->assertSame('valid-co', $result->slug);
         $this->assertNotEmpty($result->public_key);
     }
@@ -129,9 +161,14 @@ class CompanyTest extends AbstractUnit {
             ->getMockBuilder(CompanyInterface::class)
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Company(
             $repositoryMock,
-            new CompanyValidator()
+            new CompanyValidator(),
+            $emitterMock
         );
 
         $this->setExpectedException('InvalidArgumentException');

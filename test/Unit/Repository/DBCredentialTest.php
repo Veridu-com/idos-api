@@ -12,6 +12,7 @@ use App\Repository\DBCredential;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Collection;
 use Test\Unit\AbstractUnit;
+use App\Entity\Credential as CredentialEntity;
 
 class DBCredentialTest extends AbstractUnit {
     public function testFindByPubKeyNotFound() {
@@ -19,14 +20,14 @@ class DBCredentialTest extends AbstractUnit {
         $factory->create('Credential', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'first'])
+            ->setMethods(['where', 'get'])
             ->getMock();
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
-            ->method('first')
-            ->will($this->returnValue([]));
+            ->method('get')
+            ->will($this->returnValue(new Collection([])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -45,23 +46,27 @@ class DBCredentialTest extends AbstractUnit {
 
     public function testFindByPubKey() {
         $array = [
-            'companyId'  => 1,
             'name'       => 'NiceCredential',
-            'created_at' => time()
+            'public' => 'public',
+            'slug' => 'nice-credential',
+            'created_at' => time(),
+            'updated_at' => time()
         ];
 
         $factory = new Entity();
         $factory->create('Credential', []);
+
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'first'])
+            ->setMethods(['where', 'get'])
             ->getMock();
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
-            ->method('first')
-            ->will($this->returnValue($array));
+            ->method('get')
+            ->will($this->returnValue(new Collection([new CredentialEntity($array)])));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -72,9 +77,10 @@ class DBCredentialTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
+
         $dbCredential = new DBCredential($factory, $connectionMock);
 
-        $this->assertEquals($array, $dbCredential->findByPubKey(1));
+        $this->assertEquals($array, $dbCredential->findByPubKey(1)->toArray());
     }
 
     public function testGetAllByCompanyIdEmpty() {
@@ -89,7 +95,7 @@ class DBCredentialTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue([]));
+            ->will($this->returnValue(new Collection([])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -109,14 +115,18 @@ class DBCredentialTest extends AbstractUnit {
     public function testGetAllBycompanyId() {
         $array = [
             [
-                'companyId'  => 1,
                 'name'       => 'NiceCredential',
-                'created_at' => time()
+                'slug'   => 'nice-credential',
+                'public' => 'public',
+                'created_at' => time(),
+                'updated_at' => time()
             ],
             [
-                'companyId'  => 1,
                 'name'       => 'ReallyNiceCredential',
-                'created_at' => time()
+                'slug' => 'really-nice-credential',
+                'public' => 'public2',
+                'created_at' => time(),
+                'updated_at' => time()
             ]
         ];
 
@@ -131,7 +141,14 @@ class DBCredentialTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue($array));
+            ->will(
+                $this->returnValue(
+                    new Collection([
+                        new CredentialEntity($array[0]),
+                        new CredentialEntity($array[1])
+                    ])
+                )
+            );
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])

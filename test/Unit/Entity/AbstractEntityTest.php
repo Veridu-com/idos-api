@@ -19,6 +19,7 @@ class AbstractEntityTest extends AbstractUnit {
             ->setMethods(null)
             ->setConstructorArgs(['attributes' => $array])
             ->getMockForAbstractClass();
+
         $this->assertSame($array, $abstractMock->serialize());
     }
 

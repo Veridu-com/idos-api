@@ -12,6 +12,8 @@ use App\Repository\AbstractDBRepository;
 use Illuminate\Database\Connection\Query\Builder;
 use Illuminate\Database\ConnectionInterface;
 use Test\Unit\AbstractUnit;
+use App\Entity\Company as CompanyEntity;
+use Illuminate\Support\Collection;
 
 class AbstractDBRepositoryTest extends AbstractUnit {
     private function setProtectedMethod($object, $method) {
@@ -119,7 +121,8 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             'name'       => 'AbstractDBCompany',
             'slug'       => 'slug',
             'public_key' => 'public_key',
-            'created_at' => 'date'
+            'created_at' => time(),
+            'updated_at' => time()
         ];
 
         $entityMock = $this->getMockBuilder(Entity::class)
@@ -135,7 +138,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->getMock();
         $queryMock
             ->method('find')
-            ->will($this->returnValue($array));
+            ->will($this->returnValue(new CompanyEntity($array)));
 
         $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
             ->setConstructorArgs([$entityMock, $connectionMock])
@@ -145,7 +148,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('query')
             ->will($this->returnValue($queryMock));
 
-        $this->assertSame($array, $abstractMock->find(0));
+        $this->assertSame($array, $abstractMock->find(0)->toArray());
     }
 
     public function testFindByKeyNotFound() {
@@ -157,14 +160,14 @@ class AbstractDBRepositoryTest extends AbstractUnit {
 
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'first'])
+            ->setMethods(['where', 'get'])
             ->getMock();
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
-            ->method('first')
-            ->will($this->returnValue(''));
+            ->method('get')
+            ->will($this->returnValue(new Collection([])));
 
         $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
             ->setConstructorArgs([$entityMock, $connectionMock])
@@ -174,9 +177,8 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('query')
             ->will($this->returnValue($queryMock));
 
-        $this->setExpectedException(NotFound::class);
         $findBy = $this->setProtectedMethod($abstractMock, 'findBy');
-        $findBy->invoke($abstractMock, ['key' => 'value']);
+        $this->assertEmpty($findBy->invoke($abstractMock, ['key' => 'value'])->toArray());
     }
 
     public function testFindBy() {
@@ -184,7 +186,8 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             'name'       => 'AbstractDBCompany',
             'slug'       => 'slug',
             'public_key' => 'public_key',
-            'created_at' => 'date'
+            'created_at' => time(),
+            'updated_at' => time()
         ];
         $entityMock = $this->getMockBuilder(Entity::class)
             ->disableOriginalConstructor()
@@ -194,14 +197,14 @@ class AbstractDBRepositoryTest extends AbstractUnit {
 
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'first'])
+            ->setMethods(['where', 'get'])
             ->getMock();
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
-            ->method('first')
-            ->will($this->returnValue($array));
+            ->method('get')
+            ->will($this->returnValue(new Collection(new CompanyEntity($array))));
 
         $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
             ->setConstructorArgs([$entityMock, $connectionMock])
@@ -212,6 +215,6 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $findBy = $this->setProtectedMethod($abstractMock, 'findBy');
-        $this->assertSame($array, $findBy->invoke($abstractMock, ['key' => 'value']));
+        $this->assertSame($array, $findBy->invoke($abstractMock, ['key' => 'value'])->toArray());
     }
 }
