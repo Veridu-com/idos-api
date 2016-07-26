@@ -11,8 +11,8 @@ use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBPermission;
 use Illuminate\Database\Connection;
-use Test\Unit\AbstractUnit;
 use Illuminate\Support\Collection;
+use Test\Unit\AbstractUnit;
 
 class DBPermissionTest extends AbstractUnit {
     public function testFindOneNotFound() {

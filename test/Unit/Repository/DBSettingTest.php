@@ -6,13 +6,13 @@
 
 namespace Test\Unit\Repository;
 
+use App\Entity\Setting as SettingEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBSetting;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Collection;
 use Test\Unit\AbstractUnit;
-use App\Entity\Setting as SettingEntity;
 
 class DBSettingTest extends AbstractUnit {
     public function testFindOneNotFound() {
@@ -77,17 +77,17 @@ class DBSettingTest extends AbstractUnit {
         $array = [
             [
                 'section'       => 'NiceSetting',
-                'property' => 'niceProperty',
-                'value' => 'niceValue',
-                'created_at' => time(),
-                'updated_at' => time()
+                'property'      => 'niceProperty',
+                'value'         => 'niceValue',
+                'created_at'    => time(),
+                'updated_at'    => time()
             ],
             [
                 'section'       => 'ReallyNiceSetting',
-                'property' => 'realyNiceProperty',
-                'value' => 'realyNiceValue',
-                'created_at' => time(),
-                'updated_at' => time()
+                'property'      => 'realyNiceProperty',
+                'value'         => 'realyNiceValue',
+                'created_at'    => time(),
+                'updated_at'    => time()
             ]
         ];
 
@@ -105,8 +105,8 @@ class DBSettingTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new Collection([
-                        New SettingEntity($array[0]),
-                        New SettingEntity($array[1])
+                        new SettingEntity($array[0]),
+                        new SettingEntity($array[1])
                     ])
                 )
             );
@@ -157,16 +157,16 @@ class DBSettingTest extends AbstractUnit {
     public function testGetAllByCompanyIdAndSection() {
         $array = [
             [
-                'section'   => 'section1',
-                'property'  => 'property1',
-                'value'     => 'value1',
+                'section'    => 'section1',
+                'property'   => 'property1',
+                'value'      => 'value1',
                 'created_at' => time(),
                 'updated_at' => time()
             ],
             [
-                'section'   => 'section2',
-                'property'  => 'property2',
-                'value'     => 'value2',
+                'section'    => 'section2',
+                'property'   => 'property2',
+                'value'      => 'value2',
                 'created_at' => time(),
                 'updated_at' => time()
             ]

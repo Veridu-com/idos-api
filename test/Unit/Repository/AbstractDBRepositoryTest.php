@@ -6,14 +6,14 @@
 
 namespace Test\Unit\Repository;
 
+use App\Entity\Company as CompanyEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\AbstractDBRepository;
 use Illuminate\Database\Connection\Query\Builder;
 use Illuminate\Database\ConnectionInterface;
-use Test\Unit\AbstractUnit;
-use App\Entity\Company as CompanyEntity;
 use Illuminate\Support\Collection;
+use Test\Unit\AbstractUnit;
 
 class AbstractDBRepositoryTest extends AbstractUnit {
     private function setProtectedMethod($object, $method) {

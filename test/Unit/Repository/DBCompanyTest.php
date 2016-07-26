@@ -6,13 +6,13 @@
 
 namespace Test\Unit\Repository;
 
+use App\Entity\Company as CompanyEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBCompany;
 use Illuminate\Database\Connection;
-use Test\Unit\AbstractUnit;
-use App\Entity\Company as CompanyEntity;
 use Illuminate\Support\Collection;
+use Test\Unit\AbstractUnit;
 
 class DBCompanyTest extends AbstractUnit {
     public function testFindBySlugNotFound() {
@@ -80,7 +80,6 @@ class DBCompanyTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-
         $dbCompany = new DBCompany($factory, $connectionMock);
         $this->assertSame($array, $dbCompany->findBySlug('slug')->toArray());
     }
@@ -133,7 +132,7 @@ class DBCompanyTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection([New CompanyEntity($array)])));
+            ->will($this->returnValue(new Collection([new CompanyEntity($array)])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])

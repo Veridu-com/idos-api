@@ -8,6 +8,8 @@ namespace Test\Unit\Handler;
 
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteOne;
+use App\Entity\Company as CompanyEntity;
+use App\Event\Company\Created;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
@@ -15,11 +17,9 @@ use App\Handler\Company;
 use App\Repository\CompanyInterface;
 use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
+use League\Event\Emitter;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
-use League\Event\Emitter;
-use App\Event\Company\Created;
-use App\Entity\Company as CompanyEntity;
 
 class CompanyTest extends AbstractUnit {
     public function testConstructCorrectInterface() {

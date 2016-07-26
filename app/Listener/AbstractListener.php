@@ -9,5 +9,5 @@ namespace App\Listener;
 use League\Event\AbstractListener as AbstractLeagueListener;
 
 abstract class AbstractListener extends AbstractLeagueListener {
-	
+
 }

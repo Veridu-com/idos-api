@@ -10,6 +10,7 @@ use App\Command\Setting\CreateNew;
 use App\Command\Setting\DeleteAll;
 use App\Command\Setting\DeleteOne;
 use App\Command\Setting\UpdateOne;
+use App\Entity\Setting as SettingEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
@@ -19,7 +20,6 @@ use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
-use App\Entity\Setting as SettingEntity;
 
 class SettingTest extends AbstractUnit {
     public function testConstructCorrectInterface() {

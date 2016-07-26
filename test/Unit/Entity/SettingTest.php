@@ -12,7 +12,7 @@ use Test\Unit\AbstractUnit;
 class SettingTest extends AbstractUnit {
     public function testSerialize() {
         $updated = time();
-        $array = [
+        $array   = [
             'id'             => 1,
             'companyId'      => 0,
             'section'        => 'A Section',

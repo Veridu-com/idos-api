@@ -8,6 +8,7 @@ namespace Test\Unit\Handler;
 
 use App\Command\Permission\CreateNew;
 use App\Command\Permission\DeleteOne;
+use App\Entity\Permission as PermissionEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
@@ -17,7 +18,6 @@ use App\Repository\PermissionInterface;
 use App\Validator\Permission as PermissionValidator;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
-use App\Entity\Permission as PermissionEntity;
 
 class PermissionTest extends AbstractUnit {
     public function testConstructCorrectInterface() {

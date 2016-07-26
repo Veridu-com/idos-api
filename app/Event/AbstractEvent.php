@@ -9,5 +9,5 @@ namespace App\Event;
 use League\Event\AbstractEvent as AbstractLeagueEvent;
 
 abstract class AbstractEvent extends AbstractLeagueEvent {
-    
+
 }

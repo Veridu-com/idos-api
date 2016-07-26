@@ -6,16 +6,15 @@
 
 namespace Test\Unit\Command;
 
-use Test\Unit\AbstractUnit;
 use App\Command\AbstractCommand;
+use Test\Unit\AbstractUnit;
 
 /**
  * Abstract Command Implementation.
  */
 class AbstractCommandTest extends AbstractUnit {
-
     private function setProtectedMethod($object, $method) {
-        $reflection = new \ReflectionClass($object);
+        $reflection        = new \ReflectionClass($object);
         $reflection_method = $reflection->getMethod($method);
         $reflection_method->setAccessible(true);
 

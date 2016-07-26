@@ -6,13 +6,13 @@
 
 namespace Test\Unit\Repository;
 
+use App\Entity\Credential as CredentialEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBCredential;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Collection;
 use Test\Unit\AbstractUnit;
-use App\Entity\Credential as CredentialEntity;
 
 class DBCredentialTest extends AbstractUnit {
     public function testFindByPubKeyNotFound() {
@@ -47,8 +47,8 @@ class DBCredentialTest extends AbstractUnit {
     public function testFindByPubKey() {
         $array = [
             'name'       => 'NiceCredential',
-            'public' => 'public',
-            'slug' => 'nice-credential',
+            'public'     => 'public',
+            'slug'       => 'nice-credential',
             'created_at' => time(),
             'updated_at' => time()
         ];
@@ -116,15 +116,15 @@ class DBCredentialTest extends AbstractUnit {
         $array = [
             [
                 'name'       => 'NiceCredential',
-                'slug'   => 'nice-credential',
-                'public' => 'public',
+                'slug'       => 'nice-credential',
+                'public'     => 'public',
                 'created_at' => time(),
                 'updated_at' => time()
             ],
             [
                 'name'       => 'ReallyNiceCredential',
-                'slug' => 'really-nice-credential',
-                'public' => 'public2',
+                'slug'       => 'really-nice-credential',
+                'public'     => 'public2',
                 'created_at' => time(),
                 'updated_at' => time()
             ]

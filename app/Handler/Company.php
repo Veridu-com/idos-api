@@ -10,12 +10,13 @@ use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
+use App\Event\Company\Created;
 use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
-use App\Event\Company\Created;
+
 /**
  * Handles Company commands.
  */

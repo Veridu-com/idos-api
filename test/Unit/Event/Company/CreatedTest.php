@@ -7,17 +7,15 @@
 namespace Test\Unit\Event\Company;
 
 use App\Entity\Company;
-use App\Event\AbstractEvent;
-use Test\Unit\AbstractUnit;
 use App\Event\Company\Created;
+use Test\Unit\AbstractUnit;
 
 class CreatedTest extends AbstractUnit {
+    public function testConstruct() {
+        $company = new Company([]);
 
-	public function testConstruct() {
-		$company = new Company([]);
+        $created = new Created($company);
 
-		$created = new Created($company);
-
-		$this->assertInstanceOf(Company::class, $created->company);
-	}
+        $this->assertInstanceOf(Company::class, $created->company);
+    }
 }
