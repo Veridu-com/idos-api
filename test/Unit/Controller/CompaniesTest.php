@@ -12,7 +12,7 @@ use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
 use App\Command\ResponseDispatch;
 use App\Controller\Companies;
-use App\Entity\Company as EntityCompany;
+use App\Entity\Company as CompanyEntity;
 use App\Factory\Command;
 use App\Repository\DBCompany;
 use Illuminate\Support\Collection;
@@ -23,6 +23,18 @@ use Slim\Http\Response;
 use Test\Unit\AbstractUnit;
 
 class CompaniesTest extends AbstractUnit {
+    private function getEntity($id) {
+        return new CompanyEntity(
+            [
+                'name'       => 'New Company',
+                'id'         => $id,
+                'slug'       => 'new-company',
+                'created_at' => time(),
+                'updated_at' => time()
+            ]
+        );
+    }
+
     public function testListAll() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
@@ -30,13 +42,7 @@ class CompaniesTest extends AbstractUnit {
             ->getMock();
         $requestMock
             ->method('getAttribute')
-            ->will(
-                $this->returnValue(
-                    new EntityCompany(
-                        ['id' => 0]
-                    )
-                )
-            );
+            ->will($this->returnValue($this->getEntity(0)));
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -88,12 +94,7 @@ class CompaniesTest extends AbstractUnit {
         $requestMock
             ->method('getAttribute')
             ->will(
-                $this->returnValue(
-                    new EntityCompany(
-                        ['id' => 0]
-                    )
-                )
-            );
+                $this->returnValue($this->getEntity(0)));
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -142,11 +143,7 @@ class CompaniesTest extends AbstractUnit {
             ->expects($this->once())
             ->method('getAttribute')
             ->will(
-                $this->returnValue(
-                    new EntityCompany(
-                        ['id' => 1]
-                    )
-                )
+                $this->returnValue($this->getEntity(1))
             );
         $requestMock
             ->expects($this->once())
@@ -168,7 +165,7 @@ class CompaniesTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityCompany(), $responseMock));
+            ->will($this->onConsecutiveCalls($this->getEntity(1), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -199,13 +196,8 @@ class CompaniesTest extends AbstractUnit {
         $requestMock
             ->expects($this->once())
             ->method('getAttribute')
-            ->will(
-                $this->returnValue(
-                    new EntityCompany(
-                        ['id' => 0]
-                    )
-                )
-            );
+            ->will($this->returnValue($this->getEntity(0)));
+
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -221,7 +213,7 @@ class CompaniesTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityCompany(), $responseMock));
+            ->will($this->onConsecutiveCalls($this->getEntity(0), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -253,12 +245,7 @@ class CompaniesTest extends AbstractUnit {
             ->expects($this->once())
             ->method('getAttribute')
             ->will(
-                $this->returnValue(
-                    new EntityCompany(
-                        ['id' => 0]
-                    )
-                )
-            );
+                $this->returnValue($this->getEntity(0)));
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -274,7 +261,7 @@ class CompaniesTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityCompany(), $responseMock));
+            ->will($this->onConsecutiveCalls($this->getEntity(0), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -306,12 +293,7 @@ class CompaniesTest extends AbstractUnit {
             ->expects($this->once())
             ->method('getAttribute')
             ->will(
-                $this->returnValue(
-                    new EntityCompany(
-                        ['id' => 0]
-                    )
-                )
-            );
+                $this->returnValue($this->getEntity(0)));
         $requestMock
             ->expects($this->once())
             ->method('getParsedBody')
@@ -332,7 +314,7 @@ class CompaniesTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityCompany(), $responseMock));
+            ->will($this->onConsecutiveCalls($this->getEntity(0), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()

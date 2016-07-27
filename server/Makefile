@@ -54,6 +54,15 @@ dependencies:
 test:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phpunit --coverage-text
 
+test-unit:
+	docker exec --interactive --tty ${PHPSRV} vendor/bin/phpunit test/Unit --coverage-text
+
+test-func:
+	docker exec --interactive --tty ${PHPSRV} vendor/bin/phpunit test/Functional --coverage-text
+
+humbug:
+	docker exec --interactive --tty ${PHPSRV} vendor/bin/humbug
+
 cs-fixer:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/php-cs-fixer fix
 

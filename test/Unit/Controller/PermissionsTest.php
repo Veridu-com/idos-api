@@ -22,6 +22,16 @@ use Slim\Http\Response;
 use Test\Unit\AbstractUnit;
 
 class PermissionsTest extends AbstractUnit {
+    private function getEntity() {
+        return new EntityPermission(
+            [
+                'id'         => 1,
+                'route_name' => 'createNew',
+                'created_at' => time()
+            ]
+        );
+    }
+
     public function testListAll() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
@@ -154,9 +164,7 @@ class PermissionsTest extends AbstractUnit {
             ->method('getAttribute')
             ->will(
                 $this->returnValue(
-                    new EntityPermission(
-                        ['id' => 1]
-                    )
+                    $this->getEntity()
                 )
             );
         $requestMock
@@ -179,7 +187,7 @@ class PermissionsTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityPermission(), $responseMock));
+            ->will($this->onConsecutiveCalls($this->getEntity(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()

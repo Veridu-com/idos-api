@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -71,7 +74,7 @@ class Permissions implements ControllerInterface {
 
         $body = [
             'data'    => $permissions->toArray(),
-            // TODO: Discuss with Flavio if this "updated" makes sense. 
+            // TODO: Discuss with Flavio if this "updated" makes sense.
             // Should a deletion refresh it? How?
             'updated' => (
                 $permissions->isEmpty() ? time() : $permissions->max('created_at')
