@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -167,8 +169,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @param string $key
      *
      * @throws \RuntimeException
-     *
-     * @return mixed|null
      */
     private function getAttribute($key) {
         $key = $this->toSnakeCase($key);

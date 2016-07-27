@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -127,7 +129,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
 
     /**
      * Removes entity from cache then deletes an entity.
-     * 
+     *
      * @return int number of affected rows
      */
     public function delete(int $id, string $key = 'id') : int {
@@ -138,7 +140,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
 
     /**
      * Removes entity from cache then deletes an entity.
-     * 
+     *
      * @param array constraints
      *
      * @return int number of affected rows
@@ -286,7 +288,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
 
     /**
      * Tries to load "key" from the cache.
-     * 
+     *
      * @param string $key
      *
      * @return mixed | null
@@ -297,7 +299,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
 
     /**
      * Set a pair key:value into the cache.
-     * 
+     *
      * @param string $key
      * @param $value
      * @param array $tags

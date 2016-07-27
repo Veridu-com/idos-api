@@ -8,7 +8,7 @@ use App\Command\Credential\DeleteOne;
 use App\Command\Credential\UpdateOne;
 use App\Command\ResponseDispatch;
 use App\Controller\Credentials;
-use App\Entity\Company;
+use App\Entity\Company as CompanyEntity;
 use App\Entity\Credential as CredentialEntity;
 use App\Factory\Command;
 use App\Repository\DBCredential;
@@ -20,6 +20,30 @@ use Slim\Http\Response;
 use Test\Unit\AbstractUnit;
 
 class CreentialsTest extends AbstractUnit {
+    private function getCompanyEntity($id) {
+        return new CompanyEntity(
+            [
+                'name'       => 'New Company',
+                'id'         => $id,
+                'slug'       => 'new-company',
+                'created_at' => time(),
+                'updated_at' => time()
+            ]
+        );
+    }
+
+    private function getEntity() {
+        return new CredentialEntity(
+            [
+                'name'       => 'New Company',
+                'slug'       => 'new-company',
+                'public'     => 'public',
+                'created_at' => time(),
+                'updated_at' => time()
+            ]
+        );
+    }
+
     public function testListAll() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
@@ -27,13 +51,7 @@ class CreentialsTest extends AbstractUnit {
             ->getMock();
         $requestMock
             ->method('getAttribute')
-            ->will(
-                $this->returnValue(
-                    new Company(
-                        ['id' => 0]
-                    )
-                )
-            );
+            ->will($this->returnValue($this->getCompanyEntity(0)));
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -85,13 +103,7 @@ class CreentialsTest extends AbstractUnit {
         $requestMock
             ->expects($this->once())
             ->method('getAttribute')
-            ->will(
-                $this->returnValue(
-                    new Company(
-                        ['id' => 0]
-                    )
-                )
-            );
+            ->will($this->returnValue($this->getCompanyEntity(0)));
         $requestMock
             ->expects($this->once())
             ->method('getParsedBody')
@@ -112,7 +124,7 @@ class CreentialsTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new CredentialEntity(), $responseMock));
+            ->will($this->onConsecutiveCalls($this->getEntity(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -144,12 +156,7 @@ class CreentialsTest extends AbstractUnit {
             ->expects($this->once())
             ->method('getAttribute')
             ->will(
-                $this->returnValue(
-                    new Company(
-                        ['id' => 0]
-                    )
-                )
-            );
+                $this->returnValue($this->getCompanyEntity(0)));
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -166,7 +173,7 @@ class CreentialsTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new CredentialEntity(), $responseMock));
+            ->will($this->onConsecutiveCalls($this->getEntity(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -199,9 +206,7 @@ class CreentialsTest extends AbstractUnit {
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(
-                    new Company(
-                        ['id' => 0]
-                    ),
+                    $this->getCompanyEntity(0),
                     'publickey'
                 )
             );
@@ -216,13 +221,7 @@ class CreentialsTest extends AbstractUnit {
             ->getMock();
         $repositoryMock
             ->method('findByPubKey')
-            ->will(
-                $this->returnValue(
-                    new CredentialEntity(
-                        ['updated_at' => 'date']
-                    )
-                )
-            );
+            ->will($this->returnValue($this->getEntity()));
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()
@@ -264,9 +263,7 @@ class CreentialsTest extends AbstractUnit {
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(
-                    new Company(
-                        ['id' => 0]
-                    ),
+                    $this->getCompanyEntity(0),
                     'publickey'
                 )
             );
@@ -303,7 +300,7 @@ class CreentialsTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new CredentialEntity(), $responseMock));
+            ->will($this->onConsecutiveCalls($this->getEntity(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -336,9 +333,7 @@ class CreentialsTest extends AbstractUnit {
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(
-                    new Company(
-                        ['id' => 0]
-                    ),
+                    $this->getCompanyEntity(0),
                     'publickey'
                 )
             );
@@ -371,7 +366,7 @@ class CreentialsTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new CredentialEntity(), $responseMock));
+            ->will($this->onConsecutiveCalls($this->getEntity(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
