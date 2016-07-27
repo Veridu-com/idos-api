@@ -12,6 +12,10 @@
         {
             "name": "Rafael Campanari",
             "email": "rafael@veridu.com"
+        },
+        {
+            "name": "Caue Lorenzato",
+            "email": "caue@veridu.com"
         }
     ],
     "autoload": {
@@ -25,8 +29,6 @@
         "slim/http-cache": "^0.3",
         "monolog/monolog": "^1.13",
         "tedivm/stash": "^0.14",
-        "illuminate/database": "^5.2",
-        "illuminate/pagination": "^5.2",
         "robmorgan/phinx": "0.*",
         "respect/validation": "^1.0",
         "filp/whoops": "^2.0",
@@ -40,10 +42,15 @@
         "roave/security-advisories": "dev-master",
         "raveren/kint": "^1.0",
         "justinrainbow/json-schema": "^2.0",
-        "fzaninotto/faker": "^1.6"
+        "fzaninotto/faker": "^1.6",
+        "illuminate/database": "5.*",
+        "illuminate/pagination": "5.*",
+        "league/event": "^2.1",
+        "apix/cache": "1.2.*"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
+	"phpunit/php-code-coverage": "^3.0.0",
         "phpunit/dbunit": "@stable",
         "phpmd/phpmd" : "@stable",
         "phploc/phploc": "@stable",
@@ -53,7 +60,8 @@
         "psy/psysh": "@stable",
         "theseer/phpdox": "@stable",
         "ovr/phpsa": "*",
-        "ext-xsl": "*"
+        "ext-xsl": "*",
+	"humbug/humbug": "dev-master"	
     },
     "config": {
         "optimize-autoloader": false

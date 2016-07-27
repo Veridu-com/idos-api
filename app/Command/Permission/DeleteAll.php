@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Command\Permission;
 
@@ -22,7 +25,7 @@ class DeleteAll extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) {
+    public function setParameters(array $parameters) : self {
         if (isset($parameters['companyId']))
             $this->companyId = $parameters['companyId'];
 

@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -65,13 +68,13 @@ class Permissions extends AbstractController {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany    = $request->getAttribute('targetCompany');
         $permissions      = $this->repository->getAllByCompanyId($targetCompany->id);
 
         $body = [
             'data'    => $permissions->toArray(),
-            // TODO: Discuss with Flavio if this "updated" makes sense. 
+            // TODO: Discuss with Flavio if this "updated" makes sense.
             // Should a deletion refresh it? How?
             'updated' => (
                 $permissions->isEmpty() ? time() : $permissions->max('created_at')
@@ -100,7 +103,7 @@ class Permissions extends AbstractController {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany    = $request->getAttribute('targetCompany');
         $section          = $request->getAttribute('section');
         $permissions      = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
@@ -133,7 +136,7 @@ class Permissions extends AbstractController {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $routeName     = $request->getAttribute('routeName');
         $permission    = $this->repository->findOne($targetCompany->id, $routeName);
@@ -161,7 +164,7 @@ class Permissions extends AbstractController {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
+    public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Permission\\CreateNew');
@@ -196,7 +199,7 @@ class Permissions extends AbstractController {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Permission\\DeleteAll');
@@ -227,7 +230,7 @@ class Permissions extends AbstractController {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $routeName     = $request->getAttribute('routeName');
 
@@ -266,7 +269,7 @@ class Permissions extends AbstractController {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $section       = $request->getAttribute('section');
         $propName      = $request->getAttribute('property');

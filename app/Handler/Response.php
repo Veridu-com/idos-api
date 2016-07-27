@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Handler;
 
@@ -23,7 +26,7 @@ class Response implements HandlerInterface {
         ResponseInterface $response,
         array $body,
         $statusCode = 200
-    ) {
+    ) : ResponseInterface {
         unset($body['list'][0]['private_key']);
         $body     = json_encode($body);
         $response = $this->httpCache->withEtag($response, sha1($body), 'weak');
@@ -39,7 +42,7 @@ class Response implements HandlerInterface {
         array $body,
         $statusCode = 200,
         $callback = 'jsonp'
-    ) {
+    ) : ResponseInterface {
         $body     = sprintf('/**/%s(%s)', $callback, json_encode($body));
         $response = $this->httpCache->withEtag($response, sha1($body), 'weak');
 
@@ -53,7 +56,7 @@ class Response implements HandlerInterface {
         ResponseInterface $response,
         array $body,
         $statusCode = 200
-    ) {
+    ) : ResponseInterface {
         $xml = new \SimpleXMLElement('<veridu/>');
         array_walk_recursive(
             $body,
@@ -77,7 +80,7 @@ class Response implements HandlerInterface {
         ResponseInterface $response,
         array $body,
         $statusCode = 200
-    ) {
+    ) : ResponseInterface {
         $body     = http_build_query($body);
         $response = $this->httpCache->withEtag($response, sha1($body), 'weak');
 

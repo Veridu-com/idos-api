@@ -6,9 +6,9 @@
 
 namespace Test\Functional\Permission;
 
+use Slim\Http\Response;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
-use Slim\Http\Response;
 
 class UpdateOneTest extends AbstractFunctional {
     // use HasAuthMiddleware;

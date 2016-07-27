@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Route;
 
@@ -21,7 +24,7 @@ class Companies implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function getPublicNames() {
+    public static function getPublicNames() : array {
         return [
             'companies:listAll',
             'companies:createNew',

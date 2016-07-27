@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -10,6 +13,7 @@ use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -47,7 +51,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function query() {
+    protected function query() : Builder {
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
             $this->getEntityClassName()
@@ -61,32 +65,11 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return string
      */
-    protected function getTableName() {
+    protected function getTableName() : string {
         if (empty($this->tableName))
             throw new \RuntimeException(sprintf('$tableName property not set in %s', get_class($this)));
 
         return $this->tableName;
-    }
-
-    /**
-     * Get the entity name.
-     *
-     * @return string
-     */
-    protected function getEntityName() {
-        if (empty($this->entityName))
-            throw new \RuntimeException(sprintf('$entityName property not set in %s', get_class($this)));
-
-        return $this->entityName;
-    }
-
-    /**
-     * Get the entity class name.
-     *
-     * @return string
-     */
-    protected function getEntityClassName() {
-        return sprintf('\\App\\Entity\\%s', $this->getEntityName());
     }
 
     /**
@@ -108,7 +91,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function create(array $attributes) {
+    public function create(array $attributes) : EntityInterface {
         return $this->entityFactory->create(
             $this->getEntityName(),
             $attributes
@@ -118,7 +101,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function save(EntityInterface &$entity) {
+    public function save(EntityInterface &$entity) : EntityInterface {
         $serialized = $entity->serialize();
 
         if (! $entity->id) {
@@ -141,7 +124,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function find($id) {
+    public function find($id) : EntityInterface {
         $result = $this->query()
             ->find($id);
         if (empty($result))
@@ -151,30 +134,11 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
-     * Find the first entity that a key matches value.
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\EntityInterface
-     */
-    protected function findByKey($key, $value) {
-        $result = $this->query()
-            ->where($key, $value)
-            ->first();
-        if (empty($result))
-            throw new NotFound();
-
-        return $result;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function delete($id) {
+    public function delete(int $id, string $key = 'id') : int{
         return $this->query()
+            ->where($key, $id)
             ->delete($id);
     }
 
@@ -186,65 +150,48 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return int
      */
-    protected function deleteByKey($key, $value) {
+    protected function deleteByKey($key, $value) : int {
         return $this->query()
             ->where($key, $value)
             ->delete();
     }
 
     /**
-     * Return an entity collection with all entities that a key matches a value.
+     * Delete all entities that matches the given constraints.
      *
-     * @param string $key
-     * @param mixed  $value
+     * @param associative array $constraints ['key' => 'value']
      *
-     * @return \Illuminate\Support\Collection
+     * @return int
      */
-    protected function getAllByKey($key, $value) {
-        return new Collection(
-            $this->query()
-                ->where($key, $value)
-                ->get()
-        );
-    }
+    public function deleteBy(array $constraints) : int {
+        if (! sizeof($constraints)) {
+            throw new \RuntimeException(sprintf('%s@deleteBy method was called without constraints.', get_class($this)));
+        }
 
-    /**
-     * Return an entity collection with all entities that has where constraints (AND).
-     *
-     * @param array $constraints
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected function getAllByWhereConstraints(array $constraints = []) {
-        $qb = $this->query();
+        $q = $this->query();
         foreach ($constraints as $key => $value) {
-            $qb = $qb->where($key, $value);
+            $q = $q->where($key, $value);
         }
 
-        return new Collection($qb->get());
-    }
-
-    /**
-     * Return an entity with all entities that has where constraints (AND).
-     *
-     * @param array $constraints
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    protected function getOneByWhereConstraints(array $constraints = []) {
-        $entity = $this->getAllByWhereConstraints($constraints)->first();
-
-        if (! $entity) {
-            throw new NotFound();
-        }
-
-        return $entity;
+        return $q->delete();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAll() {
+    public function findBy(array $constraints) : Collection {
+        $q = $this->query();
+        foreach ($constraints as $key => $value) {
+            $q = $q->where($key, $value);
+        }
+
+        return new Collection($q->get());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAll() : Collection {
         return new Collection($this->query()->all());
     }
 }

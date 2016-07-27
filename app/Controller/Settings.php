@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -65,7 +68,7 @@ class Settings implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $settings      = $this->repository->getAllByCompanyId($targetCompany->id);
 
@@ -96,7 +99,7 @@ class Settings implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $section       = $request->getAttribute('section');
         $settings      = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
@@ -127,7 +130,7 @@ class Settings implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $section       = $request->getAttribute('section');
         $propName      = $request->getAttribute('property');
@@ -160,7 +163,7 @@ class Settings implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
+    public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Setting\\CreateNew');
@@ -195,7 +198,7 @@ class Settings implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Setting\\DeleteAll');
@@ -224,7 +227,7 @@ class Settings implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $section       = $request->getAttribute('section');
         $property      = $request->getAttribute('property');
@@ -259,7 +262,7 @@ class Settings implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $section       = $request->getAttribute('section');
         $propName      = $request->getAttribute('property');

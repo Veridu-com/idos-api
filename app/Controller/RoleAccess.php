@@ -69,7 +69,7 @@ class RoleAccess implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingUser = $request->getAttribute('actingUser');
         $entities = $this->repository->findByIdentity($actingUser->identity_id);
 
@@ -98,7 +98,7 @@ class RoleAccess implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingUser = $request->getAttribute('actingUser');
         $role = $request->getAttribute('roleName');
         $resource = $request->getAttribute('resource');
@@ -129,7 +129,7 @@ class RoleAccess implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAllFromRole(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAllFromRole(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingUser = $request->getAttribute('actingUser');
         $role = $request->getAttribute('roleName');
 
@@ -159,7 +159,7 @@ class RoleAccess implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
+    public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingUser = $request->getAttribute('actingUser');
         $body = $request->getParsedBody();
 
@@ -194,7 +194,7 @@ class RoleAccess implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingUser = $request->getAttribute('actingUser');
 
         $command = $this->commandFactory->create('RoleAccess\\DeleteAll');
@@ -227,7 +227,7 @@ class RoleAccess implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingUser = $request->getAttribute('actingUser');
         $role = $request->getAttribute('roleName');
         $resource = $request->getAttribute('resource');
@@ -267,7 +267,7 @@ class RoleAccess implements ControllerInterface {
      *
      * @see App\Command\RoleAccess\UpdateOne
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingUser = $request->getAttribute('actingUser');
 
         $role = $request->getAttribute('roleName');

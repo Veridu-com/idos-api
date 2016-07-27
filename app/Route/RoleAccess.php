@@ -21,7 +21,7 @@ class RoleAccess implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function getPublicNames() {
+    public static function getPublicNames() : array {
         return [
             'roleAccess:listAll',
             'roleAccess:deleteAll',

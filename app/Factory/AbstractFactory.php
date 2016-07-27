@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Factory;
 
@@ -31,7 +34,7 @@ abstract class AbstractFactory implements FactoryInterface {
      *
      * @return string
      */
-    protected function getFormattedName($name) {
+    protected function getFormattedName($name) : string {
         return ucfirst($name);
     }
 
@@ -59,7 +62,7 @@ abstract class AbstractFactory implements FactoryInterface {
      *
      * @return App\Factory\FactoryInterface
      */
-    public function register($name, $class) {
+    public function register($name, $class) : FactoryInterface {
         if (! class_exists($class))
             throw new \RuntimeException(sprintf('Repository Class "%s" does not exist.', $class));
 

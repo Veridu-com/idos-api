@@ -11,6 +11,8 @@ use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBPermission;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 use Test\Unit\AbstractUnit;
 
 class DBPermissionTest extends AbstractUnit {
@@ -19,17 +21,14 @@ class DBPermissionTest extends AbstractUnit {
         $factory->create('Permission', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'first', 'get'])
+            ->setMethods(['where', 'get'])
             ->getMock();
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue([]));
-        $queryMock
-            ->method('first')
-            ->will($this->returnValue([]));
+            ->will($this->returnValue(new Collection([])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -56,17 +55,15 @@ class DBPermissionTest extends AbstractUnit {
 
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'first', 'get'])
+            ->setMethods(['where', 'get'])
             ->getMock();
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue([$entity]));
-        $queryMock
-            ->method('first')
-            ->will($this->returnValue($array));
+            ->will($this->returnValue(new Collection([$entity])));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -79,7 +76,7 @@ class DBPermissionTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbPermission = new DBPermission($factory, $connectionMock);
 
-        // fetches entity 
+        // fetches entity
         $entity = $dbPermission->findOne(0, 'companies:listAll');
 
         $this->assertInstanceOf(Permission::class, $entity);

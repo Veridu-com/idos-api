@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -27,7 +30,11 @@ class Credential extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'public', 'created_at'];
+    const CACHE_PREFIX = 'Credential';
+    /**
+     * {@inheritdoc}
+     */
+    protected $visible = ['name', 'slug', 'public', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
@@ -36,5 +43,26 @@ class Credential extends AbstractEntity {
     public function setNameAttribute($value) {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Utils::slugify($value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheKeys() : array {
+        return [
+            sprintf('%s.id.%s', self::CACHE_PREFIX, $this->id),
+            sprintf('%s.slug.%s', self::CACHE_PREFIX, $this->slug),
+            sprintf('%s.public.%s', self::CACHE_PREFIX, $this->public)
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceCacheKeys() : array {
+        return array_merge([
+            sprintf('%s.by.company_id.%s', self::CACHE_PREFIX, $this->companyId)
+        ],
+        $this->getCacheKeys());
     }
 }

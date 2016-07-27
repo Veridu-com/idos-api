@@ -1,12 +1,16 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Company;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Company Repository Implementation.
@@ -27,42 +31,42 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
     /**
      * {@inheritdoc}
      */
-    public function findBySlug($slug) {
-        return $this->findByKey('slug', $slug);
+    public function findBySlug($slug) : Company {
+        return $this->findOneBy(['slug' => $slug]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) {
-        return $this->findByKey('public_key', $pubKey);
+    public function findByPubKey($pubKey) : Company {
+        return $this->findOneBy(['public_key' => $pubKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey($privKey) {
-        return $this->findByKey('private_key', $privKey);
+    public function findByPrivKey($privKey) : Company {
+        return $this->findOneBy(['private_key' => $privKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByParentId($parentId) {
-        return $this->getAllByKey('parent_id', $parentId);
+    public function getAllByParentId($parentId) : Collection {
+        return $this->findBy(['parent_id' => $parentId]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByParentId($parentId) {
-        return $this->deleteByKey('parent_id', $parentId);
+    public function deleteByParentId(int $parentId) : int {
+        return $this->deleteBy(['parent_id' => $parentId]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteById($id) {
-        return $this->deleteByKey('id', $id);
+    public function delete(int $id, string $key = 'id') : int {
+        return $this->deleteBy(['id' => $id]);
     }
 }

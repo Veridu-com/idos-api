@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Handler;
 
@@ -10,6 +13,7 @@ use App\Command\Setting\CreateNew;
 use App\Command\Setting\DeleteAll;
 use App\Command\Setting\DeleteOne;
 use App\Command\Setting\UpdateOne;
+use App\Entity\Setting as SettingEntity;
 use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
 use Interop\Container\ContainerInterface;
@@ -68,9 +72,9 @@ class Setting implements HandlerInterface {
      *
      * @param App\Command\Setting\CreateNew $command
      *
-     * @return array
+     * @return App\Entity\Setting
      */
-    public function handleCreateNew(CreateNew $command) {
+    public function handleCreateNew(CreateNew $command) : SettingEntity {
         $this->validator->assertSectionName($command->section);
         $this->validator->assertPropName($command->property);
         $this->validator->assertId($command->companyId);
@@ -91,26 +95,13 @@ class Setting implements HandlerInterface {
     }
 
     /**
-     * Deletes all settings ($command->companyId).
-     *
-     * @param App\Command\Setting\DeleteAll $command
-     *
-     * @return void
-     */
-    public function handleDeleteAll(DeleteAll $command) {
-        $this->validator->assertId($command->companyId);
-
-        return $this->repository->deleteByCompanyId($command->companyId);
-    }
-
-    /**
      * Updates a Setting.
      *
      * @param App\Command\Setting\UpdateOne $command
      *
-     * @return array
+     * @return App\Entity\Setting
      */
-    public function handleUpdateOne(UpdateOne $command) {
+    public function handleUpdateOne(UpdateOne $command) : SettingEntity {
         $this->validator->assertId($command->companyId);
         $this->validator->assertPropName($command->propNameId);
         $this->validator->assertSectionName($command->sectionNameId);
@@ -118,7 +109,8 @@ class Setting implements HandlerInterface {
         $setting = $this->repository->findOne($command->companyId, $command->sectionNameId, $command->propNameId);
 
         if ($command->value) {
-            $setting->value = $command->value;
+            $setting->value     = $command->value;
+            $setting->updatedAt = time();
         }
 
         $success = $this->repository->update($setting);
@@ -127,18 +119,30 @@ class Setting implements HandlerInterface {
     }
 
     /**
+     * Deletes all settings ($command->companyId).
+     *
+     * @param App\Command\Setting\DeleteAll $command
+     *
+     * @return int
+     */
+    public function handleDeleteAll(DeleteAll $command) : int {
+        $this->validator->assertId($command->companyId);
+
+        return $this->repository->deleteByCompanyId($command->companyId);
+    }
+
+    /**
      * Deletes a Setting.
      *
      * @param App\Command\Setting\DeleteOne $command
      *
-     * @return void
+     * @return int
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->companyId);
         $this->validator->assertPropName($command->property);
         $this->validator->assertSectionName($command->section);
 
         return $this->repository->deleteOne($command->companyId, $command->section, $command->property);
     }
-
 }

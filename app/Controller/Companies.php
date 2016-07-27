@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -70,10 +73,9 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
-
-        $companies = $this->repository->getAllByParentId($actingCompany->id);
+        $companies     = $this->repository->getAllByParentId($actingCompany->id);
 
         $body = [
             'data'    => $companies->toArray(),
@@ -103,10 +105,9 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetUser = $request->getAttribute('targetUser');
-        $entity = $this->repository->findByRoleAndResource();
-        
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $targetCompany = $request->getAttribute('targetCompany');
+
         $body = [
             'data'    => $targetUser->toArray(),
             'updated' => $targetUser->updated_at
@@ -132,7 +133,7 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
+    public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
 
         $command = $this->commandFactory->create('Company\\CreateNew');
@@ -166,7 +167,7 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
 
         $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
@@ -197,8 +198,13 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
+<<<<<<< HEAD
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetUser = $request->getAttribute('targetUser');
+=======
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $targetCompany = $request->getAttribute('targetCompany');
+>>>>>>> 6e14bbb3592088e6efac877989d53991663218d0
 
         $command = $this->commandFactory->create('Company\\DeleteOne');
         $command->setParameter('companyId', $targetUser->id);
@@ -232,8 +238,13 @@ class Companies implements ControllerInterface {
      *
      * @see App\Command\Company\UpdateOne
      */
+<<<<<<< HEAD
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
         $targetUser = $request->getAttribute('targetUser');
+=======
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $targetCompany = $request->getAttribute('targetCompany');
+>>>>>>> 6e14bbb3592088e6efac877989d53991663218d0
 
         $command = $this->commandFactory->create('Company\\UpdateOne');
         $command

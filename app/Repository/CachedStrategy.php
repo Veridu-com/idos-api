@@ -1,13 +1,16 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
+use Apix\Cache\PsrCache\TaggablePool;
 use App\Factory\Repository;
-use Stash\Interfaces\PoolInterface;
 
 /**
  * Cache-based Repository Strategy.
@@ -22,39 +25,39 @@ class CachedStrategy implements RepositoryStrategyInterface {
     /**
      * Cache Pool.
      *
-     * @var \Stash\Interfaces\PoolInterface
+     * @var \Apix\Cache\PsrCache\TaggablePool
      */
-    private $cachePool;
+    private $cache;
 
     /**
      * Class constructor.
      *
-     * @param App\Factory\Repository          $repositoryFactory
-     * @param \Stash\Interfaces\PoolInterface $cachePool
+     * @param App\Factory\Repository            $repositoryFactory
+     * @param \Apix\Cache\PsrCache\TaggablePool $cache
      *
      * @return void
      */
-    public function __construct(Repository $repositoryFactory, PoolInterface $cachePool) {
+    public function __construct(Repository $repositoryFactory,  TaggablePool $cache) {
         $this->repositoryFactory = $repositoryFactory;
-        $this->cachePool         = $cachePool;
+        $this->cache             = $cache;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFormattedName($repositoryName) {
+    public function getFormattedName($repositoryName) : string {
         return sprintf('Cached%s', ucfirst($repositoryName));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build($className) {
-        $repositoryName = preg_replace('/^.*?Cached/', '', $className);
+    public function build($className) : RepositoryInterface {
+        $repositoryName = preg_replace('/.*?Cached/', '', $className);
 
         return new $className(
             $this->repositoryFactory->create($repositoryName),
-            $this->cachePool
+            $this->cache
         );
     }
 }

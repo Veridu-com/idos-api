@@ -1,0 +1,53 @@
+version: '2'
+services:
+  nginx:
+    container_name: srv-web
+    image: idos/nginx:latest
+    ports:
+      - "8080:80"
+    depends_on:
+      - php-fpm
+    links:
+      - "php-fpm:srv-php"
+    networks:
+      idos-ipv4-front:
+        ipv4_address: 172.16.238.10
+  php-fpm:
+    container_name: srv-php
+    image: idos/php-fpm:latest
+    volumes:
+      - ../:/app
+    depends_on:
+      - postgresql
+    links:
+      - "postgresql:srv-db"
+    networks:
+      idos-ipv4-front:
+        ipv4_address: 172.16.238.11
+      idos-ipv4-back:
+        ipv4_address: 172.16.239.11
+  postgresql:
+    container_name: srv-db
+    image: veridu/postgresql:latest
+    networks:
+      idos-ipv4-back:
+        ipv4_address: 172.16.239.12
+networks:
+  idos-ipv4-front:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          gateway: 172.16.238.1
+  idos-ipv4-back:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.239.0/24
+          gateway: 172.16.239.1

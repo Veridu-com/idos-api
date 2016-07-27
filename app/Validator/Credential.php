@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Validator;
 
@@ -79,7 +82,7 @@ class Credential implements ValidatorInterface {
      *
      * @return bool
      */
-    public function productionValue($production) {
+    public function productionValue($production) : bool {
         return Validator::trueVal()
             ->validate($production);
     }

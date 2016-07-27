@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Handler;
 
@@ -10,10 +13,13 @@ use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
+use App\Entity\Company as CompanyEntity;
+use App\Event\Company\Created;
 use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Company commands.
@@ -31,6 +37,12 @@ class Company implements HandlerInterface {
      * @var App\Validator\Company
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -43,7 +55,9 @@ class Company implements HandlerInterface {
                     ->create('Company'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Company')
+                    ->create('Company'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -58,10 +72,12 @@ class Company implements HandlerInterface {
      */
     public function __construct(
         CompanyInterface $repository,
-        CompanyValidator $validator
+        CompanyValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -71,7 +87,7 @@ class Company implements HandlerInterface {
      *
      * @return App\Entity\Company
      */
-    public function handleCreateNew(CreateNew $command) {
+    public function handleCreateNew(CreateNew $command) : CompanyEntity {
         $this->validator->assertName($command->name);
         $this->validator->assertParentId($command->parentId);
 
@@ -86,7 +102,10 @@ class Company implements HandlerInterface {
         $company->public_key  = Key::createNewRandomKey()->saveToAsciiSafeString();
         $company->private_key = Key::createNewRandomKey()->saveToAsciiSafeString();
 
-        $this->repository->save($company);
+        if ($this->repository->save($company)) {
+            $event = new Created($company);
+            $this->emitter->emit($event);
+        }
 
         return $company;
     }
@@ -98,16 +117,15 @@ class Company implements HandlerInterface {
      *
      * @return App\Entity\Company
      */
-    public function handleUpdateOne(UpdateOne $command) {
+    public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
         $this->validator->assertId($command->companyId);
         $this->validator->assertName($command->name);
 
-        $company       = $this->repository->find($command->companyId);
-        $company->name = $command->name;
+        $company            = $this->repository->find($command->companyId);
+        $company->name      = $command->name;
+        $company->updatedAt = time();
 
-        $this->repository->save($company);
-
-        return $company;
+        return $this->repository->save($company);
     }
 
     /**
@@ -117,10 +135,10 @@ class Company implements HandlerInterface {
      *
      * @return int
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->companyId);
 
-        return $this->repository->deleteById($command->companyId);
+        return $this->repository->delete($command->companyId);
     }
 
     /**
@@ -130,7 +148,7 @@ class Company implements HandlerInterface {
      *
      * @return int
      */
-    public function handleDeleteAll(DeleteAll $command) {
+    public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->parentId);
 
         return $this->repository->deleteByParentId($command->parentId);

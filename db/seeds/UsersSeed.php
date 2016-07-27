@@ -28,35 +28,14 @@ class UsersSeed extends AbstractSeed {
             [
                 'credential_id' => 1,
                 'identity_id'   => 1,
-                'username'      => md5('JohnDoe')       // 9fd9f63e0d6487537569075da85a0c7f
-            ]
-        ];
 
-        $roleAccessData = [
-            [
-                'identity_id'   => 1,
-                'role'          => 'guest',
-                'resource'      => 'get.profile.attributes',
-                'access'        => '4'
+                'username'      => md5('JohnDoe')       // 9fd9f63e0d6487537569075da85a0c7f2     
             ],
             [
-                'identity_id'   => 1,
-                'role'          => 'guest',
-                'resource'      => 'put.profile.attributes.name',
-                'access'        => '6'
-            ],
-            [
-                'identity_id'   => 1,
-                'role'          => 'company',
-                'resource'      => 'put.profile.attributes.lastname',
-                'access'        => '0'
-            ],
-            [
-                'identity_id'   => 1,
-                'role'          => 'company',
-                'resource'      => 'post.profile.attributes.middlename',
-                'access'        => '2'
-            ],
+                'credential_id' => 1,
+                'identity_id'   => 2,
+                'username'      => md5('JohnDoe') . '2' // 9fd9f63e0d6487537569075da85a0c7f2
+            ]
         ];
 
         $table = $this->table('identities');

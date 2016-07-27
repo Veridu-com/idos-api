@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Helper\Utils;
@@ -14,7 +16,6 @@ use App\Helper\Utils;
  * @apiEntity schema/credential/credentialEntity.json
  *
  * @property int $id
- * @FIXME list all user props
  */
 class User extends AbstractEntity {
     /**

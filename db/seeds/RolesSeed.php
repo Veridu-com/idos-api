@@ -7,7 +7,6 @@
 use Phinx\Seed\AbstractSeed;
 
 class RolesSeed extends AbstractSeed {
-    
     public function run() {
         $roles = [
             ['name' => 'company'],
@@ -24,7 +23,7 @@ class RolesSeed extends AbstractSeed {
             ->save();
 
         return $roles;
-
+        
     }
 
 }

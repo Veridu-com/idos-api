@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -17,7 +20,7 @@ interface RepositoryStrategyInterface {
      *
      * @return string
      */
-    public function getFormattedName($repositoryName);
+    public function getFormattedName($repositoryName) : string;
 
     /**
      * Builds a new repository.
@@ -26,5 +29,5 @@ interface RepositoryStrategyInterface {
      *
      * @return App\Repository\RepositoryInterface
      */
-    public function build($className);
+    public function build($className) : RepositoryInterface;
 }

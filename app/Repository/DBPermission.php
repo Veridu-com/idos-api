@@ -1,9 +1,10 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
-
 namespace App\Repository;
 
 use App\Entity\Permission;
@@ -30,7 +31,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
      * {@inheritdoc}
      */
     public function findOne(int $companyId, string $routeName) : Permission {
-        return $this->getOneByWhereConstraints([
+        return $this->findOneBy([
             'company_id' => $companyId,
             'route_name' => $routeName
         ]);
@@ -40,7 +41,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
      * {@inheritdoc}
      */
     public function getAllByCompanyId(int $companyId) : Collection{
-        return $this->getAllByKey('company_id', $companyId);
+        return $this->findBy(['company_id' => $companyId]);
     }
 
     /**
@@ -48,6 +49,8 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
      *
      * @param int    companyId permission's company_id
      * @param string routeName   permission's routeName
+     *
+     * @return int
      */
     public function deleteOne(int $companyId, string $routeName) : int {
         return $this->query()

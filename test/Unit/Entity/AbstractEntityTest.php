@@ -7,26 +7,9 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\AbstractEntity;
+use Test\Unit\AbstractUnit;
 
-class AbstractEntityTest extends \PHPUnit_Framework_TestCase {
-    /**
-     * Sets a protected property on a given object via reflection.
-     *
-     * @link http://stackoverflow.com/questions/18558183/phpunit-mockbuilder-set-mock-object-internal-property
-     *
-     * @param mixed  $object   instance in which protected value is being modified
-     * @param string $property property on instance being modified
-     * @param mixed  $value    new value of the property being modified
-     *
-     * @return void
-     */
-    private function setProtectedProperty($object, $property, $value) {
-        $reflection          = new \ReflectionClass($object);
-        $reflection_property = $reflection->getProperty($property);
-        $reflection_property->setAccessible(true);
-        $reflection_property->setValue($object, $value);
-    }
-
+class AbstractEntityTest extends AbstractUnit {
     public function testSerialize() {
         $array = [
             'id'   => 0,
@@ -36,6 +19,7 @@ class AbstractEntityTest extends \PHPUnit_Framework_TestCase {
             ->setMethods(null)
             ->setConstructorArgs(['attributes' => $array])
             ->getMockForAbstractClass();
+
         $this->assertSame($array, $abstractMock->serialize());
     }
 

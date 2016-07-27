@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Command\Credential;
 
@@ -34,7 +37,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) {
+    public function setParameters(array $parameters) : self {
         if (isset($parameters['name']))
             $this->name = $parameters['name'];
 

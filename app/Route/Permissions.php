@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Route;
 
@@ -21,7 +24,7 @@ class Permissions implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function getPublicNames() {
+    public static function getPublicNames() : array {
         return [
             'permissions:listAll',
             'permissions:deleteAll',
@@ -80,7 +83,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:listAll'
             )
-            ->add($permission(Permission::PUBLIC_ACTION))
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:listAll');
     }
@@ -110,7 +113,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:createNew'
             )
-            ->add($permission(Permission::PUBLIC_ACTION))
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:createNew');
     }
@@ -169,7 +172,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
                 'App\Controller\Permissions:getOne'
             )
-            ->add($permission(Permission::PUBLIC_ACTION))
+            ->add($permission(Permission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:getOne');
     }

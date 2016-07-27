@@ -1,10 +1,16 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace App\Repository;
+
+use App\Entity\Setting as SettingEntity;
+use Illuminate\Support\Collection;
 
 /**
  * Setting Repository Interface.
@@ -17,7 +23,7 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByCompanyId($companyId);
+    public function getAllByCompanyId($companyId) : Collection;
     /**
      * Deletes all Settings based on their Company Id.
      *
@@ -25,7 +31,7 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteByCompanyId($companyId);
+    public function deleteByCompanyId($companyId) : int;
     /**
      * Find one setting based on their companyId, section and property name.
      *
@@ -35,7 +41,7 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return App\Entity\Setting
      */
-    public function findOne($companyId, $section, $propName);
+    public function findOne($companyId, $section, $propName) : SettingEntity;
     /**
      * Deletes one setting based on their companyId, section and property name.
      *
@@ -43,9 +49,9 @@ interface SettingInterface extends RepositoryInterface {
      * @param string $section
      * @param string $propName
      *
-     * @return App\Entity\Setting
+     * @return int
      */
-    public function deleteOne($companyId, $section, $propName);
+    public function deleteOne($companyId, $section, $propName) : int;
     /**
      * Retrieves all settings from company that has the given section.
      *
@@ -54,7 +60,7 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByCompanyIdAndSection($companyId, $section);
+    public function getAllByCompanyIdAndSection($companyId, $section) : Collection;
     /**
      * Updates one setting.
      *
@@ -64,5 +70,5 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function update(\App\Entity\EntityInterface &$entity);
+    public function update(\App\Entity\EntityInterface &$entity) :int;
 }

@@ -1,13 +1,17 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\EntityInterface;
 use App\Entity\Setting;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Setting Repository Implementation.
@@ -29,8 +33,8 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne($companyId, $section, $propName) {
-        return $this->getOneByWhereConstraints([
+    public function findOne($companyId, $section, $propName) : Setting {
+        return $this->findOneBy([
             'company_id' => $companyId,
             'section'    => $section,
             'property'   => $propName
@@ -40,7 +44,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function update(EntityInterface &$entity) {
+    public function update(EntityInterface &$entity) : int {
         $serialized = $entity->serialize();
 
         return $this->query()
@@ -53,15 +57,15 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId($companyId) {
-        return $this->getAllByKey('company_id', $companyId);
+    public function getAllByCompanyId($companyId) : Collection {
+        return $this->findBy(['company_id' => $companyId]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyIdAndSection($companyId, $section) {
-        return $this->getAllByWhereConstraints([
+    public function getAllByCompanyIdAndSection($companyId, $section) : Collection {
+        return $this->findBy([
             'company_id' => $companyId,
             'section'    => $section
         ]);
@@ -70,7 +74,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteOne($companyId, $section, $property) {
+    public function deleteOne($companyId, $section, $property) : int {
         return $this->query()
             ->where('company_id', $companyId)
             ->where('section', $section)
@@ -81,7 +85,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteByCompanyId($companyId) {
+    public function deleteByCompanyId($companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
 

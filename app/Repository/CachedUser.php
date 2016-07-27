@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -11,25 +14,11 @@ namespace App\Repository;
  */
 class CachedUser extends AbstractCachedRepository implements UserInterface {
     /**
-     * {@inheritdoc}
+     * The entity associated with the repository.
+     *
+     * @var string
      */
-    public function find($id) {
-        return $this->repository->find($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($id) {
-        return $this->repository->delete($id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAll() {
-        return $this->repository->getAll();
-    }
+    protected $entityName = 'User';
 
     /**
      * {@inheritdoc}

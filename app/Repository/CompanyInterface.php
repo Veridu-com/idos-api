@@ -1,10 +1,16 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace App\Repository;
+
+use App\Entity\Company as CompanyEntity;
+use Illuminate\Support\Collection;
 
 /**
  * Company Repository Interface.
@@ -17,9 +23,9 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return App\Entity\Company
      */
-    public function findByPubKey($pubKey);
+    public function findByPubKey($pubKey) : CompanyEntity;
     /**
      * Finds a Company based on its Private Key.
      *
@@ -27,9 +33,9 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return App\Entity\Company
      */
-    public function findByPrivKey($privKey);
+    public function findByPrivKey($privKey) : CompanyEntity;
     /**
      * Finds a Company based on its Slug.
      *
@@ -37,9 +43,9 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return App\Entity\Company
      */
-    public function findBySlug($slug);
+    public function findBySlug($slug) : CompanyEntity;
     /**
      * Gets all Companies based on their Parent Id.
      *
@@ -47,7 +53,7 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByParentId($parentId);
+    public function getAllByParentId($parentId) : Collection;
     /**
      * Deletes all Companies based on their Parent Id.
      *
@@ -55,5 +61,5 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteByParentId($parentId);
+    public function deleteByParentId(int $parentId) : int;
 }

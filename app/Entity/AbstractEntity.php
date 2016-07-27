@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -51,6 +54,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var bool
      */
     protected $dirty = false;
+    /**
+     * Cache prefix.
+     *
+     * @var bool
+     */
+    protected $cachePrefix = null;
 
     /**
      * Formats a snake_case string to CamelCase.
@@ -66,6 +75,20 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $return .= ucfirst(trim($word));
 
         return $return;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheKeys() : array {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceCacheKeys() : array {
+        return [];
     }
 
     /**
@@ -158,7 +181,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = $this->attributes[$key];
         }
 
-        if (in_array($key, $this->dates)) {
+        if ((in_array($key, $this->dates)) && ($value !== null)) {
             $value = strtotime($value);
         }
 
@@ -179,6 +202,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __construct(array $attributes = []) {
+        $this->cachePrefix = str_replace('App\\Entity\\', '', get_class($this));
+
         if (! empty($attributes)) {
             $this
                 ->hydrate($attributes)
@@ -220,6 +245,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     public function serialize() {
         $attributes = array_keys($this->attributes);
         $return     = [];
+
         foreach ($attributes as $attribute) {
             $return[$this->toSnakeCase($attribute)] = $this->attributes[$attribute];
         }

@@ -1,8 +1,11 @@
 <?php
+
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -64,7 +67,7 @@ class Main implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $classList = [
             'Companies',
             'Credentials',
