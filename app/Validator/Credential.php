@@ -82,7 +82,7 @@ class Credential implements ValidatorInterface {
      *
      * @return bool
      */
-    public function productionValue($production) {
+    public function productionValue($production) : bool {
         return Validator::trueVal()
             ->validate($production);
     }

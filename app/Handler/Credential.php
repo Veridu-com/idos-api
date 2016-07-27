@@ -13,6 +13,7 @@ use App\Command\Credential\CreateNew;
 use App\Command\Credential\DeleteAll;
 use App\Command\Credential\DeleteOne;
 use App\Command\Credential\UpdateOne;
+use App\Entity\Credential as CredentialEntity;
 use App\Repository\CredentialInterface;
 use App\Validator\Credential as CredentialValidator;
 use Defuse\Crypto\Key;
@@ -74,7 +75,7 @@ class Credential implements HandlerInterface {
      *
      * @return App\Entity\Credential
      */
-    public function handleCreateNew(CreateNew $command) {
+    public function handleCreateNew(CreateNew $command) : CredentialEntity {
         $this->validator->assertName($command->name);
         $this->validator->assertProduction($command->production);
         $this->validator->assertCompanyId($command->companyId);
@@ -101,7 +102,7 @@ class Credential implements HandlerInterface {
      *
      * @return App\Entity\Credential
      */
-    public function handleUpdateOne(UpdateOne $command) {
+    public function handleUpdateOne(UpdateOne $command) : CredentialEntity {
         $this->validator->assertId($command->credentialId);
         $this->validator->assertName($command->name);
 
@@ -119,7 +120,7 @@ class Credential implements HandlerInterface {
      *
      * @return int
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->credentialId);
 
         return $this->repository->delete($command->credentialId);
@@ -132,7 +133,7 @@ class Credential implements HandlerInterface {
      *
      * @return int
      */
-    public function handleDeleteAll(DeleteAll $command) {
+    public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->companyId);
 
         return $this->repository->deleteByCompanyId($command->companyId);

@@ -10,8 +10,8 @@ use App\Entity\Company as CompanyEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\AbstractDBRepository;
-use Illuminate\Database\Connection\Query\Builder;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Test\Unit\AbstractUnit;
 

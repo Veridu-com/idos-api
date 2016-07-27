@@ -140,7 +140,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return array
      */
-    private function authorizationSetup() {
+    private function authorizationSetup() : array {
         return [
             self::USER_TOKEN => [
                 'name'    => 'UserToken',
@@ -215,7 +215,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserToken(ServerRequestInterface $request, $reqToken) {
+    private function handleUserToken(ServerRequestInterface $request, $reqToken) : ServerRequestInterface {
         $token = $this->jwtParser->parse($reqToken);
 
         // Ensures JWT Audience is the current API
@@ -263,7 +263,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserPubKey(ServerRequestInterface $request, $reqKey) {
+    private function handleUserPubKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
         $targetUser = $this->userRepository->findByPubKey($reqKey);
         if ($targetUser->isEmpty())
             throw new AppException('Invalid Credential');
@@ -281,7 +281,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserPrivKey(ServerRequestInterface $request, $reqKey) {
+    private function handleUserPrivKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
         $actingUser = $this->userRepository->findByPrivKey($reqKey);
         if ($actingUser->isEmpty())
             throw new AppException('Invalid Credential');
@@ -299,7 +299,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCompanyPubKey(ServerRequestInterface $request, $reqKey) {
+    private function handleCompanyPubKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
         $actingCompany = $this->companyRepository->findByPubKey($reqKey);
         if ($actingCompany->isEmpty())
             throw new AppException('Invalid Credential');
@@ -317,7 +317,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCompanyPrivKey(ServerRequestInterface $request, $reqKey) {
+    private function handleCompanyPrivKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
         try {
             $actingCompany = $this->companyRepository->findByPrivKey($reqKey);
 
@@ -337,7 +337,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialToken(ServerRequestInterface $request, $reqToken) {
+    private function handleCredentialToken(ServerRequestInterface $request, $reqToken) : ServerRequestInterface {
         $token = $this->jwtParser->parse($reqToken);
 
         // Ensures JWT Audience is the current API
@@ -390,7 +390,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialPubKey(ServerRequestInterface $request, $reqKey) {
+    private function handleCredentialPubKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
         $credential = $this->credentialRepository->findByPubKey($reqKey);
         if ($credential->isEmpty())
             throw new AppException('Invalid Credential');
@@ -414,7 +414,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialPrivKey(ServerRequestInterface $request, $reqKey) {
+    private function handleCredentialPrivKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
         $credential = $this->credentialRepository->findByPrivKey($reqKey);
         if ($credential->isEmpty())
             throw new AppException('Invalid Credential');

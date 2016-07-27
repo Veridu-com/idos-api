@@ -20,7 +20,7 @@ interface RepositoryStrategyInterface {
      *
      * @return string
      */
-    public function getFormattedName($repositoryName);
+    public function getFormattedName($repositoryName) : string;
 
     /**
      * Builds a new repository.
@@ -29,5 +29,5 @@ interface RepositoryStrategyInterface {
      *
      * @return App\Repository\RepositoryInterface
      */
-    public function build($className);
+    public function build($className) : RepositoryInterface;
 }

@@ -18,7 +18,7 @@ trait CreatedUnixTimestamp {
      *
      * @return int
      */
-    public function getCreatedAttribute() {
+    public function getCreatedAttribute() : int {
         if (! isset($this->attributes['created_at']))
             return 0;
 

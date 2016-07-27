@@ -72,7 +72,7 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
         $companies     = $this->repository->getAllByParentId($actingCompany->id);
 
@@ -104,7 +104,7 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $body = [
@@ -132,7 +132,7 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
+    public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
 
         $command = $this->commandFactory->create('Company\\CreateNew');
@@ -166,7 +166,7 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
 
         $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
@@ -197,7 +197,7 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Company\\DeleteOne');
@@ -232,7 +232,7 @@ class Companies implements ControllerInterface {
      *
      * @see App\Command\Company\UpdateOne
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Company\\UpdateOne');

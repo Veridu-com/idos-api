@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Credential as CredentialEntity;
+use Illuminate\Support\Collection;
+
 /**
  * Cache-based Credential Repository Implementation.
  */
@@ -23,21 +26,21 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) {
+    public function findByPubKey($pubKey) : CredentialEntity {
         return $this->repository->findOneBy(['public' => $pubKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByCompanyId($companyId) {
+    public function deleteByCompanyId($companyId) : int {
         return $this->repository->deleteByKey('company_id', $companyId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId($companyId) {
+    public function getAllByCompanyId($companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
     }
 }

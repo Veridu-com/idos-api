@@ -71,7 +71,7 @@ class Permission implements HandlerInterface {
      *
      * @param App\Command\Permission\CreateNew $command
      *
-     * @return array
+     * @return App\Entity\Permission
      */
     public function handleCreateNew(CreateNew $command) : PermissionEntity {
         $this->validator->assertRouteName($command->routeName);
@@ -95,7 +95,7 @@ class Permission implements HandlerInterface {
      *
      * @param App\Command\Permission\DeleteAll $command
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->companyId);
@@ -108,7 +108,7 @@ class Permission implements HandlerInterface {
      *
      * @param App\Command\Permission\UpdateOne $command
      *
-     * @return array
+     * @return int
      */
     public function handleUpdateOne(UpdateOne $command) : int {
         $this->validator->assertId($command->companyId);
@@ -131,7 +131,7 @@ class Permission implements HandlerInterface {
      *
      * @param App\Command\Permission\DeleteOne $command
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->companyId);

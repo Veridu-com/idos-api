@@ -181,7 +181,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = $this->attributes[$key];
         }
 
-        if (in_array($key, $this->dates)) {
+        if ((in_array($key, $this->dates)) && ($value !== null)) {
             $value = strtotime($value);
         }
 

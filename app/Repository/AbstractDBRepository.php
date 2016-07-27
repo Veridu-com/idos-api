@@ -13,6 +13,7 @@ use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -50,7 +51,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function query() {
+    protected function query() : Builder {
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
             $this->getEntityClassName()
@@ -64,7 +65,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return string
      */
-    protected function getTableName() {
+    protected function getTableName() : string {
         if (empty($this->tableName))
             throw new \RuntimeException(sprintf('$tableName property not set in %s', get_class($this)));
 
@@ -149,7 +150,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return int
      */
-    protected function deleteByKey($key, $value) {
+    protected function deleteByKey($key, $value) : int {
         return $this->query()
             ->where($key, $value)
             ->delete();
