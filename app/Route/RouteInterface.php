@@ -28,5 +28,5 @@ interface RouteInterface {
      *
      * @return array
      */
-    public static function getPublicNames();
+    public static function getPublicNames() : array;
 }

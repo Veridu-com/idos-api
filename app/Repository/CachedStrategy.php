@@ -45,14 +45,14 @@ class CachedStrategy implements RepositoryStrategyInterface {
     /**
      * {@inheritdoc}
      */
-    public function getFormattedName($repositoryName) {
+    public function getFormattedName($repositoryName) : string {
         return sprintf('Cached%s', ucfirst($repositoryName));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build($className) {
+    public function build($className) : RepositoryInterface {
         $repositoryName = preg_replace('/.*?Cached/', '', $className);
 
         return new $className(

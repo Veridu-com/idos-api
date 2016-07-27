@@ -48,14 +48,14 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * {@inheritdoc}
      */
-    public function getFormattedName($repositoryName) {
+    public function getFormattedName($repositoryName) : string {
         return sprintf('DB%s', ucfirst($repositoryName));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build($className) {
+    public function build($className) : RepositoryInterface {
         return new $className($this->entityFactory, $this->connection);
     }
 }

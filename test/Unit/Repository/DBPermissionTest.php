@@ -11,6 +11,7 @@ use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBPermission;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Test\Unit\AbstractUnit;
 

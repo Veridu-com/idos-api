@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\EntityInterface;
+use App\Entity\Setting as SettingEntity;
+use Illuminate\Support\Collection;
 
 /**
  * Cache-based Setting Repository Implementation.
@@ -25,7 +27,7 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
     /**
      * {@inheritdoc}
      */
-    public function findOne($companyId, $section, $propName) {
+    public function findOne($companyId, $section, $propName) : SettingEntity {
         return $this->findOneBy([
             'company_id' => $companyId,
             'section'    => $section,
@@ -36,7 +38,7 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteOne($companyId, $section, $propName) {
+    public function deleteOne($companyId, $section, $propName) : int {
         return $this->deleteBy([
             'company_id' => $companyId,
             'section'    => $section,
@@ -47,7 +49,7 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyIdAndSection($companyId, $section) {
+    public function getAllByCompanyIdAndSection($companyId, $section) : Collection {
         return $this->findBy([
             'company_id' => $companyId,
             'section'    => $section
@@ -57,7 +59,7 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
     /**
      * {@inheritdoc}
      */
-    public function update(EntityInterface &$entity) {
+    public function update(EntityInterface &$entity) : int {
         $this->deleteEntityCache($entity);
 
         return $this->repository->update($entity);
@@ -66,14 +68,14 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteByCompanyId($companyId) {
+    public function deleteByCompanyId($companyId) : int {
         return $this->deleteBy(['company_id' => $companyId]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId($companyId) {
+    public function getAllByCompanyId($companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
     }
 }

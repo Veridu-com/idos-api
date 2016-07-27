@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Company;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Company Repository Implementation.
@@ -30,28 +31,28 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
     /**
      * {@inheritdoc}
      */
-    public function findBySlug($slug) {
+    public function findBySlug($slug) : Company {
         return $this->findOneBy(['slug' => $slug]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) {
+    public function findByPubKey($pubKey) : Company {
         return $this->findOneBy(['public_key' => $pubKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey($privKey) {
+    public function findByPrivKey($privKey) : Company {
         return $this->findOneBy(['private_key' => $privKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByParentId($parentId) {
+    public function getAllByParentId($parentId) : Collection {
         return $this->findBy(['parent_id' => $parentId]);
     }
 

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Credential;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Credential Repository Implementation.
@@ -31,28 +32,28 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) {
+    public function findByPubKey($pubKey) : Credential {
         return $this->findOneBy(['public' => $pubKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId($companyId) {
+    public function getAllByCompanyId($companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByCompanyId($companyId) {
+    public function deleteByCompanyId($companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByPubKey($pubKey) {
+    public function deleteByPubKey($pubKey) : int {
         return $this->deleteByKey('public', $pubKey);
     }
 }

@@ -23,7 +23,7 @@ class Main implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function getPublicNames() {
+    public static function getPublicNames() : array {
         return [];
     }
 

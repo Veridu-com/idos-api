@@ -47,7 +47,7 @@ class CORS implements MiddlewareInterface{
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface{
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
         if (! empty($request->getHeaderLine('Origin')))
             $response = $response
                 ->withHeader(

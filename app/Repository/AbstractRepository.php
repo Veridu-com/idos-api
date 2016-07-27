@@ -49,7 +49,7 @@ abstract class AbstractRepository implements RepositoryInterface {
      *
      * @return string
      */
-    protected function getEntityName() {
+    protected function getEntityName() : string {
         if (empty($this->entityName))
             throw new \RuntimeException(sprintf('$entityName property not set in %s', get_class($this)));
 
@@ -61,7 +61,7 @@ abstract class AbstractRepository implements RepositoryInterface {
      *
      * @return string
      */
-    protected function getEntityClassName() {
+    protected function getEntityClassName() : string {
         return sprintf('\\App\\Entity\\%s', $this->getEntityName());
     }
 

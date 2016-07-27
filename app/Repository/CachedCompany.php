@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Company as CompanyEntity;
 use Illuminate\Support\Collection;
 
 /**
@@ -24,14 +25,14 @@ class CachedCompany extends AbstractCachedRepository implements CompanyInterface
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($publicKey) {
+    public function findByPubKey($publicKey) : CompanyEntity {
         return $this->findOneBy(['public_key' => $publicKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey($privateKey) {
+    public function findByPrivKey($privateKey) : CompanyEntity {
         return $this->findOneBy(['private_key' => $privateKey]);
     }
 

@@ -11,6 +11,7 @@ namespace App\Repository;
 
 use App\Entity\EntityInterface;
 use App\Entity\Setting;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Setting Repository Implementation.
@@ -32,7 +33,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne($companyId, $section, $propName) {
+    public function findOne($companyId, $section, $propName) : Setting {
         return $this->findOneBy([
             'company_id' => $companyId,
             'section'    => $section,
@@ -43,7 +44,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function update(EntityInterface &$entity) {
+    public function update(EntityInterface &$entity) : int {
         $serialized = $entity->serialize();
 
         return $this->query()
@@ -56,14 +57,14 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId($companyId) {
+    public function getAllByCompanyId($companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyIdAndSection($companyId, $section) {
+    public function getAllByCompanyIdAndSection($companyId, $section) : Collection {
         return $this->findBy([
             'company_id' => $companyId,
             'section'    => $section
@@ -73,7 +74,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteOne($companyId, $section, $property) {
+    public function deleteOne($companyId, $section, $property) : int {
         return $this->query()
             ->where('company_id', $companyId)
             ->where('section', $section)
@@ -84,7 +85,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteByCompanyId($companyId) {
+    public function deleteByCompanyId($companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
 

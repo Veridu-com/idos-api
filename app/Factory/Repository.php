@@ -32,7 +32,7 @@ class Repository extends AbstractFactory {
     /**
      * {@inheritdoc}
      */
-    protected function getFormattedName($name) {
+    protected function getFormattedName($name) : string {
         return $this->strategy->getFormattedName($name);
     }
 

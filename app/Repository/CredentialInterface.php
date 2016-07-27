@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Credential as CredentialEntity;
+use Illuminate\Support\Collection;
+
 /**
  * Credential Repository Interface.
  */
@@ -22,7 +25,7 @@ interface CredentialInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function findByPubKey($pubKey);
+    public function findByPubKey($pubKey) : CredentialEntity;
     /**
      * Gets all Credentials based on their Company Id.
      *
@@ -30,7 +33,7 @@ interface CredentialInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByCompanyId($companyId);
+    public function getAllByCompanyId($companyId) : Collection;
     /**
      * Deletes all Credentials based on their Company Id.
      *
@@ -38,5 +41,5 @@ interface CredentialInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteByCompanyId($companyId);
+    public function deleteByCompanyId($companyId) : int;
 }

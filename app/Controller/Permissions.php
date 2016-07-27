@@ -68,7 +68,7 @@ class Permissions implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany    = $request->getAttribute('targetCompany');
         $permissions      = $this->repository->getAllByCompanyId($targetCompany->id);
 
@@ -103,7 +103,7 @@ class Permissions implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) {
+    public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany    = $request->getAttribute('targetCompany');
         $section          = $request->getAttribute('section');
         $permissions      = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
@@ -136,7 +136,7 @@ class Permissions implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $routeName     = $request->getAttribute('routeName');
         $permission    = $this->repository->findOne($targetCompany->id, $routeName);
@@ -164,7 +164,7 @@ class Permissions implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function createNew(ServerRequestInterface $request, ResponseInterface $response) {
+    public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Permission\\CreateNew');
@@ -199,7 +199,7 @@ class Permissions implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Permission\\DeleteAll');
@@ -230,7 +230,7 @@ class Permissions implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $routeName     = $request->getAttribute('routeName');
 
@@ -269,7 +269,7 @@ class Permissions implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $section       = $request->getAttribute('section');
         $propName      = $request->getAttribute('property');

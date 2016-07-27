@@ -24,7 +24,7 @@ class Companies implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function getPublicNames() {
+    public static function getPublicNames() : array {
         return [
             'companies:listAll',
             'companies:createNew',

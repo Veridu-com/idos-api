@@ -13,6 +13,7 @@ use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
+use App\Entity\Company as CompanyEntity;
 use App\Event\Company\Created;
 use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
@@ -86,7 +87,7 @@ class Company implements HandlerInterface {
      *
      * @return App\Entity\Company
      */
-    public function handleCreateNew(CreateNew $command) {
+    public function handleCreateNew(CreateNew $command) : CompanyEntity {
         $this->validator->assertName($command->name);
         $this->validator->assertParentId($command->parentId);
 
@@ -116,7 +117,7 @@ class Company implements HandlerInterface {
      *
      * @return App\Entity\Company
      */
-    public function handleUpdateOne(UpdateOne $command) {
+    public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
         $this->validator->assertId($command->companyId);
         $this->validator->assertName($command->name);
 
@@ -134,7 +135,7 @@ class Company implements HandlerInterface {
      *
      * @return int
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->companyId);
 
         return $this->repository->delete($command->companyId);
@@ -147,7 +148,7 @@ class Company implements HandlerInterface {
      *
      * @return int
      */
-    public function handleDeleteAll(DeleteAll $command) {
+    public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->parentId);
 
         return $this->repository->deleteByParentId($command->parentId);
