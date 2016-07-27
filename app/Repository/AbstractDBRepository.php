@@ -177,14 +177,11 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     public function findBy(array $constraints) : Collection {
         $q = $this->query();
-
         foreach ($constraints as $key => $value) {
             $q = $q->where($key, $value);
         }
 
-        $results = $q->get();
-
-        return new Collection($results);
+        return new Collection($q->get());
     }
 
     /**

@@ -14,3 +14,6 @@ phpunit.xml
 server/docker/
 sftp-config.json
 vendor/
+humbuglog.txt
+humbuglog.json
+humbug.json

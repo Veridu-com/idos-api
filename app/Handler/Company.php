@@ -10,6 +10,7 @@ use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
+use App\Event\Company\Created;
 use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
@@ -98,7 +99,7 @@ class Company implements HandlerInterface {
         $company->private_key = Key::createNewRandomKey()->saveToAsciiSafeString();
 
         if ($this->repository->save($company)) {
-            $event = new \App\Event\Company\Created($company);
+            $event = new Created($company);
             $this->emitter->emit($event);
         }
 

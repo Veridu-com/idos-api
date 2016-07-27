@@ -44,7 +44,7 @@ class CreentialsTest extends AbstractUnit {
             ->setMethods(['getAllByCompanyId'])
             ->getMock();
         $repositoryMock
-            ->method('getAllByParentId')
+            ->method('getAllByCompanyId')
             ->will($this->returnValue(new Collection(['id' => 0])));
 
         $commandBus = $this->getMockBuilder(CommandBus::class)

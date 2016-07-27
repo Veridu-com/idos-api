@@ -6,6 +6,7 @@
 
 namespace Test\Unit\Repository;
 
+use App\Entity\Setting as SettingEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBSetting;
@@ -26,7 +27,7 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue([]));
+            ->will($this->returnValue(new Collection([])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -55,7 +56,7 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue([]));
+            ->will($this->returnValue(new Collection([])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -75,14 +76,18 @@ class DBSettingTest extends AbstractUnit {
     public function testGetAllBycompanyId() {
         $array = [
             [
-                'companyId'  => 1,
-                'name'       => 'NiceSetting',
-                'created_at' => time()
+                'section'       => 'NiceSetting',
+                'property'      => 'niceProperty',
+                'value'         => 'niceValue',
+                'created_at'    => time(),
+                'updated_at'    => time()
             ],
             [
-                'companyId'  => 1,
-                'name'       => 'ReallyNiceSetting',
-                'created_at' => time()
+                'section'       => 'ReallyNiceSetting',
+                'property'      => 'realyNiceProperty',
+                'value'         => 'realyNiceValue',
+                'created_at'    => time(),
+                'updated_at'    => time()
             ]
         ];
 
@@ -97,7 +102,14 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue($array));
+            ->will(
+                $this->returnValue(
+                    new Collection([
+                        new SettingEntity($array[0]),
+                        new SettingEntity($array[1])
+                    ])
+                )
+            );
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -126,7 +138,7 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue([]));
+            ->will($this->returnValue(new Collection([])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -143,8 +155,26 @@ class DBSettingTest extends AbstractUnit {
     }
 
     public function testGetAllByCompanyIdAndSection() {
+        $array = [
+            [
+                'section'    => 'section1',
+                'property'   => 'property1',
+                'value'      => 'value1',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
+            [
+                'section'    => 'section2',
+                'property'   => 'property2',
+                'value'      => 'value2',
+                'created_at' => time(),
+                'updated_at' => time()
+            ]
+        ];
+
         $factory = new Entity();
         $factory->create('Setting', []);
+
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -154,16 +184,11 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will(
-                $this->returnValue(
-                    [
-                        'companyId' => 1,
-                        'section'   => 'section',
-                        'property'  => 'property',
-                        'value'     => 'value'
-                    ]
-                )
-            );
+            ->will($this->returnValue(new Collection([
+                new SettingEntity($array[0]),
+                new SettingEntity($array[1])
+            ])));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -174,17 +199,10 @@ class DBSettingTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
+
         $dbSetting = new DBSetting($factory, $connectionMock);
 
         $this->assertInstanceOf(Collection::class, $dbSetting->getAllByCompanyIdAndSection(1, 'section'));
-        $array = $dbSetting->getAllByCompanyIdAndSection('', '')->toArray();
-        $this->assertArrayHasKey('companyId', $array);
-        $this->assertEquals(1, $array['companyId']);
-        $this->assertArrayHasKey('section', $array);
-        $this->assertEquals('section', $array['section']);
-        $this->assertArrayHasKey('property', $array);
-        $this->assertEquals('property', $array['property']);
-        $this->assertArrayHasKey('value', $array);
-        $this->assertEquals('value', $array['value']);
+        $this->assertEquals($array, $dbSetting->getAllByCompanyIdAndSection(1, 'section')->toArray());
     }
 }

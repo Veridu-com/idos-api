@@ -19,6 +19,7 @@ class ListAllTest extends AbstractFunctional {
 
     public function testSuccess() {
         $request    = $this->createRequest($this->createEnvironment());
+
         $response   = $this->process($request);
         $body       = json_decode($response->getBody(), true);
 

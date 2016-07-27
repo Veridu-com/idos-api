@@ -67,6 +67,7 @@ abstract class AbstractRepository implements RepositoryInterface {
      */
     public function findOneBy(array $constraints) : EntityInterface {
         $entity = $this->findBy($constraints)->first();
+
         if (! $entity) {
             throw new NotFound();
         }

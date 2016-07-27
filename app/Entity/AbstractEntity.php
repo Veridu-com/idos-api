@@ -56,7 +56,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @var bool
      */
-    protected $cachePrefix;
+    protected $cachePrefix = null;
 
     /**
      * Formats a snake_case string to CamelCase.
@@ -72,6 +72,20 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $return .= ucfirst(trim($word));
 
         return $return;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheKeys() : array {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceCacheKeys() : array {
+        return [];
     }
 
     /**

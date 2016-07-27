@@ -10,6 +10,7 @@ use App\Command\Setting\CreateNew;
 use App\Command\Setting\DeleteAll;
 use App\Command\Setting\DeleteOne;
 use App\Command\Setting\UpdateOne;
+use App\Entity\Setting as SettingEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
@@ -104,7 +105,10 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $dbConnectionMock = $this->getMock('Illuminate\Database\ConnectionInterface');
+        $settingEntity = new SettingEntity([]);
+
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
 
         $entityFactory = new EntityFactory();
         $entityFactory->create('Setting');
@@ -116,7 +120,7 @@ class SettingTest extends AbstractUnit {
         $SettingRepository
             ->expects($this->once())
             ->method('save')
-            ->willReturn(true);
+            ->willReturn($settingEntity);
 
         $handler = new Setting(
             $SettingRepository,

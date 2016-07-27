@@ -32,7 +32,7 @@ class CreateNewTest extends AbstractFunctional {
 
         $body = json_decode($response->getBody(), true);
 
-        $this->assertNotEmpty($body);
+            $this->assertNotEmpty($body);
 
         $this->assertEquals(201, $response->getStatusCode());
 

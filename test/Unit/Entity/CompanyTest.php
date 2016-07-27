@@ -12,16 +12,16 @@ use Test\Unit\AbstractUnit;
 class CompanyTest extends AbstractUnit {
     public function testSerialize() {
 
-        $created = time();
         $updated = time();
         $array   = [
             'id'          => 0,
             'name'        => 'My Co',
             'public_key'  => 'pkey',
             'private_key' => 'privkey',
-            'created_at'  => $created,
-            'updated_at'  => $updated
+            'created_at'  => time(),
+            'updated_at'  => time()
         ];
+
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
             ->setConstructorArgs(['attributes' => $array])
@@ -38,9 +38,11 @@ class CompanyTest extends AbstractUnit {
         $this->assertArrayHasKey('private_key', $array);
         $this->assertSame('privkey', $array['private_key']);
         $this->assertArrayHasKey('created_at', $array);
-        $this->assertSame($created, $array['created_at']);
+        $this->assertTrue(is_string($array['created_at']));
+        $this->assertTrue(is_int($abstractMock->createdAt));
         $this->assertArrayHasKey('updated_at', $array);
-        $this->assertSame($updated, $array['updated_at']);
+        $this->assertTrue(is_string($array['updated_at']));
+        $this->assertTrue(is_int($abstractMock->updatedAt));
     }
 
     public function testToArray() {

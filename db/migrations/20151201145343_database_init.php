@@ -181,7 +181,7 @@ class DatabaseInit extends AbstractMigration {
         $roleAccess = $this->table('role_access');
         $roleAccess
             ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('role', 'text', ['null' => true]) 
+            ->addColumn('role', 'text', ['null' => true])
             ->addColumn('resource', 'text', ['null' => true])
             ->addColumn('access', 'text', ['null' => true, 'default' => null]) // enum ('r', 'w', 'rw', null)
             ->addColumn(
