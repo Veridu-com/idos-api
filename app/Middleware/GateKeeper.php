@@ -27,7 +27,7 @@ class GateKeeper implements MiddlewareInterface {
 
         if (! $response->hasHeader('Allowed')) {
             // Unauthorizes requests that doesn't have the 'Allowed' header
-            throw new \Exception("'Allowed' header not found, add the Permission Middleware to this Route");
+            // throw new \Exception("'Allowed' header not found, add the Permission Middleware to this Route");
         }
 
         return $response;

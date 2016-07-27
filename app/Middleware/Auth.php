@@ -261,9 +261,11 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleUserPubKey(ServerRequestInterface $request, $reqKey) {
-        $targetUser = $this->userRepository->findByPubKey($reqKey);
-        if ($targetUser->isEmpty())
+        try {
+            $targetUser = $this->userRepository->findByPubKey($reqKey);
+        } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
+        }
 
         return $request
             // Stores Target User for future use
@@ -279,9 +281,11 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleUserPrivKey(ServerRequestInterface $request, $reqKey) {
-        $actingUser = $this->userRepository->findByPrivKey($reqKey);
-        if ($actingUser->isEmpty())
+        try {
+            $actingUser = $this->userRepository->findByPrivKey($reqKey);
+        } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
+        }
 
         return $request
             // Stores Acting User for future use

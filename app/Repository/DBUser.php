@@ -7,6 +7,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Repository\DBCredential;
 use App\Exception\NotFound;
 
 /**
@@ -24,7 +25,7 @@ class DBUser extends AbstractDBRepository implements UserInterface {
      *
      * @var string
      */
-    protected $entityName = User::class;
+    protected $entityName = 'User';
 
     /**
      * {@inheritdoc}
@@ -34,6 +35,23 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             ->where('username', $userName)
             ->where('credential_id', $credentialId)
             ->first();
+        if (empty($result))
+            throw new NotFound();
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByPrivKey(string $privateKey) {
+        $result = $this->query()
+            ->selectRaw('users.*')
+            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
+            ->where('credentials.private', '=', $privateKey)
+            ->first();
+
+
         if (empty($result))
             throw new NotFound();
 

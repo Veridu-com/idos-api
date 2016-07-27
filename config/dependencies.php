@@ -341,6 +341,13 @@ $container['permissionMiddleware'] = function (ContainerInterface $container) {
     };
 };
 
+// User Permission Middleware
+$container['userPermissionMiddleware'] = function (ContainerInterface $container) {
+    return function ($resource) use ($container) {
+        return new Middleware\UserPermission($container, $resource);
+    };
+};
+
 // App Repository Factory
 $container['repositoryFactory'] = function (ContainerInterface $container) {
     $settings = $container->get('settings');
