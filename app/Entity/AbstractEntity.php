@@ -169,6 +169,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @param string $key
      *
+     * @return mixed|null
+     *
      * @throws \RuntimeException
      */
     private function getAttribute($key) {
