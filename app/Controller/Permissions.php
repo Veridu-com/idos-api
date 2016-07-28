@@ -111,7 +111,7 @@ class Permissions implements ControllerInterface {
         $body = [
             'data'    => $permissions->toArray(),
             'updated' => (
-                $permissions->isEmpty() ? time() : strtotime($permissions->max('updated_at'))
+                $permissions->isEmpty() ? time() : $permissions->max('updated_at')
             )
         ];
 
@@ -255,46 +255,4 @@ class Permissions implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-
-    /**
-     * Updates one Permission of the Target Company based on path paramaters section and property.
-     *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string section
-     * @apiEndpointRequiredParam path string property
-     * @apiEndpointResponse 200 Permission
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
-        $propName      = $request->getAttribute('property');
-
-        $command = $this->commandFactory->create('Permission\\UpdateOne');
-        $command
-            ->setParameters($request->getParsedBody())
-            ->setParameter('sectionNameId', $section)
-            ->setParameter('propNameId', $propName)
-            ->setParameter('companyId', $targetCompany->id);
-
-        $permission = $this->commandBus->handle($command);
-
-        $body = [
-            'data'    => $permission->toArray(),
-            'updated' => strtotime($permission->updated_at)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
 }
