@@ -10,10 +10,9 @@ use App\Entity\Credential;
 use Test\Unit\AbstractUnit;
 
 class CredentialTest extends AbstractUnit {
-    public function testSerialize() {
-        $array = [
+    private function getAttributes() {
+        return [
             'id'          => 0,
-            'companyId'   => '0',
             'name'        => 'My Credential',
             'public'      => 'public',
             'private'     => 'private',
@@ -21,15 +20,18 @@ class CredentialTest extends AbstractUnit {
             'created_at'  => time(),
             'updated_at'  => time()
         ];
+    }
+
+    public function testSerialize() {
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
-            ->setConstructorArgs(['attributes' => $array])
+            ->setConstructorArgs([array_merge(['company_id' => 0], $this->getAttributes())])
             ->getMockForAbstractClass();
         $array = $abstractMock->serialize();
         $this->assertArrayHasKey('id', $array);
         $this->assertSame(0, $array['id']);
         $this->assertArrayHasKey('company_id', $array);
-        $this->assertSame('0', $array['company_id']);
+        $this->assertSame(0, $array['company_id']);
         $this->assertArrayHasKey('name', $array);
         $this->assertSame('My Credential', $array['name']);
         $this->assertArrayHasKey('slug', $array);
@@ -49,19 +51,9 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testToArray() {
-        $array = [
-            'id'          => 0,
-            'companyId'   => '0',
-            'name'        => 'My Credential',
-            'public'      => 'public',
-            'private'     => 'private',
-            'production'  => false,
-            'created_at'  => time(),
-            'updated_at'  => time()
-        ];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
-            ->setConstructorArgs(['attributes' => $array])
+            ->setConstructorArgs([$this->getAttributes()])
             ->getMockForAbstractClass();
         $array = $abstractMock->toArray();
         $this->assertArrayHasKey('name', $array);
@@ -72,5 +64,71 @@ class CredentialTest extends AbstractUnit {
         $this->assertSame('public', $array['public']);
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($array['created_at']));
+    }
+
+    public function testGetCachedKeysEmptyAttributes() {
+        $array = ['Credential.id.', 'Credential.slug.', 'Credential.public.'];
+        $abstractMock = $this->getMockBuilder(Credential::class)
+            ->setMethods(null)
+            ->setConstructorArgs([])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+    }
+
+
+    public function testGetCachedKeys() {
+        $array = ['Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
+        $abstractMock = $this->getMockBuilder(Credential::class)
+            ->setMethods(null)
+            ->setConstructorArgs([$this->getAttributes()])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+    }
+
+    public function testReferenceCacheKeysNoCompanyId() {
+        $array = ['Credential.by.company_id.', 'Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
+        $abstractMock = $this->getMockBuilder(Credential::class)
+            ->setMethods(null)
+            ->setConstructorArgs([$this->getAttributes()])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getReferenceCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+
+    }
+
+    public function testReferenceCacheKeysEmptyAttributes() {
+        $array = ['Credential.by.company_id.', 'Credential.id.', 'Credential.slug.', 'Credential.public.'];
+        $abstractMock = $this->getMockBuilder(Credential::class)
+            ->setMethods(null)
+            ->setConstructorArgs([])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getReferenceCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+
+    }
+
+    public function testReferenceCacheKeys() {
+        $array = ['Credential.by.company_id.0', 'Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
+        $abstractMock = $this->getMockBuilder(Credential::class)
+            ->setMethods(null)
+            ->setConstructorArgs(
+                [
+                    array_merge(
+                        ['companyId' => '0'],
+                        $this->getAttributes()
+                    )
+                ]
+            )
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getReferenceCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+
     }
 }

@@ -9,9 +9,11 @@ namespace Test\Unit\Controller;
 use App\Command\Permission\CreateNew;
 use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
+use App\Command\Permission\UpdateOne;
 use App\Command\ResponseDispatch;
 use App\Controller\Permissions;
-use App\Entity\Permission as EntityPermission;
+use App\Entity\Permission as PermissionEntity;
+use App\Entity\Company as CompanyEntity;
 use App\Factory\Command;
 use App\Repository\DBPermission;
 use Illuminate\Support\Collection;
@@ -22,12 +24,25 @@ use Slim\Http\Response;
 use Test\Unit\AbstractUnit;
 
 class PermissionsTest extends AbstractUnit {
+    private function getCompanyEntity($id) {
+        return new CompanyEntity(
+            [
+                'name'       => 'New Company',
+                'id'         => $id,
+                'slug'       => 'new-company',
+                'created_at' => time(),
+                'updated_at' => time()
+            ]
+        );
+    }
+
     private function getEntity() {
-        return new EntityPermission(
+        return new PermissionEntity(
             [
                 'id'         => 1,
                 'route_name' => 'createNew',
-                'created_at' => time()
+                'created_at' => time(),
+                'updated_at' => time()
             ]
         );
     }
@@ -41,7 +56,7 @@ class PermissionsTest extends AbstractUnit {
             ->method('getAttribute')
             ->will(
                 $this->returnValue(
-                    new EntityPermission(
+                    new PermissionEntity(
                         ['id' => 0]
                     )
                 )
@@ -89,6 +104,65 @@ class PermissionsTest extends AbstractUnit {
         $this->assertSame($responseMock, $permissionMock->listAll($requestMock, $responseMock));
     }
 
+    public function testListAllFromSection() {
+        $requestMock = $this->getMockBuilder(Request::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getAttribute'])
+            ->getMock();
+        $requestMock
+            ->expects($this->exactly(2))
+            ->method('getAttribute')
+            ->will(
+                $this->onConsecutiveCalls(
+                    $this->returnValue(
+                        $this->getEntity()
+                    ),
+                    'section'
+                )
+            );
+
+        $responseMock = $this->getMockBuilder(Response::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $repositoryMock = $this->getMockBuilder(DBPermission::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getAllByCompanyIdAndSection'])
+            ->getMock();
+        $repositoryMock
+            ->method('getAllByCompanyIdAndSection')
+            ->will($this->returnValue(new Collection([$this->getEntity()])));
+
+        $commandBus = $this->getMockBuilder(CommandBus::class)
+            ->disableOriginalConstructor()
+            ->setMethods([])
+            ->getMock();
+        $commandBus
+            ->expects($this->once())
+            ->method('handle')
+            ->will($this->returnValue($responseMock));
+
+        $commandFactory = $this->getMockBuilder(Command::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['create'])
+            ->getMock();
+        $commandFactory
+            ->expects($this->once())
+            ->method('create')
+            ->will($this->returnValue(new ResponseDispatch()));
+
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $permissionsMock = $this->getMockBuilder(Permissions::class)
+            ->setConstructorArgs([$repositoryMock, $commandBus, $commandFactory, $optimus])
+            ->setMethods(null)
+            ->getMock();
+
+        $this->assertSame($responseMock, $permissionsMock->listAllFromSection($requestMock, $responseMock));
+    }
+
     public function testGetOne() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
@@ -102,7 +176,7 @@ class PermissionsTest extends AbstractUnit {
             ->will(
                 $this->returnValueMap([
                     // reads: [$args[0], $args[1], RETURN VALUE]
-                    ['targetCompany', null, new EntityPermission(['id' => 0])],
+                    ['targetCompany', null, new PermissionEntity(['id' => 0])],
                     ['routeName', null, 'companies:listAll']
                 ]
             ));
@@ -118,7 +192,7 @@ class PermissionsTest extends AbstractUnit {
 
         $dbPermissionMock
             ->method('findOne')
-            ->will($this->returnValue(new EntityPermission([
+            ->will($this->returnValue(new PermissionEntity([
                 'id'         => 0,
                 'created_at' => (new \DateTime())->format('YYYY-MM-DD')
                 ])
@@ -220,7 +294,7 @@ class PermissionsTest extends AbstractUnit {
             ->method('getAttribute')
             ->will(
                 $this->returnValue(
-                    new EntityPermission(
+                    new PermissionEntity(
                         ['id' => 0]
                     )
                 )
@@ -240,7 +314,7 @@ class PermissionsTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityPermission(), $responseMock));
+            ->will($this->onConsecutiveCalls(new PermissionEntity(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -273,7 +347,7 @@ class PermissionsTest extends AbstractUnit {
             ->method('getAttribute')
             ->will(
                 $this->returnValue(
-                    new EntityPermission(
+                    new PermissionEntity(
                         ['id' => 0]
                     )
                 )
@@ -293,7 +367,7 @@ class PermissionsTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new EntityPermission(), $responseMock));
+            ->will($this->onConsecutiveCalls(new PermissionEntity(), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -315,5 +389,4 @@ class PermissionsTest extends AbstractUnit {
 
         $this->assertSame($responseMock, $permissionMock->deleteOne($requestMock, $responseMock));
     }
-
 }

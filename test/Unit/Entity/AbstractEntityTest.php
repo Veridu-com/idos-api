@@ -16,7 +16,7 @@ class AbstractEntityTest extends AbstractUnit {
             'name' => 'abc'
         ];
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(null)
+            ->setMethods(['getReferenceCacheKeys'])
             ->setConstructorArgs(['attributes' => $array])
             ->getMockForAbstractClass();
 
@@ -25,7 +25,7 @@ class AbstractEntityTest extends AbstractUnit {
 
     public function testToArray() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(null)
+            ->setMethods(['getReferenceCacheKeys'])
             ->setConstructorArgs(
                 [
                     'attributes' => [
@@ -42,7 +42,7 @@ class AbstractEntityTest extends AbstractUnit {
 
     public function testExists() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(null)
+            ->setMethods(['getReferenceCacheKeys'])
             ->setConstructorArgs(
                 [
                     'attributes' => [
@@ -59,7 +59,7 @@ class AbstractEntityTest extends AbstractUnit {
 
     public function testNotExists() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(null)
+            ->setMethods(['getReferenceCacheKeys'])
             ->getMockForAbstractClass();
         $abstractMock->hydrate(
             [
@@ -74,7 +74,7 @@ class AbstractEntityTest extends AbstractUnit {
 
     public function testIsNotDirty() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(null)
+            ->setMethods(['getReferenceCacheKeys'])
             ->setConstructorArgs(
                 [
                     'attributes' => [
@@ -88,7 +88,7 @@ class AbstractEntityTest extends AbstractUnit {
     }
     public function testIsDirty() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(null)
+            ->setMethods(['getReferenceCacheKeys'])
             ->setConstructorArgs(
                 [
                     'attributes' => [
@@ -104,7 +104,7 @@ class AbstractEntityTest extends AbstractUnit {
     }
     public function testMagicMethods() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(null)
+            ->setMethods(['getReferenceCacheKeys'])
             ->setConstructorArgs(
                 [
                     'attributes' => [
@@ -125,7 +125,7 @@ class AbstractEntityTest extends AbstractUnit {
 
     public function testSetMutator() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(['setNameAttribute'])
+            ->setMethods(['getReferenceCacheKeys'])
             ->setConstructorArgs(
                 [
                     'attributes' => [

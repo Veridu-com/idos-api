@@ -24,7 +24,7 @@ class CompanyTest extends AbstractUnit {
 
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
-            ->setConstructorArgs(['attributes' => $array])
+            ->setConstructorArgs([$array])
             ->getMockForAbstractClass();
         $array = $abstractMock->serialize();
         $this->assertArrayHasKey('id', $array);
@@ -50,7 +50,7 @@ class CompanyTest extends AbstractUnit {
             ->setMethods(null)
             ->setConstructorArgs(
                 [
-                    'attributes' => [
+                    [
                         'id'          => 0,
                         'name'        => 'My Co',
                         'public_key'  => 'pkey',
@@ -71,5 +71,98 @@ class CompanyTest extends AbstractUnit {
         $this->assertSame('pkey', $array['public_key']);
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($array['created_at']));
+    }
+
+    public function testGetCachedKeysEmptyAttributes() {
+        $array = ['Company.id.', 'Company.slug.', 'Company.private_key.'];
+        $abstractMock = $this->getMockBuilder(Company::class)
+            ->setMethods(null)
+            ->setConstructorArgs([])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+    }
+
+
+    public function testGetCachedKeys() {
+        $array = ['Company.id.0', 'Company.slug.my-co', 'Company.private_key.privkey'];
+        $abstractMock = $this->getMockBuilder(Company::class)
+            ->setMethods(null)
+            ->setConstructorArgs(
+                [
+                    [
+                        'id'          => 0,
+                        'name'        => 'My Co',
+                        'public_key'  => 'pkey',
+                        'private_key' => 'privkey',
+                        'created_at'  => time(),
+                        'updated_at'  => time()
+                    ]
+                ]
+            )
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+    }
+
+    public function testReferenceCacheKeysNoParentId() {
+        $array = ['Company.by.parent_id.', 'Company.id.0', 'Company.slug.my-co', 'Company.private_key.privkey'];
+        $abstractMock = $this->getMockBuilder(Company::class)
+            ->setMethods(null)
+            ->setConstructorArgs(
+                [
+                    [
+                        'id'          => 0,
+                        'name'        => 'My Co',
+                        'public_key'  => 'pkey',
+                        'private_key' => 'privkey',
+                        'created_at'  => time(),
+                        'updated_at'  => time()
+                    ]
+                ]
+            )
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getReferenceCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+
+    }
+
+    public function testReferenceCacheKeysEmptyAttributes() {
+        $array = ['Company.by.parent_id.', 'Company.id.', 'Company.slug.', 'Company.private_key.'];
+        $abstractMock = $this->getMockBuilder(Company::class)
+            ->setMethods(null)
+            ->setConstructorArgs([])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getReferenceCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+
+    }
+
+    public function testReferenceCacheKeys() {
+        $array = ['Company.by.parent_id.parentId', 'Company.id.0', 'Company.slug.my-co', 'Company.private_key.privkey'];
+        $abstractMock = $this->getMockBuilder(Company::class)
+            ->setMethods(null)
+            ->setConstructorArgs(
+                [
+                    [
+                        'parent_id' => 'parentId',
+                        'id'          => 0,
+                        'name'        => 'My Co',
+                        'public_key'  => 'pkey',
+                        'private_key' => 'privkey',
+                        'created_at'  => time(),
+                        'updated_at'  => time()
+                    ]
+                ]
+            )
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getReferenceCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+
     }
 }

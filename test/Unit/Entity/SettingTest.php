@@ -10,21 +10,21 @@ use App\Entity\Setting;
 use Test\Unit\AbstractUnit;
 
 class SettingTest extends AbstractUnit {
-    public function testSerialize() {
-        $updated = time();
-        $array   = [
-            'id'             => 1,
-            'companyId'      => 0,
+    private function getAttributes() {
+        return [
+            'id'  => 1,
             'section'        => 'A Section',
             'property'       => 'property',
             'value'          => 'value',
             'created_at'     => time(),
-            'updated_at'     => $updated
+            'updated_at'     => time()
         ];
+    }
 
+    public function testSerialize() {
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
-            ->setConstructorArgs(['attributes' => $array])
+            ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes())])
             ->getMockForAbstractClass();
 
         $array = $abstractMock->serialize();
@@ -49,19 +49,7 @@ class SettingTest extends AbstractUnit {
     public function testToArray() {
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
-            ->setConstructorArgs(
-                [
-                    'attributes' => [
-                    'id'             => 1,
-                    'companyId'      => 0,
-                    'section'        => 'A Section',
-                    'property'       => 'property',
-                    'value'          => 'value',
-                    'created_at'     => time(),
-                    'updated_at'     => time()
-                    ]
-                ]
-            )
+            ->setConstructorArgs([$this->getAttributes()])
             ->getMockForAbstractClass();
 
         $array = $abstractMock->toArray();
@@ -73,5 +61,64 @@ class SettingTest extends AbstractUnit {
         $this->assertSame('value', $array['value']);
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($array['created_at']));
+    }
+
+    public function testGetCachedKeysEmptyAttributes() {
+        $array = ['Setting.company_id..section..property.'];
+        $abstractMock = $this->getMockBuilder(Setting::class)
+            ->setMethods(null)
+            ->setConstructorArgs([])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+    }
+
+
+    public function testGetCachedKeys() {
+        $array = ['Setting.company_id.0.section.A Section.property.property'];
+        $abstractMock = $this->getMockBuilder(Setting::class)
+            ->setMethods(null)
+            ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes())])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+    }
+
+    public function testReferenceCacheKeysNoCompanyId() {
+        $array = ['Setting.by.company_id.', 'Setting.by.company_id..section.A Section', 'Setting.company_id..section.A Section.property.property'];
+        $abstractMock = $this->getMockBuilder(Setting::class)
+            ->setMethods(null)
+            ->setConstructorArgs([$this->getAttributes()])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getReferenceCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+
+    }
+
+    public function testReferenceCacheKeysEmptyAttributes() {
+        $array = ['Setting.by.company_id.', 'Setting.by.company_id..section.', 'Setting.company_id..section..property.'];
+        $abstractMock = $this->getMockBuilder(Setting::class)
+            ->setMethods(null)
+            ->setConstructorArgs([])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getReferenceCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+
+    }
+
+    public function testReferenceCacheKeys() {
+        $array = ['Setting.by.company_id.0', 'Setting.by.company_id.0.section.A Section',  'Setting.company_id.0.section.A Section.property.property'];
+        $abstractMock = $this->getMockBuilder(Setting::class)
+            ->setMethods(null)
+            ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes())])
+            ->getMockForAbstractClass();
+        $result = $abstractMock->getReferenceCacheKeys();
+        $this->assertNotEmpty($result);
+        $this->assertSame($array, $result);
+
     }
 }

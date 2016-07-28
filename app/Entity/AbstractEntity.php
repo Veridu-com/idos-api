@@ -68,7 +68,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return string
      */
-    private function toCamelCase($string) {
+    private function toCamelCase($string) : string {
         $words  = explode('_', strtolower($string));
         $return = '';
         foreach ($words as $word)
@@ -78,27 +78,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return [];
-    }
-
-    /**
      * Formats a CamelCase string to snake_case.
      *
      * @param string $string
      *
      * @return string
      */
-    private function toSnakeCase($string) {
+    private function toSnakeCase($string) : string {
         return strtolower(preg_replace('/([A-Z])/', '_$1', $string));
     }
 
@@ -109,7 +95,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return bool
      */
-    private function hasSetMutator($key) {
+    private function hasSetMutator($key) : bool {
         return method_exists(
             $this,
             sprintf(
@@ -126,7 +112,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return bool
      */
-    private function hasGetMutator($key) {
+    private function hasGetMutator($key) : bool {
         return method_exists(
             $this,
             sprintf(
@@ -214,7 +200,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * {@inheritdoc}
      */
-    public function hydrate(array $attributes = []) {
+    public function hydrate(array $attributes = []) : EntityInterface {
         foreach ($attributes as $key => $value)
             $this->setAttribute($key, $value);
 
@@ -224,7 +210,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * {@inheritdoc}
      */
-    public function toArray() {
+    public function toArray() : array {
         if (empty($this->visible)) {
             $attributes = array_keys($this->attributes);
         } else {
@@ -235,14 +221,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         foreach ($attributes as $attribute) {
             $return[$attribute] = $this->getAttribute($this->toSnakeCase($attribute));
         }
-
         return $return;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function serialize() {
+    public function serialize() : array {
         $attributes = array_keys($this->attributes);
         $return     = [];
 
@@ -256,14 +241,14 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * {@inheritdoc}
      */
-    public function exists() {
+    public function exists() : bool {
         return $this->exists;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isDirty() {
+    public function isDirty() : bool {
         return $this->dirty;
     }
 
@@ -304,7 +289,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return bool
      */
-    public function __isset($key) {
+    public function __isset($key) : bool {
         return $this->getAttribute($this->toSnakeCase($key)) !== null;
     }
     /**
