@@ -12,7 +12,7 @@ use Test\Unit\AbstractUnit;
 class SettingTest extends AbstractUnit {
     private function getAttributes() {
         return [
-            'id'  => 1,
+            'id'             => 1,
             'section'        => 'A Section',
             'property'       => 'property',
             'value'          => 'value',
@@ -64,7 +64,7 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testGetCachedKeysEmptyAttributes() {
-        $array = ['Setting.company_id..section..property.'];
+        $array        = ['Setting.company_id..section..property.'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
             ->setConstructorArgs([])
@@ -74,9 +74,8 @@ class SettingTest extends AbstractUnit {
         $this->assertSame($array, $result);
     }
 
-
     public function testGetCachedKeys() {
-        $array = ['Setting.company_id.0.section.A Section.property.property'];
+        $array        = ['Setting.company_id.0.section.A Section.property.property'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
             ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes())])
@@ -87,7 +86,7 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeysNoCompanyId() {
-        $array = ['Setting.by.company_id.', 'Setting.by.company_id..section.A Section', 'Setting.company_id..section.A Section.property.property'];
+        $array        = ['Setting.by.company_id.', 'Setting.by.company_id..section.A Section', 'Setting.company_id..section.A Section.property.property'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
             ->setConstructorArgs([$this->getAttributes()])
@@ -99,7 +98,7 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeysEmptyAttributes() {
-        $array = ['Setting.by.company_id.', 'Setting.by.company_id..section.', 'Setting.company_id..section..property.'];
+        $array        = ['Setting.by.company_id.', 'Setting.by.company_id..section.', 'Setting.company_id..section..property.'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
             ->setConstructorArgs([])
@@ -111,7 +110,7 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeys() {
-        $array = ['Setting.by.company_id.0', 'Setting.by.company_id.0.section.A Section',  'Setting.company_id.0.section.A Section.property.property'];
+        $array        = ['Setting.by.company_id.0', 'Setting.by.company_id.0.section.A Section',  'Setting.company_id.0.section.A Section.property.property'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
             ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes())])

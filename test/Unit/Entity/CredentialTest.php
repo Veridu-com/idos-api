@@ -67,7 +67,7 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testGetCachedKeysEmptyAttributes() {
-        $array = ['Credential.id.', 'Credential.slug.', 'Credential.public.'];
+        $array        = ['Credential.id.', 'Credential.slug.', 'Credential.public.'];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
             ->setConstructorArgs([])
@@ -77,9 +77,8 @@ class CredentialTest extends AbstractUnit {
         $this->assertSame($array, $result);
     }
 
-
     public function testGetCachedKeys() {
-        $array = ['Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
+        $array        = ['Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
             ->setConstructorArgs([$this->getAttributes()])
@@ -90,7 +89,7 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeysNoCompanyId() {
-        $array = ['Credential.by.company_id.', 'Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
+        $array        = ['Credential.by.company_id.', 'Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
             ->setConstructorArgs([$this->getAttributes()])
@@ -102,7 +101,7 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeysEmptyAttributes() {
-        $array = ['Credential.by.company_id.', 'Credential.id.', 'Credential.slug.', 'Credential.public.'];
+        $array        = ['Credential.by.company_id.', 'Credential.id.', 'Credential.slug.', 'Credential.public.'];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
             ->setConstructorArgs([])
@@ -114,7 +113,7 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeys() {
-        $array = ['Credential.by.company_id.0', 'Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
+        $array        = ['Credential.by.company_id.0', 'Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
             ->setConstructorArgs(

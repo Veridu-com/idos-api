@@ -74,7 +74,7 @@ class CompanyTest extends AbstractUnit {
     }
 
     public function testGetCachedKeysEmptyAttributes() {
-        $array = ['Company.id.', 'Company.slug.', 'Company.private_key.'];
+        $array        = ['Company.id.', 'Company.slug.', 'Company.private_key.'];
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
             ->setConstructorArgs([])
@@ -84,9 +84,8 @@ class CompanyTest extends AbstractUnit {
         $this->assertSame($array, $result);
     }
 
-
     public function testGetCachedKeys() {
-        $array = ['Company.id.0', 'Company.slug.my-co', 'Company.private_key.privkey'];
+        $array        = ['Company.id.0', 'Company.slug.my-co', 'Company.private_key.privkey'];
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
             ->setConstructorArgs(
@@ -108,7 +107,7 @@ class CompanyTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeysNoParentId() {
-        $array = ['Company.by.parent_id.', 'Company.id.0', 'Company.slug.my-co', 'Company.private_key.privkey'];
+        $array        = ['Company.by.parent_id.', 'Company.id.0', 'Company.slug.my-co', 'Company.private_key.privkey'];
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
             ->setConstructorArgs(
@@ -131,7 +130,7 @@ class CompanyTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeysEmptyAttributes() {
-        $array = ['Company.by.parent_id.', 'Company.id.', 'Company.slug.', 'Company.private_key.'];
+        $array        = ['Company.by.parent_id.', 'Company.id.', 'Company.slug.', 'Company.private_key.'];
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
             ->setConstructorArgs([])
@@ -143,13 +142,13 @@ class CompanyTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeys() {
-        $array = ['Company.by.parent_id.parentId', 'Company.id.0', 'Company.slug.my-co', 'Company.private_key.privkey'];
+        $array        = ['Company.by.parent_id.parentId', 'Company.id.0', 'Company.slug.my-co', 'Company.private_key.privkey'];
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
             ->setConstructorArgs(
                 [
                     [
-                        'parent_id' => 'parentId',
+                        'parent_id'   => 'parentId',
                         'id'          => 0,
                         'name'        => 'My Co',
                         'public_key'  => 'pkey',

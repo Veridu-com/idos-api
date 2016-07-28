@@ -10,12 +10,11 @@ use App\Entity\Permission;
 use Test\Unit\AbstractUnit;
 
 class PermissionTest extends AbstractUnit {
-
     private function getAttributes() {
         return [
-            'id' => 0,
-            'routeName' => 'companies:listAll',
-            'public' => 'public',
+            'id'         => 0,
+            'routeName'  => 'companies:listAll',
+            'public'     => 'public',
             'created_at' => time(),
             'updated_at' => time()
         ];
@@ -63,7 +62,7 @@ class PermissionTest extends AbstractUnit {
     }
 
      public function testGetCachedKeysEmptyAttributes() {
-        $array = ['Permission.id.', 'Permission.public.'];
+        $array        = ['Permission.id.', 'Permission.public.'];
         $abstractMock = $this->getMockBuilder(Permission::class)
             ->setMethods(null)
             ->setConstructorArgs([])
@@ -73,9 +72,8 @@ class PermissionTest extends AbstractUnit {
         $this->assertSame($array, $result);
     }
 
-
     public function testGetCachedKeys() {
-        $array = ['Permission.id.0', 'Permission.public.public'];
+        $array        = ['Permission.id.0', 'Permission.public.public'];
         $abstractMock = $this->getMockBuilder(Permission::class)
             ->setMethods(null)
             ->setConstructorArgs([$this->getAttributes()])
@@ -86,7 +84,7 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeysNoParentId() {
-        $array = ['Permission.by.parent_id.', 'Permission.id.0', 'Permission.public.public'];
+        $array        = ['Permission.by.parent_id.', 'Permission.id.0', 'Permission.public.public'];
         $abstractMock = $this->getMockBuilder(Permission::class)
             ->setMethods(null)
             ->setConstructorArgs([$this->getAttributes()])
@@ -98,7 +96,7 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeysEmptyAttributes() {
-        $array = ['Permission.by.parent_id.', 'Permission.id.', 'Permission.public.'];
+        $array        = ['Permission.by.parent_id.', 'Permission.id.', 'Permission.public.'];
         $abstractMock = $this->getMockBuilder(Permission::class)
             ->setMethods(null)
             ->setConstructorArgs([])
@@ -110,7 +108,7 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testReferenceCacheKeys() {
-        $array = ['Permission.by.parent_id.0', 'Permission.id.0', 'Permission.public.public'];
+        $array        = ['Permission.by.parent_id.0', 'Permission.id.0', 'Permission.public.public'];
         $abstractMock = $this->getMockBuilder(Permission::class)
             ->setMethods(null)
             ->setConstructorArgs(

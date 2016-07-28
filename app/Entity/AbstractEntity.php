@@ -221,6 +221,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         foreach ($attributes as $attribute) {
             $return[$attribute] = $this->getAttribute($this->toSnakeCase($attribute));
         }
+
         return $return;
     }
 
