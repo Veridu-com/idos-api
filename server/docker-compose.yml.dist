@@ -4,7 +4,7 @@ services:
     container_name: srv-web
     image: idos/nginx:latest
     ports:
-      - "8080:80"
+      - "127.0.0.1:8080:80"
     depends_on:
       - php-fpm
     links:
@@ -19,8 +19,12 @@ services:
       - ../:/app
     depends_on:
       - postgresql
+      - gearman
+      - redis
     links:
       - "postgresql:srv-db"
+      - "gearman:srv-queue"
+      - "redis:srv-redis"
     networks:
       idos-ipv4-front:
         ipv4_address: 172.16.238.11
@@ -32,6 +36,30 @@ services:
     networks:
       idos-ipv4-back:
         ipv4_address: 172.16.239.12
+  gearman:
+    container_name: srv-queue
+    image: veridu/gearman:latest
+    networks:
+      idos-ipv4-back:
+        ipv4_address: 172.16.239.13
+  php:
+    container_name: srv-worker
+    image: idos/php:latest
+    depends_on:
+      - postgresql
+      - gearman
+    links:
+      - "postgresql:srv-db"
+      - "gearman:srv-queue"
+    networks:
+      idos-ipv4-back:
+        ipv4_address: 172.16.239.14
+  redis:
+    container_name: srv-redis
+    image: veridu/redis:latest
+    networks:
+      idos-ipv4-back:
+        ipv4_address: 172.16.239.15
 networks:
   idos-ipv4-front:
     driver: bridge
