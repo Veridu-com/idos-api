@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -18,11 +17,13 @@ class CreateNew extends AbstractCommand {
     /**
      * Member's username (user input).
      *
-     * @var object
+     * @var string
      */
     public $username;
     /**
      * Member's role.
+     *
+     * @var string
      */
     public $role;
     /**

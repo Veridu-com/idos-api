@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -80,7 +79,7 @@ class Members implements ControllerInterface {
         else
             $members = $this->repository->getAllByCompanyIdAndRole(
                 $targetCompany->id,
-                preg_split("/[\s,]+/", $roles)
+                explode(',', $roles)
             );
 
         $body = [
@@ -153,14 +152,8 @@ class Members implements ControllerInterface {
         $command = $this->commandFactory->create('Member\\UpdateOne');
 
         $command
-            ->setParameters(
-                array_merge(
-                    $request->getParsedBody(),
-                    [
-                        'username' => $username
-                    ]
-                )
-            )
+            ->setParameters($request->getParsedBody())
+            ->setParameter('username', $username)
             ->setParameter('companyId', $targetCompany->id);
 
         $member = $this->commandBus->handle($command);
