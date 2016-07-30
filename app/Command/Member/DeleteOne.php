@@ -22,7 +22,7 @@ class DeleteOne extends AbstractCommand {
      */
     public $username;
     /**
-     * Company Id of member to be deleted
+     * Company Id of member to be deleted.
      *
      * @var int
      */

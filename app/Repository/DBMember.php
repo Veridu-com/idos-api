@@ -30,15 +30,15 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
     protected $entityName = 'Member';
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function getAllByCompanyId($companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function getAllByCompanyIdAndRole($companyId, $roles) : Collection {
         $items = [];
         foreach ($roles as $role) {
@@ -52,7 +52,7 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
      */
     public function findOne($companyId, $username) : Member {
         return $this->findOneBy([
-            'company_id' => $companyId,
+            'company_id'  => $companyId,
             'username'    => $username
         ]);
     }
@@ -68,8 +68,8 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * {@inheritdoc}
+     */
     public function deleteByCompanyId($companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }

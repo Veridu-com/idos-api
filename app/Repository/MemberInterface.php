@@ -16,7 +16,6 @@ use Illuminate\Support\Collection;
  * Member Repository Interface.
  */
 interface MemberInterface extends RepositoryInterface {
-
     /**
      * Gets all Members based on their Company Id.
      *
@@ -42,7 +41,7 @@ interface MemberInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByCompanyId($companyId) : int;
-     /**
+    /**
      * Find one member based on their companyId and username.
      *
      * @param int    $companyId
@@ -51,7 +50,7 @@ interface MemberInterface extends RepositoryInterface {
      * @return App\Entity\Member
      */
     public function findOne($companyId, $username) : MemberEntity;
-     /**
+    /**
      * Deletes one member from company.
      *
      * @param int    companyId member's company_id

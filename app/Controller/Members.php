@@ -42,8 +42,8 @@ class Members implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\MemberInterface $repository
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command                $commandFactory
+     * @param \League\Tactician\CommandBus   $commandBus
+     * @param App\Factory\Command            $commandFactory
      *
      * @return void
      */
@@ -135,7 +135,7 @@ class Members implements ControllerInterface {
         return $this->commandBus->handle($command);
     }
 
-     /**
+    /**
      * Updates one Member of the Target Company based on the username.
      *
      * @apiEndpointRequiredParam body string role
@@ -148,7 +148,7 @@ class Members implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $username = $request->getAttribute('username');
+        $username      = $request->getAttribute('username');
 
         $command = $this->commandFactory->create('Member\\UpdateOne');
 
@@ -179,7 +179,6 @@ class Members implements ControllerInterface {
         return $this->commandBus->handle($command);
     }
 
-
     /**
      * Retrieves one Members of the Target Company based on the username.
      *
@@ -194,8 +193,8 @@ class Members implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $username     = $request->getAttribute('username');
-        $member    = $this->repository->findOne($targetCompany->id, $username);
+        $username      = $request->getAttribute('username');
+        $member        = $this->repository->findOne($targetCompany->id, $username);
 
         $body = [
             'data'    => $member->toArray()
@@ -253,7 +252,7 @@ class Members implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $username     = $request->getAttribute('username');
+        $username      = $request->getAttribute('username');
 
         $command = $this->commandFactory->create('Member\\DeleteOne');
         $command

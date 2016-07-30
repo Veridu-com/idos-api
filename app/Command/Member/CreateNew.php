@@ -22,7 +22,7 @@ class CreateNew extends AbstractCommand {
      */
     public $username;
     /**
-     * Member's role
+     * Member's role.
      */
     public $role;
     /**

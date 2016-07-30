@@ -10,13 +10,12 @@ declare(strict_types=1);
 namespace App\Handler;
 
 use App\Command\Member\CreateNew;
-use App\Command\Member\UpdateOne;
-use App\Command\Member\DeleteOne;
 use App\Command\Member\DeleteAll;
+use App\Command\Member\DeleteOne;
+use App\Command\Member\UpdateOne;
 use App\Entity\Member as MemberEntity;
 use App\Repository\MemberInterface;
 use App\Validator\Member as MemberValidator;
-use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 
 /**
@@ -81,8 +80,8 @@ class Member implements HandlerInterface {
 
         $member = $this->repository->create(
             [
-                'username' => $command->username,
-                'role' => $command->role,
+                'username'   => $command->username,
+                'role'       => $command->role,
                 'company_id' => $command->companyId,
                 'created_at' => time()
             ]

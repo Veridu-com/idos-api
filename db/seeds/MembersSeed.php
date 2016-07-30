@@ -11,8 +11,8 @@ class MembersSeed extends AbstractSeed {
         $data = [
             [
                 'company_id' => 1,
-                'username'  => 'aperson',
-                'role' =>  'owner',
+                'username'   => 'aperson',
+                'role'       => 'owner',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]

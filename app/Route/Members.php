@@ -221,8 +221,6 @@ class Members implements RouteInterface {
             ->setName('members:getOne');
     }
 
-
-
     /*
      * Deletes a single Member.
      *

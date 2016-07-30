@@ -103,7 +103,6 @@ class Permission implements HandlerInterface {
         return $this->repository->deleteByCompanyId($command->companyId);
     }
 
-
     /**
      * Deletes a Permission.
      *
