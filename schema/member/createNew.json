@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /companies/{companySlug}/members",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Member response payload",
+            "type": "object",
+            "$ref": "memberEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

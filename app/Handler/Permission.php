@@ -103,28 +103,6 @@ class Permission implements HandlerInterface {
         return $this->repository->deleteByCompanyId($command->companyId);
     }
 
-    /**
-     * Updates a Permission.
-     *
-     * @param App\Command\Permission\UpdateOne $command
-     *
-     * @return int
-     */
-    public function handleUpdateOne(UpdateOne $command) : int {
-        $this->validator->assertId($command->companyId);
-        $this->validator->assertPropName($command->propNameId);
-        $this->validator->assertSectionName($command->sectionNameId);
-
-        $permission = $this->repository->findOne($command->companyId, $command->sectionNameId, $command->propNameId);
-
-        if ($command->value) {
-            $permission->value = $command->value;
-        }
-
-        $success = $this->repository->update($permission);
-
-        return $success ? $permission : 0;
-    }
 
     /**
      * Deletes a Permission.

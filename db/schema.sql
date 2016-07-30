@@ -10,28 +10,28 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
--- Name: adminpack; Type: EXTENSION; Schema: -; Owner: 
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
@@ -44,7 +44,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: address_lookup; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: address_lookup; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE address_lookup (
@@ -87,7 +87,7 @@ ALTER SEQUENCE address_lookup_id_seq OWNED BY address_lookup.id;
 
 
 --
--- Name: applications; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: applications; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE applications (
@@ -127,7 +127,7 @@ ALTER SEQUENCE applications_id_seq OWNED BY applications.id;
 
 
 --
--- Name: attributes; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: attributes; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE attributes (
@@ -164,7 +164,7 @@ ALTER SEQUENCE attributes_id_seq OWNED BY attributes.id;
 
 
 --
--- Name: city_list; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: city_list; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE city_list (
@@ -200,7 +200,7 @@ ALTER SEQUENCE city_list_id_seq OWNED BY city_list.id;
 
 
 --
--- Name: companies; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: companies; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE companies (
@@ -239,7 +239,7 @@ ALTER SEQUENCE companies_id_seq OWNED BY companies.id;
 
 
 --
--- Name: company_process_handlers; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_process_handlers; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE company_process_handlers (
@@ -275,7 +275,7 @@ ALTER SEQUENCE company_process_handlers_id_seq OWNED BY company_process_handlers
 
 
 --
--- Name: company_service_handlers; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_service_handlers; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE company_service_handlers (
@@ -311,7 +311,7 @@ ALTER SEQUENCE company_service_handlers_id_seq OWNED BY company_service_handlers
 
 
 --
--- Name: company_whitelist; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_whitelist; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE company_whitelist (
@@ -348,7 +348,7 @@ ALTER SEQUENCE company_whitelist_id_seq OWNED BY company_whitelist.id;
 
 
 --
--- Name: controls; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: controls; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE controls (
@@ -387,7 +387,7 @@ ALTER SEQUENCE controls_id_seq OWNED BY controls.id;
 
 
 --
--- Name: country_list; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: country_list; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE country_list (
@@ -399,7 +399,7 @@ CREATE TABLE country_list (
 ALTER TABLE public.country_list OWNER TO "apiUser";
 
 --
--- Name: credential_whitelist; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: credential_whitelist; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE credential_whitelist (
@@ -436,7 +436,7 @@ ALTER SEQUENCE credential_whitelist_id_seq OWNED BY credential_whitelist.id;
 
 
 --
--- Name: credentials; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: credentials; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE credentials (
@@ -475,7 +475,7 @@ ALTER SEQUENCE credentials_id_seq OWNED BY credentials.id;
 
 
 --
--- Name: digested; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: digested; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE digested (
@@ -511,7 +511,7 @@ ALTER SEQUENCE digested_id_seq OWNED BY digested.id;
 
 
 --
--- Name: email; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: email; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE email (
@@ -551,7 +551,7 @@ ALTER SEQUENCE email_id_seq OWNED BY email.id;
 
 
 --
--- Name: features; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: features; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE features (
@@ -587,7 +587,7 @@ ALTER SEQUENCE features_id_seq OWNED BY features.id;
 
 
 --
--- Name: flags; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: flags; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE flags (
@@ -622,7 +622,7 @@ ALTER SEQUENCE flags_id_seq OWNED BY flags.id;
 
 
 --
--- Name: gates; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: gates; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE gates (
@@ -658,7 +658,7 @@ ALTER SEQUENCE gates_id_seq OWNED BY gates.id;
 
 
 --
--- Name: hook_errors; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: hook_errors; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE hook_errors (
@@ -694,7 +694,7 @@ ALTER SEQUENCE hook_errors_id_seq OWNED BY hook_errors.id;
 
 
 --
--- Name: hooks; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: hooks; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE hooks (
@@ -732,7 +732,7 @@ ALTER SEQUENCE hooks_id_seq OWNED BY hooks.id;
 
 
 --
--- Name: identities; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: identities; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE identities (
@@ -768,7 +768,7 @@ ALTER SEQUENCE identities_id_seq OWNED BY identities.id;
 
 
 --
--- Name: known_name_list; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: known_name_list; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE known_name_list (
@@ -784,7 +784,7 @@ CREATE TABLE known_name_list (
 ALTER TABLE public.known_name_list OWNER TO "apiUser";
 
 --
--- Name: logs; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: logs; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE logs (
@@ -822,9 +822,8 @@ ALTER TABLE public.logs_id_seq OWNER TO "apiUser";
 
 ALTER SEQUENCE logs_id_seq OWNED BY logs.id;
 
-
 --
--- Name: metrics; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: metrics; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE metrics (
@@ -860,7 +859,7 @@ ALTER SEQUENCE metrics_id_seq OWNED BY metrics.id;
 
 
 --
--- Name: name_list; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: name_list; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE name_list (
@@ -877,7 +876,7 @@ CREATE TABLE name_list (
 ALTER TABLE public.name_list OWNER TO "apiUser";
 
 --
--- Name: normalised; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: normalised; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE normalised (
@@ -913,7 +912,7 @@ ALTER SEQUENCE normalised_id_seq OWNED BY normalised.id;
 
 
 --
--- Name: phinxlog; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: phinxlog; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE phinxlog (
@@ -927,7 +926,7 @@ CREATE TABLE phinxlog (
 ALTER TABLE public.phinxlog OWNER TO "apiUser";
 
 --
--- Name: process_handlers; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: process_handlers; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE process_handlers (
@@ -966,7 +965,7 @@ ALTER SEQUENCE process_handlers_id_seq OWNED BY process_handlers.id;
 
 
 --
--- Name: processes; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: processes; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE processes (
@@ -1002,7 +1001,7 @@ ALTER SEQUENCE processes_id_seq OWNED BY processes.id;
 
 
 --
--- Name: role_access; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: role_access; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE role_access (
@@ -1040,7 +1039,7 @@ ALTER SEQUENCE role_access_id_seq OWNED BY role_access.id;
 
 
 --
--- Name: scores; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: scores; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE scores (
@@ -1077,7 +1076,7 @@ ALTER SEQUENCE scores_id_seq OWNED BY scores.id;
 
 
 --
--- Name: service_handlers; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: service_handlers; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE service_handlers (
@@ -1114,7 +1113,7 @@ ALTER SEQUENCE service_handlers_id_seq OWNED BY service_handlers.id;
 
 
 --
--- Name: services; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: services; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE services (
@@ -1150,7 +1149,7 @@ ALTER SEQUENCE services_id_seq OWNED BY services.id;
 
 
 --
--- Name: settings; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: settings; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE settings (
@@ -1188,7 +1187,7 @@ ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
 
 
 --
--- Name: sms; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: sms; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE sms (
@@ -1228,7 +1227,7 @@ ALTER SEQUENCE sms_id_seq OWNED BY sms.id;
 
 
 --
--- Name: social; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: social; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE social (
@@ -1271,7 +1270,7 @@ ALTER SEQUENCE social_id_seq OWNED BY social.id;
 
 
 --
--- Name: sources; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: sources; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE sources (
@@ -1309,7 +1308,7 @@ ALTER SEQUENCE sources_id_seq OWNED BY sources.id;
 
 
 --
--- Name: spotafriend; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: spotafriend; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE spotafriend (
@@ -1350,7 +1349,7 @@ ALTER SEQUENCE spotafriend_id_seq OWNED BY spotafriend.id;
 
 
 --
--- Name: tasks; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: tasks; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE tasks (
@@ -1389,7 +1388,7 @@ ALTER SEQUENCE tasks_id_seq OWNED BY tasks.id;
 
 
 --
--- Name: user_access; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: user_access; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE user_access (
@@ -1427,7 +1426,7 @@ ALTER SEQUENCE user_access_id_seq OWNED BY user_access.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE TABLE users (
@@ -1715,7 +1714,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: address_lookup_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: address_lookup_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY address_lookup
@@ -1723,7 +1722,7 @@ ALTER TABLE ONLY address_lookup
 
 
 --
--- Name: applications_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: applications_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY applications
@@ -1731,7 +1730,7 @@ ALTER TABLE ONLY applications
 
 
 --
--- Name: attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: attributes_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY attributes
@@ -1739,7 +1738,7 @@ ALTER TABLE ONLY attributes
 
 
 --
--- Name: city_list_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: city_list_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY city_list
@@ -1747,7 +1746,7 @@ ALTER TABLE ONLY city_list
 
 
 --
--- Name: companies_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: companies_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY companies
@@ -1755,7 +1754,7 @@ ALTER TABLE ONLY companies
 
 
 --
--- Name: company_process_handlers_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_process_handlers_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY company_process_handlers
@@ -1763,7 +1762,7 @@ ALTER TABLE ONLY company_process_handlers
 
 
 --
--- Name: company_service_handlers_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_service_handlers_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY company_service_handlers
@@ -1771,7 +1770,7 @@ ALTER TABLE ONLY company_service_handlers
 
 
 --
--- Name: company_whitelist_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_whitelist_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY company_whitelist
@@ -1779,7 +1778,7 @@ ALTER TABLE ONLY company_whitelist
 
 
 --
--- Name: controls_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: controls_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY controls
@@ -1787,7 +1786,7 @@ ALTER TABLE ONLY controls
 
 
 --
--- Name: country_list_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: country_list_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY country_list
@@ -1795,7 +1794,7 @@ ALTER TABLE ONLY country_list
 
 
 --
--- Name: credential_whitelist_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: credential_whitelist_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY credential_whitelist
@@ -1803,7 +1802,7 @@ ALTER TABLE ONLY credential_whitelist
 
 
 --
--- Name: credentials_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: credentials_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY credentials
@@ -1811,7 +1810,7 @@ ALTER TABLE ONLY credentials
 
 
 --
--- Name: digested_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: digested_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY digested
@@ -1819,7 +1818,7 @@ ALTER TABLE ONLY digested
 
 
 --
--- Name: email_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: email_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY email
@@ -1827,7 +1826,7 @@ ALTER TABLE ONLY email
 
 
 --
--- Name: features_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: features_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY features
@@ -1835,7 +1834,7 @@ ALTER TABLE ONLY features
 
 
 --
--- Name: flags_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: flags_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY flags
@@ -1843,7 +1842,7 @@ ALTER TABLE ONLY flags
 
 
 --
--- Name: gates_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: gates_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY gates
@@ -1851,7 +1850,7 @@ ALTER TABLE ONLY gates
 
 
 --
--- Name: hook_errors_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: hook_errors_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY hook_errors
@@ -1859,7 +1858,7 @@ ALTER TABLE ONLY hook_errors
 
 
 --
--- Name: hooks_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: hooks_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY hooks
@@ -1867,7 +1866,7 @@ ALTER TABLE ONLY hooks
 
 
 --
--- Name: identities_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: identities_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY identities
@@ -1875,7 +1874,7 @@ ALTER TABLE ONLY identities
 
 
 --
--- Name: known_name_list_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: known_name_list_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY known_name_list
@@ -1883,7 +1882,7 @@ ALTER TABLE ONLY known_name_list
 
 
 --
--- Name: logs_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: logs_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY logs
@@ -1891,7 +1890,7 @@ ALTER TABLE ONLY logs
 
 
 --
--- Name: metrics_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: metrics_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY metrics
@@ -1899,7 +1898,7 @@ ALTER TABLE ONLY metrics
 
 
 --
--- Name: name_list_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: name_list_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY name_list
@@ -1907,7 +1906,7 @@ ALTER TABLE ONLY name_list
 
 
 --
--- Name: normalised_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: normalised_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY normalised
@@ -1915,7 +1914,7 @@ ALTER TABLE ONLY normalised
 
 
 --
--- Name: phinxlog_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: phinxlog_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY phinxlog
@@ -1923,7 +1922,7 @@ ALTER TABLE ONLY phinxlog
 
 
 --
--- Name: process_handlers_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: process_handlers_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY process_handlers
@@ -1931,7 +1930,7 @@ ALTER TABLE ONLY process_handlers
 
 
 --
--- Name: processes_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: processes_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY processes
@@ -1939,7 +1938,7 @@ ALTER TABLE ONLY processes
 
 
 --
--- Name: role_access_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: role_access_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY role_access
@@ -1947,7 +1946,7 @@ ALTER TABLE ONLY role_access
 
 
 --
--- Name: scores_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: scores_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY scores
@@ -1955,7 +1954,7 @@ ALTER TABLE ONLY scores
 
 
 --
--- Name: service_handlers_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: service_handlers_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY service_handlers
@@ -1963,7 +1962,7 @@ ALTER TABLE ONLY service_handlers
 
 
 --
--- Name: services_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: services_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY services
@@ -1971,7 +1970,7 @@ ALTER TABLE ONLY services
 
 
 --
--- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY settings
@@ -1979,7 +1978,7 @@ ALTER TABLE ONLY settings
 
 
 --
--- Name: sms_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: sms_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY sms
@@ -1987,7 +1986,7 @@ ALTER TABLE ONLY sms
 
 
 --
--- Name: social_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: social_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY social
@@ -1995,7 +1994,7 @@ ALTER TABLE ONLY social
 
 
 --
--- Name: sources_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: sources_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY sources
@@ -2003,7 +2002,7 @@ ALTER TABLE ONLY sources
 
 
 --
--- Name: spotafriend_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: spotafriend_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY spotafriend
@@ -2011,7 +2010,7 @@ ALTER TABLE ONLY spotafriend
 
 
 --
--- Name: tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY tasks
@@ -2019,7 +2018,7 @@ ALTER TABLE ONLY tasks
 
 
 --
--- Name: user_access_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: user_access_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY user_access
@@ -2027,7 +2026,7 @@ ALTER TABLE ONLY user_access
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: apiUser; Tablespace:
 --
 
 ALTER TABLE ONLY users
@@ -2035,497 +2034,497 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: address_lookup_postcode; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: address_lookup_postcode; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX address_lookup_postcode ON address_lookup USING btree (postcode);
 
 
 --
--- Name: address_lookup_reference; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: address_lookup_reference; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX address_lookup_reference ON address_lookup USING btree (reference);
 
 
 --
--- Name: applications_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: applications_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX applications_company_id ON applications USING btree (company_id);
 
 
 --
--- Name: attributes_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: attributes_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX attributes_identity_id ON attributes USING btree (identity_id);
 
 
 --
--- Name: city_list_country; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: city_list_country; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX city_list_country ON city_list USING btree (country);
 
 
 --
--- Name: city_list_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: city_list_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX city_list_name ON city_list USING btree (name);
 
 
 --
--- Name: city_list_region; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: city_list_region; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX city_list_region ON city_list USING btree (region);
 
 
 --
--- Name: companies_public_key; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: companies_public_key; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX companies_public_key ON companies USING btree (public_key);
 
 
 --
--- Name: company_process_handlers_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_process_handlers_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX company_process_handlers_company_id ON company_process_handlers USING btree (company_id);
 
 
 --
--- Name: company_service_handlers_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_service_handlers_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX company_service_handlers_company_id ON company_service_handlers USING btree (company_id);
 
 
 --
--- Name: company_whitelist_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_whitelist_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX company_whitelist_company_id ON company_whitelist USING btree (company_id);
 
 
 --
--- Name: company_whitelist_company_id_value; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: company_whitelist_company_id_value; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX company_whitelist_company_id_value ON company_whitelist USING btree (company_id, value);
 
 
 --
--- Name: credential_whitelist_credential_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: credential_whitelist_credential_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX credential_whitelist_credential_id ON credential_whitelist USING btree (credential_id);
 
 
 --
--- Name: credential_whitelist_credential_id_value; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: credential_whitelist_credential_id_value; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX credential_whitelist_credential_id_value ON credential_whitelist USING btree (credential_id, value);
 
 
 --
--- Name: credentials_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: credentials_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX credentials_company_id ON credentials USING btree (company_id);
 
 
 --
--- Name: credentials_private; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: credentials_private; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX credentials_private ON credentials USING btree (private);
 
 
 --
--- Name: credentials_public; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: credentials_public; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX credentials_public ON credentials USING btree (public);
 
 
 --
--- Name: digested_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: digested_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX digested_name ON digested USING btree (name);
 
 
 --
--- Name: digested_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: digested_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX digested_source_id ON digested USING btree (source_id);
 
 
 --
--- Name: email_email; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: email_email; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX email_email ON email USING btree (email);
 
 
 --
--- Name: email_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: email_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX email_source_id ON email USING btree (source_id);
 
 
 --
--- Name: features_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: features_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX features_identity_id ON features USING btree (identity_id);
 
 
 --
--- Name: features_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: features_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX features_name ON features USING btree (name);
 
 
 --
--- Name: flags_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: flags_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX flags_identity_id ON flags USING btree (identity_id);
 
 
 --
--- Name: flags_identity_id_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: flags_identity_id_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX flags_identity_id_name ON flags USING btree (identity_id, name);
 
 
 --
--- Name: flags_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: flags_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX flags_name ON flags USING btree (name);
 
 
 --
--- Name: gates_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: gates_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX gates_identity_id ON gates USING btree (identity_id);
 
 
 --
--- Name: gates_identity_id_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: gates_identity_id_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX gates_identity_id_name ON gates USING btree (identity_id, name);
 
 
 --
--- Name: gates_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: gates_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX gates_name ON gates USING btree (name);
 
 
 --
--- Name: hook_errors_hook_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: hook_errors_hook_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX hook_errors_hook_id ON hook_errors USING btree (hook_id);
 
 
 --
--- Name: hooks_credential_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: hooks_credential_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX hooks_credential_id ON hooks USING btree (credential_id);
 
 
 --
--- Name: identities_public_key; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: identities_public_key; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX identities_public_key ON identities USING btree (public_key);
 
 
 --
--- Name: known_name_list_dmetaphone1; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: known_name_list_dmetaphone1; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX known_name_list_dmetaphone1 ON known_name_list USING btree (dmetaphone1);
 
 
 --
--- Name: known_name_list_dmetaphone2; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: known_name_list_dmetaphone2; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX known_name_list_dmetaphone2 ON known_name_list USING btree (dmetaphone2);
 
 
 --
--- Name: known_name_list_metaphone; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: known_name_list_metaphone; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX known_name_list_metaphone ON known_name_list USING btree (metaphone);
 
 
 --
--- Name: known_name_list_soundex; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: known_name_list_soundex; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX known_name_list_soundex ON known_name_list USING btree (soundex);
 
 
 --
--- Name: logs_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: logs_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX logs_company_id ON logs USING btree (company_id);
 
 
 --
--- Name: logs_credential_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: logs_credential_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX logs_credential_id ON logs USING btree (credential_id);
 
 
 --
--- Name: logs_user_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: logs_user_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX logs_user_id ON logs USING btree (user_id);
 
 
 --
--- Name: name_list_dmetaphone1; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: name_list_dmetaphone1; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX name_list_dmetaphone1 ON name_list USING btree (dmetaphone1);
 
 
 --
--- Name: name_list_dmetaphone2; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: name_list_dmetaphone2; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX name_list_dmetaphone2 ON name_list USING btree (dmetaphone2);
 
 
 --
--- Name: name_list_metaphone; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: name_list_metaphone; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX name_list_metaphone ON name_list USING btree (metaphone);
 
 
 --
--- Name: name_list_soundex; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: name_list_soundex; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX name_list_soundex ON name_list USING btree (soundex);
 
 
 --
--- Name: normalised_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: normalised_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX normalised_name ON normalised USING btree (name);
 
 
 --
--- Name: normalised_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: normalised_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX normalised_source_id ON normalised USING btree (source_id);
 
 
 --
--- Name: process_handlers_runlevel; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: process_handlers_runlevel; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX process_handlers_runlevel ON process_handlers USING btree (runlevel);
 
 
 --
--- Name: process_handlers_step; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: process_handlers_step; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX process_handlers_step ON process_handlers USING btree (step);
 
 
 --
--- Name: processes_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: processes_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX processes_name ON processes USING btree (name);
 
 
 --
--- Name: role_access_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: role_access_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX role_access_identity_id ON role_access USING btree (identity_id);
 
 
 --
--- Name: role_access_resource; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: role_access_resource; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX role_access_resource ON role_access USING btree (resource);
 
 
 --
--- Name: role_access_role; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: role_access_role; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX role_access_role ON role_access USING btree (role);
 
 
 --
--- Name: scores_attribute_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: scores_attribute_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX scores_attribute_id ON scores USING btree (attribute_id);
 
 
 --
--- Name: service_handlers_service_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: service_handlers_service_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX service_handlers_service_id ON service_handlers USING btree (service_id);
 
 
 --
--- Name: service_handlers_source; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: service_handlers_source; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX service_handlers_source ON service_handlers USING btree (source);
 
 
 --
--- Name: services_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: services_name; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX services_name ON services USING btree (name);
 
 
 --
--- Name: settings_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: settings_company_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX settings_company_id ON settings USING btree (company_id);
 
 
 --
--- Name: settings_company_id_category_property; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: settings_company_id_category_property; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX settings_company_id_category_property ON settings USING btree (company_id, category, property);
 
 
 --
--- Name: sms_phone; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: sms_phone; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX sms_phone ON sms USING btree (phone);
 
 
 --
--- Name: sms_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: sms_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX sms_source_id ON sms USING btree (source_id);
 
 
 --
--- Name: social_application_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: social_application_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX social_application_id ON social USING btree (application_id);
 
 
 --
--- Name: social_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: social_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX social_source_id ON social USING btree (source_id);
 
 
 --
--- Name: sources_user_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: sources_user_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX sources_user_id ON sources USING btree (user_id);
 
 
 --
--- Name: spotafriend_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: spotafriend_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX spotafriend_source_id ON spotafriend USING btree (source_id);
 
 
 --
--- Name: tasks_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: tasks_source_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX tasks_source_id ON tasks USING btree (source_id);
 
 
 --
--- Name: user_access_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: user_access_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX user_access_identity_id ON user_access USING btree (identity_id);
 
 
 --
--- Name: user_access_resource; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: user_access_resource; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX user_access_resource ON user_access USING btree (resource);
 
 
 --
--- Name: user_access_user_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: user_access_user_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX user_access_user_id ON user_access USING btree (user_id);
 
 
 --
--- Name: users_credential_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: users_credential_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX users_credential_id ON users USING btree (credential_id);
 
 
 --
--- Name: users_credential_id_username; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: users_credential_id_username; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE UNIQUE INDEX users_credential_id_username ON users USING btree (credential_id, username);
 
 
 --
--- Name: users_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: users_identity_id; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX users_identity_id ON users USING btree (identity_id);
 
 
 --
--- Name: users_username; Type: INDEX; Schema: public; Owner: apiUser; Tablespace: 
+-- Name: users_username; Type: INDEX; Schema: public; Owner: apiUser; Tablespace:
 --
 
 CREATE INDEX users_username ON users USING btree (username);

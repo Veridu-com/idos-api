@@ -281,6 +281,34 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
+        $members = $this->table('members');
+        $members
+            ->addColumn('company_id', 'integer', ['null' => false])
+            // ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('username', 'text', ['null' => false, 'unique' => true])
+            ->addColumn('role', 'text', ['null' => false, 'default' => 'member'])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addIndex('company_id')
+            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         $settings = $this->table('settings');
         $settings
             ->addColumn('company_id', 'integer', ['null' => false])

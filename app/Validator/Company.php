@@ -66,4 +66,4 @@ class Company implements ValidatorInterface {
             Validator::digit()
         )->assert($parentId);
     }
-}
+    }

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace App\Factory;
 
+use App\Entity\EntityInterface;
+
 /**
  * Entity Factory Implementation.
  */
@@ -29,7 +31,7 @@ class Entity extends AbstractFactory {
      *
      * @return mixed
      */
-    public function create($name, array $attributes = []) {
+    public function create($name, array $attributes = []) : EntityInterface{
         $class = $this->getClassName($name);
 
         if (class_exists($class))
