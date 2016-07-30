@@ -11,14 +11,11 @@ namespace App\Entity;
  *
  * @apiEntity schema/setting/settingEntity.json
  *
- * @property int 	$id
- * @property int 	$company_id
- * @property string $section
- * @property string $property
- * @property string $value
- * @property int    $created_at
- * @property int    $updated_at
- * @FIXME fix comments
+ * @property int 	    $id
+ * @property int        $identity_id
+ * @property string     $role
+ * @property string     $resource
+ * @property int 	    $access
  */
 class RoleAccess extends AbstractEntity {
     /**

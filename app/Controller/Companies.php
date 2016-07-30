@@ -25,19 +25,19 @@ class Companies implements ControllerInterface {
      *
      * @var App\Repository\CompanyInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
      */
-    protected $commandBus;
+    private $commandBus;
     /**
      * Command Factory instance.
      *
      * @var App\Factory\Command
      */
-    protected $commandFactory;
+    private $commandFactory;
 
     /**
      * Class constructor.
@@ -109,8 +109,8 @@ class Companies implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $body = [
-            'data'    => $targetUser->toArray(),
-            'updated' => $targetUser->updated_at
+            'data'    => $targetCompany->toArray(),
+            'updated' => $targetCompany->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -202,7 +202,7 @@ class Companies implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Company\\DeleteOne');
-        $command->setParameter('companyId', $targetUser->id);
+        $command->setParameter('companyId', $targetCompany->id);
         $deleted = $this->commandBus->handle($command);
 
         $body = [
@@ -239,11 +239,11 @@ class Companies implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetUser->id);
-        $targetUser = $this->commandBus->handle($command);
+            ->setParameter('companyId', $targetCompany->id);
+        $targetCompany = $this->commandBus->handle($command);
 
         $body = [
-            'data'    => $targetUser->toArray(),
+            'data'    => $targetCompany->toArray(),
             'updated' => time()
         ];
 

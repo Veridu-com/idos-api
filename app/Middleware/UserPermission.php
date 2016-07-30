@@ -27,7 +27,7 @@ class UserPermission implements MiddlewareInterface {
     public function __construct(ContainerInterface $container, string $resource, string $accessLevel) {
         $this->container            = $container;
         $this->resource             = $resource;
-        $this->accessLevel          = +$accessLevel;
+        $this->accessLevel          = (int) $accessLevel;
        
 
         $this->defaultPermissions   = [

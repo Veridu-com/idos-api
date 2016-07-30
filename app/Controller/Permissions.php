@@ -18,7 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Handles requests to /companies/{companySlug}/permissions.
  */
-class Permissions extends AbstractController {
+class Permissions implements ControllerInterface {
     /**
      * Permission Repository instance.
      *

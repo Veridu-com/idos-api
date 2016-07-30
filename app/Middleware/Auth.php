@@ -263,7 +263,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserPubKey(ServerRequestInterface $request, $reqKey) {
+    private function handleUserPubKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
         try {
             $targetUser = $this->userRepository->findByPubKey($reqKey);
         } catch (NotFound $e) {
@@ -283,7 +283,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserPrivKey(ServerRequestInterface $request, $reqKey) {
+    private function handleUserPrivKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
         try {
             $actingUser = $this->userRepository->findByPrivKey($reqKey);
         } catch (NotFound $e) {
