@@ -20,7 +20,7 @@ interface EntityInterface {
      *
      * @return App\Entity\EntityInterface
      */
-    public function hydrate(array $attributes = []);
+    public function hydrate(array $attributes = []) : self;
 
     /**
      * Gets the entity cache keys.
@@ -46,26 +46,26 @@ interface EntityInterface {
      *
      * @return array
      */
-    public function toArray();
+    public function toArray() : array;
 
     /**
      * Serialize the entity instance to an array.
      *
      * @return array
      */
-    public function serialize();
+    public function serialize() : array;
 
     /**
      * Determine if the entity exists on the repository.
      *
      * @return bool
      */
-    public function exists();
+    public function exists() : bool;
 
     /**
      * Determine if the entity have been modified.
      *
      * @return bool
      */
-    public function isDirty();
+    public function isDirty() : bool;
 }
