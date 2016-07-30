@@ -10,10 +10,10 @@ use App\Command\RoleAccess\CreateNew;
 use App\Command\RoleAccess\DeleteAll;
 use App\Command\RoleAccess\DeleteOne;
 use App\Command\RoleAccess\UpdateOne;
+use App\Entity\EntityInterface;
 use App\Repository\RoleAccessInterface;
 use App\Validator\RoleAccess as RoleAccessValidator;
 use Interop\Container\ContainerInterface;
-use App\Entity\EntityInterface;
 
 /**
  * Handles RoleAccess commands.
@@ -119,10 +119,10 @@ class RoleAccess implements HandlerInterface {
         $this->validator->assertId($command->identityId);
 
         // finds entity
-        $entity = $this->repository->findOne($command->identityId, $command->role, $command->resource);
-        $entity->access = $command->access;
+        $entity            = $this->repository->findOne($command->identityId, $command->role, $command->resource);
+        $entity->access    = $command->access;
         $entity->updatedAt = time();
-                
+
         // saves entity
         $this->repository->save($entity);
 

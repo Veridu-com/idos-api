@@ -6,10 +6,8 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
-use App\Repository\DBCredential;
-use App\Exception\NotFound;
 use App\Entity\EntityInterface;
+use App\Entity\User;
 use Illuminate\Support\Collection;
 
 /**
@@ -35,7 +33,7 @@ class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
     public function findByIdentityAndRole(int $identityId, string $role) : Collection {
         return $this->findBy([
             'identity_id' => $identityId,
-            'role' => $role
+            'role'        => $role
         ]);
     }
 
@@ -45,8 +43,8 @@ class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
     public function findOne(int $identityId, string $role, string $resource) : EntityInterface {
         return $this->findOneBy([
             'identity_id' => $identityId,
-            'role' => $role,
-            'resource' => $resource
+            'role'        => $role,
+            'resource'    => $resource
         ]);
     }
 
@@ -56,8 +54,8 @@ class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
     public function deleteOne(int $identityId, string $role, string $resource) : int {
         return $this->deleteBy([
             'identity_id' => $identityId,
-            'role' => $role,
-            'resource' => $resource
+            'role'        => $role,
+            'resource'    => $resource
         ]);
     }
 

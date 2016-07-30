@@ -31,7 +31,7 @@ class CreateNew extends AbstractCommand {
      */
     public $access;
     /**
-     * RoleAccess's owner's identity id
+     * RoleAccess's owner's identity id.
      *
      * @var object
      */

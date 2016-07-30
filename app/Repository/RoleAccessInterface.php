@@ -16,8 +16,8 @@ interface RoleAccessInterface extends RepositoryInterface {
     /**
      * Find a role access by the user's identity id and the role route.
      *
-     * @param int       $identityId
-     * @param string    $role
+     * @param int    $identityId
+     * @param string $role
      *
      * @throws App\Exception\NotFound
      *
@@ -26,9 +26,9 @@ interface RoleAccessInterface extends RepositoryInterface {
     public function findByIdentityAndRole(int $identityId, string $role) :  Collection;
 
     /**
-     * Find role accesses by the user's identity id
+     * Find role accesses by the user's identity id.
      *
-     * @param int       $identityId
+     * @param int $identityId
      *
      * @throws App\Exception\NotFound
      *
@@ -39,7 +39,7 @@ interface RoleAccessInterface extends RepositoryInterface {
     /**
      * Find a role access by the user's identity id.
      *
-     * @param int       $identityId
+     * @param int $identityId
      *
      * @throws App\Exception\NotFound
      *
@@ -50,7 +50,7 @@ interface RoleAccessInterface extends RepositoryInterface {
     /**
      * Find a role access by the user's identity id.
      *
-     * @param int       $identityId
+     * @param int $identityId
      *
      * @throws App\Exception\NotFound
      *
@@ -61,7 +61,7 @@ interface RoleAccessInterface extends RepositoryInterface {
     /**
      * Deletes all role access configuration of the gven identity.
      *
-     * @param int       $identityId
+     * @param int $identityId
      *
      * @throws App\Exception\NotFound
      *

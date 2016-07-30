@@ -22,9 +22,9 @@ class RoleAccess extends AbstractEntity {
      * Cache prefix.
      */
     const CACHE_PREFIX      = 'RoleAccess';
-    
+
     /**
-     * Access levels following UNIX file permission standard
+     * Access levels following UNIX file permission standard.
      */
     const ACCESS_FORBIDDEN  = 0x00;
     const ACCESS_EXECUTE    = 0x01;
@@ -40,7 +40,6 @@ class RoleAccess extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
 
     /**
      * {@inheritdoc}

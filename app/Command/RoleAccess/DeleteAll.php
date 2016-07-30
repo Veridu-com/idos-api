@@ -13,7 +13,7 @@ use App\Command\AbstractCommand;
  */
 class DeleteAll extends AbstractCommand {
     /**
-     * RoleAccess's owner's identity id
+     * RoleAccess's owner's identity id.
      *
      * @var object
      */

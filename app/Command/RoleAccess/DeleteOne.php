@@ -27,7 +27,7 @@ class DeleteOne extends AbstractCommand {
     public $resource;
 
     /**
-     * RoleAccess's owner's identity id
+     * RoleAccess's owner's identity id.
      *
      * @var object
      */

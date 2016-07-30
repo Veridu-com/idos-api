@@ -5,7 +5,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Middleware;
 
@@ -518,7 +518,7 @@ class Auth implements MiddlewareInterface {
             if ($companySlug) {
                 $request = $this->populateRequestCompanies($companySlug, $request);
             }
-            
+
             // Resolves {userName} route argument
             if ($userName) {
                 $request = $this->populateRequestUsers($userName, $request);
@@ -527,17 +527,16 @@ class Auth implements MiddlewareInterface {
             return $next($request, $response);
         }
 
-
         throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
     }
 
     /**
      * Populates the request with the found user on the request.
      *
-     * @param      string                                    $username  The username
-     * @param      \Psr\Http\Message\ServerRequestInterface  $request   The request object
+     * @param string                                   $username The username
+     * @param \Psr\Http\Message\ServerRequestInterface $request  The request object
      * 
-     * @return     \Psr\Http\Message\ServerRequestInterface  $request   The modified request object
+     * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
     private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
             // Loads Target User
@@ -571,10 +570,10 @@ class Auth implements MiddlewareInterface {
     /**
      * Populates the request with the found companies on the request.
      *
-     * @param      string                                    $username  The username
-     * @param      \Psr\Http\Message\ServerRequestInterface  $request   The request object
+     * @param string                                   $username The username
+     * @param \Psr\Http\Message\ServerRequestInterface $request  The request object
      * 
-     * @return     \Psr\Http\Message\ServerRequestInterface  $request   The modified request object
+     * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
     private function populateRequestCompanies(string $companySlug, ServerRequestInterface $request) : ServerRequestInterface {
         // Loads Target Company

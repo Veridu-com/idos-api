@@ -23,7 +23,7 @@ class RolesSeed extends AbstractSeed {
             ->save();
 
         return $roles;
-        
+
     }
 
 }

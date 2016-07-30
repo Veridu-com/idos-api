@@ -6,11 +6,10 @@
 
 namespace App\Route;
 
-use Slim\App;
-use App\Middleware\Auth;
-use App\Middleware\UserPermission;
-use Interop\Container\ContainerInterface;
 use App\Entity\RoleAccess as RoleAccessEntity;
+use App\Middleware\Auth;
+use Interop\Container\ContainerInterface;
+use Slim\App;
 
 /**
  * RoleAccess routing definitions.

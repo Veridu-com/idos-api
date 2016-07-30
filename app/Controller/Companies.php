@@ -5,7 +5,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -20,7 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * Handles requests to /companies and /companies/{companySlug}.
  */
 class Companies implements ControllerInterface {
-        /**
+    /**
      * Company Repository instance.
      *
      * @var App\Repository\CompanyInterface

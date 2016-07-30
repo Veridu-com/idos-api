@@ -4,11 +4,9 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
-
-use App\Helper\Utils;
 
 /**
  * Users Entity.
@@ -35,6 +33,7 @@ class User extends AbstractEntity {
 
     public function setUsernameAttribute($value) {
         $this->attributes['username'] = is_string($value) ? $value : stream_get_contents($value, -1, 0);
+
         return $this;
     }
 

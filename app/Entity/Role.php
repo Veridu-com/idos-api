@@ -21,46 +21,46 @@ class Role extends AbstractEntity {
      * Cache prefix.
      */
     const CACHE_PREFIX      = 'Role';
-    
+
     /**
      * Company role.
      *
-     * @var        string
+     * @var string
      */
     const COMPANY  = 'company';
 
     /**
      * Company owner role.
      *
-     * @var        string
+     * @var string
      */
     const COMPANY_OWNER  = 'company.owner';
 
     /**
      * Company admin role.
      *
-     * @var        string
+     * @var string
      */
     const COMPANY_ADMIN  = 'company.admin';
 
     /**
      * Company member role.
      *
-     * @var        string
+     * @var string
      */
     const COMPANY_MEMBER  = 'company.member';
 
     /**
      * User role.
      *
-     * @var        string
+     * @var string
      */
     const USER  = 'user';
 
     /**
      * Guest role.
      *
-     * @var        string
+     * @var string
      */
     const GUEST  = 'guest';
 
@@ -73,7 +73,6 @@ class Role extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at'];
-
 
     /**
      * {@inheritdoc}

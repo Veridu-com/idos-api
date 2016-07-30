@@ -5,15 +5,13 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
 use App\Entity\EntityInterface;
 use App\Entity\User;
 use App\Exception\NotFound;
-use App\Repository\DBCredential;
-
 /**
  * Database-based User Repository Implementation.
  */
@@ -42,7 +40,7 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             ->first();
 
         if (empty($result))
-            throw new NotFound;
+            throw new NotFound();
 
         return $result;
     }
@@ -68,7 +66,7 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             ->first();
 
         if (empty($result))
-            throw new NotFound;
+            throw new NotFound();
 
         return $result;
     }

@@ -39,7 +39,7 @@ class RoleAccess implements ValidatorInterface {
      * @return void
      */
     public function assertAccess(int $value) {
-        Validator::digit()->length(1,1)->in([
+        Validator::digit()->length(1, 1)->in([
             0x00,
             0x01,
             0x02,
