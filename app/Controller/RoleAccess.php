@@ -70,8 +70,8 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
-        $entities = $this->repository->findByIdentity($actingUser->identity_id);
+        $targetUser = $request->getAttribute('targetUser');
+        $entities = $this->repository->findByIdentity($targetUser->identity_id);
 
         $body = [
             'data'    => $entities->toArray()
@@ -99,11 +99,11 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
+        $targetUser = $request->getAttribute('targetUser');
         $role = $request->getAttribute('roleName');
         $resource = $request->getAttribute('resource');
 
-        $entities = $this->repository->findOne($actingUser->identity_id, $role, $resource);
+        $entities = $this->repository->findOne($targetUser->identity_id, $role, $resource);
 
         $body = [
             'data'    => $entities->toArray()
@@ -130,10 +130,10 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAllFromRole(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
+        $targetUser = $request->getAttribute('targetUser');
         $role = $request->getAttribute('roleName');
 
-        $entities = $this->repository->findByIdentityAndRole($actingUser->identity_id, $role);
+        $entities = $this->repository->findByIdentityAndRole($targetUser->identity_id, $role);
 
         $body = [
             'data'    => $entities->toArray()
@@ -160,13 +160,13 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
+        $targetUser = $request->getAttribute('targetUser');
         $body = $request->getParsedBody();
 
         $command = $this->commandFactory->create('RoleAccess\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('identityId', $actingUser->identityId);
+            ->setParameter('identityId', $targetUser->identityId);
         $company = $this->commandBus->handle($command);
 
         $body = [
@@ -195,10 +195,10 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
-
+        $targetUser = $request->getAttribute('targetUser');
+        
         $command = $this->commandFactory->create('RoleAccess\\DeleteAll');
-        $command->setParameter('identityId', $actingUser->identityId);
+        $command->setParameter('identityId', $targetUser->identityId);
 
         $deleted = $this->commandBus->handle($command);
 
@@ -228,12 +228,12 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
+        $targetUser = $request->getAttribute('targetUser');
         $role = $request->getAttribute('roleName');
         $resource = $request->getAttribute('resource');
 
         $command = $this->commandFactory->create('RoleAccess\\DeleteOne');
-        $command->setParameter('identityId', $actingUser->identityId);
+        $command->setParameter('identityId', $targetUser->identityId);
         $command->setParameter('role', $role);
         $command->setParameter('resource', $resource);
 
@@ -268,7 +268,7 @@ class RoleAccess implements ControllerInterface {
      * @see App\Command\RoleAccess\UpdateOne
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
+        $targetUser = $request->getAttribute('targetUser');
 
         $role = $request->getAttribute('roleName');
         $resource = $request->getAttribute('resource');
@@ -279,7 +279,7 @@ class RoleAccess implements ControllerInterface {
             ->setParameters($request->getParsedBody())
             ->setParameter('role', $role)
             ->setParameter('resource', $resource)
-            ->setParameter('identityId', $actingUser->identityId);
+            ->setParameter('identityId', $targetUser->identityId);
         $company = $this->commandBus->handle($command);
 
         $body = [

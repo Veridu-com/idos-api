@@ -308,8 +308,8 @@ $container['permissionMiddleware'] = function (ContainerInterface $container) {
 
 // User Permission Middleware
 $container['userPermissionMiddleware'] = function (ContainerInterface $container) {
-    return function ($resource) use ($container) {
-        return new Middleware\UserPermission($container, $resource);
+    return function ($resource, $resourceAccessLevel) use ($container) {
+        return new Middleware\UserPermission($container, $resource, $resourceAccessLevel);
     };
 };
 

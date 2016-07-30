@@ -9,9 +9,10 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\EntityInterface;
 use App\Entity\User;
-use App\Repository\DBCredential;
 use App\Exception\NotFound;
+use App\Repository\DBCredential;
 
 /**
  * Database-based User Repository Implementation.
@@ -33,15 +34,27 @@ class DBUser extends AbstractDBRepository implements UserInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByUserName($userName, $credentialId) {
+    public function findByUserNameAndCompany(string $username, int $companyId) : EntityInterface {
         $result = $this->query()
-            ->where('username', $userName)
-            ->where('credential_id', $credentialId)
+            ->selectRaw('users.*, credentials.company_id')
+            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
+            ->where('credentials.company_id', '=', $companyId)
             ->first();
+
         if (empty($result))
-            throw new NotFound();
+            throw new NotFound;
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByUserName($username, $credentialId) {
+        return $this->findOneBy([
+            'username'      => $username,
+            'credential_id' => $credentialId
+        ]);
     }
 
     /**
@@ -54,9 +67,8 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             ->where('credentials.private', '=', $privateKey)
             ->first();
 
-
         if (empty($result))
-            throw new NotFound();
+            throw new NotFound;
 
         return $result;
     }

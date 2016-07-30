@@ -510,58 +510,96 @@ class Auth implements MiddlewareInterface {
 
         // Request has proper Authorization, proceed with regular process
         if ($hasAuthorization) {
-            $routeInfo = $request->getAttribute('routeInfo');
-
-            // Resolves {userName} route argument
-            if (! empty($routeInfo[2]['userName'])) {
-                // Loads Target User
-                if ($routeInfo[2]['userName'] === '_self') {
-                    // Self Reference for User Token / User Private Key
-                    $user = $request->getAttribute('actingUser');
-                    if (empty($user))
-                        throw new AppException('InvalidUserNameReference');
-                } else {
-                    // Load User
-                    $company = $request->getAttribute('targetCompany');
-                    if (empty($company))
-                        $company = $request->getAttribute('actingCompany');
-                    if (empty($company))
-                        throw new AppException('InvalidRequest');
-                    $user = $this->userRepository->findOrCreate($routeInfo[2]['userName'], $company->id);
-                }
-
-                // Stores Target User for future use
-                $request = $request->withAttribute('targetUser', $user);
-            }
+            $routeInfo      = $request->getAttribute('routeInfo');
+            $companySlug    = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
+            $userName       = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
 
             // Resolves {companySlug} route argument
-            if (! empty($routeInfo[2]['companySlug'])) {
-                // Loads Target Company
-                if ($routeInfo[2]['companySlug'] === '_self') {
-                    // Self Reference for Credential Token / Compamny Private Key
-                    $targetCompany = $request->getAttribute('actingCompany');
-                    if (empty($targetCompany))
-                        throw new AppException('InvalidCompanyNameReference');
-                } else {
-                    // Load Company
-                    $targetCompany = $this->companyRepository->findBySlug($routeInfo[2]['companySlug']);
-                    if (empty($targetCompany))
-                        throw new AppException('InvalidCompanyNameReference');
-                    // Checks if access hierarchy is respected (Parent to Child or Company to itself)
-                    if ($this->authorizationRequirement != self::NONE) {
-                        $actingCompany = $request->getAttribute('actingCompany');
-                        if (($actingCompany->id != $targetCompany->id) && ($actingCompany->id != $targetCompany->parent_id))
-                            throw new AppException('AccessDenied');
-                    }
-                }
-
-                // Stores Target Company for future use
-                $request = $request->withAttribute('targetCompany', $targetCompany);
+            if ($companySlug) {
+                $request = $this->populateRequestCompanies($companySlug, $request);
+            }
+            
+            // Resolves {userName} route argument
+            if ($userName) {
+                $request = $this->populateRequestUsers($userName, $request);
             }
 
             return $next($request, $response);
         }
 
+
         throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
+    }
+
+    /**
+     * Populates the request with the found user on the request.
+     *
+     * @param      string                                    $username  The username
+     * @param      \Psr\Http\Message\ServerRequestInterface  $request   The request object
+     * 
+     * @return     \Psr\Http\Message\ServerRequestInterface  $request   The modified request object
+     */
+    private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
+            // Loads Target User
+            if ($username === '_self') {
+                // Self Reference for User Token / User Private Key
+                $user = $request->getAttribute('actingUser');
+                if (empty($user)){
+                    throw new AppException('InvalidUserNameReference');
+                }
+            } else {
+                // Load User
+                $company = $request->getAttribute('targetCompany');
+                if (empty($company)) {
+                    $company = $request->getAttribute('actingCompany');
+                }
+                if (empty($company)) {
+                    throw new AppException('InvalidRequest');
+                }
+
+                // @TODO: Didn't understand why findOrCreate
+                $user = $this->userRepository->findByUserNameAndCompany($username, $company->id);
+            }
+
+            // Stores Target User for future use
+
+            $request = $request->withAttribute('targetUser', $user);
+
+            return $request;
+    }
+
+    /**
+     * Populates the request with the found companies on the request.
+     *
+     * @param      string                                    $username  The username
+     * @param      \Psr\Http\Message\ServerRequestInterface  $request   The request object
+     * 
+     * @return     \Psr\Http\Message\ServerRequestInterface  $request   The modified request object
+     */
+    private function populateRequestCompanies(string $companySlug, ServerRequestInterface $request) : ServerRequestInterface {
+        // Loads Target Company
+        if ($companySlug === '_self') {
+            // Self Reference for Credential Token / Compamny Private Key
+            $targetCompany = $request->getAttribute('actingCompany');
+            if (empty($targetCompany))
+                throw new AppException('InvalidCompanyNameReference');
+        } else {
+            // Load Company
+            $targetCompany = $this->companyRepository->findBySlug($companySlug);
+            if (empty($targetCompany))
+                throw new AppException('InvalidCompanyNameReference');
+            // Checks if access hierarchy is respected (Parent to Child or Company to itself)
+            if ($this->authorizationRequirement != self::NONE) {
+                $actingCompany = $request->getAttribute('actingCompany');
+
+            }
+        }
+
+        // TODO: When there is a acting user there's no need for this test
+        // if (($actingCompany->id != $targetCompany->id) && ($actingCompany->id != $targetCompany->parent_id))
+        //     throw new AppException('AccessDenied');
+
+        // Stores Target Company for future use
+        return $request->withAttribute('targetCompany', $targetCompany);
     }
 }

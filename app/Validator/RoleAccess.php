@@ -6,6 +6,7 @@
 
 namespace App\Validator;
 
+use App\Entity\Role;
 use Respect\Validation\Validator;
 
 /**
@@ -19,14 +20,13 @@ class RoleAccess implements ValidatorInterface {
      *
      * @return void
      */
-    public function assertRoleName($value) {
+    public function assertRoleName(string $value) {
         Validator::in([
-            'company',
-            'company.owner',
-            'company.admin',
-            'company.member',
-            'user',
-            'guest'
+            Role::COMPANY,
+            Role::COMPANY_OWNER,
+            Role::COMPANY_ADMIN,
+            Role::USER,
+            Role::GUEST
         ])->assert($value);
         // @FIXME shouldn't this provider a better error message?
     }
@@ -38,15 +38,15 @@ class RoleAccess implements ValidatorInterface {
      *
      * @return void
      */
-    public function assertAccess($value) {
-        Validator::stringType()->length(1,1)->in([
-            '0',
-            '1',
-            '2',
-            '4',
-            '5',
-            '6',
-            '7'
+    public function assertAccess(int $value) {
+        Validator::digit()->length(1,1)->in([
+            0x00,
+            0x01,
+            0x02,
+            0x04,
+            0x05,
+            0x06,
+            0x07
         ])->assert($value);
 
     }
@@ -59,8 +59,7 @@ class RoleAccess implements ValidatorInterface {
      * @return void
      */
     public function assertResource($value) {
-        $split = explode('.', $value);
-        Validator::in(['get', 'post', 'put'])->assert($split[0]);
+        Validator::stringType()->assert($value);
     }
 
     /**

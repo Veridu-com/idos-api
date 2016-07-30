@@ -28,13 +28,27 @@ class UsersSeed extends AbstractSeed {
             [
                 'credential_id' => 1,
                 'identity_id'   => 1,
-
-                'username'      => md5('JohnDoe')       // 9fd9f63e0d6487537569075da85a0c7f2     
+                'username'      => md5('JohnDoe')       // 9fd9f63e0d6487537569075da85a0c7f  
             ],
             [
-                'credential_id' => 1,
+                'credential_id' => 2,
                 'identity_id'   => 2,
                 'username'      => md5('JohnDoe') . '2' // 9fd9f63e0d6487537569075da85a0c7f2
+            ]
+        ];
+
+        $roleAccessData = [
+            [
+                'identity_id'   => 1,
+                'role'          => 'user',
+                'resource'      => 'roleAccess:listAll',
+                'access'        => 0x04,
+            ],
+            [
+                'identity_id'   => 2,
+                'role'          => 'user',
+                'resource'      => 'roleAccess:listAll',
+                'access'        => 0x04
             ]
         ];
 

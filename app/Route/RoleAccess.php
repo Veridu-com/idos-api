@@ -6,15 +6,16 @@
 
 namespace App\Route;
 
+use Slim\App;
 use App\Middleware\Auth;
 use App\Middleware\UserPermission;
 use Interop\Container\ContainerInterface;
-use Slim\App;
+use App\Entity\RoleAccess as RoleAccessEntity;
 
 /**
  * RoleAccess routing definitions.
  *
- * @link docs/access/roles/overview.md
+ * @link docs/access/roles/{username}/overview.md
  * @see App\Controller\RoleAccess
  */
 class RoleAccess implements RouteInterface {
@@ -46,17 +47,17 @@ class RoleAccess implements RouteInterface {
             );
         };
 
-        $container            = $app->getContainer();
-        $authMiddleware       = $container->get('authMiddleware');
-        $userPermissionMiddleware = $container->get('userPermissionMiddleware');
+        $container                  = $app->getContainer();
+        $authMiddleware             = $container->get('authMiddleware');
+        $userPermissionMiddleware   = $container->get('userPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $userPermissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $userPermissionMiddleware);
-        self::createNew($app, $authMiddleware, $userPermissionMiddleware);
         self::listAllFromRole($app, $authMiddleware, $userPermissionMiddleware);
         self::getOne($app, $authMiddleware, $userPermissionMiddleware);
+        self::createNew($app, $authMiddleware, $userPermissionMiddleware);
         self::updateOne($app, $authMiddleware, $userPermissionMiddleware);
         self::deleteOne($app, $authMiddleware, $userPermissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $userPermissionMiddleware);
     }
 
     /**
@@ -81,11 +82,11 @@ class RoleAccess implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $userPermission) {
         $app
             ->get(
-                '/access/roles',
+                '/access/roles/{companySlug}/{userName:[a-zA-Z0-9_-]+}',
                 'App\Controller\RoleAccess:listAll'
             )
-            ->add($userPermission('GET /access/roles'))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($userPermission('roleAccess:listAll', RoleAccessEntity::ACCESS_READ))
+            ->add($auth(Auth::USER_PRIVKEY | Auth::COMP_PRIVKEY))
             ->setName('roleAccess:listAll');
     }
 
@@ -111,11 +112,11 @@ class RoleAccess implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $userPermission) {
         $app
             ->post(
-                '/access/roles',
+                '/access/roles/{companySlug}/{userName:[a-zA-Z0-9_-]+}',
                 'App\Controller\RoleAccess:createNew'
             )
-            ->add($userPermission('POST /access/roles'))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($userPermission('roleAccess:createNew', RoleAccessEntity::ACCESS_WRITE))
+            ->add($auth(Auth::USER_PRIVKEY | Auth::COMP_PRIVKEY))
             ->setName('roleAccess:createNew');
     }
 
@@ -141,11 +142,11 @@ class RoleAccess implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $userPermission) {
         $app
             ->delete(
-                '/access/roles',
+                '/access/roles/{companySlug}/{userName:[a-zA-Z0-9_-]+}',
                 'App\Controller\RoleAccess:deleteAll'
             )
-            ->add($userPermission('DELETE /access/roles'))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($userPermission('roleAccess:deleteAll', RoleAccessEntity::ACCESS_WRITE))
+            ->add($auth(Auth::USER_PRIVKEY | Auth::COMP_PRIVKEY))
             ->setName('roleAccess:deleteAll');
     }
 
@@ -169,11 +170,11 @@ class RoleAccess implements RouteInterface {
     private static function listAllFromRole(App $app, callable $auth, callable $userPermission) {
         $app
             ->get(
-                '/access/roles/{roleName}',
+                '/access/roles/{companySlug:[a-zA-Z0-9_-]+}/{userName:[a-zA-Z0-9_-]+}/{roleName:[a-zA-Z0-9_-]+}',
                 'App\Controller\RoleAccess:listAllFromRole'
             )
-            ->add($userPermission('GET /access/roles/:roleName'))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($userPermission('roleAccess:listAllFromRole', RoleAccessEntity::ACCESS_READ))
+            ->add($auth(Auth::USER_PRIVKEY | Auth::COMP_PRIVKEY))
             ->setName('roleAccess:listAllFromRole');
     }
 
@@ -197,11 +198,11 @@ class RoleAccess implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $userPermission) {
         $app
             ->get(
-                '/access/roles/{roleName}/{resource}',
+                '/access/roles/{companySlug:[a-zA-Z0-9_-]+}/{userName:[a-zA-Z0-9_-]+}/{roleName:[a-zA-Z0-9_-]+}/{resource}',
                 'App\Controller\RoleAccess:getOne'
             )
-            ->add($userPermission('get.access.roles.{role}.{resource}'))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($userPermission('roleAccess:getOne', RoleAccessEntity::ACCESS_READ))
+            ->add($auth(Auth::USER_PRIVKEY | Auth::COMP_PRIVKEY))
             ->setName('roleAccess:getOne');
     }
 
@@ -225,11 +226,11 @@ class RoleAccess implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $userPermission) {
         $app
             ->put(
-                '/access/roles/{roleName}/{resource}',
+                '/access/roles/{companySlug:[a-zA-Z0-9_-]+}/{userName:[a-zA-Z0-9_-]+}/{roleName:[a-zA-Z0-9_-]+}/{resource}',
                 'App\Controller\RoleAccess:updateOne'
             )
-            ->add($userPermission('put.access.roles.{role}.{resource}'))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($userPermission('roleAccess:updateOne', RoleAccessEntity::ACCESS_WRITE))
+            ->add($auth(Auth::USER_PRIVKEY | Auth::COMP_PRIVKEY))
             ->setName('roleAccess:updateOne');
     }
 
@@ -255,11 +256,11 @@ class RoleAccess implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $userPermission) {
         $app
             ->delete(
-                '/access/roles/{roleName}/{resource}',
+                '/access/roles/{companySlug:[a-zA-Z0-9_-]+}/{userName:[a-zA-Z0-9_-]+}/{roleName:[a-zA-Z0-9_-]+}/{resource}',
                 'App\Controller\RoleAccess:deleteOne'
             )
-            ->add($userPermission('delete.access.roles.{role}.{resource}'))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($userPermission('roleAccess:deleteOne', RoleAccessEntity::ACCESS_WRITE))
+            ->add($auth(Auth::USER_PRIVKEY | Auth::COMP_PRIVKEY))
             ->setName('roleAccess:deleteOne');
     }
 }

@@ -198,13 +198,8 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-<<<<<<< HEAD
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetUser = $request->getAttribute('targetUser');
-=======
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
->>>>>>> 6e14bbb3592088e6efac877989d53991663218d0
 
         $command = $this->commandFactory->create('Company\\DeleteOne');
         $command->setParameter('companyId', $targetUser->id);
@@ -238,13 +233,8 @@ class Companies implements ControllerInterface {
      *
      * @see App\Command\Company\UpdateOne
      */
-<<<<<<< HEAD
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) {
-        $targetUser = $request->getAttribute('targetUser');
-=======
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
->>>>>>> 6e14bbb3592088e6efac877989d53991663218d0
 
         $command = $this->commandFactory->create('Company\\UpdateOne');
         $command
