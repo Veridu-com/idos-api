@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -32,17 +31,30 @@ class Setting extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $visible = ['section', 'property', 'value', 'created_at', 'updated_at'];
-
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
 
-    public function getValueAttribute($value) {
+    /**
+     * Property mutator (getter) for $value.
+     *
+     * @param mixed $value
+     *
+     * @return string
+     */
+    public function getValueAttribute($value) : string {
         return  is_string($value) ? $value : stream_get_contents($value, -1, 0);
     }
 
-    public function setValueAttribute($value) {
+    /**
+     * Property mutator (setter) for $value.
+     *
+     * @param mixed $value
+     *
+     * @return App\Entity\Setting
+     */
+    public function setValueAttribute($value) : self {
         $value                     = is_string($value) ? $value : stream_get_contents($value, -1, 0);
         $this->attributes['value'] = $value;
 
@@ -54,7 +66,13 @@ class Setting extends AbstractEntity {
      */
     public function getCacheKeys() : array {
         return [
-            sprintf('%s.company_id.%s.section.%s.property.%s', self::CACHE_PREFIX, $this->companyId, $this->section, $this->property)
+            sprintf(
+                '%s.company_id.%s.section.%s.property.%s',
+                self::CACHE_PREFIX,
+                $this->companyId,
+                $this->section,
+                $this->property
+            )
         ];
     }
 
@@ -63,8 +81,17 @@ class Setting extends AbstractEntity {
      */
     public function getReferenceCacheKeys() : array {
         return array_merge([
-            sprintf('%s.by.company_id.%s', self::CACHE_PREFIX, $this->companyId),
-            sprintf('%s.by.company_id.%s.section.%s', self::CACHE_PREFIX, $this->companyId, $this->section)
+            sprintf(
+                '%s.by.company_id.%s',
+                self::CACHE_PREFIX,
+                $this->companyId
+            ),
+            sprintf(
+                '%s.by.company_id.%s.section.%s',
+                self::CACHE_PREFIX,
+                $this->companyId,
+                $this->section
+            )
         ],
         $this->getCacheKeys());
     }

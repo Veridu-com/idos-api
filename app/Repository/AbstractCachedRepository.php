@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -206,7 +205,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function find($id) : EntityInterface {
+    public function find(int $id) : EntityInterface {
         $cacheKey = sprintf('%s.id.%s', $this->cachePrefix, $id);
         $entity   = $this->load($cacheKey);
 
@@ -250,7 +249,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function findBySlug($slug) : EntityInterface {
+    public function findBySlug(string $slug) : EntityInterface {
         return $this->findOneBy(['slug' => $slug]);
     }
 

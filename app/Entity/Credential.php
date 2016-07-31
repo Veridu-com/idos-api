@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -16,7 +15,7 @@ use App\Helper\Utils;
  *
  * @apiEntity schema/credential/credentialEntity.json
  *
- * @property int $id
+ * @property int    $id
  * @property string $company_id
  * @property string $name
  * @property string $slug
@@ -31,6 +30,7 @@ class Credential extends AbstractEntity {
      * {@inheritdoc}
      */
     const CACHE_PREFIX = 'Credential';
+
     /**
      * {@inheritdoc}
      */
@@ -40,9 +40,18 @@ class Credential extends AbstractEntity {
      */
     protected $dates = ['created_at', 'updated_at'];
 
-    public function setNameAttribute($value) {
+    /**
+     * Property mutator (setter) for $name.
+     *
+     * @param string $value
+     *
+     * @return App\Entity\Credential
+     */
+    public function setNameAttribute(string $value) : self {
         $this->attributes['name'] = $value;
         $this->attributes['slug'] = Utils::slugify($value);
+
+        return $this;
     }
 
     /**
@@ -50,9 +59,21 @@ class Credential extends AbstractEntity {
      */
     public function getCacheKeys() : array {
         return [
-            sprintf('%s.id.%s', self::CACHE_PREFIX, $this->id),
-            sprintf('%s.slug.%s', self::CACHE_PREFIX, $this->slug),
-            sprintf('%s.public.%s', self::CACHE_PREFIX, $this->public)
+            sprintf(
+                '%s.id.%s',
+                self::CACHE_PREFIX,
+                $this->id
+            ),
+            sprintf(
+                '%s.slug.%s',
+                self::CACHE_PREFIX,
+                $this->slug
+            ),
+            sprintf(
+                '%s.public.%s',
+                self::CACHE_PREFIX,
+                $this->public
+            )
         ];
     }
 
@@ -61,7 +82,11 @@ class Credential extends AbstractEntity {
      */
     public function getReferenceCacheKeys() : array {
         return array_merge([
-            sprintf('%s.by.company_id.%s', self::CACHE_PREFIX, $this->companyId)
+            sprintf(
+                '%s.by.company_id.%s',
+                self::CACHE_PREFIX,
+                $this->companyId
+            )
         ],
         $this->getCacheKeys());
     }

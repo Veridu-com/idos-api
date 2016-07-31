@@ -18,7 +18,7 @@ abstract class AbstractUnit extends \PHPUnit_Framework_TestCase {
      *
      * @return void
      */
-    protected function setProtectedProperty($object, $property, $value) {
+    protected function setProtectedProperty($object, string $property, $value) {
         $reflection          = new \ReflectionClass($object);
         $reflection_property = $reflection->getProperty($property);
         $reflection_property->setAccessible(true);

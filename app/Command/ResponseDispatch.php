@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -42,17 +41,21 @@ class ResponseDispatch extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) {
-        if (isset($parameters['request']))
+        if (isset($parameters['request'])) {
             $this->request = $parameters['request'];
+        }
 
-        if (isset($parameters['response']))
+        if (isset($parameters['response'])) {
             $this->response = $parameters['response'];
+        }
 
-        if (isset($parameters['body']))
+        if (isset($parameters['body'])) {
             $this->body = $parameters['body'];
+        }
 
-        if (isset($parameters['statusCode']))
+        if (isset($parameters['statusCode'])) {
             $this->statusCode = $parameters['statusCode'];
+        }
 
         return $this;
     }

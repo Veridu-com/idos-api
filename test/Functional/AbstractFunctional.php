@@ -20,36 +20,49 @@ use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 
+/**
+ * PLEASE ADD SOME DOCUMENTATION HERE!
+ */
 abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
+    /**
+     * Slim's Application Instance.
+     *
+     * @var \Slim\App
+     */
     private $app;
 
+    /**
+     * FIXME ADD DOC!
+     *
+     * @var string
+     */
     protected $schemaErrors;
 
     /**
-     * entities populated via populate() method.
+     * Entities populated via populate() method.
      *
      * @see self::populate()
+     *
+     * @var array
      */
     protected $entities;
 
     /**
-     * entity property of the test.
-     */
-    protected $entity;
-
-    /**
-     *  http method of the test.
+     * HTTP method of the test.
+     *
+     * @var string
      */
     protected $httpMethod;
 
     /**
-     *  uri property of the test.
+     * URI property of the test.
+     *
+     * @var string
      */
     protected $uri;
 
     public static function setUpBeforeClass() {
-        $phinxApp         = new PhinxApplication();
-        $phinxTextWrapper = new TextWrapper($phinxApp);
+        $phinxTextWrapper = new TextWrapper(new PhinxApplication());
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
         $phinxTextWrapper->setOption('environment', 'testing');
@@ -59,8 +72,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     public static function tearDownAfterClass() {
-        $phinxApp         = new PhinxApplication();
-        $phinxTextWrapper = new TextWrapper($phinxApp);
+        $phinxTextWrapper = new TextWrapper(new PhinxApplication());
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
         $phinxTextWrapper->setOption('parser', 'YAML');
         $phinxTextWrapper->setOption('environment', 'testing');
@@ -96,9 +108,9 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      *  @param string $uri URI to be queried
      *  @param string $method URI to be queried
      *
-     *  @return array $entities
+     *  @return void
      */
-    protected function populate(string $uri, string $method = 'GET') : array {
+    protected function populate(string $uri, string $method = 'GET') {
         $environment = $this->createEnvironment([
             'REQUEST_URI'    => $uri,
             'REQUEST_METHOD' => $method
@@ -107,21 +119,20 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         $request    = $this->createRequest($environment);
         $response   = $this->process($request);
         $body       = json_decode($response->getBody(), true);
-
-        if ($response->getStatusCode() === 403)
+        if ($response->getStatusCode() === 403) {
             $this->entities = [];
-        else
+        } else {
             $this->entities = $body['data'];
-
-        return $this->entities;
+        }
     }
 
     protected function getRandomEntity($index = false) {
         if (! $this->entities) {
             throw new \RuntimeException('Test instance not populated, call populate() method before calling getRandomEntity() method.');
         }
+
         if ($index === false) {
-            $index = mt_rand(0, (sizeof($this->entities) - 1));
+            $index = mt_rand(0, (count($this->entities) - 1));
         }
 
         return $this->entities[$index];
@@ -138,7 +149,11 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return Environment::mock(array_merge($defaults, $options));
     }
 
-    protected function createRequest(Environment $environment, $body = null) : Request {
+    protected function createRequest(Environment $environment = null, $body = null) : Request {
+        if ($environment === null) {
+            $environment = $this->createEnvironment();
+        }
+
         $requestBody = new RequestBody();
 
         if ($body) {
@@ -173,15 +188,17 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
             $schema
         );
 
-        if(! $validator->isValid())
+        if (! $validator->isValid()) {
             $this->getSchemaErrors($validator);
+        }
 
         return $validator->isValid();
     }
 
     protected function getSchemaErrors($validator) {
-        $this->schemaErrors = null;
-        foreach ($validator->getErrors() as $error)
+        $this->schemaErrors = '';
+        foreach ($validator->getErrors() as $error) {
             $this->schemaErrors .= sprintf("[%s] %s\n", $error['property'], $error['message']);
+        }
     }
 }

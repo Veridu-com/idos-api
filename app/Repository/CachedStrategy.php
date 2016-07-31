@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -45,14 +44,14 @@ class CachedStrategy implements RepositoryStrategyInterface {
     /**
      * {@inheritdoc}
      */
-    public function getFormattedName($repositoryName) : string {
+    public function getFormattedName(string $repositoryName) : string {
         return sprintf('Cached%s', ucfirst($repositoryName));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build($className) : RepositoryInterface {
+    public function build(string $className) : RepositoryInterface {
         $repositoryName = preg_replace('/.*?Cached/', '', $className);
 
         return new $className(

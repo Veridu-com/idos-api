@@ -21,18 +21,20 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request    = $this->createRequest($this->createEnvironment());
+        $request    = $this->createRequest();
         $response   = $this->process($request);
         $body       = json_decode($response->getBody(), true);
 
-        // success assertions
+        // // success assertions
         $this->assertNotEmpty($body);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertEquals(count($this->entities), $body['deleted']);
-        $this->populate($this->uri); // refreshes the $entities prop
-        $this->assertEquals(0, sizeof($this->entities)); // checks if all entities were deleted
+        // refreshes the $entities prop
+        $this->populate($this->uri);
+        // checks if all entities were deleted
+        $this->assertEquals(0, count($this->entities));
 
         /*
          * Validates Json Schema with Json Response

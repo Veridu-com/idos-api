@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -16,7 +15,10 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Whitelist Middleware.
  *
+ * Scope: Application.
  * IP-based (whitelist) access control.
+ *
+ * FIXME Must be properly implemented! Remove Container injection!
  */
 class Whitelist implements MiddlewareInterface {
     private $container;
@@ -25,7 +27,18 @@ class Whitelist implements MiddlewareInterface {
         $this->container = $container;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
+    /**
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param callable                                 $next
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ) : ResponseInterface {
         // Token based requests aren't subject to whitelisting
         if (! empty($request->getAttribute('token')))
             return $next($request, $response);

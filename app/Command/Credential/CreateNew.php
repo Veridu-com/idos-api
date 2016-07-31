@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -36,16 +35,21 @@ class CreateNew extends AbstractCommand {
 
     /**
      * {@inheritdoc}
+     *
+     * @return App\Command\Credential\CreateNew
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['name']))
+        if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
+        }
 
-        if (isset($parameters['production']))
+        if (isset($parameters['production'])) {
             $this->production = $parameters['production'];
+        }
 
-        if (isset($parameters['companyId']))
+        if (isset($parameters['companyId'])) {
             $this->companyId = $parameters['companyId'];
+        }
 
         return $this;
     }
