@@ -37,7 +37,8 @@ class SettingTest extends AbstractUnit {
         $this->assertArrayHasKey('property', $array);
         $this->assertSame('property', $array['property']);
         $this->assertArrayHasKey('value', $array);
-        $this->assertSame('value', $array['value']);
+        $this->assertNotSame('value', $array['value']);
+        $this->assertStringStartsWith('secure:', $array['value']);
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_string($array['created_at']));
         $this->assertTrue(is_int($abstractMock->createdAt));
