@@ -196,7 +196,7 @@ class PermissionTest extends AbstractUnit {
             new PermissionValidator()
         );
 
-         $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(DeleteOne::class)

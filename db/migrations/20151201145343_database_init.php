@@ -284,8 +284,7 @@ class DatabaseInit extends AbstractMigration {
         $members = $this->table('members');
         $members
             ->addColumn('company_id', 'integer', ['null' => false])
-            // ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('username', 'text', ['null' => false, 'unique' => true])
+            ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('role', 'text', ['null' => false, 'default' => 'member'])
             ->addColumn(
                 'created_at',
@@ -306,7 +305,9 @@ class DatabaseInit extends AbstractMigration {
                 ]
             )
             ->addIndex('company_id')
+            ->addIndex('user_id')
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $settings = $this->table('settings');

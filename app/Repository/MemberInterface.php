@@ -22,7 +22,7 @@ interface MemberInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByCompanyId($companyId) : Collection;
+    public function getAllByCompanyId(int $companyId) : Collection;
     /**
      * Gets all Members basedon their Company Id and role.
      *
@@ -31,7 +31,7 @@ interface MemberInterface extends RepositoryInterface {
      *
      * @return Illuminate\Support\Collection
      */
-    public function getAllByCompanyIdAndRole($companyId, $role) : Collection;
+    public function getAllByCompanyIdAndRole(int $companyId, array $role) : Collection;
     /*
      * Deletes all Members based on their Company Id.
      *
@@ -39,7 +39,7 @@ interface MemberInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteByCompanyId($companyId) : int;
+    public function deleteByCompanyId(int $companyId) : int;
     /**
      * Find one member based on their companyId and username.
      *
@@ -48,7 +48,7 @@ interface MemberInterface extends RepositoryInterface {
      *
      * @return App\Entity\Member
      */
-    public function findOne($companyId, $username) : MemberEntity;
+    public function findOne(int $companyId, string $username) : MemberEntity;
     /**
      * Deletes one member from company.
      *

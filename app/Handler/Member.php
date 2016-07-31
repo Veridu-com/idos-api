@@ -53,8 +53,8 @@ class Member implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\MemberInterface
-     * @param App\Validator\Member
+     * @param App\Repository\MemberInterface $repository
+     * @param App\Validator\Member $validator
      *
      * @return void
      */

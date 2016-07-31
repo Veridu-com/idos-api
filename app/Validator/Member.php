@@ -22,8 +22,8 @@ class Member implements ValidatorInterface {
      *
      * @return void
      */
-    public function assertUsername($name) {
-        Validator::prnt()
+    public function assertUsername(string $name) {
+        Validator::graph()
             ->length(1, 50)
             ->assert($name);
     }
@@ -35,7 +35,7 @@ class Member implements ValidatorInterface {
      *
      * @return void
      */
-    public function assertCompanyId($id) {
+    public function assertCompanyId(int $id) {
         Validator::digit()
             ->assert($id);
     }
@@ -47,7 +47,7 @@ class Member implements ValidatorInterface {
      *
      * @return void
      */
-    public function assertId($id) {
+    public function assertId(int $id) {
         Validator::digit()
             ->assert($id);
     }

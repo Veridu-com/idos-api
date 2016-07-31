@@ -31,11 +31,7 @@ class Entity extends AbstractFactory {
      *
      * @return mixed
      */
-<<<<<<< HEAD
-    public function create($name, array $attributes = []) : EntityInterface{
-=======
-    public function create(string $name, array $attributes = []) {
->>>>>>> 1e300d6ebc2855bbb48439d2d0f0c3675417a63b
+    public function create(string $name, array $attributes = []) : EntityInterface {
         $class = $this->getClassName($name);
 
         if (class_exists($class)) {
