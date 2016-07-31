@@ -7,7 +7,9 @@
 namespace Test\Unit\Handler;
 
 use App\Command\Company\CreateNew;
+use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
+use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
 use App\Event\Company\Created;
 use App\Factory\Entity as EntityFactory;
@@ -156,6 +158,57 @@ class CompanyTest extends AbstractUnit {
         $this->assertNotEmpty($result->public_key);
     }
 
+    public function testHandleUpdateOne() {
+        $companyEntity = new CompanyEntity(
+            [
+                'id'         => 0,
+                'name'       => 'New Company',
+                'slug'       => 'new-company',
+                'public_key' => 'public_key',
+                'created_at' => time(),
+                'updated_at' => time()
+            ]
+        );
+
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Company');
+
+        $companyRepository = $this->getMockBuilder(DBCompany::class)
+            ->setMethods(['find', 'save'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMock();
+        $companyRepository
+            ->expects($this->once())
+            ->method('find')
+            ->will($this->returnValue($companyEntity));
+        $companyRepository
+            ->expects($this->once())
+            ->method('save')
+            ->willReturn($companyEntity);
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
+        $handler = new Company(
+            $companyRepository,
+            new CompanyValidator(),
+            $emitterMock
+        );
+
+        $command            = new UpdateOne();
+        $command->name      = 'valid co';
+        $command->companyId = 0;
+
+        $result = $handler->handleUpdateOne($command);
+        $this->assertSame('valid co', $result->name);
+        $this->assertSame('valid-co', $result->slug);
+        $this->assertNotEmpty($result->public_key);
+    }
+
     public function testHandleDeleteOneInvalidCompanySlug() {
         $repositoryMock = $this
             ->getMockBuilder(CompanyInterface::class)
@@ -181,4 +234,128 @@ class CompanyTest extends AbstractUnit {
 
         $handler->handleDeleteOne($commandMock);
     }
+
+    public function testHandleDeleteAllInvalidCompanySlug() {
+        $repositoryMock = $this
+            ->getMockBuilder(CompanyInterface::class)
+            ->getMock();
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
+        $handler = new Company(
+            $repositoryMock,
+            new CompanyValidator(),
+            $emitterMock
+        );
+
+        $this->setExpectedException('InvalidArgumentException');
+
+        $commandMock = $this
+            ->getMockBuilder(DeleteAll::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $commandMock->companySlug = '';
+
+        $handler->handleDeleteAll($commandMock);
+    }
+
+    public function testHandleDeleteOne() {
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Company');
+
+        $companyRepository = $this->getMockBuilder(DBCompany::class)
+            ->setMethods(['delete'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMock();
+        $companyRepository
+            ->method('delete')
+            ->will($this->returnValue(0));
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
+        $handler = new Company(
+            $companyRepository,
+            new CompanyValidator(),
+            $emitterMock
+        );
+
+        $commandMock = $this
+            ->getMockBuilder(DeleteOne::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandMock->companyId = 0;
+
+        $this->assertEquals(0, $handler->handleDeleteOne($commandMock));
+    }
+
+    public function testHandleDeleteAllCompanyIdNotFound() {
+        $repositoryMock = $this
+            ->getMockBuilder(CompanyInterface::class)
+            ->getMock();
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
+        $handler = new Company(
+            $repositoryMock,
+            new CompanyValidator(),
+            $emitterMock
+        );
+
+        $this->setExpectedException('InvalidArgumentException');
+
+        $commandMock = $this
+            ->getMockBuilder(DeleteAll::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandMock->companyId = null;
+
+        $handler->handleDeleteAll($commandMock);
+    }
+
+    public function testHandleDeleteAll() {
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Company');
+
+        $companyRepository = $this->getMockBuilder(DBCompany::class)
+            ->setMethods(['deleteByParentId'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMock();
+        $companyRepository
+            ->method('deleteByParentId')
+            ->will($this->returnValue(0));
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
+        $handler = new Company(
+            $companyRepository,
+            new CompanyValidator(),
+            $emitterMock
+        );
+
+        $commandMock = $this
+            ->getMockBuilder(DeleteAll::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandMock->parentId = 0;
+
+        $this->assertEquals(0, $handler->handleDeleteAll($commandMock));
+    }
+
 }

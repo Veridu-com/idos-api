@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -24,10 +23,13 @@ class DeleteAll extends AbstractCommand {
 
     /**
      * {@inheritdoc}
+     *
+     * @return App\Command\Company\DeleteAll
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['parentId']))
+        if (isset($parameters['parentId'])) {
             $this->parentId = $parameters['parentId'];
+        }
 
         return $this;
     }

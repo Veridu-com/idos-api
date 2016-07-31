@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -124,7 +123,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function find($id) : EntityInterface {
+    public function find(int $id) : EntityInterface {
         $result = $this->query()
             ->find($id);
         if (empty($result))
@@ -150,7 +149,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return int
      */
-    protected function deleteByKey($key, $value) : int {
+    protected function deleteByKey(string $key, $value) : int {
         return $this->query()
             ->where($key, $value)
             ->delete();
@@ -164,28 +163,28 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @return int
      */
     public function deleteBy(array $constraints) : int {
-        if (! sizeof($constraints)) {
+        if (! count($constraints)) {
             throw new \RuntimeException(sprintf('%s@deleteBy method was called without constraints.', get_class($this)));
         }
 
-        $q = $this->query();
+        $query = $this->query();
         foreach ($constraints as $key => $value) {
-            $q = $q->where($key, $value);
+            $query = $query->where($key, $value);
         }
 
-        return $q->delete();
+        return $query->delete();
     }
 
     /**
      * {@inheritdoc}
      */
     public function findBy(array $constraints) : Collection {
-        $q = $this->query();
+        $query = $this->query();
         foreach ($constraints as $key => $value) {
-            $q = $q->where($key, $value);
+            $query = $query->where($key, $value);
         }
 
-        return new Collection($q->get());
+        return new Collection($query->get());
     }
 
     /**

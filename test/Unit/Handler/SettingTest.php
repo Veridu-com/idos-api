@@ -113,17 +113,17 @@ class SettingTest extends AbstractUnit {
         $entityFactory = new EntityFactory();
         $entityFactory->create('Setting');
 
-        $SettingRepository = $this->getMockBuilder(DBSetting::class)
+        $settingRepository = $this->getMockBuilder(DBSetting::class)
             ->setMethods(['save'])
             ->setConstructorArgs([$entityFactory, $dbConnectionMock])
             ->getMock();
-        $SettingRepository
+        $settingRepository
             ->expects($this->once())
             ->method('save')
             ->willReturn($settingEntity);
 
         $handler = new Setting(
-            $SettingRepository,
+            $settingRepository,
             new SettingValidator()
         );
 
@@ -162,6 +162,35 @@ class SettingTest extends AbstractUnit {
         $handler->handleDeleteAll($commandMock);
     }
 
+    public function testHandleDeleteAll() {
+        $settingEntity = new SettingEntity([]);
+
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Setting');
+
+        $settingRepository = $this->getMockBuilder(DBSetting::class)
+            ->setMethods(['deleteByCompanyId'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMock();
+        $settingRepository
+            ->expects($this->once())
+            ->method('deleteByCompanyId')
+            ->willReturn(1);
+
+        $handler = new Setting(
+            $settingRepository,
+            new SettingValidator()
+        );
+
+        $command              = new DeleteAll();
+        $command->companyId   = 0;
+
+        $this->assertEquals(1, $handler->handleDeleteAll($command));
+    }
+
     public function testHandleUpdateOneInvalidProperties() {
         $repositoryMock = $this
             ->getMockBuilder(SettingInterface::class)
@@ -188,6 +217,44 @@ class SettingTest extends AbstractUnit {
 
     }
 
+    public function testHandleUpdateOne() {
+        $settingEntity = new SettingEntity([]);
+
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Setting');
+
+        $settingRepository = $this->getMockBuilder(DBSetting::class)
+            ->setMethods(['findOne', 'update'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMock();
+        $settingRepository
+            ->expects($this->once())
+            ->method('findOne')
+            ->willReturn($settingEntity);
+        $settingRepository
+            ->expects($this->once())
+            ->method('update')
+            ->will($this->returnValue(1));
+
+        $handler = new Setting(
+            $settingRepository,
+            new SettingValidator()
+        );
+
+        $command                = new UpdateOne();
+        $command->companyId     = 0;
+        $command->propNameId    = 'propNameId';
+        $command->sectionNameId = 'sectionId';
+
+        $setting = $handler->handleUpdateOne($command);
+
+        $this->assertInstanceOf(SettingEntity::class, $setting);
+        $this->assertEquals(0, $setting->companyId);
+    }
+
     public function testHandleDeleteOneInvalidSettingSlug() {
         $repositoryMock = $this
             ->getMockBuilder(SettingInterface::class)
@@ -211,4 +278,36 @@ class SettingTest extends AbstractUnit {
 
         $handler->handleDeleteOne($commandMock);
     }
+
+    public function testHandleDeleteOne() {
+        $settingEntity = new SettingEntity([]);
+
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Setting');
+
+        $settingRepository = $this->getMockBuilder(DBSetting::class)
+            ->setMethods(['deleteOne'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMock();
+        $settingRepository
+            ->expects($this->once())
+            ->method('deleteOne')
+            ->willReturn(1);
+
+        $handler = new Setting(
+            $settingRepository,
+            new SettingValidator()
+        );
+
+        $command              = new DeleteOne();
+        $command->companyId   = 0;
+        $command->property    = 'propNameId';
+        $command->section     = 'sectionId';
+
+        $this->assertEquals(1, $handler->handleDeleteOne($command));
+    }
+
 }

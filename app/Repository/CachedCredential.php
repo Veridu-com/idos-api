@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -26,21 +25,21 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) : CredentialEntity {
+    public function findByPubKey(string $pubKey) : CredentialEntity {
         return $this->repository->findOneBy(['public' => $pubKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByCompanyId($companyId) : int {
+    public function deleteByCompanyId(string $companyId) : int {
         return $this->repository->deleteByKey('company_id', $companyId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId($companyId) : Collection {
+    public function getAllByCompanyId(string $companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -16,7 +15,7 @@ abstract class AbstractCommand implements CommandInterface {
     /**
      * {@inheritdoc}
      */
-    public function setParameter($name, $value) {
+    public function setParameter(string $name, $value) {
         if (property_exists($this, $name)) {
             $this->{$name} = $value;
 

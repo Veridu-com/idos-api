@@ -125,7 +125,7 @@ class AbstractEntityTest extends AbstractUnit {
 
     public function testSetMutator() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(['getReferenceCacheKeys'])
+            ->setMethods(['getReferenceCacheKeys', 'setNameAttribute'])
             ->setConstructorArgs(
                 [
                     'attributes' => [

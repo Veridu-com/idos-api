@@ -42,7 +42,7 @@ class DBSettingTest extends AbstractUnit {
         $dbSetting = new DBSetting($factory, $connectionMock);
 
         $this->setExpectedException(NotFound::class);
-        $dbSetting->findOne('', '', '');
+        $dbSetting->findOne(0, '', '');
     }
 
     public function testGetAllByCompanyIdEmpty() {
@@ -152,7 +152,7 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbSetting = new DBSetting($factory, $connectionMock);
 
-        $this->assertEmpty($dbSetting->getAllByCompanyIdAndSection('', '')->toArray());
+        $this->assertEmpty($dbSetting->getAllByCompanyIdAndSection(0, '')->toArray());
     }
 
     public function testGetAllByCompanyIdAndSection() {

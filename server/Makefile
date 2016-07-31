@@ -1,10 +1,13 @@
 WEBSRV=srv-web
 PHPSRV=srv-php
 DBSRV=srv-db
+QUEUESRV=srv-queue
+WORKERSRV=srv-worker
+REDISSRV=srv-redis
 
 rename: clean
-	cat Makefile | sed s/srv-web/${WEBSRV}/ | sed s/srv-php/${PHPSRV}/ | sed s/srv-db/${DBSRV}/ > /tmp/Makefile && mv /tmp/Makefile Makefile
-	cat docker-compose.yml | sed s/srv-web/${WEBSRV}/ | sed s/srv-php/${PHPSRV}/ | sed s/srv-db/${DBSRV}/ > /tmp/docker-compose.yml && mv /tmp/docker-compose.yml docker-compose.yml
+	cat Makefile | sed s/srv-web/${WEBSRV}/ | sed s/srv-php/${PHPSRV}/ | sed s/srv-db/${DBSRV}/ | sed s/srv-queue/${QUEUESRV}/ | sed s/srv-worker/${WORKERSRV}/ | sed s/srv-redis/${REDISSRV}/ > /tmp/Makefile && mv /tmp/Makefile Makefile
+	cat docker-compose.yml | sed s/srv-web/${WEBSRV}/ | sed s/srv-php/${PHPSRV}/ | sed s/srv-db/${DBSRV}/ | sed s/srv-queue/${QUEUESRV}/ | sed s/srv-worker/${WORKERSRV}/ | sed s/srv-redis/${REDISSRV}/ > /tmp/docker-compose.yml && mv /tmp/docker-compose.yml docker-compose.yml
 	@echo You must run $(tput bold) \> make reset \< $(tput sgr0) to start your containers
 
 build: clean
@@ -54,6 +57,9 @@ dependencies:
 test:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phpunit --coverage-text
 
+test-quick:
+	docker exec --interactive --tty ${PHPSRV} vendor/bin/phpunit
+
 test-unit:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phpunit test/Unit --coverage-text
 
@@ -83,3 +89,12 @@ phinx-seed:
 
 psql:
 	docker exec --interactive --tty ${DBSRV} psql -h localhost idos-api idos-api
+
+supervisorctl:
+	docker exec --interactive --tty ${QUEUESRV} supervisorctl
+
+gearadmin:
+	docker exec --interactive --tty ${QUEUESRV} gearadmin --status
+
+redis-cli:
+	docker exec --interactive --tty ${REDISSRV} redis-cli

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -89,6 +88,8 @@ class Permissions implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
+
+    // FIXME REMOVE listAllFromSection - If required, it should be a filter on listAll
 
     /**
      * Lists all Permissions that belongs to the Target Company and has the given section.

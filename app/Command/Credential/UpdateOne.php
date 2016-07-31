@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -30,13 +29,17 @@ class UpdateOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
+     *
+     * @return App\Command\Credential\UpdateOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['name']))
+        if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
+        }
 
-        if (isset($parameters['credentialId']))
+        if (isset($parameters['credentialId'])) {
             $this->credentialId = $parameters['credentialId'];
+        }
 
         return $this;
     }

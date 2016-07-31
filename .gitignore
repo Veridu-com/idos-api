@@ -8,12 +8,13 @@ composer.lock
 config/settings.php
 config/testing.php
 environment.php
+humbug.json
+humbuglog.*
 phinx.yml
 phpdox.xml
 phpunit.xml
+server/docker-compose.yml
 server/docker/
 sftp-config.json
 vendor/
-humbuglog.txt
-humbuglog.json
-humbug.json
+VeriduRuleset.xml

@@ -1,8 +1,16 @@
 <?php
+<<<<<<< HEAD
 /**
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
+=======
+/*
+ * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
+ * All rights reserved.
+ */
+
+>>>>>>> 1e300d6ebc2855bbb48439d2d0f0c3675417a63b
 declare(strict_types=1);
 
 namespace App\Entity;
@@ -10,24 +18,22 @@ namespace App\Entity;
 /**
  * Permissions Entity.
  *
- * @apiEntity Permission
- * @apiEntityRequiredProperty 	int 	company_id 	Company owner of the Permission
- * @apiEntityRequiredProperty 	string 	routeName 	permission's route's name associated
+ * @apiEntity schema/permission/permissionEntity.json
  *
  * @property int 	$id
  * @property int 	$company_id
- * @property string $routeName
+ * @property string $route_name
  */
 class Permission extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
     const CACHE_PREFIX = 'Permission';
+
     /**
      * {@inheritdoc}
      */
     protected $visible = ['route_name', 'created_at'];
-
     /**
      * {@inheritdoc}
      */
@@ -38,8 +44,16 @@ class Permission extends AbstractEntity {
      */
     public function getCacheKeys() : array {
         return [
-            sprintf('%s.id.%s', self::CACHE_PREFIX, $this->id),
-            sprintf('%s.public.%s', self::CACHE_PREFIX, $this->public)
+            sprintf(
+                '%s.id.%s',
+                self::CACHE_PREFIX,
+                $this->id
+            ),
+            sprintf(
+                '%s.public.%s',
+                self::CACHE_PREFIX,
+                $this->public
+            )
         ];
     }
 
@@ -48,7 +62,11 @@ class Permission extends AbstractEntity {
      */
     public function getReferenceCacheKeys() : array {
         return array_merge([
-            sprintf('%s.by.parent_id.%s', self::CACHE_PREFIX, $this->parentId)
+            sprintf(
+                '%s.by.parent_id.%s',
+                self::CACHE_PREFIX,
+                $this->parentId
+            )
         ],
         $this->getCacheKeys());
     }
