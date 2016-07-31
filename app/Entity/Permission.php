@@ -1,16 +1,9 @@
 <?php
-<<<<<<< HEAD
 /**
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
-=======
-/*
- * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
- * All rights reserved.
- */
 
->>>>>>> 1e300d6ebc2855bbb48439d2d0f0c3675417a63b
 declare(strict_types=1);
 
 namespace App\Entity;

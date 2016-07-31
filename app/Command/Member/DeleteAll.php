@@ -25,8 +25,9 @@ class DeleteAll extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['companyId']))
+        if (isset($parameters['companyId'])) {
             $this->companyId = $parameters['companyId'];
+        }
 
         return $this;
     }

@@ -59,9 +59,7 @@ class Members implements ControllerInterface {
     /**
      * Lists all Members that belongs to the Target Company.
      *
-     * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Member creation date (lower bound)
-     * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Member creation date (upper bound)
-     * @apiEndpointParam query int page 10|1 Current page
+     * @apiEndpointParam path string companySlug
      * @apiEndpointResponse 200 schema/member/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -72,7 +70,7 @@ class Members implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
-        $roles = $request->getQueryParam('role', $default = null);
+        $roles = $request->getQueryParam('role', null);
 
         if ($roles === null)
             $members = $this->repository->getAllByCompanyId($targetCompany->id);
@@ -101,7 +99,7 @@ class Members implements ControllerInterface {
     /**
      * Creates a new Member for the Target Company.
      *
-     * @apiEndpointResponse 201 Member
+     * @apiEndpointResponse 201 schema/member/memberEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
