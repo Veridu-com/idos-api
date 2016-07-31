@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -48,14 +47,14 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * {@inheritdoc}
      */
-    public function getFormattedName($repositoryName) : string {
+    public function getFormattedName(string $repositoryName) : string {
         return sprintf('DB%s', ucfirst($repositoryName));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build($className) : RepositoryInterface {
+    public function build(string $className) : RepositoryInterface {
         return new $className($this->entityFactory, $this->connection);
     }
 }

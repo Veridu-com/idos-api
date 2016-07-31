@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -18,6 +17,8 @@ class Credential implements ValidatorInterface {
     /**
      * Asserts a valid name, 1-15 chars long.
      *
+     * @param mixed $name
+     *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
@@ -30,6 +31,8 @@ class Credential implements ValidatorInterface {
 
     /**
      * Asserts a valid slug, 1-15 chars long.
+     *
+     * @param mixed $slug
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
@@ -44,6 +47,8 @@ class Credential implements ValidatorInterface {
     /**
      * Asserts a valid production flag, boolean.
      *
+     * @param mixed $production
+     *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
@@ -55,6 +60,8 @@ class Credential implements ValidatorInterface {
 
     /**
      * Asserts a valid company id, integer.
+     *
+     * @param mixed $id
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
@@ -68,6 +75,8 @@ class Credential implements ValidatorInterface {
     /**
      * Asserts a valid id, integer.
      *
+     * @param mixed $id
+     *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
@@ -79,6 +88,8 @@ class Credential implements ValidatorInterface {
 
     /**
      * Validates a production flag value.
+     *
+     * @param mixed $production
      *
      * @return bool
      */

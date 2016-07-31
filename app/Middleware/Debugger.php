@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -15,6 +14,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Debugger Middleware.
  *
+ * Scope: Application.
  * Allows requests to force a specific error response for development.
  */
 class Debugger implements MiddlewareInterface {
@@ -27,7 +27,18 @@ class Debugger implements MiddlewareInterface {
         );
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
+    /**
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param callable                                 $next
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ) : ResponseInterface {
         $queryParams = $request->getQueryParams();
         if (empty($queryParams['forcedError']))
             return $next($request, $response);

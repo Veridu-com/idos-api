@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -16,8 +15,12 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Route Middleware
+ * Permission Middleware.
+ *
+ * Scope: Route.
  * This middleware is responsible to add a "allowed" parameter on the $response object.
+ *
+ * FIXME Remove Container injection!
  */
 class Permission implements MiddlewareInterface {
     const PUBLIC_ACTION     =    'public';
@@ -31,9 +34,22 @@ class Permission implements MiddlewareInterface {
         $this->permissionType = $permissionType;
     }
 
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
-        $actingCompany            = $request->getAttribute('actingCompany');                            // get actingCompany set on Auth middleware
-        $permissionRepository     = $this->container->get('repositoryFactory')->create('Permission'); // get permissionRepository for checking
+    /**
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param callable                                 $next
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ) : ResponseInterface {
+        // get actingCompany set on Auth middleware
+        $actingCompany            = $request->getAttribute('actingCompany');
+        // get permissionRepository for checking
+        $permissionRepository     = $this->container->get('repositoryFactory')->create('Permission');
         $routeName                = $request->getAttribute('route')->getName();
         $response                 = $this->allow($response);
 

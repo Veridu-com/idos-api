@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -27,12 +26,12 @@ class DBUser extends AbstractDBRepository implements UserInterface {
      *
      * @var string
      */
-    protected $entityName = User::class;
+    protected $entityName = 'User';
 
     /**
      * {@inheritdoc}
      */
-    public function findByUserName($userName, $credentialId) {
+    public function findByUserName(string $userName, int $credentialId) : User {
         $result = $this->query()
             ->where('username', $userName)
             ->where('credential_id', $credentialId)

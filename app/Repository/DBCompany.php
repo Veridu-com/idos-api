@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -28,31 +27,32 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
      * @var string
      */
     protected $entityName = 'Company';
+
     /**
      * {@inheritdoc}
      */
-    public function findBySlug($slug) : Company {
+    public function findBySlug(string $slug) : Company {
         return $this->findOneBy(['slug' => $slug]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) : Company {
+    public function findByPubKey(string $pubKey) : Company {
         return $this->findOneBy(['public_key' => $pubKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey($privKey) : Company {
+    public function findByPrivKey(string $privKey) : Company {
         return $this->findOneBy(['private_key' => $privKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByParentId($parentId) : Collection {
+    public function getAllByParentId(int $parentId) : Collection {
         return $this->findBy(['parent_id' => $parentId]);
     }
 
@@ -67,6 +67,6 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
      * {@inheritdoc}
      */
     public function delete(int $id, string $key = 'id') : int {
-        return $this->deleteBy(['id' => $id]);
+        return $this->deleteBy([$key => $id]);
     }
 }

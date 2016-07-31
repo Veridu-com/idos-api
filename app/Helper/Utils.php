@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -13,8 +12,16 @@ namespace App\Helper;
  * Utilities Class.
  */
 class Utils {
-    // http://stackoverflow.com/questions/2955251/php-function-to-make-slug-url-string
-    public static function slugify($text) {
+    /**
+     * Transforms a text into a slug.
+     *
+     * @param string $text
+     *
+     * @link http://stackoverflow.com/questions/2955251/php-function-to-make-slug-url-string
+     *
+     * @return string
+     */
+    public static function slugify(string $text) : string {
         // replace non letter or digits by -
         $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
 

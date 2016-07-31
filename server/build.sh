@@ -29,3 +29,22 @@ cp conf.d/*.sql docker/infra/postgresql/docker-init.d/
 cd docker/infra/postgresql
 make clean
 make build-all
+cd -
+
+# builds infra/gearman
+cd docker/infra/gearman
+make clean
+make build-all
+cd -
+
+# builds idos/manager/php
+cd docker/idos/manager/php
+make clean
+make build-all
+cd -
+
+# builds infra/redis
+cd docker/infra/redis
+make clean
+make build-all
+cd -

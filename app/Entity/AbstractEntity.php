@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -219,7 +218,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         $return = [];
         foreach ($attributes as $attribute) {
-            $return[$attribute] = $this->getAttribute($this->toSnakeCase($attribute));
+            $return[$attribute] = $this->getAttribute($attribute);
         }
 
         return $return;
@@ -263,7 +262,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return mixed
      */
     public function __get($key) {
-        return $this->getAttribute($this->toSnakeCase($key));
+        return $this->getAttribute($key);
     }
 
     /**
@@ -277,7 +276,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __set($key, $value) {
-        $this->setAttribute($this->toSnakeCase($key), $value);
+        $this->setAttribute($key, $value);
         $this->dirty = true;
     }
 
@@ -291,7 +290,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return bool
      */
     public function __isset($key) : bool {
-        return $this->getAttribute($this->toSnakeCase($key)) !== null;
+        return $this->getAttribute($key) !== null;
     }
     /**
      * Unset an attribute on the entity.
@@ -303,7 +302,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __unset($key) {
-        $this->setAttribute($this->toSnakeCase($key), null);
+        $this->setAttribute($key, null);
         $this->dirty = true;
     }
 }

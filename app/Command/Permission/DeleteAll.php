@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -16,7 +15,7 @@ use App\Command\AbstractCommand;
  */
 class DeleteAll extends AbstractCommand {
     /**
-     * Company Id that all settings will be deleted.
+     * Company Id.
      *
      * @var int
      */
@@ -24,10 +23,13 @@ class DeleteAll extends AbstractCommand {
 
     /**
      * {@inheritdoc}
+     *
+     * @return App\Command\Permission\DeleteAll
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['companyId']))
+        if (isset($parameters['companyId'])) {
             $this->companyId = $parameters['companyId'];
+        }
 
         return $this;
     }
