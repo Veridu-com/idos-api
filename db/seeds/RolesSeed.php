@@ -21,9 +21,6 @@ class RolesSeed extends AbstractSeed {
         $table
             ->insert($roles)
             ->save();
-
-        return $roles;
-
     }
 
 }

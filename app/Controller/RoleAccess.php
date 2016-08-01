@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /access/roles and /access/roles/{roleName}.
+ * Handles requests to /access/roles and /access/roles/{companySlug}/{userName}.
  */
 class RoleAccess implements ControllerInterface {
     /**
@@ -57,12 +57,13 @@ class RoleAccess implements ControllerInterface {
         $this->optimus        = $optimus;
     }
     /**
-     * List all child RoleAccess that belongs to the Acting RoleAccess.
+     * List all child RoleAccess that belongs to the target User.
      *
-     * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial RoleAccess creation date (lower bound)
-     * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final RoleAccess creation date (upper bound)
-     * @apiEndpointParam query int page 10|1 Current page
-     * @apiEndpointResponse 200 schema/company/listAll.json
+     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
+     * @apiEndpointRequiredParam route      string userName         The target user's username.
+     * @apiEndpointParam query              int page 10|1           Current page.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -87,9 +88,14 @@ class RoleAccess implements ControllerInterface {
     }
 
     /**
-     * Retrieves role access defined to certain role.
+     * Retrieves role access defined to certain role and resource for the target User.
      *
-     * @apiEndpointResponse 200 schema/company/listAllFromRole.json
+     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
+     * @apiEndpointRequiredParam route      string userName         The target user's username.
+     * @apiEndpointRequiredParam route      string roleName         The role name.
+     * @apiEndpointRequiredParam route      string resource         The resource.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -117,15 +123,19 @@ class RoleAccess implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
+
     /**
-     * Retrieves role access defined to certain role.
+     * Retrieves role access defined to certain role for the target User.
      *
-     * @apiEndpointResponse 200 schema/company/listAllFromRole.json
+     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
+     * @apiEndpointRequiredParam route      string userName         The target user's username.
+     * @apiEndpointRequiredParam route      string roleName         The role name.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/listAllFromRole.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -149,10 +159,15 @@ class RoleAccess implements ControllerInterface {
     }
 
     /**
-     * Creates a new child RoleAccess for the Acting RoleAccess.
+     * Creates a new RoleAccess for the target User.
      *
-     * @apiEndpointRequiredParam body string name NewCo. RoleAccess name
-     * @apiEndpointResponse 201 schema/company/createNew.json
+     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
+     * @apiEndpointRequiredParam route      string userName         The target user's username.
+     * @apiEndpointRequiredParam body       string role             The role.
+     * @apiEndpointRequiredParam body       string resource         The resource.
+     * @apiEndpointRequiredParam body       int access              The access.
+     * 
+     * @apiEndpointResponse 201 schema/access/roles/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -185,9 +200,12 @@ class RoleAccess implements ControllerInterface {
     }
 
     /**
-     * Deletes all child RoleAccess that belongs to the Acting RoleAccess.
+     * Deletes all RoleAccess registers that belongs to the target User.
      *
-     * @apiEndpointResponse 200 schema/company/deleteAll.json
+     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
+     * @apiEndpointRequiredParam route      string userName         The target user's username.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -216,9 +234,14 @@ class RoleAccess implements ControllerInterface {
     }
 
     /**
-     * Deletes the Target RoleAccess, a child of the Acting RoleAccess.
+     * Deletes a RoleAccess of the target User.
      *
-     * @apiEndpointResponse 200 schema/company/deleteOne.json
+     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
+     * @apiEndpointRequiredParam route      string userName         The target user's username.
+     * @apiEndpointRequiredParam route      string roleName         The role name.
+     * @apiEndpointRequiredParam route      string resource         The resource.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -255,8 +278,13 @@ class RoleAccess implements ControllerInterface {
     /**
      * Updates the Target RoleAccess, a child of the Acting RoleAccess.
      *
-     * @apiEndpointRequiredParam body string name NewName New RoleAccess name
-     * @apiEndpointResponse 200 schema/company/updateOne.json
+     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
+     * @apiEndpointRequiredParam route      string userName         The target user's username.
+     * @apiEndpointRequiredParam route      string roleName         The role name.
+     * @apiEndpointRequiredParam route      string resource         The resource.
+     * @apiEndpointRequiredParam body       int access              The access value.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

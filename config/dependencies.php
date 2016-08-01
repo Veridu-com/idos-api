@@ -309,7 +309,9 @@ $container['permissionMiddleware'] = function (ContainerInterface $container) {
 // User Permission Middleware
 $container['userPermissionMiddleware'] = function (ContainerInterface $container) {
     return function ($resource, $resourceAccessLevel) use ($container) {
-        return new Middleware\UserPermission($container, $resource, $resourceAccessLevel);
+        $roleAccessRepository = $container->get('repositoryFactory')->create('RoleAccess');
+
+        return new Middleware\UserPermission($roleAccessRepository, $resource, $resourceAccessLevel);
     };
 };
 

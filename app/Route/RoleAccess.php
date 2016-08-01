@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace App\Route;
 
 use App\Entity\RoleAccess as RoleAccessEntity;
@@ -14,7 +16,7 @@ use Slim\App;
 /**
  * RoleAccess routing definitions.
  *
- * @link docs/access/roles/{username}/overview.md
+ * @link docs/access/roles/{companySlug}/{userName}/overview.md
  * @see App\Controller\RoleAccess
  */
 class RoleAccess implements RouteInterface {
@@ -62,18 +64,21 @@ class RoleAccess implements RouteInterface {
     /**
      * List all RoleAccess.
      *
-     * Retrieve a complete list of all roleAccess that belong to the requesting company.
+     * Retrieve a complete list of all Role Access that belong to the target User.
      *
-     * @apiEndpoint GET /companies/{companySlug}/roleAccess
-     * @apiAuth header key compPrivKey User's Private Key
-     * @apiAuth query key compPrivKey User's Private Key
+     * @apiEndpoint GET /access/roles/{companySlug}/{userName}
+     * 
+     * @apiAuth header  key compPrivKey     Company's Private Key
+     * @apiAuth query   key compPrivKey     Company's Private Key
+     * @apiAuth query   key userPrivKey     User's Private Key
+     * @apiAuth header  key userPrivKey     User's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/roleAccess/listAll.md
+     * @link docs/access/roles/roleAccess/listAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\UserPermission::__invoke
      * @see App\Controller\RoleAccess::listAll
@@ -92,18 +97,21 @@ class RoleAccess implements RouteInterface {
     /**
      * Create new RoleAccess.
      *
-     * Create a new credential for the requesting company.
+     * Create a new Role Access for the target User.
      *
-     * @apiEndpoint POST /companies/{companySlug}/roleAccess
-     * @apiAuth header key compPrivKey User's Private Key
-     * @apiAuth query key compPrivKey User's Private Key
+     * @apiEndpoint POST /access/roles/{companySlug}/{userName}
+     * 
+     * @apiAuth header  key compPrivKey     Company's Private Key
+     * @apiAuth query   key compPrivKey     Company's Private Key
+     * @apiAuth query   key userPrivKey     User's Private Key
+     * @apiAuth header  key userPrivKey     User's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/roleAccess/createNew.md
+     * @link docs/access/roles/roleAccess/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\UserPermission::__invoke
      * @see App\Controller\RoleAccess::createNew
@@ -124,16 +132,19 @@ class RoleAccess implements RouteInterface {
      *
      * Deletes all roleAccess that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/roleAccess
-     * @apiAuth header key compPrivKey User's Private Key
-     * @apiAuth query key compPrivKey User's Private Key
+     * @apiEndpoint DELETE /access/roles/{companySlug}/{userName}
+     * 
+     * @apiAuth header  key compPrivKey     Company's Private Key
+     * @apiAuth query   key compPrivKey     Company's Private Key
+     * @apiAuth query   key userPrivKey     User's Private Key
+     * @apiAuth header  key userPrivKey     User's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/roleAccess/deleteAll.md
+     * @link docs/access/roles/roleAccess/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\UserPermission::__invoke
      * @see App\Controller\RoleAccess::deleteAll
@@ -154,14 +165,19 @@ class RoleAccess implements RouteInterface {
      *
      * Retrieves all public information from a RoleAccess.
      *
-     * @apiEndpoint GET /companies/{companySlug}/roleAccess/{routeName}
+     * @apiEndpoint GET /access/roles/{companySlug}/{userName}/{routeName}
+     * 
+     * @apiAuth header  key compPrivKey     Company's Private Key
+     * @apiAuth query   key compPrivKey     Company's Private Key
+     * @apiAuth query   key userPrivKey     User's Private Key
+     * @apiAuth header  key userPrivKey     User's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/roleAccess/listAllFromRole.md
+     * @link docs/access/roles/roleAccess/listAllFromRole.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\UserPermission::__invoke
      * @see App\Controller\RoleAccess::listAllFromRole
@@ -182,14 +198,19 @@ class RoleAccess implements RouteInterface {
      *
      * Retrieves all public information from a RoleAccess.
      *
-     * @apiEndpoint GET /companies/{companySlug}/roleAccess/{routeName}
+     * @apiEndpoint GET /access/roles/{companySlug}/{userName}
+     * 
+     * @apiAuth header  key compPrivKey     Company's Private Key
+     * @apiAuth query   key compPrivKey     Company's Private Key
+     * @apiAuth query   key userPrivKey     User's Private Key
+     * @apiAuth header  key userPrivKey     User's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/roleAccess/getOne.md
+     * @link docs/access/roles/roleAccess/getOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\UserPermission::__invoke
      * @see App\Controller\RoleAccess::getOne
@@ -210,14 +231,14 @@ class RoleAccess implements RouteInterface {
      *
      * Retrieves all public information from a RoleAccess.
      *
-     * @apiEndpoint GET /companies/{companySlug}/roleAccess/{routeName}
+     * @apiEndpoint GET /access/roles/{companySlug}/{userName}/{routeName}
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/roleAccess/getOne.md
+     * @link docs/access/roles/roleAccess/getOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\UserPermission::__invoke
      * @see App\Controller\RoleAccess::getOne
@@ -238,7 +259,7 @@ class RoleAccess implements RouteInterface {
      *
      * Deletes a single RoleAccess that belongs to the requesting user.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/roleAccess/{routeName}
+     * @apiEndpoint DELETE /access/roles/{companySlug}/{userName}/{routeName}
      * @apiAuth header key compPrivKey User's Private Key
      * @apiAuth query key compPrivKey User's Private Key
      *
@@ -247,7 +268,7 @@ class RoleAccess implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/roleAccess/deleteOne.md
+     * @link docs/access/roles/roleAccess/deleteOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\UserPermission::__invoke
      * @see App\Controller\RoleAccess::deleteOne

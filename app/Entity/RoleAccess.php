@@ -26,7 +26,7 @@ class RoleAccess extends AbstractEntity {
     /**
      * Access levels following UNIX file permission standard.
      */
-    const ACCESS_FORBIDDEN  = 0x00;
+    const ACCESS_NONE       = 0x00;
     const ACCESS_EXECUTE    = 0x01;
     const ACCESS_WRITE      = 0x02;
     const ACCESS_READ       = 0x04;

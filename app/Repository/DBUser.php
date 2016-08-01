@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -37,8 +37,9 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             ->where('credentials.company_id', '=', $companyId)
             ->first(['users.*']);
 
-        if (empty($result))
+        if (empty($result)) {
             throw new NotFound();
+        }
 
         return $result;
     }
@@ -63,8 +64,9 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             ->where('credentials.private', '=', $privateKey)
             ->first();
 
-        if (empty($result))
+        if (empty($result)) {
             throw new NotFound();
+        }
 
         return $result;
     }

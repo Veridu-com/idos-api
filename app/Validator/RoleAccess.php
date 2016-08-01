@@ -4,9 +4,12 @@
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace App\Validator;
 
 use App\Entity\Role;
+use App\Entity\RoleAccess AS RoleAccessEntity;
 use Respect\Validation\Validator;
 
 /**
@@ -40,13 +43,13 @@ class RoleAccess implements ValidatorInterface {
      */
     public function assertAccess(int $value) {
         Validator::digit()->length(1, 1)->in([
-            0x00,
-            0x01,
-            0x02,
-            0x04,
-            0x05,
-            0x06,
-            0x07
+            RoleAccessEntity::ACCESS_NONE,
+            RoleAccessEntity::ACCESS_EXECUTE,
+            RoleAccessEntity::ACCESS_WRITE,
+            RoleAccessEntity::ACCESS_READ,
+            RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_EXECUTE,
+            RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE,
+            RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE | RoleAccessEntity::ACCESS_EXECUTE
         ])->assert($value);
 
     }

@@ -4,29 +4,47 @@
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 namespace App\Middleware;
 
 use App\Entity\Role;
 use App\Entity\RoleAccess;
 use App\Exception\NotAllowed;
 use App\Exception\NotFound;
-use Interop\Container\ContainerInterface;
+use App\Repository\RoleAccessInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Route Middleware
- * This middleware is responsible to add a "allowed" parameter on the $response object.
+ * Route UserPermission Middleware
+ * This middleware is responsible for allowing or not access to certain user resources
+ * This access control is controlled by the user or company and uses the RoleAccess repository to filter it
  */
 class UserPermission implements MiddlewareInterface {
-    private $container;
+    /**
+     * Default permissions for each role
+     * 
+     * @var array
+     */
     private $defaultPermissions;
+    
+    /**
+     * Role access repository.
+     */
     private $roleAccessRepository;
 
-    public function __construct(ContainerInterface $container, string $resource, string $accessLevel) {
-        $this->container            = $container;
-        $this->resource             = $resource;
-        $this->accessLevel          = (int) $accessLevel;
+    /**
+     * Class constructor.
+     *
+     * @param      \App\Repository\RoleAccessInterface  $roleAccessRepository  The role access repository
+     * @param      string                               $resource              The resource
+     * @param      string                               $accessLevel           The access level
+     */ 
+    public function __construct(RoleAccessInterface $roleAccessRepository, string $resource, string $accessLevel) {
+        $this->roleAccessRepository     = $roleAccessRepository;
+        $this->resource                 = $resource;
+        $this->accessLevel              = (int) $accessLevel;
 
         $this->defaultPermissions   = [
             Role::COMPANY           => RoleAccess::ACCESS_READ | RoleAccess::ACCESS_WRITE | RoleAccess::ACCESS_EXECUTE,
@@ -38,6 +56,38 @@ class UserPermission implements MiddlewareInterface {
         ];
     }
 
+    /**
+     * Gets the access from role.
+     *
+     * @param      integer  $identityId  The identity identifier
+     * @param      string   $role        The role
+     * @param      string   $resource    The resource
+     *
+     * @return     int      The access from role.
+     */
+    private function getAccessFromRole(int $identityId, string $role, string $resource) : int {
+        try {
+            $roleAccess             = $this->roleAccessRepository->findOne($identityId, $role, $resource);
+            $access                 = $roleAccess->access;
+        } catch (NotFound $e) {
+            // fallbacks to default permission
+            $access = $this->defaultPermissions[$role];
+        }
+
+        return $access;
+    }
+
+    /**
+     * Invoked function when the middleware is called for that route.
+     *
+     * @param      \Psr\Http\Message\ServerRequestInterface  $request   The request
+     * @param      \Psr\Http\Message\ResponseInterface       $response  The response
+     * @param      Function|callable                         $next      The next callable object
+     *
+     * @throws     \App\Exception\NotAllowed                 Throws NotAllowed if the actor doesn't have access to the resource
+     *
+     * @return     Function                                   Next callable function
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
         $actingUser     = $request->getAttribute('actingUser');
         $targetUser     = $request->getAttribute('targetUser');
@@ -52,30 +102,28 @@ class UserPermission implements MiddlewareInterface {
 
         // Use cases got by this middleware:
         // User -> User
-        //      User (company owner) -> User
-        //      User (company member) -> User
-        //      User (company admin) -> User
+        //      User (company owner)    ->  User
+        //      User (company member)   ->  User
+        //      User (company admin)    ->  User
         //      User (any user) -> User
-        //  
         // Company -> User
-        //      
 
         // User -> User
         if ($actingUser && $actingUser->id !== $targetUser->id) {
             // @FIXME When company members are developed get back to this middleware and find the specific role for each use case
             $role = Role::USER;
 
-            $access = $this->getAcessFromRole($targetUser->identityId, $role, $this->resource);
+            $access = $this->getAccessFromRole($targetUser->identityId, $role, $this->resource);
 
             if (($this->accessLevel & $access) !== $this->accessLevel) {
                 throw new NotAllowed();
             }
         }
 
-        // use case: Company on User
+        // use case: Company -> User
         if ($actingCompany) {
             $role   = Role::COMPANY;
-            $access = $this->getAcessFromRole($targetUser->identityId, $role, $this->resource);
+            $access = $this->getAccessFromRole($targetUser->identityId, $role, $this->resource);
 
             if (($this->accessLevel & $access) !== $this->accessLevel) {
                 throw new NotAllowed();
@@ -84,20 +132,5 @@ class UserPermission implements MiddlewareInterface {
 
         return $next($request, $response);
     }
-
-    private function getAcessFromRole(int $identityId, string $role, string $resource) : int {
-        try {
-            $roleAccessRepository   = $this->container->get('repositoryFactory')->create('RoleAccess');
-            $roleAccess             = $roleAccessRepository->findOne($identityId, $role, $resource);
-            $access                 = $roleAccess->access;
-        } catch (NotFound $e) {
-            // fallbacks to default permission
-            $access = $this->defaultPermissions[$role];
-        }
-
-        return $access;
-    }
-    private function allow(ResponseInterface $response) : ResponseInterface {
-        return $response->withHeader('Allowed', 'true');
-    }
+    
 }

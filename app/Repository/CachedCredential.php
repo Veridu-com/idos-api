@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Repository;
 
@@ -25,15 +25,15 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey($pubKey) : CredentialEntity {
-        return $this->findOneBy(['private' => $pubKey]);
+    public function findByPrivKey(string $key) : CredentialEntity {
+        return $this->findOneBy(['private' => $key]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) : CredentialEntity {
-        return $this->repository->findOneBy(['public' => $pubKey]);
+    public function findByPubKey($key) : CredentialEntity {
+        return $this->repository->findOneBy(['public' => $key]);
     }
 
     /**
