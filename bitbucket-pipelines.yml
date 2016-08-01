@@ -1,13 +1,13 @@
-image: phpunit/phpunit:5.0.3
+image: composer/composer:latest
 
 pipelines:
   default:
     - step:
         script:
+          - apt-get update
+          - apt-get install libxml-dev libxml
           - docker-php-ext-install xsl
-          - php --version
-          - composer --version
-          - phpunit --version
+          - docker-php-ext-enable xsl
           - composer self-update
           - composer install
           - phpunit --coverage-text --configuration phpunit.xml.dist
