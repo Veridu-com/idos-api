@@ -31,14 +31,34 @@ class DBUser extends AbstractDBRepository implements UserInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByUserName(string $userName, int $credentialId) : User {
+    public function findByUsername(string $userName, int $credentialId) : User {
         $result = $this->query()
             ->where('username', $userName)
             ->where('credential_id', $credentialId)
             ->first();
-        if (empty($result))
+        if (empty($result)) {
             throw new NotFound();
+        }
 
         return $result;
     }
+
+    public function findOrCreate(string $userName, int $credentialId) : User {
+        $result = $this->query()
+            ->where('username', $userName)
+            ->where('credential_id', $credentialId)
+            ->first();
+        if (empty($result)) {
+            $user = $this
+                ->create([
+                    'username' => $userName,
+                    'credential_id' => $credentialId
+                ]);
+
+            $result = $this->save($user);
+        }
+
+        return $result;
+    }
+
 }
