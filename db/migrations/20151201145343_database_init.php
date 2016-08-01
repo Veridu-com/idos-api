@@ -552,7 +552,7 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('credential_id', 'integer', ['null' => false])
             ->addColumn('role', 'text', ['null' => true])
             ->addColumn('identity_id', 'integer', ['null' => true, 'default' => null])
-            ->addColumn('username', 'binary', ['null' => false])
+            ->addColumn('username', 'text', ['null' => false])
             ->addColumn(
                 'created_at',
                 'timestamp',
