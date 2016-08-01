@@ -4,7 +4,7 @@ pipelines:
   default:
     - step:
         script:
-          - apt-get update && apt-get install libxml-dev libxml libxslt-dev -y
+          - apt-get update && apt-get install libxslt-dev -y
           - docker-php-ext-install xsl && docker-php-ext-enable xsl
           - composer self-update
           - composer install
