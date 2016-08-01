@@ -7,6 +7,7 @@
 namespace Test\Unit\Handler;
 
 use App\Command\Permission\CreateNew;
+use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
 use App\Entity\Permission as PermissionEntity;
 use App\Factory\Entity as EntityFactory;
@@ -129,6 +130,62 @@ class PermissionTest extends AbstractUnit {
         $this->assertSame(1, $result->company_id);
     }
 
+    public function testHandleDeleteAllCompanyIdNotFound() {
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Permission');
+
+        $permissionRepository = $this->getMockBuilder(DBPermission::class)
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMock();
+
+        $handler = new Permission(
+            $permissionRepository,
+            new PermissionValidator()
+        );
+
+        $this->setExpectedException('InvalidArgumentException');
+
+        $commandMock = $this
+            ->getMockBuilder(DeleteAll::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandMock->companyId = '';
+
+        $handler->handleDeleteAll($commandMock);
+    }
+
+    public function testHandleDeleteAll() {
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Permission');
+
+        $permissionRepository = $this->getMockBuilder(DBPermission::class)
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setMethods(['deleteByCompanyId'])
+            ->getMock();
+        $permissionRepository
+            ->method('deleteByCompanyId')
+            ->will($this->returnValue(0));
+
+        $handler = new Permission(
+            $permissionRepository,
+            new PermissionValidator()
+        );
+
+        $commandMock = $this
+            ->getMockBuilder(DeleteAll::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandMock->companyId = 0;
+        $this->assertEquals(0, $handler->handleDeleteAll($commandMock));
+    }
+
     public function testHandleDeleteOneInvalidRouteName() {
         $repositoryMock = $this
             ->getMockBuilder(PermissionInterface::class)
@@ -152,4 +209,35 @@ class PermissionTest extends AbstractUnit {
 
         $handler->handleDeleteOne($commandMock);
     }
+
+    public function testHandleDeleteOne() {
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $entityFactory = new EntityFactory();
+        $entityFactory->create('Permission');
+
+        $permissionRepository = $this->getMockBuilder(DBPermission::class)
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setMethods(['deleteOne'])
+            ->getMock();
+        $permissionRepository
+            ->method('deleteOne')
+            ->will($this->returnValue(0));
+
+        $handler = new Permission(
+            $permissionRepository,
+            new PermissionValidator()
+        );
+
+        $commandMock = $this
+            ->getMockBuilder(DeleteOne::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $commandMock->companyId = 0;
+        $commandMock->routeName = 'Companies:listAll';
+        $this->assertEquals(0, $handler->handleDeleteOne($commandMock));
+    }
+
 }

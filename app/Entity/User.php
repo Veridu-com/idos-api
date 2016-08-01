@@ -12,8 +12,6 @@ namespace App\Entity;
  * Users Entity.
  *
  * @apiEntity schema/credential/credentialEntity.json
- *
- * @property int $id
  */
 class User extends AbstractEntity {
     /**
@@ -24,7 +22,7 @@ class User extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'created_at'];
+    protected $visible = ['username', 'created_at'];
     /**
      * {@inheritdoc}
      */
@@ -61,4 +59,5 @@ class User extends AbstractEntity {
         ],
         $this->getCacheKeys());
     }
+
 }
