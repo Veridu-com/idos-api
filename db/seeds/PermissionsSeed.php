@@ -22,7 +22,6 @@ class PermissionsSeed extends AbstractSeed {
 
         $data = [];
         $now  = date('Y-m-d H:i:s');
-        $size = sizeof($names) - 1;
 
         foreach ($names as $routeName) {
             $data[] = [

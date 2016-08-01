@@ -32,11 +32,13 @@ class UpdateOne extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['name']))
+        if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
+        }
 
-        if (isset($parameters['credentialId']))
+        if (isset($parameters['credentialId'])) {
             $this->credentialId = $parameters['credentialId'];
+        }
 
         return $this;
     }

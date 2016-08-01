@@ -41,17 +41,21 @@ class CreateNew extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) {
-        if (isset($parameters['role']))
+        if (isset($parameters['role'])) {
             $this->role = $parameters['role'];
+        }
 
-        if (isset($parameters['resource']))
+        if (isset($parameters['resource'])) {
             $this->resource = $parameters['resource'];
+        }
 
-        if (isset($parameters['access']))
+        if (isset($parameters['access'])) {
             $this->access = $parameters['access'];
+        }
 
-        if (isset($parameters['identityId']))
+        if (isset($parameters['identityId'])) {
             $this->identityId = $parameters['identityId'];
+        }
 
         return $this;
     }

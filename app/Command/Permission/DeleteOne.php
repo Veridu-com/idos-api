@@ -32,11 +32,13 @@ class DeleteOne extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['routeName']))
+        if (isset($parameters['routeName'])) {
             $this->routeName = $parameters['routeName'];
+        }
 
-        if (isset($parameters['companyId']))
+        if (isset($parameters['companyId'])) {
             $this->companyId = $parameters['companyId'];
+        }
 
         return $this;
     }

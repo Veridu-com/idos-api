@@ -9,7 +9,7 @@ use App\Command;
 use App\Event\ListenerProvider;
 use App\Exception\AppException;
 use App\Factory;
-use App\Handler; // TODO: Why not use folder identifiers instead of using so many declarations?
+use App\Handler; 
 use App\Middleware as Middleware;
 use App\Middleware\Auth;
 use App\Repository;
