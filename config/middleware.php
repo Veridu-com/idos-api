@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 use App\Middleware\Debugger;
 use App\Middleware\GateKeeper;
 use App\Middleware\Watcher;
