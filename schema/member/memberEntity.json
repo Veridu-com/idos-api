@@ -4,9 +4,10 @@
     "title": "Member",
     "type": "object",
     "properties": {
-        "username": {
-            "description": "Member Username",
-            "type": "string",
+        "user": {
+            "description": "User entity",
+            "type": "array",
+            "$ref": "memberEntity.json",
             "pattern": ""
         },
         "role": {
@@ -24,7 +25,7 @@
         }
     },
     "required": [
-        "username",
+        "user",
         "role",
         "created_at"
     ]
