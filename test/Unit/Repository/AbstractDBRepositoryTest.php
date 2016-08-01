@@ -10,6 +10,7 @@ use App\Entity\Company as CompanyEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\AbstractDBRepository;
+use App\Repository\RepositoryInterface;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
@@ -22,6 +23,18 @@ class AbstractDBRepositoryTest extends AbstractUnit {
         $reflection_method->setAccessible(true);
 
         return $reflection_method;
+    }
+
+    private function getEntity($id) {
+        return new CompanyEntity(
+            [
+                'name'       => 'New Company',
+                'id'         => $id,
+                'slug'       => 'new-company',
+                'created_at' => time(),
+                'updated_at' => time()
+            ]
+        );
     }
 
     public function testGetTableNameRuntimeException() {
@@ -43,6 +56,82 @@ class AbstractDBRepositoryTest extends AbstractUnit {
         $getTableName = $this->setProtectedMethod($abstractMock, 'getTableName');
         $this->assertSame('AbstractDBRepository', $getTableName->invoke($abstractMock));
 
+    }
+
+    public function testConstructorRightInterface() {
+        $entityFactory    = new Entity();
+        $dbConnectionMock = $this
+            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $abstractDBMock = $this
+            ->getMockBuilder(AbstractDBRepository::class)
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMock();
+
+        $this->assertInstanceOf(RepositoryInterface::class, $abstractDBMock);
+    }
+
+    public function testSaveThrowsException() {
+        $entityFactory = new Entity();
+
+        $dbConnectionMock = $this
+            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['where', 'update'])
+            ->getMock();
+        $queryMock
+            ->method('where')
+            ->will($this->returnValue($queryMock));
+        $queryMock
+            ->method('update')
+            ->will($this->returnValue(true));
+
+        $abstractDBMock = $this
+            ->getMockBuilder(AbstractDBRepository::class)
+            ->setMethods(['query'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMockForAbstractClass();
+        $abstractDBMock
+            ->method('query')
+            ->will($this->returnValue($queryMock));
+
+        $this->setExpectedException(\Exception::class);
+        $abstractDBMock->save($this->getEntity(1));
+
+    }
+
+    public function testSaveEmptyId() {
+        $entityFactory = new Entity();
+
+        $dbConnectionMock = $this
+            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['insertGetId'])
+            ->getMock();
+        $queryMock
+            ->method('insertGetId')
+            ->will($this->returnValue($queryMock));
+
+        $abstractDBMock = $this
+            ->getMockBuilder(AbstractDBRepository::class)
+            ->setMethods(['query', 'create'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMockForAbstractClass();
+        $abstractDBMock
+            ->method('query')
+            ->will($this->returnValue($queryMock));
+        $abstractDBMock
+            ->method('create')
+            ->will($this->returnValue($this->getEntity(1)));
+
+        $this->assertEquals($this->getEntity(1), $abstractDBMock->save($this->getEntity('')));
     }
 
     public function testGetEntityNameRuntimeException() {
@@ -149,6 +238,54 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $this->assertSame($array, $abstractMock->find(0)->toArray());
+    }
+
+    public function testDeleteByEmptyConstraintsException() {
+        $entityFactory    = new Entity();
+        $dbConnectionMock = $this
+            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $queryMock = $this
+            ->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $abstractDBMock = $this
+            ->getMockBuilder(AbstractDBRepository::class)
+            ->setMethods(null)
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMockForAbstractClass();
+
+        $this->setExpectedException(\RuntimeException::class);
+        $abstractDBMock->deleteBy([]);
+    }
+
+    public function testDeleteBy() {
+        $entityFactory    = new Entity();
+        $dbConnectionMock = $this
+            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMock();
+
+        $queryMock = $this
+            ->getMockBuilder(Builder::class)
+            ->setMethods(['delete'])
+            ->disableOriginalConstructor()
+            ->getMock();
+        $queryMock
+            ->method('delete')
+            ->will($this->returnValue(1));
+
+        $abstractDBMock = $this
+            ->getMockBuilder(AbstractDBRepository::class)
+            ->setMethods(['query'])
+            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->getMockForAbstractClass();
+        $abstractDBMock
+            ->method('query')
+            ->will($this->returnValue($queryMock));
+
+        $this->assertEquals(1, $abstractDBMock->deleteBy(['id' => 0]));
     }
 
     public function testFindByKeyNotFound() {
