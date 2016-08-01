@@ -39,7 +39,8 @@ class CredentialTest extends AbstractUnit {
         $this->assertArrayHasKey('public', $array);
         $this->assertSame('public', $array['public']);
         $this->assertArrayHasKey('private', $array);
-        $this->assertSame('private', $array['private']);
+        $this->assertNotSame('private', $array['private']);
+        $this->assertStringStartsWith('secure:', $array['private']);
         $this->assertArrayHasKey('production', $array);
         $this->assertFalse($array['production']);
         $this->assertArrayHasKey('created_at', $array);

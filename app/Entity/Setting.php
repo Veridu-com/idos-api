@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Extension\SecureFields;
+
 /**
  * Settings Entity.
  *
@@ -22,6 +24,7 @@ namespace App\Entity;
  * @property int    $updated_at
  */
 class Setting extends AbstractEntity {
+    use SecureFields;
     /**
      * Cache prefix.
      */
@@ -35,6 +38,12 @@ class Setting extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+    /**
+     * The attributes that should be secured.
+     *
+     * @var array
+     */
+    protected $secure = ['value'];
 
     /**
      * Property mutator (getter) for $value.
