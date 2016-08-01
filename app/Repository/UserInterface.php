@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -8,6 +7,8 @@
 declare(strict_types = 1);
 
 namespace App\Repository;
+
+use App\Entity\User;
 
 /**
  * User Repository Interface.
@@ -21,7 +22,7 @@ interface UserInterface extends RepositoryInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return App\Entity\User
      */
-    public function findByUserName($userName, $credentialId);
+    public function findByUserName(string $userName, int $credentialId) : User;
 }

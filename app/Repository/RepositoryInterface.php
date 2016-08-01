@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -43,7 +42,7 @@ interface RepositoryInterface {
      *
      * @return App\Entity\EntityInterface
      */
-    public function find($id) : EntityInterface;
+    public function find(int $id) : EntityInterface;
 
     /**
      * Find an entity by a key.

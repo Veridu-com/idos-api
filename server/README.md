@@ -23,6 +23,9 @@ In case you need, internal IP addresses for each server:
 - **srv-web**: 172.16.238.10
 - **srv-php**: 172.16.238.11, 172.16.239.11
 - **srv-db**: 172.16.239.12
+- **srv-queue**: 172.16.239.13
+- **srv-worker**: 172.16.239.14
+- **srv-redis**: 172.16.239.15
 
 ### Database
 
@@ -102,3 +105,15 @@ You can execute Phinx's Seed command by running `make phinx-seed`.
 ### PostgreSQL
 
 You can execute PostgreSQL's terminal-based front-end by running `make psql` - it will require **idos-api** user password.
+
+### Gearman
+
+You can execute Gearman's terminal-based front-end by running `make gearadmin`.
+
+### Supervisor
+
+You can execute Supervisor's terminal-based front-end by running `make supervisorctl`.
+
+### Redis
+
+You can execute Redis' terminal-based front-end by running `make redis-cli`.

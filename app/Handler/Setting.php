@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -54,8 +53,8 @@ class Setting implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\SettingInterface
-     * @param App\Validator\Setting
+     * @param App\Repository\SettingInterface $repository
+     * @param App\Validator\Setting           $validator
      *
      * @return void
      */

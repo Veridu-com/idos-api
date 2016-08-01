@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -34,7 +33,7 @@ abstract class AbstractFactory implements FactoryInterface {
      *
      * @return string
      */
-    protected function getFormattedName($name) : string {
+    protected function getFormattedName(string $name) : string {
         return ucfirst($name);
     }
 
@@ -45,11 +44,12 @@ abstract class AbstractFactory implements FactoryInterface {
      *
      * @return string
      */
-    protected function getClassName($name) {
+    protected function getClassName(string $name) {
         $name = $this->getFormattedName($name);
 
-        if (isset($this->classMap[$name]))
+        if (isset($this->classMap[$name])) {
             return $this->classMap[$name];
+        }
 
         return sprintf('%s%s', $this->getNamespace(), $name);
     }
@@ -62,9 +62,10 @@ abstract class AbstractFactory implements FactoryInterface {
      *
      * @return App\Factory\FactoryInterface
      */
-    public function register($name, $class) : FactoryInterface {
-        if (! class_exists($class))
+    public function register(string $name, string $class) : FactoryInterface {
+        if (! class_exists($class)) {
             throw new \RuntimeException(sprintf('Repository Class "%s" does not exist.', $class));
+        }
 
         $name                  = $this->getFormattedName($name);
         $this->classMap[$name] = $class;
@@ -81,11 +82,12 @@ abstract class AbstractFactory implements FactoryInterface {
      *
      * @return mixed
      */
-    public function create($name) {
+    public function create(string $name) {
         $class = $this->getClassName($name);
 
-        if (class_exists($class))
+        if (class_exists($class)) {
             return new $class();
+        }
 
         throw new \RuntimeException(sprintf('"%s" (%s) not found.', $name, $class));
     }

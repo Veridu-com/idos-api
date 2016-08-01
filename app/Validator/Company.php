@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -18,6 +17,8 @@ class Company implements ValidatorInterface {
     /**
      * Asserts a valid company id, digit.
      *
+     * @param mixed $id
+     *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
@@ -29,6 +30,8 @@ class Company implements ValidatorInterface {
 
     /**
      * Asserts a valid name, 1-15 chars long.
+     *
+     * @param mixed $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
@@ -43,6 +46,8 @@ class Company implements ValidatorInterface {
     /**
      * Asserts a valid slug, 1-15 chars long.
      *
+     * @param mixed $slug
+     *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
@@ -55,6 +60,8 @@ class Company implements ValidatorInterface {
 
     /**
      * Asserts a valid parent id, digit or null.
+     *
+     * @param mixed $parentId
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *

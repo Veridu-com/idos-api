@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -29,5 +28,5 @@ interface CommandInterface {
      *
      * @return App\Command\CommandInterface
      */
-    public function setParameter($name, $value);
+    public function setParameter(string $name, $value);
 }

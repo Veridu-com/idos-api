@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -25,21 +24,21 @@ class CachedCompany extends AbstractCachedRepository implements CompanyInterface
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($publicKey) : CompanyEntity {
+    public function findByPubKey(string $publicKey) : CompanyEntity {
         return $this->findOneBy(['public_key' => $publicKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey($privateKey) : CompanyEntity {
+    public function findByPrivKey(string $privateKey) : CompanyEntity {
         return $this->findOneBy(['private_key' => $privateKey]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByParentId($parentId) : Collection {
+    public function getAllByParentId(string $parentId) : Collection {
         return $this->findBy(['parent_id' => $parentId]);
     }
 

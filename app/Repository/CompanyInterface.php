@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -9,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\Company as CompanyEntity;
+use App\Entity\Company;
 use Illuminate\Support\Collection;
 
 /**
@@ -25,7 +24,8 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @return App\Entity\Company
      */
-    public function findByPubKey($pubKey) : CompanyEntity;
+    public function findByPubKey(string $pubKey) : Company;
+
     /**
      * Finds a Company based on its Private Key.
      *
@@ -35,7 +35,8 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @return App\Entity\Company
      */
-    public function findByPrivKey($privKey) : CompanyEntity;
+    public function findByPrivKey(string $privKey) : Company;
+
     /**
      * Finds a Company based on its Slug.
      *
@@ -45,7 +46,8 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @return App\Entity\Company
      */
-    public function findBySlug($slug) : CompanyEntity;
+    public function findBySlug(string $slug) : Company;
+
     /**
      * Gets all Companies based on their Parent Id.
      *
@@ -53,7 +55,8 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByParentId($parentId) : Collection;
+    public function getAllByParentId(int $parentId) : Collection;
+
     /**
      * Deletes all Companies based on their Parent Id.
      *

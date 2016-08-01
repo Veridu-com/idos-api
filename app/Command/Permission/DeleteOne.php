@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -22,7 +21,7 @@ class DeleteOne extends AbstractCommand {
      */
     public $routeName;
     /**
-     * Permission Id.
+     * Company Id.
      *
      * @var int
      */
@@ -30,6 +29,8 @@ class DeleteOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
+     *
+     * @return App\Command\Permission\DeleteOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['routeName'])) {

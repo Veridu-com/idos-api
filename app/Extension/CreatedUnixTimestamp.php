@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -19,8 +18,9 @@ trait CreatedUnixTimestamp {
      * @return int
      */
     public function getCreatedAttribute() : int {
-        if (! isset($this->attributes['created_at']))
+        if (! isset($this->attributes['created_at'])) {
             return 0;
+        }
 
         return strtotime($this->attributes['created_at']);
     }

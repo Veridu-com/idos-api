@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -16,7 +15,7 @@ class Entity extends AbstractFactory {
     /**
      * {@inheritdoc}
      */
-    protected function getNamespace() {
+    protected function getNamespace() : string {
         return '\\App\\Entity\\';
     }
 
@@ -24,16 +23,18 @@ class Entity extends AbstractFactory {
      * Creates new entity instances.
      *
      * @param string $name
+     * @param array  $attributes
      *
      * @throws \RuntimeException
      *
      * @return mixed
      */
-    public function create($name, array $attributes = []) {
+    public function create(string $name, array $attributes = []) {
         $class = $this->getClassName($name);
 
-        if (class_exists($class))
+        if (class_exists($class)) {
             return new $class($attributes);
+        }
 
         throw new \RuntimeException(sprintf('Class (%s) not found.', $class));
     }

@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -21,7 +20,7 @@ interface FactoryInterface {
      *
      * @return App\Factory\FactoryInterface
      */
-    public function register($name, $class);
+    public function register(string $name, string $class) : FactoryInterface;
     /**
      * Builds and returns objects.
      *
@@ -29,5 +28,5 @@ interface FactoryInterface {
      *
      * @return mixed
      */
-    public function create($name);
+    public function create(string $name);
 }

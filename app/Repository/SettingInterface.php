@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -9,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\Setting as SettingEntity;
+use App\Entity\Setting;
 use Illuminate\Support\Collection;
 
 /**
@@ -23,7 +22,8 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByCompanyId($companyId) : Collection;
+    public function getAllByCompanyId(int $companyId) : Collection;
+
     /**
      * Deletes all Settings based on their Company Id.
      *
@@ -31,7 +31,8 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteByCompanyId($companyId) : int;
+    public function deleteByCompanyId(int $companyId) : int;
+
     /**
      * Find one setting based on their companyId, section and property name.
      *
@@ -41,7 +42,8 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return App\Entity\Setting
      */
-    public function findOne($companyId, $section, $propName) : SettingEntity;
+    public function findOne(int $companyId, string $section, string $propName) : Setting;
+
     /**
      * Deletes one setting based on their companyId, section and property name.
      *
@@ -51,7 +53,8 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteOne($companyId, $section, $propName) : int;
+    public function deleteOne(int $companyId, string $section, string $propName) : int;
+
     /**
      * Retrieves all settings from company that has the given section.
      *
@@ -60,15 +63,14 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByCompanyIdAndSection($companyId, $section) : Collection;
+    public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection;
+
     /**
      * Updates one setting.
      *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
-     * @param string propName  setting's propName
+     * @param App\Entity\Setting $setting instance
      *
      * @return int
      */
-    public function update(\App\Entity\EntityInterface &$entity) :int;
+    public function update(Setting &$setting) : int;
 }

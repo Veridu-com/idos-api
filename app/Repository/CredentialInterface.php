@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -9,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\Credential as CredentialEntity;
+use App\Entity\Credential;
 use Illuminate\Support\Collection;
 
 /**
@@ -23,9 +22,10 @@ interface CredentialInterface extends RepositoryInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return App\Entity\Credential
      */
-    public function findByPubKey($pubKey) : CredentialEntity;
+    public function findByPubKey(string $pubKey) : Credential;
+
     /**
      * Gets all Credentials based on their Company Id.
      *
@@ -33,7 +33,8 @@ interface CredentialInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByCompanyId($companyId) : Collection;
+    public function getAllByCompanyId(int $companyId) : Collection;
+
     /**
      * Deletes all Credentials based on their Company Id.
      *
@@ -41,5 +42,5 @@ interface CredentialInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteByCompanyId($companyId) : int;
+    public function deleteByCompanyId(int $companyId) : int;
 }

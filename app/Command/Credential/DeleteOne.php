@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -24,6 +23,8 @@ class DeleteOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
+     *
+     * @return App\Command\Credential\DeleteOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['credentialId'])) {

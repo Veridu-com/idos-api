@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -20,7 +19,7 @@ interface RepositoryStrategyInterface {
      *
      * @return string
      */
-    public function getFormattedName($repositoryName) : string;
+    public function getFormattedName(string $repositoryName) : string;
 
     /**
      * Builds a new repository.
@@ -29,5 +28,5 @@ interface RepositoryStrategyInterface {
      *
      * @return App\Repository\RepositoryInterface
      */
-    public function build($className) : RepositoryInterface;
+    public function build(string $className) : RepositoryInterface;
 }

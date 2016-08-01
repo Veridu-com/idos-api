@@ -24,24 +24,32 @@ class User extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['username', 'role', 'created_at'];
-
+    protected $visible = ['name', 'created_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
-    public function setUsernameAttribute($value) {
-        $this->attributes['username'] = is_string($value) ? $value : stream_get_contents($value, -1, 0);
-
-        return $this;
-    }
 
     /**
      * {@inheritdoc}
      */
     public function getCacheKeys() : array {
         return [
+            sprintf(
+                '%s/id/%s',
+                self::CACHE_PREFIX,
+                $this->id
+            ),
+            sprintf(
+                '%s/slug/%s',
+                self::CACHE_PREFIX,
+                $this->slug
+            ),
+            sprintf(
+                '%s/public/%s',
+                self::CACHE_PREFIX,
+                $this->public
+            )
         ];
     }
 

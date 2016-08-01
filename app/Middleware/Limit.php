@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -18,18 +17,66 @@ use Stash\Item;
 /**
  * Limit Middleware.
  *
+ * Scope: Route.
  * Enforces request limits and adds usage details to response headers.
+ *
+ * FIXME This needs to be updated as Stash has been removed..
  */
 class Limit implements MiddlewareInterface {
+    /**
+     * Dependency Container.
+     *
+     * @var \Interop\Container\ContainerInterface
+     */
     private $container;
+    /**
+     * Soft Limit (emits alert).
+     *
+     * @var int
+     */
     private $softLimit;
+    /**
+     * Hard Limit (blocks request).
+     *
+     * @var int
+     */
     private $hardLimit;
+    /**
+     * Limit Type (Key or User).
+     *
+     * @var int
+     */
     private $limitType;
 
+    /**
+     * Key-based limit control.
+     *
+     * @const KEYLIMIT
+     */
     const KEYLIMIT = 0x00;
+    /**
+     * User-based limit control.
+     *
+     * @const USRLIMIT
+     */
     const USRLIMIT = 0x01;
 
-    public function __construct(ContainerInterface $container, $softLimit, $hardLimit, $limitType = self::KEYLIMIT) {
+    /**
+     * Class constructor.
+     *
+     * @param \Interop\Container\ContainerInterface $container
+     * @param int                                   $softLimit
+     * @param int                                   $hardLimit
+     * @param int                                   $limitType
+     *
+     * @return void
+     */
+    public function __construct(
+        ContainerInterface $container,
+        int $softLimit,
+        int $hardLimit,
+        int $limitType = self::KEYLIMIT
+    ) {
         $this->container = $container;
         $this->softLimit = $softLimit;
         $this->hardLimit = $hardLimit;
@@ -51,7 +98,11 @@ class Limit implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ) : ResponseInterface {
         $key = $request->getAttribute('key');
         if ($this->limitType == self::KEYLIMIT)
             // The limit is based on the key / route identifier

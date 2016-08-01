@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -23,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Authorization Middleware.
  *
+ * Scope: Application.
  * Extracts authorization from request and stores Acting/Target
  * Subjects (User and/or Company) to request.
  */
@@ -193,7 +193,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return string|null
      */
-    private function extractAuthorization(ServerRequestInterface $request, $name) {
+    private function extractAuthorization(ServerRequestInterface $request, string $name) {
         $name  = ucfirst($name);
         $regex = sprintf('/^%s ([a-zA-Z0-9]+)$/', $name);
         if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches))
@@ -215,7 +215,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserToken(ServerRequestInterface $request, $reqToken) : ServerRequestInterface {
+    private function handleUserToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         $token = $this->jwtParser->parse($reqToken);
 
         // Ensures JWT Audience is the current API
@@ -263,16 +263,15 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserPubKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
+    private function handleUserPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         try {
             $targetUser = $this->userRepository->findByPubKey($reqKey);
         } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
         }
 
-        return $request
-            // Stores Target User for future use
-            ->withAttribute('targetUser', $targetUser);
+        // Stores Target User for future use
+        return $request->withAttribute('targetUser', $targetUser);
     }
 
     /**
@@ -283,16 +282,15 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserPrivKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
+    private function handleUserPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         try {
             $actingUser = $this->userRepository->findByPrivKey($reqKey);
         } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
         }
 
-        return $request
-            // Stores Acting User for future use
-            ->withAttribute('actingUser', $actingUser);
+        // Stores Acting User for future use
+        return $request->withAttribute('actingUser', $actingUser);
     }
 
     /**
@@ -303,7 +301,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCompanyPubKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
+    private function handleCompanyPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         $actingCompany = $this->companyRepository->findByPubKey($reqKey);
         if ($actingCompany->isEmpty())
             throw new AppException('Invalid Credential');
@@ -321,7 +319,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCompanyPrivKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
+    private function handleCompanyPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         try {
             $actingCompany = $this->companyRepository->findByPrivKey($reqKey);
 
@@ -341,7 +339,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialToken(ServerRequestInterface $request, $reqToken) : ServerRequestInterface {
+    private function handleCredentialToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         $token = $this->jwtParser->parse($reqToken);
 
         // Ensures JWT Audience is the current API
@@ -394,7 +392,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialPubKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
+    private function handleCredentialPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         $credential = $this->credentialRepository->findByPubKey($reqKey);
         if ($credential->isEmpty())
             throw new AppException('Invalid Credential');
@@ -418,7 +416,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialPrivKey(ServerRequestInterface $request, $reqKey) : ServerRequestInterface {
+    private function handleCredentialPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         $credential = $this->credentialRepository->findByPrivKey($reqKey);
         if ($credential->isEmpty())
             throw new AppException('Invalid Credential');
@@ -454,7 +452,7 @@ class Auth implements MiddlewareInterface {
         JWTParser $jwtParser,
         JWTValidation $jwtValidation,
         JWTSigner $jwtSigner,
-        $authorizationRequirement = self::NONE
+        int $authorizationRequirement = self::NONE
     ) {
         $this->credentialRepository = $credentialRepository;
         $this->userRepository       = $userRepository;
@@ -485,8 +483,11 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
-
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ) : ResponseInterface {
         $hasAuthorization   = ($this->authorizationRequirement == self::NONE);
         $validAuthorization = [];
 

@@ -19,21 +19,22 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        // gets the number of related permissions
-        $totalNumberOfEntities   = sizeof($this->populate($this->uri));
-
         // then creates the DELETE request
-        $request    = $this->createRequest($this->createEnvironment());
+        $request    = $this->createRequest();
         $response   = $this->process($request);
         $body       = json_decode($response->getBody(), true);
 
         // success assertions
         $this->assertNotEmpty($body);
+
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
-        $this->assertEquals($totalNumberOfEntities, $body['deleted']); // checks if listAll retrived the number of deleted objects
-        $this->populate($this->uri); // refreshes the $entities prop
-        $this->assertEquals(0, sizeof($this->entities)); // checks if all entities were deleted
+        // checks if listAll retrived the number of deleted objects
+        $this->assertEquals(count($this->entities), $body['deleted']);
+        // refreshes the $entities prop
+        $this->populate($this->uri);
+        // checks if all entities were deleted
+        $this->assertEquals(0, sizeof($this->entities));
 
         /*
          * Validates Json Schema with Json Response

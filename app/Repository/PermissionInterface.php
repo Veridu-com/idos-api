@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -24,6 +23,7 @@ interface PermissionInterface extends RepositoryInterface {
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllByCompanyId(int $companyId) : Collection;
+
     /**
      * Deletes all Permissions based on their Company Id.
      *
@@ -32,6 +32,7 @@ interface PermissionInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByCompanyId(int $companyId) : int;
+
     /**
      * Find one permission based on their companyId, routeName.
      *
@@ -41,6 +42,7 @@ interface PermissionInterface extends RepositoryInterface {
      * @return App\Entity\Permission
      */
     public function findOne(int $companyId, string $routeName) : Permission;
+
     /**
      * Deletes one permission based on their companyId, routeName.
      *

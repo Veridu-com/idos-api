@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -32,7 +31,7 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey($pubKey) : Credential {
+    public function findByPubKey(string $pubKey) : Credential {
         return $this->findOneBy(['public' => $pubKey]);
     }
 
@@ -43,21 +42,21 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId($companyId) : Collection {
+    public function getAllByCompanyId(int $companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByCompanyId($companyId) : int {
+    public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByPubKey($pubKey) : int {
+    public function deleteByPubKey(string $pubKey) : int {
         return $this->deleteByKey('public', $pubKey);
     }
 }

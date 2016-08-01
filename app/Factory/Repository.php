@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -32,7 +31,7 @@ class Repository extends AbstractFactory {
     /**
      * {@inheritdoc}
      */
-    protected function getFormattedName($name) : string {
+    protected function getFormattedName(string $name) : string {
         return $this->strategy->getFormattedName($name);
     }
 
@@ -50,7 +49,7 @@ class Repository extends AbstractFactory {
     /**
      * {@inheritdoc}
      */
-    public function create($name) {
+    public function create(string $name) {
         $class = $this->getClassName($name);
 
         if (class_exists($class))
