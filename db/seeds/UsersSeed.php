@@ -28,7 +28,7 @@ class UsersSeed extends AbstractSeed {
             [
                 'credential_id' => 1,
                 'identity_id'   => 1,
-                'username'      => md5('JohnDoe')       // 9fd9f63e0d6487537569075da85a0c7f2     
+                'username'      => md5('JohnDoe')       // 9fd9f63e0d6487537569075da85a0c7f2
             ],
             [
                 'credential_id' => 1,

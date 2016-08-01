@@ -29,18 +29,6 @@ class Member implements ValidatorInterface {
     }
 
     /**
-     * Asserts a valid company id, integer.
-     *
-     * @throws \Respect\Validation\Exceptions\ExceptionInterface
-     *
-     * @return void
-     */
-    public function assertCompanyId(int $id) {
-        Validator::digit()
-            ->assert($id);
-    }
-
-    /**
      * Asserts a valid id, integer.
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface

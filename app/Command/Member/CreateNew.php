@@ -15,12 +15,6 @@ use App\Command\AbstractCommand;
  */
 class CreateNew extends AbstractCommand {
     /**
-     * Member's username (user input).
-     *
-     * @var string
-     */
-    public $username;
-    /**
      * Member's role.
      *
      * @var string
@@ -32,13 +26,19 @@ class CreateNew extends AbstractCommand {
      * @var int
      */
     public $companyId;
+    /**
+     * Member's username (user input).
+     *
+     * @var string
+     */
+    public $userName;
 
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['username'])) {
-            $this->username = $parameters['username'];
+        if (isset($parameters['userName'])) {
+            $this->userName = $parameters['userName'];
         }
 
         if(isset($parameters['role'])) {

@@ -14,6 +14,7 @@ namespace App\Entity;
  * @apiEntity schema/member/memberEntity.json
  *
  * @property int $id
+ * @property int $user_id
  */
 class Member extends AbstractEntity {
     /**
@@ -23,7 +24,7 @@ class Member extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['username', 'role', 'created_at'];
+    protected $visible = ['user', 'role', 'created_at'];
     /**
      * {@inheritdoc}
      */
@@ -35,7 +36,7 @@ class Member extends AbstractEntity {
     public function getCacheKeys() : array {
         return [
             sprintf('%s.id.%s', self::CACHE_PREFIX, $this->id),
-            sprintf('%s.username.%s', self::CACHE_PREFIX, $this->username)
+            sprintf('%s.user_id.%s', self::CACHE_PREFIX, $this->userId)
         ];
     }
 

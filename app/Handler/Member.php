@@ -14,6 +14,7 @@ use App\Command\Member\DeleteOne;
 use App\Command\Member\UpdateOne;
 use App\Entity\Member as MemberEntity;
 use App\Repository\MemberInterface;
+use App\Repository\UserInterface;
 use App\Validator\Member as MemberValidator;
 use Interop\Container\ContainerInterface;
 
@@ -27,6 +28,12 @@ class Member implements HandlerInterface {
      * @var App\Repository\MemberInterface
      */
     protected $repository;
+     /**
+     * User Repository instance.
+     *
+     * @var App\Repository\UserInterface
+     */
+    protected $userRepository;
     /**
      * Member Validator instance.
      *
@@ -44,6 +51,9 @@ class Member implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Member'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('User'),
+                $container
                     ->get('validatorFactory')
                     ->create('Member')
             );
@@ -54,15 +64,18 @@ class Member implements HandlerInterface {
      * Class constructor.
      *
      * @param App\Repository\MemberInterface $repository
+     * @param App\Repository\UserInterface $repository
      * @param App\Validator\Member $validator
      *
      * @return void
      */
     public function __construct(
         MemberInterface $repository,
+        UserInterface $userRepository,
         MemberValidator $validator
     ) {
         $this->repository = $repository;
+        $this->userRepository = $userRepository;
         $this->validator  = $validator;
     }
 
@@ -74,19 +87,25 @@ class Member implements HandlerInterface {
      * @return App\Entity\Member
      */
     public function handleCreateNew(CreateNew $command) : MemberEntity {
-        $this->validator->assertUsername($command->username);
-        $this->validator->assertCompanyId($command->companyId);
+        $this->validator->assertId($command->companyId);
+        $this->validator->assertUserName($command->userName);
+
+        $user = $this->userRepository->findOneBy(['username' => $command->userName]);
 
         $member = $this->repository->create(
             [
-                'username'   => $command->username,
+                'user_id'   => $user->id,
                 'role'       => $command->role,
                 'company_id' => $command->companyId,
                 'created_at' => time()
             ]
         );
 
-        return $this->repository->save($member);
+        $member = $this->repository->save($member);
+
+        $member->user = $user->toArray();
+
+        return $member;
     }
 
     /**
@@ -98,13 +117,17 @@ class Member implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : MemberEntity {
         $this->validator->assertId($command->companyId);
-        $this->validator->assertUsername($command->username);
+        $this->validator->assertId($command->userId);
 
-        $member            = $this->repository->findOne($command->companyId, $command->username);
+        $member            = $this->repository->findOne($command->companyId, $command->userId);
         $member->role      = $command->role;
         $member->updatedAt = time();
 
-        return $this->repository->save($member);
+        $member = $this->repository->save($member);
+
+        $member->user = $this->userRepository->find($command->userId)->toArray();
+
+        return $member;
     }
 
     /**
@@ -116,12 +139,12 @@ class Member implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->companyId);
-        $this->validator->assertUsername($command->username);
+        $this->validator->assertId($command->userId);
 
-        return $this->repository->deleteOne($command->companyId, $command->username);
+        return $this->repository->deleteOne($command->companyId, $command->userId);
     }
 
-    /*
+    /**
      * Deletes all members ($command->companyId).
      *
      * @param App\Command\Member\DeleteAll $command

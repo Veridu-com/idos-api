@@ -281,35 +281,6 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        $members = $this->table('members');
-        $members
-            ->addColumn('company_id', 'integer', ['null' => false])
-            ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('role', 'text', ['null' => false, 'default' => 'member'])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addIndex('company_id')
-            ->addIndex('user_id')
-            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         $settings = $this->table('settings');
         $settings
             ->addColumn('company_id', 'integer', ['null' => false])
@@ -627,6 +598,36 @@ class DatabaseInit extends AbstractMigration {
             ->addIndex('credential_id')
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
+
+        $members = $this->table('members');
+        $members
+            ->addColumn('company_id', 'integer', ['null' => false])
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('role', 'text', ['null' => false, 'default' => 'member'])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addIndex('company_id')
+            ->addIndex('user_id')
+            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
 
         $hookLogs = $this->table('hook_logs');
 

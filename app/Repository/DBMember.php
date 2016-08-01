@@ -12,7 +12,7 @@ use App\Entity\Member;
 use Illuminate\Support\Collection;
 
 /**
- * Database-based Credential Repository Implementation.
+ * Database-based Member Repository Implementation.
  */
 class DBMember extends AbstractDBRepository implements MemberInterface {
     /**
@@ -38,31 +38,30 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
-        $items = [];
+     public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
+        $items = new Collection();
         foreach ($roles as $role) {
-            $items = array_merge($this->findBy(['company_id' => $companyId, 'role' => $role])->toArray(), $items);
+            $items = $items->merge($this->findBy(['company_id' => $companyId, 'role' => $role]));
         }
-
-        return new Collection($items);
+        return $items;
     }
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $companyId, string $username) : Member {
+    public function findOne(int $companyId, int $userId) : Member {
         return $this->findOneBy([
             'company_id'  => $companyId,
-            'username'    => $username
+            'user_id'    => $userId
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteOne(int $companyId, string $username) : int {
+    public function deleteOne(int $companyId, int $userId) : int {
         return $this->query()
             ->where('company_id', $companyId)
-            ->where('username', $username)
+            ->where('user_id', $userId)
             ->delete();
     }
 

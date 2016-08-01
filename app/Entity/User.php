@@ -15,6 +15,7 @@ namespace App\Entity;
  *
  * @property int $id
  * @FIXME
+ * PUT $visible['username']
  */
 class User extends AbstractEntity {
     /**
@@ -24,7 +25,7 @@ class User extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'created_at'];
+    protected $visible = ['created_at'];
     /**
      * {@inheritdoc}
      */
@@ -52,4 +53,9 @@ class User extends AbstractEntity {
             )
         ];
     }
+
+    public function getReferenceCacheKeys() : array {
+
+    }
+
 }

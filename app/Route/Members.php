@@ -42,6 +42,7 @@ class Members implements RouteInterface {
         $app->getContainer()[\App\Controller\Members::class] = function (ContainerInterface $container) {
             return new \App\Controller\Members(
                 $container->get('repositoryFactory')->create('Member'),
+                $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
                 $container->get('optimus')
@@ -130,12 +131,12 @@ class Members implements RouteInterface {
      *
      * Updates Member's role
      *
-     * @apiEndpoint PUT /companies/{companySlug}/members/{username}
+     * @apiEndpoint PUT /companies/{companySlug}/members/{userName}
      * @apiGroup Company Members
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string username johndoe
+     * @apiEndpointURIFragment string userName johndoe
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -151,7 +152,7 @@ class Members implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{username:[a-zA-Z0-9]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{userName:[a-zA-Z0-9]+}',
                 'App\Controller\Members:updateOne'
             )
             ->add($permission(Permission::PRIVATE_ACTION))
@@ -197,12 +198,12 @@ class Members implements RouteInterface {
      *
      * Retrieves all public information from a Member
      *
-     * @apiEndpoint GET /companies/{companySlug}/members/{username}
+     * @apiEndpoint GET /companies/{companySlug}/members/{userName}
      * @apiGroup Company Members
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string username
+     * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -218,7 +219,7 @@ class Members implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{username:[a-zA-Z0-9]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{userName:[a-zA-Z0-9]+}',
                 'App\Controller\Members:getOne'
             )
             ->add($permission(Permission::PRIVATE_ACTION))
@@ -231,12 +232,12 @@ class Members implements RouteInterface {
      *
      * Deletes a single Member that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/members/{username}
+     * @apiEndpoint DELETE /companies/{companySlug}/members/{userName}
      * @apiGroup Company Members
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string username
+     * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -252,7 +253,7 @@ class Members implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{username:[a-zA-Z0-9]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{userName:[a-zA-Z0-9]+}',
                 'App\Controller\Members:deleteOne'
             )
             ->add($permission(Permission::PRIVATE_ACTION))
