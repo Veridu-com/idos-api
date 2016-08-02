@@ -1,17 +1,11 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "https://api.veridu.com/1.0/schema/member/memberEntity.json",
-    "title": "Member",
+    "id": "https://api.veridu.com/1.0/schema/user/userEntity.json",
+    "title": "User",
     "type": "object",
     "properties": {
-        "user": {
-            "description": "User entity",
-            "type": "object",
-            "$ref": "../user/userEntity.json",
-            "pattern": ""
-        },
-        "role": {
-            "description": "Role access of the member in the company",
+        "username": {
+            "description": "user's username",
             "type": "string",
             "pattern": ""
         },
@@ -25,8 +19,7 @@
         }
     },
     "required": [
-        "user",
-        "role",
+        "username",
         "created_at"
     ]
 }
