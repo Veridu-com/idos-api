@@ -35,6 +35,27 @@ class UserPermission implements MiddlewareInterface {
     private $roleAccessRepository;
 
     /**
+     * Gets the access from role.
+     *
+     * @param      integer  $identityId  The identity identifier
+     * @param      string   $role        The role
+     * @param      string   $resource    The resource
+     *
+     * @return     int      The access from role.
+     */
+    private function getAccessFromRole(int $identityId, string $role, string $resource) : int {
+        try {
+            $roleAccess             = $this->roleAccessRepository->findOne($identityId, $role, $resource);
+            $access                 = $roleAccess->access;
+        } catch (NotFound $e) {
+            // fallbacks to default permission
+            $access = $this->defaultPermissions[$role];
+        }
+
+        return $access;
+    }
+
+    /**
      * Class constructor.
      *
      * @param      \App\Repository\RoleAccessInterface  $roleAccessRepository  The role access repository
@@ -54,27 +75,6 @@ class UserPermission implements MiddlewareInterface {
             Role::USER              => RoleAccess::ACCESS_READ,
             Role::GUEST             => RoleAccess::ACCESS_READ
         ];
-    }
-
-    /**
-     * Gets the access from role.
-     *
-     * @param      integer  $identityId  The identity identifier
-     * @param      string   $role        The role
-     * @param      string   $resource    The resource
-     *
-     * @return     int      The access from role.
-     */
-    private function getAccessFromRole(int $identityId, string $role, string $resource) : int {
-        try {
-            $roleAccess             = $this->roleAccessRepository->findOne($identityId, $role, $resource);
-            $access                 = $roleAccess->access;
-        } catch (NotFound $e) {
-            // fallbacks to default permission
-            $access = $this->defaultPermissions[$role];
-        }
-
-        return $access;
     }
 
     /**

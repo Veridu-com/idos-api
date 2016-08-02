@@ -63,10 +63,7 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             ->join('credentials', 'users.credential_id', '=', 'credentials.id')
             ->where('credentials.private', '=', $privateKey)
             ->first();
-<<<<<<< HEAD
 
-=======
->>>>>>> dd0edd3382227d9888a0e869d4007402e3a61912
         if (empty($result)) {
             throw new NotFound();
         }
@@ -87,6 +84,19 @@ class DBUser extends AbstractDBRepository implements UserInterface {
                 ]);
 
             $result = $this->save($user);
+        }
+
+        return $result;
+    }
+
+    public function findOneByUserNameAndCredential(string $userName, int $credentialId) : User {
+        $result = $this->query()
+            ->where('username', $userName)
+            ->where('credential_id', $credentialId)
+            ->first();
+
+        if (empty($result)) {
+            throw new NotFound('User not found.');
         }
 
         return $result;

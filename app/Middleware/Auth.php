@@ -220,29 +220,32 @@ class Auth implements MiddlewareInterface {
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (! $token->validate($this->jwtvalidation))
+        if (! $token->validate($this->jwtvalidation)) {
             throw new AppException('Token Validation Failed');
+        }
 
         // Retrieves JWT Issuer
         $pubKey     = $token->getClaim('iss');
         $credential = $this->credentialRepository->findByPubKey($pubKey);
-        if ($credential->isEmpty())
+        if ($credential->isEmpty()) {
             throw new AppException('Invalid Credential');
+        }
 
         // JWT Signature Verification
         if (! $token->verify($this->jwtSigner, $credential->private_key))
             throw new AppException('Token Verification Failed');
 
         // Retrieves JWT Subject
-        if (! $token->hasClaim('sub'))
+        if (! $token->hasClaim('sub')) {
             throw new AppException('Missing Subject Claim');
+        }
         $userName = $token->getClaim('sub');
 
         // If it's a new user, creates it
         $actingUser = $this->userRepository->findOrCreate($userName, $credential->id);
 
         // Retrieves Credential's owner
-        $targetCompany = $this->companyRepository->findById($credential->company_id);
+        $targetCompany = $this->companyRepository->findById($credential->companyId);
 
         return $request
             // Stores Acting User for future use
@@ -557,12 +560,10 @@ class Auth implements MiddlewareInterface {
                     throw new AppException('InvalidRequest');
                 }
 
-                // @TODO: Didn't understand why findOrCreate
-                $user = $this->userRepository->findByUserNameAndCompany($username, $company->id);
+                $user = $this->userRepository->findByUsernameAndCredential($username, $request->getAttribute('credential'));
             }
 
             // Stores Target User for future use
-
             $request = $request->withAttribute('targetUser', $user);
 
             return $request;

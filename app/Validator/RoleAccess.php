@@ -47,6 +47,7 @@ class RoleAccess implements ValidatorInterface {
             RoleAccessEntity::ACCESS_EXECUTE,
             RoleAccessEntity::ACCESS_WRITE,
             RoleAccessEntity::ACCESS_READ,
+            RoleAccessEntity::ACCESS_WRITE | RoleAccessEntity::ACCESS_EXECUTE,
             RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_EXECUTE,
             RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE,
             RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE | RoleAccessEntity::ACCESS_EXECUTE

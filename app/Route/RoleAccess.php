@@ -62,7 +62,7 @@ class RoleAccess implements RouteInterface {
     }
 
     /**
-     * List all RoleAccess.
+     * List all RoleAccess from a target User.
      *
      * Retrieve a complete list of all Role Access that belong to the target User.
      *
@@ -130,7 +130,7 @@ class RoleAccess implements RouteInterface {
     /**
      * Deletes all roleAccess.
      *
-     * Deletes all roleAccess that belongs to the requesting company.
+     * Deletes all roleAccess that belongs to the target User.
      *
      * @apiEndpoint DELETE /access/roles/{companySlug}/{userName}
      * 
