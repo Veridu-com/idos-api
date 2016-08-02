@@ -13,15 +13,16 @@ use JsonSchema\Validator;
 use Phinx\Console\PhinxApplication;
 use Phinx\Wrapper\TextWrapper;
 use Slim\App;
+use Slim\Http\Body;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
 use Slim\Http\RequestBody;
 use Slim\Http\Response;
 use Slim\Http\Uri;
-use Slim\Http\Body;
+
 /**
- * AbstractFunctional Class
+ * AbstractFunctional Class.
  *
  * Join all common methods of the other functional classes.
  */
@@ -34,7 +35,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     private $app;
 
     /**
-     * Message of the errors of a failed schema assertion
+     * Message of the errors of a failed schema assertion.
      *
      * @var string
      */
@@ -64,7 +65,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     protected $uri;
 
     /**
-     * Runs one time before any method of the Child classes
+     * Runs one time before any method of the Child classes.
      */
     public static function setUpBeforeClass() {
         $phinxTextWrapper = new TextWrapper(new PhinxApplication());
@@ -78,7 +79,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Load all the dependencies for the aplication
+     * Load all the dependencies for the aplication.
      *
      * @return Slim\App $app
      */
@@ -102,9 +103,9 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Process the request
+     * Process the request.
      *
-     * @param  Request $request
+     * @param Request $request
      *
      * @return ResponseInterface response
      */
@@ -137,9 +138,9 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Helper to get a random entity
+     * Helper to get a random entity.
      *
-     * @param int|boolean $index
+     * @param int|bool $index
      *
      * @return array $this->entities
      */
@@ -156,7 +157,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Mocks the environment
+     * Mocks the environment.
      *
      * @param array $options Environment options
      *
@@ -174,9 +175,11 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Creates the Request based on the mocked environment and the request body
-     * @param  Environment|null $environment
-     * @param  StreamInterface           $body  Request body
+     * Creates the Request based on the mocked environment and the request body.
+     *
+     * @param Environment|null $environment
+     * @param StreamInterface  $body        Request body
+     *
      * @return RequestInterface $request
      */
     protected function createRequest(Environment $environment = null, $body = null) : Request {
@@ -203,10 +206,12 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Validates the schemas given the schema file and the response body
-     * @param  string $schemaFile
+     * Validates the schemas given the schema file and the response body.
+     *
+     * @param string $schemaFile
      * @param  $bodyResponse
-     * @return boolean $validator->isValid
+     *
+     * @return bool $validator->isValid
      */
     protected function validateSchema(string $schemaFile, $bodyResponse) : bool {
         $schemaFile = ltrim($schemaFile, '/');
@@ -232,7 +237,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Gets the schema Errors if something went wrong in $this->validateSchema()
+     * Gets the schema Errors if something went wrong in $this->validateSchema().
      *
      * @param Validator $validator
      */
