@@ -32,7 +32,6 @@ trait SecureFields {
         return $this;
     }
 
-
     /**
      * {@inheritdoc}
      */

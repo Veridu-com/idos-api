@@ -48,7 +48,7 @@ class Members implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\MemberInterface $repository
-     * @param App\Repository\UserInterface $userRepository
+     * @param App\Repository\UserInterface   $userRepository
      * @param \League\Tactician\CommandBus   $commandBus
      * @param App\Factory\Command            $commandFactory
      *
@@ -79,7 +79,7 @@ class Members implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $roles = $request->getQueryParam('role', null);
+        $roles         = $request->getQueryParam('role', null);
 
         if ($roles === null)
             $members = $this->repository->getAllByCompanyId($targetCompany->id);
@@ -91,6 +91,7 @@ class Members implements ControllerInterface {
 
         $members->transform(function ($member) {
             $member->user = $this->userRepository->find($member->userId)->toArray();
+
             return $member;
         });
 
@@ -100,7 +101,6 @@ class Members implements ControllerInterface {
                 $members->isEmpty() ? time() : $members->max('updated_at')
             )
         ];
-
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
@@ -123,12 +123,12 @@ class Members implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $bodyRequest = $request->getParsedBody();
+        $bodyRequest   = $request->getParsedBody();
 
         $command = $this->commandFactory->create('Member\\CreateNew');
 
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($bodyRequest)
             ->setParameter('userName', $bodyRequest['userName'])
             ->setParameter('companyId', $targetCompany->id);
 
@@ -161,7 +161,7 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $targetCompany   = $request->getAttribute('targetCompany');
         $targetUser      = $request->getAttribute('targetUser');
 
         $command = $this->commandFactory->create('Member\\UpdateOne');
@@ -199,10 +199,10 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $targetCompany   = $request->getAttribute('targetCompany');
         $targetUser      = $request->getAttribute('targetUser');
-        $member        = $this->repository->findOne($targetCompany->id, $targetUser->id);
-        $member->user = $this->userRepository->find($targetUser->id)->toArray();
+        $member          = $this->repository->findOne($targetCompany->id, $targetUser->id);
+        $member->user    = $this->userRepository->find($targetUser->id)->toArray();
 
         $body = [
             'data'    => $member->toArray()
@@ -259,7 +259,7 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $targetCompany   = $request->getAttribute('targetCompany');
         $targetUser      = $request->getAttribute('targetUser');
 
         $command = $this->commandFactory->create('Member\\DeleteOne');
