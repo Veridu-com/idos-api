@@ -14,7 +14,6 @@ use App\Command\AbstractCommand;
  * Member "Delete One" Command.
  */
 class DeleteOne extends AbstractCommand {
-
     /**
      * Company Id of member to be deleted.
      *
@@ -22,7 +21,7 @@ class DeleteOne extends AbstractCommand {
      */
     public $companyId;
     /**
-     * User id
+     * User id.
      *
      * @var int
      */
