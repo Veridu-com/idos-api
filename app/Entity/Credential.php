@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Helper\Utils;
 use App\Extension\SecureFields;
+use App\Helper\Utils;
 
 /**
  * Credentials Entity.
