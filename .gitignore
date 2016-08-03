@@ -19,4 +19,3 @@ server/docker/
 sftp-config.json
 vendor/
 VeriduRuleset.xml
-server/Makefile
