@@ -587,6 +587,7 @@ class Auth implements MiddlewareInterface {
         } else {
             // Load Company
             $targetCompany = $this->companyRepository->findBySlug($companySlug);
+
             if (empty($targetCompany))
                 throw new AppException('InvalidCompanyNameReference');
             // Checks if access hierarchy is respected (Parent to Child or Company to itself)
