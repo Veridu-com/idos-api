@@ -400,6 +400,7 @@ class DatabaseInit extends AbstractMigration {
         $services = $this->table('services');
         $services
             ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
             ->addColumn(
                 'created_at',
@@ -420,6 +421,7 @@ class DatabaseInit extends AbstractMigration {
                 ]
             )
             ->addIndex('name', ['unique' => true])
+            ->addIndex('slug', ['unique' => true])
             ->create();
 
         // Service handlers registration
@@ -428,10 +430,23 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('service_id', 'integer', ['null' => false])
             ->addColumn('company_id', 'integer', ['null' => true])
             ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
             ->addColumn('source', 'text', ['null' => false])
-            ->addColumn('location', 'text', ['null' => false])
+            ->addColumn('location', 'text', ['null' => false]) // url
+            ->addColumn('auth_username', 'text', ['null' => false]) 
+            ->addColumn('auth_password', 'text', ['null' => false]) 
+             ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
             ->addIndex('service_id')
             ->addIndex('source')
+            ->addIndex(['slug', 'company_id', 'service_id'], ['unique' => true])
             ->addForeignKey('service_id', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();

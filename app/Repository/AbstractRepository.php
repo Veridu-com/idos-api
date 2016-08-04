@@ -11,6 +11,7 @@ namespace App\Repository;
 use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
+use Illuminate\Support\Collection;
 
 /**
  * Abstract Generic Repository.
@@ -76,4 +77,19 @@ abstract class AbstractRepository implements RepositoryInterface {
 
         return $entity;
     }
+
+    public function castHydrate(Collection $items) : Collection {
+        $entityClass = $this->getEntityClassName();
+        $relationships = $entityClass::$relationships;
+
+        foreach ($relationships as $databasePrefix => $entityName) {
+            $items = $items->map(function ($item) use ($entityName, $databasePrefix){
+                $item->$databasePrefix = $this->entityFactory->create($entityName, (array) $item->$databasePrefix);
+                return $item;
+            });
+        }
+
+        return $items;
+    }
+
 }

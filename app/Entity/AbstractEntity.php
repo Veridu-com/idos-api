@@ -36,6 +36,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $dates = [];
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $relations = [];
+    /**
      * The storage format of the model's date columns.
      *
      * @var string
@@ -145,7 +151,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = date($this->dateFormat, $value);
         }
 
-        $this->attributes[$key] = $value;
+        $split = explode('.', $key);
+        if (count($split) > 1) {
+            $this->relations[$split[0]][$split[1]] = $value;
+        } else {
+            $this->attributes[$key] = $value;
+        }
 
         return $this;
     }
@@ -262,7 +273,18 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return mixed
      */
     public function __get(string $key) {
-        return $this->getAttribute($key);
+        // tries to get from entity attributes
+        $value = $this->getAttribute($key);
+        if ($value) {
+            return $value;
+        }
+
+        // else checks if a relation exists
+        if (isset($this->relations[$key])) {
+            return (object) $this->relations[$key];
+        }
+
+        return null;
     }
 
     /**

@@ -6,7 +6,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class SettingsSeed extends AbstractSeed {
+class S11SettingsSeed extends AbstractSeed {
     public function run() {
         $faker = Faker\Factory::create();
 
