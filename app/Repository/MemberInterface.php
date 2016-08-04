@@ -43,7 +43,7 @@ interface MemberInterface extends RepositoryInterface {
     /**
      * Find one member based on their companyId and username.
      *
-     * @param int    $companyId
+     * @param int $companyId
      * @param int $userId
      *
      * @return App\Entity\Member
@@ -53,7 +53,7 @@ interface MemberInterface extends RepositoryInterface {
      * Deletes one member from company.
      *
      * @param int    $companyId member's company_id
-     * @param string $userId   member's username
+     * @param string $userId    member's username
      *
      * @return int
      */

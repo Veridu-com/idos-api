@@ -643,7 +643,6 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-
         $hookLogs = $this->table('hook_logs');
 
         $credentialWhiteList = $this->table('credential_whitelist');
