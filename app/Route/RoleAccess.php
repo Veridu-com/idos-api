@@ -86,7 +86,7 @@ class RoleAccess implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $userPermission) {
         $app
             ->get(
-                '/access/roles/{companySlug}/{userName:[a-zA-Z0-9_-]+}',
+                '/access/roles',
                 'App\Controller\RoleAccess:listAll'
             )
             ->add($userPermission('roleAccess:listAll', RoleAccessEntity::ACCESS_READ))
@@ -119,7 +119,7 @@ class RoleAccess implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $userPermission) {
         $app
             ->post(
-                '/access/roles/{companySlug}/{userName:[a-zA-Z0-9_-]+}',
+                '/access/roles',
                 'App\Controller\RoleAccess:createNew'
             )
             ->add($userPermission('roleAccess:createNew', RoleAccessEntity::ACCESS_WRITE))
@@ -152,7 +152,7 @@ class RoleAccess implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $userPermission) {
         $app
             ->delete(
-                '/access/roles/{companySlug}/{userName:[a-zA-Z0-9_-]+}',
+                '/access/roles',
                 'App\Controller\RoleAccess:deleteAll'
             )
             ->add($userPermission('roleAccess:deleteAll', RoleAccessEntity::ACCESS_WRITE))

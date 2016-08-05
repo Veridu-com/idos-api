@@ -560,10 +560,6 @@ class Auth implements MiddlewareInterface {
                     throw new AppException('InvalidRequest');
                 }
 
-                // @FIXME
-                // how it will find username by user if NO credential was given? 
-                // 1. username repeats inside company
-                // 2. Can't find right credential since targetCompany may have N credentials
                 $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential'));
             }
 
