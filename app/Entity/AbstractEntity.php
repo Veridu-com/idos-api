@@ -39,7 +39,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     protected $dates = [];
 
     /**
-     * The reations of the entity.
+     * The relations of the entity.
      * 
      * @var array
      */
@@ -240,7 +240,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             $return[$attribute] = null;
-            
+
             if ($this->relationships && isset($this->relationships[$attribute])) {
                 // populating relations
                 if (isset($this->relations[$attribute])) {
@@ -294,14 +294,16 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         return $this->getAttribute($key);
     }
 
+
     /**
      * Dynamically retrieve relations value.
      *
-     * @param string $key
+     * @param      string            $methodName  The method name
+     * @param      array             $args        The arguments
      *
-     * @throws \RuntimeException
+     * @throws     \RuntimeException  (description)
      *
-     * @return mixed
+     * @return     void
      */
     public function __call($methodName, $args) {
         if (isset($this->relations[$methodName])) {
