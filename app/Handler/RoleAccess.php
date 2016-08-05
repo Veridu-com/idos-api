@@ -27,7 +27,7 @@ class RoleAccess implements HandlerInterface {
      * @var App\Repository\RoleAccessInterface
      */
     protected $repository;
-    
+
     /**
      * RoleAccess Validator instance.
      *

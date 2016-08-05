@@ -13,13 +13,13 @@ use App\Command\AbstractCommand;
  */
 class UpdateOne extends AbstractCommand {
     /**
-     * RoleAccess's role name
+     * RoleAccess's role name.
      *
      * @var string
      */
     public $role;
     /**
-     * RoleAccess's resource
+     * RoleAccess's resource.
      *
      * @var string
      */

@@ -13,14 +13,14 @@ use App\Command\AbstractCommand;
  */
 class CreateNew extends AbstractCommand {
     /**
-     * RoleAccess's role
+     * RoleAccess's role.
      *
      * @var string
      */
     public $role;
 
     /**
-     * RoleAccess's resource
+     * RoleAccess's resource.
      *
      * @var string
      */

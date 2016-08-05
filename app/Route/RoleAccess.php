@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace App\Route;
 
-use App\Entity\RoleAccess as RoleAccessEntity;
 use App\Middleware\Auth;
 use Interop\Container\ContainerInterface;
 use Slim\App;

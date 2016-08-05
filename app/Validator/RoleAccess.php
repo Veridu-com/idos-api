@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Validator;
 
 use App\Entity\Role;
-use App\Entity\RoleAccess AS RoleAccessEntity;
+use App\Entity\RoleAccess as RoleAccessEntity;
 use Respect\Validation\Validator;
 
 /**

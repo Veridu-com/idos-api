@@ -22,7 +22,7 @@ class S11PermissionsSeed extends AbstractSeed {
 
         $data = [];
         $now  = date('Y-m-d H:i:s');
-        
+
         foreach ($names as $routeName) {
             $data[] = [
                 'company_id'    => 1,           // Company #2 wont have any permssion

@@ -19,16 +19,16 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Route UserPermission Middleware
  * This middleware is responsible for allowing or not access to certain user resources
- * This access control is controlled by the user or company and uses the RoleAccess repository to filter it
+ * This access control is controlled by the user or company and uses the RoleAccess repository to filter it.
  */
 class UserPermission implements MiddlewareInterface {
     /**
-     * Default permissions for each role
+     * Default permissions for each role.
      * 
      * @var array
      */
     private $defaultPermissions;
-    
+
     /**
      * Role access repository.
      */
@@ -37,11 +37,11 @@ class UserPermission implements MiddlewareInterface {
     /**
      * Gets the access from role.
      *
-     * @param      integer  $identityId  The identity identifier
-     * @param      string   $role        The role
-     * @param      string   $resource    The resource
+     * @param int    $identityId The identity identifier
+     * @param string $role       The role
+     * @param string $resource   The resource
      *
-     * @return     int      The access from role.
+     * @return int The access from role.
      */
     private function getAccessFromRole(int $identityId, string $role, string $resource) : int {
         try {
@@ -58,10 +58,10 @@ class UserPermission implements MiddlewareInterface {
     /**
      * Class constructor.
      *
-     * @param      \App\Repository\RoleAccessInterface  $roleAccessRepository  The role access repository
-     * @param      string                               $resource              The resource
-     * @param      string                               $accessLevel           The access level
-     */ 
+     * @param \App\Repository\RoleAccessInterface $roleAccessRepository The role access repository
+     * @param string                              $resource             The resource
+     * @param string                              $accessLevel          The access level
+     */
     public function __construct(RoleAccessInterface $roleAccessRepository, string $resource, string $accessLevel) {
         $this->roleAccessRepository     = $roleAccessRepository;
         $this->resource                 = $resource;
@@ -80,13 +80,13 @@ class UserPermission implements MiddlewareInterface {
     /**
      * Invoked function when the middleware is called for that route.
      *
-     * @param      \Psr\Http\Message\ServerRequestInterface  $request   The request
-     * @param      \Psr\Http\Message\ResponseInterface       $response  The response
-     * @param      Function|callable                         $next      The next callable object
+     * @param \Psr\Http\Message\ServerRequestInterface $request  The request
+     * @param \Psr\Http\Message\ResponseInterface      $response The response
+     * @param Function|callable                        $next     The next callable object
      *
-     * @throws     \App\Exception\NotAllowed                 Throws NotAllowed if the actor doesn't have access to the resource
+     * @throws \App\Exception\NotAllowed Throws NotAllowed if the actor doesn't have access to the resource
      *
-     * @return     Function                                   Next callable function
+     * @return Function Next callable function
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
         $actingUser     = $request->getAttribute('actingUser');
@@ -132,5 +132,5 @@ class UserPermission implements MiddlewareInterface {
 
         return $next($request, $response);
     }
-    
+
 }
