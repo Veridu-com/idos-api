@@ -25,6 +25,16 @@ interface ServiceHandlerInterface extends RepositoryInterface {
     public function getAllByCompanyId(int $companyId) : Collection;
 
     /**
+     * Gets all ServiceHandlers based on their Company Id and service's slug.
+     *
+     * @param int       $companyId
+     * @param string    $serviceSlug
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function findAllFromService(int $companyId, string $serviceSlug) : Collection;
+
+    /**
      * Deletes all ServiceHandlers based on their Company Id.
      *
      * @param int $companyId
@@ -34,43 +44,24 @@ interface ServiceHandlerInterface extends RepositoryInterface {
     public function deleteByCompanyId(int $companyId) : int;
 
     /**
-     * Find one setting based on their companyId, section and property name.
+     * Find one setting based on their companyId, serviceSlug and own slug.
      *
-     * @param int    $companyId
-     * @param string $section
-     * @param string $propName
+     * @param int       $companyId
+     * @param string    $slug
+     * @param string    $serviceSlug
      *
      * @return App\Entity\ServiceHandler
      */
-    public function findOne(int $companyId, string $section, string $propName) : ServiceHandler;
+    public function findOne(int $companyId, string $slug, string $serviceSlug) : ServiceHandler;
 
     /**
-     * Deletes one setting based on their companyId, section and property name.
+     * Deletes one setting based on their companyId, own slug and serviceSlug.
      *
      * @param int    $companyId
-     * @param string $section
-     * @param string $propName
+     * @param string $slug
+     * @param string $serviceSlug
      *
      * @return int
      */
-    public function deleteOne(int $companyId, string $section, string $propName) : int;
-
-    /**
-     * Retrieves all settings from company that has the given section.
-     *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection;
-
-    /**
-     * Updates one setting.
-     *
-     * @param App\Entity\ServiceHandler $setting instance
-     *
-     * @return int
-     */
-    public function update(ServiceHandler &$setting) : int;
+    public function deleteOne(int $companyId, string $slug, string $serviceSlug) : int;
 }

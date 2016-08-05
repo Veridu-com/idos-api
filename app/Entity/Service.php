@@ -8,22 +8,23 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Extension\NameToSlugMutator;
+
 /**
  * Service's Entity.
  *
- * @apiEntity schema/setting/settingEntity.json
+ * @apiEntity schema/service/serviceEntity.json
  *
  * @property int        $id
- * @property int        $company_id
- * @property int        $service_id
  * @property string     $name
  * @property string     $slug
- * @property string     $source
- * @property string     $location
- * @property string     $auth_username
- * @property string     $auth_password
+ * @property boolean    $enabled
+ * @property int        $created_at
+ * @property int        $updated_at
  */
-class Service extends AbstractEntity {    
+class Service extends AbstractEntity {
+    use NameToSlugMutator;
+
     /**
      * Cache prefix.
      */
@@ -32,38 +33,12 @@ class Service extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'created_at'];
+    protected $visible = ['name', 'slug', 'enabled', 'created_at'];
 
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
-
-    /**
-     * Property mutator (getter) for $value.
-     *
-     * @param mixed $value
-     *
-     * @return string
-     */
-    public function getValueAttribute($value) : string {
-        return  is_string($value) ? $value : stream_get_contents($value, -1, 0);
-    }
-
-    /**
-     * Property mutator (setter) for $value.
-     *
-     * @param mixed $value
-     *
-     * @return App\Entity\Service
-     */
-    public function setValueAttribute($value) : self {
-        $value                     = is_string($value) ? $value : stream_get_contents($value, -1, 0);
-        $this->attributes['value'] = $value;
-
-        return $this;
-    }
 
     /**
      * {@inheritdoc}

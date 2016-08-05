@@ -8,12 +8,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Extension\NameToSlugMutator;
 use App\Extension\SecureFields;
 
 /**
  * ServiceHandler's Entity.
  *
- * @apiEntity schema/setting/settingEntity.json
+ * @apiEntity schema/service-handler/serviceHandlerEntity.json
  *
  * @property int        $id
  * @property int        $company_id
@@ -24,8 +25,13 @@ use App\Extension\SecureFields;
  * @property string     $location
  * @property string     $auth_username
  * @property string     $auth_password
+ * @property int        $created_at
+ * @property int        $updated_at
  */
-class ServiceHandler extends AbstractEntity {    
+class ServiceHandler extends AbstractEntity {
+    use NameToSlugMutator;
+    use SecureFields;
+
     /**
      * Cache prefix.
      */
@@ -34,7 +40,7 @@ class ServiceHandler extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'source', 'location', 'created_at', 'updated_at'];
+    protected $visible = ['name', 'slug', 'source', 'location', 'service_slug', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
@@ -44,34 +50,16 @@ class ServiceHandler extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    public static $relationships = [
+    public $relationships = [
         'service' => 'Service'
     ];
 
     /**
-     * Property mutator (getter) for $value.
+     * The attributes that should be secured.
      *
-     * @param mixed $value
-     *
-     * @return string
+     * @var array
      */
-    public function getValueAttribute($value) : string {
-        return  is_string($value) ? $value : stream_get_contents($value, -1, 0);
-    }
-
-    /**
-     * Property mutator (setter) for $value.
-     *
-     * @param mixed $value
-     *
-     * @return App\Entity\ServiceHandler
-     */
-    public function setValueAttribute($value) : self {
-        $value                     = is_string($value) ? $value : stream_get_contents($value, -1, 0);
-        $this->attributes['value'] = $value;
-
-        return $this;
-    }
+    protected $secure = ['auth_username', 'auth_password', 'location'];
 
     /**
      * {@inheritdoc}

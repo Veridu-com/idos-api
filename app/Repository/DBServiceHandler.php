@@ -31,45 +31,22 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $companyId, string $serviceSlug, string $serviceHandlerSlug) : ServiceHandler {
-        return $this->query()
-            ->join('services', sprintf('%s.service_id', $this->tableName), '=', 'services.id')
-            ->where('services.slug', '=', $serviceSlug)
-            ->where(sprintf('%s.company_id', $this->tableName), '=', $companyId)
-            ->where(sprintf('%s.slug', $this->tableName), '=',$serviceHandlerSlug)
-            ->first();
+    public function findOne(int $companyId, string $slug, string $serviceSlug) : ServiceHandler {
+        return $this->findOneBy([
+            'company_id'    => $companyId,
+            'slug'          => $slug,
+            'service_slug'  => $serviceSlug,
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
     public function findAllFromService(int $companyId, string $serviceSlug) : Collection {
-        $items =  new Collection($this->query()
-            ->join('services', sprintf('%s.service_id', $this->tableName), '=', 'services.id')
-            ->where('services.slug', '=', $serviceSlug)
-            ->where(sprintf('%s.company_id', $this->tableName), '=', $companyId)
-            ->get([
-                'services.name as service.name',
-                'services.slug as service.slug',
-                'services.enabled as service.enabled',
-                'service_handlers.*',
-            ])
-        );
-
-        return $this->castHydrate($items);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function update(ServiceHandler &$entity) : int {
-        $serialized = $entity->serialize();
-
-        return $this->query()
-            ->where('company_id', $entity->company_id)
-            ->where('service', $entity->service)
-            ->where('property', $entity->property)
-            ->update($serialized);
+        return $this->findBy([
+            'company_id'    => $companyId,
+            'service_slug'  => $serviceSlug,
+        ]);
     }
 
     /**
@@ -82,22 +59,12 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyIdAndSection(int $companyId, string $service) : Collection {
-        return $this->findBy([
-            'company_id' => $companyId,
-            'service'    => $service
+    public function deleteOne(int $companyId, string $slug, string $serviceSlug) : int {
+        return $this->deleteBy([
+            'company_id' =>  $companyId,
+            'slug' =>  $slug,
+            'service_slug' =>  $serviceSlug
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteOne(int $companyId, string $service, string $property) : int {
-        return $this->query()
-            ->where('company_id', $companyId)
-            ->where('service', $service)
-            ->where('property', $property)
-            ->delete();
     }
 
     /**

@@ -427,14 +427,14 @@ class DatabaseInit extends AbstractMigration {
         // Service handlers registration
         $serviceHandlers = $this->table('service_handlers');
         $serviceHandlers
-            ->addColumn('service_id', 'integer', ['null' => false])
             ->addColumn('company_id', 'integer', ['null' => true])
+            ->addColumn('service_slug', 'text', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])
             ->addColumn('source', 'text', ['null' => false])
             ->addColumn('location', 'text', ['null' => false]) // url
-            ->addColumn('auth_username', 'text', ['null' => false]) 
-            ->addColumn('auth_password', 'text', ['null' => false]) 
+            ->addColumn('auth_username', 'text', ['null' => false])  // this has to be encrypted
+            ->addColumn('auth_password', 'text', ['null' => false])  // this has to be encrypted
              ->addColumn(
                 'created_at',
                 'timestamp',
@@ -444,10 +444,19 @@ class DatabaseInit extends AbstractMigration {
                     'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addIndex('service_id')
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addIndex('service_slug')
             ->addIndex('source')
-            ->addIndex(['slug', 'company_id', 'service_id'], ['unique' => true])
-            ->addForeignKey('service_id', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addIndex(['slug', 'company_id', 'service_slug'], ['unique' => true])
+            ->addForeignKey('service_slug', 'services', 'slug', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 

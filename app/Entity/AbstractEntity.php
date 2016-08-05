@@ -23,42 +23,49 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var array
      */
     protected $attributes = [];
+
     /**
      * The attributes that should be visible in public arrays.
      *
      * @var array
      */
     protected $visible = [];
+
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = [];
+
     /**
-     * The attributes that should be mutated to dates.
-     *
+     * The reations of the entity.
+     * 
      * @var array
      */
-    protected $relations = [];
+    public $relations = [];
+    
     /**
      * The storage format of the model's date columns.
      *
      * @var string
      */
     protected $dateFormat = 'Y-m-d H:i:s';
+
     /**
      * Indicates if the entity exists on the repository.
      *
      * @var bool
      */
     protected $exists = false;
+
     /**
      * Indicates if any entity attribute has been changed.
      *
      * @var bool
      */
     protected $dirty = false;
+
     /**
      * Cache prefix.
      *
@@ -151,6 +158,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = date($this->dateFormat, $value);
         }
 
+        // tries to populate relations array mapped by the "." character
         $split = explode('.', $key);
         if (count($split) > 1) {
             $this->relations[$split[0]][$split[1]] = $value;
@@ -231,7 +239,14 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         $return = [];
         foreach ($attributes as $attribute) {
-            $return[$attribute] = $this->getAttribute($attribute);
+            if (array_key_exists($attribute, $this->attributes)) {
+                $return[$attribute] = $this->getAttribute($attribute);;
+            }
+            
+            // if relationship is mapped and if it has been populated by the setter...
+            if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
+                $return[$attribute] = $this->$attribute()->toArray();
+            }
         }
 
         return $return;
@@ -273,18 +288,25 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return mixed
      */
     public function __get(string $key) {
-        // tries to get from entity attributes
-        $value = $this->getAttribute($key);
-        if ($value) {
-            return $value;
+        return $this->getAttribute($key);
+    }
+
+
+    /**
+     * Dynamically retrieve relations value.
+     *
+     * @param string $key
+     *
+     * @throws \RuntimeException
+     *
+     * @return mixed
+     */
+    public function __call($methodName, $args) {
+        if (isset($this->relations[$methodName])) {
+            return $this->relations[$methodName];
         }
 
-        // else checks if a relation exists
-        if (isset($this->relations[$key])) {
-            return (object) $this->relations[$key];
-        }
-
-        return null;
+        throw new \RuntimeException(sprintf('Relation "%s" is not mapped within the "relationships" property of the class "%s".', $methodName, get_class($this)));
     }
 
     /**
