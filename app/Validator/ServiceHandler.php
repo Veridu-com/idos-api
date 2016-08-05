@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Validator;
 
@@ -30,6 +30,7 @@ class ServiceHandler implements ValidatorInterface {
 
     /**
      * Asserts a valid source. 
+     *
      * @FIXME: what is a source? How can I validate it?
      *
      * @param mixed $value

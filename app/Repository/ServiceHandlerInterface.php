@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -27,8 +27,8 @@ interface ServiceHandlerInterface extends RepositoryInterface {
     /**
      * Gets all ServiceHandlers based on their Company Id and service's slug.
      *
-     * @param int       $companyId
-     * @param string    $serviceSlug
+     * @param int    $companyId
+     * @param string $serviceSlug
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -46,9 +46,9 @@ interface ServiceHandlerInterface extends RepositoryInterface {
     /**
      * Find one setting based on their companyId, serviceSlug and own slug.
      *
-     * @param int       $companyId
-     * @param string    $slug
-     * @param string    $serviceSlug
+     * @param int    $companyId
+     * @param string $slug
+     * @param string $serviceSlug
      *
      * @return App\Entity\ServiceHandler
      */

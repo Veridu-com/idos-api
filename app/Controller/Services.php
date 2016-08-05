@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -67,7 +67,7 @@ class Services implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {        
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $entities = $this->repository->getAll();
 
         $body = [

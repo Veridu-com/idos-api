@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -61,9 +61,9 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
      */
     public function deleteOne(int $companyId, string $slug, string $serviceSlug) : int {
         return $this->deleteBy([
-            'company_id' =>  $companyId,
-            'slug' =>  $slug,
-            'service_slug' =>  $serviceSlug
+            'company_id'   => $companyId,
+            'slug'         => $slug,
+            'service_slug' => $serviceSlug
         ]);
     }
 

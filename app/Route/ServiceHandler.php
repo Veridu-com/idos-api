@@ -56,7 +56,7 @@ class ServiceHandler implements RouteInterface {
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
     }
-    
+
     /**
      * List all Service handlers.
      *

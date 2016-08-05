@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -18,7 +18,7 @@ use App\Extension\NameToSlugMutator;
  * @property int        $id
  * @property string     $name
  * @property string     $slug
- * @property boolean    $enabled
+ * @property bool    $enabled
  * @property int        $created_at
  * @property int        $updated_at
  */

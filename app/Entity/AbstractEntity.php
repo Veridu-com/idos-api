@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -44,7 +44,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var array
      */
     public $relations = [];
-    
+
     /**
      * The storage format of the model's date columns.
      *
@@ -240,9 +240,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             if (array_key_exists($attribute, $this->attributes)) {
-                $return[$attribute] = $this->getAttribute($attribute);;
+                $return[$attribute] = $this->getAttribute($attribute);
             }
-            
+
             // if relationship is mapped and if it has been populated by the setter...
             if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
                 $return[$attribute] = $this->$attribute()->toArray();
@@ -290,7 +290,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     public function __get(string $key) {
         return $this->getAttribute($key);
     }
-
 
     /**
      * Dynamically retrieve relations value.

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -43,8 +43,8 @@ class ServiceHandlers implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\ServiceHandlerInterface $repository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param \League\Tactician\CommandBus           $commandBus
+     * @param App\Factory\Command                    $commandFactory
      *
      * @return void
      */
@@ -57,7 +57,7 @@ class ServiceHandlers implements ControllerInterface {
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }
-    
+
     /**
      * Lists all Service handlers that belongs to the acting Company.
      *
@@ -107,9 +107,9 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
-        $serviceSlug = $request->getAttribute('serviceSlug');
-        $slug = $request->getAttribute('serviceHandlerSlug');
-        $entity       = $this->repository->findOne($actingCompany->id, $slug, $serviceSlug);
+        $serviceSlug   = $request->getAttribute('serviceSlug');
+        $slug          = $request->getAttribute('serviceHandlerSlug');
+        $entity        = $this->repository->findOne($actingCompany->id, $slug, $serviceSlug);
 
         $body = [
             'data'    => $entity->toArray()

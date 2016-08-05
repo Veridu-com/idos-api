@@ -19,8 +19,8 @@ class S31ServiceHandlersSeed extends AbstractSeed {
                 'source'            => 'source',
                 'location'          => 'http://localhost:8001',
                 'auth_username'     => 'idos',
-                'auth_password'     => 'secret',    
-                'created_at' => $now
+                'auth_password'     => 'secret',
+                'created_at'        => $now
             ],
             [
                 'company_id'        => 1,
@@ -30,8 +30,8 @@ class S31ServiceHandlersSeed extends AbstractSeed {
                 'source'            => 'source',
                 'location'          => 'http://localhost:8001',
                 'auth_username'     => 'idos',
-                'auth_password'     => 'secret',    
-                'created_at' => $now
+                'auth_password'     => 'secret',
+                'created_at'        => $now
             ],
         ];
 

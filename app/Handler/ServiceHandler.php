@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
@@ -13,10 +13,10 @@ use App\Command\ServiceHandler\DeleteAll;
 use App\Command\ServiceHandler\DeleteOne;
 use App\Command\ServiceHandler\UpdateOne;
 use App\Entity\ServiceHandler as ServiceHandlerEntity;
+use App\Exception\NotFound;
 use App\Repository\ServiceHandlerInterface;
 use App\Validator\ServiceHandler as ServiceHandlerValidator;
 use Interop\Container\ContainerInterface;
-use App\Exception\NotFound;
 
 /**
  * Handles ServiceHandler commands.
@@ -83,7 +83,7 @@ class ServiceHandler implements HandlerInterface {
         $this->validator->assertAuthUsername($command->authUsername);
         $this->validator->assertLocation($command->location);
 
-        $now = time();
+        $now    = time();
         $entity = $this->repository->create(
             [
                 'company_id'    => $command->companyId,
@@ -144,9 +144,9 @@ class ServiceHandler implements HandlerInterface {
         foreach ($input as $key => $value) {
             $entity->$key = $value;
         }
-        
+
         $success = $this->repository->save($entity);
-        
+
         if (! $success) {
             throw new \RuntimeException('Error updating entity.');
         }
@@ -184,7 +184,7 @@ class ServiceHandler implements HandlerInterface {
         $rowsAffected = $this->repository->deleteOne($command->companyId, $command->slug, $command->serviceSlug);
 
         if (! $rowsAffected) {
-            throw new NotFound;
+            throw new NotFound();
         }
 
         return $rowsAffected;

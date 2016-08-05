@@ -4,19 +4,17 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Extension;
 
-use App\Entity\EntityInterface;
 use App\Helper\Utils;
 
 /**
  * Trait to a name mutator.
- * The mutator adds a "slug" property based on the received name
+ * The mutator adds a "slug" property based on the received name.
  */
 trait NameToSlugMutator {
-
     /**
      * Property Mutator (setter) for $name.
      *

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -150,7 +150,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @return int
      */
     protected function deleteByKey(string $key, $value) : int {
-        return $this->deleteBy([ $key => $value ]);
+        return $this->deleteBy([$key => $value]);
     }
 
     /**
