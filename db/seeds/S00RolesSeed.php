@@ -6,7 +6,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class RolesSeed extends AbstractSeed {
+class S00RolesSeed extends AbstractSeed {
     public function run() {
         $roles = [
             ['name' => 'company'],

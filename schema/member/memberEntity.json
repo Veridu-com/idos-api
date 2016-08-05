@@ -6,8 +6,8 @@
     "properties": {
         "user": {
             "description": "User entity",
-            "type": "array",
-            "$ref": "memberEntity.json",
+            "type": "object",
+            "$ref": "../user/userEntity.json",
             "pattern": ""
         },
         "role": {

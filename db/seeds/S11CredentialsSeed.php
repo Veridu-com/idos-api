@@ -6,7 +6,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class CredentialsSeed extends AbstractSeed {
+class S11CredentialsSeed extends AbstractSeed {
     public function run() {
         $data = [
             [

@@ -28,7 +28,7 @@ class Member implements HandlerInterface {
      * @var App\Repository\MemberInterface
      */
     protected $repository;
-     /**
+    /**
      * User Repository instance.
      *
      * @var App\Repository\UserInterface
@@ -64,8 +64,8 @@ class Member implements HandlerInterface {
      * Class constructor.
      *
      * @param App\Repository\MemberInterface $repository
-     * @param App\Repository\UserInterface $repository
-     * @param App\Validator\Member $validator
+     * @param App\Repository\UserInterface   $repository
+     * @param App\Validator\Member           $validator
      *
      * @return void
      */
@@ -74,9 +74,9 @@ class Member implements HandlerInterface {
         UserInterface $userRepository,
         MemberValidator $validator
     ) {
-        $this->repository = $repository;
+        $this->repository     = $repository;
         $this->userRepository = $userRepository;
-        $this->validator  = $validator;
+        $this->validator      = $validator;
     }
 
     /**
@@ -94,7 +94,7 @@ class Member implements HandlerInterface {
 
         $member = $this->repository->create(
             [
-                'user_id'   => $user->id,
+                'user_id'    => $user->id,
                 'role'       => $command->role,
                 'company_id' => $command->companyId,
                 'created_at' => time()

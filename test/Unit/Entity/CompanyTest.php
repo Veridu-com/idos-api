@@ -36,7 +36,8 @@ class CompanyTest extends AbstractUnit {
         $this->assertArrayHasKey('public_key', $array);
         $this->assertSame('pkey', $array['public_key']);
         $this->assertArrayHasKey('private_key', $array);
-        $this->assertSame('privkey', $array['private_key']);
+        $this->assertNotSame('privkey', $array['private_key']);
+        $this->assertStringStartsWith('secure:', $array['private_key']);
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_string($array['created_at']));
         $this->assertTrue(is_int($abstractMock->createdAt));

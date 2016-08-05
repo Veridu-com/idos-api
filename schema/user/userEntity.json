@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/user/userEntity.json",
+    "title": "User",
+    "type": "object",
+    "properties": {
+        "username": {
+            "description": "user's username",
+            "type": "string",
+            "pattern": ""
+        },
+        "created_at": {
+            "description": "Member's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Member's updated unixtime",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "username",
+        "created_at"
+    ]
+}

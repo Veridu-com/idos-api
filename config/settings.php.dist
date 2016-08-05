@@ -61,5 +61,6 @@ $appSettings = [
     'repository' => [
         'strategy' => 'db',
         'cached'   => false
-    ]
+    ],
+    'secure' => ''
 ];

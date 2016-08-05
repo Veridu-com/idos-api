@@ -27,7 +27,7 @@ class UpdateOne extends AbstractCommand {
      */
     public $companyId;
     /**
-     * User Id
+     * User Id.
      *
      * @var int
      */

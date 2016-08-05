@@ -25,22 +25,15 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey(string $key) : CredentialEntity {
-        return $this->findOneBy(['private' => $key]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByPubKey($key) : CredentialEntity {
-        return $this->repository->findOneBy(['public' => $key]);
+    public function findByPubKey(string $pubKey) : CredentialEntity {
+        return $this->findOneBy(['public' => $pubKey]);
     }
 
     /**
      * {@inheritdoc}
      */
     public function deleteByCompanyId(string $companyId) : int {
-        return $this->repository->deleteByKey('company_id', $companyId);
+        return $this->deleteBy('company_id', $companyId);
     }
 
     /**
@@ -48,5 +41,12 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
      */
     public function getAllByCompanyId(string $companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByCompanyId($companyId) {
+        return $this->deleteBy('company_id', $companyId);
     }
 }

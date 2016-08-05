@@ -42,7 +42,7 @@ class UsersSeed extends AbstractSeed {
                 'identity_id'   => 1,
                 'role'          => 'user',
                 'resource'      => 'roleAccess:listAll',
-                'access'        => 0x04o
+                'access'        => 0x04
             ],
             [
                 'identity_id'   => 2,

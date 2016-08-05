@@ -13,6 +13,7 @@ use JsonSchema\Validator;
 use Phinx\Console\PhinxApplication;
 use Phinx\Wrapper\TextWrapper;
 use Slim\App;
+use Slim\Http\Body;
 use Slim\Http\Environment;
 use Slim\Http\Headers;
 use Slim\Http\Request;
@@ -21,7 +22,9 @@ use Slim\Http\Response;
 use Slim\Http\Uri;
 
 /**
- * PLEASE ADD SOME DOCUMENTATION HERE!
+ * AbstractFunctional Class.
+ *
+ * Join all common methods of the other functional classes.
  */
 abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     /**
@@ -32,7 +35,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     private $app;
 
     /**
-     * FIXME ADD DOC!
+     * Message of the errors of a failed schema assertion.
      *
      * @var string
      */
@@ -61,6 +64,9 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      */
     protected $uri;
 
+    /**
+     * Runs one time before any method of the Child classes.
+     */
     public static function setUpBeforeClass() {
         $phinxTextWrapper = new TextWrapper(new PhinxApplication());
         $phinxTextWrapper->setOption('configuration', 'phinx.yml');
@@ -68,18 +74,16 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         $phinxTextWrapper->setOption('environment', 'testing');
         $phinxTextWrapper->getRollback('testing', 0);
         $phinxTextWrapper->getMigrate();
-        $phinxTextWrapper->getSeed();
+        $array = ['CompaniesSeed', 'CredentialsSeed', 'SettingsSeed', 'IdentitiesSeed', 'UsersSeed', 'PermissionsSeed', 'MembersSeed'];
+        $phinxTextWrapper->getSeed(null, null, $array);
     }
 
-    public static function tearDownAfterClass() {
-        $phinxTextWrapper = new TextWrapper(new PhinxApplication());
-        $phinxTextWrapper->setOption('configuration', 'phinx.yml');
-        $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->setOption('environment', 'testing');
-        $phinxTextWrapper->getRollback('testing', 0);
-    }
-
-    protected function getApp() {
+    /**
+     * Load all the dependencies for the aplication.
+     *
+     * @return Slim\App $app
+     */
+    protected function getApp() : App {
         if ($this->app) {
             return $this->app;
         }
@@ -98,7 +102,14 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return $app;
     }
 
-    protected function process($request) {
+    /**
+     * Process the request.
+     *
+     * @param Request $request
+     *
+     * @return ResponseInterface response
+     */
+    protected function process(Request $request) : Response {
         return $this->getApp()->process($request, new Response());
     }
 
@@ -126,7 +137,14 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    protected function getRandomEntity($index = false) {
+    /**
+     * Helper to get a random entity.
+     *
+     * @param int|bool $index
+     *
+     * @return array $this->entities
+     */
+    protected function getRandomEntity($index = false) : array {
         if (! $this->entities) {
             throw new \RuntimeException('Test instance not populated, call populate() method before calling getRandomEntity() method.');
         }
@@ -138,7 +156,14 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return $this->entities[$index];
     }
 
-    protected function createEnvironment(array $options = []) {
+    /**
+     * Mocks the environment.
+     *
+     * @param array $options Environment options
+     *
+     * @return The mocked environment
+     */
+    protected function createEnvironment(array $options = []) : Environment {
         $defaults = [
             'REQUEST_URI'    => $this->uri,
             'REQUEST_METHOD' => $this->httpMethod,
@@ -149,6 +174,14 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return Environment::mock(array_merge($defaults, $options));
     }
 
+    /**
+     * Creates the Request based on the mocked environment and the request body.
+     *
+     * @param Environment|null $environment
+     * @param StreamInterface  $body        Request body
+     *
+     * @return RequestInterface $request
+     */
     protected function createRequest(Environment $environment = null, $body = null) : Request {
         if ($environment === null) {
             $environment = $this->createEnvironment();
@@ -172,7 +205,15 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return $request;
     }
 
-    protected function validateSchema($schemaFile, $bodyResponse) {
+    /**
+     * Validates the schemas given the schema file and the response body.
+     *
+     * @param string $schemaFile
+     * @param  $bodyResponse
+     *
+     * @return bool $validator->isValid
+     */
+    protected function validateSchema(string $schemaFile, $bodyResponse) : bool {
         $schemaFile = ltrim($schemaFile, '/');
         $resolver   = new RefResolver(new UriRetriever(), new UriResolver());
         $schema     = $resolver->resolve(
@@ -195,7 +236,12 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         return $validator->isValid();
     }
 
-    protected function getSchemaErrors($validator) {
+    /**
+     * Gets the schema Errors if something went wrong in $this->validateSchema().
+     *
+     * @param Validator $validator
+     */
+    protected function getSchemaErrors(Validator $validator) {
         $this->schemaErrors = '';
         foreach ($validator->getErrors() as $error) {
             $this->schemaErrors .= sprintf("[%s] %s\n", $error['property'], $error['message']);

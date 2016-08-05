@@ -5,7 +5,7 @@
  */
 use Phinx\Seed\AbstractSeed;
 
-class PermissionsSeed extends AbstractSeed {
+class S11PermissionsSeed extends AbstractSeed {
     public function run() {
         $faker      = Faker\Factory::create();
         $routeFiles = glob(__DIR__ . '/../../app/Route/*.php');

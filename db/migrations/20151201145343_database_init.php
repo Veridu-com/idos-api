@@ -400,6 +400,7 @@ class DatabaseInit extends AbstractMigration {
         $services = $this->table('services');
         $services
             ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
             ->addColumn(
                 'created_at',
@@ -420,19 +421,42 @@ class DatabaseInit extends AbstractMigration {
                 ]
             )
             ->addIndex('name', ['unique' => true])
+            ->addIndex('slug', ['unique' => true])
             ->create();
 
         // Service handlers registration
         $serviceHandlers = $this->table('service_handlers');
         $serviceHandlers
-            ->addColumn('service_id', 'integer', ['null' => false])
             ->addColumn('company_id', 'integer', ['null' => true])
+            ->addColumn('service_slug', 'text', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
             ->addColumn('source', 'text', ['null' => false])
-            ->addColumn('location', 'text', ['null' => false])
-            ->addIndex('service_id')
+            ->addColumn('location', 'text', ['null' => false]) // url
+            ->addColumn('auth_username', 'text', ['null' => false])  // this has to be encrypted
+            ->addColumn('auth_password', 'text', ['null' => false])  // this has to be encrypted
+             ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addIndex('service_slug')
             ->addIndex('source')
-            ->addForeignKey('service_id', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addIndex(['slug', 'company_id', 'service_slug'], ['unique' => true])
+            ->addForeignKey('service_slug', 'services', 'slug', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
@@ -627,7 +651,6 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
-
 
         $hookLogs = $this->table('hook_logs');
 

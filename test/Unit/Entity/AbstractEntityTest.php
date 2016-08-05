@@ -139,7 +139,8 @@ class AbstractEntityTest extends AbstractUnit {
         $abstractMock
             ->expects($this->once())
             ->method('setNameAttribute')
-            ->with($this->equalTo('cba'));
+            ->with($this->equalTo('cba'))
+            ->will($this->returnValue($abstractMock));
 
         $abstractMock->name = 'cba';
     }

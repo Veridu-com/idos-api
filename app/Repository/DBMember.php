@@ -35,14 +35,15 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
         return $this->findBy(['company_id' => $companyId]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
+     /**
+      * {@inheritdoc}
+      */
      public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
         $items = new Collection();
         foreach ($roles as $role) {
             $items = $items->merge($this->findBy(['company_id' => $companyId, 'role' => $role]));
         }
+
         return $items;
     }
     /**
@@ -51,7 +52,7 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
     public function findOne(int $companyId, int $userId) : Member {
         return $this->findOneBy([
             'company_id'  => $companyId,
-            'user_id'    => $userId
+            'user_id'     => $userId
         ]);
     }
 

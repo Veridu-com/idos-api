@@ -79,7 +79,7 @@ class DBUser extends AbstractDBRepository implements UserInterface {
         if (empty($result)) {
             $user = $this
                 ->create([
-                    'username' => $userName,
+                    'username'      => $userName,
                     'credential_id' => $credentialId
                 ]);
 

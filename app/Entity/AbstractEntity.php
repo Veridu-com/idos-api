@@ -23,36 +23,49 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var array
      */
     protected $attributes = [];
+
     /**
      * The attributes that should be visible in public arrays.
      *
      * @var array
      */
     protected $visible = [];
+
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = [];
+
+    /**
+     * The reations of the entity.
+     * 
+     * @var array
+     */
+    public $relations = [];
+
     /**
      * The storage format of the model's date columns.
      *
      * @var string
      */
     protected $dateFormat = 'Y-m-d H:i:s';
+
     /**
      * Indicates if the entity exists on the repository.
      *
      * @var bool
      */
     protected $exists = false;
+
     /**
      * Indicates if any entity attribute has been changed.
      *
      * @var bool
      */
     protected $dirty = false;
+
     /**
      * Cache prefix.
      *
@@ -67,11 +80,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return string
      */
-    private function toCamelCase($string) : string {
+    private function toCamelCase(string $string) : string {
         $words  = explode('_', strtolower($string));
         $return = '';
-        foreach ($words as $word)
+        foreach ($words as $word) {
             $return .= ucfirst(trim($word));
+        }
 
         return $return;
     }
@@ -83,7 +97,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return string
      */
-    private function toSnakeCase($string) : string {
+    private function toSnakeCase(string $string) : string {
         return strtolower(preg_replace('/([A-Z])/', '_$1', $string));
     }
 
@@ -94,7 +108,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return bool
      */
-    private function hasSetMutator($key) : bool {
+    private function hasSetMutator(string $key) : bool {
         return method_exists(
             $this,
             sprintf(
@@ -111,7 +125,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return bool
      */
-    private function hasGetMutator($key) : bool {
+    private function hasGetMutator(string $key) : bool {
         return method_exists(
             $this,
             sprintf(
@@ -131,7 +145,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return App\Entity\EntityInterface
      */
-    private function setAttribute($key, $value) {
+    protected function setAttribute(string $key, $value) : EntityInterface {
         $key = $this->toSnakeCase($key);
 
         if ($this->hasSetMutator($key)) {
@@ -144,7 +158,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = date($this->dateFormat, $value);
         }
 
-        $this->attributes[$key] = $value;
+        // tries to populate relations array mapped by the "." character
+        $split = explode('.', $key);
+        if (count($split) > 1) {
+            $this->relations[$split[0]][$split[1]] = $value;
+        } else {
+            $this->attributes[$key] = $value;
+        }
 
         return $this;
     }
@@ -158,7 +178,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return mixed|null
      */
-    private function getAttribute($key) {
+    protected function getAttribute(string $key) {
         $key = $this->toSnakeCase($key);
 
         $value = null;
@@ -200,8 +220,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * {@inheritdoc}
      */
     public function hydrate(array $attributes = []) : EntityInterface {
-        foreach ($attributes as $key => $value)
+        foreach ($attributes as $key => $value) {
             $this->setAttribute($key, $value);
+        }
 
         return $this;
     }
@@ -218,7 +239,17 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         $return = [];
         foreach ($attributes as $attribute) {
-            $return[$attribute] = $this->getAttribute($attribute);
+            $return[$attribute] = null;
+            
+            if ($this->relationships && isset($this->relationships[$attribute])) {
+                // populating relations
+                if (isset($this->relations[$attribute])) {
+                    $return[$attribute] = $this->$attribute()->toArray();
+                }
+            } else {
+                // populating own attributes
+                $return[$attribute] = $this->getAttribute($attribute);
+            }
         }
 
         return $return;
@@ -228,11 +259,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * {@inheritdoc}
      */
     public function serialize() : array {
-        $attributes = array_keys($this->attributes);
-        $return     = [];
-
-        foreach ($attributes as $attribute) {
-            $return[$this->toSnakeCase($attribute)] = $this->attributes[$attribute];
+        $return = [];
+        foreach ($this->attributes as $key => $value) {
+            $return[$this->toSnakeCase($key)] = $value;
         }
 
         return $return;
@@ -261,8 +290,25 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return mixed
      */
-    public function __get($key) {
+    public function __get(string $key) {
         return $this->getAttribute($key);
+    }
+
+    /**
+     * Dynamically retrieve relations value.
+     *
+     * @param string $key
+     *
+     * @throws \RuntimeException
+     *
+     * @return mixed
+     */
+    public function __call($methodName, $args) {
+        if (isset($this->relations[$methodName])) {
+            return $this->relations[$methodName];
+        }
+
+        throw new \RuntimeException(sprintf('Relation "%s" is not mapped within the "relationships" property of the class "%s".', $methodName, get_class($this)));
     }
 
     /**
@@ -275,7 +321,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return void
      */
-    public function __set($key, $value) {
+    public function __set(string $key, $value) {
         $this->setAttribute($key, $value);
         $this->dirty = true;
     }
@@ -289,7 +335,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return bool
      */
-    public function __isset($key) : bool {
+    public function __isset(string $key) : bool {
         return $this->getAttribute($key) !== null;
     }
     /**
@@ -301,8 +347,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return void
      */
-    public function __unset($key) {
-        $this->setAttribute($key, null);
+    public function __unset(string $key) {
+        unset($this->attributes[$key]);
         $this->dirty = true;
     }
 }
