@@ -28,7 +28,7 @@ class Member extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['created_at', 'updated_at', 'user_created_at'];
 
     /**
      * {@inheritdoc}

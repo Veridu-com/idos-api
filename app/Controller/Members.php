@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Factory\Command;
 use App\Repository\MemberInterface;
 use App\Repository\UserInterface;
+use App\Entity\User;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -81,17 +82,19 @@ class Members implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $roles         = $request->getQueryParam('role', null);
 
-        if ($roles === null)
+        if ($roles === null) {
             $members = $this->repository->getAllByCompanyId($targetCompany->id);
-        else
+        }
+        else {
             $members = $this->repository->getAllByCompanyIdAndRole(
                 $targetCompany->id,
                 explode(',', $roles)
             );
+        }
 
         $members->transform(function ($member) {
-            $member->user = $this->userRepository->find($member->userId)->toArray();
-
+            $user = new User(['username' => $member->username, 'created_at' => $member->userCreatedAt]);
+            $member->user = $user->toArray();
             return $member;
         });
 

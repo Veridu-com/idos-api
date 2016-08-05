@@ -193,4 +193,11 @@ abstract class AbstractDBRepository extends AbstractRepository {
     public function getAll() : Collection {
         return new Collection($this->query()->all());
     }
+
+    public function mapRelationships(Collection $items) {
+
+        // mapear items em busca de um prefixo dentro da minha propriedade $relationships
+        // para cada prefixo encontrado, colocar num array
+
+    }
 }

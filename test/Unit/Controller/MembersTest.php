@@ -85,12 +85,8 @@ class MembersTest extends AbstractUnit {
             ->will($this->returnValue(new Collection([$this->getEntity()])));
         $dbUserMock = $this->getMockBuilder(DBUser::class)
             ->disableOriginalConstructor()
-            ->setMethods(['find'])
+            ->setMethods(null)
             ->getMock();
-        $dbUserMock
-            ->expects($this->once())
-            ->method('find')
-            ->will($this->returnValue($this->getUserEntity()));
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()
@@ -148,12 +144,8 @@ class MembersTest extends AbstractUnit {
             ->will($this->returnValue(new Collection([$this->getEntity()])));
         $dbUserMock = $this->getMockBuilder(DBUser::class)
             ->disableOriginalConstructor()
-            ->setMethods(['find'])
+            ->setMethods(null)
             ->getMock();
-        $dbUserMock
-            ->expects($this->once())
-            ->method('find')
-            ->will($this->returnValue($this->getUserEntity()));
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()
