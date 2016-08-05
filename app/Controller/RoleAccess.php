@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /access/roles and /access/roles/{companySlug}/{userName}.
+ * Handles requests to /access/roles.
  */
 class RoleAccess implements ControllerInterface {
     /**
@@ -58,11 +58,10 @@ class RoleAccess implements ControllerInterface {
         $this->commandFactory = $commandFactory;
         $this->optimus        = $optimus;
     }
+
     /**
-     * List all child RoleAccess that belongs to the target User.
+     * List all child RoleAccess that belongs to the acting User.
      *
-     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
-     * @apiEndpointRequiredParam route      string userName         The target user's username.
      * @apiEndpointParam query              int page 10|1           Current page.
      * 
      * @apiEndpointResponse 200 schema/access/roles/listAll.json
@@ -90,10 +89,8 @@ class RoleAccess implements ControllerInterface {
     }
 
     /**
-     * Retrieves role access defined to certain role and resource for the target User.
+     * Retrieves role access defined to certain role and resource for the acting User.
      *
-     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
-     * @apiEndpointRequiredParam route      string userName         The target user's username.
      * @apiEndpointRequiredParam route      string roleName         The role name.
      * @apiEndpointRequiredParam route      string resource         The resource.
      * 
@@ -127,44 +124,8 @@ class RoleAccess implements ControllerInterface {
     }
 
     /**
-     * Retrieves role access defined to certain role for the target User.
+     * Creates a new RoleAccess for the acting User.
      *
-     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
-     * @apiEndpointRequiredParam route      string userName         The target user's username.
-     * @apiEndpointRequiredParam route      string roleName         The role name.
-     * 
-     * @apiEndpointResponse 200 schema/access/roles/listAllFromRole.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function listAllFromRole(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
-        $role       = $request->getAttribute('roleName');
-
-        $entities = $this->repository->findByIdentityAndRole($actingUser->identity_id, $role);
-
-        $body = [
-            'data'    => $entities->toArray()
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Creates a new RoleAccess for the target User.
-     *
-     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
-     * @apiEndpointRequiredParam route      string userName         The target user's username.
      * @apiEndpointRequiredParam body       string role             The role.
      * @apiEndpointRequiredParam body       string resource         The resource.
      * @apiEndpointRequiredParam body       int access              The access.
@@ -202,11 +163,8 @@ class RoleAccess implements ControllerInterface {
     }
 
     /**
-     * Deletes all RoleAccess registers that belongs to the target User.
+     * Deletes all RoleAccess registers that belongs to the acting User.
      *
-     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
-     * @apiEndpointRequiredParam route      string userName         The target user's username.
-     * 
      * @apiEndpointResponse 200 schema/access/roles/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -236,10 +194,8 @@ class RoleAccess implements ControllerInterface {
     }
 
     /**
-     * Deletes a RoleAccess of the target User.
+     * Deletes a RoleAccess of the acting User.
      *
-     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
-     * @apiEndpointRequiredParam route      string userName         The target user's username.
      * @apiEndpointRequiredParam route      string roleName         The role name.
      * @apiEndpointRequiredParam route      string resource         The resource.
      * 
@@ -280,8 +236,6 @@ class RoleAccess implements ControllerInterface {
     /**
      * Updates the Target RoleAccess, a child of the Acting RoleAccess.
      *
-     * @apiEndpointRequiredParam route      string companySlug      The target company's slug.
-     * @apiEndpointRequiredParam route      string userName         The target user's username.
      * @apiEndpointRequiredParam route      string roleName         The role name.
      * @apiEndpointRequiredParam route      string resource         The resource.
      * @apiEndpointRequiredParam body       int access              The access value.

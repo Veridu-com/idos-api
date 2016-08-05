@@ -205,6 +205,7 @@ class DatabaseInit extends AbstractMigration {
             ->addIndex('identity_id')
             ->addIndex('role')
             ->addIndex('resource')
+            ->addIndex(['identity_id', 'role', 'resource'], ['unique' => true])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
             ->create();

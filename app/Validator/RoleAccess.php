@@ -31,7 +31,6 @@ class RoleAccess implements ValidatorInterface {
             Role::USER,
             Role::GUEST
         ])->assert($value);
-        // @FIXME shouldn't this provider a better error message?
     }
 
     /**
@@ -56,7 +55,7 @@ class RoleAccess implements ValidatorInterface {
     }
 
     /**
-     * Asserts a valid access value.
+     * Asserts a valid resource value.
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
@@ -67,7 +66,7 @@ class RoleAccess implements ValidatorInterface {
     }
 
     /**
-     * Asserts a valid id, integer.
+     * Asserts a valid id.
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *

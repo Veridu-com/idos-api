@@ -48,7 +48,6 @@ class RoleAccess extends AbstractEntity {
      */
     public function getCacheKeys() : array {
         return [
-
         ];
     }
 

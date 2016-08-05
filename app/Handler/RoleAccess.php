@@ -12,7 +12,7 @@ use App\Command\RoleAccess\CreateNew;
 use App\Command\RoleAccess\DeleteAll;
 use App\Command\RoleAccess\DeleteOne;
 use App\Command\RoleAccess\UpdateOne;
-use App\Entity\EntityInterface;
+use App\Entity\RoleAccess as RoleAccessEntity;
 use App\Repository\RoleAccessInterface;
 use App\Validator\RoleAccess as RoleAccessValidator;
 use Interop\Container\ContainerInterface;
@@ -27,6 +27,7 @@ class RoleAccess implements HandlerInterface {
      * @var App\Repository\RoleAccessInterface
      */
     protected $repository;
+    
     /**
      * RoleAccess Validator instance.
      *
@@ -71,13 +72,15 @@ class RoleAccess implements HandlerInterface {
      *
      * @param App\Command\RoleAccess\CreateNew $command
      *
-     * @return array
+     * @return App\Entity\RoleAccess
      */
-    public function handleCreateNew(CreateNew $command) : EntityInterface {
+    public function handleCreateNew(CreateNew $command) : RoleAccessEntity {
         $this->validator->assertRoleName($command->role);
         $this->validator->assertResource($command->resource);
         $this->validator->assertAccess($command->access);
         $this->validator->assertId($command->identityId);
+
+        $now = time();
 
         $entity = $this->repository->create(
             [
@@ -85,7 +88,8 @@ class RoleAccess implements HandlerInterface {
                 'resource'      => $command->resource,
                 'access'        => $command->access,
                 'identity_id'   => $command->identityId,
-                'created_at'    => time()
+                'created_at'    => $now,
+                'updated_at'    => $now
             ]
         );
 
@@ -95,11 +99,11 @@ class RoleAccess implements HandlerInterface {
     }
 
     /**
-     * Deletes all settings ($command->companyId).
+     * Deletes all RoleAccess of the identity.
      *
      * @param App\Command\RoleAccess\DeleteAll $command
      *
-     * @return void
+     * @return int number of affected rows
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->identityId);
@@ -112,9 +116,9 @@ class RoleAccess implements HandlerInterface {
      *
      * @param App\Command\RoleAccess\UpdateOne $command
      *
-     * @return array
+     * @return App\Entity\RoleAccess
      */
-    public function handleUpdateOne(UpdateOne $command) : EntityInterface {
+    public function handleUpdateOne(UpdateOne $command) : RoleAccessEntity {
         $this->validator->assertRoleName($command->role);
         $this->validator->assertResource($command->resource);
         $this->validator->assertAccess($command->access);
@@ -136,7 +140,7 @@ class RoleAccess implements HandlerInterface {
      *
      * @param App\Command\RoleAccess\DeleteOne $command
      *
-     * @return void
+     * @return int number of affected rows
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertRoleName($command->role);

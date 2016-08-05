@@ -9,31 +9,34 @@ namespace App\Command\RoleAccess;
 use App\Command\AbstractCommand;
 
 /**
- * RoleAccess "Update One" Command.
+ * RoleAccess "Create new" Command.
  */
 class CreateNew extends AbstractCommand {
     /**
-     * RoleAccess's section name identifier (comes from URI).
+     * RoleAccess's role
      *
      * @var string
      */
     public $role;
+
     /**
-     * RoleAccess's resource identifier (comes from URI).
+     * RoleAccess's resource
      *
-     * @var object
+     * @var string
      */
     public $resource;
+
     /**
-     * RoleAccess's access name (user input).
+     * RoleAccess's access value.
      *
-     * @var object
+     * @var int
      */
     public $access;
+
     /**
      * RoleAccess's owner's identity id.
      *
-     * @var object
+     * @var int
      */
     public $identityId;
 

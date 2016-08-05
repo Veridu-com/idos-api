@@ -15,7 +15,7 @@ class DeleteAll extends AbstractCommand {
     /**
      * RoleAccess's owner's identity id.
      *
-     * @var object
+     * @var int
      */
     public $identityId;
 

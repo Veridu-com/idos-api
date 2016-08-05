@@ -13,23 +13,23 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * RoleAccess's section name identifier (comes from URI).
+     * RoleAccess's role
      *
      * @var string
      */
     public $role;
 
     /**
-     * RoleAccess's resource identifier (comes from URI).
+     * RoleAccess's resource
      *
-     * @var object
+     * @var string
      */
     public $resource;
 
     /**
-     * RoleAccess's owner's identity id.
+     * RoleAccess's owner's identity id
      *
-     * @var object
+     * @var string
      */
     public $identityId;
 
