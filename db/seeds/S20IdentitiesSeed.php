@@ -6,13 +6,8 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class IdentitiesSeed extends AbstractSeed {
+class S20IdentitiesSeed extends AbstractSeed {
     public function run() {
-        $faker = Faker\Factory::create();
-
-        $data = [];
-        $now  = date('Y-m-d H:i:s');
-
         $identitiesData = [
             [
                 'public_key'    => md5('hello'), // 5d41402abc4b2a76b9719d911017c592

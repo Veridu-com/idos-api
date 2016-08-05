@@ -369,7 +369,7 @@
 [GET /1.0/services](services/listAll.md)
 
 ### Service Handlers
-
+// Atualmente está assim:
 [GET /1.0/services/:serviceName](services/listServiceHandlers.md)
 
 [DELETE /1.0/services/:serviceName](services/deleteServiceHandlers.md)
@@ -381,6 +381,20 @@
 [PUT /1.0/services/:serviceName/:handlerName](services/updateServiceHandler.md)
 
 [DELETE /1.0/services/:serviceName/:handlerName](services/deleteServiceHandler.md)
+
+// Proposta:
+[GET /1.0/service-handlers](service-handlers/listAll.md)  (com sistema de filtragem)
+// get one
+[GET /1.0/service-handlers/:serviceSlug/:serviceHandlerSlug](service-handlers/getOne.md)
+// delete all
+[DELETE /1.0/service-handlers](service-handlers/deleteAll.md)
+// create ( { serviceSlug: 'email-service' ... } )
+[POST /1.0/service-handlers](service-handlers/createNew.md)
+// update
+[PUT /1.0/service-handlers/:serviceSlug/:serviceHandlerSlug](service-handlers/updateOne.md)
+// delete one
+[DELETE /1.0/service-handlers/:serviceSlug/:serviceHandlerSlug](service-handlers/deletOne.md)
+
 
 ## Daemons API
 
