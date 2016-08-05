@@ -239,13 +239,16 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         $return = [];
         foreach ($attributes as $attribute) {
-            if (array_key_exists($attribute, $this->attributes)) {
+            $return[$attribute] = null;
+            
+            if ($this->relationships && isset($this->relationships[$attribute])) {
+                // populating relations
+                if (isset($this->relations[$attribute])) {
+                    $return[$attribute] = $this->$attribute()->toArray();
+                }
+            } else {
+                // populating own attributes
                 $return[$attribute] = $this->getAttribute($attribute);
-            }
-
-            // if relationship is mapped and if it has been populated by the setter...
-            if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
-                $return[$attribute] = $this->$attribute()->toArray();
             }
         }
 
