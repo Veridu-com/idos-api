@@ -6,7 +6,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class CountrySeed extends AbstractSeed {
+class S00CountrySeed extends AbstractSeed {
     public function run() {
 
     }

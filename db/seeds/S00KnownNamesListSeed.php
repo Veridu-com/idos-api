@@ -6,7 +6,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class CitySeed extends AbstractSeed {
+class S00KnownNamesListSeed extends AbstractSeed {
     public function run() {
 
     }

@@ -6,13 +6,8 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class UsersSeed extends AbstractSeed {
+class S21UsersSeed extends AbstractSeed {
     public function run() {
-        $faker = Faker\Factory::create();
-
-        $data = [];
-        $now  = date('Y-m-d H:i:s');
-
         $usersData = [
             [
                 'credential_id' => 1,

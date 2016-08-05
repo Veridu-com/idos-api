@@ -20,7 +20,7 @@ class DBStrategy implements RepositoryStrategyInterface {
      *
      * @var App\Entity\EntityFactory
      */
-    private $entityFactory;
+    public $entityFactory;
     /**
      * DB Connection.
      *
