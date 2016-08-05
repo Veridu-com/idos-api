@@ -6,7 +6,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class KnownNamesList extends AbstractSeed {
+class S00NameListSeed extends AbstractSeed {
     public function run() {
 
     }

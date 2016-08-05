@@ -150,9 +150,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @return int
      */
     protected function deleteByKey(string $key, $value) : int {
-        return $this->query()
-            ->where($key, $value)
-            ->delete();
+        return $this->deleteBy([$key => $value]);
     }
 
     /**
@@ -176,6 +174,26 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
+     * Update all entities that matches the given constraints.
+     *
+     * @param associative array $constraints ['key' => 'value']
+     *
+     * @return int
+     */
+    public function updateBy(array $constraints, array $fields) : int {
+        if (! count($constraints)) {
+            throw new \RuntimeException(sprintf('%s@updateBy method was called without constraints.', get_class($this)));
+        }
+
+        $query = $this->query();
+        foreach ($constraints as $key => $value) {
+            $query = $query->where($key, $value);
+        }
+
+        return $query->update($fields);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function findBy(array $constraints) : Collection {
@@ -191,6 +209,6 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function getAll() : Collection {
-        return new Collection($this->query()->all());
+        return new Collection($this->query()->get());
     }
 }

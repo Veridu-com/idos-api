@@ -6,7 +6,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class CompaniesSeed extends AbstractSeed {
+class S10CompaniesSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
