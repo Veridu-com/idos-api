@@ -74,8 +74,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         $phinxTextWrapper->setOption('environment', 'testing');
         $phinxTextWrapper->getRollback('testing', 0);
         $phinxTextWrapper->getMigrate();
-        $array = ['CompaniesSeed', 'CredentialsSeed', 'SettingsSeed', 'IdentitiesSeed', 'UsersSeed', 'PermissionsSeed', 'MembersSeed'];
-        $phinxTextWrapper->getSeed(null, null, $array);
+        $phinxTextWrapper->getSeed();
     }
 
     /**

@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\MemberInterface;
 use App\Repository\UserInterface;
-use App\Entity\User;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -95,6 +95,7 @@ class Members implements ControllerInterface {
         $members->transform(function ($member) {
             $user = new User(['username' => $member->username, 'created_at' => $member->userCreatedAt]);
             $member->user = $user->toArray();
+
             return $member;
         });
 

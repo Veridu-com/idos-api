@@ -10,6 +10,28 @@ use App\Entity\Member;
 use Test\Unit\AbstractUnit;
 
 class MemberTest extends AbstractUnit {
+
+    public function testSetAttributeWithRelation() {
+        $member = new Member([
+            'id' => 1,
+            'role' => 'admin',
+            'created_at' => time(),
+            'updated_at' => time(),
+            'user.username' => 'User Name',
+            'user.created_at' => time(),
+            'user.updated_at' => time()
+        ]);
+
+        $array = [
+            'username' => 'User Name',
+            'created_at' => time(),
+            'updated_at' => time()
+        ];
+
+        $this->assertArrayHasKey('user', $member->relations);
+        $this->assertSame($array, $member->relations['user']);
+    }
+
     public function testSerialize() {
         $array   = [
             'id'               => 1,

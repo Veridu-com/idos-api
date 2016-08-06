@@ -88,7 +88,7 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
         return $this->deleteByKey('company_id', $companyId);
     }
 
-    public function FunctionName($value='')
+    public function FunctionName($value = '')
     {
         # code...
     }
