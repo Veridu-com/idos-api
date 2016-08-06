@@ -23,7 +23,7 @@ interface CompanyServiceHandlerInterface extends RepositoryInterface {
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllByCompanyId(int $companyId) : Collection;
-    
+
     /**
      * Deletes all CompanyServiceHandlers based on their Company Id.
      *
@@ -53,5 +53,5 @@ interface CompanyServiceHandlerInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteOne(int $id, int $companyId) : int ;
+    public function deleteOne(int $id, int $companyId) : int;
 }

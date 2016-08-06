@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace App\Extension;
 
-use App\Helper\Utils;
-
 /**
  * Trait to a name mutator.
  * The mutator adds a "slug" property based on the received name.

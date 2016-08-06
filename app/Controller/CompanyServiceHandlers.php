@@ -43,8 +43,8 @@ class CompanyServiceHandlers implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\CompanyServiceHandlerInterface $repository
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param App\Factory\Command                    $commandFactory
+     * @param \League\Tactician\CommandBus                  $commandBus
+     * @param App\Factory\Command                           $commandFactory
      *
      * @return void
      */
@@ -105,8 +105,8 @@ class CompanyServiceHandlers implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
-        $id = (int) $request->getAttribute('id');
-        
+        $id            = (int) $request->getAttribute('id');
+
         $entity = $this->repository->findOne($id, $actingCompany->id);
 
         $body = [

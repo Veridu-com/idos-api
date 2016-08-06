@@ -11,7 +11,6 @@ namespace App\Handler;
 use App\Command\CompanyServiceHandler\CreateNew;
 use App\Command\CompanyServiceHandler\DeleteAll;
 use App\Command\CompanyServiceHandler\DeleteOne;
-use App\Command\CompanyServiceHandler\UpdateOne;
 use App\Entity\CompanyServiceHandler as CompanyServiceHandlerEntity;
 use App\Exception\NotFound;
 use App\Repository\CompanyServiceHandlerInterface;

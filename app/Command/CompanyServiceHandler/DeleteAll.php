@@ -27,7 +27,7 @@ class DeleteAll extends AbstractCommand {
      * @return App\Command\CompanyServiceHandler\DeleteAll
      */
     public function setParameters(array $parameters) : self {
-        
+
         return $this;
     }
 }

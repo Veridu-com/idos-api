@@ -69,11 +69,12 @@ class Main implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $files = glob(__DIR__ . '/../Route/*.php');
 
-        $classList = array_map(function ($filename){
+        $classList = array_map(function ($filename) {
             return basename($filename, '.php');
         }, array_filter($files, function ($filename) {
             $add = true;
             $add = strpos($filename, 'Interface') === false;
+
             return $add;
         }));
 

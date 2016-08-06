@@ -10,7 +10,6 @@ namespace App\Entity;
 
 use App\Extension\NameToSlugMutator;
 use App\Extension\SecureFields;
-use App\Extension\IdToOptimusMutator;
 
 /**
  * ServiceHandler's Entity.

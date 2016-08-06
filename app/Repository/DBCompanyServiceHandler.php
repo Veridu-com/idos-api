@@ -29,9 +29,9 @@ class DBCompanyServiceHandler extends AbstractDBRepository implements CompanySer
     protected $entityName = 'CompanyServiceHandler';
 
     /**
-     * Used to select fields on join statements with the table service_handlers
+     * Used to select fields on join statements with the table service_handlers.
      *
-     * @var        array
+     * @var array
      */
     private $querySelect = [
         'company_service_handlers.id',
@@ -65,7 +65,7 @@ class DBCompanyServiceHandler extends AbstractDBRepository implements CompanySer
             ->join('service_handlers', 'service_handlers.id', '=', 'company_service_handlers.service_handler_id')
             ->where('company_service_handlers.company_id', '=', $companyId)
             ->get($this->querySelect));
-        
+
         return $this->castHydrate($collection);
     }
 
