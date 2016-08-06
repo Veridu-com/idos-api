@@ -89,15 +89,26 @@ abstract class AbstractRepository implements RepositoryInterface {
         $entity        = $this->create([]);
         $relationships = $entity->relationships;
 
-        foreach ($relationships as $databasePrefix => $entityName) {
-            $items = $items->map(function ($item) use ($entityName, $databasePrefix) {
-                $item->relations[$databasePrefix] = $this->entityFactory->create($entityName, (array) $item->$databasePrefix());
+        return $items->transform(function ($item) {
+            return $this->castHydrateEntity($item);
+        });
+    }
 
-                return $item;
-            });
+    /**
+     * Casts entity mapped by the repository property $relationships. 
+     *
+     * @param \App\Entity\EntityInterface $items The items.
+     *
+     * @return \Illuminate\Support\Collection Collection with items casted to the matched class
+     */
+    public function castHydrateEntity(EntityInterface &$entity) : EntityInterface {
+        $relationships = $entity->relationships;
+
+        foreach ($relationships as $databasePrefix => $entityName) {
+            $entity->relations[$databasePrefix] = $this->entityFactory->create($entityName, (array) $entity->$databasePrefix());
         }
 
-        return $items;
+        return $entity;
     }
 
 }
