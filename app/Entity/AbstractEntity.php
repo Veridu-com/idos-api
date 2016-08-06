@@ -301,7 +301,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @param      string            $methodName  The method name
      * @param      array             $args        The arguments
      *
-     * @throws     \RuntimeException  (description)
+     * @throws     \RuntimeException
      *
      * @return     void
      */
