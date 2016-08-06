@@ -46,31 +46,6 @@ class Setting extends AbstractEntity {
     protected $secure = ['value'];
 
     /**
-     * Property mutator (getter) for $value.
-     *
-     * @param mixed $value
-     *
-     * @return string
-     */
-    public function getValueAttribute($value) : string {
-        return  is_string($value) ? $value : stream_get_contents($value, -1, 0);
-    }
-
-    /**
-     * Property mutator (setter) for $value.
-     *
-     * @param mixed $value
-     *
-     * @return App\Entity\Setting
-     */
-    public function setValueAttribute($value) : self {
-        $value                     = is_string($value) ? $value : stream_get_contents($value, -1, 0);
-        $this->attributes['value'] = $value;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getCacheKeys() : array {

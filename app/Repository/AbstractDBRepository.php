@@ -14,6 +14,7 @@ use App\Factory\Entity;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Abstract Database-based Repository.
@@ -25,6 +26,13 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @var App\Factory\Entity
      */
     protected $entityFactory;
+
+    /**
+     * Server request.
+     *
+     * @var Psr\Http\Message\ServerRequestInterface
+     */
+    protected $request;
 
     /**
      * DB Table Name.
@@ -44,6 +52,13 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @var \Illuminate\Database\ConnectionInterface
      */
     protected $dbConnection;
+
+    /**
+     * Filterable keys of the repository.
+     *
+     * @var array
+     */
+    protected $filterableKeys = [];
 
     /**
      * Begin a fluent query against a database table.
@@ -210,5 +225,61 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     public function getAll() : Collection {
         return new Collection($this->query()->get());
+    }
+
+    /**
+     * Paginates a query builder instance.
+     *
+     * @param      \Illuminate\Database\Query\Builder  $query    The query
+     * @param      array                               $columns  The columns to retrieve
+     *
+     * @return     Collection                          returns a associative collection [ 'data' => Colection of objects, 'pagination' => Pagination metadata ]
+     */
+    protected function paginate(Builder $query, array $columns = ['*']) : Collection {
+        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+        $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 15;
+
+        $pagination = $query->paginate($perPage, $columns, 'page', $page)->toArray();
+
+        $data = $pagination['data'];
+        unset($pagination['data']);
+
+        return new Collection([
+            'pagination' => $pagination,
+            'data' => new Collection($data)
+        ]);
+    }
+
+    /**
+     * Filters user inputs
+     *
+     * @param      \Illuminate\Database\Query\Builder  $query  The query
+     * 
+     * @example     Equals to:          /?filter={"section" : "services"}                           -   applies where "section" = "services" 
+     * @example     Custom operator:    /?filter={"score" : { "operator": ">", "value": 30 }}       -   applies where "score" = 30
+     * @example     Date types:         /?filter={"created_at" : { "type": "date, "from": 1470511041, "to" : 1470519941  } } - applies where "created_at" > $from AND where "created_at" > $to
+     *
+     * @return     Collection                          Additional filters to query based on user's querystrings 
+     */
+    protected function filter(Builder $query) : Builder {
+        $filters = [];
+
+        foreach ($this->filterableKeys as $key) {
+            if (isset($_GET[$key])) {
+                $filters[$key] = $_GET[$key];
+            }
+        }
+
+        if (! count($filters)) {
+            return $query;
+        }
+
+        $dates = ['created_at', 'updated_at'];
+
+        foreach ($filters as $key => $value) {
+            $query =  $query->where($key, '=', $value);
+        }
+
+        return $query;
     }
 }

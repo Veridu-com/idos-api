@@ -71,10 +71,14 @@ class Settings implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $settings      = $this->repository->getAllByCompanyId($targetCompany->id);
 
+        $data = $settings['data'];
+        $pagination = $settings['pagination'];
+
         $body = [
-            'data'    => $settings->toArray(),
+            'data'    => $data,
+            'pagination' => $pagination,
             'updated' => (
-                $settings->isEmpty() ? time() : $settings->max('updated_at')
+                $data->isEmpty() ? time() : $data->max('updated_at')
             )
         ];
 
