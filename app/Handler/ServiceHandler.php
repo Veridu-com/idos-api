@@ -137,7 +137,7 @@ class ServiceHandler implements HandlerInterface {
             $input['authUsername'] = $command->authUsername;
         }
 
-        $entity = $this->repository->findOne($command->companyId, $command->serviceSlug, $command->slug);
+        $entity = $this->repository->findOne($command->companyId, $command->slug, $command->serviceSlug);
 
         // fills entity
         // @FIXME: There could exist on AbstractEntity to fill it based on a [ key => value ] array.
