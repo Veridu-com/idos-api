@@ -463,7 +463,7 @@ class DatabaseInit extends AbstractMigration {
         // Company's service handlers (configuration)
         $companyServiceHandlers = $this->table('company_service_handlers');
         $companyServiceHandlers
-            ->addColumn('handler_id', 'integer', ['null' => false])
+            ->addColumn('service_handler_id', 'integer', ['null' => false])
             ->addColumn('company_id', 'integer', ['null' => false])
             ->addColumn(
                 'created_at',
@@ -484,7 +484,9 @@ class DatabaseInit extends AbstractMigration {
                 ]
             )
             ->addIndex('company_id')
-            ->addForeignKey('handler_id', 'service_handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addIndex('service_handler_id')
+            ->addIndex(['company_id', 'service_handler_id'], ['unique' => true])
+            ->addForeignKey('service_handler_id', 'service_handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
