@@ -67,25 +67,33 @@ class Main implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $classList = [
-            'Companies',
-            'Credentials',
-            'Settings'
-        ];
+        $files = glob(__DIR__ . '/../Route/*.php');
+
+        $classList = array_map(function ($filename) {
+            return basename($filename, '.php');
+        }, array_filter($files, function ($filename) {
+            $add = true;
+            $add &= strpos($filename, 'Interface') === false;
+
+            return $add;
+        }));
+
         $routeList    = [];
         $publicRoutes = [];
 
-        foreach ($this->router->getRoutes() as $route)
+        foreach ($this->router->getRoutes() as $route) {
             $routeList[$route->getName()] = [
                 'name'    => $route->getName(),
                 'uri'     => $route->getPattern(),
                 'methods' => $route->getMethods()
             ];
+        }
 
         foreach ($classList as $className) {
             $routeClass = sprintf('\\App\\Route\\%s', $className);
-            foreach ($routeClass::getPublicNames() as $routeName)
+            foreach ($routeClass::getPublicNames() as $routeName) {
                 $publicRoutes[] = $routeList[$routeName];
+            }
         }
 
         $command = $this->commandFactory->create('ResponseDispatch');
