@@ -40,7 +40,7 @@ class ServiceHandler extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'source', 'location', 'service_slug', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'name', 'slug', 'source', 'location', 'service_slug', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
@@ -53,7 +53,7 @@ class ServiceHandler extends AbstractEntity {
     public $relationships = [
         'service' => 'Service'
     ];
-
+    
     /**
      * The attributes that should be secured.
      *

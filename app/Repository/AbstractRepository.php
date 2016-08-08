@@ -12,6 +12,7 @@ use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use Illuminate\Support\Collection;
+use Jenssegers\Optimus\Optimus;
 
 /**
  * Abstract Generic Repository.
@@ -25,14 +26,23 @@ abstract class AbstractRepository implements RepositoryInterface {
     protected $entityFactory;
 
     /**
+     * Optimus instance.
+     *
+     * @var \Jenssegers\Optimus\Optimus
+     */
+    protected $optimus;
+
+    /**
      * Class constructor.
      *
      * @param App\Factory\Entity $entityFactory
+     * @param \Jenssegers\Optimus\Optimus $optimus
      *
      * @return void
      */
-    public function __construct(Entity $entityFactory) {
+    public function __construct(Entity $entityFactory, Optimus $optimus) {
         $this->entityFactory = $entityFactory;
+        $this->optimus = $optimus;
     }
 
     /**

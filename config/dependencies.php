@@ -12,6 +12,7 @@ use App\Factory;
 use App\Handler; // TODO: Why not use folder identifiers instead of using so many declarations?
 use App\Middleware as Middleware;
 use App\Middleware\Auth;
+use App\Middleware\OptimusDecode;
 use App\Repository;
 use Illuminate\Database\Capsule\Manager;
 use Interop\Container\ContainerInterface;
@@ -278,7 +279,7 @@ $container['validatorFactory'] = function (ContainerInterface $container) {
 
 // App Entity Factory
 $container['entityFactory'] = function (ContainerInterface $container) {
-    return new Factory\Entity();
+    return new Factory\Entity($container->get('optimus'));
 };
 
 // Auth Middleware
@@ -306,13 +307,20 @@ $container['permissionMiddleware'] = function (ContainerInterface $container) {
     };
 };
 
+// Permission Middleware
+$container['optimusDecodeMiddleware'] = function (ContainerInterface $container) {
+    return function ($permissionType) use ($container) {
+        return new Middleware\OptimusDecode($container->get('optimus'));
+    };
+};
+
 // App Repository Factory
 $container['repositoryFactory'] = function (ContainerInterface $container) {
     $settings = $container->get('settings');
     switch ($settings['repository']['strategy']) {
         case 'db':
         default:
-            $strategy = new Repository\DBStrategy($container->get('entityFactory'), $container->get('db'));
+            $strategy = new Repository\DBStrategy($container->get('entityFactory'), $container->get('optimus'), $container->get('db'));
     }
 
     if ((isset($settings['repository']['cached'])) && ($settings['repository']['cached'])) {
