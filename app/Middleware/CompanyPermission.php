@@ -22,7 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * FIXME Remove Container injection!
  */
-class Permission implements MiddlewareInterface {
+class CompanyPermission implements MiddlewareInterface {
     const PUBLIC_ACTION     =    'public';
     const PRIVATE_ACTION    =    'private';
 
@@ -57,7 +57,6 @@ class Permission implements MiddlewareInterface {
             try {
                 $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
             } catch (NotFound $e) {
-                $response->getBody()->rewind();
                 throw new NotAllowed();
             }
         }

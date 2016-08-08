@@ -12,6 +12,7 @@ use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use Illuminate\Support\Collection;
+use Jenssegers\Optimus\Optimus;
 
 /**
  * Abstract Generic Repository.
@@ -25,14 +26,23 @@ abstract class AbstractRepository implements RepositoryInterface {
     protected $entityFactory;
 
     /**
+     * Optimus instance.
+     *
+     * @var \Jenssegers\Optimus\Optimus
+     */
+    protected $optimus;
+
+    /**
      * Class constructor.
      *
-     * @param App\Factory\Entity $entityFactory
+     * @param App\Factory\Entity          $entityFactory
+     * @param \Jenssegers\Optimus\Optimus $optimus
      *
      * @return void
      */
-    public function __construct(Entity $entityFactory) {
+    public function __construct(Entity $entityFactory, Optimus $optimus) {
         $this->entityFactory = $entityFactory;
+        $this->optimus       = $optimus;
     }
 
     /**
@@ -89,15 +99,26 @@ abstract class AbstractRepository implements RepositoryInterface {
         $entity        = $this->create([]);
         $relationships = $entity->relationships;
 
-        foreach ($relationships as $databasePrefix => $entityName) {
-            $items = $items->map(function ($item) use ($entityName, $databasePrefix) {
-                $item->relations[$databasePrefix] = $this->entityFactory->create($entityName, (array) $item->$databasePrefix());
+        return $items->transform(function ($item) {
+            return $this->castHydrateEntity($item);
+        });
+    }
 
-                return $item;
-            });
+    /**
+     * Casts entity mapped by the repository property $relationships. 
+     *
+     * @param \App\Entity\EntityInterface $entity The entity.
+     *
+     * @return \App\Entity\EntityInterface
+     */
+    public function castHydrateEntity(EntityInterface &$entity) : EntityInterface {
+        $relationships = $entity->relationships;
+
+        foreach ($relationships as $databasePrefix => $entityName) {
+            $entity->relations[$databasePrefix] = $this->entityFactory->create($entityName, (array) $entity->$databasePrefix());
         }
 
-        return $items;
+        return $entity;
     }
 
 }

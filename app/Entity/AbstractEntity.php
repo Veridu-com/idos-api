@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Jenssegers\Optimus\Optimus;
 
 /**
  * Abstract Entity Implementation.
@@ -39,11 +40,18 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     protected $dates = [];
 
     /**
-     * The reations of the entity.
+     * The relations of the entity.
      * 
      * @var array
      */
     public $relations = [];
+
+    /**
+     * Attributes to obfuscate using Jenssegers\Optimus\Optimus.
+     * 
+     * @var array
+     */
+    protected $obfuscated = ['id'];
 
     /**
      * The storage format of the model's date columns.
@@ -72,6 +80,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var bool
      */
     protected $cachePrefix = null;
+
+    /**
+     * Optimus.
+     *
+     * @var use Jenssegers\Optimus\Optimus
+     */
+    public $optimus = null;
 
     /**
      * Formats a snake_case string to CamelCase.
@@ -150,7 +165,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         if ($this->hasSetMutator($key)) {
             $method = sprintf('set%sAttribute', $this->toCamelCase($key));
-
             return $this->{$method}($value);
         }
 
@@ -202,11 +216,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * Class constructor.
      *
-     * @param array $attributes
+     * @param array                       $attributes
+     * @param \Jenssegers\Optimus\Optimus $optimus
      *
      * @return void
      */
-    public function __construct(array $attributes = []) {
+    public function __construct(array $attributes = [],  Optimus $optimus) {
         $this->cachePrefix = str_replace('App\\Entity\\', '', get_class($this));
 
         if (! empty($attributes)) {
@@ -214,6 +229,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 ->hydrate($attributes)
                 ->exists = true;
         }
+
+        $this->optimus = $optimus;
     }
 
     /**
@@ -239,17 +256,24 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         $return = [];
         foreach ($attributes as $attribute) {
-            $return[$attribute] = null;
-            
+            $value = null;
+
             if ($this->relationships && isset($this->relationships[$attribute])) {
                 // populating relations
                 if (isset($this->relations[$attribute])) {
-                    $return[$attribute] = $this->$attribute()->toArray();
+                    $value = $this->$attribute()->toArray();
                 }
             } else {
                 // populating own attributes
-                $return[$attribute] = $this->getAttribute($attribute);
+                $value = $this->getAttribute($attribute);
+
+                // field obfuscation
+                if (in_array($attribute, $this->obfuscated) && is_int($value)) {
+                    $value = $this->optimus->encode($value);
+                }
             }
+
+            $return[$attribute] = $value;
         }
 
         return $return;
@@ -294,14 +318,16 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         return $this->getAttribute($key);
     }
 
+
     /**
      * Dynamically retrieve relations value.
      *
-     * @param string $key
+     * @param      string            $methodName  The method name
+     * @param      array             $args        The arguments
      *
-     * @throws \RuntimeException
+     * @throws     \RuntimeException
      *
-     * @return mixed
+     * @return     void
      */
     public function __call($methodName, $args) {
         if (isset($this->relations[$methodName])) {

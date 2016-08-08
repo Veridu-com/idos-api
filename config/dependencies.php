@@ -282,6 +282,7 @@ $container['validatorFactory'] = function (ContainerInterface $container) : Fact
 // App Entity Factory
 $container['entityFactory'] = function (ContainerInterface $container) : Factory\Entity {
     return new Factory\Entity();
+    return new Factory\Entity($container->get('optimus'));
 };
 
 // Auth Middleware
@@ -305,7 +306,23 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
 // Permission Middleware
 $container['permissionMiddleware'] = function (ContainerInterface $container) : callable {
     return function ($permissionType) use ($container) {
-        return new Middleware\Permission($container, $permissionType);
+        return new Middleware\CompanyPermission($container, $permissionType);
+    };
+};
+
+// User Permission Middleware
+$container['userPermissionMiddleware'] = function (ContainerInterface $container) {
+    return function ($resource, $resourceAccessLevel) use ($container) {
+        $roleAccessRepository = $container->get('repositoryFactory')->create('RoleAccess');
+
+        return new Middleware\UserPermission($roleAccessRepository, $resource, $resourceAccessLevel);
+    };
+};
+
+// Permission Middleware
+$container['optimusDecodeMiddleware'] = function (ContainerInterface $container) {
+    return function ($permissionType) use ($container) {
+        return new Middleware\OptimusDecode($container->get('optimus'));
     };
 };
 
@@ -315,7 +332,7 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
     switch ($settings['repository']['strategy']) {
         case 'db':
         default:
-            $strategy = new Repository\DBStrategy($container->get('entityFactory'), $container->get('db'));
+            $strategy = new Repository\DBStrategy($container->get('entityFactory'), $container->get('optimus'), $container->get('db'));
     }
 
     if ((isset($settings['repository']['cached'])) && ($settings['repository']['cached'])) {
