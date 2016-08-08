@@ -73,7 +73,7 @@ class Main implements ControllerInterface {
             return basename($filename, '.php');
         }, array_filter($files, function ($filename) {
             $add = true;
-            $add = strpos($filename, 'Interface') === false;
+            $add &= strpos($filename, 'Interface') === false;
 
             return $add;
         }));

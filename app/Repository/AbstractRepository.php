@@ -97,9 +97,9 @@ abstract class AbstractRepository implements RepositoryInterface {
     /**
      * Casts entity mapped by the repository property $relationships. 
      *
-     * @param \App\Entity\EntityInterface $items The items.
+     * @param \App\Entity\EntityInterface $entity The entity.
      *
-     * @return \Illuminate\Support\Collection Collection with items casted to the matched class
+     * @return \App\Entity\EntityInterface
      */
     public function castHydrateEntity(EntityInterface &$entity) : EntityInterface {
         $relationships = $entity->relationships;
