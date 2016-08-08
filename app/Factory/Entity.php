@@ -15,7 +15,6 @@ use Jenssegers\Optimus\Optimus;
  * Entity Factory Implementation.
  */
 class Entity extends AbstractFactory {
-
     /**
      * Optimus variable.
      * 

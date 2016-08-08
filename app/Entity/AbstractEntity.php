@@ -11,7 +11,6 @@ namespace App\Entity;
 use Illuminate\Contracts\Support\Arrayable;
 use Jenssegers\Optimus\Optimus;
 
-
 /**
  * Abstract Entity Implementation.
  * Heavily inspired on Eloquent's Model.
@@ -218,7 +217,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * Class constructor.
      *
-     * @param array $attributes
+     * @param array                       $attributes
      * @param \Jenssegers\Optimus\Optimus $optimus
      *
      * @return void
@@ -259,7 +258,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             $value = null;
-            
+
             if ($this->relationships && isset($this->relationships[$attribute])) {
                 // populating relations
                 if (isset($this->relations[$attribute])) {
@@ -268,7 +267,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             } else {
                 // populating own attributes
                 $value = $this->getAttribute($attribute);
-                
+
                 // field obfuscation
                 if (in_array($attribute, $this->obfuscated) && is_int($value)) {
                     $value = $this->optimus->encode($value);
@@ -277,7 +276,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
             $return[$attribute] = $value;
         }
-
 
         return $return;
     }

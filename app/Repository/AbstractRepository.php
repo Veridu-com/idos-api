@@ -35,14 +35,14 @@ abstract class AbstractRepository implements RepositoryInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity $entityFactory
+     * @param App\Factory\Entity          $entityFactory
      * @param \Jenssegers\Optimus\Optimus $optimus
      *
      * @return void
      */
     public function __construct(Entity $entityFactory, Optimus $optimus) {
         $this->entityFactory = $entityFactory;
-        $this->optimus = $optimus;
+        $this->optimus       = $optimus;
     }
 
     /**

@@ -8,16 +8,15 @@ declare(strict_types=1);
 
 namespace App\Middleware;
 
+use Jenssegers\Optimus\Optimus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Jenssegers\Optimus\Optimus;
 
 /**
  * OptimusDecode Middleware.
  *
  * Scope: App.
  * This middleware is responsible decode all ".*Id" attributes that are going through the router.
- *
  */
 class OptimusDecode implements MiddlewareInterface {
     private $optimus;
@@ -42,10 +41,10 @@ class OptimusDecode implements MiddlewareInterface {
 
         foreach ($routeParams as $key => $value) {
             if (preg_match('/.*?Id$/', $key)) {
-                $request = $request->withAttribute(sprintf('decoded%s', ucfirst($key)) , $this->optimus->decode($value));
+                $request = $request->withAttribute(sprintf('decoded%s', ucfirst($key)), $this->optimus->decode($value));
             }
         }
-        
+
         return $next($request, $response);
     }
 }

@@ -6,8 +6,8 @@
 
 use App\Middleware\Debugger;
 use App\Middleware\GateKeeper;
-use App\Middleware\Watcher;
 use App\Middleware\OptimusDecode;
+use App\Middleware\Watcher;
 use Slim\HttpCache\Cache;
 
 if (! isset($app)) {

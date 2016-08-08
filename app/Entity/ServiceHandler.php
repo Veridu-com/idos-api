@@ -53,7 +53,7 @@ class ServiceHandler extends AbstractEntity {
     public $relationships = [
         'service' => 'Service'
     ];
-    
+
     /**
      * The attributes that should be secured.
      *

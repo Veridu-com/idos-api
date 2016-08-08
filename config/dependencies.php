@@ -12,7 +12,6 @@ use App\Factory;
 use App\Handler; // TODO: Why not use folder identifiers instead of using so many declarations?
 use App\Middleware as Middleware;
 use App\Middleware\Auth;
-use App\Middleware\OptimusDecode;
 use App\Repository;
 use Illuminate\Database\Capsule\Manager;
 use Interop\Container\ContainerInterface;

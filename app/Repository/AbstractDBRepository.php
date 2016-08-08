@@ -56,7 +56,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
             $this->getEntityClassName(),
             [
-                [], 
+                [],
                 $this->optimus
             ]
         );
