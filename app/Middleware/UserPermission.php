@@ -130,7 +130,12 @@ class UserPermission implements MiddlewareInterface {
             }
         }
 
+        $request = $this->allow($request);
+        
         return $next($request, $response);
     }
 
+    private function allow(ResponseInterface $response) : ResponseInterface {
+        return $response->withHeader('Allowed', 'true');
+    }
 }

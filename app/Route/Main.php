@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Route;
 
-use App\Middleware\Permission;
+use App\Middleware\CompanyPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -65,7 +65,7 @@ class Main implements RouteInterface {
                 '/',
                 'App\Controller\Main:listAll'
             )
-            ->add($permission(Permission::PUBLIC_ACTION))
+            ->add($permission(CompanyPermission::PUBLIC_ACTION))
             ->setName('main:listAll');
     }
 }
