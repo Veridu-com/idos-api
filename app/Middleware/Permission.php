@@ -57,7 +57,6 @@ class Permission implements MiddlewareInterface {
             try {
                 $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
             } catch (NotFound $e) {
-                $response->getBody()->rewind();
                 throw new NotAllowed();
             }
         }

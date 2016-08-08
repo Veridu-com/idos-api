@@ -183,7 +183,7 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('role', 'text', ['null' => true])
             ->addColumn('resource', 'text', ['null' => true])
-            ->addColumn('access', 'integer', ['null' => false, 'default' => 0x00]) // values [ 0x00, 0x01, 0x02, 0x04, 0x05, 0x06, 0x07 ]
+            ->addColumn('access', 'integer', ['null' => false, 'default' => 0x00]) // values [ none=0x00, exec=0x01, w=0x02, r=0x04, r-exec=0x05, rw=0x06, rw-exec=0x07 ]
             ->addColumn(
                 'created_at',
                 'timestamp',
