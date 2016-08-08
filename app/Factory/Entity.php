@@ -9,11 +9,22 @@ declare(strict_types=1);
 namespace App\Factory;
 
 use App\Entity\EntityInterface;
+use Jenssegers\Optimus\Optimus;
 
 /**
  * Entity Factory Implementation.
  */
 class Entity extends AbstractFactory {
+    /**
+     * Optimus variable.
+     * 
+     * @var \Jessengers\Optimus\Optimus
+     */
+    private $optimus;
+
+    public function __construct(Optimus $optimus) {
+        $this->optimus = $optimus;
+    }
     /**
      * {@inheritdoc}
      */
@@ -35,7 +46,7 @@ class Entity extends AbstractFactory {
         $class = $this->getClassName($name);
 
         if (class_exists($class)) {
-            return new $class($attributes);
+            return new $class($attributes, $this->optimus);
         }
 
         throw new \RuntimeException(sprintf('Class (%s) not found.', $class));
