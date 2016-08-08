@@ -12,16 +12,13 @@ namespace App\Entity;
  * Users Entity.
  *
  * @apiEntity schema/credential/credentialEntity.json
- *
- * @property int $id
- * @FIXME
- * PUT $visible['username']
  */
 class User extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
     const CACHE_PREFIX = 'User';
+
     /**
      * {@inheritdoc}
      */
@@ -54,8 +51,13 @@ class User extends AbstractEntity {
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getReferenceCacheKeys() : array {
-
+        return array_merge([
+        ],
+        $this->getCacheKeys());
     }
 
 }

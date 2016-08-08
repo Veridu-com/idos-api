@@ -560,7 +560,7 @@ class Auth implements MiddlewareInterface {
                     throw new AppException('InvalidRequest');
                 }
 
-                $user = $this->userRepository->findByUsernameAndCredential($username, $request->getAttribute('credential'));
+                $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential'));
             }
 
             // Stores Target User for future use

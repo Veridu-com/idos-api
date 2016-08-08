@@ -183,7 +183,7 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('role', 'text', ['null' => true])
             ->addColumn('resource', 'text', ['null' => true])
-            ->addColumn('access', 'text', ['null' => true, 'default' => null]) // enum ('r', 'w', 'rw', null)
+            ->addColumn('access', 'integer', ['null' => false, 'default' => 0x00]) // values [ none=0x00, exec=0x01, w=0x02, r=0x04, r-exec=0x05, rw=0x06, rw-exec=0x07 ]
             ->addColumn(
                 'created_at',
                 'timestamp',
@@ -205,6 +205,7 @@ class DatabaseInit extends AbstractMigration {
             ->addIndex('identity_id')
             ->addIndex('role')
             ->addIndex('resource')
+            ->addIndex(['identity_id', 'role', 'resource'], ['unique' => true])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
             ->create();

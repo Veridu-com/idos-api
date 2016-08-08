@@ -61,7 +61,7 @@ class DeleteOneTest extends AbstractFunctional {
      */
     public function checkForbiddenAccessTo(string $uri, string $method) {
         $this->httpMethod   = $method;
-        $this->uri          = sprintf($uri, $this->entity['route_name']);
+        $this->uri          = $uri;
         $request            = $this->createRequest($this->createEnvironment());
         $response           = $this->process($request);
         $body               = json_decode($response->getBody(), true);
