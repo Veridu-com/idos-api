@@ -32,13 +32,14 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
      * {@inheritdoc}
      */
     public function getAllByCompanyId(int $companyId) : Collection {
-        return new Collection(
+        return $this->castHydrate(new Collection(
                 $this->query()
                 ->join('users', 'users.id', '=', 'members.user_id')
                 ->where('members.company_id', '=', $companyId)
-                ->get(['users.username as username',
-                    'users.created_at as user_created_at',
+                ->get(['users.username as user.username',
+                    'users.created_at as user.created_at',
                     'members.*'])
+            )
         );
     }
 
@@ -59,7 +60,7 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
             );
         }
 
-        return $items;
+        return $this->castHydrate($items);
     }
     /**
      * {@inheritdoc}

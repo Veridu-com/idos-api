@@ -219,7 +219,7 @@ class Members implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{credentialId:[0-9]+}/{userName:[a-zA-Z0-9]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{memberId}',
                 'App\Controller\Members:getOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))

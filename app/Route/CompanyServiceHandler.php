@@ -7,7 +7,7 @@
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\Permission;
+use App\Middleware\CompanyPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -72,7 +72,7 @@ class CompanyServiceHandler implements RouteInterface {
      *
      * @link docs/company-service-handlers/listAll.md
      * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
+     * @see App\Middleware\CompanyPermission::__invoke
      * @see App\Controller\CompanyServiceHandlers::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
@@ -81,7 +81,7 @@ class CompanyServiceHandler implements RouteInterface {
                 '/company-service-handlers',
                 'App\Controller\CompanyServiceHandlers:listAll'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('company-service-handlers:listAll');
     }
@@ -103,7 +103,7 @@ class CompanyServiceHandler implements RouteInterface {
      *
      * @link docs/company-service-handlers/createNew.md
      * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
+     * @see App\Middleware\CompanyPermission::__invoke
      * @see App\Controller\CompanyServiceHandlers::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
@@ -112,7 +112,7 @@ class CompanyServiceHandler implements RouteInterface {
                 '/company-service-handlers',
                 'App\Controller\CompanyServiceHandlers:createNew'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('company-service-handlers:createNew');
     }
@@ -134,7 +134,7 @@ class CompanyServiceHandler implements RouteInterface {
      *
      * @link docs/company-service-handlers/deleteAll.md
      * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
+     * @see App\Middleware\CompanyPermission::__invoke
      * @see App\Controller\CompanyServiceHandlers::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
@@ -143,7 +143,7 @@ class CompanyServiceHandler implements RouteInterface {
                 '/company-service-handlers',
                 'App\Controller\CompanyServiceHandlers:deleteAll'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('company-service-handlers:deleteAll');
     }
@@ -158,7 +158,7 @@ class CompanyServiceHandler implements RouteInterface {
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiEndpointURIFragment  int  id
-     * 
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      *
@@ -166,7 +166,7 @@ class CompanyServiceHandler implements RouteInterface {
      *
      * @link docs/company-service-handlers/getOne.md
      * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
+     * @see App\Middleware\CompanyPermission::__invoke
      * @see App\Controller\CompanyServiceHandlers::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
@@ -175,7 +175,7 @@ class CompanyServiceHandler implements RouteInterface {
                 '/company-service-handlers/{id:[0-9]+}',
                 'App\Controller\CompanyServiceHandlers:getOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('company-service-handlers:getOne');
     }
@@ -198,7 +198,7 @@ class CompanyServiceHandler implements RouteInterface {
      *
      * @link docs/company-service-handlers/deleteOne.md
      * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
+     * @see App\Middleware\CompanyPermission::__invoke
      * @see App\Controller\CompanyServiceHandlers::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
@@ -207,7 +207,7 @@ class CompanyServiceHandler implements RouteInterface {
                 '/company-service-handlers/{id:[0-9]+}',
                 'App\Controller\CompanyServiceHandlers:deleteOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('company-service-handlers:deleteOne');
     }

@@ -105,7 +105,7 @@ abstract class AbstractRepository implements RepositoryInterface {
     }
 
     /**
-     * Casts entity mapped by the repository property $relationships. 
+     * Casts entity mapped by the repository property $relationships.
      *
      * @param \App\Entity\EntityInterface $entity The entity.
      *

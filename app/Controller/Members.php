@@ -92,13 +92,6 @@ class Members implements ControllerInterface {
             );
         }
 
-        $members->transform(function ($member) {
-            $user = new User(['username' => $member->username, 'created_at' => $member->userCreatedAt]);
-            $member->user = $user->toArray();
-
-            return $member;
-        });
-
         $body = [
             'data'    => $members->toArray(),
             'updated' => (
@@ -203,13 +196,13 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany   = $request->getAttribute('targetCompany');
-        $targetUser      = $request->getAttribute('targetUser');
-        $member          = $this->repository->findOne($targetCompany->id, $targetUser->id);
-        $member->user    = $this->userRepository->find($targetUser->id)->toArray();
+        $member          = $this->repository->find($request->getAttribute('decodedMemberId'));
+        $attributes = $member->serialize();
+        $member = $member->toArray();
+        $member['user']  = $this->userRepository->find($attributes['user_id'])->toArray();
 
         $body = [
-            'data'    => $member->toArray()
+            'data'    => $member
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
