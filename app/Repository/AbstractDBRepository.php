@@ -28,13 +28,6 @@ abstract class AbstractDBRepository extends AbstractRepository {
     protected $entityFactory;
 
     /**
-     * Server request.
-     *
-     * @var Psr\Http\Message\ServerRequestInterface
-     */
-    protected $request;
-
-    /**
      * DB Table Name.
      *
      * @var string
@@ -248,13 +241,15 @@ abstract class AbstractDBRepository extends AbstractRepository {
         $pagination = $query->paginate($perPage, $columns, 'page', $page);
 
         return [
-            'total'             => $pagination->total(),
-            'per_page'          => (int) $pagination->perPage(),
-            'current_page'      => $pagination->currentPage(),
-            'last_page'         => $pagination->lastPage(),
-            'from'              => $pagination->firstItem(),
-            'to'                => $pagination->lastItem(),
-            'collection'        => $pagination->getCollection()
+            'pagination'    => [
+                'total'             => (int) $pagination->total(),
+                'per_page'          => (int) $pagination->perPage(),
+                'current_page'      => (int) $pagination->currentPage(),
+                'last_page'         => (int) $pagination->lastPage(),
+                'from'              => (int) $pagination->firstItem(),
+                'to'                => (int) $pagination->lastItem(),
+            ],
+            'collection'    => $pagination->getCollection()
         ];
 
     }
