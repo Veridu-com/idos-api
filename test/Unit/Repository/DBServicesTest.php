@@ -1,0 +1,87 @@
+<?php
+/*
+ * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
+ * All rights reserved.
+ */
+
+namespace Test\Unit\Repository;
+
+use App\Entity\Service as ServiceEntity;
+use App\Exception\NotFound;
+use App\Factory\Entity;
+use App\Repository\DBService;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
+use Test\Unit\AbstractUnit;
+
+class DBServiceTest extends AbstractUnit {
+
+    public function testGetAll() {
+         $array = [
+            'name'       => 'New Service',
+            'slug'       => 'new-service',
+            'enabled' => true,
+            'created_at' => time(),
+            // 'updated_at' => time()
+         ];
+        $factory = new Entity();
+        $factory->create('Service', $array);
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get'])
+            ->getMock();
+        $queryMock
+            ->method('get')
+            ->will($this->returnValue(new Collection(new ServiceEntity($array))));
+
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
+
+         $dbService = new DBService($factory, $connectionMock);
+
+         $this->assertSame($array, $dbService->getAll()->toArray());
+    }
+
+    public function testGetAllEmpty() {
+         $array = [
+            'name'       => 'New Service',
+            'slug'       => 'new-service',
+            'enabled' => true,
+            'created_at' => time(),
+            // 'updated_at' => time()
+         ];
+        $factory = new Entity();
+        $factory->create('Service', $array);
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get'])
+            ->getMock();
+        $queryMock
+            ->method('get')
+            ->will($this->returnValue(new Collection()));
+
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
+
+         $dbService = new DBService($factory, $connectionMock);
+
+         $this->assertEmpty($dbService->getAll()->toArray());
+    }
+}

@@ -32,6 +32,12 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $userName;
+    /**
+     * Credential Id.
+     *
+     * @var int
+     */
+    public $credentialId;
 
     /**
      * {@inheritdoc}
@@ -47,6 +53,10 @@ class CreateNew extends AbstractCommand {
 
         if (isset($parameters['companyId'])) {
             $this->companyId = $parameters['companyId'];
+        }
+
+        if (isset($parameters['credentialId'])) {
+            $this->credentialId = intval($parameters['credentialId']);
         }
 
         return $this;
