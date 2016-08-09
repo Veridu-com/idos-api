@@ -21,12 +21,22 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
      * @var string
      */
     protected $tableName = 'settings';
+
     /**
      * The entity associated with the repository.
      *
      * @var string
      */
     protected $entityName = 'Setting';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $filterableKeys = [
+        'section'       => 'string', 
+        'property'      => 'string', 
+        'created_at'    => 'date'
+    ];
 
     /**
      * {@inheritdoc}
@@ -55,8 +65,13 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId) : Collection {
-        return $this->findBy(['company_id' => $companyId]);
+    public function getAllByCompanyId(int $companyId, array $queryParams = []) : array {
+        $dbQuery = $this->query()->where('company_id', $companyId);
+
+        return $this->paginate(
+            $this->filter($dbQuery, $queryParams),
+            $queryParams
+        );
     }
 
     /**
