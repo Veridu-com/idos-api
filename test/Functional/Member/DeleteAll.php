@@ -6,17 +6,16 @@
 
 namespace Test\Functional\Member;
 
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
 
-class UpdateOneTest extends AbstractFunctional {
+class DeleteAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
 
     protected function setUp() {
-        $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/companies/veridu-ltd/members/1321189817';
+        $this->httpMethod = 'DELETE';
+        $this->uri        = '/1.0/companies/veridu-ltd/members';
+        // $this->populate($this->uri);
     }
 
     public function testSuccess() {
@@ -26,47 +25,42 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode(['role' => 'member']));
+        $request = $this->createRequest($environment, json_encode(['credential' => '4c9184f37cff01bcdc32dc486ec36961']));
 
         $response = $this->process($request);
 
         $body = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-
+        $response->getStatusCode();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Json Schema with Json Response
          */
         $this->assertTrue(
             $this->validateSchema(
-                'member/updateOne.json',
+                'member/deleteOne.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
-
+            $this->schemaErrors
+        );
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/members/0000000';
-
-        $environment = $this->createEnvironment(
+         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json'
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode(['role' => 'member']));
+        $request = $this->createRequest($environment, json_encode(['credential' => '0000000000000']));
 
         $response = $this->process($request);
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 

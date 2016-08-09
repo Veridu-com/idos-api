@@ -10,7 +10,7 @@ namespace App\Repository;
 
 use App\Entity\Member;
 use Illuminate\Support\Collection;
-
+use App\Exception\NotFound;
 /**
  * Database-based Member Repository Implementation.
  */
@@ -65,11 +65,22 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $companyId, int $userId) : Member {
-        return $this->findOneBy([
-            'company_id'  => $companyId,
-            'user_id'     => $userId
-        ]);
+    public function findOne(int $memberId) : Member {
+        $items = new Collection();
+        $items = $items->merge(
+            $this->query()
+                ->join('users', 'users.id', '=', 'members.user_id')
+                ->where('members.id', '=', $memberId)
+                ->get(['users.username as user.username',
+                    'users.created_at as user.created_at',
+                    'members.*'])
+        );
+
+        $member = $this->castHydrate($items)->first();
+        if (! $member)
+            throw new NotFound();
+
+        return $member;
     }
 
     /**
@@ -89,8 +100,11 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
         return $this->deleteByKey('company_id', $companyId);
     }
 
-    public function FunctionName($value = '')
-    {
-        # code...
+    public function saveOne(Member $member) : Member {
+        $user = $member->relations['user'];
+        $this->save($member);
+        $member->relations['user'] = $user;
+        return $member;
     }
+
 }

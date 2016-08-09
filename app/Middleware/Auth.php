@@ -325,6 +325,7 @@ class Auth implements MiddlewareInterface {
     private function handleCompanyPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         try {
             $actingCompany = $this->companyRepository->findByPrivKey($reqKey);
+
             return $request
                 // Stores Acting Company for future use
                 ->withAttribute('actingCompany', $actingCompany);
@@ -516,7 +517,6 @@ class Auth implements MiddlewareInterface {
             $routeInfo      = $request->getAttribute('routeInfo');
             $companySlug    = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
             $userName       = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
-            $credentialId = empty($routeInfo[2]['credentialId']) ? null : $routeInfo[2]['credentialId'];
 
             // Resolves {companySlug} route argument
             if ($companySlug) {
@@ -525,7 +525,7 @@ class Auth implements MiddlewareInterface {
 
             // Resolves {userName} route argument
             if ($userName) {
-                $request = $this->populateRequestUsers($userName, inval($credentialId), $request);
+                $request = $this->populateRequestUsers($userName, $request);
             }
 
             return $next($request, $response);
@@ -542,7 +542,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
-    private function populateRequestUsers(string $username, int $credentialId, ServerRequestInterface $request) : ServerRequestInterface {
+    private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
             // Loads Target User
             if ($username === '_self') {
                 // Self Reference for User Token / User Private Key

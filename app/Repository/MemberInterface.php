@@ -43,12 +43,11 @@ interface MemberInterface extends RepositoryInterface {
     /**
      * Find one member based on their companyId and username.
      *
-     * @param int $companyId
-     * @param int $userId
+     * @param int $memberId
      *
      * @return App\Entity\Member
      */
-    public function findOne(int $companyId, int $userId) : MemberEntity;
+    public function findOne(int $memberId);
     /**
      * Deletes one member from company.
      *

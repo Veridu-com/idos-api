@@ -11,7 +11,7 @@ use Test\Functional\AbstractFunctional;
 class GetOneTest extends AbstractFunctional {
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/companies/veridu-ltd/members/9fd9f63e0d6487537569075da85a0c7f2';
+        $this->uri        = '/1.0/companies/veridu-ltd/members/1321189817';
     }
 
     public function testSuccess() {
@@ -37,7 +37,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri          = '/1.0/companies/veridu-ltd/members/dummy';
+        $this->uri          = '/1.0/companies/veridu-ltd/members/0000000';
         $request            = $this->createRequest($this->createEnvironment());
         $response           = $this->process($request);
 

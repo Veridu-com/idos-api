@@ -118,7 +118,7 @@ class Members implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{credentialId:[0-9]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members',
                 'App\Controller\Members:createNew'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
@@ -152,7 +152,7 @@ class Members implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{userName:[a-zA-Z0-9]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{memberId}',
                 'App\Controller\Members:updateOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
@@ -253,7 +253,7 @@ class Members implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{credentialId:[0-9]+}/{userName:[a-zA-Z0-9]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{memberId}',
                 'App\Controller\Members:deleteOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
