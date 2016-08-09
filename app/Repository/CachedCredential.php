@@ -20,41 +20,20 @@ class CachedCredential extends AbstractCachedRepository implements CredentialInt
      *
      * @var string
      */
-<<<<<<< Updated upstream
     protected $entityName = 'Credential';
-=======
-    public function find($id) {
-        return $this->findOneBy(['id' => $id]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($id) {
-        return $this->deleteBy(['id' => $id]);
-    }
->>>>>>> Stashed changes
 
     /**
      * {@inheritdoc}
      */
     public function findByPubKey(string $pubKey) : CredentialEntity {
-<<<<<<< Updated upstream
-        return $this->repository->findOneBy(['public' => $pubKey]);
-=======
         return $this->findOneBy(['public' => $pubKey]);
->>>>>>> Stashed changes
     }
 
     /**
      * {@inheritdoc}
      */
     public function deleteByCompanyId(string $companyId) : int {
-<<<<<<< Updated upstream
-        return $this->repository->deleteByKey('company_id', $companyId);
-=======
         return $this->deleteBy('company_id', $companyId);
->>>>>>> Stashed changes
     }
 
     /**

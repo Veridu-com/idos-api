@@ -10,6 +10,7 @@ namespace App\Repository;
 
 use App\Factory\Entity;
 use Illuminate\Database\Connection;
+use Jenssegers\Optimus\Optimus;
 
 /**
  * Database-based Repository Strategy.
@@ -29,18 +30,28 @@ class DBStrategy implements RepositoryStrategyInterface {
     protected $connection;
 
     /**
+     * Optimus instance.
+     *
+     * @var \Jenssegers\Optimus\Optimus
+     */
+    protected $optimus;
+
+    /**
      * Class constructor.
      *
      * @param App\Factory\Entity              $entityFactory
+     * @param \Jenssegers\Optimus\Optimus     $optimus
      * @param \Illuminate\Database\Connection $connection
      *
      * @return void
      */
     public function __construct(
         Entity $entityFactory,
+        Optimus $optimus,
         Connection $connection
     ) {
         $this->entityFactory = $entityFactory;
+        $this->optimus       = $optimus;
         $this->connection    = $connection;
     }
 
@@ -55,6 +66,6 @@ class DBStrategy implements RepositoryStrategyInterface {
      * {@inheritdoc}
      */
     public function build(string $className) : RepositoryInterface {
-        return new $className($this->entityFactory, $this->connection);
+        return new $className($this->entityFactory, $this->optimus, $this->connection);
     }
 }
