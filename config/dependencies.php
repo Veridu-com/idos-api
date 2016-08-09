@@ -300,7 +300,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) {
 };
 
 // Permission Middleware
-$container['permissionMiddleware'] = function (ContainerInterface $container) {
+$container['companyPermissionMiddleware'] = function (ContainerInterface $container) {
     return function ($permissionType) use ($container) {
         return new Middleware\CompanyPermission($container, $permissionType);
     };
