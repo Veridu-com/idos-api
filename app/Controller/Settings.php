@@ -74,7 +74,7 @@ class Settings implements ControllerInterface {
         $data = $result['collection'];
 
         $body = [
-            'data'    => $data,
+            'data'    => $data->toArray(),
             'pagination' => $result['pagination'],
             'updated' => (
                 $data->isEmpty() ? time() : $data->max('updated_at')
