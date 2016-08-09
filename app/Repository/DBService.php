@@ -27,4 +27,10 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
      */
     protected $entityName = 'Service';
 
+    public function findByCompanyId(int $companyId) {
+        return $this->findBy([
+            'company_id' => $companyId
+        ]);
+    }
+
 }
