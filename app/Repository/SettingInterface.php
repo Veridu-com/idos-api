@@ -20,9 +20,9 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @param int $companyId
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return array
      */
-    public function getAllByCompanyId(int $companyId) : Collection;
+    public function getAllByCompanyId(int $companyId) : array;
 
     /**
      * Deletes all Settings based on their Company Id.

@@ -68,11 +68,11 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $settings      = $this->repository->getAllByCompanyId($targetCompany->id);
+        $targetCompany  = $request->getAttribute('targetCompany');
+        $pagination     = $this->repository->getAllByCompanyId($targetCompany->id, $request->getQueryParams());
 
-        $data = $settings['data'];
-        $pagination = $settings['pagination'];
+        $data = $pagination['collection'];
+        unset($pagination['collection']);
 
         $body = [
             'data'    => $data,

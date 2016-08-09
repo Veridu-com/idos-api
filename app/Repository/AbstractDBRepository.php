@@ -239,40 +239,43 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @param      \Illuminate\Database\Query\Builder  $query    The query
      * @param      array                               $columns  The columns to retrieve
      *
-     * @return     Collection                          returns a associative collection [ 'data' => Colection of objects, 'pagination' => Pagination metadata ]
+     * @return     array
      */
-    protected function paginate(Builder $query, array $columns = ['*']) : Collection {
-        $page = isset($_GET['page']) ? $_GET['page'] : 1;
-        $perPage = isset($_GET['perPage']) ? $_GET['perPage'] : 15;
+    protected function paginate(Builder $query, array $queryParams = [], array $columns = ['*']) : array {
+        $page = isset($queryParams['page']) ? $queryParams['page'] : 1;
+        $perPage = isset($queryParams['perPage']) ? $queryParams['perPage'] : 15;
 
-        $pagination = $query->paginate($perPage, $columns, 'page', $page)->toArray();
+        $pagination = $query->paginate($perPage, $columns, 'page', $page);
 
-        $data = $pagination['data'];
-        unset($pagination['data']);
+        return [
+            'total'             => $pagination->total(),
+            'per_page'          => (int) $pagination->perPage(),
+            'current_page'      => $pagination->currentPage(),
+            'last_page'         => $pagination->lastPage(),
+            'from'              => $pagination->firstItem(),
+            'to'                => $pagination->lastItem(),
+            'collection'        => $pagination->getCollection()
+        ];
 
-        return new Collection([
-            'pagination' => $pagination,
-            'data' => new Collection($data)
-        ]);
     }
 
     /**
      * Filters user inputs
      *
      * @param      \Illuminate\Database\Query\Builder  $query  The query
+     * @param      array                               $queryParams  The query params
      * 
-     * @example     Equals to:          /?filter={"section" : "services"}                           -   applies where "section" = "services" 
-     * @example     Custom operator:    /?filter={"score" : { "operator": ">", "value": 30 }}       -   applies where "score" = 30
-     * @example     Date types:         /?filter={"created_at" : { "type": "date, "from": 1470511041, "to" : 1470519941  } } - applies where "created_at" > $from AND where "created_at" > $to
-     *
-     * @return     Collection                          Additional filters to query based on user's querystrings 
+     * @return     \Illuminate\Database\Query\Builder
      */
-    protected function filter(Builder $query) : Builder {
+    protected function filter(Builder $query, array $queryParams) : Builder {
         $filters = [];
 
-        foreach ($this->filterableKeys as $key) {
-            if (isset($_GET[$key])) {
-                $filters[$key] = $_GET[$key];
+        foreach ($this->filterableKeys as $key => $type) {
+            if (isset($queryParams[$key])) {
+                $filters[$key] = [
+                    'type'  => $type,
+                    'value' => $queryParams[$key]
+                ];
             }
         }
 
@@ -280,10 +283,39 @@ abstract class AbstractDBRepository extends AbstractRepository {
             return $query;
         }
 
-        $dates = ['created_at', 'updated_at'];
+        foreach ($filters as $key => $filter) {
+            $value = $filter['value'];
+            $type = $filter['type'];
 
-        foreach ($filters as $key => $value) {
-            $query =  $query->where($key, '=', $value);
+            switch ($type) {
+                case 'date':
+                    // expects query pattern to be created_at=DATE_FROM,DATE_UNTIL or created_at=DATE_FROM
+                    // expect dates to match the pattern: YYYY-MM-DD
+                    $values = explode(',', $value);
+                    if (count($values) == 2) {
+                        $from = $values[0];
+                        $to = $values[1];
+                        $query = $query->whereDate($key, '>=', $from);
+                        $query = $query->whereDate($key, '<=', $to);
+                    } else {
+                        // no comma
+                        $query = $query->whereDate($key,  '=', $value);
+                    }
+                    break;
+                case 'string':
+                    // starts or ends with "%"
+                    if (preg_match('/.*%$|^%.*/', $value)) {
+                        $query =  $query->where($key, 'ilike', $value);
+                    } else {
+                        $query =  $query->where($key, $value);
+                    }
+                    break;
+                
+                default:
+                    $query =  $query->where($key, '=', $value);
+                    break;
+            }
+
         }
 
         return $query;
