@@ -165,6 +165,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         if ($this->hasSetMutator($key)) {
             $method = sprintf('set%sAttribute', $this->toCamelCase($key));
+
             return $this->{$method}($value);
         }
 
@@ -318,16 +319,15 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         return $this->getAttribute($key);
     }
 
-
     /**
      * Dynamically retrieve relations value.
      *
-     * @param      string            $methodName  The method name
-     * @param      array             $args        The arguments
+     * @param string $methodName The method name
+     * @param array  $args       The arguments
      *
-     * @throws     \RuntimeException
+     * @throws \RuntimeException
      *
-     * @return     void
+     * @return void
      */
     public function __call($methodName, $args) {
         if (isset($this->relations[$methodName])) {

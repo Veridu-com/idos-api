@@ -15,8 +15,8 @@ use App\Handler;
 use App\Middleware;
 use App\Middleware\Auth;
 use App\Repository;
-use Illuminate\Database\Connection;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Database\Connection;
 use Interop\Container\ContainerInterface;
 use Jenssegers\Optimus\Optimus;
 use Lcobucci\JWT;
@@ -281,7 +281,6 @@ $container['validatorFactory'] = function (ContainerInterface $container) : Fact
 
 // App Entity Factory
 $container['entityFactory'] = function (ContainerInterface $container) : Factory\Entity {
-    return new Factory\Entity();
     return new Factory\Entity($container->get('optimus'));
 };
 

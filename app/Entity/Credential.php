@@ -49,7 +49,7 @@ class Credential extends AbstractEntity {
     protected $secure = ['private'];
 
     /**
-     * Property mutator (setter) for $name.
+     * Property mutator for $name.
      *
      * @param string $value
      *

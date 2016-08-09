@@ -20,6 +20,10 @@ trait SecureFields {
     protected function setAttribute(string $key, $value) : EntityInterface {
         parent::setAttribute($key, $value);
         if ((isset($this->secure)) && (in_array($key, $this->secure))) {
+            if (is_resource($value)) {
+                $value = stream_get_contents($value, -1, 0);
+            }
+
             if (strpos((string) $value, 'secure:') === false) {
                 $this->attributes[$key] = sprintf(
                     'secure:%s',
@@ -38,6 +42,10 @@ trait SecureFields {
     protected function getAttribute(string $key) {
         $value = parent::getAttribute($key);
         if ((isset($this->secure)) && (in_array($key, $this->secure))) {
+            if (is_resource($value)) {
+                $value = stream_get_contents($value, -1, 0);
+            }
+
             if (strpos((string) $value, 'secure:') === 0) {
                 $value = substr($value, 7);
                 // $value = $this->secure->unlock($value);

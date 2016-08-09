@@ -128,13 +128,12 @@ class AbstractEntityTest extends AbstractUnit {
             ->setMethods(['getReferenceCacheKeys', 'setNameAttribute'])
             ->setConstructorArgs([])
             ->getMockForAbstractClass();
-        
+
         $abstractMock
             ->expects($this->once())
             ->method('setNameAttribute')
             ->with($this->equalTo('cba'))
             ->will($this->returnValue($abstractMock));
-
 
         $abstractMock->name = 'cba';
     }
