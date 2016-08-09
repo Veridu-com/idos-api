@@ -69,14 +69,13 @@ class Settings implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany  = $request->getAttribute('targetCompany');
-        $pagination     = $this->repository->getAllByCompanyId($targetCompany->id, $request->getQueryParams());
+        $result         = $this->repository->getAllByCompanyId($targetCompany->id, $request->getQueryParams());
 
-        $data = $pagination['collection'];
-        unset($pagination['collection']);
+        $data = $result['collection'];
 
         $body = [
             'data'    => $data,
-            'pagination' => $pagination,
+            'pagination' => $result['pagination'],
             'updated' => (
                 $data->isEmpty() ? time() : $data->max('updated_at')
             )
