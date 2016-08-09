@@ -304,7 +304,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
 };
 
 // Permission Middleware
-$container['permissionMiddleware'] = function (ContainerInterface $container) : callable {
+$container['companyPermissionMiddleware'] = function (ContainerInterface $container) : callable {
     return function ($permissionType) use ($container) {
         return new Middleware\CompanyPermission($container, $permissionType);
     };

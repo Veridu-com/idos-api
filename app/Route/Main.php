@@ -38,7 +38,7 @@ class Main implements RouteInterface {
             );
         };
 
-        $permissionMiddleware = $app->getContainer()->get('permissionMiddleware');
+        $permissionMiddleware = $app->getContainer()->get('companyPermissionMiddleware');
 
         self::listAll($app, $permissionMiddleware);
     }
