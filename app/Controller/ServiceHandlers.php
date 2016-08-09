@@ -125,7 +125,7 @@ class ServiceHandlers implements ControllerInterface {
     }
 
     /**
-     * Creates a new ServiceHandler for the Target Company.
+     * Creates a new ServiceHandler for the acting Company.
      *
      * @apiEndpointRequiredParam    body    string      name            Service handler's name.
      * @apiEndpointRequiredParam    body    string      source          Service handler's source.

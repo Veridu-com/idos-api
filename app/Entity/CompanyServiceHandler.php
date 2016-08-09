@@ -8,39 +8,27 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Extension\NameToSlugMutator;
-use App\Extension\SecureFields;
-
 /**
- * ServiceHandler's Entity.
+ * CompanyServiceHandler's Entity.
  *
  * @apiEntity schema/service-handler/serviceHandlerEntity.json
  *
  * @property int        $id
  * @property int        $company_id
- * @property int        $service_id
- * @property string     $name
- * @property string     $slug
- * @property string     $source
- * @property string     $location
- * @property string     $auth_username
- * @property string     $auth_password
+ * @property int        $service_handler_id
  * @property int        $created_at
  * @property int        $updated_at
  */
-class ServiceHandler extends AbstractEntity {
-    use NameToSlugMutator;
-    use SecureFields;
-
+class CompanyServiceHandler extends AbstractEntity {
     /**
      * Cache prefix.
      */
-    const CACHE_PREFIX = 'ServiceHandler';
+    const CACHE_PREFIX = 'CompanyServiceHandler';
 
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'slug', 'source', 'location', 'service_slug', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'service_handler', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
@@ -48,11 +36,11 @@ class ServiceHandler extends AbstractEntity {
     protected $dates = ['created_at', 'updated_at'];
 
     /**
-     * The attributes that should be secured.
-     *
-     * @var array
+     * {@inheritdoc}
      */
-    protected $secure = ['auth_username', 'auth_password', 'location'];
+    public $relationships = [
+        'service_handler' => 'ServiceHandler'
+    ];
 
     /**
      * {@inheritdoc}

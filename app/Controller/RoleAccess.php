@@ -9,20 +9,20 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Factory\Command;
-use App\Repository\CompanyInterface;
+use App\Repository\RoleAccessInterface;
 use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies and /companies/{companySlug}.
+ * Handles requests to /access/roles.
  */
-class Companies implements ControllerInterface {
+class RoleAccess implements ControllerInterface {
     /**
-     * Company Repository instance.
+     * RoleAccess Repository instance.
      *
-     * @var App\Repository\CompanyInterface
+     * @var App\Repository\RoleAccessInterface
      */
     private $repository;
     /**
@@ -41,14 +41,14 @@ class Companies implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CompanyInterface $repository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param App\Repository\RoleAccessInterface $repository
+     * @param \League\Tactician\CommandBus       $commandBus
+     * @param App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
-        CompanyInterface $repository,
+        RoleAccessInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory,
         Optimus $optimus
@@ -60,12 +60,11 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * List all child Companies that belongs to the Acting Company.
+     * List all child RoleAccess that belongs to the acting User.
      *
-     * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Company creation date (lower bound)
-     * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Company creation date (upper bound)
-     * @apiEndpointParam query int page 10|1 Current page
-     * @apiEndpointResponse 200 schema/company/listAll.json
+     * @apiEndpointParam query              int page 10|1           Current page.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -73,14 +72,11 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
-        $companies     = $this->repository->getAllByParentId($actingCompany->id);
+        $actingUser = $request->getAttribute('actingUser');
+        $entities   = $this->repository->findByIdentity($actingUser->identity_id);
 
         $body = [
-            'data'    => $companies->toArray(),
-            'updated' => (
-                $companies->isEmpty() ? time() : $companies->max('updated_at')
-            )
+            'data'    => $entities->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -93,9 +89,12 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Retrieves the Target Company, a child of the Acting Company.
+     * Retrieves role access defined to certain role and resource for the acting User.
      *
-     * @apiEndpointResponse 200 schema/company/getOne.json
+     * @apiEndpointRequiredParam route      string roleName         The role name.
+     * @apiEndpointRequiredParam route      string resource         The resource.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -105,11 +104,14 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $actingUser = $request->getAttribute('actingUser');
+        $role       = $request->getAttribute('roleName');
+        $resource   = $request->getAttribute('resource');
+
+        $entities = $this->repository->findOne($actingUser->identity_id, $role, $resource);
 
         $body = [
-            'data'    => $targetCompany->toArray(),
-            'updated' => $targetCompany->updated_at
+            'data'    => $entities->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -122,10 +124,13 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Creates a new child Company for the Acting Company.
+     * Creates a new RoleAccess for the acting User.
      *
-     * @apiEndpointRequiredParam body string name NewCo. Company name
-     * @apiEndpointResponse 201 schema/company/createNew.json
+     * @apiEndpointRequiredParam body       string role             The role.
+     * @apiEndpointRequiredParam body       string resource         The resource.
+     * @apiEndpointRequiredParam body       int access              The access.
+     * 
+     * @apiEndpointResponse 201 schema/access/roles/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -133,12 +138,13 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
+        $actingUser = $request->getAttribute('actingUser');
+        $body       = $request->getParsedBody();
 
-        $command = $this->commandFactory->create('Company\\CreateNew');
+        $command = $this->commandFactory->create('RoleAccess\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('parentId', $actingCompany->id);
+            ->setParameter('identityId', $actingUser->identityId);
         $company = $this->commandBus->handle($command);
 
         $body = [
@@ -157,9 +163,9 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Deletes all child Companies that belongs to the Acting Company.
+     * Deletes all RoleAccess registers that belongs to the acting User.
      *
-     * @apiEndpointResponse 200 schema/company/deleteAll.json
+     * @apiEndpointResponse 200 schema/access/roles/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -167,9 +173,11 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
+        $actingUser = $request->getAttribute('actingUser');
 
-        $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
+        $command = $this->commandFactory->create('RoleAccess\\DeleteAll');
+        $command->setParameter('identityId', $actingUser->identityId);
+
         $deleted = $this->commandBus->handle($command);
 
         $body = [
@@ -186,9 +194,12 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Deletes the Target Company, a child of the Acting Company.
+     * Deletes a RoleAccess of the acting User.
      *
-     * @apiEndpointResponse 200 schema/company/deleteOne.json
+     * @apiEndpointRequiredParam route      string roleName         The role name.
+     * @apiEndpointRequiredParam route      string resource         The resource.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -198,14 +209,19 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $actingUser = $request->getAttribute('actingUser');
+        $role       = $request->getAttribute('roleName');
+        $resource   = $request->getAttribute('resource');
 
-        $command = $this->commandFactory->create('Company\\DeleteOne');
-        $command->setParameter('companyId', $targetCompany->id);
+        $command = $this->commandFactory->create('RoleAccess\\DeleteOne');
+        $command->setParameter('identityId', $actingUser->identityId);
+        $command->setParameter('role', $role);
+        $command->setParameter('resource', $resource);
+
         $deleted = $this->commandBus->handle($command);
 
         $body = [
-            'deleted' => $deleted
+            'status' => (bool) $deleted
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -218,10 +234,13 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Updates the Target Company, a child of the Acting Company.
+     * Updates the Target RoleAccess, a child of the Acting RoleAccess.
      *
-     * @apiEndpointRequiredParam body string name NewName New Company name
-     * @apiEndpointResponse 200 schema/company/updateOne.json
+     * @apiEndpointRequiredParam route      string roleName         The role name.
+     * @apiEndpointRequiredParam route      string resource         The resource.
+     * @apiEndpointRequiredParam body       int access              The access value.
+     * 
+     * @apiEndpointResponse 200 schema/access/roles/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -230,20 +249,25 @@ class Companies implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      *
-     * @see App\Command\Company\UpdateOne
+     * @see App\Command\RoleAccess\UpdateOne
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $actingUser = $request->getAttribute('actingUser');
 
-        $command = $this->commandFactory->create('Company\\UpdateOne');
+        $role     = $request->getAttribute('roleName');
+        $resource = $request->getAttribute('resource');
+        $body     = $request->getParsedBody();
+
+        $command = $this->commandFactory->create('RoleAccess\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetCompany->id);
-        $targetCompany = $this->commandBus->handle($command);
+            ->setParameter('role', $role)
+            ->setParameter('resource', $resource)
+            ->setParameter('identityId', $actingUser->identityId);
+        $company = $this->commandBus->handle($command);
 
         $body = [
-            'data'    => $targetCompany->toArray(),
-            'updated' => time()
+            'data' => $company->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -253,5 +277,7 @@ class Companies implements ControllerInterface {
             ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
+
     }
+
 }

@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\Permission;
+use App\Middleware\CompanyPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -82,7 +82,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:listAll'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:listAll');
     }
@@ -112,7 +112,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:createNew'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:createNew');
     }
@@ -142,7 +142,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:deleteAll'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:deleteAll');
     }
@@ -171,7 +171,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
                 'App\Controller\Permissions:getOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:getOne');
     }
@@ -201,7 +201,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
                 'App\Controller\Permissions:deleteOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('permissions:deleteOne');
     }

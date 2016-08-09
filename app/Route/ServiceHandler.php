@@ -7,7 +7,7 @@
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\Permission;
+use App\Middleware\CompanyPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -83,7 +83,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers',
                 'App\Controller\ServiceHandlers:listAll'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:listAll');
     }
@@ -114,7 +114,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers',
                 'App\Controller\ServiceHandlers:createNew'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:createNew');
     }
@@ -146,7 +146,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers',
                 'App\Controller\ServiceHandlers:deleteAll'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:deleteAll');
     }
@@ -179,7 +179,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers/{serviceSlug:[a-zA-Z0-9_-]+}/{serviceHandlerSlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\ServiceHandlers:getOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:getOne');
     }
@@ -212,7 +212,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers/{serviceSlug:[a-zA-Z0-9_-]+}/{serviceHandlerSlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\ServiceHandlers:updateOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:updateOne');
     }
@@ -245,7 +245,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers/{serviceSlug:[a-zA-Z0-9_-]+}/{serviceHandlerSlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\ServiceHandlers:deleteOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:deleteOne');
     }

@@ -14,6 +14,7 @@ use App\Factory\Entity;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Jenssegers\Optimus\Optimus;
 
 /**
  * Abstract Database-based Repository.
@@ -53,7 +54,11 @@ abstract class AbstractDBRepository extends AbstractRepository {
     protected function query() : Builder {
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
-            $this->getEntityClassName()
+            $this->getEntityClassName(),
+            [
+                [],
+                $this->optimus
+            ]
         );
 
         return $this->dbConnection->table($this->getTableName());
@@ -75,15 +80,17 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * Class constructor.
      *
      * @param App\Factory\Entity                       $entityFactory
+     * @param \Jenssegers\Optimus\Optimus              $optimus
      * @param \Illuminate\Database\ConnectionInterface $dbConnection
      *
      * @return void
      */
     public function __construct(
         Entity $entityFactory,
+        Optimus $optimus,
         ConnectionInterface $dbConnection
     ) {
-        parent::__construct($entityFactory);
+        parent::__construct($entityFactory, $optimus);
         $this->dbConnection = $dbConnection;
     }
 

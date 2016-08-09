@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\Permission;
+use App\Middleware\CompanyPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -88,7 +88,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
                 'App\Controller\Settings:listAll'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:listAll');
     }
@@ -120,7 +120,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}',
                 'App\Controller\Settings:listAllFromSection'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:listAllFromSection');
     }
@@ -152,7 +152,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
                 'App\Controller\Settings:createNew'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:createNew');
     }
@@ -184,7 +184,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
                 'App\Controller\Settings:deleteAll'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:deleteAll');
     }
@@ -218,7 +218,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
                 'App\Controller\Settings:getOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:getOne');
     }
@@ -252,7 +252,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
                 'App\Controller\Settings:updateOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:updateOne');
     }
@@ -286,7 +286,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
                 'App\Controller\Settings:deleteOne'
             )
-            ->add($permission(Permission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:deleteOne');
     }

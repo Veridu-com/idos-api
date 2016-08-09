@@ -290,5 +290,36 @@ class AbstractEntityTest extends AbstractUnit {
         $this->assertFalse(isset($abstractMock->name));
     }
 
+<<<<<<< HEAD
+=======
+    public function testSetMutator() {
+        $abstractMock = $this->getMockBuilder(AbstractEntity::class)
+            ->setMethods(['getReferenceCacheKeys', 'setNameAttribute'])
+            ->setConstructorArgs([])
+            ->getMockForAbstractClass();
+        
+        $abstractMock
+            ->expects($this->once())
+            ->method('setNameAttribute')
+            ->with($this->equalTo('cba'))
+            ->will($this->returnValue($abstractMock));
+
+
+        $abstractMock->name = 'cba';
+    }
+
+    public function testGetMutator() {
+        $abstractMock = $this->getMockBuilder(AbstractEntity::class)
+            ->setMethods(['getNameAttribute'])
+            ->setConstructorArgs(
+                [
+                    'attributes' => [
+                        'id'   => 0,
+                        'name' => 'abc'
+                    ]
+                ]
+            )
+            ->getMockForAbstractClass();
+>>>>>>> d0df343e13c81c0516fa04c7e9a8c630e8414ad4
 
 }
