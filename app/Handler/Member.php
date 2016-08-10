@@ -13,6 +13,7 @@ use App\Command\Member\DeleteAll;
 use App\Command\Member\DeleteOne;
 use App\Command\Member\UpdateOne;
 use App\Entity\Member as MemberEntity;
+use App\Repository\CredentialInterface;
 use App\Repository\MemberInterface;
 use App\Repository\UserInterface;
 use App\Validator\Member as MemberValidator;
@@ -28,6 +29,12 @@ class Member implements HandlerInterface {
      * @var App\Repository\MemberInterface
      */
     protected $repository;
+    /**
+     * Credential Repository instance.
+     *
+     * @var App\Repository\CredentialInterface
+     */
+    protected $credentialRepository;
     /**
      * User Repository instance.
      *
@@ -52,6 +59,9 @@ class Member implements HandlerInterface {
                     ->create('Member'),
                 $container
                     ->get('repositoryFactory')
+                    ->create('Credential'),
+                $container
+                    ->get('repositoryFactory')
                     ->create('User'),
                 $container
                     ->get('validatorFactory')
@@ -63,20 +73,22 @@ class Member implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\MemberInterface $repository
-     * @param App\Repository\UserInterface   $repository
-     * @param App\Validator\Member           $validator
+     * @param App\Repository\MemberInterface     $repository
+     * @param App\Repository\CredentialInterface $repository
+     * @param App\Validator\Member               $validator
      *
      * @return void
      */
     public function __construct(
         MemberInterface $repository,
+        CredentialInterface $credentialRepository,
         UserInterface $userRepository,
         MemberValidator $validator
     ) {
-        $this->repository     = $repository;
-        $this->userRepository = $userRepository;
-        $this->validator      = $validator;
+        $this->repository           = $repository;
+        $this->credentialRepository = $credentialRepository;
+        $this->userRepository       = $userRepository;
+        $this->validator            = $validator;
     }
 
     /**
@@ -87,23 +99,24 @@ class Member implements HandlerInterface {
      * @return App\Entity\Member
      */
     public function handleCreateNew(CreateNew $command) : MemberEntity {
-        $this->validator->assertId($command->companyId);
         $this->validator->assertUserName($command->userName);
 
-        $user = $this->userRepository->findOneBy(['username' => $command->userName]);
+        $credential = $this->credentialRepository->findByPubKey($command->credential);
+
+        $user = $this->userRepository->findOneBy(['username' => $command->userName, 'credential_id' => $credential->id]);
 
         $member = $this->repository->create(
             [
                 'user_id'    => $user->id,
                 'role'       => $command->role,
-                'company_id' => $command->companyId,
+                'company_id' => $credential->companyId,
                 'created_at' => time()
             ]
         );
 
         $member = $this->repository->save($member);
 
-        $member->user = $user->toArray();
+        $member->relations['user'] = $user;
 
         return $member;
     }
@@ -116,16 +129,11 @@ class Member implements HandlerInterface {
      * @return App\Entity\Member
      */
     public function handleUpdateOne(UpdateOne $command) : MemberEntity {
-        $this->validator->assertId($command->companyId);
-        $this->validator->assertId($command->userId);
-
-        $member            = $this->repository->findOne($command->companyId, $command->userId);
+        $this->validator->assertId($command->memberId);
+        $member            = $this->repository->findOne($command->memberId);
         $member->role      = $command->role;
         $member->updatedAt = time();
-
-        $member = $this->repository->save($member);
-
-        $member->user = $this->userRepository->find($command->userId)->toArray();
+        $member            = $this->repository->saveOne($member);
 
         return $member;
     }
@@ -138,10 +146,9 @@ class Member implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertId($command->companyId);
-        $this->validator->assertId($command->userId);
+        $this->validator->assertId($command->memberId);
 
-        return $this->repository->deleteOne($command->companyId, $command->userId);
+        return $this->repository->delete($command->memberId);
     }
 
     /**
@@ -152,9 +159,9 @@ class Member implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertId($command->companyId);
+        $credential = $this->credentialRepository->findByPubKey($command->credential);
 
-        return $this->repository->deleteByCompanyId($command->companyId);
+        return $this->repository->deleteByCompanyId($credential->companyId);
     }
 
 }

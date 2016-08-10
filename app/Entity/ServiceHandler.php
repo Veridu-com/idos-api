@@ -48,13 +48,6 @@ class ServiceHandler extends AbstractEntity {
     protected $dates = ['created_at', 'updated_at'];
 
     /**
-     * {@inheritdoc}
-     */
-    public $relationships = [
-        'service' => 'Service'
-    ];
-
-    /**
      * The attributes that should be secured.
      *
      * @var array

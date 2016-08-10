@@ -21,17 +21,17 @@ class CreateNew extends AbstractCommand {
      */
     public $role;
     /**
-     * Company Id.
-     *
-     * @var int
-     */
-    public $companyId;
-    /**
      * Member's username (user input).
      *
      * @var string
      */
     public $userName;
+    /**
+     * Credential public key.
+     *
+     * @var string
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}
@@ -45,8 +45,8 @@ class CreateNew extends AbstractCommand {
             $this->role = $parameters['role'];
         }
 
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
+        if(isset($parameters['credential'])) {
+            $this->credential = $parameters['credential'];
         }
 
         return $this;

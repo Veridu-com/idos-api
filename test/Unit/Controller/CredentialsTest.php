@@ -19,8 +19,12 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Test\Unit\AbstractUnit;
 
-class CreentialsTest extends AbstractUnit {
+class CredentialsTest extends AbstractUnit {
     private function getCompanyEntity($id) {
+         $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new CompanyEntity(
             [
                 'name'       => 'New Company',
@@ -28,11 +32,16 @@ class CreentialsTest extends AbstractUnit {
                 'slug'       => 'new-company',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
 
     private function getEntity() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new CredentialEntity(
             [
                 'name'       => 'New Company',
@@ -40,7 +49,8 @@ class CreentialsTest extends AbstractUnit {
                 'public'     => 'public',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
 
@@ -284,12 +294,7 @@ class CreentialsTest extends AbstractUnit {
             ->method('findByPubKey')
             ->will(
                 $this->returnValue(
-                    new CredentialEntity(
-                        [
-                            'id'         => 0,
-                            'updated_at' => 'date'
-                        ]
-                    )
+                   $this->getEntity(0)
                 )
             );
 
@@ -350,12 +355,7 @@ class CreentialsTest extends AbstractUnit {
             ->method('findByPubKey')
             ->will(
                 $this->returnValue(
-                    new CredentialEntity(
-                        [
-                            'id'         => 0,
-                            'updated_at' => 'date'
-                        ]
-                    )
+                   $this->getEntity(0)
                 )
             );
 

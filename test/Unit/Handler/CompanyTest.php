@@ -19,11 +19,23 @@ use App\Handler\Company;
 use App\Repository\CompanyInterface;
 use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
+use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
 class CompanyTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testConstructCorrectInterface() {
         $repositoryMock = $this
             ->getMockBuilder(CompanyInterface::class)
@@ -117,7 +129,7 @@ class CompanyTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $companyEntity = new CompanyEntity([]);
+        $companyEntity = new CompanyEntity([], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
@@ -130,12 +142,12 @@ class CompanyTest extends AbstractUnit {
             ->method('emit')
             ->will($this->returnValue(new Created($companyEntity)));
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Company');
 
         $companyRepository = $this->getMockBuilder(DBCompany::class)
             ->setMethods(['save'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $companyRepository
             ->expects($this->once())
@@ -167,18 +179,19 @@ class CompanyTest extends AbstractUnit {
                 'public_key' => 'public_key',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $this->optimus
         );
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Company');
 
         $companyRepository = $this->getMockBuilder(DBCompany::class)
             ->setMethods(['find', 'save'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $companyRepository
             ->expects($this->once())
@@ -265,12 +278,12 @@ class CompanyTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Company');
 
         $companyRepository = $this->getMockBuilder(DBCompany::class)
             ->setMethods(['delete'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $companyRepository
             ->method('delete')
@@ -327,12 +340,12 @@ class CompanyTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Company');
 
         $companyRepository = $this->getMockBuilder(DBCompany::class)
             ->setMethods(['deleteByParentId'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $companyRepository
             ->method('deleteByParentId')

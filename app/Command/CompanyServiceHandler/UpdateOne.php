@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace App\Command\ServiceHandler;
+namespace App\Command\CompanyServiceHandler;
 
 use App\Command\AbstractCommand;
 

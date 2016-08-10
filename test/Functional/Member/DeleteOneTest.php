@@ -14,7 +14,7 @@ class DeleteOneTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/companies/veridu-ltd/members/9fd9f63e0d6487537569075da85a0c7f2';
+        $this->uri        = '/1.0/companies/veridu-ltd/members/1321189817';
         // $this->populate($this->uri);
     }
 
@@ -41,7 +41,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri          = sprintf('/1.0/companies/dummy-ltd');
+        $this->uri          = sprintf('/1.0/companies/dummy-ltd/members/000000');
         $request            = $this->createRequest($this->createEnvironment());
         $response           = $this->process($request);
         $body               = json_decode($response->getBody(), true);

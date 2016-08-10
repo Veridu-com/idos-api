@@ -7,9 +7,21 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\Company;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class CompanyTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testSerialize() {
 
         $updated = time();
@@ -24,7 +36,7 @@ class CompanyTest extends AbstractUnit {
 
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
         $array = $abstractMock->serialize();
         $this->assertArrayHasKey('id', $array);
@@ -58,7 +70,8 @@ class CompanyTest extends AbstractUnit {
                         'private_key' => 'privkey',
                         'created_at'  => time(),
                         'updated_at'  => time()
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -78,7 +91,7 @@ class CompanyTest extends AbstractUnit {
         $array        = ['Company.id.', 'Company.slug.', 'Company.private_key.'];
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
@@ -98,7 +111,8 @@ class CompanyTest extends AbstractUnit {
                         'private_key' => 'privkey',
                         'created_at'  => time(),
                         'updated_at'  => time()
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -120,7 +134,8 @@ class CompanyTest extends AbstractUnit {
                         'private_key' => 'privkey',
                         'created_at'  => time(),
                         'updated_at'  => time()
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -134,7 +149,7 @@ class CompanyTest extends AbstractUnit {
         $array        = ['Company.by.parent_id.', 'Company.id.', 'Company.slug.', 'Company.private_key.'];
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
@@ -156,7 +171,8 @@ class CompanyTest extends AbstractUnit {
                         'private_key' => 'privkey',
                         'created_at'  => time(),
                         'updated_at'  => time()
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();

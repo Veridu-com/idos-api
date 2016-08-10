@@ -15,18 +15,17 @@ use App\Command\AbstractCommand;
  */
 class DeleteAll extends AbstractCommand {
     /**
-     * Company Id of members to be deleted.
+     * Credential public key of members to be deleted.
      *
-     * @var int
+     * @var string
      */
-    public $companyId;
-
+    public $credential;
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
+        if (isset($parameters['credential'])) {
+            $this->credential = $parameters['credential'];
         }
 
         return $this;

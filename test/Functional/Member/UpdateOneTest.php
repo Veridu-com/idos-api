@@ -16,7 +16,7 @@ class UpdateOneTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/companies/veridu-ltd/members/9fd9f63e0d6487537569075da85a0c7f2';
+        $this->uri        = '/1.0/companies/veridu-ltd/members/1321189817';
     }
 
     public function testSuccess() {
@@ -26,7 +26,7 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode(['role' => 'admin']));
+        $request = $this->createRequest($environment, json_encode(['role' => 'member']));
 
         $response = $this->process($request);
 
@@ -36,7 +36,6 @@ class UpdateOneTest extends AbstractFunctional {
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
-        $this->assertSame('admin', $body['data']['role']);
 
         /*
          * Validates Json Schema against Json Response'
@@ -52,7 +51,7 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/members/dummy';
+        $this->uri = '/1.0/companies/veridu-ltd/members/0000000';
 
         $environment = $this->createEnvironment(
             [
@@ -60,7 +59,7 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode(['name' => 'New Name']));
+        $request = $this->createRequest($environment, json_encode(['role' => 'member']));
 
         $response = $this->process($request);
 

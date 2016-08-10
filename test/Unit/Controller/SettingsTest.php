@@ -21,6 +21,10 @@ use Test\Unit\AbstractUnit;
 
 class SettingsTest extends AbstractUnit {
     public function testListAll() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute'])
@@ -30,7 +34,8 @@ class SettingsTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new Company(
-                        ['id' => 1]
+                        ['id' => 1],
+                        $optimus
                     )
                 )
             );
@@ -74,10 +79,6 @@ class SettingsTest extends AbstractUnit {
             ->method('create')
             ->will($this->returnValue(new ResponseDispatch()));
 
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $settingsMock = $this->getMockBuilder(Settings::class)
             ->setConstructorArgs([$repositoryMock, $commandBus, $commandFactory, $optimus])
             ->setMethods(null)
@@ -87,6 +88,9 @@ class SettingsTest extends AbstractUnit {
     }
 
     public function testListAllFromSection() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute'])
@@ -98,7 +102,8 @@ class SettingsTest extends AbstractUnit {
                 $this->onConsecutiveCalls(
                     $this->returnValue(
                         new Company(
-                            ['id' => 1]
+                            ['id' => 1],
+                            $optimus
                         )
                     ),
                     'section'
@@ -144,10 +149,6 @@ class SettingsTest extends AbstractUnit {
             ->method('create')
             ->will($this->returnValue(new ResponseDispatch()));
 
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $settingsMock = $this->getMockBuilder(Settings::class)
             ->setConstructorArgs([$repositoryMock, $commandBus, $commandFactory, $optimus])
             ->setMethods(null)
@@ -157,6 +158,9 @@ class SettingsTest extends AbstractUnit {
     }
 
     public function testGetOne() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute'])
@@ -168,7 +172,7 @@ class SettingsTest extends AbstractUnit {
                 $this->onConsecutiveCalls(
                     $this->returnValue(
                         new Company(
-                            ['id' => 1]
+                            ['id' => 1], $optimus
                         )
                     ),
                     'section',
@@ -195,7 +199,8 @@ class SettingsTest extends AbstractUnit {
                             'value'      => 'value',
                             'created_at' => time(),
                             'updated_at' => time()
-                        ]
+                        ],
+                        $optimus
                     )
                 )
             );
@@ -217,11 +222,6 @@ class SettingsTest extends AbstractUnit {
             ->expects($this->once())
             ->method('create')
             ->will($this->returnValue(new ResponseDispatch()));
-
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $settingsMock = $this->getMockBuilder(Settings::class)
             ->setConstructorArgs([$repositoryMock, $commandBus, $commandFactory, $optimus])
             ->setMethods(null)
@@ -231,6 +231,9 @@ class SettingsTest extends AbstractUnit {
     }
 
     public function testCreateNew() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute', 'getParsedBody'])
@@ -240,7 +243,7 @@ class SettingsTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new Company(
-                        ['id' => 1]
+                        ['id' => 1], $optimus
                     )
                 )
             );
@@ -285,7 +288,8 @@ class SettingsTest extends AbstractUnit {
                             'value'      => 'value',
                             'created_at' => time(),
                             'updated_at' => time()
-                        ]
+                        ],
+                        $optimus
                     ),
                     $responseMock
                 )
@@ -300,10 +304,6 @@ class SettingsTest extends AbstractUnit {
             ->method('create')
             ->will($this->onConsecutiveCalls(new CreateNew(), new ResponseDispatch()));
 
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $settingsMock = $this->getMockBuilder(Settings::class)
             ->setConstructorArgs([$repositoryMock, $commandBus, $commandFactory, $optimus])
             ->setMethods(null)
@@ -313,6 +313,9 @@ class SettingsTest extends AbstractUnit {
     }
 
     public function testDeleteAll() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute'])
@@ -322,7 +325,7 @@ class SettingsTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new Company(
-                        ['id' => 1]
+                        ['id' => 1], $optimus
                     )
                 )
             );
@@ -367,10 +370,6 @@ class SettingsTest extends AbstractUnit {
             ->method('create')
             ->will($this->onConsecutiveCalls(new DeleteAll(), new ResponseDispatch()));
 
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $settingsMock = $this->getMockBuilder(Settings::class)
             ->setConstructorArgs([$repositoryMock, $commandBus, $commandFactory, $optimus])
             ->setMethods(null)
@@ -380,6 +379,9 @@ class SettingsTest extends AbstractUnit {
     }
 
     public function testDeleteOne() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute'])
@@ -391,7 +393,7 @@ class SettingsTest extends AbstractUnit {
                 $this->onConsecutiveCalls(
                     $this->returnValue(
                         new Company(
-                            ['id' => 1]
+                            ['id' => 1], $optimus
                         )
                     ),
                     'section',
@@ -440,6 +442,9 @@ class SettingsTest extends AbstractUnit {
     }
 
     public function testUpdateOne() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute', 'getParsedBody'])
@@ -450,7 +455,7 @@ class SettingsTest extends AbstractUnit {
             ->will(
                 $this->onConsecutiveCalls(
                     new Company(
-                        ['id' => 1]
+                        ['id' => 1], $optimus
                     ),
                     'section',
                     'property'
@@ -498,7 +503,8 @@ class SettingsTest extends AbstractUnit {
                             'value'      => 'value',
                             'created_at' => time(),
                             'updated_at' => time()
-                        ]
+                        ],
+                        $optimus
                     ),
                     $responseMock
                 )
@@ -512,10 +518,6 @@ class SettingsTest extends AbstractUnit {
             ->expects($this->exactly(2))
             ->method('create')
             ->will($this->onConsecutiveCalls(new UpdateOne(), new ResponseDispatch()));
-
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $settingsMock = $this->getMockBuilder(Settings::class)
             ->setConstructorArgs([$repositoryMock, $commandBus, $commandFactory, $optimus])

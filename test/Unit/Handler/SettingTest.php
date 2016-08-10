@@ -18,10 +18,22 @@ use App\Handler\Setting;
 use App\Repository\DBSetting;
 use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
+use Jenssegers\Optimus\Optimus;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
 class SettingTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testConstructCorrectInterface() {
         $repositoryMock = $this
             ->getMockBuilder(SettingInterface::class)
@@ -105,17 +117,17 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $settingEntity = new SettingEntity([]);
+        $settingEntity = new SettingEntity([], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Setting');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
             ->setMethods(['save'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $settingRepository
             ->expects($this->once())
@@ -163,17 +175,17 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testHandleDeleteAll() {
-        $settingEntity = new SettingEntity([]);
+        $settingEntity = new SettingEntity([], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Setting');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
             ->setMethods(['deleteByCompanyId'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $settingRepository
             ->expects($this->once())
@@ -218,17 +230,17 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testHandleUpdateOne() {
-        $settingEntity = new SettingEntity([]);
+        $settingEntity = new SettingEntity([], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Setting');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
             ->setMethods(['findOne', 'update'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $settingRepository
             ->expects($this->once())
@@ -280,17 +292,17 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testHandleDeleteOne() {
-        $settingEntity = new SettingEntity([]);
+        $settingEntity = new SettingEntity([], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Setting');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
             ->setMethods(['deleteOne'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $settingRepository
             ->expects($this->once())

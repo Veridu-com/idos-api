@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Member;
+use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -32,7 +33,15 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
      * {@inheritdoc}
      */
     public function getAllByCompanyId(int $companyId) : Collection {
-        return $this->findBy(['company_id' => $companyId]);
+        return $this->castHydrate(new Collection(
+                $this->query()
+                ->join('users', 'users.id', '=', 'members.user_id')
+                ->where('members.company_id', '=', $companyId)
+                ->get(['users.username as user.username',
+                    'users.created_at as user.created_at',
+                    'members.*'])
+            )
+        );
     }
 
      /**
@@ -41,19 +50,38 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
      public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
         $items = new Collection();
         foreach ($roles as $role) {
-            $items = $items->merge($this->findBy(['company_id' => $companyId, 'role' => $role]));
+            $items = $items->merge(
+                $this->query()
+                ->join('users', 'users.id', '=', 'members.user_id')
+                ->where('members.company_id', '=', $companyId)
+                ->where('members.role', '=', $role)
+                ->get(['users.username as username',
+                    'users.created_at as user_created_at',
+                    'members.*'])
+            );
         }
 
-        return $items;
+        return $this->castHydrate($items);
     }
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $companyId, int $userId) : Member {
-        return $this->findOneBy([
-            'company_id'  => $companyId,
-            'user_id'     => $userId
-        ]);
+    public function findOne(int $memberId) : Member {
+        $items = new Collection();
+        $items = $items->merge(
+            $this->query()
+                ->join('users', 'users.id', '=', 'members.user_id')
+                ->where('members.id', '=', $memberId)
+                ->get(['users.username as user.username',
+                    'users.created_at as user.created_at',
+                    'members.*'])
+        );
+
+        $member = $this->castHydrate($items)->first();
+        if (! $member)
+            throw new NotFound();
+
+        return $member;
     }
 
     /**
@@ -72,4 +100,13 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
+
+    public function saveOne(Member $member) : Member {
+        $user = $member->relations['user'];
+        $this->save($member);
+        $member->relations['user'] = $user;
+
+        return $member;
+    }
+
 }

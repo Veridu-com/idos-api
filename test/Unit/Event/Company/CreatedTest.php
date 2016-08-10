@@ -8,11 +8,16 @@ namespace Test\Unit\Event\Company;
 
 use App\Entity\Company;
 use App\Event\Company\Created;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class CreatedTest extends AbstractUnit {
     public function testConstruct() {
-        $company = new Company([]);
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $company = new Company([], $optimus);
 
         $created = new Created($company);
 

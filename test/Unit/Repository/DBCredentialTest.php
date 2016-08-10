@@ -13,11 +13,23 @@ use App\Repository\DBCredential;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class DBCredentialTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testFindByPubKeyNotFound() {
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Credential', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -39,7 +51,7 @@ class DBCredentialTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbCredential = new DBCredential($factory, $connectionMock);
+        $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
         $this->setExpectedException(NotFound::class);
         $dbCredential->findByPubKey(1);
@@ -54,7 +66,7 @@ class DBCredentialTest extends AbstractUnit {
             'updated_at' => time()
         ];
 
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Credential', []);
 
         $queryMock = $this->getMockBuilder(Builder::class)
@@ -66,7 +78,7 @@ class DBCredentialTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection([new CredentialEntity($array)])));
+            ->will($this->returnValue(new Collection([new CredentialEntity($array, $this->optimus)])));
 
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
@@ -79,13 +91,13 @@ class DBCredentialTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbCredential = new DBCredential($factory, $connectionMock);
+        $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
         $this->assertEquals($array, $dbCredential->findByPubKey(1)->toArray());
     }
 
     public function testGetAllByCompanyIdEmpty() {
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Credential', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -107,7 +119,7 @@ class DBCredentialTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbCredential = new DBCredential($factory, $connectionMock);
+        $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
         $this->assertInstanceOf(Collection::class, $dbCredential->getAllByCompanyId(1));
         $this->assertEmpty($dbCredential->getAllByCompanyId(1));
@@ -131,7 +143,7 @@ class DBCredentialTest extends AbstractUnit {
             ]
         ];
 
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Credential', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -145,8 +157,8 @@ class DBCredentialTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new Collection([
-                        new CredentialEntity($array[0]),
-                        new CredentialEntity($array[1])
+                        new CredentialEntity($array[0], $this->optimus),
+                        new CredentialEntity($array[1], $this->optimus)
                     ])
                 )
             );
@@ -160,14 +172,14 @@ class DBCredentialTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbCredential = new DBCredential($factory, $connectionMock);
+        $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
         $this->assertInstanceOf(Collection::class, $dbCredential->getAllByCompanyId(1));
         $this->assertEquals($array, $dbCredential->getAllByCompanyId(1)->toArray());
     }
 
     public function testDeleteByCompanyId() {
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Credential', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -189,13 +201,13 @@ class DBCredentialTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbCredential = new DBCredential($factory, $connectionMock);
+        $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
         $this->assertEquals(3, $dbCredential->deleteByCompanyId(1));
     }
 
     public function testDeleteByPubKey() {
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Credential', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -217,7 +229,7 @@ class DBCredentialTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbCredential = new DBCredential($factory, $connectionMock);
+        $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
         $this->assertEquals(2, $dbCredential->deleteByPubKey(1));
     }

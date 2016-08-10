@@ -15,10 +15,22 @@ use App\Repository\CredentialInterface;
 use App\Repository\DBCredential;
 use App\Validator\Credential as CredentialValidator;
 use Illuminate\Database\Query\Builder;
+use Jenssegers\Optimus\Optimus;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
 class CredentialTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testConstructCorrectInterface() {
         $repositoryMock = $this
             ->getMockBuilder(CredentialInterface::class)
@@ -81,7 +93,7 @@ class CredentialTest extends AbstractUnit {
             ->setMethods([])
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Credential');
 
         $builderMock = $this->getMockBuilder(Builder::class)
@@ -89,7 +101,7 @@ class CredentialTest extends AbstractUnit {
             ->getMock();
 
         $credentialRepository = $this->getMockBuilder(DBCredential::class)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->setMethods(['query'])
             ->getMock();
         $credentialRepository
@@ -119,7 +131,7 @@ class CredentialTest extends AbstractUnit {
             ->setMethods([])
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Credential');
 
         $builderMock = $this->getMockBuilder(Builder::class)
@@ -127,7 +139,7 @@ class CredentialTest extends AbstractUnit {
             ->getMock();
 
         $credentialRepository = $this->getMockBuilder(DBCredential::class)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->setMethods(['query', 'find'])
             ->getMock();
         $credentialRepository
@@ -135,7 +147,7 @@ class CredentialTest extends AbstractUnit {
             ->will($this->returnValue($builderMock));
         $credentialRepository
             ->method('find')
-            ->will($this->returnValue(new CredentialEntity()));
+            ->will($this->returnValue(new CredentialEntity([], $this->optimus)));
 
         $handler = new Credential(
             $credentialRepository,
@@ -156,11 +168,11 @@ class CredentialTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Credential');
 
         $credentialRepository = $this->getMockBuilder(DBCredential::class)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->setMethods(['delete'])
             ->getMock();
         $credentialRepository
@@ -182,11 +194,11 @@ class CredentialTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Credential');
 
         $credentialRepository = $this->getMockBuilder(DBCredential::class)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->setMethods(['deleteByCompanyId'])
             ->getMock();
         $credentialRepository
