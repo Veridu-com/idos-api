@@ -31,6 +31,7 @@ class DBServiceHandlerTest extends AbstractUnit {
      private function getEntity($id) {
         return new ServiceHandlerEntity(
             [
+                'id' => 1,
                 'name'         => 'New Service Handler',
                 'slug'         => 'new-service-handler',
                 'id'           => $id,
