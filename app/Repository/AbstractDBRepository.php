@@ -47,6 +47,13 @@ abstract class AbstractDBRepository extends AbstractRepository {
     protected $dbConnection;
 
     /**
+     * Filterable keys of the repository.
+     *
+     * @var array
+     */
+    protected $filterableKeys = [];
+
+    /**
      * Begin a fluent query against a database table.
      *
      * @return \Illuminate\Database\Query\Builder
@@ -219,10 +226,93 @@ abstract class AbstractDBRepository extends AbstractRepository {
         return new Collection($this->query()->get());
     }
 
-    public function mapRelationships(Collection $items) {
+    /**
+     * Paginates a query builder instance.
+     *
+     * @param      \Illuminate\Database\Query\Builder  $query    The query
+     * @param      array                               $columns  The columns to retrieve
+     *
+     * @return     array
+     */
+    protected function paginate(Builder $query, array $queryParams = [], array $columns = ['*']) : array {
+        $page = isset($queryParams['page']) ? $queryParams['page'] : 1;
+        $perPage = isset($queryParams['perPage']) ? $queryParams['perPage'] : 15;
 
-        // mapear items em busca de um prefixo dentro da minha propriedade $relationships
-        // para cada prefixo encontrado, colocar num array
+        $pagination = $query->paginate($perPage, $columns, 'page', $page);
 
+        return [
+            'pagination'    => [
+                'total'             => (int) $pagination->total(),
+                'per_page'          => (int) $pagination->perPage(),
+                'current_page'      => (int) $pagination->currentPage(),
+                'last_page'         => (int) $pagination->lastPage(),
+                'from'              => (int) $pagination->firstItem(),
+                'to'                => (int) $pagination->lastItem(),
+            ],
+            'collection'    => $pagination->getCollection()
+        ];
+
+    }
+
+    /**
+     * Filters user inputs
+     *
+     * @param      \Illuminate\Database\Query\Builder  $query  The query
+     * @param      array                               $queryParams  The query params
+     *
+     * @return     \Illuminate\Database\Query\Builder
+     */
+    protected function filter(Builder $query, array $queryParams) : Builder {
+        $filters = [];
+
+        foreach ($this->filterableKeys as $key => $type) {
+            if (isset($queryParams[$key])) {
+                $filters[$key] = [
+                    'type'  => $type,
+                    'value' => $queryParams[$key]
+                ];
+            }
+        }
+
+        if (! count($filters)) {
+            return $query;
+        }
+
+        foreach ($filters as $key => $filter) {
+            $value = $filter['value'];
+            $type = $filter['type'];
+
+            switch ($type) {
+                case 'date':
+                    // expects query pattern to be created_at=DATE_FROM,DATE_UNTIL or created_at=DATE_FROM
+                    // expect dates to match the pattern: YYYY-MM-DD
+                    $values = explode(',', $value);
+                    if (count($values) == 2) {
+                        $from = $values[0];
+                        $to = $values[1];
+                        $query = $query->whereDate($key, '>=', $from);
+                        $query = $query->whereDate($key, '<=', $to);
+                    } else {
+                        // no comma
+                        $query = $query->whereDate($key,  '=', $value);
+                    }
+                    break;
+                case 'string':
+                    // starts or ends with "%"
+                    if (preg_match('/.*%$|^%.*/', $value)) {
+                        $query =  $query->where($key, 'ilike', $value);
+                    } else {
+                        $query =  $query->where($key, $value);
+                    }
+                    break;
+
+                default:
+                    $query =  $query->where($key, '=', $value);
+                    break;
+            }
+
+        }
+
+        return $query;
     }
 }
