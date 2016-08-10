@@ -31,8 +31,8 @@ class CreateNewTest extends AbstractFunctional {
             json_encode(
                 [
                     'credential' => '4c9184f37cff01bcdc32dc486ec36961',
-                    'userName' => '9fd9f63e0d6487537569075da85a0c7f2',
-                    'role'     => 'admin',
+                    'userName'   => '9fd9f63e0d6487537569075da85a0c7f2',
+                    'role'       => 'admin',
                 ]
             )
         );

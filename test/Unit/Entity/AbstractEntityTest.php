@@ -8,17 +8,27 @@ namespace Test\Unit\Entity;
 
 use App\Entity\AbstractEntity;
 use App\Entity\Company;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
-use App\Entity\EntityInterface;
 
 class AbstractEntityTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
 
-     private function setProtectedMethod($object, $method) {
+    private function setProtectedMethod($object, $method) {
         $reflection        = new \ReflectionClass($object);
         $reflection_method = $reflection->getMethod($method);
         $reflection_method->setAccessible(true);
 
         return $reflection_method;
+    }
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     public function testToCamelCase() {
@@ -28,7 +38,7 @@ class AbstractEntityTest extends AbstractUnit {
         ];
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(['getReferenceCacheKeys'])
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
 
         $method = $this->setProtectedMethod($abstractMock, 'toCamelCase');
@@ -43,7 +53,7 @@ class AbstractEntityTest extends AbstractUnit {
         ];
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(['getReferenceCacheKeys'])
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
 
         $method = $this->setProtectedMethod($abstractMock, 'toSnakeCase');
@@ -59,7 +69,8 @@ class AbstractEntityTest extends AbstractUnit {
                     [
                         'id'   => 1,
                         'name' => 'abc'
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -85,7 +96,8 @@ class AbstractEntityTest extends AbstractUnit {
                     [
                         'id'   => 1,
                         'name' => 'abc'
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -106,7 +118,7 @@ class AbstractEntityTest extends AbstractUnit {
         ];
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(['getReferenceCacheKeys', 'hasSetMutator'])
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
         $abstractMock
             ->method('hasSetMutator')
@@ -124,7 +136,7 @@ class AbstractEntityTest extends AbstractUnit {
         ];
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(['getReferenceCacheKeys'])
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
 
         $method = $this->setProtectedMethod($abstractMock, 'setAttribute');
@@ -147,7 +159,7 @@ class AbstractEntityTest extends AbstractUnit {
         ];
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(['getReferenceCacheKeys', 'hasGetMutator'])
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
         $abstractMock
             ->method('hasGetMutator')
@@ -160,14 +172,14 @@ class AbstractEntityTest extends AbstractUnit {
 
     public function testHydrate() {
          $array = [
-            'id'   => 1,
-            'name' => 'Abstract Entity',
+            'id'         => 1,
+            'name'       => 'Abstract Entity',
             'created_at' => time(),
             'updated_at' => time()
         ];
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(['getReferenceCacheKeys'])
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
 
         $abstractMock->hydrate($array);
@@ -185,7 +197,8 @@ class AbstractEntityTest extends AbstractUnit {
                     [
                         'id'   => 1,
                         'name' => 'abc'
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -201,7 +214,7 @@ class AbstractEntityTest extends AbstractUnit {
         ];
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(['getReferenceCacheKeys'])
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
 
         $this->assertSame($array, $abstractMock->serialize());
@@ -215,7 +228,8 @@ class AbstractEntityTest extends AbstractUnit {
                     [
                         'id'   => 1,
                         'name' => 'abc'
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -227,6 +241,7 @@ class AbstractEntityTest extends AbstractUnit {
     public function testNotExists() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(['getReferenceCacheKeys'])
+            ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $abstractMock->hydrate(
             [
@@ -247,7 +262,8 @@ class AbstractEntityTest extends AbstractUnit {
                     [
                         'id'   => 1,
                         'name' => 'abc'
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -261,7 +277,8 @@ class AbstractEntityTest extends AbstractUnit {
                     [
                         'id'   => 1,
                         'name' => 'abc'
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -277,7 +294,8 @@ class AbstractEntityTest extends AbstractUnit {
                     [
                         'id'   => 1,
                         'name' => 'abc'
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -293,7 +311,7 @@ class AbstractEntityTest extends AbstractUnit {
     public function testSetMutator() {
         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
             ->setMethods(['getReferenceCacheKeys', 'setNameAttribute'])
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
 
         $abstractMock
@@ -301,7 +319,6 @@ class AbstractEntityTest extends AbstractUnit {
             ->method('setNameAttribute')
             ->with($this->equalTo('cba'))
             ->will($this->returnValue($abstractMock));
-
 
         $abstractMock->name = 'cba';
     }
@@ -311,10 +328,11 @@ class AbstractEntityTest extends AbstractUnit {
             ->setMethods(['getNameAttribute'])
             ->setConstructorArgs(
                 [
-                    'attributes' => [
+                    [
                         'id'   => 0,
                         'name' => 'abc'
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();

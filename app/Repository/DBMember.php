@@ -9,8 +9,9 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\Member;
-use Illuminate\Support\Collection;
 use App\Exception\NotFound;
+use Illuminate\Support\Collection;
+
 /**
  * Database-based Member Repository Implementation.
  */
@@ -104,6 +105,7 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
         $user = $member->relations['user'];
         $this->save($member);
         $member->relations['user'] = $user;
+
         return $member;
     }
 

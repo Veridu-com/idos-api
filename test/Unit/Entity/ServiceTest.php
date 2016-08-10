@@ -7,23 +7,35 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\Service;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class ServiceTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testSerialize() {
 
         $updated = time();
         $array   = [
             'id'          => 1,
             'name'        => 'My Service',
-            'enabled'  => true,
+            'enabled'     => true,
             'created_at'  => time(),
             'updated_at'  => time()
         ];
 
         $abstractMock = $this->getMockBuilder(Service::class)
             ->setMethods(null)
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
         $array = $abstractMock->serialize();
         $this->assertArrayHasKey('id', $array);
@@ -50,10 +62,11 @@ class ServiceTest extends AbstractUnit {
                     [
                         'id'          => 1,
                         'name'        => 'My Service',
-                        'enabled'  => true,
+                        'enabled'     => true,
                         'created_at'  => time(),
                         'updated_at'  => time()
-                    ]
+                    ],
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();

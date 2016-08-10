@@ -11,19 +11,30 @@ use App\Command\ServiceHandler\DeleteAll;
 use App\Command\ServiceHandler\DeleteOne;
 use App\Command\ServiceHandler\UpdateOne;
 use App\Entity\ServiceHandler as ServiceHandlerEntity;
-use App\Event\ServiceHandler\Created;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\ServiceHandler;
-use App\Repository\ServiceHandlerInterface;
 use App\Repository\DBServiceHandler;
+use App\Repository\ServiceHandlerInterface;
 use App\Validator\ServiceHandler as ServiceHandlerValidator;
+use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
 class ServiceHandlerTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testConstructCorrectInterface() {
         $repositoryMock = $this
             ->getMockBuilder(ServiceHandlerInterface::class)
@@ -105,17 +116,17 @@ class ServiceHandlerTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $serviceHandlerEntity = new ServiceHandlerEntity([]);
+        $serviceHandlerEntity = new ServiceHandlerEntity([], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('ServiceHandler');
 
         $serviceHandlerRepository = $this->getMockBuilder(DBServiceHandler::class)
             ->setMethods(['save'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $serviceHandlerRepository
             ->expects($this->once())
@@ -127,14 +138,14 @@ class ServiceHandlerTest extends AbstractUnit {
             new ServiceHandlerValidator()
         );
 
-        $command           = new CreateNew();
-        $command->name     = 'New Service Handler';
-        $command->source     = 'email';
-        $command->companyId     = 1;
-        $command->serviceSlug    = 'slug';
+        $command                   = new CreateNew();
+        $command->name             = 'New Service Handler';
+        $command->source           = 'email';
+        $command->companyId        = 1;
+        $command->serviceSlug      = 'slug';
         $command->authPassword     = 'Auth Password';
         $command->authUsername     = 'Auth Username';
-        $command->location = 'http://localhost:8080';
+        $command->location         = 'http://localhost:8080';
 
         $result = $handler->handleCreateNew($command);
         $this->assertSame('New Service Handler', $result->name);
@@ -151,26 +162,27 @@ class ServiceHandlerTest extends AbstractUnit {
     public function testHandleUpdateOne() {
         $serviceHandlerEntity = new ServiceHandlerEntity(
             [
-                'id'         => 1,
-                'name'       => 'New Service Handler',
-                'slug'       => 'new-service-handler',
-                'source' => 'email',
-                'location' => 'http://localhost:8080' ,
+                'id'           => 1,
+                'name'         => 'New Service Handler',
+                'slug'         => 'new-service-handler',
+                'source'       => 'email',
+                'location'     => 'http://localhost:8080',
                 'service-slug' => 'slug',
-                'created_at' => time(),
-                'updated_at' => time()
-            ]
+                'created_at'   => time(),
+                'updated_at'   => time()
+            ],
+            $this->optimus
         );
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('ServiceHandler');
 
         $serviceHandlerRepository = $this->getMockBuilder(DBServiceHandler::class)
             ->setMethods(['findOne', 'save'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $serviceHandlerRepository
             ->expects($this->once())
@@ -186,15 +198,15 @@ class ServiceHandlerTest extends AbstractUnit {
             new ServiceHandlerValidator()
         );
 
-        $command            = new UpdateOne();
-        $command->name     = 'New Service Handler';
-        $command->slug = 'new-service-handler';
-        $command->source     = 'email';
-        $command->companyId     = 1;
-        $command->serviceSlug    = 'slug';
+        $command                   = new UpdateOne();
+        $command->name             = 'New Service Handler';
+        $command->slug             = 'new-service-handler';
+        $command->source           = 'email';
+        $command->companyId        = 1;
+        $command->serviceSlug      = 'slug';
         $command->authPassword     = 'Auth Password';
         $command->authUsername     = 'Auth Username';
-        $command->location = 'http://localhost:8080';
+        $command->location         = 'http://localhost:8080';
 
         $result = $handler->handleUpdateOne($command);
         $this->assertSame('New Service Handler', $result->name);
@@ -232,12 +244,12 @@ class ServiceHandlerTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('ServiceHandler');
 
         $serviceHandlerRepository = $this->getMockBuilder(DBServiceHandler::class)
             ->setMethods(['deleteOne'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $serviceHandlerRepository
             ->method('deleteOne')
@@ -253,13 +265,12 @@ class ServiceHandlerTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $commandMock->companyId = 1;
-        $commandMock->slug = 'slug';
-        $commandMock->serviceSlug ='new-service-handler';
+        $commandMock->companyId   = 1;
+        $commandMock->slug        = 'slug';
+        $commandMock->serviceSlug = 'new-service-handler';
 
         $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
     }
-
 
     public function testHandleDeleteAllInvalidServiceSlug() {
         $repositoryMock = $this
@@ -281,7 +292,6 @@ class ServiceHandlerTest extends AbstractUnit {
 
         $handler->handleDeleteAll($commandMock);
     }
-
 
     public function testHandleDeleteAllCompanyIdNotFound() {
         $repositoryMock = $this
@@ -308,12 +318,12 @@ class ServiceHandlerTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('ServiceHandler');
 
         $serviceHandlerRepository = $this->getMockBuilder(DBServiceHandler::class)
             ->setMethods(['deleteByCompanyId'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $serviceHandlerRepository
             ->method('deleteByCompanyId')

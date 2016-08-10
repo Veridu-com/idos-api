@@ -13,8 +13,8 @@ use App\Command\Member\DeleteAll;
 use App\Command\Member\DeleteOne;
 use App\Command\Member\UpdateOne;
 use App\Entity\Member as MemberEntity;
-use App\Repository\MemberInterface;
 use App\Repository\CredentialInterface;
+use App\Repository\MemberInterface;
 use App\Repository\UserInterface;
 use App\Validator\Member as MemberValidator;
 use Interop\Container\ContainerInterface;
@@ -73,9 +73,9 @@ class Member implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\MemberInterface $repository
-     * @param App\Repository\CredentialInterface   $repository
-     * @param App\Validator\Member           $validator
+     * @param App\Repository\MemberInterface     $repository
+     * @param App\Repository\CredentialInterface $repository
+     * @param App\Validator\Member               $validator
      *
      * @return void
      */
@@ -85,10 +85,10 @@ class Member implements HandlerInterface {
         UserInterface $userRepository,
         MemberValidator $validator
     ) {
-        $this->repository     = $repository;
+        $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
-        $this->userRepository = $userRepository;
-        $this->validator      = $validator;
+        $this->userRepository       = $userRepository;
+        $this->validator            = $validator;
     }
 
     /**
@@ -133,7 +133,7 @@ class Member implements HandlerInterface {
         $member            = $this->repository->findOne($command->memberId);
         $member->role      = $command->role;
         $member->updatedAt = time();
-        $member = $this->repository->saveOne($member);
+        $member            = $this->repository->saveOne($member);
 
         return $member;
     }
@@ -160,6 +160,7 @@ class Member implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $credential = $this->credentialRepository->findByPubKey($command->credential);
+
         return $this->repository->deleteByCompanyId($credential->companyId);
     }
 

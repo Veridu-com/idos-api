@@ -30,10 +30,10 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'MyCompany x Handler',
-                    'source' => 'My lockd source',
-                    'service' => 'email',
-                    'location' => 'http://localhost:8001',
+                    'name'         => 'MyCompany x Handler',
+                    'source'       => 'My lockd source',
+                    'service'      => 'email',
+                    'location'     => 'http://localhost:8001',
                     'authUsername' => 'sodi',
                     'authPassword' => 'terces'
                 ]
@@ -76,10 +76,10 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'MyCompany x Handler',
-                    'source' => 'My lockd source',
-                    'service' => 'email',
-                    'location' => 'http://localhost:8001',
+                    'name'         => 'MyCompany x Handler',
+                    'source'       => 'My lockd source',
+                    'service'      => 'email',
+                    'location'     => 'http://localhost:8001',
                     'authUsername' => 'sodi',
                     'authPassword' => 'terces'
                 ]

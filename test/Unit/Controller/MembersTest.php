@@ -27,6 +27,10 @@ use Test\Unit\AbstractUnit;
 
 class MembersTest extends AbstractUnit {
     private function getCompanyEntity($id) {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new CompanyEntity(
             [
                 'name'       => 'New Company',
@@ -34,20 +38,30 @@ class MembersTest extends AbstractUnit {
                 'slug'       => 'new-company',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
     private function getUserEntity() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new UserEntity(
             [
                 'id'         => 1,
                 'username'   => 'Username',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
     private function getEntity() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new MemberEntity(
             [
                 'user'       => [],
@@ -55,7 +69,8 @@ class MembersTest extends AbstractUnit {
                 'role'       => 'admin',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
 
@@ -297,9 +312,9 @@ public function testCreateNew() {
             ->setMethods(['getAttribute'])
             ->getMock();
         $requestMock
-            ->expects($this->exactly(2))
+            ->expects($this->once())
             ->method('getAttribute')
-            ->will($this->onConsecutiveCalls($this->getCompanyEntity(1), $this->getUserEntity(1)));
+            ->will($this->returnValue(1));
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -315,13 +330,7 @@ public function testCreateNew() {
             ->will($this->returnValue($this->getEntity()));
         $dbUserMock = $this->getMockBuilder(DBUser::class)
             ->disableOriginalConstructor()
-            ->setMethods(['find'])
             ->getMock();
-        $dbUserMock
-            ->expects($this->once())
-            ->method('find')
-            ->will($this->returnValue($this->getUserEntity()));
-
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()
             ->setMethods([])

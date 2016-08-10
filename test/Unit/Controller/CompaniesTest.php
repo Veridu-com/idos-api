@@ -24,6 +24,10 @@ use Test\Unit\AbstractUnit;
 
 class CompaniesTest extends AbstractUnit {
     private function getEntity($id) {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new CompanyEntity(
             [
                 'name'       => 'New Company',
@@ -31,7 +35,8 @@ class CompaniesTest extends AbstractUnit {
                 'slug'       => 'new-company',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
 

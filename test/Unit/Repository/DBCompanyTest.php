@@ -13,11 +13,23 @@ use App\Repository\DBCompany;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class DBCompanyTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testFindBySlugNotFound() {
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -39,7 +51,7 @@ class DBCompanyTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbCompany = new DBCompany($factory, $connectionMock);
+        $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
         $this->setExpectedException(NotFound::class);
         $dbCompany->findBySlug('');
     }
@@ -53,7 +65,7 @@ class DBCompanyTest extends AbstractUnit {
             'updated_at' => time()
         ];
 
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -66,7 +78,7 @@ class DBCompanyTest extends AbstractUnit {
             ->method('get')
             ->will($this->returnValue(
                 new Collection([
-                    new CompanyEntity($array)
+                    new CompanyEntity($array, $this->optimus)
                 ])
             )
         );
@@ -81,12 +93,12 @@ class DBCompanyTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbCompany = new DBCompany($factory, $connectionMock);
+        $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
         $this->assertSame($array, $dbCompany->findBySlug('slug')->toArray());
     }
 
     public function testFindByPubKeyNotFound() {
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -108,7 +120,7 @@ class DBCompanyTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbCompany = new DBCompany($factory, $connectionMock);
+        $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
         $this->setExpectedException(NotFound::class);
         $dbCompany->findByPubKey('');
     }
@@ -122,7 +134,7 @@ class DBCompanyTest extends AbstractUnit {
             'updated_at' => time()
          ];
 
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -133,7 +145,7 @@ class DBCompanyTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection([new CompanyEntity($array)])));
+            ->will($this->returnValue(new Collection([new CompanyEntity($array, $this->optimus)])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -144,12 +156,12 @@ class DBCompanyTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-         $dbCompany = new DBCompany($factory, $connectionMock);
+         $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
          $this->assertSame($array, $dbCompany->findByPubKey('public_key')->toArray());
     }
 
     public function testFindByPrivKeyNotFound() {
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -171,7 +183,7 @@ class DBCompanyTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbCompany = new DBCompany($factory, $connectionMock);
+        $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
         $this->setExpectedException(NotFound::class);
         $dbCompany->findByPrivKey('');
     }
@@ -185,7 +197,7 @@ class DBCompanyTest extends AbstractUnit {
             'updated_at' => time()
         ];
 
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -196,7 +208,7 @@ class DBCompanyTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection([new CompanyEntity($array)])));
+            ->will($this->returnValue(new Collection([new CompanyEntity($array, $this->optimus)])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -207,7 +219,7 @@ class DBCompanyTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-         $dbCompany = new DBCompany($factory, $connectionMock);
+         $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
          $this->assertSame($array, $dbCompany->findByPrivKey('private_key')->toArray());
     }
 }

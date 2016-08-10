@@ -7,5 +7,4 @@
 use Test\Unit\AbstractUnit;
 
 class AuthTest extends AbstractUnit {
-
 }

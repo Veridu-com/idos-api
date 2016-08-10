@@ -12,22 +12,15 @@ use Test\Unit\AbstractUnit;
 class DeleteOneTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new DeleteOne();
-        $this->assertNull($command->companyId);
-        $this->assertNull($command->userId);
+        $this->assertNull($command->memberId);
 
         $this->assertInstanceOf(
             DeleteOne::class,
             $command->setParameters([])
         );
-        $this->assertNull($command->companyId);
-        $this->assertNull($command->userId);
+        $this->assertNull($command->memberId);
 
-        $command->setParameters(['companyId' => 1]);
-        $this->assertSame(1, $command->companyId);
-        $this->assertNull($command->userId);
-
-        $command->setParameters(['userId' => 1]);
-        $this->assertSame(1, $command->companyId);
-        $this->assertSame(1, $command->userId);
+        $command->setParameters(['memberId' => 1]);
+        $this->assertSame(1, $command->memberId);
     }
 }

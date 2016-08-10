@@ -17,10 +17,22 @@ use App\Handler\Permission;
 use App\Repository\DBPermission;
 use App\Repository\PermissionInterface;
 use App\Validator\Permission as PermissionValidator;
+use Jenssegers\Optimus\Optimus;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
 class PermissionTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testConstructCorrectInterface() {
         $repositoryMock = $this
             ->getMockBuilder(PermissionInterface::class)
@@ -98,17 +110,17 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $permissionEntity = new PermissionEntity([]);
+        $permissionEntity = new PermissionEntity([], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Permission');
 
         $permissionRepository = $this->getMockBuilder(DBPermission::class)
             ->setMethods(['save'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $permissionRepository
             ->expects($this->once())
@@ -133,11 +145,11 @@ class PermissionTest extends AbstractUnit {
     public function testHandleDeleteAllCompanyIdNotFound() {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Permission');
 
         $permissionRepository = $this->getMockBuilder(DBPermission::class)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
 
         $handler = new Permission(
@@ -161,11 +173,11 @@ class PermissionTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Permission');
 
         $permissionRepository = $this->getMockBuilder(DBPermission::class)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->setMethods(['deleteByCompanyId'])
             ->getMock();
         $permissionRepository
@@ -214,11 +226,11 @@ class PermissionTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Permission');
 
         $permissionRepository = $this->getMockBuilder(DBPermission::class)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->setMethods(['deleteOne'])
             ->getMock();
         $permissionRepository

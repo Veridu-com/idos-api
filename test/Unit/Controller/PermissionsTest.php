@@ -24,6 +24,10 @@ use Test\Unit\AbstractUnit;
 
 class PermissionsTest extends AbstractUnit {
     private function getCompanyEntity($id) {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new CompanyEntity(
             [
                 'name'       => 'New Company',
@@ -31,22 +35,32 @@ class PermissionsTest extends AbstractUnit {
                 'slug'       => 'new-company',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
 
     private function getEntity() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new PermissionEntity(
             [
                 'id'         => 1,
                 'route_name' => 'createNew',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
 
     public function testListAll() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute'])
@@ -56,7 +70,8 @@ class PermissionsTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new PermissionEntity(
-                        ['id' => 0]
+                        ['id' => 0],
+                        $optimus
                     )
                 )
             );
@@ -90,10 +105,6 @@ class PermissionsTest extends AbstractUnit {
             ->expects($this->once())
             ->method('create')
             ->will($this->returnValue(new ResponseDispatch()));
-
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $permissionMock = $this->getMockBuilder(Permissions::class)
             ->setConstructorArgs([$dbPermissionMock, $commandBus, $commandFactory, $optimus])
@@ -163,19 +174,19 @@ class PermissionsTest extends AbstractUnit {
     }
 
     public function testGetOne() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute'])
             ->getMock();
 
-        // @returnValueMap
-        // https://phpunit.de/manual/3.6/en/test-doubles.html#test-doubles.stubs.examples.StubTest5.php
         $requestMock
             ->method('getAttribute')
             ->will(
                 $this->returnValueMap([
-                    // reads: [$args[0], $args[1], RETURN VALUE]
-                    ['targetCompany', null, new PermissionEntity(['id' => 0])],
+                    ['targetCompany', null, new PermissionEntity(['id' => 0], $optimus)],
                     ['routeName', null, 'companies:listAll']
                 ]
             ));
@@ -194,7 +205,8 @@ class PermissionsTest extends AbstractUnit {
             ->will($this->returnValue(new PermissionEntity([
                 'id'         => 0,
                 'created_at' => (new \DateTime())->format('YYYY-MM-DD')
-                ])
+                ],
+                $optimus)
             ));
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
@@ -214,10 +226,6 @@ class PermissionsTest extends AbstractUnit {
             ->expects($this->once())
             ->method('create')
             ->will($this->returnValue(new ResponseDispatch()));
-
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $permissionMock = $this->getMockBuilder(Permissions::class)
             ->setConstructorArgs([$dbPermissionMock, $commandBus, $commandFactory, $optimus])
@@ -284,6 +292,10 @@ class PermissionsTest extends AbstractUnit {
     }
 
     public function testDeleteAll() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute'])
@@ -294,7 +306,8 @@ class PermissionsTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new PermissionEntity(
-                        ['id' => 0]
+                        ['id' => 0],
+                        $optimus
                     )
                 )
             );
@@ -313,7 +326,7 @@ class PermissionsTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new PermissionEntity(), $responseMock));
+            ->will($this->onConsecutiveCalls(new PermissionEntity([], $optimus), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -324,10 +337,6 @@ class PermissionsTest extends AbstractUnit {
             ->method('create')
             ->will($this->onConsecutiveCalls(new DeleteAll(), new ResponseDispatch()));
 
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $permissionMock = $this->getMockBuilder(Permissions::class)
             ->setConstructorArgs([$dbPermissionMock, $commandBus, $commandFactory, $optimus])
             ->setMethods(null)
@@ -337,6 +346,10 @@ class PermissionsTest extends AbstractUnit {
     }
 
     public function testDeleteOne() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAttribute'])
@@ -347,7 +360,8 @@ class PermissionsTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new PermissionEntity(
-                        ['id' => 0]
+                        ['id' => 0],
+                        $optimus
                     )
                 )
             );
@@ -366,7 +380,7 @@ class PermissionsTest extends AbstractUnit {
         $commandBus
             ->expects($this->exactly(2))
             ->method('handle')
-            ->will($this->onConsecutiveCalls(new PermissionEntity(), $responseMock));
+            ->will($this->onConsecutiveCalls(new PermissionEntity([], $optimus), $responseMock));
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -376,10 +390,6 @@ class PermissionsTest extends AbstractUnit {
             ->expects($this->exactly(2))
             ->method('create')
             ->will($this->onConsecutiveCalls(new DeleteOne(), new ResponseDispatch()));
-
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $permissionMock = $this->getMockBuilder(Permissions::class)
             ->setConstructorArgs([$dbPermissionMock, $commandBus, $commandFactory, $optimus])

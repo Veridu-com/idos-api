@@ -13,11 +13,23 @@ use App\Repository\DBPermission;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class DBPermissionTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testFindOneNotFound() {
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Permission', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -39,7 +51,7 @@ class DBPermissionTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbPermission = new DBPermission($factory, $connectionMock);
+        $dbPermission = new DBPermission($factory, $this->optimus, $connectionMock);
         $this->setExpectedException(NotFound::class);
         $dbPermission->findOne(1, 'notAExistingRoutName');
     }
@@ -50,7 +62,7 @@ class DBPermissionTest extends AbstractUnit {
             'created_at'     => time()
         ];
 
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $entity  = $factory->create('Permission', $array);
 
         $queryMock = $this->getMockBuilder(Builder::class)
@@ -74,7 +86,7 @@ class DBPermissionTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbPermission = new DBPermission($factory, $connectionMock);
+        $dbPermission = new DBPermission($factory, $this->optimus, $connectionMock);
 
         // fetches entity
         $entity = $dbPermission->findOne(0, 'companies:listAll');

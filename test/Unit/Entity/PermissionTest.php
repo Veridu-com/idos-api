@@ -7,9 +7,21 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\Permission;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class PermissionTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     private function getAttributes() {
         return [
             'id'         => 0,
@@ -29,7 +41,7 @@ class PermissionTest extends AbstractUnit {
 
         $abstractMock = $this->getMockBuilder(Permission::class)
             ->setMethods(null)
-            ->setConstructorArgs([$this->getAttributes()])
+            ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
 
         $array = $abstractMock->serialize();
@@ -49,7 +61,7 @@ class PermissionTest extends AbstractUnit {
     public function testToArray() {
         $abstractMock = $this->getMockBuilder(CompanyPermission::class)
             ->setMethods(null)
-            ->setConstructorArgs([$this->getAttributes()])
+            ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
 
         $array = $abstractMock->toArray();
@@ -65,7 +77,7 @@ class PermissionTest extends AbstractUnit {
         $array        = ['Permission.id.', 'Permission.public.'];
         $abstractMock = $this->getMockBuilder(CompanyPermission::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
@@ -76,7 +88,7 @@ class PermissionTest extends AbstractUnit {
         $array        = ['Permission.id.0', 'Permission.public.public'];
         $abstractMock = $this->getMockBuilder(CompanyPermission::class)
             ->setMethods(null)
-            ->setConstructorArgs([$this->getAttributes()])
+            ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
@@ -87,7 +99,7 @@ class PermissionTest extends AbstractUnit {
         $array        = ['Permission.by.parent_id.', 'Permission.id.0', 'Permission.public.public'];
         $abstractMock = $this->getMockBuilder(CompanyPermission::class)
             ->setMethods(null)
-            ->setConstructorArgs([$this->getAttributes()])
+            ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
@@ -99,7 +111,7 @@ class PermissionTest extends AbstractUnit {
         $array        = ['Permission.by.parent_id.', 'Permission.id.', 'Permission.public.'];
         $abstractMock = $this->getMockBuilder(CompanyPermission::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
@@ -116,7 +128,8 @@ class PermissionTest extends AbstractUnit {
                     array_merge(
                         ['parentId' => '0'],
                         $this->getAttributes()
-                    )
+                    ),
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();

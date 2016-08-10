@@ -6,11 +6,11 @@
 
 namespace Test\Unit\Controller;
 
+use App\Command\ResponseDispatch;
 use App\Command\ServiceHandler\CreateNew;
 use App\Command\ServiceHandler\DeleteAll;
 use App\Command\ServiceHandler\DeleteOne;
 use App\Command\ServiceHandler\UpdateOne;
-use App\Command\ResponseDispatch;
 use App\Controller\ServiceHandlers;
 use App\Entity\Company;
 use App\Entity\ServiceHandler as ServiceHandlerEntity;
@@ -25,6 +25,10 @@ use Test\Unit\AbstractUnit;
 
 class ServiceHandlersTest extends AbstractUnit {
     private function getCompanyEntity() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new Company(
             [
                 'name'       => 'New Company',
@@ -32,22 +36,28 @@ class ServiceHandlersTest extends AbstractUnit {
                 'slug'       => 'new-company',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
 
     private function getEntity($id) {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new ServiceHandlerEntity(
             [
-                'name'       => 'New Service Handler',
-                'slug' => 'new-service-handler',
-                'id'         => $id,
-                'source' => 'source',
+                'name'         => 'New Service Handler',
+                'slug'         => 'new-service-handler',
+                'id'           => $id,
+                'source'       => 'source',
                 'service_slug' => 'email',
-                'location' => 'http://localhost:8080',
-                'created_at' => time(),
-                'updated_at' => time()
-            ]
+                'location'     => 'http://localhost:8080',
+                'created_at'   => time(),
+                'updated_at'   => time()
+            ],
+            $optimus
         );
     }
 
@@ -143,7 +153,7 @@ class ServiceHandlersTest extends AbstractUnit {
         $commandFactory
             ->expects($this->once())
             ->method('create')
-            ->will($this->returnValue(new ResponseDispatch));
+            ->will($this->returnValue(new ResponseDispatch()));
 
         $serviceHandlerMock = $this->getMockBuilder(ServiceHandlers::class)
             ->setConstructorArgs([$dbServiceHandlerMock, $commandBus, $commandFactory])

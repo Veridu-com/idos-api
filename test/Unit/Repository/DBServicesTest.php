@@ -7,25 +7,36 @@
 namespace Test\Unit\Repository;
 
 use App\Entity\Service as ServiceEntity;
-use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBService;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class DBServiceTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
 
     public function testGetAll() {
          $array = [
             'name'       => 'New Service',
             'slug'       => 'new-service',
-            'enabled' => true,
+            'enabled'    => true,
             'created_at' => time(),
             // 'updated_at' => time()
          ];
-        $factory = new Entity();
+
+        $factory = new Entity($this->optimus);
         $factory->create('Service', $array);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -33,7 +44,7 @@ class DBServiceTest extends AbstractUnit {
             ->getMock();
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection(new ServiceEntity($array))));
+            ->will($this->returnValue(new Collection(new ServiceEntity($array, $this->optimus))));
 
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
@@ -46,7 +57,7 @@ class DBServiceTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-         $dbService = new DBService($factory, $connectionMock);
+         $dbService = new DBService($factory, $this->optimus, $connectionMock);
 
          $this->assertSame($array, $dbService->getAll()->toArray());
     }
@@ -55,11 +66,11 @@ class DBServiceTest extends AbstractUnit {
          $array = [
             'name'       => 'New Service',
             'slug'       => 'new-service',
-            'enabled' => true,
+            'enabled'    => true,
             'created_at' => time(),
             // 'updated_at' => time()
          ];
-        $factory = new Entity();
+        $factory = new Entity($this->optimus);
         $factory->create('Service', $array);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
@@ -80,7 +91,7 @@ class DBServiceTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-         $dbService = new DBService($factory, $connectionMock);
+         $dbService = new DBService($factory, $this->optimus, $connectionMock);
 
          $this->assertEmpty($dbService->getAll()->toArray());
     }

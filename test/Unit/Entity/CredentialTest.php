@@ -7,9 +7,21 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\Credential;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class CredentialTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     private function getAttributes() {
         return [
             'id'          => 0,
@@ -25,7 +37,7 @@ class CredentialTest extends AbstractUnit {
     public function testSerialize() {
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
-            ->setConstructorArgs([array_merge(['company_id' => 0], $this->getAttributes())])
+            ->setConstructorArgs([array_merge(['company_id' => 0], $this->getAttributes()), $this->optimus])
             ->getMockForAbstractClass();
         $array = $abstractMock->serialize();
         $this->assertArrayHasKey('id', $array);
@@ -54,7 +66,7 @@ class CredentialTest extends AbstractUnit {
     public function testToArray() {
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
-            ->setConstructorArgs([$this->getAttributes()])
+            ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
         $array = $abstractMock->toArray();
         $this->assertArrayHasKey('name', $array);
@@ -71,7 +83,7 @@ class CredentialTest extends AbstractUnit {
         $array        = ['Credential.id.', 'Credential.slug.', 'Credential.public.'];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
@@ -82,7 +94,7 @@ class CredentialTest extends AbstractUnit {
         $array        = ['Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
-            ->setConstructorArgs([$this->getAttributes()])
+            ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
@@ -93,7 +105,7 @@ class CredentialTest extends AbstractUnit {
         $array        = ['Credential.by.company_id.', 'Credential.id.0', 'Credential.slug.my-credential', 'Credential.public.public'];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
-            ->setConstructorArgs([$this->getAttributes()])
+            ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
@@ -105,7 +117,7 @@ class CredentialTest extends AbstractUnit {
         $array        = ['Credential.by.company_id.', 'Credential.id.', 'Credential.slug.', 'Credential.public.'];
         $abstractMock = $this->getMockBuilder(Credential::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
@@ -122,7 +134,8 @@ class CredentialTest extends AbstractUnit {
                     array_merge(
                         ['companyId' => '0'],
                         $this->getAttributes()
-                    )
+                    ),
+                    $this->optimus
                 ]
             )
             ->getMockForAbstractClass();

@@ -12,6 +12,7 @@ use App\Entity\Service as ServiceEntity;
 use App\Factory\Command;
 use App\Repository\DBService;
 use Illuminate\Support\Collection;
+use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -19,15 +20,20 @@ use Test\Unit\AbstractUnit;
 
 class ServicesTest extends AbstractUnit {
     private function getEntity($id) {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new ServiceEntity(
             [
                 'name'       => 'New Service',
                 'id'         => $id,
                 'slug'       => 'new-service',
-                'enabled' => true,
+                'enabled'    => true,
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $optimus
         );
     }
 
@@ -47,7 +53,7 @@ class ServicesTest extends AbstractUnit {
             ->getMock();
         $dbServiceMock
             ->method('getAll')
-            ->will($this->returnValue(new Collection($this->getentity(1))));
+            ->will($this->returnValue(new Collection($this->getEntity(1))));
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()

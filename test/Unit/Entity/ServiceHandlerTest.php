@@ -7,18 +7,30 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\ServiceHandler;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class ServiceHandlerTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     private function getAttributes() {
         return [
-            'id' => 1,
-            'name' => 'New Service Handler',
-            'source' => 'email',
-            'location' => 'url',
+            'id'           => 1,
+            'name'         => 'New Service Handler',
+            'source'       => 'email',
+            'location'     => 'url',
             'service_slug' => 'slug',
-            'created_at' => time(),
-            'updated_at' => time(),
+            'created_at'   => time(),
+            'updated_at'   => time(),
         ];
     }
 
@@ -28,13 +40,14 @@ class ServiceHandlerTest extends AbstractUnit {
             ->setConstructorArgs([
                 array_merge(
                     [
-                        'companyId' => 1,
-                        'serviceId' => 2,
+                        'companyId'    => 1,
+                        'serviceId'    => 2,
                         'authUsername' => 'Auth Username',
                         'authPassword' => 'Auth Password'
                     ],
                     $this->getAttributes()
-                )
+                ),
+                $this->optimus
             ])
             ->getMockForAbstractClass();
 
@@ -71,13 +84,14 @@ class ServiceHandlerTest extends AbstractUnit {
             ->setConstructorArgs([
                 array_merge(
                     [
-                        'companyId' => 1,
-                        'serviceId' => 2,
+                        'companyId'    => 1,
+                        'serviceId'    => 2,
                         'authUsername' => 'Auth Username',
                         'authPassword' => 'Auth Password'
                     ],
                     $this->getAttributes()
-                )
+                ),
+                $this->optimus
             ])
             ->getMockForAbstractClass();
 

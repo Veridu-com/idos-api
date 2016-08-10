@@ -16,15 +16,28 @@ use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Member;
+use App\Repository\CredentialInterface;
 use App\Repository\DBMember;
 use App\Repository\DBUser;
 use App\Repository\MemberInterface;
 use App\Repository\UserInterface;
 use App\Validator\Member as MemberValidator;
+use Jenssegers\Optimus\Optimus;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
 class MemberTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     private function getEntity() {
         return new MemberEntity(
             [
@@ -33,7 +46,8 @@ class MemberTest extends AbstractUnit {
                 'role'       => 'admin',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $this->optimus
         );
     }
     private function getUserEntity() {
@@ -43,13 +57,31 @@ class MemberTest extends AbstractUnit {
                 'username'   => 'userName',
                 'created_at' => time(),
                 'updated_at' => time()
-            ]
+            ],
+            $this->optimus
+        );
+    }
+
+    private function getCredentialEntity() {
+        return new CredentialEntity(
+            [
+                'id' => 1,
+                'name' => 'New Credential',
+                'slug' => 'new-credential',
+                'public' => 'pubKey',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
+            $this->optimus
         );
     }
 
     public function testConstructCorrectInterface() {
         $repositoryMock = $this
             ->getMockBuilder(MemberInterface::class)
+            ->getMock();
+        $credentialRepositoryMock = $this
+            ->getMockBuilder(CredentialInterface::class)
             ->getMock();
         $userRepositoryMock = $this
             ->getMockBuilder(UserInterface::class)
@@ -62,6 +94,7 @@ class MemberTest extends AbstractUnit {
             'App\\Handler\\HandlerInterface',
             new Member(
                 $repositoryMock,
+                $credentialRepositoryMockMock,
                 $userRepositoryMock,
                 $validatorMock
             )
@@ -77,7 +110,9 @@ class MemberTest extends AbstractUnit {
         $userRepositoryMock = $this
             ->getMockBuilder(UserInterface::class)
             ->getMock();
-
+        $credentialRepositoryMock = $this
+            ->getMockBuilder(CredentialInterface::class)
+            ->getMock();
         $repositoryFactoryMock = $this
             ->getMockBuilder(Repository::class)
             ->disableOriginalConstructor()
@@ -118,9 +153,12 @@ class MemberTest extends AbstractUnit {
         $userRepositoryMock = $this
             ->getMockBuilder(UserInterface::class)
             ->getMock();
-
+        $credentialRepositoryMock = $this
+            ->getMockBuilder(CredentialInterface::class)
+            ->getMock();
         $handler = new Member(
             $repositoryMock,
+            $credentialRepositoryMock,
             $userRepositoryMock,
             new MemberValidator()
         );
@@ -130,8 +168,8 @@ class MemberTest extends AbstractUnit {
         $commandMock = $this
             ->getMockBuilder(CreateNew::class)
             ->getMock();
-        $commandMock->companyId = 0;
-        $commandMock->userName  = '';
+        $commandMock->credential = '';
+        $commandMock->userName   = '';
 
         $handler->handleCreateNew($commandMock);
     }
@@ -141,40 +179,48 @@ class MemberTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Member');
 
-        $memberRepository = $this->getMockBuilder(DBMember::class)
+        $repository = $this->getMockBuilder(DBMember::class)
             ->setMethods(['create', 'save'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
-        $memberRepository
+        $repository
             ->expects($this->once())
             ->method('create')
             ->will($this->returnValue($memberEntity));
-        $memberRepository
+        $repository
             ->expects($this->once())
             ->method('save')
             ->willReturn($memberEntity);
-        $userRepository = $this->getMockBuilder(DBUser::class)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+        $credentialRepositoryMock = $this
+            ->getMockBuilder(CredentialInterface::class)
+            ->setMethods(['findByPubKey'])
+            ->getMock();
+        $credentialRepository
+            ->method('findByPubKey')
+            ->will($this->returnValue($this->getCredentialEntity()));
+        $userRepositoryMock = $this->getMockBuilder(DBUser::class)
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->setMethods(['findOneBy'])
             ->getMock();
-        $userRepository
+        $userRepositoryMock
             ->expects($this->once())
             ->method('findOneBy')
             ->will($this->returnValue($this->getUserEntity()));
 
         $handler = new Member(
-            $memberRepository,
-            $userRepository,
+            $repository,
+            $credentialRepositoryMock,
+            $userRepositoryMock,
             new MemberValidator()
         );
 
         $command               = new CreateNew();
         $command->userName     = 'userName';
         $command->role         = 'admin';
-        $command->companyId    = 1;
+        $command->credential    = 'pubKey';
 
         $result = $handler->handleCreateNew($command);
         $this->assertSame($this->getUserEntity()->toArray(), $result->user);
@@ -186,28 +232,32 @@ class MemberTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Member');
 
-        $memberRepository = $this->getMockBuilder(DBMember::class)
+        $repository = $this->getMockBuilder(DBMember::class)
             ->setMethods(['create', 'save'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
-        $memberRepository
+        $repository
             ->expects($this->once())
             ->method('findOne')
             ->will($this->returnValue($this->getEntity()));
-        $memberRepository
+        $repository
             ->expects($this->once())
             ->method('save')
             ->willReturn($memberEntity);
-        $userRepository = $this->getMockBuilder(DBUser::class)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+        $credentialRepositoryMock = $this
+            ->getMockBuilder(CredentialInterface::class)
+            ->getMock();
+        $userRepositoryMock = $this->getMockBuilder(DBUser::class)
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
 
         $handler = new Member(
-            $memberRepository,
-            $userRepository,
+            $repository,
+            $credentialRepositoryMock,
+            $userRepositoryMock,
             new MemberValidator()
         );
 
@@ -226,23 +276,25 @@ class MemberTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Member');
 
-        $memberRepository = $this->getMockBuilder(DBMember::class)
+        $repository = $this->getMockBuilder(DBMember::class)
             ->setMethods(['delete'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
-        $memberRepository
+        $repository
             ->method('deleteOne')
             ->will($this->returnValue(1));
-
+        $credentialRepositoryMock = $this
+            ->getMockBuilder(CredentialInterface::class)
+            ->getMock();
         $userRepositoryMock = $this->getMockBuilder(DBUser::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $handler = new Member(
-            $memberRepository,
+            $repository,
             $userRepositoryMock,
             new MemberValidator()
         );
@@ -262,25 +314,30 @@ class MemberTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $entityFactory = new EntityFactory();
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Member');
 
-        $memberRepository = $this->getMockBuilder(DBMember::class)
+        $repository = $this->getMockBuilder(DBMember::class)
             ->setMethods(['deleteByCompanyId'])
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
-        $memberRepository
+        $repository
             ->method('deleteByCompanyId')
             ->will($this->returnValue(1));
-
-        $userRepository = $this->getMockBuilder(DBUser::class)
+        $credentialRepositoryMock = $this
+            ->getMockBuilder(CredentialInterface::class)
+            ->setMethods('findByPubKey')
+            ->getMock();
+        $userRepositoryMock = $this->getMockBuilder(DBUser::class)
             ->setMethods(null)
-            ->setConstructorArgs([$entityFactory, $dbConnectionMock])
+            ->setMethods(['findOneBy'])
+            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
 
         $handler = new Member(
-            $memberRepository,
-            $userRepository,
+            $repository,
+            $credentialRepositoryMock,
+            $userRepositoryMock,
             new MemberValidator()
         );
 
