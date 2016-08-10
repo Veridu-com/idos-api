@@ -539,7 +539,7 @@ class Auth implements MiddlewareInterface {
      *
      * @param string                                   $username The username
      * @param \Psr\Http\Message\ServerRequestInterface $request  The request object
-     * 
+     *
      * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
     private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
@@ -574,7 +574,7 @@ class Auth implements MiddlewareInterface {
      *
      * @param string                                   $username The username
      * @param \Psr\Http\Message\ServerRequestInterface $request  The request object
-     * 
+     *
      * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
     private function populateRequestCompanies(string $companySlug, ServerRequestInterface $request) : ServerRequestInterface {

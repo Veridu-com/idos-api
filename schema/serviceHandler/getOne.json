@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /service-handlers/{serviceSlug}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Service Handler response payload",
+            "type": "object",
+            "$ref": "serviceHandlerEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

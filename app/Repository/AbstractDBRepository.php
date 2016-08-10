@@ -259,7 +259,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @param      \Illuminate\Database\Query\Builder  $query  The query
      * @param      array                               $queryParams  The query params
-     * 
+     *
      * @return     \Illuminate\Database\Query\Builder
      */
     protected function filter(Builder $query, array $queryParams) : Builder {
@@ -305,7 +305,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
                         $query =  $query->where($key, $value);
                     }
                     break;
-                
+
                 default:
                     $query =  $query->where($key, '=', $value);
                     break;

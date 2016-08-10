@@ -89,7 +89,7 @@ abstract class AbstractRepository implements RepositoryInterface {
     }
 
     /**
-     * Casts collection items to entities mapped by the repository property $relationships. 
+     * Casts collection items to entities mapped by the repository property $relationships.
      *
      * @param \Illuminate\Support\Collection $items The items.
      *
@@ -105,7 +105,7 @@ abstract class AbstractRepository implements RepositoryInterface {
     }
 
     /**
-     * Casts entity mapped by the repository property $relationships. 
+     * Casts entity mapped by the repository property $relationships.
      *
      * @param \App\Entity\EntityInterface $entity The entity.
      *

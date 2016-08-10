@@ -14,7 +14,7 @@ class CreateNewTest extends AbstractUnit {
         $command = new CreateNew();
         $this->assertNull($command->userName);
         $this->assertNull($command->role);
-        $this->assertNull($command->companyId);
+        $this->assertNull($command->credential);
 
         $this->assertInstanceOf(
             CreateNew::class,
@@ -23,20 +23,20 @@ class CreateNewTest extends AbstractUnit {
 
         $this->assertNull($command->userName);
         $this->assertNull($command->role);
-        $this->assertNull($command->companyId);
+        $this->assertNull($command->credential);
 
         $command->setParameters(['userName' => 'a']);
         $this->assertSame('a', $command->userName);
-        $this->assertNull($command->companyId);
+        $this->assertNull($command->credential);
         $this->assertNull($command->role);
 
-        $command->setParameters(['companyId' => 1]);
+        $command->setParameters(['credential' => 'pubKey']);
         $this->assertSame('a', $command->userName);
-        $this->assertSame(1, $command->companyId);
+        $this->assertSame('pubKey', $command->credential);
 
         $command->setParameters(['role' => 'admin']);
         $this->assertSame('a', $command->userName);
         $this->assertSame('admin', $command->role);
-        $this->assertSame(1, $command->companyId);
+        $this->assertSame('pubKey', $command->credential);
     }
 }

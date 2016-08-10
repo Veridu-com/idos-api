@@ -15,17 +15,6 @@ class CommandTest extends AbstractUnit {
     }
 
     public function testCorrectInterface() {
-        $commands = [
-            'Company\CreateNew',
-            'Company\DeleteAll',
-            'Company\DeleteOne',
-            'Company\UpdateOne',
-            'Credential\CreateNew',
-            'Credential\DeleteAll',
-            'Credential\DeleteOne',
-            'Credential\UpdateOne'
-        ];
-
         $commands = $this->getCommandNames();
 
         foreach ($commands as $command) {

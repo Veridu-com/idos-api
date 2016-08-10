@@ -4,11 +4,23 @@ declare (strict_types = 1);
 
 use App\Entity\Company;
 use App\Factory\Entity;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class EntityClass extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     public function testCreateNotFound() {
-        $entity = new Entity();
+        $entity = new Entity($this->optimus);
         $this->setExpectedException(\RuntimeException::class);
         $entity->create('Dummy', []);
     }
@@ -19,10 +31,10 @@ class EntityClass extends AbstractUnit {
             'slug'       => null,
             'public_key' => null,
             'created_at' => null,
-            'updated_at' => null,
+            'updated_at' => null
         ];
 
-        $entity  = new Entity();
+        $entity  = new Entity($this->optimus);
         $company = $entity->create('company', []);
         $this->assertInstanceOf(Company::class, $company);
         $this->assertSame($array, $company->toArray());
@@ -37,7 +49,7 @@ class EntityClass extends AbstractUnit {
             'updated_at' => time(),
         ];
 
-        $entity  = new Entity();
+        $entity  = new Entity($this->optimus);
         $company = $entity->create('company', $array);
         $this->assertInstanceOf(Company::class, $company);
         $this->assertSame($array, $company->toArray());

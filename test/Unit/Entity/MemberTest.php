@@ -7,9 +7,45 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\Member;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class MemberTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    public function testSetAttributeWithRelation() {
+        $member = new Member(
+            [
+                'id'              => 1,
+                'role'            => 'admin',
+                'created_at'      => time(),
+                'updated_at'      => time(),
+                'user.username'   => 'User Name',
+                'user.created_at' => time(),
+                'user.updated_at' => time()
+            ],
+            $this->optimus
+        );
+
+        $array = [
+            'username'   => 'User Name',
+            'created_at' => time(),
+            'updated_at' => time()
+        ];
+
+        $this->assertArrayHasKey('user', $member->relations);
+        $this->assertSame($array, $member->relations['user']);
+    }
+
     public function testSerialize() {
         $array   = [
             'id'               => 1,
@@ -21,7 +57,7 @@ class MemberTest extends AbstractUnit {
 
         $abstractMock = $this->getMockBuilder(Member::class)
             ->setMethods(null)
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
         $array = $abstractMock->serialize();
         $this->assertArrayHasKey('id', $array);
@@ -48,7 +84,7 @@ class MemberTest extends AbstractUnit {
         ];
         $abstractMock = $this->getMockBuilder(Member::class)
             ->setMethods(null)
-            ->setConstructorArgs([$array])
+            ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
         $array = $abstractMock->toArray();
         $this->assertArrayHasKey('user', $array);
@@ -62,7 +98,7 @@ class MemberTest extends AbstractUnit {
         $array        = ['Member.id.', 'Member.user_id.'];
         $abstractMock = $this->getMockBuilder(Member::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
@@ -80,7 +116,8 @@ class MemberTest extends AbstractUnit {
                     'role'       => 'admin',
                     'created_at' => time(),
                     'updated_at' => time()
-                ]
+                ],
+                $this->optimus
             ])
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
@@ -99,7 +136,8 @@ class MemberTest extends AbstractUnit {
                     'role'       => 'admin',
                     'created_at' => time(),
                     'updated_at' => time()
-                ]
+                ],
+                $this->optimus
             ])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
@@ -112,7 +150,7 @@ class MemberTest extends AbstractUnit {
         $array        = ['Member.by.company_id.', 'Member.id.', 'Member.user_id.'];
         $abstractMock = $this->getMockBuilder(Member::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
@@ -132,7 +170,8 @@ class MemberTest extends AbstractUnit {
                     'role'       => 'admin',
                     'created_at' => time(),
                     'updated_at' => time()
-                ]
+                ],
+                $this->optimus
             ])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();

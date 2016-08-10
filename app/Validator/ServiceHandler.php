@@ -29,7 +29,7 @@ class ServiceHandler implements ValidatorInterface {
     }
 
     /**
-     * Asserts a valid source. 
+     * Asserts a valid source.
      *
      * @FIXME: what is a source? How can I validate it?
      *

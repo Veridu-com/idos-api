@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\MemberInterface;
 use App\Repository\UserInterface;
@@ -81,19 +82,15 @@ class Members implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $roles         = $request->getQueryParam('role', null);
 
-        if ($roles === null)
+        if ($roles === null) {
             $members = $this->repository->getAllByCompanyId($targetCompany->id);
-        else
+        }
+        else {
             $members = $this->repository->getAllByCompanyIdAndRole(
                 $targetCompany->id,
                 explode(',', $roles)
             );
-
-        $members->transform(function ($member) {
-            $member->user = $this->userRepository->find($member->userId)->toArray();
-
-            return $member;
-        });
+        }
 
         $body = [
             'data'    => $members->toArray(),
@@ -122,15 +119,12 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
         $bodyRequest   = $request->getParsedBody();
 
         $command = $this->commandFactory->create('Member\\CreateNew');
 
         $command
-            ->setParameters($bodyRequest)
-            ->setParameter('userName', $bodyRequest['userName'])
-            ->setParameter('companyId', $targetCompany->id);
+            ->setParameters($bodyRequest);
 
         $member = $this->commandBus->handle($command);
 
@@ -161,13 +155,9 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany   = $request->getAttribute('targetCompany');
-        $targetUser      = $request->getAttribute('targetUser');
-
         $command = $this->commandFactory->create('Member\\UpdateOne');
         $command
-            ->setParameter('userId', $targetUser->id)
-            ->setParameter('companyId', $targetCompany->id)
+            ->setParameter('memberId', $request->getAttribute('decodedMemberId'))
             ->setParameters($request->getParsedBody());
 
         $member = $this->commandBus->handle($command);
@@ -199,10 +189,7 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany   = $request->getAttribute('targetCompany');
-        $targetUser      = $request->getAttribute('targetUser');
-        $member          = $this->repository->findOne($targetCompany->id, $targetUser->id);
-        $member->user    = $this->userRepository->find($targetUser->id)->toArray();
+        $member          = $this->repository->findOne($request->getAttribute('decodedMemberId'));
 
         $body = [
             'data'    => $member->toArray()
@@ -228,10 +215,10 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-
+        $body    = $request->getParsedBody();
         $command = $this->commandFactory->create('Member\\DeleteAll');
-        $command->setParameter('companyId', $targetCompany->id);
+
+        $command->setParameter('credential', $body['credential']);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -259,13 +246,8 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany   = $request->getAttribute('targetCompany');
-        $targetUser      = $request->getAttribute('targetUser');
-
         $command = $this->commandFactory->create('Member\\DeleteOne');
-        $command
-            ->setParameter('companyId', $targetCompany->id)
-            ->setParameter('userId', $targetUser->id);
+        $command->setParameter('memberId', $request->getAttribute('decodedMemberId'));
 
         $deleted = $this->commandBus->handle($command);
         $body    = [

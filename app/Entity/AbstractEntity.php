@@ -41,14 +41,14 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
     /**
      * The relations of the entity.
-     * 
+     *
      * @var array
      */
     public $relations = [];
 
     /**
      * Attributes to obfuscate using Jenssegers\Optimus\Optimus.
-     * 
+     *
      * @var array
      */
     protected $obfuscated = ['id'];
@@ -258,7 +258,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             $value = null;
-
             if ($this->relationships && isset($this->relationships[$attribute])) {
                 // populating relations
                 if (isset($this->relations[$attribute])) {

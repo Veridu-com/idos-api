@@ -62,7 +62,7 @@ class ServiceHandlers implements ControllerInterface {
      * Lists all Service handlers that belongs to the acting Company.
      *
      * @apiEndpointParam    query   int     page 10|1 Current page
-     * 
+     *
      * @apiEndpointResponse 200 schema/service-handlers/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -92,12 +92,12 @@ class ServiceHandlers implements ControllerInterface {
 
     /**
      * Retrieves one ServiceHandler of the acting Company and service and has the given serviceHandlerSlug.
-     * 
-     * @apiEndpointRequiredParam    route   string  service slug 
+     *
+     * @apiEndpointRequiredParam    route   string  service slug
      * @apiEndpointRequiredParam    route   string  service handler slug
-     * 
+     *
      * @apiEndpointParam            query   int     page 10|1 Current page
-     * 
+     *
      * @apiEndpointResponse 200 schema/services-handlers/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -127,13 +127,13 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Creates a new ServiceHandler for the acting Company.
      *
-     * @apiEndpointRequiredParam    body    string      name            Service handler's name.    
-     * @apiEndpointRequiredParam    body    string      source          Service handler's source.    
-     * @apiEndpointRequiredParam    body    string      location        Service handler's location.    
-     * @apiEndpointRequiredParam    body    string      authUsername    Service handler's authUsername.    
-     * @apiEndpointRequiredParam    body    string      authPassword    Service handler's authPassword.    
+     * @apiEndpointRequiredParam    body    string      name            Service handler's name.
+     * @apiEndpointRequiredParam    body    string      source          Service handler's source.
+     * @apiEndpointRequiredParam    body    string      location        Service handler's location.
+     * @apiEndpointRequiredParam    body    string      authUsername    Service handler's authUsername.
+     * @apiEndpointRequiredParam    body    string      authPassword    Service handler's authPassword.
      * @apiEndpointRequiredParam    body    string      service         Service's slug.
-     * 
+     *
      * @apiEndpointResponse 201 schema/services-handlers/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -234,12 +234,12 @@ class ServiceHandlers implements ControllerInterface {
      *
      * @apiEndpointRequiredParam    route   string      slug            Service handler's slug.
      * @apiEndpointRequiredParam    route   string      service         Service's slug.
-     * @apiEndpointRequiredParam    body    string      name            Service handler's name.    
-     * @apiEndpointRequiredParam    body    string      source          Service handler's source.    
-     * @apiEndpointRequiredParam    body    string      location        Service handler's location.    
-     * @apiEndpointRequiredParam    body    string      authUsername    Service handler's authUsername.    
-     * @apiEndpointRequiredParam    body    string      authPassword    Service handler's authPassword.    
-     * 
+     * @apiEndpointRequiredParam    body    string      name            Service handler's name.
+     * @apiEndpointRequiredParam    body    string      source          Service handler's source.
+     * @apiEndpointRequiredParam    body    string      location        Service handler's location.
+     * @apiEndpointRequiredParam    body    string      authUsername    Service handler's authUsername.
+     * @apiEndpointRequiredParam    body    string      authPassword    Service handler's authPassword.
+     *
      * @apiEndpointResponse 200 schema/services-handlers/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

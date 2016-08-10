@@ -24,11 +24,16 @@ class Member extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['user', 'role', 'created_at'];
+    protected $visible = ['id', 'user', 'role', 'created_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = ['user' => 'User'];
 
     /**
      * {@inheritdoc}

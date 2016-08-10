@@ -21,31 +21,21 @@ class UpdateOne extends AbstractCommand {
      */
     public $role;
     /**
-     * Company Id.
+     * Member Id.
      *
      * @var int
      */
-    public $companyId;
-    /**
-     * User Id.
-     *
-     * @var int
-     */
-    public $userId;
+    public $memberId;
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['userId'])) {
-            $this->userId = $parameters['userId'];
+        if (isset($parameters['memberId'])) {
+            $this->memberId = $parameters['memberId'];
         }
 
         if (isset($parameters['role'])) {
             $this->role = $parameters['role'];
-        }
-
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
         }
 
         return $this;

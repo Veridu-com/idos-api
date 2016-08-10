@@ -173,7 +173,7 @@ class ServiceHandler implements HandlerInterface {
      * @param App\Command\ServiceHandler\DeleteOne $command
      *
      * @throws App\Exception\NotFound
-     * 
+     *
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {

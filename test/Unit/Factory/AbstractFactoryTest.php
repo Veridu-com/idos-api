@@ -80,6 +80,10 @@ class AbstractFactoryTest extends AbstractUnit {
     }
 
     public function testCreate() {
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $abstractMock = $this->getMockBuilder(AbstractFactory::class)
             ->setMethods(['getNamespace'])
             ->getMockForAbstractClass();

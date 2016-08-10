@@ -7,9 +7,21 @@
 namespace Test\Unit\Entity;
 
 use App\Entity\Setting;
+use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class SettingTest extends AbstractUnit {
+    /*
+     * Jenssengers\Optimus\Optimus $optimus
+     */
+    private $optimus;
+
+    public function setUp() {
+        $this->optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
     private function getAttributes() {
         return [
             'id'             => 1,
@@ -24,7 +36,7 @@ class SettingTest extends AbstractUnit {
     public function testSerialize() {
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
-            ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes())])
+            ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes()), $this->optimus])
             ->getMockForAbstractClass();
 
         $array = $abstractMock->serialize();
@@ -50,7 +62,7 @@ class SettingTest extends AbstractUnit {
     public function testToArray() {
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
-            ->setConstructorArgs([$this->getAttributes()])
+            ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
 
         $array = $abstractMock->toArray();
@@ -68,7 +80,7 @@ class SettingTest extends AbstractUnit {
         $array        = ['Setting.company_id..section..property.'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
@@ -79,7 +91,7 @@ class SettingTest extends AbstractUnit {
         $array        = ['Setting.company_id.0.section.A Section.property.property'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
-            ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes())])
+            ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes()), $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
@@ -90,7 +102,7 @@ class SettingTest extends AbstractUnit {
         $array        = ['Setting.by.company_id.', 'Setting.by.company_id..section.A Section', 'Setting.company_id..section.A Section.property.property'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
-            ->setConstructorArgs([$this->getAttributes()])
+            ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
@@ -102,7 +114,7 @@ class SettingTest extends AbstractUnit {
         $array        = ['Setting.by.company_id.', 'Setting.by.company_id..section.', 'Setting.company_id..section..property.'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
-            ->setConstructorArgs([])
+            ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
@@ -114,7 +126,7 @@ class SettingTest extends AbstractUnit {
         $array        = ['Setting.by.company_id.0', 'Setting.by.company_id.0.section.A Section',  'Setting.company_id.0.section.A Section.property.property'];
         $abstractMock = $this->getMockBuilder(Setting::class)
             ->setMethods(null)
-            ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes())])
+            ->setConstructorArgs([array_merge(['companyId' => 0], $this->getAttributes()), $this->optimus])
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);

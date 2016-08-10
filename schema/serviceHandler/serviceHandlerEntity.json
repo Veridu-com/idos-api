@@ -1,0 +1,53 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/serviceHandler/serviceHandlerEntity.json",
+    "title": "Service Handler",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Service Handler Name",
+            "type": "string",
+            "pattern": ""
+        },
+        "slug": {
+            "description": "Slug based on Service Handler's name",
+            "type": "string",
+            "pattern": "[a-zA-Z0-9_-]+"
+        },
+        "source": {
+        	"description": "The Service Handler source",
+        	"type": "string",
+        	"pattern": ""
+        },
+        "location": {
+            "description": "The url location of the service handler",
+            "type": "string",
+            "pattern": ""
+        },
+        "service_slug": {
+    		"description": "Slug based on the Service's name",
+    		"type": "string",
+    		"pattern": ""
+        },
+        "created_at": {
+            "description": "Service Handler's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+        	"description": "Unixtime of the last update",
+        	"type": "integer"
+        }
+    },
+    "dependencies": {
+        "slug": ["name"],
+        "service_slug": ["name"]
+    },
+    "required": [
+        "name",
+        "slug",
+        "source",
+        "location",
+        "service_slug",
+        "created_at"
+    ]
+}
