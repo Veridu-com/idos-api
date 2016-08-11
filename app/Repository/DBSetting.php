@@ -33,8 +33,8 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'section'       => 'string', 
-        'property'      => 'string', 
+        'section'       => 'string',
+        'property'      => 'string',
         'created_at'    => 'date'
     ];
 

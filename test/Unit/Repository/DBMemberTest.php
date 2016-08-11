@@ -31,14 +31,29 @@ class DBMemberTest extends AbstractUnit {
     private function getEntity() {
         return new MemberEntity(
             [
-                'user'       => [],
-                'user_id'    => 1,
-                'role'       => 'admin',
-                'created_at' => time(),
-                'updated_at' => time()
+                'id'              => 1,
+                'companyId'       => 1,
+                'user_id'         => 1,
+                'role'            => 'admin',
+                'created_at'      => time(),
+                'updated_at'      => time(),
+                'user.username'   => 'userName',
+                'user.created_at' => time()
             ],
             $this->optimus
         );
+    }
+
+    private function getAttributes() {
+        return [
+            'id'   => null,
+            'user' => [
+                'username'   => 'userName',
+                'created_at' => time()
+            ],
+            'role'       => 'admin',
+            'created_at' => time(),
+        ];
     }
 
     public function testGetAllBycompanyId() {
@@ -46,14 +61,33 @@ class DBMemberTest extends AbstractUnit {
         $factory->create('Member', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'get'])
+            ->setMethods(['join', 'where', 'get'])
             ->getMock();
+        $queryMock
+            ->method('join')
+            ->will($this->returnValue($queryMock));
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection($this->getEntity())));
+            ->will(
+                $this->returnValue(
+                    new MemberEntity(
+                        [
+                            'id'              => 1,
+                            'companyId'       => 1,
+                            'user_id'         => 1,
+                            'role'            => 'admin',
+                            'created_at'      => time(),
+                            'updated_at'      => time(),
+                            'user.username'   => 'userName',
+                            'user.created_at' => time()
+                        ],
+                        $this->optimus
+                    )
+                )
+            );
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -65,7 +99,8 @@ class DBMemberTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $this->assertSame($this->getEntity()->toArray(), $dbMember->getAllByCompanyId(1)->toArray());
+        $result   = $dbMember->getAllByCompanyId(1)->first();
+        $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
     public function testGetAllBycompanyIdAndRole() {
@@ -80,7 +115,7 @@ class DBMemberTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection($this->getEntity())));
+            ->will($this->returnValue([$this->getEntity()]));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -92,7 +127,8 @@ class DBMemberTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $this->assertSame($this->getEntity()->toArray(), $dbMember->getAllByCompanyIdAndRole(1, ['admin'])->toArray());
+        $result   = $dbMember->getAllByCompanyIdAndRole(1, ['admin'])->first();
+        $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
     public function testFindOneNotFound() {
@@ -155,7 +191,9 @@ class DBMemberTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $this->assertSame($this->getEntity()->toArray(), $dbMember->findOne(0, 1)->toArray());
+
+        $result = $dbMember->findOne(0, 1);
+        $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
     public function testDeleteOne() {
