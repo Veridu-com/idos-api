@@ -10,9 +10,9 @@ use App\Command\Member\CreateNew;
 use App\Command\Member\DeleteAll;
 use App\Command\Member\DeleteOne;
 use App\Command\Member\UpdateOne;
+use App\Entity\Credential as CredentialEntity;
 use App\Entity\Member as MemberEntity;
 use App\Entity\User as UserEntity;
-use App\Entity\Credential as CredentialEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
@@ -68,10 +68,10 @@ class MemberTest extends AbstractUnit {
     private function getCredentialEntity() {
         return new CredentialEntity(
             [
-                'id' => 1,
-                'name' => 'New Credential',
-                'slug' => 'new-credential',
-                'public' => 'pubKey',
+                'id'         => 1,
+                'name'       => 'New Credential',
+                'slug'       => 'new-credential',
+                'public'     => 'pubKey',
                 'created_at' => time(),
                 'updated_at' => time()
             ],
@@ -220,9 +220,9 @@ class MemberTest extends AbstractUnit {
             new MemberValidator()
         );
 
-        $command               = new CreateNew();
-        $command->userName     = 'userName';
-        $command->role         = 'admin';
+        $command                = new CreateNew();
+        $command->userName      = 'userName';
+        $command->role          = 'admin';
         $command->credential    = 'pubKey';
 
         $result = $handler->handleCreateNew($command);
@@ -264,8 +264,8 @@ class MemberTest extends AbstractUnit {
             new MemberValidator()
         );
 
-        $command               = new UpdateOne();
-        $command->role         = 'admin';
+        $command                 = new UpdateOne();
+        $command->role           = 'admin';
         $command->memberId       = 1;
 
         $result = $handler->handleUpdateOne($command);
@@ -335,7 +335,7 @@ class MemberTest extends AbstractUnit {
             ->will($this->returnValue(
                 new CredentialEntity(
                     [
-                        'id' => 1,
+                        'id'        => 1,
                         'companyId' => 1
                     ],
                     $this->optimus

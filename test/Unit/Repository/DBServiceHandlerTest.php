@@ -31,7 +31,7 @@ class DBServiceHandlerTest extends AbstractUnit {
      private function getEntity($id) {
         return new ServiceHandlerEntity(
             [
-                'id' => 1,
+                'id'           => 1,
                 'name'         => 'New Service Handler',
                 'slug'         => 'new-service-handler',
                 'id'           => $id,
@@ -47,7 +47,7 @@ class DBServiceHandlerTest extends AbstractUnit {
 
     private function getToArray() {
         return [
-            'id' => null,
+            'id'           => null,
             'name'         => 'New Service Handler',
             'slug'         => 'new-service-handler',
             'source'       => 'source',

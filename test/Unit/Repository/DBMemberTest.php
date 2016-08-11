@@ -31,13 +31,13 @@ class DBMemberTest extends AbstractUnit {
     private function getEntity() {
         return new MemberEntity(
             [
-                'id' => 1,
-                'companyId' => 1,
-                'user_id' => 1,
-                'role' => 'admin',
-                'created_at' => time(),
-                'updated_at' => time(),
-                'user.username' =>'userName',
+                'id'              => 1,
+                'companyId'       => 1,
+                'user_id'         => 1,
+                'role'            => 'admin',
+                'created_at'      => time(),
+                'updated_at'      => time(),
+                'user.username'   => 'userName',
                 'user.created_at' => time()
             ],
             $this->optimus
@@ -46,12 +46,12 @@ class DBMemberTest extends AbstractUnit {
 
     private function getAttributes() {
         return [
-            'id' => null,
+            'id'   => null,
             'user' => [
-                'username' =>'userName',
+                'username'   => 'userName',
                 'created_at' => time()
             ],
-            'role' => 'admin',
+            'role'       => 'admin',
             'created_at' => time(),
         ];
     }
@@ -75,13 +75,13 @@ class DBMemberTest extends AbstractUnit {
                 $this->returnValue(
                     new MemberEntity(
                         [
-                            'id' => 1,
-                            'companyId' => 1,
-                            'user_id' => 1,
-                            'role' => 'admin',
-                            'created_at' => time(),
-                            'updated_at' => time(),
-                            'user.username' =>'userName',
+                            'id'              => 1,
+                            'companyId'       => 1,
+                            'user_id'         => 1,
+                            'role'            => 'admin',
+                            'created_at'      => time(),
+                            'updated_at'      => time(),
+                            'user.username'   => 'userName',
                             'user.created_at' => time()
                         ],
                         $this->optimus
@@ -99,7 +99,7 @@ class DBMemberTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $result = $dbMember->getAllByCompanyId(1)->first();
+        $result   = $dbMember->getAllByCompanyId(1)->first();
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
@@ -127,7 +127,7 @@ class DBMemberTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $result = $dbMember->getAllByCompanyIdAndRole(1, ['admin'])->first();
+        $result   = $dbMember->getAllByCompanyIdAndRole(1, ['admin'])->first();
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 

@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Test\Unit\Factory;
 
 use App\Factory\AbstractFactory;
-use App\Factory\Entity;
 use App\Factory\Command;
 use Test\Unit\AbstractUnit;
 

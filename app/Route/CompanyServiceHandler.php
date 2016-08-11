@@ -44,8 +44,8 @@ class CompanyServiceHandler implements RouteInterface {
             );
         };
 
-        $container              = $app->getContainer();
-        $authMiddleware         = $container->get('authMiddleware');
+        $container                     = $app->getContainer();
+        $authMiddleware                = $container->get('authMiddleware');
         $companyPermissionMiddleware   = $container->get('companyPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $companyPermissionMiddleware);
