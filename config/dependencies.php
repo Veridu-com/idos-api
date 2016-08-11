@@ -4,16 +4,19 @@
  * All rights reserved.
  */
 
+declare(strict_types=1);
+
 use Apix\Cache;
 use App\Command;
 use App\Event\ListenerProvider;
 use App\Exception\AppException;
 use App\Factory;
 use App\Handler;
-use App\Middleware as Middleware;
+use App\Middleware;
 use App\Middleware\Auth;
 use App\Repository;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Database\Connection;
 use Interop\Container\ContainerInterface;
 use Jenssegers\Optimus\Optimus;
 use Lcobucci\JWT;
@@ -45,7 +48,7 @@ if (! isset($app)) {
 $container = $app->getContainer();
 
 // Slim Error Handling
-$container['errorHandler'] = function (ContainerInterface $container) {
+$container['errorHandler'] = function (ContainerInterface $container) : callable {
     return function (
         ServerRequestInterface $request,
         ResponseInterface $response,
@@ -149,17 +152,17 @@ $container['errorHandler'] = function (ContainerInterface $container) {
 };
 
 // Slim Not Found Handler
-$container['notFoundHandler'] = function (ContainerInterface $container) {
+$container['notFoundHandler'] = function (ContainerInterface $container) : callable {
     return function (
         ServerRequestInterface $request,
         ResponseInterface $response
     ) use ($container) {
-        throw new \Exception('not found');
+        throw new \Exception('Whoopsies! Route not found!', 404);
     };
 };
 
 // Slim Not Allowed Handler
-$container['notAllowedHandler'] = function (ContainerInterface $container) {
+$container['notAllowedHandler'] = function (ContainerInterface $container) : callable {
     return function (
         ServerRequestInterface $request,
         ResponseInterface $response,
@@ -169,12 +172,12 @@ $container['notAllowedHandler'] = function (ContainerInterface $container) {
             return $response->withStatus(204);
         }
 
-        throw new \Exception('notAllowedHandler');
+        throw new \Exception('Whoopsies! Method not allowed for this route!', 400);
     };
 };
 
 // Monolog Logger
-$container['log'] = function (ContainerInterface $container) {
+$container['log'] = function (ContainerInterface $container) : callable {
     return function ($channel = 'API') use ($container) {
         $settings = $container->get('settings');
         $logger   = new Logger($channel);
@@ -188,7 +191,7 @@ $container['log'] = function (ContainerInterface $container) {
 };
 
 // Stash Cache
-$container['cache'] = function (ContainerInterface $container) {
+$container['cache'] = function (ContainerInterface $container) : Cache\PsrCache\TaggablePool {
     $settings = $container->get('settings');
 
     if (empty($settings['cache']['driver'])) {
@@ -215,12 +218,12 @@ $container['cache'] = function (ContainerInterface $container) {
 };
 
 // Slim HTTP Cache
-$container['httpCache'] = function (ContainerInterface $container) {
+$container['httpCache'] = function (ContainerInterface $container) : CacheProvider {
     return new CacheProvider();
 };
 
 // Tactician Command Bus
-$container['commandBus'] = function (ContainerInterface $container) {
+$container['commandBus'] = function (ContainerInterface $container) : CommandBus {
     $settings = $container->get('settings');
     $logger   = new Logger('CommandBus');
     $logger
@@ -267,22 +270,22 @@ $container['commandBus'] = function (ContainerInterface $container) {
 };
 
 // App Command Factory
-$container['commandFactory'] = function (ContainerInterface $container) {
+$container['commandFactory'] = function (ContainerInterface $container) : Factory\Command {
     return new Factory\Command();
 };
 
 // Validator Factory
-$container['validatorFactory'] = function (ContainerInterface $container) {
+$container['validatorFactory'] = function (ContainerInterface $container) : Factory\Validator {
     return new Factory\Validator();
 };
 
 // App Entity Factory
-$container['entityFactory'] = function (ContainerInterface $container) {
+$container['entityFactory'] = function (ContainerInterface $container) : Factory\Entity {
     return new Factory\Entity($container->get('optimus'));
 };
 
 // Auth Middleware
-$container['authMiddleware'] = function (ContainerInterface $container) {
+$container['authMiddleware'] = function (ContainerInterface $container) : callable {
     return function ($authorizationRequirement) use ($container) {
         $repositoryFactory = $container->get('repositoryFactory');
         $jwt               = $container->get('jwt');
@@ -300,7 +303,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) {
 };
 
 // Permission Middleware
-$container['companyPermissionMiddleware'] = function (ContainerInterface $container) {
+$container['companyPermissionMiddleware'] = function (ContainerInterface $container) : callable {
     return function ($permissionType) use ($container) {
         return new Middleware\CompanyPermission($container, $permissionType);
     };
@@ -323,7 +326,7 @@ $container['optimusDecodeMiddleware'] = function (ContainerInterface $container)
 };
 
 // App Repository Factory
-$container['repositoryFactory'] = function (ContainerInterface $container) {
+$container['repositoryFactory'] = function (ContainerInterface $container) : Factory\Repository {
     $settings = $container->get('settings');
     switch ($settings['repository']['strategy']) {
         case 'db':
@@ -342,7 +345,7 @@ $container['repositoryFactory'] = function (ContainerInterface $container) {
 };
 
 // JSON Web Token
-$container['jwt'] = function (ContainerInterface $container) {
+$container['jwt'] = function (ContainerInterface $container) : callable {
     return function ($item) use ($container) {
         switch ($item) {
             case 'builder':
@@ -358,7 +361,7 @@ $container['jwt'] = function (ContainerInterface $container) {
 };
 
 // DB Access
-$container['db'] = function (ContainerInterface $container) {
+$container['db'] = function (ContainerInterface $container) : Connection {
     $capsule = new Manager();
     $capsule->addConnection($container['settings']['db']);
 
@@ -366,12 +369,12 @@ $container['db'] = function (ContainerInterface $container) {
 };
 
 // Respect Validator
-$container['validator'] = function (ContainerInterface $container) {
+$container['validator'] = function (ContainerInterface $container) : Validator {
     return Validator::create();
 };
 
 // Optimus
-$container['optimus'] = function (ContainerInterface $container) {
+$container['optimus'] = function (ContainerInterface $container) : Optimus {
     $settings = $container->get('settings');
 
     return new Optimus(
@@ -382,7 +385,7 @@ $container['optimus'] = function (ContainerInterface $container) {
 };
 
 // App files
-$container['globFiles'] = function () {
+$container['globFiles'] = function () : array {
     return [
         'routes'             => glob(__DIR__ . '/../app/Route/*.php'),
         'handlers'           => glob(__DIR__ . '/../app/Handler/*.php'),
@@ -391,7 +394,7 @@ $container['globFiles'] = function () {
 };
 
 // Register Event emitter & Event listeners
-$container['eventEmitter'] = function (ContainerInterface $container) {
+$container['eventEmitter'] = function (ContainerInterface $container) : Emitter {
     $emitter = new Emitter();
 
     $providers = array_map(function ($providerFile) {
@@ -403,4 +406,19 @@ $container['eventEmitter'] = function (ContainerInterface $container) {
     }
 
     return $emitter;
+};
+
+// Secure
+$container['secure'] = function (ContainerInterface $container) : Secure {
+    $fileName = __DIR__ . '/../resources/secure.key';
+    if (! is_file($fileName)) {
+        throw new RuntimeException('Secure key not found!');
+    }
+
+    $encoded = file_get_contents($fileName);
+    if (empty($encoded)) {
+        throw new RuntimeException('Secure key could not be loaded!');
+    }
+
+    return new Secure($encoded, $settings['secure']);
 };

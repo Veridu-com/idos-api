@@ -37,9 +37,14 @@ class OptimusDecode implements MiddlewareInterface {
         ResponseInterface $response,
         callable $next
     ) : ResponseInterface {
-        $routeParams = ($request->getAttributes())['routeInfo'][2];
+        $routeParams = $request->getAttribute('routeInfo');
 
-        foreach ($routeParams as $key => $value) {
+        if (empty($routeParams[2])) {
+            // routes with no URI fragments
+            return $next($request, $response);
+        }
+
+        foreach ($routeParams[2] as $key => $value) {
             if (preg_match('/.*?Id$/', $key)) {
                 $request = $request->withAttribute(sprintf('decoded%s', ucfirst($key)), $this->optimus->decode($value));
             }

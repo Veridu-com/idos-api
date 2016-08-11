@@ -60,7 +60,6 @@
         "sensiolabs/security-checker": "@stable",
         "psy/psysh": "@stable",
         "theseer/phpdox": "@stable",
-        "ovr/phpsa": "*",
         "ext-xsl": "*",
         "humbug/humbug": "dev-master"
     },

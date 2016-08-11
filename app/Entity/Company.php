@@ -47,7 +47,7 @@ class Company extends AbstractEntity {
     protected $secure = ['private_key'];
 
     /**
-     * Property Mutator (setter) for $name.
+     * Property Mutator for $name.
      *
      * @param string $value
      *
