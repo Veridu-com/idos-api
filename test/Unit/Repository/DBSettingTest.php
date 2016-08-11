@@ -69,7 +69,7 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection([])));
+            ->will($this->returnValue(new Collection([[]])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -86,7 +86,7 @@ class DBSettingTest extends AbstractUnit {
         $this->assertEmpty($dbSetting->getAllByCompanyId(1));
     }
 
-    public function testGetAllBycompanyId() {
+    public function testGetAllByCompanyId() {
         $array = [
             [
                 'section'       => 'NiceSetting',

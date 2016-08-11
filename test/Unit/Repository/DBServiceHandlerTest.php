@@ -47,6 +47,7 @@ class DBServiceHandlerTest extends AbstractUnit {
 
     private function getToArray() {
         return [
+            'id' => null,
             'name'         => 'New Service Handler',
             'slug'         => 'new-service-handler',
             'source'       => 'source',

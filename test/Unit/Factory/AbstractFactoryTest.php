@@ -11,6 +11,7 @@ namespace Test\Unit\Factory;
 
 use App\Factory\AbstractFactory;
 use App\Factory\Entity;
+use App\Factory\Command;
 use Test\Unit\AbstractUnit;
 
 class AbstractFactoryTest extends AbstractUnit {
@@ -92,6 +93,6 @@ class AbstractFactoryTest extends AbstractUnit {
             ->method('getNamespace')
             ->will($this->returnValue('App\\Factory\\'));
 
-        $this->assertInstanceOf(Entity::class, $abstractMock->create('entity'));
+        $this->assertInstanceOf(Command::class, $abstractMock->create('command'));
     }
 }
