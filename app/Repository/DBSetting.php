@@ -68,7 +68,7 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     public function getAllByCompanyId(int $companyId, array $queryParams = []) : array {
         $dbQuery = $this->query()->where('company_id', $companyId);
 
-        $this->paginate(
+        return $this->paginate(
             $this->filter($dbQuery, $queryParams),
             $queryParams
         );
