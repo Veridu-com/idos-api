@@ -52,12 +52,10 @@ class SettingsTest extends AbstractUnit {
             ->method('getAllByCompanyId')
             ->will(
                 $this->returnValue(
-                    new Collection(
-                        [
-                            'section'    => 'section',
-                            'updated_at' => time()
-                        ]
-                    )
+                    [
+                        'section'    => 'section',
+                        'updated_at' => time()
+                    ]
                 )
             );
 

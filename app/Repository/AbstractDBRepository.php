@@ -229,13 +229,13 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * Paginates a query builder instance.
      *
-     * @param      \Illuminate\Database\Query\Builder  $query    The query
-     * @param      array                               $columns  The columns to retrieve
+     * @param \Illuminate\Database\Query\Builder $query   The query
+     * @param array                              $columns The columns to retrieve
      *
-     * @return     array
+     * @return array
      */
     protected function paginate(Builder $query, array $queryParams = [], array $columns = ['*']) : array {
-        $page = isset($queryParams['page']) ? $queryParams['page'] : 1;
+        $page    = isset($queryParams['page']) ? $queryParams['page'] : 1;
         $perPage = isset($queryParams['perPage']) ? $queryParams['perPage'] : 15;
 
         $pagination = $query->paginate($perPage, $columns, 'page', $page);
@@ -255,12 +255,12 @@ abstract class AbstractDBRepository extends AbstractRepository {
     }
 
     /**
-     * Filters user inputs
+     * Filters user inputs.
      *
-     * @param      \Illuminate\Database\Query\Builder  $query  The query
-     * @param      array                               $queryParams  The query params
+     * @param \Illuminate\Database\Query\Builder $query       The query
+     * @param array                              $queryParams The query params
      *
-     * @return     \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Database\Query\Builder
      */
     protected function filter(Builder $query, array $queryParams) : Builder {
         $filters = [];
@@ -280,7 +280,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
 
         foreach ($filters as $key => $filter) {
             $value = $filter['value'];
-            $type = $filter['type'];
+            $type  = $filter['type'];
 
             switch ($type) {
                 case 'date':
@@ -288,8 +288,8 @@ abstract class AbstractDBRepository extends AbstractRepository {
                     // expect dates to match the pattern: YYYY-MM-DD
                     $values = explode(',', $value);
                     if (count($values) == 2) {
-                        $from = $values[0];
-                        $to = $values[1];
+                        $from  = $values[0];
+                        $to    = $values[1];
                         $query = $query->whereDate($key, '>=', $from);
                         $query = $query->whereDate($key, '<=', $to);
                     } else {

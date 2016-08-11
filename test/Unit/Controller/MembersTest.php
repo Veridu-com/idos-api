@@ -195,14 +195,8 @@ class MembersTest extends AbstractUnit {
 public function testCreateNew() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getAttribute', 'getParsedBody'])
+            ->setMethods(['getParsedBody'])
             ->getMock();
-        $requestMock
-            ->expects($this->once())
-            ->method('getAttribute')
-            ->will(
-                $this->returnValue($this->getCompanyEntity(1))
-            );
         $requestMock
             ->expects($this->once())
             ->method('getParsedBody')
@@ -255,9 +249,9 @@ public function testCreateNew() {
             ->setMethods(['getAttribute', 'getParsedBody'])
             ->getMock();
         $requestMock
-            ->expects($this->exactly(2))
+            ->expects($this->once())
             ->method('getAttribute')
-            ->will($this->onConsecutiveCalls($this->getCompanyEntity(1), $this->getUserEntity(1)));
+            ->will($this->returnValue(1));
         $requestMock
             ->expects($this->once())
             ->method('getParsedBody')
@@ -364,12 +358,12 @@ public function testCreateNew() {
     public function testDeleteAll() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getAttribute'])
+            ->setMethods(['getParsedBody'])
             ->getMock();
         $requestMock
             ->expects($this->once())
-            ->method('getAttribute')
-            ->will($this->returnValue($this->getCompanyEntity(1)));
+            ->method('getParsedBody')
+            ->will($this->returnValue(['credential' => 'pubKey']));
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -420,9 +414,9 @@ public function testCreateNew() {
             ->setMethods(['getAttribute'])
             ->getMock();
         $requestMock
-            ->expects($this->exactly(2))
+            ->expects($this->once())
             ->method('getAttribute')
-            ->will($this->onConsecutiveCalls($this->getCompanyEntity(1), $this->getUserEntity(1)));
+            ->will($this->returnValue(1));
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()

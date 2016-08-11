@@ -376,5 +376,5 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         unset($this->attributes[$key]);
         $this->dirty = true;
     }
-    
+
 }
