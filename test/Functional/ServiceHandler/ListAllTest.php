@@ -14,7 +14,7 @@ class ListAllTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/service-handler';
+        $this->uri        = '/1.0/service-handlers';
     }
 
     public function testSuccess() {

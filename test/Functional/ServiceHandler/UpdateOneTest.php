@@ -64,7 +64,7 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/service-handlers /dummy/dummy-service-slug';
+        $this->uri = '/1.0/service-handlers/dummy/dummy-service-slug';
 
         $environment = $this->createEnvironment(
             [
