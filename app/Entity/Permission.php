@@ -19,6 +19,7 @@ namespace App\Entity;
  */
 class Permission extends AbstractEntity {
     /**
+     *
      * {@inheritdoc}
      */
     const CACHE_PREFIX = 'Permission';
