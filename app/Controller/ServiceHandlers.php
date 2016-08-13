@@ -106,10 +106,10 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
-        $serviceSlug   = $request->getAttribute('serviceSlug');
-        $slug          = $request->getAttribute('serviceHandlerSlug');
-        $entity        = $this->repository->findOne($actingCompany->id, $slug, $serviceSlug);
+        $actingCompany      = $request->getAttribute('actingCompany');
+        $serviceHandlerId   = $request->getAttribute('decodedServiceHandlerId');
+        
+        $entity = $this->repository->findOne($actingCompany->id, $serviceHandlerId);
 
         $body = [
             'data'    => $entity->toArray()
@@ -143,7 +143,7 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
-
+        
         $command = $this->commandFactory->create('ServiceHandler\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
@@ -207,14 +207,12 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceSlug        = $request->getAttribute('serviceSlug');
-        $serviceHandlerSlug = $request->getAttribute('serviceHandlerSlug');
+        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
         $command
             ->setParameter('companyId', $actingCompany->id)
-            ->setParameter('serviceSlug', $serviceSlug)
-            ->setParameter('slug', $serviceHandlerSlug);
+            ->setParameter('serviceHandlerId', $serviceHandlerId);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -249,14 +247,12 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceSlug        = $request->getAttribute('serviceSlug');
-        $serviceHandlerSlug = $request->getAttribute('serviceHandlerSlug');
+        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('serviceSlug', $serviceSlug)
-            ->setParameter('slug', $serviceHandlerSlug)
+            ->setParameter('serviceHandlerId', $serviceHandlerId)
             ->setParameter('companyId', $actingCompany->id);
 
         $entity = $this->commandBus->handle($command);

@@ -15,23 +15,11 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Setting's section name (user input).
-     *
-     * @var object
-     */
-    public $section;
-    /**
-     * Setting's property name (user input).
-     *
-     * @var object
-     */
-    public $property;
-    /**
      * Setting Id.
      *
      * @var int
      */
-    public $companyId;
+    public $settingId;
 
     /**
      * {@inheritdoc}
@@ -39,17 +27,6 @@ class DeleteOne extends AbstractCommand {
      * @return App\Command\Setting\DeleteOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['section'])) {
-            $this->section = $parameters['section'];
-        }
-
-        if (isset($parameters['property'])) {
-            $this->property = $parameters['property'];
-        }
-
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
-        }
 
         return $this;
     }

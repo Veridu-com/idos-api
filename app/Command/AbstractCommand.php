@@ -24,4 +24,5 @@ abstract class AbstractCommand implements CommandInterface {
 
         throw new \RuntimeException(sprintf('Invalid property name "%s"', $name));
     }
+    
 }

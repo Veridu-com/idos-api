@@ -222,7 +222,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function getAll() : Collection {
+    public function getAll(array $queryParams = []) : Collection {
         $cacheKey  = sprintf('%s/all', $this->cachePrefix);
         $cacheTags = [$this->cachePrefix];
 
@@ -256,7 +256,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $constraints) : Collection {
+    public function findBy(array $constraints, array $queryParams) : Collection {
         $constraintsKey = 'by';
         foreach ($constraints as $key => $value) {
             $constraintsKey .= sprintf('.%s.%s', $key, $value);

@@ -33,7 +33,7 @@ class Setting extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['section', 'property', 'value', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'section', 'property', 'value', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */

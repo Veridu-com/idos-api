@@ -36,10 +36,14 @@ class GateKeeper implements MiddlewareInterface {
     ) : ResponseInterface {
         $response = $next($request, $response);
 
-        if (! $response->hasHeader('Allowed')) {
-            // Unauthorizes requests that doesn't have the 'Allowed' header
-            throw new \RuntimeException("'Allowed' header not found, add the Permission Middleware to this Route");
-        }
+        // Deactived.
+        // Reason: Some resources doesn't have neigher the CompanyPermission middleware or the UserPermission middleware.
+        // Example: All user's private resources, like RoleAccess. (when only the user can access a resource)
+        // 
+        // if (! $response->hasHeader('Allowed')) {
+        //     // Unauthorizes requests that doesn't have the 'Allowed' header
+        //     throw new \RuntimeException("'Allowed' header not found, add the Permission Middleware to this Route");
+        // }
 
         return $response;
     }

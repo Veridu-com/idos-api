@@ -176,7 +176,7 @@ class ServiceHandler implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/service-handlers/{serviceSlug:[a-zA-Z0-9_-]+}/{serviceHandlerSlug:[a-zA-Z0-9_-]+}',
+                '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:getOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
@@ -209,7 +209,7 @@ class ServiceHandler implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/service-handlers/{serviceSlug:[a-zA-Z0-9_-]+}/{serviceHandlerSlug:[a-zA-Z0-9_-]+}',
+                '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:updateOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
@@ -242,7 +242,7 @@ class ServiceHandler implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/service-handlers/{serviceSlug:[a-zA-Z0-9_-]+}/{serviceHandlerSlug:[a-zA-Z0-9_-]+}',
+                '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:deleteOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))

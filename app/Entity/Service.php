@@ -17,8 +17,10 @@ use App\Extension\NameToSlugMutator;
  *
  * @property int        $id
  * @property string     $name
- * @property string     $slug
- * @property bool    $enabled
+ * @property string     $url
+ * @property array      $listens
+ * @property array      $triggers
+ * @property bool       $enabled
  * @property int        $created_at
  * @property int        $updated_at
  */
@@ -33,12 +35,17 @@ class Service extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'enabled', 'created_at'];
+    protected $visible = [ 'id', 'name', 'url', 'enabled', 'listens', 'triggers', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $json = ['listens', 'triggers'];
 
     /**
      * {@inheritdoc}

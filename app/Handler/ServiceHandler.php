@@ -75,32 +75,23 @@ class ServiceHandler implements HandlerInterface {
      * @return App\Entity\ServiceHandler
      */
     public function handleCreateNew(CreateNew $command) : ServiceHandlerEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertSource($command->source);
         $this->validator->assertId($command->companyId);
-        $this->validator->assertSlug($command->serviceSlug);
-        $this->validator->assertAuthPassword($command->authPassword);
-        $this->validator->assertAuthUsername($command->authUsername);
-        $this->validator->assertLocation($command->location);
+        $this->validator->assertId($command->serviceId);
+        $this->validator->assertListens($command->listens);
 
         $now    = time();
         $entity = $this->repository->create(
             [
                 'company_id'    => $command->companyId,
-                'service_slug'  => $command->serviceSlug,
-                'name'          => $command->name,
-                'source'        => $command->source,
-                'location'      => $command->location,
-                'authPassword'  => $command->authPassword,
-                'authUsername'  => $command->authUsername,
-                'created_at'    => $now,
-                'updated_at'    => $now
+                'service_id'    => $command->serviceId,
+                'listens'       => $command->listens,
+                'created_at'    => $now
             ]
         );
 
-        $this->repository->save($entity);
+        $entity = $this->repository->save($entity);
 
-        return $entity;
+        return $this->repository->findOne($command->companyId, $entity->id);
     }
 
     /**
@@ -111,40 +102,24 @@ class ServiceHandler implements HandlerInterface {
      * @return App\Entity\ServiceHandler
      */
     public function handleUpdateOne(UpdateOne $command) : ServiceHandlerEntity {
-        $this->validator->assertSlug($command->slug);
-        $this->validator->assertSlug($command->serviceSlug);
         $this->validator->assertId($command->companyId);
+        $this->validator->assertId($command->serviceHandlerId);
+        $this->validator->assertListens($command->listens);
 
-        // optional inputs
-        if ($command->name) {
-            $this->validator->assertName($command->name);
-            $input['name'] = $command->name;
-        }
-        if ($command->location) {
-            $this->validator->assertName($command->location);
-            $input['location'] = $command->location;
-        }
-        if ($command->source) {
-            $this->validator->assertSource($command->source);
-            $input['source'] = $command->source;
-        }
-        if ($command->authPassword) {
-            $this->validator->assertAuthPassword($command->authPassword);
-            $input['authPassword'] = $command->authPassword;
-        }
-        if ($command->authUsername) {
-            $this->validator->assertAuthUsername($command->authUsername);
-            $input['authUsername'] = $command->authUsername;
-        }
+        $entity = $this->repository->findOne($command->companyId, $command->serviceHandlerId);
 
-        $entity = $this->repository->findOne($command->companyId, $command->slug, $command->serviceSlug);
+        $allowedListeners = $entity->service()->listens;
 
-        // fills entity
-        // @FIXME: There could exist on AbstractEntity to fill it based on a [ key => value ] array.
-        foreach ($input as $key => $value) {
-            $entity->$key = $value;
-        }
+        // validates allowed listeners
+        array_map(function ($listener) use ($allowedListeners) {
+            if (! in_array($listener, $allowedListeners)) {
+                throw new NotFound('Listener not found on Service');
+            }
+        }, $command->listens);
 
+        // updates listen attribute
+        $entity->listens = $command->listens;
+        // save entity
         $success = $this->repository->save($entity);
 
         if (! $success) {
@@ -178,10 +153,9 @@ class ServiceHandler implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->companyId);
-        $this->validator->assertSlug($command->slug);
-        $this->validator->assertSlug($command->serviceSlug);
+        $this->validator->assertId($command->serviceHandlerId);
 
-        $rowsAffected = $this->repository->deleteOne($command->companyId, $command->slug, $command->serviceSlug);
+        $rowsAffected = $this->repository->deleteOne($command->companyId, $command->serviceHandlerId);
 
         if (! $rowsAffected) {
             throw new NotFound();

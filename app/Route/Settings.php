@@ -26,7 +26,6 @@ class Settings implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'settings:listAll',
-            'settings:listAllFromSection',
             'settings:deleteAll',
             'settings:createNew',
             'settings:getOne',
@@ -53,7 +52,6 @@ class Settings implements RouteInterface {
         $permissionMiddleware   = $container->get('companyPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::listAllFromSection($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
@@ -91,38 +89,6 @@ class Settings implements RouteInterface {
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:listAll');
-    }
-    /**
-     * List all Settings from section.
-     *
-     * Retrieve a complete list of all settings that belong to the requesting company and has the given section.
-     *
-     * @apiEndpoint GET /companies/{companySlug}/settings/{section}
-     * @apiGroup Company Settings
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string section lookup
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     *
-     * @return void
-     *
-     * @link docs/companies/settings/listAllFromSection.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Settings::listAllFromSection
-     */
-    private static function listAllFromSection(App $app, callable $auth, callable $permission) {
-        $app
-            ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}',
-                'App\Controller\Settings:listAllFromSection'
-            )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('settings:listAllFromSection');
     }
 
     /**
@@ -215,7 +181,7 @@ class Settings implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:getOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
@@ -249,7 +215,7 @@ class Settings implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:updateOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
@@ -283,7 +249,7 @@ class Settings implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{section:[a-zA-Z0-9_-]+}/{property:[a-zA-Z0-9_-]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:deleteOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))

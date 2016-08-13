@@ -400,170 +400,28 @@ class DatabaseInit extends AbstractMigration {
         // Service list
         $services = $this->table('services');
         $services
+            ->addColumn('company_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('slug', 'text', ['null' => false])
+            ->addColumn('url', 'text', ['null' => false])
+            ->addColumn('username', 'text', ['null' => false])
+            ->addColumn('password', 'text', ['null' => false])
+            ->addColumn('listens', 'jsonb', ['null' => false, 'default' => '[]'])
+            ->addColumn('triggers', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addIndex('name', ['unique' => true])
-            ->addIndex('slug', ['unique' => true])
+            ->addTimestamps()
+            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         // Service handlers registration
         $serviceHandlers = $this->table('service_handlers');
         $serviceHandlers
-            ->addColumn('company_id', 'integer', ['null' => true])
-            ->addColumn('service_slug', 'text', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('slug', 'text', ['null' => false])
-            ->addColumn('source', 'text', ['null' => false])
-            ->addColumn('location', 'text', ['null' => false]) // url
-            ->addColumn('auth_username', 'text', ['null' => false])  // this has to be encrypted
-            ->addColumn('auth_password', 'text', ['null' => false])  // this has to be encrypted
-             ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addIndex('service_slug')
-            ->addIndex('source')
-            ->addIndex(['slug', 'company_id', 'service_slug'], ['unique' => true])
-            ->addForeignKey('service_slug', 'services', 'slug', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        // Company's service handlers (configuration)
-        $companyServiceHandlers = $this->table('company_service_handlers');
-        $companyServiceHandlers
-            ->addColumn('service_handler_id', 'integer', ['null' => false])
             ->addColumn('company_id', 'integer', ['null' => false])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addIndex('company_id')
-            ->addIndex('service_handler_id')
-            ->addIndex(['company_id', 'service_handler_id'], ['unique' => true])
-            ->addForeignKey('service_handler_id', 'service_handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        /*
-         *
-         * PROCESS RELATED TABLES
-         *
-         */
-
-        // Process list
-        $processes = $this->table('processes');
-        $processes
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addIndex('name', ['unique' => true])
-            ->create();
-
-        // Process handlers registrarion
-        $processHandlers = $this->table('process_handlers');
-        $processHandlers
-            ->addColumn('process_id', 'integer', ['null' => false])
-            ->addColumn('company_id', 'integer', ['null' => true])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('step', 'text', ['null' => false])
-            ->addColumn('sources', 'text', ['null' => true])
-            ->addColumn('runlevel', 'integer', ['null' => false, 'default' => 0])
-            ->addColumn('location', 'text', ['null' => false])
-            ->addIndex('step')
-            ->addIndex('runlevel')
-            ->addForeignKey('process_id', 'processes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        // Company's process handlers (configuration)
-        $companyProcessHandlers = $this->table('company_process_handlers');
-        $companyProcessHandlers
-            ->addColumn('handler_id', 'integer', ['null' => false])
-            ->addColumn('company_id', 'integer', ['null' => false])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addIndex('company_id')
-            ->addForeignKey('handler_id', 'process_handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addColumn('service_id', 'integer', ['null' => false])
+            ->addColumn('listens', 'jsonb', ['null' => false, 'default' => '[]'])
+            ->addTimestamps()
+            ->addIndex(['company_id', 'service_id']) // Must be in array "events" of the the related "service"
+            ->addIndex(['service_id', 'company_id'], ['unique' => true])
+            ->addForeignKey('service_id', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
@@ -745,7 +603,7 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        // Process ID control
+        // Daemon ID control
         $controls = $this->table('controls');
         $controls
             ->addColumn('user_id', 'integer', ['null' => false])

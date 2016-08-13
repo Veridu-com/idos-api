@@ -11,57 +11,29 @@ namespace App\Command\ServiceHandler;
 use App\Command\AbstractCommand;
 
 /**
- * ServiceHandler "Create New" Command.
+ * ServiceHandler "Create new" Command.
  */
 class CreateNew extends AbstractCommand {
     /**
-     * ServiceHandler's name.
+     * ServiceHandler's company's id.
      *
      * @var string
-     */
-    public $name;
-
-    /**
-     * ServiceHandler's source.
-     *
-     * @var string
-     */
-    public $source;
-
-    /**
-     * ServiceHandler's location.
-     *
-     * @var string
-     */
-    public $location;
-
-    /**
-     * ServiceHandler's authPassword.
-     *
-     * @var string
-     */
-    public $authPassword;
-
-    /**
-     * ServiceHandler's authUsername.
-     *
-     * @var string
-     */
-    public $authUsername;
-
-    /**
-     * ServiceHandler's company's Id.
-     *
-     * @var int
      */
     public $companyId;
 
     /**
-     * ServiceHandler service's slug.
+     * ServiceHandler's service's id.
      *
-     * @var int
+     * @var string
      */
-    public $serviceSlug;
+    public $serviceId;
+
+    /**
+     * ServiceHandler's listens attribute.
+     *
+     * @var string
+     */
+    public $listens;
 
     /**
      * {@inheritdoc}
@@ -69,32 +41,12 @@ class CreateNew extends AbstractCommand {
      * @return App\Command\ServiceHandler\CreateNew
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
+        if (isset($parameters['decoded_service_id'])) {
+            $this->serviceId = $parameters['decoded_service_id'];
         }
-
-        if (isset($parameters['source'])) {
-            $this->source = $parameters['source'];
-        }
-
-        if (isset($parameters['location'])) {
-            $this->location = $parameters['location'];
-        }
-
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
-        }
-
-        if (isset($parameters['service'])) {
-            $this->serviceSlug = $parameters['service'];
-        }
-
-        if (isset($parameters['authPassword'])) {
-            $this->authPassword = $parameters['authPassword'];
-        }
-
-        if (isset($parameters['authUsername'])) {
-            $this->authUsername = $parameters['authUsername'];
+        
+        if (isset($parameters['listens'])) {
+            $this->listens = $parameters['listens'];
         }
 
         return $this;

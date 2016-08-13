@@ -13,6 +13,7 @@ use App\Command\Setting\DeleteAll;
 use App\Command\Setting\DeleteOne;
 use App\Command\Setting\UpdateOne;
 use App\Entity\Setting as SettingEntity;
+use App\Exception\NotFound;
 use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
 use Interop\Container\ContainerInterface;
@@ -88,7 +89,7 @@ class Setting implements HandlerInterface {
             ]
         );
 
-        $this->repository->save($setting);
+        $setting = $this->repository->save($setting);
 
         return $setting;
     }
@@ -101,11 +102,9 @@ class Setting implements HandlerInterface {
      * @return App\Entity\Setting
      */
     public function handleUpdateOne(UpdateOne $command) : SettingEntity {
-        $this->validator->assertId($command->companyId);
-        $this->validator->assertPropName($command->propNameId);
-        $this->validator->assertSectionName($command->sectionNameId);
+        $this->validator->assertId($command->settingId);
 
-        $setting = $this->repository->findOne($command->companyId, $command->sectionNameId, $command->propNameId);
+        $setting = $this->repository->find($command->settingId);
 
         if ($command->value) {
             $setting->value     = $command->value;
@@ -138,10 +137,14 @@ class Setting implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertId($command->companyId);
-        $this->validator->assertPropName($command->property);
-        $this->validator->assertSectionName($command->section);
+        $this->validator->assertId($command->settingId);
 
-        return $this->repository->deleteOne($command->companyId, $command->section, $command->property);
+        $rowsAffected = $this->repository->delete($command->settingId);
+
+        if (! $rowsAffected) {
+            throw new NotFound;
+        }
+
+        return $rowsAffected;
     }
 }

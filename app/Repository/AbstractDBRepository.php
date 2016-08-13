@@ -58,7 +58,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function query() : Builder {
+    protected function query($table = null) : Builder {
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
             $this->getEntityClassName(),
@@ -68,7 +68,8 @@ abstract class AbstractDBRepository extends AbstractRepository {
             ]
         );
 
-        return $this->dbConnection->table($this->getTableName());
+        $table = ($table === null) ? $this->getTableName() : $table; 
+        return $this->dbConnection->table($table);
     }
 
     /**
@@ -210,11 +211,13 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $constraints) : Collection {
+    public function findBy(array $constraints, array $queryParams = []) : Collection {
         $query = $this->query();
         foreach ($constraints as $key => $value) {
             $query = $query->where($key, $value);
         }
+
+        $query = $this->filter($query, $queryParams);
 
         return new Collection($query->get());
     }
@@ -222,8 +225,9 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function getAll() : Collection {
-        return new Collection($this->query()->get());
+    public function getAll(array $queryParams = []) : Collection {
+        $query = $this->filter($this->query(), $queryParams);
+        return new Collection($query->get());
     }
 
     /**
@@ -262,7 +266,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function filter(Builder $query, array $queryParams) : Builder {
+    protected function filter(Builder $query, array $queryParams = []) : Builder {
         $filters = [];
 
         foreach ($this->filterableKeys as $key => $type) {
@@ -284,7 +288,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
 
             switch ($type) {
                 case 'date':
-                    // expects query pattern to be created_at=DATE_FROM,DATE_UNTIL or created_at=DATE_FROM
+                    // expects query pattern to be created_at=DATE_FROM,DATE_UNTIL or created_at=EXACT_DATE
                     // expect dates to match the pattern: YYYY-MM-DD
                     $values = explode(',', $value);
                     if (count($values) == 2) {
@@ -297,6 +301,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
                         $query = $query->whereDate($key,  '=', $value);
                     }
                     break;
+
                 case 'string':
                     // starts or ends with "%"
                     if (preg_match('/.*%$|^%.*/', $value)) {
@@ -306,6 +311,16 @@ abstract class AbstractDBRepository extends AbstractRepository {
                     }
                     break;
 
+                case 'boolean':
+                    // avoids buggy user inputs going through the database
+                    $truthyValues = [true, 1, 't', 'true', '1'];
+                    if (in_array($value, $truthyValues, true)) {
+                        $query =  $query->where($key, '=', true);
+                    } else {
+                        $query =  $query->where($key, '=', false);
+                    }
+                    break;
+                                    
                 default:
                     $query =  $query->where($key, '=', $value);
                     break;

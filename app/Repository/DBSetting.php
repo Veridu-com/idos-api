@@ -41,17 +41,6 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $companyId, string $section, string $propName) : Setting {
-        return $this->findOneBy([
-            'company_id' => $companyId,
-            'section'    => $section,
-            'property'   => $propName
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function update(Setting &$entity) : int {
         $serialized = $entity->serialize();
 
@@ -82,17 +71,6 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
             'company_id' => $companyId,
             'section'    => $section
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteOne(int $companyId, string $section, string $property) : int {
-        return $this->query()
-            ->where('company_id', $companyId)
-            ->where('section', $section)
-            ->where('property', $property)
-            ->delete();
     }
 
     /**

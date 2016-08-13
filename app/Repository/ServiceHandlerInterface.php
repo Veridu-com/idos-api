@@ -46,22 +46,20 @@ interface ServiceHandlerInterface extends RepositoryInterface {
     /**
      * Find one setting based on their companyId, serviceSlug and own slug.
      *
-     * @param int    $companyId
-     * @param string $slug
-     * @param string $serviceSlug
+     * @param int $companyId
+     * @param int $serviceHandlerId
      *
      * @return App\Entity\ServiceHandler
      */
-    public function findOne(int $companyId, string $slug, string $serviceSlug) : ServiceHandler;
+    public function findOne(int $companyId, int $serviceHandlerId) : ServiceHandler;
 
     /**
      * Deletes one setting based on their companyId, own slug and serviceSlug.
      *
      * @param int    $companyId
-     * @param string $slug
-     * @param string $serviceSlug
+     * @param int    $serviceHandlerId
      *
      * @return int
      */
-    public function deleteOne(int $companyId, string $slug, string $serviceSlug) : int;
+    public function deleteOne(int $companyId, int $serviceHandlerId) : int;
 }

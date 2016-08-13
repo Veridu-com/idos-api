@@ -23,5 +23,5 @@ interface ServiceInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAll() : Collection;
+    public function getAll(array $queryParams = []) : Collection;
 }

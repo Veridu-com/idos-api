@@ -170,7 +170,7 @@ class RoleAccess implements RouteInterface {
     private static function getOne(App $app, callable $auth) {
         $app
             ->get(
-                '/access/roles/{roleName:[a-zA-Z0-9_-]+}/{resource:[a-zA-Z0-9_-]+\:[a-zA-Z0-9_-]+}',
+                '/access/roles/{roleAccessId:[0-9]+}',
                 'App\Controller\RoleAccess:getOne'
             )
             ->add($auth(Auth::USER_PRIVKEY))
@@ -197,7 +197,7 @@ class RoleAccess implements RouteInterface {
     private static function updateOne(App $app, callable $auth) {
         $app
             ->put(
-                '/access/roles/{roleName:[a-zA-Z0-9_-]+}/{resource:[a-zA-Z0-9_-]+\:[a-zA-Z0-9_-]+}',
+                '/access/roles/{roleAccessId:[0-9]+}',
                 'App\Controller\RoleAccess:updateOne'
             )
             ->add($auth(Auth::USER_PRIVKEY))
@@ -226,7 +226,7 @@ class RoleAccess implements RouteInterface {
     private static function deleteOne(App $app, callable $auth) {
         $app
             ->delete(
-                '/access/roles/{roleName:[a-zA-Z0-9_-]+}/{resource:[a-zA-Z0-9_-]+\:[a-zA-Z0-9_-]+}',
+                '/access/roles/{roleAccessId:[0-9]+}',
                 'App\Controller\RoleAccess:deleteOne'
             )
             ->add($auth(Auth::USER_PRIVKEY))

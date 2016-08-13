@@ -96,10 +96,7 @@ abstract class AbstractRepository implements RepositoryInterface {
      * @return \Illuminate\Support\Collection Collection with items casted to the matched class
      */
     public function castHydrate(Collection $items) : Collection {
-        $entity        = $this->create([]);
-        $relationships = $entity->relationships;
-
-        return $items->transform(function ($item) {
+        return $items->map(function ($item) {
             return $this->castHydrateEntity($item);
         });
     }
@@ -114,6 +111,10 @@ abstract class AbstractRepository implements RepositoryInterface {
     public function castHydrateEntity(EntityInterface &$entity) : EntityInterface {
         $relationships = $entity->relationships;
 
+        if (! $relationships) {
+            return $entity;
+        }
+        
         foreach ($relationships as $databasePrefix => $entityName) {
             $entity->relations[$databasePrefix] = $this->entityFactory->create($entityName, (array) $entity->$databasePrefix());
         }
