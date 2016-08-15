@@ -142,7 +142,7 @@ class Setting implements HandlerInterface {
         $rowsAffected = $this->repository->delete($command->settingId);
 
         if (! $rowsAffected) {
-            throw new NotFound;
+            throw new NotFound();
         }
 
         return $rowsAffected;

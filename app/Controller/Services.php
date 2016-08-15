@@ -43,8 +43,8 @@ class Services implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\ServiceInterface $repository
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param App\Factory\Command                    $commandFactory
+     * @param \League\Tactician\CommandBus    $commandBus
+     * @param App\Factory\Command             $commandFactory
      *
      * @return void
      */
@@ -101,7 +101,7 @@ class Services implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
         $serviceId     = $request->getAttribute('decodedServiceId');
-        
+
         $entity = $this->repository->findOne($serviceId, $actingCompany);
 
         $body = [
@@ -140,7 +140,7 @@ class Services implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
-        
+
         $command = $this->commandFactory->create('Service\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
@@ -245,7 +245,7 @@ class Services implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceId = $request->getAttribute('decodedServiceId');
+        $serviceId          = $request->getAttribute('decodedServiceId');
 
         $command = $this->commandFactory->create('Service\\UpdateOne');
         $command

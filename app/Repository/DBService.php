@@ -55,6 +55,7 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
     public function findOne(int $serviceId, Company $company) : Service {
         $query = $this->query()->where('id', $serviceId);
         $query = $this->scopeQuery($query, $company);
+
         return $query->first();
     }
 
@@ -66,9 +67,9 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
             ->where('id', $serviceId)
             ->where('company_id', $company->id)
             ->delete();
-            
+
         if (! $affectedRows) {
-            throw new NotFound;
+            throw new NotFound();
         }
 
         return $affectedRows;
@@ -81,17 +82,17 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
         $affectedRows = $this->deleteBy([
             'company_id' => $companyId
         ]);
-        
+
         return $affectedRows;
     }
 
     /**
      * Scopes query given the service "access" attribute.
      *
-     * @param      \Illuminate\Database\Query\Builder  $query    The query
-     * @param      \App\Entity\Company                 $company  The company
+     * @param \Illuminate\Database\Query\Builder $query   The query
+     * @param \App\Entity\Company                $company The company
      *
-     * @return     Illuminate\Database\Query\Builder   The mutated $query
+     * @return Illuminate\Database\Query\Builder The mutated $query
      */
     private function scopeQuery(Builder $query, Company $company) : Builder {
         return $query->where(function ($q) use ($company) {

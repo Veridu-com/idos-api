@@ -119,7 +119,7 @@ class ServiceHandler implements HandlerInterface {
 
         // updates listen attribute
         $entity->listens = $command->listens;
-        
+
         // save entity
         $success = $this->repository->save($entity);
 

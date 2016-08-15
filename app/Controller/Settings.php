@@ -70,7 +70,7 @@ class Settings implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany  = $request->getAttribute('targetCompany');
         $result         = $this->repository->getAllByCompanyId($targetCompany->id, $request->getQueryParams());
-        
+
         $data = $result['collection'];
 
         $body = [
@@ -101,8 +101,8 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId       = $request->getAttribute('decodedSettingId');        
-        $setting       = $this->repository->find($settingId);
+        $settingId       = $request->getAttribute('decodedSettingId');
+        $setting         = $this->repository->find($settingId);
 
         $body = [
             'data'    => $setting->toArray(),

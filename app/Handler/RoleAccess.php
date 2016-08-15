@@ -118,7 +118,7 @@ class RoleAccess implements HandlerInterface {
      *
      * @return App\Entity\RoleAccess
      */
-    public function handleUpdateOne(UpdateOne $command) : RoleAccessEntity {        
+    public function handleUpdateOne(UpdateOne $command) : RoleAccessEntity {
         $this->validator->assertId($command->identityId);
         $this->validator->assertId($command->roleAccessId);
         $this->validator->assertAccess($command->access);

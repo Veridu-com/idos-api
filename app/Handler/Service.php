@@ -14,7 +14,6 @@ use App\Command\Service\DeleteOne;
 use App\Command\Service\UpdateOne;
 use App\Entity\Service as ServiceEntity;
 use App\Exception\NotAllowed;
-use App\Exception\NotFound;
 use App\Repository\ServiceInterface;
 use App\Validator\Service as ServiceValidator;
 use Interop\Container\ContainerInterface;
@@ -78,7 +77,7 @@ class Service implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : ServiceEntity {
         $this->validator->assertCompany($command->company);
 
-        $input = [ 'company_id' => $command->company->id ];
+        $input = ['company_id' => $command->company->id];
 
         // required params
         $this->validator->assertName($command->name);
@@ -86,7 +85,7 @@ class Service implements HandlerInterface {
 
         $this->validator->assertUrl($command->url);
         $input['url'] = $command->url;
-        
+
         $this->validator->assertAuthUsername($command->authUsername);
         $input['auth_username'] = $command->authUsername;
 
@@ -167,7 +166,7 @@ class Service implements HandlerInterface {
 
         // Any thoughts on a better place of verifying this
         if ($command->company->id != $entity->companyId) {
-            throw new NotAllowed;
+            throw new NotAllowed();
         }
 
         foreach ($input as $key => $value) {
@@ -175,7 +174,6 @@ class Service implements HandlerInterface {
         }
 
         $success = $this->repository->save($entity);
-
 
         return $entity;
     }

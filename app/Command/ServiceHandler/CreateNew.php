@@ -44,7 +44,7 @@ class CreateNew extends AbstractCommand {
         if (isset($parameters['decoded_service_id'])) {
             $this->serviceId = $parameters['decoded_service_id'];
         }
-        
+
         if (isset($parameters['listens'])) {
             $this->listens = $parameters['listens'];
         }

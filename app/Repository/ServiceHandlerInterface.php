@@ -56,8 +56,8 @@ interface ServiceHandlerInterface extends RepositoryInterface {
     /**
      * Deletes one setting based on their companyId, own slug and serviceSlug.
      *
-     * @param int    $companyId
-     * @param int    $serviceHandlerId
+     * @param int $companyId
+     * @param int $serviceHandlerId
      *
      * @return int
      */

@@ -31,7 +31,7 @@ class CreateNewTest extends AbstractFunctional {
             json_encode(
                 [
                     'service_id'   => 1321189817,
-                    'listens' => [
+                    'listens'      => [
                         'idos:teste-legal'
                     ]
                 ]

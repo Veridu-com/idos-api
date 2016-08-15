@@ -43,7 +43,7 @@ class Service extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = [ 'id', 'name', 'url', 'access', 'enabled', 'listens', 'triggers', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'name', 'url', 'access', 'enabled', 'listens', 'triggers', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
@@ -54,7 +54,6 @@ class Service extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $json = ['listens', 'triggers'];
-
 
     /**
      * The attributes that should be secured.

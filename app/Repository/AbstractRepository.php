@@ -114,7 +114,7 @@ abstract class AbstractRepository implements RepositoryInterface {
         if (! $relationships) {
             return $entity;
         }
-        
+
         foreach ($relationships as $databasePrefix => $entityName) {
             $entity->relations[$databasePrefix] = $this->entityFactory->create($entityName, (array) $entity->$databasePrefix());
         }

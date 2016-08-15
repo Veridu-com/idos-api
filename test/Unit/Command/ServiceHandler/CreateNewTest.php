@@ -7,7 +7,6 @@
 namespace Test\Unit\Command\ServiceHandler;
 
 use App\Command\ServiceHandler\CreateNew;
-use Test\Unit\AbstractUnit;
 use Test\Unit\Command\AbstractCommandTest;
 
 class CreateNewTest extends AbstractCommandTest {

@@ -37,11 +37,11 @@ class AbstractCommandTest extends AbstractUnit {
      * Where "public" keys can be assign by the Command@setParameters method.
      * Where "private" kes can't be assigned by the Command@setParameters method.
      * 
-     * @param      array  $parameters  The parameters
+     * @param array $parameters The parameters
      */
-    public function assertSetParameters(string $commandClassName, array $parameters) {        
+    public function assertSetParameters(string $commandClassName, array $parameters) {
         foreach ($parameters as $parameter => $config) {
-            $command = new $commandClassName;            
+            $command = new $commandClassName();
 
             if ($config['policy'] == 'public') {
                 $command->setParameters([$parameter => 1]);

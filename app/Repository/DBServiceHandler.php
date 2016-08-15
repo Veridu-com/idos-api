@@ -56,13 +56,13 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
                     ->where('service_handlers.id', $serviceHandlerId)
                     ->where('service_handlers.company_id', $companyId)
                     ->first($this->queryAttributes);
-        
+
         if (! $entity) {
-            throw new NotFound;
+            throw new NotFound();
         }
 
         return $this->castHydrateEntity($entity);
-    }           
+    }
 
     /**
      * {@inheritdoc}
@@ -93,7 +93,7 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
     public function deleteOne(int $companyId, int $serviceHandlerId) : int {
         return $this->deleteBy([
             'company_id'   => $companyId,
-            'id' => $serviceHandlerId
+            'id'           => $serviceHandlerId
         ]);
     }
 

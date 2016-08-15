@@ -24,9 +24,9 @@ class OptimusDecode implements MiddlewareInterface {
     /**
      * Gets the decoded name of a key.
      *
-     * @param      string   $key    The key
+     * @param string $key The key
      *
-     * @return     string   The decoded name
+     * @return string The decoded name
      */
     private function getDecodedName(string $key) : string {
         return sprintf('decoded%s', ucfirst($key));
@@ -35,9 +35,9 @@ class OptimusDecode implements MiddlewareInterface {
     /**
      * Gets the decoded name of a parsed body key.
      *
-     * @param      string   $key    The key
+     * @param string $key The key
      *
-     * @return     string   The decoded name
+     * @return string The decoded name
      */
     private function getDecodedBodyName(string $key) : string {
         return sprintf('decoded_%s', $key);
@@ -46,9 +46,9 @@ class OptimusDecode implements MiddlewareInterface {
     /**
      * Test if the key should be decoded.
      *
-     * @param      string    $key    The key
+     * @param string $key The key
      *
-     * @return     bool
+     * @return bool
      */
     private function matchDecodableKey(string $key) : bool {
         return (bool) preg_match('/.*?Id$/', $key);
@@ -57,9 +57,9 @@ class OptimusDecode implements MiddlewareInterface {
     /**
      * Test if the request parsed body key should be decoded.
      *
-     * @param      string    $key    The key
+     * @param string $key The key
      *
-     * @return     bool
+     * @return bool
      */
     private function matchDecodableBodyKey(string $key) : bool {
         return (bool) preg_match('/.*?_id$/', $key);
@@ -89,7 +89,7 @@ class OptimusDecode implements MiddlewareInterface {
                 $request = $request->withAttribute($this->getDecodedName($key), $this->optimus->decode($value));
             }
         }
-        
+
         $parsedBody = $request->getParsedBody();
 
         // decode request body parameters

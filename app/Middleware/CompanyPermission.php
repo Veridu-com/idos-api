@@ -19,12 +19,11 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * Scope: Route.
  * This middleware is responsible to add a "allowed" parameter on the $response object.
- *
  */
 class CompanyPermission implements MiddlewareInterface {
     // only authorized companies can access the endpoint, controlled by App\Repository\PermissionInterface
     const PROTECTED_ACTION =    'protected';
-    
+
     // won't test anything, the endpoint should be responsible for granting 
     const PUBLIC_ACTION    =    'private';
 
@@ -59,7 +58,7 @@ class CompanyPermission implements MiddlewareInterface {
             try {
                 $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
             } catch (NotFound $e) {
-                throw new NotAllowed;
+                throw new NotAllowed();
             }
         }
 

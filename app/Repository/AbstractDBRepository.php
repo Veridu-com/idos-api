@@ -68,7 +68,8 @@ abstract class AbstractDBRepository extends AbstractRepository {
             ]
         );
 
-        $table = ($table === null) ? $this->getTableName() : $table; 
+        $table = ($table === null) ? $this->getTableName() : $table;
+
         return $this->dbConnection->table($table);
     }
 
@@ -213,7 +214,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     public function findBy(array $constraints, array $queryParams = []) : Collection {
         $query = $this->query();
-        
+
         foreach ($constraints as $key => $value) {
             $query = $query->where($key, $value);
         }
@@ -228,6 +229,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     public function getAll(array $queryParams = []) : Collection {
         $query = $this->filter($this->query(), $queryParams);
+
         return new Collection($query->get());
     }
 
@@ -321,7 +323,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
                         $query =  $query->where($key, '=', false);
                     }
                     break;
-                                    
+
                 default:
                     $query =  $query->where($key, '=', $value);
                     break;

@@ -103,7 +103,7 @@ class ServiceHandlers implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany      = $request->getAttribute('actingCompany');
         $serviceHandlerId   = $request->getAttribute('decodedServiceHandlerId');
-        
+
         $entity = $this->repository->findOne($actingCompany->id, $serviceHandlerId);
 
         $body = [
@@ -134,7 +134,7 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
-        
+
         $command = $this->commandFactory->create('ServiceHandler\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
@@ -198,7 +198,7 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
+        $serviceHandlerId   = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
         $command
@@ -233,7 +233,7 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
+        $serviceHandlerId   = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
         $command
