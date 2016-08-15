@@ -69,7 +69,7 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection([[]])));
+            ->will($this->returnValue(new Collection([new SettingEntity([], $this->optimus)])));
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -82,8 +82,10 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbSetting = new DBSetting($factory, $this->optimus, $connectionMock);
 
-        $this->assertInstanceOf(Collection::class, $dbSetting->getAllByCompanyId(1));
-        $this->assertEmpty($dbSetting->getAllByCompanyId(1));
+        $result = $dbSetting->getAllByCompanyId(1);
+        $this->assertArrayHasKey('collection', $result);
+        $this->assertInstanceOf(Collection::class, $result['collection']);
+        $this->assertInstanceOf(SettingEntity::class, $result['collection']->first());
     }
 
     public function testGetAllByCompanyId() {
@@ -135,8 +137,10 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbSetting = new DBSetting($factory, $this->optimus, $connectionMock);
 
-        $this->assertInstanceOf(Collection::class, $dbSetting->getAllByCompanyId(1));
-        $this->assertEquals($array, $dbSetting->getAllByCompanyId(1)->toArray());
+        $result = $dbSetting->getAllByCompanyId(1);
+        $this->assertInstanceOf(Collection::class, $result['collection']);
+        $this->assertInstanceOf(SettingEntity::class, $result['collection']->first());
+        $this->assertSame($array[0], $result['collection']->first()->toArray());
     }
 
     public function testGetAllByCompanyIdAndSectionEmpty() {

@@ -53,8 +53,17 @@ class SettingsTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     [
-                        'section'    => 'section',
-                        'updated_at' => time()
+                        'pagination' => 'pagination',
+                        'collection' =>
+                            new Collection(
+                                new SettingEntity(
+                                    [
+                                        'section'    => 'section',
+                                        'updated_at' => time()
+                                    ],
+                                    $optimus
+                                )
+                            )
                     ]
                 )
             );
