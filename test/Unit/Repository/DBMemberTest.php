@@ -61,7 +61,7 @@ class DBMemberTest extends AbstractUnit {
         $factory->create('Member', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['join', 'where', 'get'])
+            ->setMethods(['join', 'where', 'get', 'whereIn'])
             ->getMock();
         $queryMock
             ->method('join')
@@ -70,9 +70,12 @@ class DBMemberTest extends AbstractUnit {
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
+            ->method('whereIn')
+            ->will($this->returnValue($queryMock));
+        $queryMock
             ->method('get')
             ->will(
-                $this->returnValue(
+                $this->returnValue([
                     new MemberEntity(
                         [
                             'id'              => 1,
@@ -86,7 +89,7 @@ class DBMemberTest extends AbstractUnit {
                         ],
                         $this->optimus
                     )
-                )
+                ])
             );
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()

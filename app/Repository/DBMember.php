@@ -33,15 +33,17 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
      * {@inheritdoc}
      */
     public function getAllByCompanyId(int $companyId) : Collection {
-        return $this->castHydrate(new Collection([
-                $this->query()
+        $items = new Collection();
+        $items = $items->merge(
+            $this->query()
                 ->join('users', 'users.id', '=', 'members.user_id')
                 ->where('members.company_id', '=', $companyId)
                 ->get(['users.username as user.username',
                     'users.created_at as user.created_at',
                     'members.*'])
-            ])
-        );
+            );
+
+        return $this->castHydrate($items);
     }
 
      /**
@@ -49,17 +51,15 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
       */
      public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
         $items = new Collection();
-        foreach ($roles as $role) {
-            $items = $items->merge(
-                $this->query()
-                ->join('users', 'users.id', '=', 'members.user_id')
-                ->where('members.company_id', '=', $companyId)
-                ->where('members.role', '=', $role)
-                ->get(['users.username as username',
-                    'users.created_at as user_created_at',
-                    'members.*'])
-            );
-        }
+        $items = $items->merge(
+            $this->query()
+            ->join('users', 'users.id', '=', 'members.user_id')
+            ->where('members.company_id', '=', $companyId)
+            ->whereIn('members.role', $roles)
+            ->get(['users.username as user.username',
+                'users.created_at as user.created_at',
+                'members.*'])
+        );
 
         return $this->castHydrate($items);
     }

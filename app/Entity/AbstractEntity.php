@@ -39,6 +39,14 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $dates = [];
 
+
+    /**
+     * The attributes that should be mutated to json.
+     *
+     * @var array
+     */
+    protected $json = [];
+
     /**
      * The relations of the entity.
      *
@@ -169,6 +177,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             return $this->{$method}($value);
         }
 
+        // Tests if it is not a encoded json
+        // how: a decoded json is never a string.
+        if ((in_array($key, $this->json)) && (! is_string($value))) {
+            $value = json_encode($value);
+        }
+
         if ((in_array($key, $this->dates)) && (is_int($value))) {
             $value = date($this->dateFormat, $value);
         }
@@ -203,6 +217,10 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         if ((in_array($key, $this->dates)) && ($value !== null)) {
             $value = strtotime($value);
+        }
+
+        if ((in_array($key, $this->json)) && ($value !== null)) {
+            $value = json_decode($value);
         }
 
         if ($this->hasGetMutator($key)) {
@@ -329,11 +347,15 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __call($methodName, $args) {
-        if (isset($this->relations[$methodName])) {
-            return $this->relations[$methodName];
+        if (! isset($this->relationships[$methodName])) {
+            throw new \RuntimeException(sprintf('Relation "%s" is not mapped within the "relationships" property of the class "%s".', $methodName, get_class($this)));
         }
 
-        throw new \RuntimeException(sprintf('Relation "%s" is not mapped within the "relationships" property of the class "%s".', $methodName, get_class($this)));
+        if (! isset($this->relations[$methodName])) {
+            throw new \RuntimeException(sprintf('Relation "%s" on "%s" was not populated by the database query.', $methodName, get_class($this)));
+        }
+
+        return $this->relations[$methodName];
     }
 
     /**

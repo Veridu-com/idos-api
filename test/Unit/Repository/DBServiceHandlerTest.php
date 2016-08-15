@@ -21,6 +21,8 @@ class DBServiceHandlerTest extends AbstractUnit {
      * Jenssengers\Optimus\Optimus $optimus
      */
     private $optimus;
+    private $created_at;
+    private $updated_at;
 
     public function setUp() {
         $this->optimus = $this->getMockBuilder(Optimus::class)
@@ -38,8 +40,8 @@ class DBServiceHandlerTest extends AbstractUnit {
                 'source'       => 'source',
                 'service_slug' => 'email',
                 'location'     => 'http://localhost:8080',
-                'created_at'   => time(),
-                'updated_at'   => time()
+                'created_at'   => $this->created_at,
+                'updated_at'   => $this->updated_at
             ],
             $this->optimus
         );
@@ -53,8 +55,8 @@ class DBServiceHandlerTest extends AbstractUnit {
             'source'       => 'source',
             'location'     => 'http://localhost:8080',
             'service_slug' => 'email',
-            'created_at'   => time(),
-            'updated_at'   => time()
+            'created_at'   => $this->created_at,
+            'updated_at'   => $this->updated_at
         ];
     }
 
