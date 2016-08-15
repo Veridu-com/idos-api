@@ -4,8 +4,6 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
-
 namespace App\Route;
 
 use App\Middleware\Auth;
@@ -14,23 +12,23 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Companies routing definitions.
+ * Service routing definitions.
  *
- * @link docs/companies/overview.md
- * @see App\Controller\Companies
+ * @link docs/services/overview.md
+ * @see App\Controller\Services
  */
-class Companies implements RouteInterface {
+class Service implements RouteInterface {
     /**
      * {@inheritdoc}
      */
     public static function getPublicNames() : array {
         return [
-            'companies:listAll',
-            'companies:createNew',
-            'companies:deleteAll',
-            'companies:getOne',
-            'companies:updateOne',
-            'companies:deleteOne'
+            'services:listAll',
+            'services:deleteAll',
+            'services:createNew',
+            'services:getOne',
+            'services:updateOne',
+            'services:deleteOne'
         ];
     }
 
@@ -38,34 +36,34 @@ class Companies implements RouteInterface {
      * {@inheritdoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Companies::class] = function (ContainerInterface $container) {
-            return new \App\Controller\Companies(
-                $container->get('repositoryFactory')->create('Company'),
+        $app->getContainer()[\App\Controller\Services::class] = function (ContainerInterface $container) {
+            return new \App\Controller\Services(
+                $container->get('repositoryFactory')->create('Service'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
                 $container->get('optimus')
             );
         };
 
-        $container            = $app->getContainer();
-        $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $container              = $app->getContainer();
+        $authMiddleware         = $container->get('authMiddleware');
+        $permissionMiddleware   = $container->get('companyPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
-        self::updateOne($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
+        self::updateOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
-     * List all Companies.
+     * List all Services.
      *
-     * Retrieve a complete list of all child companies that belong to the requesting company.
+     * Retrieve a complete list of services that are visible to the requesting company.
      *
-     * @apiEndpoint GET /companies
-     * @apiGroup Company
+     * @apiEndpoint GET /services
+     * @apiGroup Company Service
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      *
@@ -74,29 +72,29 @@ class Companies implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/listAll.md
+     * @link docs/services/listAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::listAll
+     * @see App\Controller\Services::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies',
-                'App\Controller\Companies:listAll'
+                '/services',
+                'App\Controller\Services:listAll'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PUBLIC_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:listAll');
+            ->setName('service:listAll');
     }
 
     /**
-     * Create new Company.
+     * Create new Service.
      *
-     * Create a new child company for the requesting company.
+     * Create a new service for the requesting company.
      *
-     * @apiEndpoint POST /companies
-     * @apiGroup Company
+     * @apiEndpoint POST /services
+     * @apiGroup Company Service
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      *
@@ -105,29 +103,29 @@ class Companies implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/createNew.md
+     * @link docs/services/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::createNew
+     * @see App\Controller\Services::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies',
-                'App\Controller\Companies:createNew'
+                '/services',
+                'App\Controller\Services:createNew'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PUBLIC_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:createNew');
+            ->setName('service:createNew');
     }
 
     /**
-     * Delete all Companies.
+     * Deletes all service.
      *
-     * Delete all child companies that belong to the requesting company.
+     * Deletes all services that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies
-     * @apiGroup Company
+     * @apiEndpoint DELETE /services
+     * @apiGroup Company Service
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      *
@@ -136,110 +134,115 @@ class Companies implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/deleteAll.md
+     * @link docs/services/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::deleteAll
+     * @see App\Controller\Services::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies',
-                'App\Controller\Companies:deleteAll'
+                '/services',
+                'App\Controller\Services:deleteAll'
             )
+            ->add($permission(CompanyPermission::PUBLIC_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:deleteAll');
+            ->setName('service:deleteAll');
     }
 
     /**
-     * Retrieve a single Company.
+     * Retrieve a single Service.
      *
-     * Retrieves all public information from a Company.
+     * Retrieves all public information from a Service.
      *
-     * @apiEndpoint GET /companies/{companySlug}
-     * @apiGroup Company
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpoint GET /services/{serviceId}
+     * @apiGroup Company Service
+     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiEndpointURIFragment  int  serviceId 12345
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/getOne.md
-     * @see App\Controller\Companies::getOne
+     * @link docs/services/getOne.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Services::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}',
-                'App\Controller\Companies:getOne'
+                '/services/{serviceId:[0-9]+}',
+                'App\Controller\Services:getOne'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::NONE))
-            ->setName('companies:getOne');
+            ->add($auth(Auth::COMP_PRIVKEY))
+            ->setName('service:getOne');
     }
 
     /**
-     * Update a single Company.
+     * Update a single Service.
      *
-     * Updates Company's specific information.
+     * Updates Service's specific information.
      *
-     * @apiEndpoint PUT /companies/{companySlug}
-     * @apiGroup Company
+     * @apiEndpoint PUT /services/{serviceId}
+     * @apiGroup Company Service
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int serviceId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/updateOne.md
+     * @link docs/services/updateOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::updateOne
+     * @see App\Controller\Services::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}',
-                'App\Controller\Companies:updateOne'
+                '/services/{serviceId:[0-9]+}',
+                'App\Controller\Services:updateOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PUBLIC_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:updateOne');
+            ->setName('service:updateOne');
     }
 
     /**
-     * Deletes a single Company.
+     * Deletes a single Service.
      *
-     * Deletes the requesting company or a child company that belongs to it.
+     * Deletes a single Service that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}
-     * @apiGroup Company
+     * @apiEndpoint DELETE /services/{serviceId}
+     * @apiGroup Company Service
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     *
+     * @apiEndpointURIFragment int serviceId 1
+     * 
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/deleteOne.md
+     * @link docs/services/deleteOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::deleteOne
+     * @see App\Controller\Services::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}',
-                'App\Controller\Companies:deleteOne'
+                '/services/{serviceId:[0-9]+}',
+                'App\Controller\Services:deleteOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PUBLIC_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
-            ->setName('companies:deleteOne');
+            ->setName('service:deleteOne');
     }
 }

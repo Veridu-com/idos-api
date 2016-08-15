@@ -77,7 +77,7 @@ class ServiceHandlers implements ControllerInterface {
         $body = [
             'data'    => $entities->toArray(),
             'updated' => (
-                $entities->isEmpty() ? time() : $entities->max('updated_at')
+                $entities->isEmpty() ? time() : max($entities->max('created_at'), $entities->max('updated_at'))
             )
         ];
 
@@ -91,12 +91,7 @@ class ServiceHandlers implements ControllerInterface {
     }
 
     /**
-     * Retrieves one ServiceHandler of the acting Company and service and has the given serviceHandlerSlug.
-     *
-     * @apiEndpointRequiredParam    route   string  service slug
-     * @apiEndpointRequiredParam    route   string  service handler slug
-     *
-     * @apiEndpointParam            query   int     page 10|1 Current page
+     * Retrieves one Service handler of the acting Company.
      *
      * @apiEndpointResponse 200 schema/services-handlers/getOne.json
      *
@@ -127,12 +122,8 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Creates a new ServiceHandler for the acting Company.
      *
-     * @apiEndpointRequiredParam    body    string      name            Service handler's name.
-     * @apiEndpointRequiredParam    body    string      source          Service handler's source.
-     * @apiEndpointRequiredParam    body    string      location        Service handler's location.
-     * @apiEndpointRequiredParam    body    string      authUsername    Service handler's authUsername.
-     * @apiEndpointRequiredParam    body    string      authPassword    Service handler's authPassword.
-     * @apiEndpointRequiredParam    body    string      service         Service's slug.
+     * @apiEndpointRequiredParam    body    int     service_id      Service's id.
+     * @apiEndpointRequiredParam    body    array   listens         Service handler's listens property.
      *
      * @apiEndpointResponse 201 schema/services-handlers/createNew.json
      *
@@ -196,7 +187,7 @@ class ServiceHandlers implements ControllerInterface {
     }
 
     /**
-     * Deletes one Service handler of the acting Company based on path paramaters service slug and slug.
+     * Deletes one Service handler of the acting Company.
      *
      * @apiEndpointResponse 200 schema/services-handlers/deleteOne.json
      *
@@ -228,15 +219,10 @@ class ServiceHandlers implements ControllerInterface {
     }
 
     /**
-     * Updates one Service handler of the acting Company based on path paramaters service and slug.
+     * Updates one Service handler of the acting Company.
      *
-     * @apiEndpointRequiredParam    route   string      slug            Service handler's slug.
-     * @apiEndpointRequiredParam    route   string      service         Service's slug.
-     * @apiEndpointRequiredParam    body    string      name            Service handler's name.
-     * @apiEndpointRequiredParam    body    string      source          Service handler's source.
-     * @apiEndpointRequiredParam    body    string      location        Service handler's location.
-     * @apiEndpointRequiredParam    body    string      authUsername    Service handler's authUsername.
-     * @apiEndpointRequiredParam    body    string      authPassword    Service handler's authPassword.
+     * @apiEndpointParam    body    string      name            Service handler's name.
+     * @apiEndpointParam    body    array      listens          Service handler's listens.
      *
      * @apiEndpointResponse 200 schema/services-handlers/updateOne.json
      *

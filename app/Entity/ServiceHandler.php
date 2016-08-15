@@ -18,13 +18,8 @@ use App\Extension\SecureFields;
  *
  * @property int        $id
  * @property int        $company_id
- * @property int        $service_slug
- * @property string     $name
- * @property string     $slug
- * @property string     $source
- * @property string     $location
- * @property string     $auth_username
- * @property string     $auth_password
+ * @property int        $service_id
+ * @property array      $listens
  * @property int        $created_at
  * @property int        $updated_at
  */
@@ -64,7 +59,7 @@ class ServiceHandler extends AbstractEntity {
      *
      * @var array
      */
-    protected $secure = ['auth_username', 'auth_password', 'location'];
+    protected $secure = ['username', 'password'];
 
     /**
      * {@inheritdoc}

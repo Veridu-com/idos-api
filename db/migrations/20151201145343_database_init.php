@@ -403,11 +403,12 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('company_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('url', 'text', ['null' => false])
-            ->addColumn('username', 'text', ['null' => false])
-            ->addColumn('password', 'text', ['null' => false])
+            ->addColumn('auth_username', 'text', ['null' => false])
+            ->addColumn('auth_password', 'text', ['null' => false])
             ->addColumn('listens', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addColumn('triggers', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
+            ->addColumn('access', 'integer', ['null' => false, 'default' => 1]) // 0x00 => 'private', 0x01 => 'company' (visible by children), 0x02 => 'public'
             ->addTimestamps()
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();

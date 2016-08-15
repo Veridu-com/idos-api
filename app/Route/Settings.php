@@ -86,7 +86,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
                 'App\Controller\Settings:listAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:listAll');
     }
@@ -118,7 +118,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
                 'App\Controller\Settings:createNew'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:createNew');
     }
@@ -150,7 +150,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
                 'App\Controller\Settings:deleteAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:deleteAll');
     }
@@ -184,7 +184,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:getOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:getOne');
     }
@@ -218,7 +218,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:updateOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:updateOne');
     }
@@ -252,7 +252,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:deleteOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('settings:deleteOne');
     }

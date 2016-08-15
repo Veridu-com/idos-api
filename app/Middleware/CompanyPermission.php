@@ -20,11 +20,13 @@ use Psr\Http\Message\ServerRequestInterface;
  * Scope: Route.
  * This middleware is responsible to add a "allowed" parameter on the $response object.
  *
- * FIXME Remove Container injection!
  */
 class CompanyPermission implements MiddlewareInterface {
-    const PUBLIC_ACTION     =    'public';
-    const PRIVATE_ACTION    =    'private';
+    // only authorized companies can access the endpoint, controlled by App\Repository\PermissionInterface
+    const PROTECTED_ACTION =    'protected';
+    
+    // won't test anything, the endpoint should be responsible for granting 
+    const PUBLIC_ACTION    =    'private';
 
     private $container;
     private $permissionType;
@@ -53,11 +55,11 @@ class CompanyPermission implements MiddlewareInterface {
         $routeName                = $request->getAttribute('route')->getName();
         $response                 = $this->allow($response);
 
-        if ($this->permissionType === self::PRIVATE_ACTION) {
+        if ($this->permissionType === self::PROTECTED_ACTION) {
             try {
                 $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
             } catch (NotFound $e) {
-                throw new NotAllowed();
+                throw new NotAllowed;
             }
         }
 

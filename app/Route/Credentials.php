@@ -86,7 +86,7 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials',
                 'App\Controller\Credentials:listAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('credentials:listAll');
     }
@@ -118,7 +118,7 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials',
                 'App\Controller\Credentials:createNew'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('credentials:createNew');
     }
@@ -150,7 +150,7 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials',
                 'App\Controller\Credentials:deleteAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('credentials:deleteAll');
     }
@@ -183,7 +183,7 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:getOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('credentials:getOne');
     }
@@ -216,7 +216,7 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:updateOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('credentials:updateOne');
     }
@@ -249,7 +249,7 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:deleteOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(CompanyPermission::PROTECTED_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('credentials:deleteOne');
     }

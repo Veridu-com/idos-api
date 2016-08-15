@@ -58,10 +58,10 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function query($table = null) : Builder {
+    protected function query($table = null, $entityName = null) : Builder {
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
-            $this->getEntityClassName(),
+            ($entityName) ? $entityName : $this->getEntityClassName(),
             [
                 [],
                 $this->optimus
@@ -213,6 +213,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     public function findBy(array $constraints, array $queryParams = []) : Collection {
         $query = $this->query();
+        
         foreach ($constraints as $key => $value) {
             $query = $query->where($key, $value);
         }
