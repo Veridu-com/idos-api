@@ -30,6 +30,9 @@ clean:
 reset: clean
 	docker-compose up
 
+remove-all:
+	docker rm $(docker ps -a -q)
+
 web-bash:
 	docker exec --interactive --tty ${WEBSRV} bash
 
