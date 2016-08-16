@@ -58,11 +58,11 @@ cd -
 # builds idos/manager/php
 if [ -d "docker/idos/manager/php/idos-manager" ]; then
     cd docker/idos/manager/php/idos-manager/
-    git pull origin master
+    git pull origin dev
     cd -
 else
     cd docker/idos/manager/php
-    git clone git@bitbucket.org:veridu/idos-manager.git
+    git clone git@bitbucket.org:veridu/idos-manager.git -b dev
     cd -
 fi
 cd docker/idos/manager/php
