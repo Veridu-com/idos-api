@@ -23,10 +23,10 @@ use Psr\Http\Message\ServerRequestInterface;
  * -FIXME Remove Container injection!
  */
 class CompanyPermission implements MiddlewareInterface {
-    const SELF_ACTION    =    'self';
-    const PARENT_ACTION  =    'parent';
-    const PUBLIC_ACTION  =    'public';
-    const PRIVATE_ACTION =    'private';
+    const PUBLIC_ACTION  = 0x00;
+    const SELF_ACTION    = 0x01;
+    const PARENT_ACTION  = 0x02;
+    const PRIVATE_ACTION = 0x04;
 
     private $container;
     private $permissionType;
@@ -55,30 +55,30 @@ class CompanyPermission implements MiddlewareInterface {
         $routeName                = $request->getAttribute('route')->getName();
         $response                 = $this->allow($response);
 
-        if ($this->permissionType === self::PRIVATE_ACTION) {
+        if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
             try {
                 $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
             } catch (NotFound $e) {
                 throw new NotAllowed;
             }
         }
-        
-        if ($this->permissionType === self::SELF_ACTION || $this->permissionType === self::SELF_OR_PARENT_ACTION) {
-            $allowed = false;
-            $targetCompany = $request->getAttribute('targetCompany');
 
-            if ($targetCompany->id == $actingCompany->id) {
-                $allowed = true;
-            } else {
-                // if it is a parent
-                $companyRepository     = $this->container->get('repositoryFactory')->create('Company');
-                $allowed = $companyRepository->isParent($actingCompany, $targetCompany);
+        if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
+            $targetCompany = $request->getAttribute('targetCompany');
+            if ($targetCompany->id !== $actingCompany->id) {
+                throw new NotAllowed;
             }
+        }
+        
+        if (($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
+            $targetCompany = $request->getAttribute('targetCompany');
+            $companyRepository     = $this->container->get('repositoryFactory')->create('Company');
+
+            $allowed = $companyRepository->isParent($actingCompany, $targetCompany);
 
             if (! $allowed) {
                 throw new NotAllowed;
             }
-
         }
 
         return $next($request, $response);
