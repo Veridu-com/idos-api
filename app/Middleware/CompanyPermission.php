@@ -54,7 +54,7 @@ class CompanyPermission implements MiddlewareInterface {
         $permissionRepository     = $this->container->get('repositoryFactory')->create('Permission');
         $routeName                = $request->getAttribute('route')->getName();
         $response                 = $this->allow($response);
-
+        
         if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
             try {
                 $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
@@ -62,7 +62,7 @@ class CompanyPermission implements MiddlewareInterface {
                 throw new NotAllowed;
             }
         }
-
+        
         if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
             $targetCompany = $request->getAttribute('targetCompany');
             if ($targetCompany->id !== $actingCompany->id) {
