@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Hook response payload",
+            "type": "object",
+            "$ref": "hookEntity.json"
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}
