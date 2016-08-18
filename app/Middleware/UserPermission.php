@@ -98,6 +98,7 @@ class UserPermission implements MiddlewareInterface {
 
         if (! $targetUser) {
             $response = $this->allow($response);
+
             return $next($request, $response);
         }
 
@@ -109,7 +110,7 @@ class UserPermission implements MiddlewareInterface {
             $access = $this->getAccessFromRole($targetUser->identityId, $role, $this->resource);
 
             if (($this->accessLevel & $access) !== $this->accessLevel) {
-                throw new NotAllowed;
+                throw new NotAllowed();
             }
         }
 
