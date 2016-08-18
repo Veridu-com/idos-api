@@ -27,10 +27,10 @@ class Companies implements RouteInterface {
         return [
             'companies:listAll',
             'companies:createNew',
-            'companies:deleteAll',
             'companies:getOne',
             'companies:updateOne',
-            'companies:deleteOne'
+            'companies:deleteOne',
+            'companies:deleteAll',
         ];
     }
 
@@ -141,12 +141,13 @@ class Companies implements RouteInterface {
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Companies::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth) {
+    private static function deleteAll(App $app, callable $auth,  callable $permission) {
         $app
             ->delete(
                 '/companies',
                 'App\Controller\Companies:deleteAll'
             )
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:deleteAll');
     }
