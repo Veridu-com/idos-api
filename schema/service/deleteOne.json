@@ -1,11 +1,11 @@
-    {
+{
     "$schema" : "http://json-schema.org/draft-04/schema#",
-    "title": "DELETE /companies/{companySlug}/settings/{section}/{property}",
+    "title": "DELETE /services/{serviceId}",
     "type": "object",
     "properties": {
         "status": {
-            "description": "Response status flag",
-            "type": "boolean"
+          "description": "Response status flag",
+          "type": "boolean"
         }
     },
     "required": [

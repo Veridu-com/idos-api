@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\ServiceHandler;
+namespace Test\Functional\Service;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
@@ -16,7 +16,7 @@ class CreateNewTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/service-handlers';
+        $this->uri        = '/1.0/services';
     }
 
     public function testSuccess() {
@@ -30,19 +30,26 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    "service_id" => 1860914067,
-                    "listens"=> [
+                    "name"  => "New service name",
+                    "url"  => "http://service-url.com",
+                    "enabled" => true,
+                    "access"  => 1,
+                    "auth_username" => "idos",
+                    "auth_password" => "secret",
+                    "listens" => [
                         "source.add.facebook"
-                    ]
+                    ],
+                    "triggers" => [
+                        "source.scraper.facebook.finished"
+                    ]                    
                 ]
             )
         );
 
         $response = $this->process($request);
-
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
+
         $this->assertEquals(201, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertNotEmpty($body['data']);
@@ -52,7 +59,7 @@ class CreateNewTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'serviceHandler/createNew.json',
+                'service/createNew.json',
                 json_decode($response->getBody())
             ),
                 $this->schemaErrors

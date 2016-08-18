@@ -83,16 +83,18 @@ class OptimusDecode implements MiddlewareInterface {
     ) : ResponseInterface {
         $routeParams = $request->getAttribute('routeInfo')[2];
 
-        // decode route parameters
-        foreach ($routeParams as $key => $value) {
-            if ($this->matchDecodableKey($key)) {
-                $request = $request->withAttribute($this->getDecodedName($key), $this->optimus->decode($value));
+        // decode route params
+        if (is_array($routeParams)) {
+            // decode route parameters
+            foreach ($routeParams as $key => $value) {
+                if ($this->matchDecodableKey($key)) {
+                    $request = $request->withAttribute($this->getDecodedName($key), $this->optimus->decode($value));
+                }
             }
         }
 
-        $parsedBody = $request->getParsedBody();
-
         // decode request body parameters
+        $parsedBody = $request->getParsedBody();
         if (is_array($parsedBody)) {
             // adds decoded values to $parsedBody
             foreach ($parsedBody as $key => $value) {

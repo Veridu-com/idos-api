@@ -43,6 +43,7 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
         'services.listens as service.listens',
         'services.triggers as service.triggers',
         'services.enabled as service.enabled',
+        'services.access as service.access',
         'services.created_at as service.created_at',
         'services.updated_at as service.updated_at',
     ];

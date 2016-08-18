@@ -169,11 +169,18 @@ class Service implements HandlerInterface {
             throw new NotAllowed();
         }
 
+        $backup = $entity->toArray();
+
         foreach ($input as $key => $value) {
             $entity->$key = $value;
         }
 
-        $success = $this->repository->save($entity);
+        if ($backup != $entity->toArray()) {
+            $entity->updatedAt = time();
+            $this->repository->save($entity);
+        }
+
+
 
         return $entity;
     }

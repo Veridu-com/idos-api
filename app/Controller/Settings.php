@@ -101,7 +101,7 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId       = $request->getAttribute('decodedSettingId');
+        $settingId       = (int) $request->getAttribute('decodedSettingId');
         $setting         = $this->repository->find($settingId);
 
         $body = [

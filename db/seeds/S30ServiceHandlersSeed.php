@@ -22,13 +22,7 @@ class S30ServiceHandlersSeed extends AbstractSeed {
                 'service_id'    => 2, // data-mapper
                 'listens'       => json_encode(['idos:scraper.facebook.completed']),
                 'created_at'    => $now
-            ],
-            [
-                'company_id'    => 1,
-                'service_id'    => 3, // data-mapper
-                'listens'       => json_encode(['idos:feature-extractor.facebook.completed']),
-                'created_at'    => $now
-            ],
+            ]
         ];
 
         $service_handlers = $this->table('service_handlers');

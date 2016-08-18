@@ -4,42 +4,37 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Setting;
+namespace Test\Functional\Service;
 
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
 
-class UpdateOneTest extends AbstractFunctional {
+class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
 
     protected function setUp() {
-        $this->httpMethod = 'PUT';
-        $this->populate('/1.0/companies/veridu-ltd/settings');
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/companies/veridu-ltd/settings/%s', $this->entity['id']);
+        $this->httpMethod = 'DELETE';
+        $this->uri        = '/1.0/service-handlers/1321189817';
     }
 
     public function testSuccess() {
-        $environment = $this->createEnvironment(['HTTP_CONTENT_TYPE' => 'application/json']);
-
-        $request = $this->createRequest($environment, json_encode(['value' => 'New biscuit']));
-
-        $response = $this->process($request);
-
-        $body = json_decode($response->getBody(), true);
-
+        $request            = $this->createRequest($this->createEnvironment());
+        $response           = $this->process($request);
+        $body               = json_decode($response->getBody(), true);
         // assertions
+        
         $this->assertNotEmpty($body);
+        $response->getStatusCode();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
+
+
         /*
          * Validates Json Schema with Json Response
          */
         $this->assertTrue(
             $this->validateSchema(
-                'setting/updateOne.json',
+                'service/deleteOne.json',
                 json_decode($response->getBody())
             ),
             $this->schemaErrors
@@ -47,21 +42,10 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri   = sprintf('/1.0/companies/veridu-ltd/settings/29239203');
-        $environment = $this->createEnvironment(
-            [
-                'HTTP_CONTENT_TYPE' => 'application/json'
-            ]
-        );
-
-        $request = $this->createRequest(
-            $environment,
-            json_encode(['value' => 'New Prop. Value'])
-        );
-
-        $response = $this->process($request);
-
-        $body = json_decode($response->getBody(), true);
+        $this->uri          = sprintf('/1.0/service-handlers/12121212');
+        $request            = $this->createRequest($this->createEnvironment());
+        $response           = $this->process($request);
+        $body               = json_decode($response->getBody(), true);
 
         // assertions
         $this->assertNotEmpty($body);
@@ -79,4 +63,5 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
+
 }

@@ -75,7 +75,7 @@ class Services implements ControllerInterface {
         $body = [
             'data'    => $entities->toArray(),
             'updated' => (
-                $entities->isEmpty() ? time() : $entities->max('updated_at')
+                $entities->isEmpty() ? time() : max($entities->max('updated_at'), $entities->max('created_at'))
             )
         ];
 
@@ -100,7 +100,7 @@ class Services implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
-        $serviceId     = $request->getAttribute('decodedServiceId');
+        $serviceId     = (int) $request->getAttribute('decodedServiceId');
 
         $entity = $this->repository->findOne($serviceId, $actingCompany);
 

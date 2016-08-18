@@ -27,13 +27,21 @@ class DBServiceTest extends AbstractUnit {
             ->getMock();
     }
 
+    /**
+     * @group failing
+     */
     public function testGetAll() {
          $array = [
+            'id'         =>  null,
             'name'       => 'New Service',
-            'slug'       => 'new-service',
+            'url'        => 'url', 
+            'access'     => 0x01, 
+            'enabled'    => true, 
+            'listens'    => ['listen1', 'listen2'], 
+            'triggers'    => ['trigger1', 'trigger2'], 
             'enabled'    => true,
             'created_at' => time(),
-            // 'updated_at' => time()
+            'updated_at' => time()
          ];
 
         $factory = new Entity($this->optimus);

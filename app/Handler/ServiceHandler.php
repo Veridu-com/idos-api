@@ -117,11 +117,13 @@ class ServiceHandler implements HandlerInterface {
             }
         }, $command->listens);
 
-        // updates listen attribute
-        $entity->listens = $command->listens;
-
-        // save entity
-        $success = $this->repository->save($entity);
+        if ($entity->listens != $command->listens) {
+            // updates listen attribute
+            $entity->listens = $command->listens;
+            $entity->updatedAt = time();
+            // save entity
+            $success = $this->repository->save($entity);
+        }
 
         return $entity;
     }

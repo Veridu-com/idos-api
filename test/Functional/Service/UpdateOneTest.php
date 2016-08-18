@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Setting;
+namespace Test\Functional\Service;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
@@ -16,38 +16,10 @@ class UpdateOneTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
-        $this->populate('/1.0/companies/veridu-ltd/settings');
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/companies/veridu-ltd/settings/%s', $this->entity['id']);
+        $this->uri        = '/1.0/services/1321189817';
     }
 
     public function testSuccess() {
-        $environment = $this->createEnvironment(['HTTP_CONTENT_TYPE' => 'application/json']);
-
-        $request = $this->createRequest($environment, json_encode(['value' => 'New biscuit']));
-
-        $response = $this->process($request);
-
-        $body = json_decode($response->getBody(), true);
-
-        // assertions
-        $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertTrue($body['status']);
-        /*
-         * Validates Json Schema with Json Response
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'setting/updateOne.json',
-                json_decode($response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testNotFound() {
-        $this->uri   = sprintf('/1.0/companies/veridu-ltd/settings/29239203');
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json'
@@ -56,15 +28,63 @@ class UpdateOneTest extends AbstractFunctional {
 
         $request = $this->createRequest(
             $environment,
-            json_encode(['value' => 'New Prop. Value'])
+            json_encode(
+                [
+                    'listens' => [
+                        'idos:source.facebook.added'
+                    ]
+                ]
+            )
         );
 
         $response = $this->process($request);
 
         $body = json_decode($response->getBody(), true);
 
-        // assertions
         $this->assertNotEmpty($body);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertTrue($body['status']);
+        $this->assertSame(['idos:source.facebook.added'], $body['data']['listens']);
+
+        /*
+         * Validates Json Schema against Json Response'
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'service/updateOne.json',
+                json_decode($response->getBody())
+            ),
+                $this->schemaErrors
+            );
+
+    }
+
+    public function testNotFound() {
+        $this->uri = '/1.0/services/13211898171';
+
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE' => 'application/json'
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'listens' => [
+                        'dummy:listens'
+                    ]
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+
+        $body = json_decode($response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
@@ -79,4 +99,5 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
+
 }

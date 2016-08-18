@@ -94,76 +94,6 @@ class SettingsTest extends AbstractUnit {
         $this->assertSame($responseMock, $settingsMock->listAll($requestMock, $responseMock));
     }
 
-    public function testListAllFromSection() {
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $requestMock = $this->getMockBuilder(Request::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getAttribute'])
-            ->getMock();
-        $requestMock
-            ->expects($this->exactly(2))
-            ->method('getAttribute')
-            ->will(
-                $this->onConsecutiveCalls(
-                    $this->returnValue(
-                        new Company(
-                            ['id' => 1],
-                            $optimus
-                        )
-                    ),
-                    'section'
-                )
-            );
-
-        $responseMock = $this->getMockBuilder(Response::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $repositoryMock = $this->getMockBuilder(DBSetting::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getAllByCompanyIdAndSection'])
-            ->getMock();
-        $repositoryMock
-            ->method('getAllByCompanyIdAndSection')
-            ->will(
-                $this->returnValue(
-                    new Collection(
-                        [
-                            'section'    => 'section',
-                            'updated_at' => time()
-                        ]
-                    )
-                )
-            );
-
-        $commandBus = $this->getMockBuilder(CommandBus::class)
-            ->disableOriginalConstructor()
-            ->setMethods([])
-            ->getMock();
-        $commandBus
-            ->expects($this->once())
-            ->method('handle')
-            ->will($this->returnValue($responseMock));
-
-        $commandFactory = $this->getMockBuilder(Command::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['create'])
-            ->getMock();
-        $commandFactory
-            ->expects($this->once())
-            ->method('create')
-            ->will($this->returnValue(new ResponseDispatch()));
-
-        $settingsMock = $this->getMockBuilder(Settings::class)
-            ->setConstructorArgs([$repositoryMock, $commandBus, $commandFactory, $optimus])
-            ->setMethods(null)
-            ->getMock();
-
-        $this->assertSame($responseMock, $settingsMock->listAllFromSection($requestMock, $responseMock));
-    }
-
     public function testGetOne() {
         $optimus = $this->getMockBuilder(Optimus::class)
             ->disableOriginalConstructor()
@@ -173,14 +103,12 @@ class SettingsTest extends AbstractUnit {
             ->setMethods(['getAttribute'])
             ->getMock();
         $requestMock
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(1))
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(
                     $this->returnValue(
-                        new Company(
-                            ['id' => 1], $optimus
-                        )
+                        "1"
                     ),
                     'section',
                     'propName'
@@ -193,10 +121,10 @@ class SettingsTest extends AbstractUnit {
 
         $repositoryMock = $this->getMockBuilder(DBSetting::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findOne'])
+            ->setMethods(['find'])
             ->getMock();
         $repositoryMock
-            ->method('findOne')
+            ->method('find')
             ->will(
                 $this->returnValue(
                     new SettingEntity(
@@ -394,14 +322,12 @@ class SettingsTest extends AbstractUnit {
             ->setMethods(['getAttribute'])
             ->getMock();
         $requestMock
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(1))
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(
                     $this->returnValue(
-                        new Company(
-                            ['id' => 1], $optimus
-                        )
+                        "1"
                     ),
                     'section',
                     'propName'
@@ -457,7 +383,7 @@ class SettingsTest extends AbstractUnit {
             ->setMethods(['getAttribute', 'getParsedBody'])
             ->getMock();
         $requestMock
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(1))
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(

@@ -102,7 +102,7 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceHandlerId   = $request->getAttribute('decodedServiceHandlerId');
+        $serviceHandlerId   = (int) $request->getAttribute('decodedServiceHandlerId');
 
         $entity = $this->repository->findOne($actingCompany->id, $serviceHandlerId);
 
@@ -206,7 +206,7 @@ class ServiceHandlers implements ControllerInterface {
             ->setParameter('serviceHandlerId', $serviceHandlerId);
 
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'status' => (bool) $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -244,8 +244,7 @@ class ServiceHandlers implements ControllerInterface {
         $entity = $this->commandBus->handle($command);
 
         $body = [
-            'data'    => $entity->toArray(),
-            'updated' => $entity->updated_at
+            'data'    => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

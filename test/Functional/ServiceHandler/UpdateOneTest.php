@@ -16,7 +16,7 @@ class UpdateOneTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/service-handlers/email/veridu-email-handler';
+        $this->uri        = '/1.0/service-handlers/1321189817';
     }
 
     public function testSuccess() {
@@ -30,12 +30,9 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'         => 'MyCompany x Handler',
-                    'source'       => 'My lockd source',
-                    'service'      => 'email',
-                    'location'     => 'http://localhost:8001',
-                    'authUsername' => 'sodi',
-                    'authPassword' => 'terces'
+                    'listens' => [
+                        'idos:source.facebook.added'
+                    ]
                 ]
             )
         );
@@ -45,10 +42,9 @@ class UpdateOneTest extends AbstractFunctional {
         $body = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
-        $this->assertSame('MyCompany x Handler', $body['data']['name']);
+        $this->assertSame(['idos:source.facebook.added'], $body['data']['listens']);
 
         /*
          * Validates Json Schema against Json Response'
@@ -64,7 +60,7 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/service-handlers/dummy/dummy-service-slug';
+        $this->uri = '/1.0/service-handlers/13211898171';
 
         $environment = $this->createEnvironment(
             [
@@ -76,12 +72,9 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'         => 'MyCompany x Handler',
-                    'source'       => 'My lockd source',
-                    'service'      => 'email',
-                    'location'     => 'http://localhost:8001',
-                    'authUsername' => 'sodi',
-                    'authPassword' => 'terces'
+                    'listens' => [
+                        'dummy:listens'
+                    ]
                 ]
             )
         );

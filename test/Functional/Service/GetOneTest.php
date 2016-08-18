@@ -4,45 +4,41 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\ServiceHandler;
+namespace Test\Functional\Service;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
 
-class DeleteOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-
+class GetOneTest extends AbstractFunctional {
     protected function setUp() {
-        $this->httpMethod = 'DELETE';
+        $this->httpMethod = 'GET';
         $this->uri        = '/1.0/services/1321189817';
     }
 
     public function testSuccess() {
-        $request            = $this->createRequest($this->createEnvironment());
-        $response           = $this->process($request);
-        $body               = json_decode($response->getBody(), true);
-        // assertions
-        
+        $request    = $this->createRequest($this->createEnvironment());
+        $response   = $this->process($request);
+        $body       = json_decode($response->getBody(), true);
+
         $this->assertNotEmpty($body);
-        $response->getStatusCode();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
-
         /*
-         * Validates Json Schema with Json Response
+         * Validates Json Schema against Json Response'
          */
         $this->assertTrue(
             $this->validateSchema(
-                'service/deleteOne.json',
+                'service/getOne.json',
                 json_decode($response->getBody())
             ),
             $this->schemaErrors
         );
+
     }
 
     public function testNotFound() {
-        $this->uri          = sprintf('/1.0/service-handlers/12121212');
+        $this->uri = '/1.0/services/13211898171';
+
         $request            = $this->createRequest($this->createEnvironment());
         $response           = $this->process($request);
         $body               = json_decode($response->getBody(), true);
