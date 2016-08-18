@@ -8,46 +8,53 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Extension\SecureFields;
+
 /**
- * Service's Entity.
+ * Hooks Entity.
  *
- * @apiEntity schema/service/serviceEntity.json
- *
- * @property int        $id
- * @property string     $name
- * @property string     $url
- * @property array      $listens
- * @property array      $triggers
- * @property bool       $enabled
- * @property int        $created_at
- * @property int        $updated_at
+ * @apiEntity schema/hook/hookEntity.json
  */
-class Service extends AbstractEntity {
+class Hook extends AbstractEntity {
+    use SecureFields;
     /**
-     * Cache prefix.
+     * {@inheritdoc}
      */
-    const CACHE_PREFIX = 'Service';
+    const CACHE_PREFIX = 'Hook';
 
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'url', 'enabled', 'listens', 'triggers', 'created_at', 'updated_at'];
-
+    protected $visible = ['id', 'trigger', 'url', 'subscribed', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
     /**
      * {@inheritdoc}
      */
-    protected $json = ['listens', 'triggers'];
+    protected $secure = ['url'];
 
     /**
      * {@inheritdoc}
      */
     public function getCacheKeys() : array {
         return [
+            sprintf(
+                '%s/id/%s',
+                self::CACHE_PREFIX,
+                $this->id
+            ),
+            sprintf(
+                '%s/slug/%s',
+                self::CACHE_PREFIX,
+                $this->slug
+            ),
+            sprintf(
+                '%s/public/%s',
+                self::CACHE_PREFIX,
+                $this->public
+            )
         ];
     }
 
@@ -59,4 +66,5 @@ class Service extends AbstractEntity {
         ],
         $this->getCacheKeys());
     }
+
 }

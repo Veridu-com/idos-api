@@ -6,27 +6,33 @@
 
 declare(strict_types=1);
 
-namespace App\Command\Company;
+namespace App\Command\Hook;
 
 use App\Command\AbstractCommand;
 
 /**
- * Company "Delete One" Command.
+ * Hook "Delete All" Command.
  */
-class DeleteOne extends AbstractCommand {
+class DeleteAll extends AbstractCommand {
     /**
-     * Company Id to be deleted.
+     * Credential public key.
+     *
+     * @var string
+     */
+    public $credentialPubKey;
+    /**
+     * Company.
      *
      * @var App\Entity\Company
      */
     public $company;
-
     /**
      * {@inheritdoc}
-     *
-     * @return App\Command\Company\DeleteOne
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['credentialPubKey'])) {
+            $this->credentialPubKey = $parameters['credentialPubKey'];
+        }
         if (isset($parameters['company'])) {
             $this->company = $parameters['company'];
         }

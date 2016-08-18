@@ -9,28 +9,29 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Factory\Command;
-use App\Repository\CompanyInterface;
-use Jenssegers\Optimus\Optimus;
+use App\Repository\CompanyServiceHandlerInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies and /companies/{companySlug}.
+ * Handles requests to /company-service-handlers.
  */
-class Companies implements ControllerInterface {
+class CompanyServiceHandlers implements ControllerInterface {
     /**
-     * Company Repository instance.
+     * CompanyServiceHandler Repository instance.
      *
-     * @var App\Repository\CompanyInterface
+     * @var App\Repository\CompanyServiceHandlerInterface
      */
     private $repository;
+
     /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
      */
     private $commandBus;
+
     /**
      * Command Factory instance.
      *
@@ -41,31 +42,28 @@ class Companies implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CompanyInterface $repository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param App\Repository\CompanyServiceHandlerInterface $repository
+     * @param \League\Tactician\CommandBus                  $commandBus
+     * @param App\Factory\Command                           $commandFactory
      *
      * @return void
      */
     public function __construct(
-        CompanyInterface $repository,
+        CompanyServiceHandlerInterface $repository,
         CommandBus $commandBus,
-        Command $commandFactory,
-        Optimus $optimus
+        Command $commandFactory
     ) {
         $this->repository     = $repository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
-        $this->optimus        = $optimus;
     }
 
     /**
-     * List all child Companies that belongs to the Acting Company.
+     * Lists all Service handlers that belongs to the acting Company.
      *
-     * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Company creation date (lower bound)
-     * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Company creation date (upper bound)
-     * @apiEndpointParam query int page 10|1 Current page
-     * @apiEndpointResponse 200 schema/company/listAll.json
+     * @apiEndpointParam    query   int     page 10|1 Current page
+     * 
+     * @apiEndpointResponse 200 schema/company-service-handlers/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -74,12 +72,12 @@ class Companies implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
-        $companies     = $this->repository->getAllByParentId($actingCompany->id);
+        $entities      = $this->repository->getAllByCompanyId($actingCompany->id);
 
         $body = [
-            'data'    => $companies->toArray(),
+            'data'    => $entities->toArray(),
             'updated' => (
-                $companies->isEmpty() ? time() : $companies->max('updated_at')
+                $entities->isEmpty() ? time() : $entities->max('updated_at')
             )
         ];
 
@@ -93,23 +91,26 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Retrieves the Target Company, a child of the Acting Company.
-     *
-     * @apiEndpointResponse 200 schema/company/getOne.json
+     * Retrieves one CompanyServiceHandler of the acting Company and has the given id.
+     * 
+     * @apiEndpointRequiredParam    route   int     id
+     * @apiEndpointParam            query   int     page 10|1 Current page
+     * 
+     * @apiEndpointResponse 200 schema/company-services-handlers/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
-     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $actingCompany = $request->getAttribute('actingCompany');
+        $id            = (int) $request->getAttribute('id');
+
+        $entity = $this->repository->findOne($id, $actingCompany->id);
 
         $body = [
-            'data'    => $targetCompany->toArray(),
-            'updated' => $targetCompany->updated_at
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -122,10 +123,11 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Creates a new child Company for the Acting Company.
+     * Creates a new CompanyServiceHandler for the acting Company.
      *
-     * @apiEndpointRequiredParam body string name NewCo. Company name
-     * @apiEndpointResponse 201 schema/company/createNew.json
+     * @apiEndpointRequiredParam    body    int     service_handler_id     Service handler's id.    
+     * 
+     * @apiEndpointResponse 201 schema/company-services-handlers/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -135,31 +137,32 @@ class Companies implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
 
-        $command = $this->commandFactory->create('Company\\CreateNew');
+        $command = $this->commandFactory->create('CompanyServiceHandler\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('parentId', $actingCompany->id);
-        $company = $this->commandBus->handle($command);
+            ->setParameter('companyId', $actingCompany->id);
+
+        $entity = $this->commandBus->handle($command);
 
         $body = [
-            'data' => $company->toArray()
+            'status' => true,
+            'data'   => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
+            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
-            ->setParameter('body', $body)
-            ->setParameter('statusCode', 201);
+            ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
-
     }
 
     /**
-     * Deletes all child Companies that belongs to the Acting Company.
+     * Deletes all Service handlers that belongs to the acting Company.
      *
-     * @apiEndpointResponse 200 schema/company/deleteAll.json
+     * @apiEndpointResponse 200 schema/company-services-handlers/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -169,12 +172,11 @@ class Companies implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
 
-        $command = $this->commandFactory->create('Company\\DeleteAll');
-        $command->setParameter('parentId', $actingCompany->id);
-        $deleted = $this->commandBus->handle($command);
+        $command = $this->commandFactory->create('CompanyServiceHandler\\DeleteAll');
+        $command->setParameter('companyId', $actingCompany->id);
 
         $body = [
-            'deleted' => $deleted
+            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -187,64 +189,28 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Deletes the Target Company, a child of the Acting Company.
+     * Deletes one Company Service handler of the acting Company.
      *
-     * @apiEndpointResponse 200 schema/company/deleteOne.json
-     *
+     * @apiEndpointRequiredParam    route   int     id
+     * 
+     * @apiEndpointResponse 200 schema/company-services-handlers/deleteOne.json
+     * 
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @throws App\Exception\NotFound
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $actingCompany = $request->getAttribute('actingCompany');
+        $id            = (int) $request->getAttribute('id');
 
-        $command = $this->commandFactory->create('Company\\DeleteOne');
-        $command->setParameter('company', $targetCompany);
-        $deleted = $this->commandBus->handle($command);
+        $command = $this->commandFactory->create('CompanyServiceHandler\\DeleteOne');
+        $command
+            ->setParameter('id', $id)
+            ->setParameter('companyId', $actingCompany->id);
 
         $body = [
-            'deleted' => $deleted
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Updates the Target Company, a child of the Acting Company.
-     *
-     * @apiEndpointRequiredParam body string name NewName New Company name
-     * @apiEndpointResponse 200 schema/company/updateOne.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     *
-     * @see App\Command\Company\UpdateOne
-     */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-
-        $command = $this->commandFactory->create('Company\\UpdateOne');
-        $command
-            ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetCompany->id);
-        $targetCompany = $this->commandBus->handle($command);
-
-        $body = [
-            'data'    => $targetCompany->toArray(),
-            'updated' => time()
+            'status' => (bool) $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

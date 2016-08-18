@@ -62,5 +62,4 @@ class DeleteOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }
