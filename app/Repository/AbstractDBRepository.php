@@ -241,15 +241,15 @@ abstract class AbstractDBRepository extends AbstractRepository {
         $pagination = $query->paginate($perPage, $columns, 'page', $page);
 
         return [
-            'pagination'    => [
-                'total'             => (int) $pagination->total(),
-                'per_page'          => (int) $pagination->perPage(),
-                'current_page'      => (int) $pagination->currentPage(),
-                'last_page'         => (int) $pagination->lastPage(),
-                'from'              => (int) $pagination->firstItem(),
-                'to'                => (int) $pagination->lastItem(),
+            'pagination' => [
+                'total'        => (int) $pagination->total(),
+                'per_page'     => (int) $pagination->perPage(),
+                'current_page' => (int) $pagination->currentPage(),
+                'last_page'    => (int) $pagination->lastPage(),
+                'from'         => (int) $pagination->firstItem(),
+                'to'           => (int) $pagination->lastItem(),
             ],
-            'collection'    => $pagination->getCollection()
+            'collection' => $pagination->getCollection()
         ];
 
     }
@@ -300,14 +300,14 @@ abstract class AbstractDBRepository extends AbstractRepository {
                 case 'string':
                     // starts or ends with "%"
                     if (preg_match('/.*%$|^%.*/', $value)) {
-                        $query =  $query->where($key, 'ilike', $value);
+                        $query = $query->where($key, 'ilike', $value);
                     } else {
-                        $query =  $query->where($key, $value);
+                        $query = $query->where($key, $value);
                     }
                     break;
 
                 default:
-                    $query =  $query->where($key, '=', $value);
+                    $query = $query->where($key, '=', $value);
                     break;
             }
 

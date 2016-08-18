@@ -220,10 +220,10 @@ class MemberTest extends AbstractUnit {
             new MemberValidator()
         );
 
-        $command                = new CreateNew();
-        $command->userName      = 'userName';
-        $command->role          = 'admin';
-        $command->credential    = 'pubKey';
+        $command             = new CreateNew();
+        $command->userName   = 'userName';
+        $command->role       = 'admin';
+        $command->credential = 'pubKey';
 
         $result = $handler->handleCreateNew($command);
         $this->assertSame($memberEntity, $result);
@@ -264,9 +264,9 @@ class MemberTest extends AbstractUnit {
             new MemberValidator()
         );
 
-        $command                 = new UpdateOne();
-        $command->role           = 'admin';
-        $command->memberId       = 1;
+        $command           = new UpdateOne();
+        $command->role     = 'admin';
+        $command->memberId = 1;
 
         $result = $handler->handleUpdateOne($command);
         $this->assertSame('admin', $result->role);

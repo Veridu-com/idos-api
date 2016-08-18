@@ -15,9 +15,9 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request    = $this->createRequest($this->createEnvironment());
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $request  = $this->createRequest($this->createEnvironment());
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertEquals(200, $response->getStatusCode());
@@ -39,9 +39,9 @@ class GetOneTest extends AbstractFunctional {
     public function testNotFound() {
         $this->uri = '/1.0/service-handlers/dummy/dummy-service-slug';
 
-        $request            = $this->createRequest($this->createEnvironment());
-        $response           = $this->process($request);
-        $body               = json_decode($response->getBody(), true);
+        $request  = $this->createRequest($this->createEnvironment());
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         // assertions
         $this->assertNotEmpty($body);

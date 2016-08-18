@@ -114,7 +114,7 @@ class Credentials implements ControllerInterface {
         $credential = $this->commandBus->handle($command);
 
         $body = [
-            'data'   => $credential->toArray()
+            'data' => $credential->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -12,16 +12,16 @@ class S32CompanyServiceHandlersSeed extends AbstractSeed {
 
         $data = [
             [
-                'company_id'            => 1,
-                'service_handler_id'    => 1,
-                'created_at'            => $now,
-                'updated_at'            => $now
+                'company_id'         => 1,
+                'service_handler_id' => 1,
+                'created_at'         => $now,
+                'updated_at'         => $now
             ],
             [
-                'company_id'            => 1,
-                'service_handler_id'    => 2,
-                'created_at'            => $now,
-                'updated_at'            => $now
+                'company_id'         => 1,
+                'service_handler_id' => 2,
+                'created_at'         => $now,
+                'updated_at'         => $now
             ],
         ];
 

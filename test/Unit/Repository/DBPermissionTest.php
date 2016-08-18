@@ -58,8 +58,8 @@ class DBPermissionTest extends AbstractUnit {
 
     public function testFindOne() {
         $array = [
-            'route_name'     => 'companies:listAll',
-            'created_at'     => time()
+            'route_name' => 'companies:listAll',
+            'created_at' => time()
         ];
 
         $factory = new Entity($this->optimus);

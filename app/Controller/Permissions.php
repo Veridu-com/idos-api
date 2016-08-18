@@ -68,11 +68,11 @@ class Permissions implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany    = $request->getAttribute('targetCompany');
-        $permissions      = $this->repository->getAllByCompanyId($targetCompany->id);
+        $targetCompany = $request->getAttribute('targetCompany');
+        $permissions   = $this->repository->getAllByCompanyId($targetCompany->id);
 
         $body = [
-            'data'    => $permissions->toArray(),
+            'data' => $permissions->toArray(),
             // TODO: Discuss with Flavio if this "updated" makes sense.
             // Should a deletion refresh it? How?
             'updated' => (
@@ -105,9 +105,9 @@ class Permissions implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany    = $request->getAttribute('targetCompany');
-        $section          = $request->getAttribute('section');
-        $permissions      = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
+        $targetCompany = $request->getAttribute('targetCompany');
+        $section       = $request->getAttribute('section');
+        $permissions   = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
 
         $body = [
             'data'    => $permissions->toArray(),
@@ -143,7 +143,7 @@ class Permissions implements ControllerInterface {
         $permission    = $this->repository->findOne($targetCompany->id, $routeName);
 
         $body = [
-            'data'    => $permission->toArray()
+            'data' => $permission->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -242,7 +242,7 @@ class Permissions implements ControllerInterface {
 
         $deleted = $this->commandBus->handle($command);
         $body    = [
-            'status'  => $deleted === 1
+            'status' => $deleted === 1
         ];
 
         $statusCode = $body['status'] ? 200 : 404;

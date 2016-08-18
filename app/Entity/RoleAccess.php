@@ -23,15 +23,15 @@ class RoleAccess extends AbstractEntity {
     /**
      * Cache prefix.
      */
-    const CACHE_PREFIX      = 'RoleAccess';
+    const CACHE_PREFIX = 'RoleAccess';
 
     /**
      * Access levels following UNIX file permission standard.
      */
-    const ACCESS_NONE       = 0x00;
-    const ACCESS_EXECUTE    = 0x01;
-    const ACCESS_WRITE      = 0x02;
-    const ACCESS_READ       = 0x04;
+    const ACCESS_NONE    = 0x00;
+    const ACCESS_EXECUTE = 0x01;
+    const ACCESS_WRITE   = 0x02;
+    const ACCESS_READ    = 0x04;
 
     /**
      * {@inheritdoc}

@@ -76,7 +76,7 @@ class RoleAccess implements ControllerInterface {
         $entities   = $this->repository->findByIdentity($actingUser->identity_id);
 
         $body = [
-            'data'    => $entities->toArray()
+            'data' => $entities->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -111,7 +111,7 @@ class RoleAccess implements ControllerInterface {
         $entities = $this->repository->findOne($actingUser->identity_id, $role, $resource);
 
         $body = [
-            'data'    => $entities->toArray()
+            'data' => $entities->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

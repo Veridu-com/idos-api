@@ -20,49 +20,49 @@ class Role extends AbstractEntity {
     /**
      * Cache prefix.
      */
-    const CACHE_PREFIX      = 'Role';
+    const CACHE_PREFIX = 'Role';
 
     /**
      * Company role.
      *
      * @var string
      */
-    const COMPANY  = 'company';
+    const COMPANY = 'company';
 
     /**
      * Company owner role.
      *
      * @var string
      */
-    const COMPANY_OWNER  = 'company.owner';
+    const COMPANY_OWNER = 'company.owner';
 
     /**
      * Company admin role.
      *
      * @var string
      */
-    const COMPANY_ADMIN  = 'company.admin';
+    const COMPANY_ADMIN = 'company.admin';
 
     /**
      * Company member role.
      *
      * @var string
      */
-    const COMPANY_MEMBER  = 'company.member';
+    const COMPANY_MEMBER = 'company.member';
 
     /**
      * User role.
      *
      * @var string
      */
-    const USER  = 'user';
+    const USER = 'user';
 
     /**
      * Guest role.
      *
      * @var string
      */
-    const GUEST  = 'guest';
+    const GUEST = 'guest';
 
     /**
      * {@inheritdoc}

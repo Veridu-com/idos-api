@@ -45,8 +45,8 @@ class UserPermission implements MiddlewareInterface {
      */
     private function getAccessFromRole(int $identityId, string $role, string $resource) : int {
         try {
-            $roleAccess             = $this->roleAccessRepository->findOne($identityId, $role, $resource);
-            $access                 = $roleAccess->access;
+            $roleAccess = $this->roleAccessRepository->findOne($identityId, $role, $resource);
+            $access     = $roleAccess->access;
         } catch (NotFound $e) {
             // fallbacks to default permission
             $access = $this->defaultPermissions[$role];
@@ -63,17 +63,17 @@ class UserPermission implements MiddlewareInterface {
      * @param string                              $accessLevel          The access level
      */
     public function __construct(RoleAccessInterface $roleAccessRepository, string $resource, string $accessLevel) {
-        $this->roleAccessRepository     = $roleAccessRepository;
-        $this->resource                 = $resource;
-        $this->accessLevel              = (int) $accessLevel;
+        $this->roleAccessRepository = $roleAccessRepository;
+        $this->resource             = $resource;
+        $this->accessLevel          = (int) $accessLevel;
 
-        $this->defaultPermissions   = [
-            Role::COMPANY           => RoleAccess::ACCESS_READ | RoleAccess::ACCESS_WRITE | RoleAccess::ACCESS_EXECUTE,
-            Role::COMPANY_ADMIN     => RoleAccess::ACCESS_READ,
-            Role::COMPANY_OWNER     => RoleAccess::ACCESS_READ,
-            Role::COMPANY_MEMBER    => RoleAccess::ACCESS_READ,
-            Role::USER              => RoleAccess::ACCESS_READ,
-            Role::GUEST             => RoleAccess::ACCESS_READ
+        $this->defaultPermissions = [
+            Role::COMPANY        => RoleAccess::ACCESS_READ | RoleAccess::ACCESS_WRITE | RoleAccess::ACCESS_EXECUTE,
+            Role::COMPANY_ADMIN  => RoleAccess::ACCESS_READ,
+            Role::COMPANY_OWNER  => RoleAccess::ACCESS_READ,
+            Role::COMPANY_MEMBER => RoleAccess::ACCESS_READ,
+            Role::USER           => RoleAccess::ACCESS_READ,
+            Role::GUEST          => RoleAccess::ACCESS_READ
         ];
     }
 
@@ -89,12 +89,12 @@ class UserPermission implements MiddlewareInterface {
      * @return Function Next callable function
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
-        $actingUser     = $request->getAttribute('actingUser');
-        $targetUser     = $request->getAttribute('targetUser');
-        $actingCompany  = $request->getAttribute('actingCompany');
+        $actingUser    = $request->getAttribute('actingUser');
+        $targetUser    = $request->getAttribute('targetUser');
+        $actingCompany = $request->getAttribute('actingCompany');
 
-        $routeName                = $request->getAttribute('route')->getName();
-        $allowed                  = false;
+        $routeName = $request->getAttribute('route')->getName();
+        $allowed   = false;
 
         if (! $targetUser) {
             return $next($request, $response);

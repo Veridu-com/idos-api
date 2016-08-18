@@ -91,18 +91,18 @@ class DBSettingTest extends AbstractUnit {
     public function testGetAllByCompanyId() {
         $array = [
             [
-                'section'       => 'NiceSetting',
-                'property'      => 'niceProperty',
-                'value'         => 'niceValue',
-                'created_at'    => time(),
-                'updated_at'    => time()
+                'section'    => 'NiceSetting',
+                'property'   => 'niceProperty',
+                'value'      => 'niceValue',
+                'created_at' => time(),
+                'updated_at' => time()
             ],
             [
-                'section'       => 'ReallyNiceSetting',
-                'property'      => 'realyNiceProperty',
-                'value'         => 'realyNiceValue',
-                'created_at'    => time(),
-                'updated_at'    => time()
+                'section'    => 'ReallyNiceSetting',
+                'property'   => 'realyNiceProperty',
+                'value'      => 'realyNiceValue',
+                'created_at' => time(),
+                'updated_at' => time()
             ]
         ];
 

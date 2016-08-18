@@ -33,9 +33,9 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
      */
     public function findOne(int $companyId, string $slug, string $serviceSlug) : ServiceHandler {
         return $this->findOneBy([
-            'company_id'    => $companyId,
-            'slug'          => $slug,
-            'service_slug'  => $serviceSlug,
+            'company_id'   => $companyId,
+            'slug'         => $slug,
+            'service_slug' => $serviceSlug,
         ]);
     }
 
@@ -44,8 +44,8 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
      */
     public function findAllFromService(int $companyId, string $serviceSlug) : Collection {
         return $this->findBy([
-            'company_id'    => $companyId,
-            'service_slug'  => $serviceSlug,
+            'company_id'   => $companyId,
+            'service_slug' => $serviceSlug,
         ]);
     }
 
