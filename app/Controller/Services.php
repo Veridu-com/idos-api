@@ -257,7 +257,7 @@ class Services implements ControllerInterface {
 
         $body = [
             'data'    => $entity->toArray(),
-            'updated' => $entity->updated_at
+            'updated' => $entity->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

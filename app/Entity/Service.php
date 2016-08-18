@@ -33,7 +33,7 @@ class Service extends AbstractEntity {
     // Children companies have "read" access
     const ACCESS_PROTECTED = 0x01;
     // Any company have "read" access
-    const ACCESS_PUBLIC = 0x01;
+    const ACCESS_PUBLIC = 0x02;
 
     /**
      * Cache prefix.

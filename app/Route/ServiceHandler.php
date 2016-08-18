@@ -83,7 +83,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers',
                 'App\Controller\ServiceHandlers:listAll'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:listAll');
     }
@@ -114,7 +114,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers',
                 'App\Controller\ServiceHandlers:createNew'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:createNew');
     }
@@ -145,7 +145,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers',
                 'App\Controller\ServiceHandlers:deleteAll'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:deleteAll');
     }
@@ -177,7 +177,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:getOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:getOne');
     }
@@ -209,7 +209,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:updateOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:updateOne');
     }
@@ -241,7 +241,7 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:deleteOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('service-handlers:deleteOne');
     }

@@ -89,7 +89,7 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/members',
                 'App\Controller\Members:listAll'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('members:listAll');
     }
@@ -121,7 +121,7 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/members',
                 'App\Controller\Members:createNew'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('members:createNew');
     }
@@ -155,7 +155,7 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{memberId}',
                 'App\Controller\Members:updateOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('members:updateOne');
     }
@@ -188,7 +188,7 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/members',
                 'App\Controller\Members:deleteAll'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('members:deleteAll');
     }
@@ -222,7 +222,7 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{memberId}',
                 'App\Controller\Members:getOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('members:getOne');
     }
@@ -256,7 +256,7 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{memberId}',
                 'App\Controller\Members:deleteOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('members:deleteOne');
     }

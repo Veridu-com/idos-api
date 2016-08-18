@@ -85,7 +85,7 @@ class Companies implements RouteInterface {
                 '/companies',
                 'App\Controller\Companies:listAll'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:listAll');
     }
@@ -116,7 +116,7 @@ class Companies implements RouteInterface {
                 '/companies',
                 'App\Controller\Companies:createNew'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:createNew');
     }
@@ -206,7 +206,7 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Companies:updateOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:updateOne');
     }
@@ -238,7 +238,7 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Companies:deleteOne'
             )
-            ->add($permission(CompanyPermission::PROTECTED_ACTION))
+            ->add($permission(CompanyPermission::PRIVATE_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('companies:deleteOne');
     }

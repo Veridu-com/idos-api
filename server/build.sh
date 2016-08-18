@@ -1,24 +1,30 @@
 #!/bin/bash
 
+set -e
+
 # updates docker project
 if [ -d "docker" ]; then
     cd docker/
     git pull origin master
-    cd ../
+    cd ..
 else
     git clone git@bitbucket.org:veridu/docker.git
 fi
 
 # builds idos/api/nginx
 cd docker/idos/api/nginx
-make clean
-make build-all
+if [ `docker ps -a | grep nginx` ]; then
+    make clean
+fi
+make build
 cd -
 
 # builds idos/api/php-fpm
 cd docker/idos/api/php-fpm
-make clean
-make build-all
+if [ `docker ps -a | grep php-fpm` ]; then
+    make clean
+fi
+make build
 cd -
 
 # builds infra/postgresql
@@ -27,24 +33,49 @@ if [ ! -d "docker/infra/postgresql/docker-init.d/" ]; then
 fi
 cp conf.d/*.sql docker/infra/postgresql/docker-init.d/
 cd docker/infra/postgresql
-make clean
-make build-all
+if [ `docker ps -a | grep postgresql` ]; then
+    make clean
+fi
+make build
 cd -
 
 # builds infra/gearman
 cd docker/infra/gearman
-make clean
-make build-all
+if [ `docker ps -a | grep gearman` ]; then
+    make clean
+fi
+make build
+cd -
+
+# builds tools/cli-php
+cd docker/tools/cli-php
+if [ `docker ps -a | grep cli-php` ]; then
+    make clean
+fi
+make build
 cd -
 
 # builds idos/manager/php
+if [ -d "docker/idos/manager/php/idos-manager" ]; then
+    cd docker/idos/manager/php/idos-manager/
+    git pull origin dev
+    cd -
+else
+    cd docker/idos/manager/php
+    git clone git@bitbucket.org:veridu/idos-manager.git -b dev
+    cd -
+fi
 cd docker/idos/manager/php
-make clean
-make build-all
+if [ `docker ps -a | grep php` ]; then
+    make clean
+fi
+make build
 cd -
 
 # builds infra/redis
 cd docker/infra/redis
-make clean
-make build-all
+if [ `docker ps -a | grep redis` ]; then
+    make clean
+fi
+make build
 cd -

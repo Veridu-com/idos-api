@@ -19,13 +19,14 @@ use Psr\Http\Message\ServerRequestInterface;
  *
  * Scope: Route.
  * This middleware is responsible to add a "allowed" parameter on the $response object.
+ *
+ * -FIXME Remove Container injection!
  */
 class CompanyPermission implements MiddlewareInterface {
-    // only authorized companies can access the endpoint, controlled by App\Repository\PermissionInterface
-    const PROTECTED_ACTION = 'protected';
-
-    // won't test anything, the endpoint should be responsible for granting 
-    const PUBLIC_ACTION = 'private';
+    const PUBLIC_ACTION  = 0x00;
+    const SELF_ACTION    = 0x01;
+    const PARENT_ACTION  = 0x02;
+    const PRIVATE_ACTION = 0x04;
 
     private $container;
     private $permissionType;
@@ -50,17 +51,40 @@ class CompanyPermission implements MiddlewareInterface {
         // get actingCompany set on Auth middleware
         $actingCompany = $request->getAttribute('actingCompany');
         // get permissionRepository for checking
-        $permissionRepository = $this->container->get('repositoryFactory')->create('Permission');
-        $routeName            = $request->getAttribute('route')->getName();
-        $response             = $this->allow($response);
+        $permissionRepository     = $this->container->get('repositoryFactory')->create('Permission');
+        $routeName                = $request->getAttribute('route')->getName();
+        $response                 = $this->allow($response);
+        
+        $allowed = true;
 
-        if ($this->permissionType === self::PROTECTED_ACTION) {
+        if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
             try {
                 $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
             } catch (NotFound $e) {
-                throw new NotAllowed();
+                // deny
+                throw new NotAllowed;
+             }
+        }
+        
+        if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
+            $targetCompany = $request->getAttribute('targetCompany');
+            if ($targetCompany->id !== $actingCompany->id) {
+                // deny
+                $allowed = false;
             }
         }
+        
+        if (($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
+            $targetCompany = $request->getAttribute('targetCompany');
+            $companyRepository     = $this->container->get('repositoryFactory')->create('Company');
+            // deny or allow
+            $allowed = $companyRepository->isParent($actingCompany, $targetCompany);
+        }
+
+        if (! $allowed) {
+            throw new NotAllowed;
+        }
+
 
         return $next($request, $response);
     }
