@@ -17,6 +17,15 @@ class ListenerProvider extends Listener\AbstractListenerProvider {
         $this->events = [
             Company\Created::class => [
                 new Listener\LogFiredEventListener($container->get('log')('API'))
+            ],
+            Company\Updated::class => [
+                new Listener\LogFiredEventListener($container->get('log')('API'))
+            ],
+            Company\Deleted::class => [
+                new Listener\LogFiredEventListener($container->get('log')('API'))
+            ],
+            Company\DeletedMulti::class => [
+                new Listener\LogFiredEventListener($container->get('log')('API'))
             ]
         ];
     }

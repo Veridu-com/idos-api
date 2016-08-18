@@ -17,9 +17,9 @@ class DeleteOne extends AbstractCommand {
     /**
      * Company Id to be deleted.
      *
-     * @var int
+     * @var App\Entity\Company
      */
-    public $companyId;
+    public $company;
 
     /**
      * {@inheritdoc}
@@ -27,8 +27,8 @@ class DeleteOne extends AbstractCommand {
      * @return App\Command\Company\DeleteOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
+        if (isset($parameters['company'])) {
+            $this->company = $parameters['company'];
         }
 
         return $this;
