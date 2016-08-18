@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace App\Event\Company;
 
 use App\Event\AbstractEvent;
+use Illuminate\Support\Collection;
 
 /**
  * Deleted event for multiple companies.
@@ -28,7 +29,7 @@ class DeletedMulti extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(\Illuminate\Support\Collection $companies) {
+    public function __construct(Collection $companies) {
         $this->companies = $companies;
     }
 }
