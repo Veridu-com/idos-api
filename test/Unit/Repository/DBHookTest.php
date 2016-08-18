@@ -31,13 +31,13 @@ class DBHookTest extends AbstractUnit {
     private function getEntity() {
         return new HookEntity(
             [
-                'id'              => 1,
-                'credential_id'   => 1,
-                'trigger'         => 'trigger.test',
-                'url'             => 'http://example.com/test.php',
-                'subscribed'      => false,
-                'created_at'      => time(),
-                'updated_at'      => time()
+                'id'            => 1,
+                'credential_id' => 1,
+                'trigger'       => 'trigger.test',
+                'url'           => 'http://example.com/test.php',
+                'subscribed'    => false,
+                'created_at'    => time(),
+                'updated_at'    => time()
             ],
             $this->optimus
         );
@@ -76,13 +76,13 @@ class DBHookTest extends AbstractUnit {
                 $this->returnValue([
                     new HookEntity(
                         [
-                            'id'              => 1,
-                            'credential_id'   => 1,
-                            'trigger'         => 'trigger.test',
-                            'url'             => 'http://example.com/test.php',
-                            'subscribed'      => false,
-                            'created_at'      => time(),
-                            'updated_at'      => time()
+                            'id'            => 1,
+                            'credential_id' => 1,
+                            'trigger'       => 'trigger.test',
+                            'url'           => 'http://example.com/test.php',
+                            'subscribed'    => false,
+                            'created_at'    => time(),
+                            'updated_at'    => time()
                         ],
                         $this->optimus
                     )
@@ -99,7 +99,7 @@ class DBHookTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbHook = new DBHook($factory, $this->optimus, $connectionMock);
-        $result   = $dbHook->getAllByCredentialId(1)->first();
+        $result = $dbHook->getAllByCredentialId(1)->first();
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 

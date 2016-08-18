@@ -8,16 +8,16 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use App\Exception\NotFound;
 use App\Command\Hook\CreateNew;
 use App\Command\Hook\DeleteAll;
 use App\Command\Hook\DeleteOne;
 use App\Command\Hook\UpdateOne;
 use App\Entity\Hook as HookEntity;
 use App\Event\Hook\Created;
-use App\Event\Hook\Updated;
 use App\Event\Hook\Deleted;
 use App\Event\Hook\DeletedMulti;
+use App\Event\Hook\Updated;
+use App\Exception\NotFound;
 use App\Repository\CredentialInterface;
 use App\Repository\HookInterface;
 use App\Validator\Hook as HookValidator;
@@ -114,11 +114,11 @@ class Hook implements HandlerInterface {
 
         $hook = $this->repository->create(
             [
-                'credential_id'    => $credential->id,
+                'credential_id' => $credential->id,
                 'trigger'       => $command->trigger,
-                'url' => $command->url,
-                'subscribed' => $command->subscribed,
-                'created_at' => time()
+                'url'           => $command->url,
+                'subscribed'    => $command->subscribed,
+                'created_at'    => time()
             ]
         );
 

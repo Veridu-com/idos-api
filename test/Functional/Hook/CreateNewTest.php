@@ -16,13 +16,13 @@ class CreateNewTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'POST';
-        $this->uri = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks';
+        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks',
+                'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks',
                 'HTTP_CONTENT_TYPE' => 'application/json'
             ]
         );
@@ -31,8 +31,8 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'trigger' => 'trigger.test',
-                    'url'   => 'http://test.com/example.php',
+                    'trigger'    => 'trigger.test',
+                    'url'        => 'http://test.com/example.php',
                     'subscribed' => false,
                 ]
             )
@@ -65,7 +65,7 @@ class CreateNewTest extends AbstractFunctional {
     public function testErrorCredentialDoesntBelongToCompany() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks',
+                'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks',
                 'HTTP_CONTENT_TYPE' => 'application/json'
             ]
         );
@@ -74,8 +74,8 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'trigger' => 'trigger.test',
-                    'url'   => 'http://test.com/example.php',
+                    'trigger'    => 'trigger.test',
+                    'url'        => 'http://test.com/example.php',
                     'subscribed' => false,
                 ]
             )
@@ -103,7 +103,7 @@ class CreateNewTest extends AbstractFunctional {
     public function testErrorTargetCompanyDifferentFromActingCompany() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI' => '/1.0/companies/app-deck/credentials/1e772b1e4d57560422e07565600aca48/hooks',
+                'REQUEST_URI'       => '/1.0/companies/app-deck/credentials/1e772b1e4d57560422e07565600aca48/hooks',
                 'HTTP_CONTENT_TYPE' => 'application/json'
             ]
         );
@@ -112,8 +112,8 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'trigger' => 'trigger.test',
-                    'url'   => 'http://test.com/example.php',
+                    'trigger'    => 'trigger.test',
+                    'url'        => 'http://test.com/example.php',
                     'subscribed' => false,
                 ]
             )

@@ -6,7 +6,6 @@
 
 namespace Test\Unit\Event\Hook;
 
-use App\Entity\Hook;
 use App\Event\Hook\Deleted;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;

@@ -23,14 +23,14 @@ class HookTest extends AbstractUnit {
     }
 
     public function testSerialize() {
-        $array   = [
-            'id'               => 1,
-            'credential_id'    => 1,
-            'trigger'          => 'trigger.test',
-            'url'              => 'http://example.com/test.php',
-            'subscribed'       => true,
-            'created_at'       => time(),
-            'updated_at'       => time()
+        $array = [
+            'id'            => 1,
+            'credential_id' => 1,
+            'trigger'       => 'trigger.test',
+            'url'           => 'http://example.com/test.php',
+            'subscribed'    => true,
+            'created_at'    => time(),
+            'updated_at'    => time()
         ];
 
         $abstractMock = $this->getMockBuilder(Hook::class)
@@ -57,14 +57,14 @@ class HookTest extends AbstractUnit {
     }
 
     public function testToArray() {
-         $array   = [
-            'id'               => 1,
-            'credential_id'    => 1,
-            'trigger'          => 'trigger.test',
-            'url'              => 'http://example.com/test.php',
-            'subscribed'       => true,
-            'created_at'       => time(),
-            'updated_at'       => time()
+         $array = [
+            'id'            => 1,
+            'credential_id' => 1,
+            'trigger'       => 'trigger.test',
+            'url'           => 'http://example.com/test.php',
+            'subscribed'    => true,
+            'created_at'    => time(),
+            'updated_at'    => time()
         ];
         $abstractMock = $this->getMockBuilder(Hook::class)
             ->setMethods(null)

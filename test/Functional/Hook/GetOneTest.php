@@ -15,11 +15,11 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request    = $this->createRequest($this->createEnvironment([
+        $request = $this->createRequest($this->createEnvironment([
             'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817'
         ]));
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertEquals(200, $response->getStatusCode());

@@ -21,7 +21,7 @@ class DeleteAllTest extends AbstractFunctional {
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks',
+                'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks',
                 'HTTP_CONTENT_TYPE' => 'application/json'
             ]
         );
@@ -52,7 +52,7 @@ class DeleteAllTest extends AbstractFunctional {
     public function testErrorCredentialDoesntBelongToCompany() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks',
+                'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks',
                 'HTTP_CONTENT_TYPE' => 'application/json'
             ]
         );
@@ -81,7 +81,7 @@ class DeleteAllTest extends AbstractFunctional {
     public function testErrorTargetCompanyDifferentFromActingCompany() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI' => '/1.0/companies/app-deck/credentials/1e772b1e4d57560422e07565600aca48/hooks',
+                'REQUEST_URI'       => '/1.0/companies/app-deck/credentials/1e772b1e4d57560422e07565600aca48/hooks',
                 'HTTP_CONTENT_TYPE' => 'application/json'
             ]
         );

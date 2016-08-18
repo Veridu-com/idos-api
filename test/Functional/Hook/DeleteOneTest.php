@@ -19,13 +19,13 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request   = $this->createRequest(
+        $request = $this->createRequest(
             $this->createEnvironment([
                 'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817'
             ])
         );
-        $response  = $this->process($request);
-        $body      = json_decode($response->getBody(), true);
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
         // assertions
         $this->assertNotEmpty($body);
         $response->getStatusCode();

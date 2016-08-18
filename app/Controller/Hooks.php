@@ -9,10 +9,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Exception\NotFound;
-use App\Entity\User;
 use App\Factory\Command;
-use App\Repository\HookInterface;
 use App\Repository\CredentialInterface;
+use App\Repository\HookInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -49,10 +48,10 @@ class Hooks implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\HookInterface $repository
-     * @param App\Repository\CredentialInterface   $credentialRepository
-     * @param \League\Tactician\CommandBus   $commandBus
-     * @param App\Factory\Command            $commandFactory
+     * @param App\Repository\HookInterface       $repository
+     * @param App\Repository\CredentialInterface $credentialRepository
+     * @param \League\Tactician\CommandBus       $commandBus
+     * @param App\Factory\Command                $commandFactory
      *
      * @return void
      */
@@ -62,10 +61,10 @@ class Hooks implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository     = $repository;
+        $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
+        $this->commandBus           = $commandBus;
+        $this->commandFactory       = $commandFactory;
     }
 
     /**
@@ -81,9 +80,9 @@ class Hooks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany            = $request->getAttribute('actingCompany');
-        $targetCompany            = $request->getAttribute('targetCompany');
-        $credentialPubKey         = $request->getAttribute('pubKey');
+        $actingCompany    = $request->getAttribute('actingCompany');
+        $targetCompany    = $request->getAttribute('targetCompany');
+        $credentialPubKey = $request->getAttribute('pubKey');
 
         $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
 
@@ -122,7 +121,7 @@ class Hooks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $bodyRequest      = $request->getParsedBody();
+        $bodyRequest = $request->getParsedBody();
 
         $actingCompany    = $request->getAttribute('actingCompany');
         $targetCompany    = $request->getAttribute('targetCompany');
@@ -164,7 +163,7 @@ class Hooks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $bodyRequest      = $request->getParsedBody();
+        $bodyRequest = $request->getParsedBody();
 
         $actingCompany    = $request->getAttribute('actingCompany');
         $targetCompany    = $request->getAttribute('targetCompany');
@@ -223,7 +222,7 @@ class Hooks implements ControllerInterface {
         }
 
         $body = [
-            'data'    => $hook->toArray()
+            'data' => $hook->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -295,7 +294,7 @@ class Hooks implements ControllerInterface {
 
         $deleted = $this->commandBus->handle($command);
         $body    = [
-            'status'  => $deleted === 1
+            'status' => $deleted === 1
         ];
 
         $statusCode = $body['status'] ? 200 : 404;

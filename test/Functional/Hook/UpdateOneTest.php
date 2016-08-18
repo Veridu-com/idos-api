@@ -27,8 +27,8 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $request = $this->createRequest($environment, json_encode([
-            'trigger' => 'trigger.changed',
-            'url' => 'http://changed.com/test.php',
+            'trigger'    => 'trigger.changed',
+            'url'        => 'http://changed.com/test.php',
             'subscribed' => false
         ]));
 
@@ -60,14 +60,14 @@ class UpdateOneTest extends AbstractFunctional {
     public function testNotFound() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
+                'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
                 'HTTP_CONTENT_TYPE' => 'application/json'
             ]
         );
 
         $request = $this->createRequest($environment, json_encode([
-            'trigger' => 'trigger.changed',
-            'url' => 'http://changed.com/test.php',
+            'trigger'    => 'trigger.changed',
+            'url'        => 'http://changed.com/test.php',
             'subscribed' => false
         ]));
 
@@ -94,13 +94,13 @@ class UpdateOneTest extends AbstractFunctional {
 
     public function testErrorCredentialDoesntBelongToCompany() {
         $environment = $this->createEnvironment([
-            'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
+            'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
             'HTTP_CONTENT_TYPE' => 'application/json'
         ]);
 
         $request = $this->createRequest($environment, json_encode([
-            'trigger' => 'trigger.changed',
-            'url' => 'http://changed.com/test.php',
+            'trigger'    => 'trigger.changed',
+            'url'        => 'http://changed.com/test.php',
             'subscribed' => false
         ]));
 
@@ -125,13 +125,13 @@ class UpdateOneTest extends AbstractFunctional {
 
     public function testErrorTargetCompanyDifferentFromActingCompany() {
         $environment = $this->createEnvironment([
-            'REQUEST_URI' => '/1.0/companies/app-deck/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
+            'REQUEST_URI'       => '/1.0/companies/app-deck/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
             'HTTP_CONTENT_TYPE' => 'application/json'
         ]);
 
         $request = $this->createRequest($environment, json_encode([
-            'trigger' => 'trigger.changed',
-            'url' => 'http://changed.com/test.php',
+            'trigger'    => 'trigger.changed',
+            'url'        => 'http://changed.com/test.php',
             'subscribed' => false
         ]));
 
@@ -156,13 +156,13 @@ class UpdateOneTest extends AbstractFunctional {
 
     public function testErrorHookDoesntBelongToCredential() {
         $environment = $this->createEnvironment([
-            'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1860914067',
+            'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1860914067',
             'HTTP_CONTENT_TYPE' => 'application/json'
         ]);
 
         $request = $this->createRequest($environment, json_encode([
-            'trigger' => 'trigger.changed',
-            'url' => 'http://changed.com/test.php',
+            'trigger'    => 'trigger.changed',
+            'url'        => 'http://changed.com/test.php',
             'subscribed' => false
         ]));
 

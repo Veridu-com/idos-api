@@ -10,13 +10,12 @@ use App\Command\Hook\CreateNew;
 use App\Command\Hook\DeleteAll;
 use App\Command\Hook\DeleteOne;
 use App\Command\Hook\UpdateOne;
-use App\Entity\Credential as CredentialEntity;
 use App\Entity\Company as CompanyEntity;
+use App\Entity\Credential as CredentialEntity;
 use App\Entity\Hook as HookEntity;
 use App\Event\Hook\Created;
-use App\Event\Hook\Updated;
 use App\Event\Hook\Deleted;
-use App\Event\Hook\DeletedMulti;
+use App\Event\Hook\Updated;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
@@ -24,9 +23,7 @@ use App\Handler\Hook;
 use App\Repository\CredentialInterface;
 use App\Repository\DBCredential;
 use App\Repository\DBHook;
-use App\Repository\DBUser;
 use App\Repository\HookInterface;
-use App\Repository\UserInterface;
 use App\Validator\Hook as HookValidator;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -48,13 +45,13 @@ class HookTest extends AbstractUnit {
     private function getEntity() {
         return new HookEntity(
             [
-                'id'              => 1,
-                'credential_id'    => 1,
-                'trigger'         => 'trigger.test',
-                'url'             => 'http://example.com/test.php',
-                'subscribed'      => false,
-                'created_at'      => time(),
-                'updated_at'      => time()
+                'id'            => 1,
+                'credential_id' => 1,
+                'trigger'       => 'trigger.test',
+                'url'           => 'http://example.com/test.php',
+                'subscribed'    => false,
+                'created_at'    => time(),
+                'updated_at'    => time()
             ],
             $this->optimus
         );
@@ -195,7 +192,7 @@ class HookTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $hookEntity     = $this->getEntity();
+        $hookEntity       = $this->getEntity();
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
@@ -248,7 +245,7 @@ class HookTest extends AbstractUnit {
     }
 
     public function testHandleUpdateOne() {
-        $hookEntity     = $this->getEntity();
+        $hookEntity       = $this->getEntity();
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
@@ -348,7 +345,7 @@ class HookTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $commandMock->hookId = 1;
+        $commandMock->hookId           = 1;
         $commandMock->credentialPubKey = '4c9184f37cff01bcdc32dc486ec36961';
         $commandMock->company          = $this->getCompanyEntity();
 
