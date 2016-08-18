@@ -514,9 +514,9 @@ class Auth implements MiddlewareInterface {
 
         // Request has proper Authorization, proceed with regular process
         if ($hasAuthorization) {
-            $routeInfo      = $request->getAttribute('routeInfo');
-            $companySlug    = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
-            $userName       = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
+            $routeInfo   = $request->getAttribute('routeInfo');
+            $companySlug = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
+            $userName    = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
 
             // Resolves {companySlug} route argument
             if ($companySlug) {

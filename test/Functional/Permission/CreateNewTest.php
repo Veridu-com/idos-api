@@ -14,8 +14,8 @@ class UpdateOneTest extends AbstractFunctional {
     // use HasAuthMiddleware;
 
     protected function setUp() {
-        $this->httpMethod   = 'POST';
-        $this->uri          = '/1.0/companies/veridu-ltd/permissions';
+        $this->httpMethod = 'POST';
+        $this->uri        = '/1.0/companies/veridu-ltd/permissions';
     }
 
     public function testSuccess() {
@@ -23,9 +23,9 @@ class UpdateOneTest extends AbstractFunctional {
             'HTTP_CONTENT_TYPE' => 'application/json'
         ]);
 
-        $request    = $this->createRequest($env, json_encode(['routeName' => 'hello:biscuit']));
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $request  = $this->createRequest($env, json_encode(['routeName' => 'hello:biscuit']));
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertEquals(201, $response->getStatusCode());
@@ -49,9 +49,9 @@ class UpdateOneTest extends AbstractFunctional {
         return;
         $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
 
-        $request            = $this->createRequest($this->createEnvironment());
-        $response           = $this->process($request);
-        $body               = json_decode($response->getBody(), true);
+        $request  = $this->createRequest($this->createEnvironment());
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         // assertions
         $this->assertNotEmpty($body);

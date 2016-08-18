@@ -26,11 +26,11 @@ class ServiceTest extends AbstractUnit {
 
         $updated = time();
         $array   = [
-            'id'          => 1,
-            'name'        => 'My Service',
-            'enabled'     => true,
-            'created_at'  => time(),
-            'updated_at'  => time()
+            'id'         => 1,
+            'name'       => 'My Service',
+            'enabled'    => true,
+            'created_at' => time(),
+            'updated_at' => time()
         ];
 
         $abstractMock = $this->getMockBuilder(Service::class)
@@ -60,11 +60,11 @@ class ServiceTest extends AbstractUnit {
             ->setConstructorArgs(
                 [
                     [
-                        'id'          => 1,
-                        'name'        => 'My Service',
-                        'enabled'     => true,
-                        'created_at'  => time(),
-                        'updated_at'  => time()
+                        'id'         => 1,
+                        'name'       => 'My Service',
+                        'enabled'    => true,
+                        'created_at' => time(),
+                        'updated_at' => time()
                     ],
                     $this->optimus
                 ]

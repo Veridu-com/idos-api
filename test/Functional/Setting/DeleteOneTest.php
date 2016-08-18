@@ -22,9 +22,9 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request    = $this->createRequest($this->createEnvironment());
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $request  = $this->createRequest($this->createEnvironment());
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         // success assertions
         $this->assertNotEmpty($body);
@@ -42,10 +42,10 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFoundSlug() {
-        $this->uri    = '/1.0/companies/dummy-ltd/settings/dummy/property';
-        $request      = $this->createRequest($this->createEnvironment());
-        $response     = $this->process($request);
-        $body         = json_decode($response->getBody(), true);
+        $this->uri = '/1.0/companies/dummy-ltd/settings/dummy/property';
+        $request   = $this->createRequest($this->createEnvironment());
+        $response  = $this->process($request);
+        $body      = json_decode($response->getBody(), true);
 
         // success assertions
         $this->assertNotEmpty($body);
@@ -65,10 +65,10 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testInvalidSectionProperty() {
-        $this->uri  = '/1.0/companies/veridu-ltd/settings/section/property';
-        $request    = $this->createRequest($this->createEnvironment());
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $this->uri = '/1.0/companies/veridu-ltd/settings/section/property';
+        $request   = $this->createRequest($this->createEnvironment());
+        $response  = $this->process($request);
+        $body      = json_decode($response->getBody(), true);
 
         // success assertions
         $this->assertNotEmpty($body);

@@ -24,13 +24,13 @@ class CredentialTest extends AbstractUnit {
 
     private function getAttributes() {
         return [
-            'id'          => 0,
-            'name'        => 'My Credential',
-            'public'      => 'public',
-            'private'     => 'private',
-            'production'  => false,
-            'created_at'  => time(),
-            'updated_at'  => time()
+            'id'         => 0,
+            'name'       => 'My Credential',
+            'public'     => 'public',
+            'private'    => 'private',
+            'production' => false,
+            'created_at' => time(),
+            'updated_at' => time()
         ];
     }
 

@@ -79,10 +79,10 @@ class CompanyServiceHandler implements HandlerInterface {
         $now    = time();
         $entity = $this->repository->create(
             [
-                'company_id'            => $command->companyId,
-                'service_handler_id'    => $command->companyId,
-                'created_at'            => $now,
-                'updated_at'            => $now
+                'company_id'         => $command->companyId,
+                'service_handler_id' => $command->companyId,
+                'created_at'         => $now,
+                'updated_at'         => $now
             ]
         );
 

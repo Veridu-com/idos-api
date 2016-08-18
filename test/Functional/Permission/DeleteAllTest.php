@@ -20,9 +20,9 @@ class DeleteAllTest extends AbstractFunctional {
 
     public function testSuccess() {
         // then creates the DELETE request
-        $request    = $this->createRequest();
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $request  = $this->createRequest();
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         // success assertions
         $this->assertNotEmpty($body);

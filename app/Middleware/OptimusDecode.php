@@ -22,7 +22,7 @@ class OptimusDecode implements MiddlewareInterface {
     private $optimus;
 
     public function __construct(Optimus $optimus) {
-        $this->optimus      = $optimus;
+        $this->optimus = $optimus;
     }
 
     /**

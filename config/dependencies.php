@@ -387,9 +387,9 @@ $container['optimus'] = function (ContainerInterface $container) : Optimus {
 // App files
 $container['globFiles'] = function () : array {
     return [
-        'routes'             => glob(__DIR__ . '/../app/Route/*.php'),
-        'handlers'           => glob(__DIR__ . '/../app/Handler/*.php'),
-        'listenerProviders'  => glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
+        'routes'            => glob(__DIR__ . '/../app/Route/*.php'),
+        'handlers'          => glob(__DIR__ . '/../app/Handler/*.php'),
+        'listenerProviders' => glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
     ];
 };
 

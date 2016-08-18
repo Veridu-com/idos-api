@@ -39,7 +39,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $dates = [];
 
-
     /**
      * The attributes that should be mutated to json.
      *

@@ -49,12 +49,12 @@ class CompanyPermission implements MiddlewareInterface {
         callable $next
     ) : ResponseInterface {
         // get actingCompany set on Auth middleware
-        $actingCompany            = $request->getAttribute('actingCompany');
+        $actingCompany = $request->getAttribute('actingCompany');
         // get permissionRepository for checking
-        $permissionRepository     = $this->container->get('repositoryFactory')->create('Permission');
-        $routeName                = $request->getAttribute('route')->getName();
-        $response                 = $this->allow($response);
-        
+        $permissionRepository = $this->container->get('repositoryFactory')->create('Permission');
+        $routeName            = $request->getAttribute('route')->getName();
+        $response             = $this->allow($response);
+
         $allowed = true;
 
         if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
@@ -63,10 +63,10 @@ class CompanyPermission implements MiddlewareInterface {
             } catch (NotFound $e) {
                 // deny and prevent other checks throwing an exception
                 // this permission type cannot be combined with others
-                throw new NotAllowed;
+                throw new NotAllowed();
             }
         }
-        
+
         if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
             $targetCompany = $request->getAttribute('targetCompany');
             if ($targetCompany->id !== $actingCompany->id) {
@@ -74,18 +74,17 @@ class CompanyPermission implements MiddlewareInterface {
                 $allowed = false;
             }
         }
-        
+
         if (($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
-            $targetCompany = $request->getAttribute('targetCompany');
-            $companyRepository     = $this->container->get('repositoryFactory')->create('Company');
+            $targetCompany     = $request->getAttribute('targetCompany');
+            $companyRepository = $this->container->get('repositoryFactory')->create('Company');
             // deny or allow
             $allowed = $companyRepository->isParent($actingCompany, $targetCompany);
         }
 
         if (! $allowed) {
-            throw new NotAllowed;
+            throw new NotAllowed();
         }
-
 
         return $next($request, $response);
     }

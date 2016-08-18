@@ -138,14 +138,14 @@ class ServiceHandlerTest extends AbstractUnit {
             new ServiceHandlerValidator()
         );
 
-        $command                   = new CreateNew();
-        $command->name             = 'New Service Handler';
-        $command->source           = 'email';
-        $command->companyId        = 1;
-        $command->serviceSlug      = 'slug';
-        $command->authPassword     = 'Auth Password';
-        $command->authUsername     = 'Auth Username';
-        $command->location         = 'http://localhost:8080';
+        $command               = new CreateNew();
+        $command->name         = 'New Service Handler';
+        $command->source       = 'email';
+        $command->companyId    = 1;
+        $command->serviceSlug  = 'slug';
+        $command->authPassword = 'Auth Password';
+        $command->authUsername = 'Auth Username';
+        $command->location     = 'http://localhost:8080';
 
         $result = $handler->handleCreateNew($command);
         $this->assertSame('New Service Handler', $result->name);
@@ -198,15 +198,15 @@ class ServiceHandlerTest extends AbstractUnit {
             new ServiceHandlerValidator()
         );
 
-        $command                   = new UpdateOne();
-        $command->name             = 'New Service Handler';
-        $command->slug             = 'new-service-handler';
-        $command->source           = 'email';
-        $command->companyId        = 1;
-        $command->serviceSlug      = 'slug';
-        $command->authPassword     = 'Auth Password';
-        $command->authUsername     = 'Auth Username';
-        $command->location         = 'http://localhost:8080';
+        $command               = new UpdateOne();
+        $command->name         = 'New Service Handler';
+        $command->slug         = 'new-service-handler';
+        $command->source       = 'email';
+        $command->companyId    = 1;
+        $command->serviceSlug  = 'slug';
+        $command->authPassword = 'Auth Password';
+        $command->authUsername = 'Auth Username';
+        $command->location     = 'http://localhost:8080';
 
         $result = $handler->handleUpdateOne($command);
         $this->assertSame('New Service Handler', $result->name);

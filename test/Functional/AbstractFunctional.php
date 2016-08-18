@@ -126,9 +126,9 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
             'REQUEST_METHOD' => $method
         ]);
 
-        $request    = $this->createRequest($environment);
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $request  = $this->createRequest($environment);
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
         if ($response->getStatusCode() === 403) {
             $this->entities = [];
         } else {

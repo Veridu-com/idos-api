@@ -110,7 +110,7 @@ class CompanyServiceHandlers implements ControllerInterface {
         $entity = $this->repository->findOne($id, $actingCompany->id);
 
         $body = [
-            'data'    => $entity->toArray()
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -201,8 +201,8 @@ class CompanyServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany  = $request->getAttribute('actingCompany');
-        $id             = (int) $request->getAttribute('id');
+        $actingCompany = $request->getAttribute('actingCompany');
+        $id            = (int) $request->getAttribute('id');
 
         $command = $this->commandFactory->create('CompanyServiceHandler\\DeleteOne');
         $command

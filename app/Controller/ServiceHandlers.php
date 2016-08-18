@@ -112,7 +112,7 @@ class ServiceHandlers implements ControllerInterface {
         $entity        = $this->repository->findOne($actingCompany->id, $slug, $serviceSlug);
 
         $body = [
-            'data'    => $entity->toArray()
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
