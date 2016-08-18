@@ -113,7 +113,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $this->setExpectedException(\Exception::class);
-        $entity =  $this->getEntity(1);
+        $entity = $this->getEntity(1);
         $abstractDBMock->save($entity);
 
     }
@@ -145,7 +145,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('create')
             ->will($this->returnValue($this->getEntity(1)));
 
-        $entity =  $this->getEntity('');
+        $entity = $this->getEntity('');
         $this->assertEquals($this->getEntity(1), $abstractDBMock->save($entity));
     }
 

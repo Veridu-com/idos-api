@@ -52,8 +52,8 @@ class DBCompanyServiceHandler extends AbstractDBRepository implements CompanySer
      */
     public function findAllFromService(int $companyId, string $serviceSlug) : Collection {
         return $this->findBy([
-            'company_id'    => $companyId,
-            'service_slug'  => $serviceSlug,
+            'company_id'   => $companyId,
+            'service_slug' => $serviceSlug,
         ]);
     }
 
@@ -87,8 +87,8 @@ class DBCompanyServiceHandler extends AbstractDBRepository implements CompanySer
      */
     public function deleteOne(int $id, int $companyId) : int {
         return $this->deleteBy([
-            'id'            => $id,
-            'company_id'    => $companyId
+            'id'         => $id,
+            'company_id' => $companyId
         ]);
     }
 

@@ -24,12 +24,12 @@ class SettingTest extends AbstractUnit {
 
     private function getAttributes() {
         return [
-            'id'             => 1,
-            'section'        => 'A Section',
-            'property'       => 'property',
-            'value'          => 'value',
-            'created_at'     => time(),
-            'updated_at'     => time()
+            'id'         => 1,
+            'section'    => 'A Section',
+            'property'   => 'property',
+            'value'      => 'value',
+            'created_at' => time(),
+            'updated_at' => time()
         ];
     }
 

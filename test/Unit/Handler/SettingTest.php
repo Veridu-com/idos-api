@@ -139,11 +139,11 @@ class SettingTest extends AbstractUnit {
             new SettingValidator()
         );
 
-        $command              = new CreateNew();
-        $command->section     = 'section';
-        $command->property    = 'property';
-        $command->value       = 'value';
-        $command->companyId   = 1;
+        $command            = new CreateNew();
+        $command->section   = 'section';
+        $command->property  = 'property';
+        $command->value     = 'value';
+        $command->companyId = 1;
 
         $result = $handler->handleCreateNew($command);
         $this->assertSame('section', $result->section);
@@ -197,8 +197,8 @@ class SettingTest extends AbstractUnit {
             new SettingValidator()
         );
 
-        $command              = new DeleteAll();
-        $command->companyId   = 0;
+        $command            = new DeleteAll();
+        $command->companyId = 0;
 
         $this->assertEquals(1, $handler->handleDeleteAll($command));
     }
@@ -314,10 +314,10 @@ class SettingTest extends AbstractUnit {
             new SettingValidator()
         );
 
-        $command              = new DeleteOne();
-        $command->companyId   = 0;
-        $command->property    = 'propNameId';
-        $command->section     = 'sectionId';
+        $command            = new DeleteOne();
+        $command->companyId = 0;
+        $command->property  = 'propNameId';
+        $command->section   = 'sectionId';
 
         $this->assertEquals(1, $handler->handleDeleteOne($command));
     }

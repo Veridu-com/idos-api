@@ -69,4 +69,26 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
     public function delete(int $id, string $key = 'id') : int {
         return $this->deleteBy([$key => $id]);
     }
+
+    /**
+     * Determines if parent.
+     *
+     * @param \App\Entity\Company $parent The parent
+     * @param \App\Entity\Company $child  The child
+     *
+     * @return bool True if parent, False otherwise.
+     */
+    public function isParent(Company $parent, Company $child) {
+        if ($child->parentId === null) {
+            return false;
+        }
+
+        if ($child->parentId === $parent->id) {
+            return true;
+        }
+
+        $parent = $this->find($child->parentId);
+
+        return $this->isParent($parent, $child);
+    }
 }
