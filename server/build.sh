@@ -8,7 +8,7 @@ if [ -d "docker" ]; then
     git pull origin master
     cd ..
 else
-    git clone  git@bitbucket.org:veridu/docker.git
+    git clone git@bitbucket.org:veridu/docker.git
 fi
 
 # builds idos/api/nginx
