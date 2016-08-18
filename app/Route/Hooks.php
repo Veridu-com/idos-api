@@ -121,7 +121,7 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:createNew'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(CompanyPermission::SELF_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('hooks:createNew');
     }
@@ -155,7 +155,7 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
                 'App\Controller\Hooks:updateOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(CompanyPermission::SELF_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('hooks:updateOne');
     }
@@ -188,7 +188,7 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:deleteAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(CompanyPermission::SELF_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('hooks:deleteAll');
     }
@@ -222,7 +222,7 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
                 'App\Controller\Hooks:getOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(CompanyPermission::SELF_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('hooks:getOne');
     }
@@ -256,7 +256,7 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
                 'App\Controller\Hooks:deleteOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(CompanyPermission::SELF_ACTION))
             ->add($auth(Auth::COMP_PRIVKEY))
             ->setName('hooks:deleteOne');
     }
