@@ -8,13 +8,15 @@ namespace Test\Functional\Credential;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\HasAuthCompanyPrivKey;
 
 class ListAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    use HasAuthCompanyPrivKey;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/companies/veridu-ltd/credentials';
+        $this->uri        = '/1.0/management/credentials';
     }
 
     public function testSuccess() {

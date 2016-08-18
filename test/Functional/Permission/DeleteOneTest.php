@@ -8,9 +8,11 @@ namespace Test\Functional\Permission;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\HasAuthCompanyPrivKey;
 
 class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    use HasAuthCompanyPrivKey;
 
     /**
      * Deleted endpoint property, initialized setUp().
@@ -75,7 +77,7 @@ class DeleteOneTest extends AbstractFunctional {
      * Tries to assert current entity does not exist after the deletion.
      */
     public function checkEntityDoesNotExist() {
-        // tries to fetch the deleted entity to ensure it was successfully deleted 
+        // tries to fetch the deleted entity to ensure it was successfully deleted
         $getOneEnvironment = $this->createEnvironment(
             [
                 'REQUEST_URI'    => $this->uri,

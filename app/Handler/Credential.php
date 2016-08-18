@@ -88,8 +88,8 @@ class Credential implements HandlerInterface {
             ]
         );
 
-        $credential->public  = Key::createNewRandomKey()->saveToAsciiSafeString();
-        $credential->private = Key::createNewRandomKey()->saveToAsciiSafeString();
+        $credential->public  = md5((string)time()); // Key::createNewRandomKey()->saveToAsciiSafeString();
+        $credential->private = md5((string)time()); // Key::createNewRandomKey()->saveToAsciiSafeString();
 
         return $this->repository->save($credential);
     }

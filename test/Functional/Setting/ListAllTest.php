@@ -10,9 +10,11 @@ use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\HasAuthCompanyPrivKey;
 
 class ListAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    use HasAuthCompanyPrivKey;
 
     protected function setUp() {
         $this->httpMethod = 'GET';

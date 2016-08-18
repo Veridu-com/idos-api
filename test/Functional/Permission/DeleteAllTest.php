@@ -8,9 +8,11 @@ namespace Test\Functional\Permission;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\HasAuthCompanyPrivKey;
 
 class DeleteAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    use HasAuthCompanyPrivKey;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
