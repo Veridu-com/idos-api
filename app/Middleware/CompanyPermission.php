@@ -61,8 +61,9 @@ class CompanyPermission implements MiddlewareInterface {
             try {
                 $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
             } catch (NotFound $e) {
-                // deny
-                $allowed = false;
+                // deny and prevent other checks throwing an exception
+                // this permission type cannot be combined with others
+                throw new NotAllowed;
             }
         }
         
