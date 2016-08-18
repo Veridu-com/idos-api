@@ -28,10 +28,10 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request            = $this->createRequest($this->createEnvironment());
-        $response           = $this->process($request);
-        $body               = json_decode($response->getBody(), true);
-        $numberOfEntities   = sizeof($this->entities); // total number of entities
+        $request          = $this->createRequest($this->createEnvironment());
+        $response         = $this->process($request);
+        $body             = json_decode($response->getBody(), true);
+        $numberOfEntities = sizeof($this->entities); // total number of entities
 
         // assertions
         $this->assertNotEmpty($body);
@@ -60,11 +60,11 @@ class DeleteOneTest extends AbstractFunctional {
      * @param string method HTTP method of the route
      */
     public function checkForbiddenAccessTo(string $uri, string $method) {
-        $this->httpMethod   = $method;
-        $this->uri          = $uri;
-        $request            = $this->createRequest($this->createEnvironment());
-        $response           = $this->process($request);
-        $body               = json_decode($response->getBody(), true);
+        $this->httpMethod = $method;
+        $this->uri        = $uri;
+        $request          = $this->createRequest($this->createEnvironment());
+        $response         = $this->process($request);
+        $body             = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertEquals(403, $response->getStatusCode());
@@ -101,10 +101,10 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri          = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
-        $request            = $this->createRequest($this->createEnvironment());
-        $response           = $this->process($request);
-        $body               = json_decode($response->getBody(), true);
+        $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
+        $request   = $this->createRequest($this->createEnvironment());
+        $response  = $this->process($request);
+        $body      = json_decode($response->getBody(), true);
 
         // assertions
         $this->assertNotEmpty($body);

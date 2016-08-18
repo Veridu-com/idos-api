@@ -30,9 +30,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    "service_id" => 1860914067,
-                    "listens"=> [
-                        "source.add.facebook"
+                    'service_id' => 1860914067,
+                    'listens'    => [
+                        'source.add.facebook'
                     ]
                 ]
             )

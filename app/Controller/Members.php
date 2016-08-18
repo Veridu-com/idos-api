@@ -119,7 +119,7 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $bodyRequest   = $request->getParsedBody();
+        $bodyRequest = $request->getParsedBody();
 
         $command = $this->commandFactory->create('Member\\CreateNew');
 
@@ -189,10 +189,10 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $member          = $this->repository->findOne($request->getAttribute('decodedMemberId'));
+        $member = $this->repository->findOne($request->getAttribute('decodedMemberId'));
 
         $body = [
-            'data'    => $member->toArray()
+            'data' => $member->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -251,7 +251,7 @@ class Members implements ControllerInterface {
 
         $deleted = $this->commandBus->handle($command);
         $body    = [
-            'status'  => $deleted === 1
+            'status' => $deleted === 1
         ];
 
         $statusCode = $body['status'] ? 200 : 404;

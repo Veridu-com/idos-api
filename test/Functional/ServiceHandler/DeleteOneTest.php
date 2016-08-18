@@ -18,16 +18,15 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request            = $this->createRequest($this->createEnvironment());
-        $response           = $this->process($request);
-        $body               = json_decode($response->getBody(), true);
+        $request  = $this->createRequest($this->createEnvironment());
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
         // assertions
-        
+
         $this->assertNotEmpty($body);
         $response->getStatusCode();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
-
 
         /*
          * Validates Json Schema with Json Response
@@ -42,10 +41,10 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri          = sprintf('/1.0/service-handlers/12121212');
-        $request            = $this->createRequest($this->createEnvironment());
-        $response           = $this->process($request);
-        $body               = json_decode($response->getBody(), true);
+        $this->uri = sprintf('/1.0/service-handlers/12121212');
+        $request   = $this->createRequest($this->createEnvironment());
+        $response  = $this->process($request);
+        $body      = json_decode($response->getBody(), true);
 
         // assertions
         $this->assertNotEmpty($body);

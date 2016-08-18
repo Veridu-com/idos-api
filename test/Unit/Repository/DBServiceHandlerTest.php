@@ -36,20 +36,20 @@ class DBServiceHandlerTest extends AbstractUnit {
      private function getEntity($id = null) {
         return new ServiceHandlerEntity(
             [
-                'listens'      => ['listen1', 'listen2'],
-                'id'           => $id,
-                'service.id' => $id,
-                'service.name' => 'name',
-                'service.url' => 'url',
-                'service.access' => 'access',
-                'service.enabled' => 'enabled',
-                'service.listens' => ['listen1', 'listen2'],
-                'service.triggers' => ['trigger1', 'trigger2'],
+                'listens'            => ['listen1', 'listen2'],
+                'id'                 => $id,
+                'service.id'         => $id,
+                'service.name'       => 'name',
+                'service.url'        => 'url',
+                'service.access'     => 'access',
+                'service.enabled'    => 'enabled',
+                'service.listens'    => ['listen1', 'listen2'],
+                'service.triggers'   => ['trigger1', 'trigger2'],
                 'service.created_at' => $this->created_at,
                 'service.updated_at' => $this->updated_at,
-                'service.name' => 'name',
-                'created_at'   => $this->created_at,
-                'updated_at'   => $this->updated_at
+                'service.name'       => 'name',
+                'created_at'         => $this->created_at,
+                'updated_at'         => $this->updated_at
             ],
             $this->optimus
         );
@@ -57,21 +57,21 @@ class DBServiceHandlerTest extends AbstractUnit {
 
     private function getToArray() {
         return [
-            'id'           => null,
-            'listens'      => ['listen1', 'listen2'],
+            'id'      => null,
+            'listens' => ['listen1', 'listen2'],
             'service' => [
-                'id' => null,
-                'name' => 'name',
-                'url' => 'url',
-                'access' => 'access',
-                'enabled' => 'enabled',
-                'listens' => ['listen1', 'listen2'],
-                'triggers' => ['trigger1', 'trigger2'],
+                'id'         => null,
+                'name'       => 'name',
+                'url'        => 'url',
+                'access'     => 'access',
+                'enabled'    => 'enabled',
+                'listens'    => ['listen1', 'listen2'],
+                'triggers'   => ['trigger1', 'trigger2'],
                 'created_at' => time(),
                 'updated_at' => time(),
             ],
-            'created_at'   => $this->created_at,
-            'updated_at'   => $this->created_at
+            'created_at' => $this->created_at,
+            'updated_at' => $this->created_at
         ];
     }
 

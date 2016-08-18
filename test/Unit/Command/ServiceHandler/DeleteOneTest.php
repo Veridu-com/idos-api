@@ -10,7 +10,6 @@ use App\Command\ServiceHandler\DeleteOne;
 use Test\Unit\Command\AbstractCommandTest;
 
 class DeleteOneTest extends AbstractCommandTest {
-
     public function testSetParameters() {
         $command = new DeleteOne();
 
@@ -31,6 +30,6 @@ class DeleteOneTest extends AbstractCommandTest {
         ];
 
         $this->assertSetParameters(DeleteOne::class, $attributes);
-        
+
     }
 }

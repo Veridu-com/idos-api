@@ -15,9 +15,9 @@ trait HasAuthMiddleware {
                 'QUERY_STRING'   => null
             ]
         );
-        $request    = $this->createRequest($environment);
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $request  = $this->createRequest($environment);
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertEquals(403, $response->getStatusCode());
@@ -44,9 +44,9 @@ trait HasAuthMiddleware {
                 'QUERY_STRING'   => 'companyPrivKey=dummy'
             ]
         );
-        $request    = $this->createRequest($environment);
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $request  = $this->createRequest($environment);
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertEquals(500, $response->getStatusCode());

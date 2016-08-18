@@ -10,7 +10,6 @@ use App\Command\Setting\UpdateOne;
 use Test\Unit\Command\AbstractCommandTest;
 
 class UpdateOneTest extends AbstractCommandTest {
-
     public function testSetParameters() {
         $command = new UpdateOne();
 
@@ -31,6 +30,6 @@ class UpdateOneTest extends AbstractCommandTest {
         ];
 
         $this->assertSetParameters(UpdateOne::class, $attributes);
-        
+
     }
 }

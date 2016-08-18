@@ -46,8 +46,8 @@ class RoleAccess implements RouteInterface {
             );
         };
 
-        $container                  = $app->getContainer();
-        $authMiddleware             = $container->get('authMiddleware');
+        $container      = $app->getContainer();
+        $authMiddleware = $container->get('authMiddleware');
 
         self::listAll($app, $authMiddleware);
         self::getOne($app, $authMiddleware);

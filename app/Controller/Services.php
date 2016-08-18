@@ -105,7 +105,7 @@ class Services implements ControllerInterface {
         $entity = $this->repository->findOne($serviceId, $actingCompany);
 
         $body = [
-            'data'    => $entity->toArray()
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -203,8 +203,8 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany  = $request->getAttribute('actingCompany');
-        $serviceId      = $request->getAttribute('decodedServiceId');
+        $actingCompany = $request->getAttribute('actingCompany');
+        $serviceId     = $request->getAttribute('decodedServiceId');
 
         $command = $this->commandFactory->create('Service\\DeleteOne');
         $command
@@ -244,8 +244,8 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceId          = $request->getAttribute('decodedServiceId');
+        $actingCompany = $request->getAttribute('actingCompany');
+        $serviceId     = $request->getAttribute('decodedServiceId');
 
         $command = $this->commandFactory->create('Service\\UpdateOne');
         $command

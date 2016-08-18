@@ -84,12 +84,12 @@ class RoleAccess implements HandlerInterface {
 
         $entity = $this->repository->create(
             [
-                'role'          => $command->role,
-                'resource'      => $command->resource,
-                'access'        => $command->access,
-                'identity_id'   => $command->identityId,
-                'created_at'    => $now,
-                'updated_at'    => $now
+                'role'        => $command->role,
+                'resource'    => $command->resource,
+                'access'      => $command->access,
+                'identity_id' => $command->identityId,
+                'created_at'  => $now,
+                'updated_at'  => $now
             ]
         );
 

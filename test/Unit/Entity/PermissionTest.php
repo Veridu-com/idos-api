@@ -34,9 +34,9 @@ class PermissionTest extends AbstractUnit {
 
     public function testSerialize() {
         $array = [
-            'id'          => 0,
-            'routeName'   => 'companies:listAll',
-            'created_at'  => time()
+            'id'         => 0,
+            'routeName'  => 'companies:listAll',
+            'created_at' => time()
         ];
 
         $abstractMock = $this->getMockBuilder(Permission::class)

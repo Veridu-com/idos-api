@@ -26,11 +26,11 @@ class ServiceTest extends AbstractUnit {
 
         $updated = time();
         $array   = [
-            'id'          => 1,
-            'name'        => 'My Service',
-            'enabled'     => true,
-            'created_at'  => time(),
-            'updated_at'  => time()
+            'id'         => 1,
+            'name'       => 'My Service',
+            'enabled'    => true,
+            'created_at' => time(),
+            'updated_at' => time()
         ];
 
         $abstractMock = $this->getMockBuilder(Service::class)
@@ -58,13 +58,13 @@ class ServiceTest extends AbstractUnit {
             ->setConstructorArgs(
                 [
                     [
-                        'id'          => 1,
-                        'name'        => 'My Service',
-                        'url'         => 'url',
-                        'access'      => 0x01,
-                        'enabled'     => true,
-                        'created_at'  => time(),
-                        'updated_at'  => time()
+                        'id'         => 1,
+                        'name'       => 'My Service',
+                        'url'        => 'url',
+                        'access'     => 0x01,
+                        'enabled'    => true,
+                        'created_at' => time(),
+                        'updated_at' => time()
                     ],
                     $this->optimus
                 ]
@@ -75,10 +75,10 @@ class ServiceTest extends AbstractUnit {
 
         $this->assertArrayHasKey('name', $array);
         $this->assertSame('My Service', $array['name']);
-        
+
         $this->assertArrayHasKey('enabled', $array);
         $this->assertTrue($array['enabled']);
-        
+
         $this->assertArrayHasKey('access', $array);
         $this->assertTrue($array['access'] == 0x01);
 

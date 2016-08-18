@@ -30,24 +30,24 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    "name"  => "New service name",
-                    "url"  => "http://service-url.com",
-                    "enabled" => true,
-                    "access"  => 1,
-                    "auth_username" => "idos",
-                    "auth_password" => "secret",
-                    "listens" => [
-                        "source.add.facebook"
+                    'name'          => 'New service name',
+                    'url'           => 'http://service-url.com',
+                    'enabled'       => true,
+                    'access'        => 1,
+                    'auth_username' => 'idos',
+                    'auth_password' => 'secret',
+                    'listens'       => [
+                        'source.add.facebook'
                     ],
-                    "triggers" => [
-                        "source.scraper.facebook.finished"
-                    ]                    
+                    'triggers' => [
+                        'source.scraper.facebook.finished'
+                    ]
                 ]
             )
         );
 
         $response = $this->process($request);
-        $body = json_decode($response->getBody(), true);
+        $body     = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
 
         $this->assertEquals(201, $response->getStatusCode());

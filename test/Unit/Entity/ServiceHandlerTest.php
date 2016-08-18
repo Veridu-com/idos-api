@@ -24,9 +24,9 @@ class ServiceHandlerTest extends AbstractUnit {
 
     private function getAttributes() {
         return [
-            'id'           => 1,
-            'created_at'   => time(),
-            'updated_at'   => time(),
+            'id'         => 1,
+            'created_at' => time(),
+            'updated_at' => time(),
         ];
     }
 
@@ -54,13 +54,13 @@ class ServiceHandlerTest extends AbstractUnit {
 
         $this->assertArrayHasKey('company_id', $array);
         $this->assertSame(1, $array['company_id']);
-        
+
         $this->assertArrayHasKey('service_id', $array);
         $this->assertSame(2, $array['service_id']);
 
         $this->assertArrayHasKey('listens', $array);
         $this->assertSame(['listen1', 'listen2'], json_decode($array['listens']));
-        
+
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_string($array['created_at']));
 
@@ -77,9 +77,9 @@ class ServiceHandlerTest extends AbstractUnit {
             ->setConstructorArgs([
                 array_merge(
                     [
-                        'companyId'    => 1,
-                        'serviceId'    => 2,
-                        'listens'      => ['listen1', 'listen2']
+                        'companyId' => 1,
+                        'serviceId' => 2,
+                        'listens'   => ['listen1', 'listen2']
                     ],
                     $this->getAttributes()
                 ),

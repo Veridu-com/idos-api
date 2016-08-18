@@ -35,7 +35,7 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'created_at'    => 'date'
+        'created_at' => 'date'
     ];
 
     /**
@@ -59,7 +59,7 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
         $entity = $query->first();
 
         if (! $entity) {
-            throw new NotFound;
+            throw new NotFound();
         }
 
         return $entity;

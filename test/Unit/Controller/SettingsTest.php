@@ -108,7 +108,7 @@ class SettingsTest extends AbstractUnit {
             ->will(
                 $this->onConsecutiveCalls(
                     $this->returnValue(
-                        "1"
+                        '1'
                     ),
                     'section',
                     'propName'
@@ -327,7 +327,7 @@ class SettingsTest extends AbstractUnit {
             ->will(
                 $this->onConsecutiveCalls(
                     $this->returnValue(
-                        "1"
+                        '1'
                     ),
                     'section',
                     'propName'

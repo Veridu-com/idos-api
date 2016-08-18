@@ -118,9 +118,9 @@ class SettingTest extends AbstractUnit {
 
     public function testHandleCreateNew() {
         $settingEntity = new SettingEntity([
-            'section' => 'section',
+            'section'  => 'section',
             'property' => 'property',
-            'value' => 'value'
+            'value'    => 'value'
         ], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
@@ -143,11 +143,11 @@ class SettingTest extends AbstractUnit {
             new SettingValidator()
         );
 
-        $command              = new CreateNew();
-        $command->section     = 'section';
-        $command->property    = 'property';
-        $command->value       = 'value';
-        $command->companyId   = 1;
+        $command            = new CreateNew();
+        $command->section   = 'section';
+        $command->property  = 'property';
+        $command->value     = 'value';
+        $command->companyId = 1;
 
         $result = $handler->handleCreateNew($command);
 
@@ -201,8 +201,8 @@ class SettingTest extends AbstractUnit {
             new SettingValidator()
         );
 
-        $command              = new DeleteAll();
-        $command->companyId   = 0;
+        $command            = new DeleteAll();
+        $command->companyId = 0;
 
         $this->assertEquals(1, $handler->handleDeleteAll($command));
     }
@@ -260,9 +260,9 @@ class SettingTest extends AbstractUnit {
             new SettingValidator()
         );
 
-        $command                = new UpdateOne();
-        $command->settingId     = 1;
-        $command->value = 'cool-value';
+        $command            = new UpdateOne();
+        $command->settingId = 1;
+        $command->value     = 'cool-value';
 
         $setting = $handler->handleUpdateOne($command);
 
@@ -317,8 +317,8 @@ class SettingTest extends AbstractUnit {
             new SettingValidator()
         );
 
-        $command              = new DeleteOne();
-        $command->settingId   = 0;
+        $command            = new DeleteOne();
+        $command->settingId = 0;
 
         $this->assertEquals(1, $handler->handleDeleteOne($command));
     }

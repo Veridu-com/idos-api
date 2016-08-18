@@ -12,16 +12,16 @@ class S30ServiceHandlersSeed extends AbstractSeed {
 
         $data = [
             [
-                'company_id'    => 1,
-                'service_id'    => 1, // scraper
-                'listens'       => json_encode(['idos:source.facebook.added']),
-                'created_at'    => $now
+                'company_id' => 1,
+                'service_id' => 1, // scraper
+                'listens'    => json_encode(['idos:source.facebook.added']),
+                'created_at' => $now
             ],
             [
-                'company_id'    => 1,
-                'service_id'    => 2, // data-mapper
-                'listens'       => json_encode(['idos:scraper.facebook.completed']),
-                'created_at'    => $now
+                'company_id' => 1,
+                'service_id' => 2, // data-mapper
+                'listens'    => json_encode(['idos:scraper.facebook.completed']),
+                'created_at' => $now
             ]
         ];
 

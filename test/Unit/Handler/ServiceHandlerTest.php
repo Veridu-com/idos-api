@@ -118,10 +118,10 @@ class ServiceHandlerTest extends AbstractUnit {
 
     public function testHandleCreateNew() {
         $savedEntity = new ServiceHandlerEntity([
-            'id' => 1,
+            'id'         => 1,
             'service_id' => 1,
-            'url' => 'http://localhost:8080',
-            'listens' => ['listen1', 'listen2'],
+            'url'        => 'http://localhost:8080',
+            'listens'    => ['listen1', 'listen2'],
             'company_id' => 1,
             'created_at' => time()
         ], $this->optimus);
@@ -152,11 +152,11 @@ class ServiceHandlerTest extends AbstractUnit {
             new ServiceHandlerValidator()
         );
 
-        $command                   = new CreateNew();
-        $command->companyId        = 1;
-        $command->serviceId        = 1;
-        $command->url              = 'http://localhost:8080';
-        $command->listens          = ['listen1', 'listen2'];
+        $command            = new CreateNew();
+        $command->companyId = 1;
+        $command->serviceId = 1;
+        $command->url       = 'http://localhost:8080';
+        $command->listens   = ['listen1', 'listen2'];
 
         $result = $handler->handleCreateNew($command);
 
@@ -170,16 +170,16 @@ class ServiceHandlerTest extends AbstractUnit {
     public function testHandleUpdateOne() {
         $serviceHandlerEntity = new ServiceHandlerEntity(
             [
-                'companyId'             => 1,
-                'serviceHandlerId'      => 1,
-                'listens'               => ['listen1', 'listen2'],
-                'service.id'            => 1,
-                'service'               => new Service(['id' => 1], $this->optimus),
-                'service.name'          => 'my cool service',
-                'service.created_at'    => time(),
-                'service.updated_at'    => time(),
-                'created_at'            => time(),
-                'updated_at'            => time()
+                'companyId'          => 1,
+                'serviceHandlerId'   => 1,
+                'listens'            => ['listen1', 'listen2'],
+                'service.id'         => 1,
+                'service'            => new Service(['id' => 1], $this->optimus),
+                'service.name'       => 'my cool service',
+                'service.created_at' => time(),
+                'service.updated_at' => time(),
+                'created_at'         => time(),
+                'updated_at'         => time()
             ],
             $this->optimus
         );
@@ -198,11 +198,11 @@ class ServiceHandlerTest extends AbstractUnit {
             ->expects($this->once())
             ->method('findOne')
             ->will($this->returnValue($serviceHandlerEntity));
-            
+
         $serviceHandlerEntity->relations = [
             'service' => new Service(
                 [
-                    'id' => 1, 
+                    'id'      => 1,
                     'listens' => ['listen1', 'listen2']
                 ], $this->optimus)
         ];
@@ -212,17 +212,15 @@ class ServiceHandlerTest extends AbstractUnit {
             ->method('save')
             ->willReturn($serviceHandlerEntity);
 
-
         $handler = new ServiceHandler(
             $serviceHandlerRepository,
             new ServiceHandlerValidator()
         );
 
-
-        $command= new UpdateOne();
-        $command->companyId =  1;
-        $command->serviceHandlerId =  1;
-        $command->listens = ['listen1', 'listen2'];
+        $command                   = new UpdateOne();
+        $command->companyId        = 1;
+        $command->serviceHandlerId = 1;
+        $command->listens          = ['listen1', 'listen2'];
 
         $result = $handler->handleUpdateOne($command);
 
@@ -277,8 +275,8 @@ class ServiceHandlerTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $commandMock->companyId         = 1;
-        $commandMock->serviceHandlerId  = 1;
+        $commandMock->companyId        = 1;
+        $commandMock->serviceHandlerId = 1;
 
         $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
     }

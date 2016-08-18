@@ -48,11 +48,11 @@ class ServicesTest extends AbstractUnit {
 
         return new ServiceEntity(
             [
-                'id'           => $id,
-                'name'         => 'New Service',
-                'url'          => 'http://localhost:8080',
-                'created_at'   => time(),
-                'updated_at'   => time()
+                'id'         => $id,
+                'name'       => 'New Service',
+                'url'        => 'http://localhost:8080',
+                'created_at' => time(),
+                'updated_at' => time()
             ],
             $optimus
         );

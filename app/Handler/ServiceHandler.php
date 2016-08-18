@@ -82,10 +82,10 @@ class ServiceHandler implements HandlerInterface {
         $now    = time();
         $entity = $this->repository->create(
             [
-                'company_id'    => $command->companyId,
-                'service_id'    => $command->serviceId,
-                'listens'       => $command->listens,
-                'created_at'    => $now
+                'company_id' => $command->companyId,
+                'service_id' => $command->serviceId,
+                'listens'    => $command->listens,
+                'created_at' => $now
             ]
         );
 
@@ -119,7 +119,7 @@ class ServiceHandler implements HandlerInterface {
 
         if ($entity->listens != $command->listens) {
             // updates listen attribute
-            $entity->listens = $command->listens;
+            $entity->listens   = $command->listens;
             $entity->updatedAt = time();
             // save entity
             $success = $this->repository->save($entity);

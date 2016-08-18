@@ -101,13 +101,13 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceHandlerId   = (int) $request->getAttribute('decodedServiceHandlerId');
+        $actingCompany    = $request->getAttribute('actingCompany');
+        $serviceHandlerId = (int) $request->getAttribute('decodedServiceHandlerId');
 
         $entity = $this->repository->findOne($actingCompany->id, $serviceHandlerId);
 
         $body = [
-            'data'    => $entity->toArray()
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -197,8 +197,8 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceHandlerId   = $request->getAttribute('decodedServiceHandlerId');
+        $actingCompany    = $request->getAttribute('actingCompany');
+        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
         $command
@@ -232,8 +232,8 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceHandlerId   = $request->getAttribute('decodedServiceHandlerId');
+        $actingCompany    = $request->getAttribute('actingCompany');
+        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
         $command
@@ -244,7 +244,7 @@ class ServiceHandlers implements ControllerInterface {
         $entity = $this->commandBus->handle($command);
 
         $body = [
-            'data'    => $entity->toArray()
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

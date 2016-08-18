@@ -68,8 +68,8 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany  = $request->getAttribute('targetCompany');
-        $result         = $this->repository->getAllByCompanyId($targetCompany->id, $request->getQueryParams());
+        $targetCompany = $request->getAttribute('targetCompany');
+        $result        = $this->repository->getAllByCompanyId($targetCompany->id, $request->getQueryParams());
 
         $data = $result['collection'];
 
@@ -101,8 +101,8 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId       = (int) $request->getAttribute('decodedSettingId');
-        $setting         = $this->repository->find($settingId);
+        $settingId = (int) $request->getAttribute('decodedSettingId');
+        $setting   = $this->repository->find($settingId);
 
         $body = [
             'data'    => $setting->toArray(),
@@ -196,7 +196,7 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId       = $request->getAttribute('decodedSettingId');
+        $settingId = $request->getAttribute('decodedSettingId');
 
         $command = $this->commandFactory->create('Setting\\DeleteOne');
         $command->setParameter('settingId', $settingId);
@@ -226,7 +226,7 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId       = $request->getAttribute('decodedSettingId');
+        $settingId = $request->getAttribute('decodedSettingId');
 
         $command = $this->commandFactory->create('Setting\\UpdateOne');
         $command

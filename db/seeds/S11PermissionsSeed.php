@@ -12,7 +12,7 @@ class S11PermissionsSeed extends AbstractSeed {
 
         $names = [];
         foreach ($routeFiles as $file) {
-            $classname =  sprintf('App\\Route\\%s', basename($file, '.php'));
+            $classname = sprintf('App\\Route\\%s', basename($file, '.php'));
             if (strpos($classname, 'Interface') === false) {
                 foreach ($classname::getPublicNames() as $name) {
                     $names[] = $name;
@@ -25,9 +25,9 @@ class S11PermissionsSeed extends AbstractSeed {
 
         foreach ($names as $routeName) {
             $data[] = [
-                'company_id'    => 1,           // Company #2 wont have any permssion
-                'route_name'    => $routeName,
-                'created_at'    => $now
+                'company_id' => 1,           // Company #2 wont have any permssion
+                'route_name' => $routeName,
+                'created_at' => $now
             ];
         }
 

@@ -90,7 +90,7 @@ class DBSettingTest extends AbstractUnit {
 
         $this->assertArrayHasKey('collection', $result);
         $this->assertInstanceOf(Collection::class, $result['collection']);
-        
+
         // @FIXME - Problems testing the paginator with the Builder mock.
         // $this->assertInstanceOf(SettingEntity::class, $result['collection']->first());
     }
@@ -98,18 +98,18 @@ class DBSettingTest extends AbstractUnit {
     public function testGetAllByCompanyId() {
         $array = [
             [
-                'section'       => 'NiceSetting',
-                'property'      => 'niceProperty',
-                'value'         => 'niceValue',
-                'created_at'    => time(),
-                'updated_at'    => time()
+                'section'    => 'NiceSetting',
+                'property'   => 'niceProperty',
+                'value'      => 'niceValue',
+                'created_at' => time(),
+                'updated_at' => time()
             ],
             [
-                'section'       => 'ReallyNiceSetting',
-                'property'      => 'realyNiceProperty',
-                'value'         => 'realyNiceValue',
-                'created_at'    => time(),
-                'updated_at'    => time()
+                'section'    => 'ReallyNiceSetting',
+                'property'   => 'realyNiceProperty',
+                'value'      => 'realyNiceValue',
+                'created_at' => time(),
+                'updated_at' => time()
             ]
         ];
 
@@ -146,7 +146,7 @@ class DBSettingTest extends AbstractUnit {
 
         $result = $dbSetting->getAllByCompanyId(1);
         $this->assertInstanceOf(Collection::class, $result['collection']);
-        
+
         // @FIXME - Problems testing the paginator with the Builder mock.
         // $this->assertInstanceOf(SettingEntity::class, $result['collection']->first());
         // $this->assertSame($array[0], $result['collection']->first()->toArray());

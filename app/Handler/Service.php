@@ -180,8 +180,6 @@ class Service implements HandlerInterface {
             $this->repository->save($entity);
         }
 
-
-
         return $entity;
     }
 

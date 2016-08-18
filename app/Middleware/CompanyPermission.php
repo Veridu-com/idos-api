@@ -22,10 +22,10 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class CompanyPermission implements MiddlewareInterface {
     // only authorized companies can access the endpoint, controlled by App\Repository\PermissionInterface
-    const PROTECTED_ACTION =    'protected';
+    const PROTECTED_ACTION = 'protected';
 
     // won't test anything, the endpoint should be responsible for granting 
-    const PUBLIC_ACTION    =    'private';
+    const PUBLIC_ACTION = 'private';
 
     private $container;
     private $permissionType;
@@ -48,11 +48,11 @@ class CompanyPermission implements MiddlewareInterface {
         callable $next
     ) : ResponseInterface {
         // get actingCompany set on Auth middleware
-        $actingCompany            = $request->getAttribute('actingCompany');
+        $actingCompany = $request->getAttribute('actingCompany');
         // get permissionRepository for checking
-        $permissionRepository     = $this->container->get('repositoryFactory')->create('Permission');
-        $routeName                = $request->getAttribute('route')->getName();
-        $response                 = $this->allow($response);
+        $permissionRepository = $this->container->get('repositoryFactory')->create('Permission');
+        $routeName            = $request->getAttribute('route')->getName();
+        $response             = $this->allow($response);
 
         if ($this->permissionType === self::PROTECTED_ACTION) {
             try {

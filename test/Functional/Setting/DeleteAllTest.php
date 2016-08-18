@@ -21,13 +21,12 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request    = $this->createRequest();
-        $response   = $this->process($request);
-        $body       = json_decode($response->getBody(), true);
+        $request  = $this->createRequest();
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         // success assertions
         $this->assertNotEmpty($body);
-
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
@@ -50,10 +49,10 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri        = '/1.0/companies/dummy-ltd/settings';
-        $request          = $this->createRequest($this->createEnvironment());
-        $response         = $this->process($request);
-        $body             = json_decode($response->getBody(), true);
+        $this->uri = '/1.0/companies/dummy-ltd/settings';
+        $request   = $this->createRequest($this->createEnvironment());
+        $response  = $this->process($request);
+        $body      = json_decode($response->getBody(), true);
 
         // success assertions
         $this->assertNotEmpty($body);
