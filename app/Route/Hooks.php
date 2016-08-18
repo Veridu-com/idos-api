@@ -18,7 +18,7 @@ use Slim\App;
  * Hooks routing definitions.
  *
  * @link docs/companies/hooks/overview.md
- * @see App\Controller\Companies
+ * @see App\Controller\Hooks
  */
 class Hooks implements RouteInterface {
     /**

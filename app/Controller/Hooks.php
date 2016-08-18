@@ -71,8 +71,8 @@ class Hooks implements ControllerInterface {
     /**
      * Lists all hooks associated with given credential.
      *
-     * @apiEndpointParam path string companySlug
-     * @apiEndpointParam path string pubKey
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -112,8 +112,8 @@ class Hooks implements ControllerInterface {
     /**
      * Creates a new hook for the given credential.
      *
-     * @apiEndpointParam path string companySlug
-     * @apiEndpointParam path string pubKey
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 201 schema/hook/hookEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -154,8 +154,8 @@ class Hooks implements ControllerInterface {
     /**
      * Updates a hook from the given credential.
      *
-     * @apiEndpointParam path string companySlug
-     * @apiEndpointParam path string pubKey
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -196,8 +196,8 @@ class Hooks implements ControllerInterface {
     /**
      * Retrieves a hook from the given credential.
      *
-     * @apiEndpointParam path string companySlug
-     * @apiEndpointParam path string pubKey
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/hookEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -238,8 +238,8 @@ class Hooks implements ControllerInterface {
     /**
      * Deletes all hooks from the given credential.
      *
-     * @apiEndpointParam path string companySlug
-     * @apiEndpointParam path string pubKey
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -273,8 +273,8 @@ class Hooks implements ControllerInterface {
     /**
      * Deletes a hook from the given credential.
      *
-     * @apiEndpointParam path string companySlug
-     * @apiEndpointParam path string pubKey
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

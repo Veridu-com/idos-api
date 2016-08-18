@@ -14,10 +14,15 @@ use App\Command\Hook\DeleteAll;
 use App\Command\Hook\DeleteOne;
 use App\Command\Hook\UpdateOne;
 use App\Entity\Hook as HookEntity;
+use App\Event\Hook\Created;
+use App\Event\Hook\Updated;
+use App\Event\Hook\Deleted;
+use App\Event\Hook\DeletedMulti;
 use App\Repository\CredentialInterface;
 use App\Repository\HookInterface;
 use App\Validator\Hook as HookValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Hook commands.
@@ -41,6 +46,12 @@ class Hook implements HandlerInterface {
      * @var App\Validator\Hook
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -56,7 +67,9 @@ class Hook implements HandlerInterface {
                     ->create('Credential'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Hook')
+                    ->create('Hook'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -73,11 +86,13 @@ class Hook implements HandlerInterface {
     public function __construct(
         HookInterface   $repository,
         CredentialInterface $credentialRepository,
-        HookValidator $validator
+        HookValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
         $this->validator            = $validator;
+        $this->emitter              = $emitter;
     }
 
     /**
@@ -108,6 +123,11 @@ class Hook implements HandlerInterface {
         );
 
         $hook = $this->repository->save($hook);
+
+        if($hook) {
+            $event = new Created($hook);
+            $this->emitter->emit($event);
+        }
 
         return $hook;
     }
@@ -142,6 +162,11 @@ class Hook implements HandlerInterface {
         $hook->updatedAt  = time();
         $hook             = $this->repository->save($hook);
 
+        if($hook) {
+            $event = new Updated($hook);
+            $this->emitter->emit($event);
+        }
+
         return $hook;
     }
 
@@ -167,7 +192,14 @@ class Hook implements HandlerInterface {
             throw new NotFound();
         }
 
-        return $this->repository->delete($command->hookId);
+        $result = $this->repository->delete($command->hookId);
+
+        if($result) {
+            $event = new Deleted($result);
+            $this->emitter->emit($event);
+        }
+
+        return $result;
     }
 
     /**
@@ -184,7 +216,14 @@ class Hook implements HandlerInterface {
             throw new NotFound();
         }
 
-        return $this->repository->deleteByCredentialId($credential->id);
+        $result = $this->repository->deleteByCredentialId($credential->id);
+
+        if($result) {
+            $event = new DeletedMulti($result);
+            $this->emitter->emit($event);
+        }
+
+        return $result;
     }
 
 }

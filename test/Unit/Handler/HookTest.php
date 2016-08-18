@@ -13,6 +13,10 @@ use App\Command\Hook\UpdateOne;
 use App\Entity\Credential as CredentialEntity;
 use App\Entity\Company as CompanyEntity;
 use App\Entity\Hook as HookEntity;
+use App\Event\Hook\Created;
+use App\Event\Hook\Updated;
+use App\Event\Hook\Deleted;
+use App\Event\Hook\DeletedMulti;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
@@ -25,6 +29,7 @@ use App\Repository\HookInterface;
 use App\Repository\UserInterface;
 use App\Validator\Hook as HookValidator;
 use Jenssegers\Optimus\Optimus;
+use League\Event\Emitter;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
@@ -94,13 +99,17 @@ class HookTest extends AbstractUnit {
         $validatorMock = $this
             ->getMockBuilder(HookValidator::class)
             ->getMock();
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
 
         $this->assertInstanceOf(
             'App\\Handler\\HandlerInterface',
             new Hook(
                 $repositoryMock,
                 $credentialRepositoryMock,
-                $validatorMock
+                $validatorMock,
+                $emitterMock
             )
         );
     }
@@ -122,9 +131,16 @@ class HookTest extends AbstractUnit {
             ->expects($this->exactly(2))
             ->method('create')
             ->will($this->onConsecutiveCalls($repositoryMock, $credentialRepositoryMock));
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
 
         $container['repositoryFactory'] = function () use ($repositoryFactoryMock) {
             return $repositoryFactoryMock;
+        };
+
+        $container['eventEmitter'] = function () use ($emitterMock) {
+            return $emitterMock;
         };
 
         $validatorMock = $this
@@ -154,10 +170,14 @@ class HookTest extends AbstractUnit {
         $credentialRepositoryMock = $this
             ->getMockBuilder(CredentialInterface::class)
             ->getMock();
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
         $handler = new Hook(
             $repositoryMock,
             $credentialRepositoryMock,
-            new HookValidator()
+            new HookValidator(),
+            $emitterMock
         );
 
         $this->setExpectedException('InvalidArgumentException');
@@ -201,11 +221,19 @@ class HookTest extends AbstractUnit {
         $credentialRepositoryMock
             ->method('findByPubKey')
             ->will($this->returnValue($this->getCredentialEntity()));
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->setMethods(['emit'])
+            ->getMock();
+        $emitterMock
+            ->method('emit')
+            ->will($this->returnValue(new Created($hookEntity)));
 
         $handler = new Hook(
             $repository,
             $credentialRepositoryMock,
-            new HookValidator()
+            new HookValidator(),
+            $emitterMock
         );
 
         $commandMock                   = new CreateNew();
@@ -242,11 +270,19 @@ class HookTest extends AbstractUnit {
         $credentialRepositoryMock = $this->getMockBuilder(CredentialInterface::class)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->setMethods(['emit'])
+            ->getMock();
+        $emitterMock
+            ->method('emit')
+            ->will($this->returnValue(new Updated($hookEntity)));
 
         $handler = new Hook(
             $repository,
             $credentialRepositoryMock,
-            new HookValidator()
+            new HookValidator(),
+            $emitterMock
         );
 
         $command                   = new UpdateOne();
@@ -292,11 +328,19 @@ class HookTest extends AbstractUnit {
         $credentialRepositoryMock
             ->method('findByPubKey')
             ->will($this->returnValue($this->getCredentialEntity()));
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->setMethods(['emit'])
+            ->getMock();
+        $emitterMock
+            ->method('emit')
+            ->will($this->returnValue(new Deleted(1)));
 
         $handler = new Hook(
             $repository,
             $credentialRepositoryMock,
-            new HookValidator()
+            new HookValidator(),
+            $emitterMock
         );
 
         $commandMock = $this
@@ -332,11 +376,19 @@ class HookTest extends AbstractUnit {
         $credentialRepositoryMock
             ->method('findByPubKey')
             ->will($this->returnValue($this->getCredentialEntity()));
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->setMethods(['emit'])
+            ->getMock();
+        $emitterMock
+            ->method('emit')
+            ->will($this->returnValue(new Deleted(5)));
 
         $handler = new Hook(
             $repository,
             $credentialRepositoryMock,
-            new HookValidator()
+            new HookValidator(),
+            $emitterMock
         );
 
         $commandMock = $this

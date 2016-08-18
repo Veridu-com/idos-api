@@ -23,7 +23,7 @@ class DeleteAll extends AbstractCommand {
     /**
      * Company.
      *
-     * @var string
+     * @var App\Entity\Company
      */
     public $company;
     /**

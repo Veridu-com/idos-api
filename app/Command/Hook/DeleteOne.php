@@ -29,7 +29,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * Company.
      *
-     * @var string
+     * @var App\Entity\Company
      */
     public $company;
 

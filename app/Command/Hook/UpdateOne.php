@@ -47,7 +47,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * Company.
      *
-     * @var string
+     * @var App\Entity\Company
      */
     public $company;
 
