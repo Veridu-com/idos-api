@@ -4,41 +4,22 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Company;
+namespace Test\Functional\Hook;
 
-use Slim\Http\Environment;
-use Slim\Http\Headers;
-use Slim\Http\Request;
-use Slim\Http\RequestBody;
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 
 class MainTest extends AbstractFunctional {
-    public function testListEndpoints() {
-        $environment = Environment::mock(
-            [
-                'SCRIPT_NAME'    => '/index.php',
-                'REQUEST_URI'    => '/1.0/',
-                'REQUEST_METHOD' => 'GET',
-                'QUERY_STRING'   => ''
-            ]
-        );
 
-        $request = new Request(
-            'GET',
-            Uri::createFromEnvironment($environment),
-            Headers::createFromEnvironment($environment),
-            [],
-            $environment->all(),
-            new RequestBody()
-        );
-        $response = new Response();
+    protected function setUp() {
+        $this->httpMethod = 'GET';
+        $this->uri        = '/1.0/';
+    }
 
-        $app = $this->getApp();
-        $app->process($request, $response);
+    public function testSuccess() {
+        $request = $this->createRequest($this->createEnvironment());
 
-        $body = json_decode($response->getBody(), true);
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertEquals(200, $response->getStatusCode());
@@ -55,4 +36,5 @@ class MainTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
+
 }
