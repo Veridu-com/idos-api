@@ -124,7 +124,7 @@ class Hook implements HandlerInterface {
 
         $hook = $this->repository->save($hook);
 
-        if($hook) {
+        if ($hook) {
             $event = new Created($hook);
             $this->emitter->emit($event);
         }
@@ -162,7 +162,7 @@ class Hook implements HandlerInterface {
         $hook->updatedAt  = time();
         $hook             = $this->repository->save($hook);
 
-        if($hook) {
+        if ($hook) {
             $event = new Updated($hook);
             $this->emitter->emit($event);
         }
@@ -194,8 +194,8 @@ class Hook implements HandlerInterface {
 
         $result = $this->repository->delete($command->hookId);
 
-        if($result) {
-            $event = new Deleted($result);
+        if ($result) {
+            $event = new Deleted($hook);
             $this->emitter->emit($event);
         }
 
@@ -216,10 +216,11 @@ class Hook implements HandlerInterface {
             throw new NotFound();
         }
 
+        $hooks  = $this->repository->getAllByCredentialId($credential->id);
         $result = $this->repository->deleteByCredentialId($credential->id);
 
-        if($result) {
-            $event = new DeletedMulti($result);
+        if ($result) {
+            $event = new DeletedMulti($hooks);
             $this->emitter->emit($event);
         }
 

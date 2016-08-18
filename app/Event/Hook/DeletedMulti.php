@@ -10,6 +10,7 @@ namespace App\Event\Hook;
 
 use App\Entity\Hook;
 use App\Event\AbstractEvent;
+use Illuminate\Support\Collection;
 
 /**
  * DeletedMulti event.
@@ -18,18 +19,18 @@ class DeletedMulti extends AbstractEvent {
     /**
      * Event related Hook.
      *
-     * @var int
+     * @var Illuminate\Support\Collection
      */
-    public $result;
+    public $hooks;
 
     /**
      * Class constructor.
      *
-     * @param int $result
+     * @param Illuminate\Support\Collection $hooks
      *
      * @return void
      */
-    public function __construct(int $result) {
-        $this->result = $result;
+    public function __construct(Collection $hooks) {
+        $this->hooks = $hooks;
     }
 }

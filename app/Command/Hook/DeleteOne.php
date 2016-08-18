@@ -40,10 +40,10 @@ class DeleteOne extends AbstractCommand {
         if (isset($parameters['hookId'])) {
             $this->hookId = $parameters['hookId'];
         }
-        if(isset($parameters['credentialPubKey'])) {
+        if (isset($parameters['credentialPubKey'])) {
             $this->credentialPubKey = $parameters['credentialPubKey'];
         }
-        if(isset($parameters['company'])) {
+        if (isset($parameters['company'])) {
             $this->company = $parameters['company'];
         }
 

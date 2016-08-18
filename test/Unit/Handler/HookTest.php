@@ -15,6 +15,7 @@ use App\Entity\Credential as CredentialEntity;
 use App\Entity\Hook as HookEntity;
 use App\Event\Hook\Created;
 use App\Event\Hook\Deleted;
+use App\Event\Hook\DeletedMulti;
 use App\Event\Hook\Updated;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
@@ -25,6 +26,7 @@ use App\Repository\DBCredential;
 use App\Repository\DBHook;
 use App\Repository\HookInterface;
 use App\Validator\Hook as HookValidator;
+use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
 use Slim\Container;
@@ -301,6 +303,7 @@ class HookTest extends AbstractUnit {
     }
 
     public function testHandleDeleteOne() {
+        $hookEntity       = $this->getEntity();
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
@@ -331,7 +334,7 @@ class HookTest extends AbstractUnit {
             ->getMock();
         $emitterMock
             ->method('emit')
-            ->will($this->returnValue(new Deleted(1)));
+            ->will($this->returnValue(new Deleted($hookEntity)));
 
         $handler = new Hook(
             $repository,
@@ -353,6 +356,7 @@ class HookTest extends AbstractUnit {
     }
 
     public function testHandleDeleteAll() {
+        $hookEntity       = $this->getEntity();
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
@@ -360,9 +364,12 @@ class HookTest extends AbstractUnit {
         $entityFactory->create('Hook');
 
         $repository = $this->getMockBuilder(DBHook::class)
-            ->setMethods(['deleteByCredentialId'])
+            ->setMethods(['getAllByCredentialId', 'deleteByCredentialId'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+        $repository
+            ->method('getAllByCredentialId')
+            ->will($this->returnValue(new Collection([$hookEntity])));
         $repository
             ->method('deleteByCredentialId')
             ->will($this->returnValue(1));
@@ -379,7 +386,7 @@ class HookTest extends AbstractUnit {
             ->getMock();
         $emitterMock
             ->method('emit')
-            ->will($this->returnValue(new Deleted(5)));
+            ->will($this->returnValue(new DeletedMulti(new Collection([$hookEntity]))));
 
         $handler = new Hook(
             $repository,

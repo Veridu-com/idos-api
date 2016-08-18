@@ -6,7 +6,9 @@
 
 namespace Test\Unit\Event\Hook;
 
+use App\Entity\Hook;
 use App\Event\Hook\DeletedMulti;
+use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
@@ -16,8 +18,14 @@ class DeletedMultiTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $created = new DeletedMulti(5);
+        $hooks = [];
+        for($i = 0; $i < 5; $i++)
+            $hooks[] = new Hook([], $optimus);
 
-        $this->assertSame(5, $created->result);
+        $collection = new Collection($hooks);
+
+        $created = new DeletedMulti($collection);
+
+        $this->assertSame($collection, $created->hooks);
     }
 }

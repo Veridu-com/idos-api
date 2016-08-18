@@ -86,15 +86,15 @@ class ServiceHandler implements HandlerInterface {
         $now    = time();
         $entity = $this->repository->create(
             [
-                'company_id'    => $command->companyId,
-                'service_slug'  => $command->serviceSlug,
-                'name'          => $command->name,
-                'source'        => $command->source,
-                'location'      => $command->location,
-                'authPassword'  => $command->authPassword,
-                'authUsername'  => $command->authUsername,
-                'created_at'    => $now,
-                'updated_at'    => $now
+                'company_id'   => $command->companyId,
+                'service_slug' => $command->serviceSlug,
+                'name'         => $command->name,
+                'source'       => $command->source,
+                'location'     => $command->location,
+                'authPassword' => $command->authPassword,
+                'authUsername' => $command->authUsername,
+                'created_at'   => $now,
+                'updated_at'   => $now
             ]
         );
 

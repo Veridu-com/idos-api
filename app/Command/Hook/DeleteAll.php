@@ -30,10 +30,10 @@ class DeleteAll extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if(isset($parameters['credentialPubKey'])) {
+        if (isset($parameters['credentialPubKey'])) {
             $this->credentialPubKey = $parameters['credentialPubKey'];
         }
-        if(isset($parameters['company'])) {
+        if (isset($parameters['company'])) {
             $this->company = $parameters['company'];
         }
 

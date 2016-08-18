@@ -6,6 +6,7 @@
 
 namespace Test\Unit\Event\Hook;
 
+use App\Entity\Hook;
 use App\Event\Hook\Deleted;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
@@ -16,8 +17,10 @@ class DeletedTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $created = new Deleted(5);
+        $hook = new Hook([], $optimus);
 
-        $this->assertSame(5, $created->result);
+        $created = new Deleted($hook);
+
+        $this->assertSame($hook, $created->hook);
     }
 }

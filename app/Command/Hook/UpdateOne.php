@@ -61,16 +61,16 @@ class UpdateOne extends AbstractCommand {
         if (isset($parameters['trigger'])) {
             $this->trigger = $parameters['trigger'];
         }
-        if(isset($parameters['url'])) {
+        if (isset($parameters['url'])) {
             $this->url = $parameters['url'];
         }
-        if(isset($parameters['subscribed'])) {
+        if (isset($parameters['subscribed'])) {
             $this->subscribed = $parameters['subscribed'];
         }
-        if(isset($parameters['credentialPubKey'])) {
+        if (isset($parameters['credentialPubKey'])) {
             $this->credentialPubKey = $parameters['credentialPubKey'];
         }
-        if(isset($parameters['company'])) {
+        if (isset($parameters['company'])) {
             $this->company = $parameters['company'];
         }
 
