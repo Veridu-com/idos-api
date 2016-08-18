@@ -88,11 +88,7 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
         }
 
         $parent = $this->find($child->parentId);
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 42ed96f1f2f7c147111bad6390029e4138ea48c3
         return $this->isParent($parent, $child);
     }
 }
