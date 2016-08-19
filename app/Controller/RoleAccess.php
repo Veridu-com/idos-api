@@ -76,7 +76,10 @@ class RoleAccess implements ControllerInterface {
         $entities   = $this->repository->findByIdentity($actingUser->identity_id);
 
         $body = [
-            'data' => $entities->toArray()
+            'data' => $entities->toArray(),
+            'updated' => (
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
+            )
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

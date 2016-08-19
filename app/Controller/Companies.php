@@ -79,7 +79,7 @@ class Companies implements ControllerInterface {
         $body = [
             'data'    => $companies->toArray(),
             'updated' => (
-                $companies->isEmpty() ? time() : $companies->max('updated_at')
+                $companies->isEmpty() ? time() : max($companies->max('updatedAt'), $companies->max('createdAt'))
             )
         ];
 
