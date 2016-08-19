@@ -76,7 +76,7 @@ class Settings implements ControllerInterface {
         $body = [
             'data'       => $entities->toArray(),
             'pagination' => $result['pagination'],
-            'updated' => (
+            'updated'    => (
                 $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];

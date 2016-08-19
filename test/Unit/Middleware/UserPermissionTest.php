@@ -4,25 +4,23 @@
  * All rights reserved.
  */
 
-use App\Exception\NotAllowed as NotAllowedException;
-use App\Entity\User as UserEntity;
-use App\Entity\Role as RoleEntity;
 use App\Entity\Company as CompanyEntity;
+use App\Entity\Role as RoleEntity;
 use App\Entity\RoleAccess as RoleAccessEntity;
+use App\Entity\User as UserEntity;
+use App\Exception\NotAllowed as NotAllowedException;
 use App\Factory\Entity as EntityFactory;
-use App\Repository\DBRoleAccess;
-use App\Factory\Repository;
-use App\Middleware\MiddlewareInterface;
 use App\Middleware\UserPermission;
+use App\Repository\DBRoleAccess;
 use App\Repository\RoleAccessInterface;
+use Jenssegers\Optimus\Optimus;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\RouteInterface;
-use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class UserPermissionTest extends AbstractUnit {
-	/*
+    /*
      * Jenssengers\Optimus\Optimus $optimus
      */
     private $optimus;
@@ -46,9 +44,9 @@ class UserPermissionTest extends AbstractUnit {
     }
 
     public function mockBasic(&$dbConnectionMock, &$entityFactory, &$routeMock, &$requestMock, &$responseMock, &$nextMock) {
-    	$dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
-    	$entityFactory = new EntityFactory($this->optimus);
+        $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('RoleAccess');
         $routeMock = $this->getMockBuilder(RouteInterface::class)
             ->disableOriginalConstructor()
@@ -72,33 +70,33 @@ class UserPermissionTest extends AbstractUnit {
             ->method('withHeader')
             ->will($this->returnSelf());
         $nextMock = function ($request, $response) {
-        	return $response;
+            return $response;
         };
     }
 
     public function roleAccessRepositoryMockConfig($dbConnectionMock, $entityFactory, &$roleAccessRepositoryMock, array $config) {
-    	$roleAccessRepositoryMock = $this
+        $roleAccessRepositoryMock = $this
             ->getMockBuilder(DBRoleAccess::class)
             ->setMethods(['findOne'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->disableOriginalConstructor()
             ->getMock();
         $roleAccessRepositoryMock
-	        ->method('findOne')
-	        ->will($this->returnValueMap([
-	        	[1, RoleEntity::COMPANY, 'test-resource', new RoleAccessEntity([
-	        		'role' => RoleEntity::COMPANY,
-	        		'resource' => 'test-resource',
-	        		'access' => $config[RoleEntity::COMPANY]],
-	        		$this->optimus
-	        	)],
-	        	[1, RoleEntity::USER, 'test-resource', new RoleAccessEntity([
-	        		'role' => RoleEntity::USER,
-	        		'resource' => 'test-resource',
-	        		'access' => $config[RoleEntity::USER]],
-	        		$this->optimus
-	        	)]
-	        ]));
+            ->method('findOne')
+            ->will($this->returnValueMap([
+                [1, RoleEntity::COMPANY, 'test-resource', new RoleAccessEntity([
+                    'role'     => RoleEntity::COMPANY,
+                    'resource' => 'test-resource',
+                    'access'   => $config[RoleEntity::COMPANY]],
+                    $this->optimus
+                )],
+                [1, RoleEntity::USER, 'test-resource', new RoleAccessEntity([
+                    'role'     => RoleEntity::USER,
+                    'resource' => 'test-resource',
+                    'access'   => $config[RoleEntity::USER]],
+                    $this->optimus
+                )]
+            ]));
     }
 
     public function testConstructCorrectInterface() {
@@ -109,7 +107,7 @@ class UserPermissionTest extends AbstractUnit {
         $this->assertInstanceOf(
             'App\\Middleware\\MiddlewareInterface',
             new UserPermission(
-            	$roleAccessRepositoryMock,
+                $roleAccessRepositoryMock,
                 'test-resource',
                 RoleAccessEntity::ACCESS_WRITE
             )
@@ -117,20 +115,20 @@ class UserPermissionTest extends AbstractUnit {
     }
 
     public function testActingCompanyAndActingUserException() {
-    	$this->mockBasic($dbConnectionMock, $entityFactory, $routeMock, $requestMock, $responseMock, $nextMock);
-    	$this->roleAccessRepositoryMockConfig($dbConnectionMock, $entityFactory, $roleAccessRepositoryMock, [
-    			RoleEntity::COMPANY => [
-    				RoleAccessEntity::ACCESS_READ
-    			],
-    			RoleEntity::USER => [
-    				RoleAccessEntity::ACCESS_READ
-    			]
-    		]);
+        $this->mockBasic($dbConnectionMock, $entityFactory, $routeMock, $requestMock, $responseMock, $nextMock);
+        $this->roleAccessRepositoryMockConfig($dbConnectionMock, $entityFactory, $roleAccessRepositoryMock, [
+                RoleEntity::COMPANY => [
+                    RoleAccessEntity::ACCESS_READ
+                ],
+                RoleEntity::USER => [
+                    RoleAccessEntity::ACCESS_READ
+                ]
+            ]);
 
         $userPermissionMiddleware = new UserPermission(
-        	$roleAccessRepositoryMock,
-        	'test-resource',
-        	RoleAccessEntity::ACCESS_READ
+            $roleAccessRepositoryMock,
+            'test-resource',
+            RoleAccessEntity::ACCESS_READ
         );
 
         $requestMock
@@ -138,42 +136,43 @@ class UserPermissionTest extends AbstractUnit {
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(
-                	new UserEntity(
-		            [
-		                'id'         => 1,
-		                'username'   => 'acting-username',
-		                'identityId' => 1,
-		                'created_at' => time(),
-		                'updated_at' => time()
-		            ],
-		            $this->optimus),
-		        	new UserEntity(
-		            [
-		                'id'         => 2,
-		                'username'   => 'target-username',
-		                'identityId' => 2,
-		                'created_at' => time(),
-		                'updated_at' => time()
-		            ],
-		            $this->optimus),
-		        	new CompanyEntity(
-		            [
-		                'name'       => 'New Company',
-		                'id'         => 1,
-		                'slug'       => 'acting-company',
-		                'created_at' => time(),
-		                'updated_at' => time()
-		            ],
-		            $this->optimus),
-		        	$routeMock
-		        )
+                    new UserEntity(
+                    [
+                        'id'         => 1,
+                        'username'   => 'acting-username',
+                        'identityId' => 1,
+                        'created_at' => time(),
+                        'updated_at' => time()
+                    ],
+                    $this->optimus),
+                    new UserEntity(
+                    [
+                        'id'         => 2,
+                        'username'   => 'target-username',
+                        'identityId' => 2,
+                        'created_at' => time(),
+                        'updated_at' => time()
+                    ],
+                    $this->optimus),
+                    new CompanyEntity(
+                    [
+                        'name'       => 'New Company',
+                        'id'         => 1,
+                        'slug'       => 'acting-company',
+                        'created_at' => time(),
+                        'updated_at' => time()
+                    ],
+                    $this->optimus),
+                    $routeMock
+                )
             );
 
         try {
-        	$userPermissionMiddleware($requestMock, $responseMock, $nextMock);
-        	return $this->fail('Expected \RuntimeException');
+            $userPermissionMiddleware($requestMock, $responseMock, $nextMock);
+
+            return $this->fail('Expected \RuntimeException');
         } catch(\RuntimeException $e) {
-        	
+
         }
     }
 
@@ -189,7 +188,7 @@ class UserPermissionTest extends AbstractUnit {
         try {
             $userPermissionMiddleware($requestMock, $responseMock, $nextMock);
 
-            if(!$shouldPass) {
+            if(! $shouldPass) {
                 return $this->fail("Expected Exception\NotAllowed; routeAccessLevel: $routeAccessLevel; actingAccessLevel: $actingAccessLevel");
             }
         } catch(NotAllowedException $e) {
@@ -210,22 +209,22 @@ class UserPermissionTest extends AbstractUnit {
 
         foreach($possibleAccessLevels as $accessLevel1) {
             $routeAccessLevel = $accessLevel1;
-            $shouldPass = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
+            $shouldPass       = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
             $this->doTestRouteWithAccessLevel($roleAccessRepositoryMock, $requestMock, $responseMock, $nextMock, $routeAccessLevel, $actingAccessLevel, $shouldPass);
 
             foreach($possibleAccessLevels as $accessLevel2) {
                 $routeAccessLevel = $accessLevel1 + $accessLevel2;
-                $shouldPass = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
+                $shouldPass       = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
                 $this->doTestRouteWithAccessLevel($roleAccessRepositoryMock, $requestMock, $responseMock, $nextMock, $routeAccessLevel, $actingAccessLevel, $shouldPass);
-                
+
                 foreach($possibleAccessLevels as $accessLevel3) {
                     $routeAccessLevel = $accessLevel1 + $accessLevel2 + $accessLevel3;
-                    $shouldPass = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
+                    $shouldPass       = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
                     $this->doTestRouteWithAccessLevel($roleAccessRepositoryMock, $requestMock, $responseMock, $nextMock, $routeAccessLevel, $actingAccessLevel, $shouldPass);
-                    
+
                     foreach($possibleAccessLevels as $accessLevel4) {
                         $routeAccessLevel = $accessLevel1 + $accessLevel2 + $accessLevel3 + $accessLevel4;
-                        $shouldPass = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
+                        $shouldPass       = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
                         $this->doTestRouteWithAccessLevel($roleAccessRepositoryMock, $requestMock, $responseMock, $nextMock, $routeAccessLevel, $actingAccessLevel, $shouldPass);
 
                     }
@@ -237,7 +236,7 @@ class UserPermissionTest extends AbstractUnit {
     public function doTestWithAccessLevel($dbConnectionMock, $entityFactory, $requestMock, $responseMock, $nextMock, $actingAccessLevel, $actingRole) {
         $this->roleAccessRepositoryMockConfig($dbConnectionMock, $entityFactory, $roleAccessRepositoryMock, [
             RoleEntity::COMPANY => ($actingRole === RoleEntity::COMPANY) ? $actingAccessLevel : RoleAccessEntity::ACCESS_NONE,
-            RoleEntity::USER => ($actingRole === RoleEntity::USER) ? $actingAccessLevel : RoleAccessEntity::ACCESS_NONE
+            RoleEntity::USER    => ($actingRole === RoleEntity::USER) ? $actingAccessLevel : RoleAccessEntity::ACCESS_NONE
         ]);
 
         $this->doTestRouteWithAccessLevelCombinations($roleAccessRepositoryMock, $requestMock, $responseMock, $nextMock, $actingAccessLevel);
@@ -259,11 +258,11 @@ class UserPermissionTest extends AbstractUnit {
             foreach($possibleAccessLevels as $accessLevel2) {
                 $routeAccessLevel = $accessLevel1 + $accessLevel2;
                 $this->doTestWithAccessLevel($dbConnectionMock, $entityFactory, $requestMock, $responseMock, $nextMock, $routeAccessLevel, $actingRole);
-                
+
                 foreach($possibleAccessLevels as $accessLevel3) {
                     $routeAccessLevel = $accessLevel1 + $accessLevel2 + $accessLevel3;
                     $this->doTestWithAccessLevel($dbConnectionMock, $entityFactory, $requestMock, $responseMock, $nextMock, $routeAccessLevel, $actingRole);
-                    
+
                     foreach($possibleAccessLevels as $accessLevel4) {
                         $routeAccessLevel = $accessLevel1 + $accessLevel2 + $accessLevel3 + $accessLevel4;
                         $this->doTestWithAccessLevel($dbConnectionMock, $entityFactory, $requestMock, $responseMock, $nextMock, $routeAccessLevel, $actingRole);
@@ -304,6 +303,6 @@ class UserPermissionTest extends AbstractUnit {
                 ])
             );
 
-    	$this->doTestWithAccessLevelCombinations($dbConnectionMock, $entityFactory, $requestMock, $responseMock, $nextMock, RoleEntity::COMPANY);
+        $this->doTestWithAccessLevelCombinations($dbConnectionMock, $entityFactory, $requestMock, $responseMock, $nextMock, RoleEntity::COMPANY);
     }
 }

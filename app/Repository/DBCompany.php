@@ -73,10 +73,10 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
     /**
      * Determines if parent.
      *
-     * @param      \App\Entity\Company  $parent  The parent
-     * @param      \App\Entity\Company  $child   The child
+     * @param \App\Entity\Company $parent The parent
+     * @param \App\Entity\Company $child  The child
      *
-     * @return     boolean              True if parent, False otherwise.
+     * @return bool True if parent, False otherwise.
      */
     public function isParent(Company $parent, Company $child) {
         if ($child->parentId === null) {
