@@ -7,61 +7,25 @@
 namespace Test\Unit\Command\ServiceHandler;
 
 use App\Command\ServiceHandler\UpdateOne;
-use Test\Unit\AbstractUnit;
+use Test\Unit\Command\AbstractCommandTest;
 
-class UpdateOneTest extends AbstractUnit {
+class UpdateOneTest extends AbstractCommandTest {
     public function testSetParameters() {
-        $command = new UpdateOne();
-        $this->assertNull($command->name);
-        $this->assertNull($command->source);
-        $this->assertNull($command->location);
-        $this->assertNull($command->authPassword);
-        $this->assertNull($command->authUsername);
+        $attributes = [
+            'companyId' => [
+                'property' => 'companyId',
+                'policy'   => 'private'
+            ],
+            'serviceHandlerId' => [
+                'property' => 'serviceHandlerId',
+                'policy'   => 'private'
+            ],
+            'listens' => [
+                'property' => 'listens',
+                'policy'   => 'public'
+            ]
+        ];
 
-        $this->assertInstanceOf(
-            UpdateOne::class,
-            $command->setParameters([])
-        );
-
-        $this->assertNull($command->name);
-        $this->assertNull($command->source);
-        $this->assertNull($command->location);
-        $this->assertNull($command->authPassword);
-        $this->assertNull($command->authUsername);
-
-        $command->setParameters(['name' => 'a']);
-        $this->assertSame('a', $command->name);
-        $this->assertNull($command->source);
-        $this->assertNull($command->location);
-        $this->assertNull($command->authPassword);
-        $this->assertNull($command->authUsername);
-
-        $command->setParameters(['source' => 'source']);
-        $this->assertSame('a', $command->name);
-        $this->assertSame('source', $command->source);
-        $this->assertNull($command->location);
-        $this->assertNull($command->authPassword);
-        $this->assertNull($command->authUsername);
-
-        $command->setParameters(['location' => 'location']);
-        $this->assertSame('a', $command->name);
-        $this->assertSame('source', $command->source);
-        $this->assertSame('location', $command->location);
-        $this->assertNull($command->authPassword);
-        $this->assertNull($command->authUsername);
-
-        $command->setParameters(['authPassword' => 'authPassword']);
-        $this->assertSame('a', $command->name);
-        $this->assertSame('source', $command->source);
-        $this->assertEquals('location', $command->location);
-        $this->assertSame('authPassword', $command->authPassword);
-        $this->assertNull($command->authUsername);
-
-        $command->setParameters(['authUsername' => 'authUsername']);
-        $this->assertSame('a', $command->name);
-        $this->assertSame('source', $command->source);
-        $this->assertEquals('location', $command->location);
-        $this->assertSame('authPassword', $command->authPassword);
-        $this->assertSame('authUsername', $command->authUsername);
+        $this->assertSetParameters(UpdateOne::class, $attributes);
     }
 }

@@ -24,13 +24,9 @@ class ServiceHandlerTest extends AbstractUnit {
 
     private function getAttributes() {
         return [
-            'id'           => 1,
-            'name'         => 'New Service Handler',
-            'source'       => 'email',
-            'location'     => 'url',
-            'service_slug' => 'slug',
-            'created_at'   => time(),
-            'updated_at'   => time(),
+            'id'         => 1,
+            'created_at' => time(),
+            'updated_at' => time(),
         ];
     }
 
@@ -42,6 +38,7 @@ class ServiceHandlerTest extends AbstractUnit {
                     [
                         'companyId'    => 1,
                         'serviceId'    => 2,
+                        'listens'      => ['listen1', 'listen2'],
                         'authUsername' => 'Auth Username',
                         'authPassword' => 'Auth Password'
                     ],
@@ -54,26 +51,22 @@ class ServiceHandlerTest extends AbstractUnit {
         $array = $abstractMock->serialize();
         $this->assertArrayHasKey('id', $array);
         $this->assertSame(1, $array['id']);
+
         $this->assertArrayHasKey('company_id', $array);
         $this->assertSame(1, $array['company_id']);
+
         $this->assertArrayHasKey('service_id', $array);
         $this->assertSame(2, $array['service_id']);
-        $this->assertArrayHasKey('name', $array);
-        $this->assertSame('New Service Handler', $array['name']);
-        $this->assertArrayHasKey('service_slug', $array);
-        $this->assertSame('slug', $array['service_slug']);
-        $this->assertArrayHasKey('source', $array);
-        $this->assertSame('email', $array['source']);
-        $this->assertArrayHasKey('location', $array);
-        $this->assertSame('secure:url', $array['location']);
-        $this->assertArrayHasKey('auth_password', $array);
-        $this->assertSame('Auth Password', $array['auth_password']);
-        $this->assertArrayHasKey('auth_username', $array);
-        $this->assertSame('Auth Username', $array['auth_username']);
+
+        $this->assertArrayHasKey('listens', $array);
+        $this->assertSame(['listen1', 'listen2'], json_decode($array['listens']));
+
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_string($array['created_at']));
+
         $this->assertTrue(is_int($abstractMock->createdAt));
         $this->assertArrayHasKey('updated_at', $array);
+
         $this->assertTrue(is_string($array['updated_at']));
         $this->assertTrue(is_int($abstractMock->updatedAt));
     }
@@ -84,10 +77,9 @@ class ServiceHandlerTest extends AbstractUnit {
             ->setConstructorArgs([
                 array_merge(
                     [
-                        'companyId'    => 1,
-                        'serviceId'    => 2,
-                        'authUsername' => 'Auth Username',
-                        'authPassword' => 'Auth Password'
+                        'companyId' => 1,
+                        'serviceId' => 2,
+                        'listens'   => ['listen1', 'listen2']
                     ],
                     $this->getAttributes()
                 ),
@@ -96,18 +88,13 @@ class ServiceHandlerTest extends AbstractUnit {
             ->getMockForAbstractClass();
 
         $array = $abstractMock->toArray();
-        $this->assertArrayHasKey('name', $array);
-        $this->assertSame('New Service Handler', $array['name']);
-        $this->assertArrayHasKey('service_slug', $array);
-        $this->assertSame('slug', $array['service_slug']);
-        $this->assertArrayHasKey('slug', $array);
-        $this->assertSame('new-service-handler', $array['slug']);
-        $this->assertArrayHasKey('source', $array);
-        $this->assertSame('email', $array['source']);
-        $this->assertArrayHasKey('location', $array);
-        $this->assertSame('url', $array['location']);
+
+        $this->assertArrayHasKey('listens', $array);
+        $this->assertSame(['listen1', 'listen2'], $array['listens']);
+
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($array['created_at']));
+
         $this->assertArrayHasKey('updated_at', $array);
         $this->assertTrue(is_int($array['updated_at']));
     }

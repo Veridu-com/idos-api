@@ -32,12 +32,10 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'         => 'New Service Handler',
-                    'source'       => 'unknown',
-                    'service'      => 'email',
-                    'location'     => 'http://localhost:8001',
-                    'authUsername' => 'idos',
-                    'authPassword' => 'secret'
+                    'service_id' => 1860914067,
+                    'listens'    => [
+                        'source.add.facebook'
+                    ]
                 ]
             )
         );

@@ -15,60 +15,25 @@ use App\Command\AbstractCommand;
  */
 class UpdateOne extends AbstractCommand {
     /**
-     * ServiceHandler's name.
+     * ServiceHandler's id.
      *
      * @var string
      */
-    public $name;
+    public $serviceHandlerId;
 
     /**
-     * ServiceHandler's slug.
+     * ServiceHandler's company's id.
      *
      * @var string
-     */
-    public $slug;
-
-    /**
-     * ServiceHandler's source.
-     *
-     * @var string
-     */
-    public $source;
-
-    /**
-     * ServiceHandler's location.
-     *
-     * @var string
-     */
-    public $location;
-
-    /**
-     * ServiceHandler's authPassword.
-     *
-     * @var string
-     */
-    public $authPassword;
-
-    /**
-     * ServiceHandler's authUsername.
-     *
-     * @var string
-     */
-    public $authUsername;
-
-    /**
-     * ServiceHandler company's Id.
-     *
-     * @var int
      */
     public $companyId;
 
     /**
-     * ServiceHandler service's slug.
+     * ServiceHandler's listens attribute.
      *
-     * @var int
+     * @var string
      */
-    public $serviceSlug;
+    public $listens;
 
     /**
      * {@inheritdoc}
@@ -76,24 +41,8 @@ class UpdateOne extends AbstractCommand {
      * @return App\Command\ServiceHandler\UpdateOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
-        }
-
-        if (isset($parameters['source'])) {
-            $this->source = $parameters['source'];
-        }
-
-        if (isset($parameters['location'])) {
-            $this->location = $parameters['location'];
-        }
-
-        if (isset($parameters['authPassword'])) {
-            $this->authPassword = $parameters['authPassword'];
-        }
-
-        if (isset($parameters['authUsername'])) {
-            $this->authUsername = $parameters['authUsername'];
+        if (isset($parameters['listens'])) {
+            $this->listens = $parameters['listens'];
         }
 
         return $this;

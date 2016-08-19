@@ -128,7 +128,6 @@ class ServiceHandler implements RouteInterface {
      * @apiGroup Company ServiceHandler
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -156,12 +155,11 @@ class ServiceHandler implements RouteInterface {
      *
      * Retrieves all public information from a Service handler.
      *
-     * @apiEndpoint GET /service-handlers/{companySlug}/service-handlers/{section}/{property}
+     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment  string  serviceSlug         email
-     * @apiEndpointURIFragment  string  serviceHandlerSlug  veridu-email-service-handler
+     * @apiEndpointURIFragment string serviceHandlerId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -176,7 +174,7 @@ class ServiceHandler implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/service-handlers/{serviceSlug:[a-zA-Z0-9_-]+}/{serviceHandlerSlug:[a-zA-Z0-9_-]+}',
+                '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:getOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
@@ -187,14 +185,13 @@ class ServiceHandler implements RouteInterface {
     /**
      * Update a single ServiceHandler.
      *
-     * Updates ServiceHandler's specific information.
+     * Updates a single Service handler instance.
      *
-     * @apiEndpoint PUT /service-handlers/{companySlug}/service-handlers/{section}/{property}
+     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment  string  serviceSlug         email
-     * @apiEndpointURIFragment  string  serviceHandlerSlug  veridu-email-service-handler
+     * @apiEndpointURIFragment  string  serviceHandlerId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -209,7 +206,7 @@ class ServiceHandler implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/service-handlers/{serviceSlug:[a-zA-Z0-9_-]+}/{serviceHandlerSlug:[a-zA-Z0-9_-]+}',
+                '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:updateOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
@@ -222,12 +219,11 @@ class ServiceHandler implements RouteInterface {
      *
      * Deletes a single Service handler that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /service-handlers/{companySlug}/service-handlers/{section}/{property}
+     * @apiEndpoint DELETE /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment  string  serviceSlug         email
-     * @apiEndpointURIFragment  string  serviceHandlerSlug  veridu-email-service-handler
+     * @apiEndpointURIFragment  string  serviceHandlerId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -242,7 +238,7 @@ class ServiceHandler implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/service-handlers/{serviceSlug:[a-zA-Z0-9_-]+}/{serviceHandlerSlug:[a-zA-Z0-9_-]+}',
+                '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:deleteOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))

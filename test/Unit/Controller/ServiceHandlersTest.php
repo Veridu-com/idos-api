@@ -114,7 +114,7 @@ class ServiceHandlersTest extends AbstractUnit {
             ->setMethods(['getAttribute'])
             ->getMock();
         $requestMock
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(2))
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(
@@ -263,7 +263,7 @@ class ServiceHandlersTest extends AbstractUnit {
             ->setMethods(['getAttribute'])
             ->getMock();
         $requestMock
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(2))
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(
@@ -313,7 +313,7 @@ class ServiceHandlersTest extends AbstractUnit {
             ->setMethods(['getAttribute', 'getParsedBody'])
             ->getMock();
         $requestMock
-            ->expects($this->exactly(3))
+            ->expects($this->exactly(2))
             ->method('getAttribute')
             ->will(
                 $this->onConsecutiveCalls(

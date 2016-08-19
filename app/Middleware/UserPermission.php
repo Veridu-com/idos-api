@@ -24,7 +24,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class UserPermission implements MiddlewareInterface {
     /**
      * Default permissions for each role.
-     * 
+     *
      * @var array
      */
     private $defaultPermissions;
@@ -60,12 +60,12 @@ class UserPermission implements MiddlewareInterface {
      *
      * @param \App\Repository\RoleAccessInterface $roleAccessRepository The role access repository
      * @param string                              $resource             The resource
-     * @param string                              $accessLevel          The access level
+     * @param int                                 $accessLevel          The access level
      */
-    public function __construct(RoleAccessInterface $roleAccessRepository, string $resource, string $accessLevel) {
+    public function __construct(RoleAccessInterface $roleAccessRepository, string $resource, int $accessLevel) {
         $this->roleAccessRepository = $roleAccessRepository;
         $this->resource             = $resource;
-        $this->accessLevel          = (int) $accessLevel;
+        $this->accessLevel          = $accessLevel;
 
         $this->defaultPermissions = [
             Role::COMPANY        => RoleAccess::ACCESS_READ | RoleAccess::ACCESS_WRITE | RoleAccess::ACCESS_EXECUTE,
@@ -97,19 +97,13 @@ class UserPermission implements MiddlewareInterface {
         $allowed   = false;
 
         if (! $targetUser) {
+            $response = $this->allow($response);
+
             return $next($request, $response);
         }
 
-        // Use cases got by this middleware:
         // User -> User
-        //      User (company owner)    ->  User
-        //      User (company member)   ->  User
-        //      User (company admin)    ->  User
-        //      User (any user) -> User
-        // Company -> User
-
-        // User -> User
-        if ($actingUser && $actingUser->id !== $targetUser->id) {
+        if ($targetUser && $targetUser->id !== $actingUser->id) {
             // @FIXME When company members are developed get back to this middleware and find the specific role for each use case
             $role = Role::USER;
 
@@ -130,7 +124,7 @@ class UserPermission implements MiddlewareInterface {
             }
         }
 
-        $request = $this->allow($request);
+        $response = $this->allow($response);
 
         return $next($request, $response);
     }

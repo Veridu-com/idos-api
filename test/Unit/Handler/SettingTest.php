@@ -117,7 +117,11 @@ class SettingTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $settingEntity = new SettingEntity([], $this->optimus);
+        $settingEntity = new SettingEntity([
+            'section'  => 'section',
+            'property' => 'property',
+            'value'    => 'value'
+        ], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
@@ -146,10 +150,10 @@ class SettingTest extends AbstractUnit {
         $command->companyId = 1;
 
         $result = $handler->handleCreateNew($command);
+
         $this->assertSame('section', $result->section);
         $this->assertSame('property', $result->property);
         $this->assertSame('value', $result->value);
-        $this->assertSame(1, $result->companyId);
     }
 
     public function testHandleDeleteAllInvalidCompanyId() {
@@ -239,12 +243,12 @@ class SettingTest extends AbstractUnit {
         $entityFactory->create('Setting');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
-            ->setMethods(['findOne', 'update'])
+            ->setMethods(['find', 'update'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $settingRepository
             ->expects($this->once())
-            ->method('findOne')
+            ->method('find')
             ->willReturn($settingEntity);
         $settingRepository
             ->expects($this->once())
@@ -256,10 +260,9 @@ class SettingTest extends AbstractUnit {
             new SettingValidator()
         );
 
-        $command                = new UpdateOne();
-        $command->companyId     = 0;
-        $command->propNameId    = 'propNameId';
-        $command->sectionNameId = 'sectionId';
+        $command            = new UpdateOne();
+        $command->settingId = 1;
+        $command->value     = 'cool-value';
 
         $setting = $handler->handleUpdateOne($command);
 
@@ -301,12 +304,12 @@ class SettingTest extends AbstractUnit {
         $entityFactory->create('Setting');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
-            ->setMethods(['deleteOne'])
+            ->setMethods(['delete'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
         $settingRepository
             ->expects($this->once())
-            ->method('deleteOne')
+            ->method('delete')
             ->willReturn(1);
 
         $handler = new Setting(
@@ -315,9 +318,7 @@ class SettingTest extends AbstractUnit {
         );
 
         $command            = new DeleteOne();
-        $command->companyId = 0;
-        $command->property  = 'propNameId';
-        $command->section   = 'sectionId';
+        $command->settingId = 0;
 
         $this->assertEquals(1, $handler->handleDeleteOne($command));
     }

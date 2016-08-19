@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Extension\NameToSlugMutator;
+use App\Extension\SecureFields;
 
 /**
  * Service's Entity.
@@ -17,13 +17,23 @@ use App\Extension\NameToSlugMutator;
  *
  * @property int        $id
  * @property string     $name
- * @property string     $slug
- * @property bool    $enabled
+ * @property string     $url
+ * @property array      $listens
+ * @property array      $triggers
+ * @property bool       $enabled
+ * @property int        $access
  * @property int        $created_at
  * @property int        $updated_at
  */
 class Service extends AbstractEntity {
-    use NameToSlugMutator;
+    use SecureFields;
+
+    // Only the owning company have access
+    const ACCESS_PRIVATE = 0x00;
+    // Children companies have "read" access
+    const ACCESS_PROTECTED = 0x01;
+    // Any company have "read" access
+    const ACCESS_PUBLIC = 0x02;
 
     /**
      * Cache prefix.
@@ -33,12 +43,24 @@ class Service extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'enabled', 'created_at'];
+    protected $visible = ['id', 'name', 'url', 'access', 'enabled', 'listens', 'triggers', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $json = ['listens', 'triggers'];
+
+    /**
+     * The attributes that should be secured.
+     *
+     * @var array
+     */
+    protected $secure = ['auth_username', 'auth_password'];
 
     /**
      * {@inheritdoc}

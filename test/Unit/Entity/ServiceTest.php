@@ -42,8 +42,6 @@ class ServiceTest extends AbstractUnit {
         $this->assertSame(1, $array['id']);
         $this->assertArrayHasKey('name', $array);
         $this->assertSame('My Service', $array['name']);
-        $this->assertArrayHasKey('slug', $array);
-        $this->assertSame('my-service', $array['slug']);
         $this->assertArrayHasKey('enabled', $array);
         $this->assertTrue($array['enabled']);
         $this->assertArrayHasKey('created_at', $array);
@@ -62,6 +60,8 @@ class ServiceTest extends AbstractUnit {
                     [
                         'id'         => 1,
                         'name'       => 'My Service',
+                        'url'        => 'url',
+                        'access'     => 0x01,
                         'enabled'    => true,
                         'created_at' => time(),
                         'updated_at' => time()
@@ -72,13 +72,18 @@ class ServiceTest extends AbstractUnit {
             ->getMockForAbstractClass();
 
         $array = $abstractMock->toArray();
+
         $this->assertArrayHasKey('name', $array);
         $this->assertSame('My Service', $array['name']);
-        $this->assertArrayHasKey('slug', $array);
-        $this->assertSame('my-service', $array['slug']);
+
         $this->assertArrayHasKey('enabled', $array);
         $this->assertTrue($array['enabled']);
+
+        $this->assertArrayHasKey('access', $array);
+        $this->assertTrue($array['access'] == 0x01);
+
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($array['created_at']));
+
     }
 }

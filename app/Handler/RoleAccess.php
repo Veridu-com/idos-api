@@ -119,13 +119,12 @@ class RoleAccess implements HandlerInterface {
      * @return App\Entity\RoleAccess
      */
     public function handleUpdateOne(UpdateOne $command) : RoleAccessEntity {
-        $this->validator->assertRoleName($command->role);
-        $this->validator->assertResource($command->resource);
-        $this->validator->assertAccess($command->access);
         $this->validator->assertId($command->identityId);
+        $this->validator->assertId($command->roleAccessId);
+        $this->validator->assertAccess($command->access);
 
         // finds entity
-        $entity            = $this->repository->findOne($command->identityId, $command->role, $command->resource);
+        $entity            = $this->repository->findOne($command->identityId, $command->roleAccessId);
         $entity->access    = $command->access;
         $entity->updatedAt = time();
 
@@ -143,11 +142,10 @@ class RoleAccess implements HandlerInterface {
      * @return int number of affected rows
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertRoleName($command->role);
-        $this->validator->assertResource($command->resource);
         $this->validator->assertId($command->identityId);
+        $this->validator->assertId($command->roleAccessId);
 
-        return $this->repository->deleteOne($command->identityId, $command->role, $command->resource);
+        return $this->repository->deleteOne($command->identityId, $command->roleAccessId);
     }
 
 }

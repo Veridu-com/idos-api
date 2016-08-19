@@ -20,7 +20,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->httpMethod = 'PUT';
         $this->populate('/1.0/companies/veridu-ltd/settings');
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/companies/veridu-ltd/settings/%s/%s', $this->entity['section'], $this->entity['property']);
+        $this->uri    = sprintf('/1.0/companies/veridu-ltd/settings/%s', $this->entity['id']);
     }
 
     public function testSuccess() {
@@ -49,7 +49,7 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri   = sprintf('/1.0/companies/veridu-ltd/settings/%s/%s', 'dummy', $this->entity['property']);
+        $this->uri   = sprintf('/1.0/companies/veridu-ltd/settings/29239203');
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json'

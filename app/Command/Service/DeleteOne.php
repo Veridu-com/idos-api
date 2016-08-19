@@ -6,25 +6,32 @@
 
 declare(strict_types=1);
 
-namespace App\Command\CompanyServiceHandler;
+namespace App\Command\Service;
 
 use App\Command\AbstractCommand;
 
 /**
- * CompanyServiceHandler "Delete all" Command.
+ * Service "Delete one" Command.
  */
-class DeleteAll extends AbstractCommand {
+class DeleteOne extends AbstractCommand {
     /**
-     * CompanyServiceHandler company's Id.
+     * Service's id.
      *
      * @var int
      */
-    public $companyId;
+    public $serviceId;
+
+    /**
+     * Acting company.
+     *
+     * @var App\Entity\Company
+     */
+    public $company;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\CompanyServiceHandler\DeleteAll
+     * @return App\Command\Service\DeleteOne
      */
     public function setParameters(array $parameters) : self {
 

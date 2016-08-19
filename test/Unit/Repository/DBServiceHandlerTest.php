@@ -28,20 +28,28 @@ class DBServiceHandlerTest extends AbstractUnit {
         $this->optimus = $this->getMockBuilder(Optimus::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->created_at = time();
+        $this->updated_at = time();
     }
 
-     private function getEntity($id) {
+     private function getEntity($id = null) {
         return new ServiceHandlerEntity(
             [
-                'id'           => 1,
-                'name'         => 'New Service Handler',
-                'slug'         => 'new-service-handler',
-                'id'           => $id,
-                'source'       => 'source',
-                'service_slug' => 'email',
-                'location'     => 'http://localhost:8080',
-                'created_at'   => $this->created_at,
-                'updated_at'   => $this->updated_at
+                'listens'            => ['listen1', 'listen2'],
+                'id'                 => $id,
+                'service.id'         => $id,
+                'service.name'       => 'name',
+                'service.url'        => 'url',
+                'service.access'     => 'access',
+                'service.enabled'    => 'enabled',
+                'service.listens'    => ['listen1', 'listen2'],
+                'service.triggers'   => ['trigger1', 'trigger2'],
+                'service.created_at' => $this->created_at,
+                'service.updated_at' => $this->updated_at,
+                'service.name'       => 'name',
+                'created_at'         => $this->created_at,
+                'updated_at'         => $this->updated_at
             ],
             $this->optimus
         );
@@ -49,14 +57,21 @@ class DBServiceHandlerTest extends AbstractUnit {
 
     private function getToArray() {
         return [
-            'id'           => null,
-            'name'         => 'New Service Handler',
-            'slug'         => 'new-service-handler',
-            'source'       => 'source',
-            'location'     => 'http://localhost:8080',
-            'service_slug' => 'email',
-            'created_at'   => $this->created_at,
-            'updated_at'   => $this->updated_at
+            'id'      => null,
+            'listens' => ['listen1', 'listen2'],
+            'service' => [
+                'id'         => null,
+                'name'       => 'name',
+                'url'        => 'url',
+                'access'     => 'access',
+                'enabled'    => 'enabled',
+                'listens'    => ['listen1', 'listen2'],
+                'triggers'   => ['trigger1', 'trigger2'],
+                'created_at' => time(),
+                'updated_at' => time(),
+            ],
+            'created_at' => $this->created_at,
+            'updated_at' => $this->created_at
         ];
     }
 
@@ -65,10 +80,13 @@ class DBServiceHandlerTest extends AbstractUnit {
         $factory->create('ServiceHandler', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'get', 'first'])
+            ->setMethods(['where', 'get', 'join', 'first'])
             ->getMock();
         $queryMock
             ->method('where')
+            ->will($this->returnValue($queryMock));
+        $queryMock
+            ->method('join')
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
@@ -89,25 +107,31 @@ class DBServiceHandlerTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbServiceHandler = new DBServiceHandler($factory, $this->optimus, $connectionMock);
         $this->setExpectedException(NotFound::class);
-        $dbServiceHandler->findOne(0, 'slug', 'email');
+        $dbServiceHandler->findOne(0, 1);
     }
 
     public function testFindOne() {
         $factory = new Entity($this->optimus);
         $factory->create('ServiceHandler', []);
+
+        // query mock
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'get', 'first'])
+            ->setMethods(['where', 'join', 'get', 'first'])
             ->getMock();
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
+            ->method('join')
+            ->will($this->returnValue($queryMock));
+        $queryMock
             ->method('get')
-            ->will($this->returnValue([$this->getEntity(1)]));
+            ->will($this->returnValue([$this->getEntity()]));
          $queryMock
             ->method('first')
-            ->will($this->returnValue($this->getEntity(1)));
+            ->will($this->returnValue($this->getEntity()));
+        // connection mock
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -119,76 +143,15 @@ class DBServiceHandlerTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbServiceHandler = new DBServiceHandler($factory, $this->optimus, $connectionMock);
-        $this->assertInstanceOf(ServiceHandlerEntity::class, $dbServiceHandler->findOne(1, 'slug', 'email'));
+
+        $entity = $dbServiceHandler->findOne(1, 1);
+        $this->assertInstanceOf(ServiceHandlerEntity::class, $entity);
+
         $this->assertSame(
             $this->getToArray(),
-            $dbServiceHandler->findOne(1, 'slug', 'email')->toArray()
+            $entity->toArray()
         );
 
-    }
-
-    public function testFindAllFromServiceEmpty() {
-        $factory = new Entity($this->optimus);
-        $factory->create('ServiceHandler', []);
-        $queryMock = $this->getMockBuilder(Builder::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['where', 'get'])
-            ->getMock();
-        $queryMock
-            ->method('where')
-            ->will($this->returnValue($queryMock));
-        $queryMock
-            ->method('get')
-            ->will($this->returnValue(new Collection([])));
-
-        $connectionMock = $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['setFetchMode', 'table'])
-            ->getMock();
-        $connectionMock
-            ->method('setFetchMode')
-            ->will($this->returnValue(1));
-        $connectionMock
-            ->method('table')
-            ->will($this->returnValue($queryMock));
-        $dbServiceHandler = new DBServiceHandler($factory, $this->optimus, $connectionMock);
-
-        $this->assertEmpty($dbServiceHandler->findAllFromService(1, 'service'));
-    }
-
-    public function testFindAllFromService() {
-        $factory = new Entity($this->optimus);
-        $factory->create('ServiceHandler', []);
-        $queryMock = $this->getMockBuilder(Builder::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['where', 'get'])
-            ->getMock();
-        $queryMock
-            ->method('where')
-            ->will($this->returnValue($queryMock));
-        $queryMock
-            ->method('get')
-            ->will($this->returnValue(new Collection([$this->getEntity(1)])));
-
-        $connectionMock = $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['setFetchMode', 'table'])
-            ->getMock();
-        $connectionMock
-            ->method('setFetchMode')
-            ->will($this->returnValue(1));
-        $connectionMock
-            ->method('table')
-            ->will($this->returnValue($queryMock));
-        $dbServiceHandler = new DBServiceHandler($factory, $this->optimus, $connectionMock);
-
-        $this->assertInstanceOf(Collection::class, $dbServiceHandler->findAllFromService(1, 'service'));
-        $this->assertSame(
-            $this->getToArray(),
-            $dbServiceHandler->findAllFromService(1, 'service')
-                ->first()
-                ->toArray()
-        );
     }
 
     public function getAllByCompanyId() {
@@ -252,7 +215,7 @@ class DBServiceHandlerTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbServiceHandler = new DBServiceHandler($factory, $this->optimus, $connectionMock);
 
-        $this->assertEquals(1, $dbServiceHandler->deleteOne(1, 'service', 'service-slug'));
+        $this->assertEquals(1, $dbServiceHandler->deleteOne(1, 1));
     }
 
     public function testDeleteByCompanyId() {

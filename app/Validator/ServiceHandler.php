@@ -114,4 +114,18 @@ class ServiceHandler implements ValidatorInterface {
             ->assert($id);
     }
 
+    /**
+     * Asserts a valid listens attribute.
+     *
+     * @param mixed $listens
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertListens($value) {
+        Validator::arrayType()
+            ->assert($value);
+    }
+
 }

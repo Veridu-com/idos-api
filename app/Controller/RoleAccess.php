@@ -107,14 +107,13 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
-        $role       = $request->getAttribute('roleName');
-        $resource   = $request->getAttribute('resource');
+        $actingUser          = $request->getAttribute('actingUser');
+        $decodedRoleAccessId = $request->getAttribute('decodedRoleAccessId');
 
-        $entities = $this->repository->findOne($actingUser->identity_id, $role, $resource);
+        $entity = $this->repository->findOne($actingUser->identityId, $decodedRoleAccessId);
 
         $body = [
-            'data' => $entities->toArray()
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -148,10 +147,10 @@ class RoleAccess implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('identityId', $actingUser->identityId);
-        $company = $this->commandBus->handle($command);
+        $entity = $this->commandBus->handle($command);
 
         $body = [
-            'data' => $company->toArray()
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -212,14 +211,12 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
-        $role       = $request->getAttribute('roleName');
-        $resource   = $request->getAttribute('resource');
+        $actingUser          = $request->getAttribute('actingUser');
+        $decodedRoleAccessId = $request->getAttribute('decodedRoleAccessId');
 
         $command = $this->commandFactory->create('RoleAccess\\DeleteOne');
         $command->setParameter('identityId', $actingUser->identityId);
-        $command->setParameter('role', $role);
-        $command->setParameter('resource', $resource);
+        $command->setParameter('roleAccessId', $decodedRoleAccessId);
 
         $deleted = $this->commandBus->handle($command);
 
@@ -255,22 +252,19 @@ class RoleAccess implements ControllerInterface {
      * @see App\Command\RoleAccess\UpdateOne
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
-
-        $role     = $request->getAttribute('roleName');
-        $resource = $request->getAttribute('resource');
-        $body     = $request->getParsedBody();
+        $actingUser          = $request->getAttribute('actingUser');
+        $decodedRoleAccessId = $request->getAttribute('decodedRoleAccessId');
 
         $command = $this->commandFactory->create('RoleAccess\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('role', $role)
-            ->setParameter('resource', $resource)
+            ->setParameter('roleAccessId', $decodedRoleAccessId)
             ->setParameter('identityId', $actingUser->identityId);
-        $company = $this->commandBus->handle($command);
+
+        $entity = $this->commandBus->handle($command);
 
         $body = [
-            'data' => $company->toArray()
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

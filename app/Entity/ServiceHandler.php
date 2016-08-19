@@ -19,12 +19,7 @@ use App\Extension\SecureFields;
  * @property int        $id
  * @property int        $company_id
  * @property int        $service_id
- * @property string     $name
- * @property string     $slug
- * @property string     $source
- * @property string     $location
- * @property string     $auth_username
- * @property string     $auth_password
+ * @property array      $listens
  * @property int        $created_at
  * @property int        $updated_at
  */
@@ -40,7 +35,19 @@ class ServiceHandler extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'slug', 'source', 'location', 'service_slug', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'listens', 'service', 'created_at', 'updated_at'];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $json = ['listens'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'service' => 'Service'
+    ];
 
     /**
      * {@inheritdoc}
@@ -52,7 +59,7 @@ class ServiceHandler extends AbstractEntity {
      *
      * @var array
      */
-    protected $secure = ['auth_username', 'auth_password', 'location'];
+    protected $secure = ['username', 'password'];
 
     /**
      * {@inheritdoc}

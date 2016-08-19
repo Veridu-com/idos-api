@@ -15,11 +15,11 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * ServiceHandler's slug.
+     * ServiceHandler's id.
      *
      * @var string
      */
-    public $slug;
+    public $serviceHandlerId;
 
     /**
      * ServiceHandler company's Id.
@@ -29,29 +29,11 @@ class DeleteOne extends AbstractCommand {
     public $companyId;
 
     /**
-     * ServiceHandler service's slug.
-     *
-     * @var int
-     */
-    public $serviceSlug;
-
-    /**
      * {@inheritdoc}
      *
      * @return App\Command\ServiceHandler\DeleteOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['slug'])) {
-            $this->slug = $parameters['slug'];
-        }
-
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
-        }
-
-        if (isset($parameters['service'])) {
-            $this->serviceSlug = $parameters['service'];
-        }
 
         return $this;
     }
