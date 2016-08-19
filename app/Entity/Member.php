@@ -24,7 +24,7 @@ class Member extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'user', 'role', 'created_at'];
+    protected $visible = ['id', 'user', 'role', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */

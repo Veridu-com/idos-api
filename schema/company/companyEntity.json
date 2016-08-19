@@ -22,6 +22,10 @@
         "created_at": {
             "description": "Company's creation unixtime",
             "type": "integer"
+        },
+        "updated_at": {
+            "description": "Company's last updated unixtime",
+            "type": ["integer", "null"]
         }
     },
     "dependencies": {
@@ -31,6 +35,7 @@
         "name",
         "slug",
         "public_key",
-        "created_at"
+        "created_at",
+        "updated_at"
     ]
 }

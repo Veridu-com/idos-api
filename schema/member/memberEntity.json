@@ -22,11 +22,16 @@
         "updated_at": {
             "description": "Member's updated unixtime",
             "type": "integer"
+        },
+        "updated_at": {
+            "description": "Member's last updated unixtime",
+            "type": ["integer", "null"]
         }
     },
     "required": [
         "user",
         "role",
-        "created_at"
+        "created_at",
+        "updated_at"
     ]
 }
