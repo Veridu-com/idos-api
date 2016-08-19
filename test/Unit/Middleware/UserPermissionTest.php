@@ -77,12 +77,12 @@ class UserPermissionTest extends AbstractUnit {
     public function roleAccessRepositoryMockConfig($dbConnectionMock, $entityFactory, &$roleAccessRepositoryMock, array $config) {
         $roleAccessRepositoryMock = $this
             ->getMockBuilder(DBRoleAccess::class)
-            ->setMethods(['findOne'])
+            ->setMethods(['findByIdentityRoleResource'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->disableOriginalConstructor()
             ->getMock();
         $roleAccessRepositoryMock
-            ->method('findOne')
+            ->method('findByIdentityRoleResource')
             ->will($this->returnValueMap([
                 [1, RoleEntity::COMPANY, 'test-resource', new RoleAccessEntity([
                     'role'     => RoleEntity::COMPANY,

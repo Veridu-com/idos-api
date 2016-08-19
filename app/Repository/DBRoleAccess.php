@@ -32,6 +32,17 @@ class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
     /**
      * {@inheritdoc}
      */
+    public function findByIdentityRoleResource(int $identityId, string $role, string $resource) : RoleAccess {
+        return $this->findOneBy([
+            'identity_id' => $identityId,
+            'role'        => $role,
+            'resource'        => $resource
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findByIdentityAndRole(int $identityId, string $role) : Collection {
         return $this->findBy([
             'identity_id' => $identityId,

@@ -45,7 +45,7 @@ class UserPermission implements MiddlewareInterface {
      */
     private function getAccessFromRole(int $identityId, string $role, string $resource) : int {
         try {
-            $roleAccess = $this->roleAccessRepository->findOne($identityId, $role, $resource);
+            $roleAccess = $this->roleAccessRepository->findByIdentityRoleResource($identityId, $role, $resource);
             $access     = $roleAccess->access;
         } catch (NotFound $e) {
             // fallbacks to default permission
