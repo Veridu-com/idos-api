@@ -111,7 +111,7 @@ class UserPermission implements MiddlewareInterface {
             // @FIXME When company members are developed get back to this middleware and find the specific role for each use case
             $role = Role::USER;
 
-            $access = $this->getAccessFromRole($actingUser->identityId, $role, $this->resource);
+            $access = $this->getAccessFromRole($targetUser->identityId, $role, $this->resource);
 
             if (($this->accessLevel & $access) !== $this->accessLevel) {
                 throw new NotAllowed();

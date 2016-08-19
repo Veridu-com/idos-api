@@ -36,7 +36,7 @@ class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
         return $this->findOneBy([
             'identity_id' => $identityId,
             'role'        => $role,
-            'resource'        => $resource
+            'resource'    => $resource
         ]);
     }
 

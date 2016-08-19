@@ -305,4 +305,37 @@ class UserPermissionTest extends AbstractUnit {
 
         $this->doTestWithAccessLevelCombinations($dbConnectionMock, $entityFactory, $requestMock, $responseMock, $nextMock, RoleEntity::COMPANY);
     }
+
+    public function testUserAccess() {
+
+        $this->mockBasic($dbConnectionMock, $entityFactory, $routeMock, $requestMock, $responseMock, $nextMock);
+
+        $requestMock
+            ->method('getAttribute')
+            ->will($this->returnValueMap([
+                    ['actingUser', null, new UserEntity(
+                    [
+                        'id'         => 2,
+                        'username'   => 'acting-username',
+                        'identityId' => 2,
+                        'created_at' => time(),
+                        'updated_at' => time()
+                    ],
+                    $this->optimus)], //acting-user
+                    ['targetUser', null, new UserEntity(
+                    [
+                        'id'         => 1,
+                        'username'   => 'target-username',
+                        'identityId' => 1,
+                        'created_at' => time(),
+                        'updated_at' => time()
+                    ],
+                    $this->optimus)],
+                    ['actingCompany', null, null],
+                    ['route', null, $routeMock]
+                ])
+            );
+
+        $this->doTestWithAccessLevelCombinations($dbConnectionMock, $entityFactory, $requestMock, $responseMock, $nextMock, RoleEntity::USER);
+    }
 }
