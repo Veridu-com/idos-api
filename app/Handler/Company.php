@@ -14,15 +14,15 @@ use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
 use App\Event\Company\Created;
-use App\Event\Company\Updated;
 use App\Event\Company\Deleted;
 use App\Event\Company\DeletedMulti;
+use App\Event\Company\Updated;
+use App\Exception as AppException;
 use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
-use App\Exception as AppException;
 
 /**
  * Handles Company commands.
@@ -102,8 +102,8 @@ class Company implements HandlerInterface {
             ]
         );
 
-        $company->public_key  = md5((string)time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
-        $company->private_key = md5((string)time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
+        $company->public_key  = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
+        $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
 
         if ($this->repository->save($company)) {
             $event = new Created($company);
@@ -173,7 +173,7 @@ class Company implements HandlerInterface {
         $this->validator->assertId($command->parentId);
 
         $deletedCompanies = $this->repository->getAllByParentId($command->parentId);
-        $deletedAmount = $this->repository->deleteByParentId($command->parentId);
+        $deletedAmount    = $this->repository->deleteByParentId($command->parentId);
 
         if ($deletedAmount >= 0) {
             $event = new DeletedMulti($deletedCompanies);

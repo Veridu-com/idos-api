@@ -343,38 +343,52 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleCredentialToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
-        $token = $this->jwtParser->parse($reqToken);
 
-        // Ensures JWT Audience is the current API
-        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (! $token->validate($this->jwtvalidation))
-            throw new AppException('Token Validation Failed');
+/**
+ * @FIXME The following code relies on token generation, but this is not implemented yet,
+ *        when token generation is available, please fix this by uncommenting the next block and
+ *        removing the one after
+ */
+        // -------------the block to be uncommented starts here -------------------------------
+        // $token = $this->jwtParser->parse($reqToken);
 
-        // Retrieves JWT Issuer
-        $issuerKey        = $token->getClaim('iss');
-        $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
+        // // Ensures JWT Audience is the current API
+        // $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        // if (! $token->validate($this->jwtvalidation))
+        //     throw new AppException('Token Validation Failed');
 
-        if ($issuerCredential->isEmpty())
-            throw new AppException('Invalid Issuer Credential');
+        // // Retrieves JWT Issuer
+        // $issuerKey        = $token->getClaim('iss');
+        // $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
 
-        // JWT Signature Verification
-        if (! $token->verify($this->jwtSigner, $issuerCredential->private_key))
-            throw new AppException('Token Verification Failed');
+        // if ($issuerCredential->isEmpty())
+        //     throw new AppException('Invalid Issuer Credential');
 
-        // Retrieves JWT Subject
-        if (! $token->hasClaim('sub'))
-            throw new AppException('Missing Subject Claim');
-        $subjectKey        = $token->getClaim('sub');
-        $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
+        // // JWT Signature Verification
+        // if (! $token->verify($this->jwtSigner, $issuerCredential->private_key))
+        //     throw new AppException('Token Verification Failed');
 
-        if ($subjectCredential->isEmpty())
-            throw new AppException('Invalid Subject Credential');
+        // // Retrieves JWT Subject
+        // if (! $token->hasClaim('sub'))
+        //     throw new AppException('Missing Subject Claim');
+        // $subjectKey        = $token->getClaim('sub');
+        // $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
 
-        // Retrieves Issuer Credential's owner
-        $actingCompany = $this->companyRepository->findById($issuerCredential->company_id);
+        // if ($subjectCredential->isEmpty())
+        //     throw new AppException('Invalid Subject Credential');
 
-        // Retrieves Subject Credential's owner
-        $targetCompany = $this->companyRepository->findById($subjectCredential->company_id);
+        // // Retrieves Issuer Credential's owner
+        // $actingCompany = $this->companyRepository->findById($issuerCredential->company_id);
+
+        // // Retrieves Subject Credential's owner
+        // $targetCompany = $this->companyRepository->findById($subjectCredential->company_id);
+        // -------------the block to be uncommented ends here -------------------------------
+
+        // -------------the block to be removed starts here -------------------------------
+        $actingCompany     = $this->companyRepository->find(1);
+        $targetCompany     = $this->companyRepository->find(2);
+        $subjectCredential = $this->credentialRepository->find(1);
+        // -------------the block to be removed ends here -------------------------------
 
         return $request
             // Stores Acting Company for future use
