@@ -385,9 +385,9 @@ class Auth implements MiddlewareInterface {
         // -------------the block to be uncommented ends here -------------------------------
 
         // -------------the block to be removed starts here -------------------------------
-        $actingCompany = $companyRepository->find(1);
-        $targetCompany = $companyRepository->find(2);
-        $subjectCredential = $credentialRepository->find(1);
+        $actingCompany = $this->companyRepository->find(1);
+        $targetCompany = $this->companyRepository->find(2);
+        $subjectCredential = $this->credentialRepository->find(1);
         // -------------the block to be removed ends here -------------------------------
 
         return $request
