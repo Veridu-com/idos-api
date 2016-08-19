@@ -73,10 +73,8 @@ class Permissions implements ControllerInterface {
 
         $body = [
             'data' => $permissions->toArray(),
-            // TODO: Discuss with Flavio if this "updated" makes sense.
-            // Should a deletion refresh it? How?
             'updated' => (
-                $permissions->isEmpty() ? time() : $permissions->max('created_at')
+                $permissions->isEmpty() ? time() : $permissions->max('createdAt')
             )
         ];
 

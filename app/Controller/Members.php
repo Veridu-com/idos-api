@@ -95,7 +95,7 @@ class Members implements ControllerInterface {
         $body = [
             'data'    => $members->toArray(),
             'updated' => (
-                $members->isEmpty() ? time() : $members->max('updated_at')
+                $members->isEmpty() ? time() : max($members->max('updatedAt'), $members->max('createdAt'))
             )
         ];
 

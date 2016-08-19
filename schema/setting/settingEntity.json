@@ -24,14 +24,19 @@
             "pattern": ""
         },
         "created_at": {
-            "description": "Company's creation unixtimestamp",
+            "description": "Setting's creation unixtimestamp",
             "type": "integer"
+        },
+        "updated_at": {
+            "description": "Setting's last updated unixtime",
+            "type": ["integer", "null"]
         }
     },
     "required": [
         "section",
         "property",
         "value",
-        "created_at"
+        "created_at",
+        "updated_at"
     ]
 }

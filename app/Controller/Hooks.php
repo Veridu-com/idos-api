@@ -95,7 +95,7 @@ class Hooks implements ControllerInterface {
         $body = [
             'data'    => $hooks->toArray(),
             'updated' => (
-                $hooks->isEmpty() ? time() : $hooks->max('updated_at')
+                $hooks->isEmpty() ? time() : max($hooks->max('updatedAt'), $hooks->max('createdAt'))
             )
         ];
 

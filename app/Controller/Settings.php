@@ -71,13 +71,13 @@ class Settings implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $result        = $this->repository->getAllByCompanyId($targetCompany->id, $request->getQueryParams());
 
-        $data = $result['collection'];
+        $entities = $result['collection'];
 
         $body = [
-            'data'       => $data->toArray(),
+            'data'       => $entities->toArray(),
             'pagination' => $result['pagination'],
-            'updated'    => (
-                $data->isEmpty() ? time() : $data->max('updated_at')
+            'updated' => (
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 
