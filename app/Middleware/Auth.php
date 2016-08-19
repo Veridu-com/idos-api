@@ -344,11 +344,11 @@ class Auth implements MiddlewareInterface {
      */
     private function handleCredentialToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
 
-        /**
-         * @FIXME The following code relies on token generation, but this is not implemented yet,
-         *        when token generation is available, please fix this by uncommenting the next block and
-         *        removing the one after
-         */
+/**
+ * @FIXME The following code relies on token generation, but this is not implemented yet,
+ *        when token generation is available, please fix this by uncommenting the next block and
+ *        removing the one after
+ */
         // -------------the block to be uncommented starts here -------------------------------
         // $token = $this->jwtParser->parse($reqToken);
 
@@ -385,8 +385,8 @@ class Auth implements MiddlewareInterface {
         // -------------the block to be uncommented ends here -------------------------------
 
         // -------------the block to be removed starts here -------------------------------
-        $actingCompany = $this->companyRepository->find(1);
-        $targetCompany = $this->companyRepository->find(2);
+        $actingCompany     = $this->companyRepository->find(1);
+        $targetCompany     = $this->companyRepository->find(2);
         $subjectCredential = $this->credentialRepository->find(1);
         // -------------the block to be removed ends here -------------------------------
 

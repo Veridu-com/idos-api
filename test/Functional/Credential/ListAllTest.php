@@ -12,10 +12,10 @@ use Test\Functional\Traits\HasAuthMiddleware;
 class ListAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
     /**
-      * @FIXME The HasAuthCredentialToken runs a wrong credentials test
-      *        but we don't generate tokens yet, so there are no wrong credentials
-      *        when token generations is implemented, please fix this by uncommenting the next line
-      */
+     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+     *        but we don't generate tokens yet, so there are no wrong credentials
+     *        when token generations is implemented, please fix this by uncommenting the next line
+     */
     // use HasAuthCredentialToken;
 
     protected function setUp() {
@@ -24,7 +24,7 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request  = $this->createRequest($this->createEnvironment(
+        $request = $this->createRequest($this->createEnvironment(
                 [
                     'QUERY_STRING' => 'credentialToken=test'
                 ]

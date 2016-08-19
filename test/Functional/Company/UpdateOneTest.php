@@ -9,8 +9,8 @@ namespace Test\Functional\Company;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
 use Test\Functional\Traits\HasAuthCompanyPrivKey;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class UpdateOneTest extends AbstractFunctional {
     use HasAuthMiddleware;

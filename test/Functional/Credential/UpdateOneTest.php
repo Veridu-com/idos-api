@@ -14,10 +14,10 @@ use Test\Functional\Traits\HasAuthMiddleware;
 class UpdateOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
     /**
-      * @FIXME The HasAuthCredentialToken runs a wrong credentials test
-      *        but we don't generate tokens yet, so there are no wrong credentials
-      *        when token generations is implemented, please fix this by uncommenting the next line
-      */
+     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+     *        but we don't generate tokens yet, so there are no wrong credentials
+     *        when token generations is implemented, please fix this by uncommenting the next line
+     */
     // use HasAuthCredentialToken;
 
     protected function setUp() {
@@ -29,7 +29,7 @@ class UpdateOneTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING' => 'credentialToken=test',
+                'QUERY_STRING'      => 'credentialToken=test',
             ]
         );
 
@@ -63,7 +63,7 @@ class UpdateOneTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING' => 'credentialToken=test',
+                'QUERY_STRING'      => 'credentialToken=test',
             ]
         );
 
