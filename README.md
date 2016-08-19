@@ -14,3 +14,6 @@
 ```
 
 This is the code repository for idOS API.
+
+[ ![Codeship Status for flavioheleno/idos-api](https://codeship.com/projects/98db9a00-4867-0134-bd0e-327461fc61a5/status?branch=dev)](https://codeship.com/projects/169407)
+
