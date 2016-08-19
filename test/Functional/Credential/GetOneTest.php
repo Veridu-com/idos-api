@@ -15,7 +15,12 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request  = $this->createRequest($this->createEnvironment());
+        $request  = $this->createRequest($this->createEnvironment(
+                [
+                    'QUERY_STRING' => 'credentialToken=test'
+                ]
+            )
+        );
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
 
@@ -39,7 +44,12 @@ class GetOneTest extends AbstractFunctional {
     public function testNotFound() {
         $this->uri = '/1.0/management/credentials/dummy';
 
-        $request  = $this->createRequest($this->createEnvironment());
+        $request  = $this->createRequest($this->createEnvironment(
+                [
+                    'QUERY_STRING' => 'credentialToken=test'
+                ]
+            )
+        );
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
 

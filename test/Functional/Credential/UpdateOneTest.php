@@ -10,11 +10,15 @@ use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
-use Test\Functional\Traits\HasAuthCompanyPrivKey;
 
 class UpdateOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    use HasAuthCompanyPrivKey;
+    /**
+      * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+      *        but we don't generate tokens yet, so there are no wrong credentials
+      *        when token generations is implemented, please fix this by uncommenting the next line
+      */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
@@ -58,7 +62,8 @@ class UpdateOneTest extends AbstractFunctional {
 
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json'
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'QUERY_STRING' => 'credentialToken=test',
             ]
         );
 

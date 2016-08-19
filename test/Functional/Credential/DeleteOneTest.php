@@ -8,11 +8,15 @@ namespace Test\Functional\Credential;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
-use Test\Functional\Traits\HasAuthCompanyPrivKey;
 
 class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    use HasAuthCompanyPrivKey;
+    /**
+      * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+      *        but we don't generate tokens yet, so there are no wrong credentials
+      *        when token generations is implemented, please fix this by uncommenting the next line
+      */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
@@ -20,7 +24,12 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request  = $this->createRequest($this->createEnvironment());
+        $request  = $this->createRequest($this->createEnvironment(
+                [
+                    'QUERY_STRING' => 'credentialToken=test'
+                ]
+            )
+        );
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
         // assertions
@@ -42,7 +51,12 @@ class DeleteOneTest extends AbstractFunctional {
 
     public function testNotFound() {
         $this->uri = '/1.0/management/credentials/dummy';
-        $request   = $this->createRequest($this->createEnvironment());
+        $request  = $this->createRequest($this->createEnvironment(
+                [
+                    'QUERY_STRING' => 'credentialToken=test'
+                ]
+            )
+        );
         $response  = $this->process($request);
         $body      = json_decode($response->getBody(), true);
 

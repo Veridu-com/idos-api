@@ -8,11 +8,15 @@ namespace Test\Functional\Credential;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
-use Test\Functional\Traits\HasAuthCompanyPrivKey;
 
 class ListAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    use HasAuthCompanyPrivKey;
+    /**
+      * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+      *        but we don't generate tokens yet, so there are no wrong credentials
+      *        when token generations is implemented, please fix this by uncommenting the next line
+      */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -20,7 +24,12 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request  = $this->createRequest($this->createEnvironment());
+        $request  = $this->createRequest($this->createEnvironment(
+                [
+                    'QUERY_STRING' => 'credentialToken=test'
+                ]
+            )
+        );
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
 
