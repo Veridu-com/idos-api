@@ -10,16 +10,17 @@
             "pattern": ""
         },
         "created_at": {
-            "description": "Member's creation unixtime",
+            "description": "User's creation unixtime",
             "type": "integer"
         },
         "updated_at": {
-            "description": "Member's updated unixtime",
-            "type": "integer"
+            "description": "User's last updated unixtime",
+            "type": ["integer", "null"]
         }
     },
     "required": [
         "username",
-        "created_at"
+        "created_at",
+        "updated_at"
     ]
 }

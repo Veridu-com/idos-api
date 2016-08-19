@@ -64,11 +64,10 @@ class Credentials implements RouteInterface {
      *
      * Retrieve a complete list of all credentials that belong to the requesting company.
      *
-     * @apiEndpoint GET /companies/{companySlug}/credentials
+     * @apiEndpoint GET /management/credentials
      * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -83,11 +82,11 @@ class Credentials implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials',
+                '/management/credentials',
                 'App\Controller\Credentials:listAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:listAll');
     }
 
@@ -96,11 +95,10 @@ class Credentials implements RouteInterface {
      *
      * Create a new credential for the requesting company.
      *
-     * @apiEndpoint POST /companies/{companySlug}/credentials
+     * @apiEndpoint POST /management/credentials
      * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -115,11 +113,11 @@ class Credentials implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials',
+                '/management/credentials',
                 'App\Controller\Credentials:createNew'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:createNew');
     }
 
@@ -128,11 +126,10 @@ class Credentials implements RouteInterface {
      *
      * Delete all credentials that belong to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/credentials
+     * @apiEndpoint DELETE /management/credentials
      * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -147,11 +144,11 @@ class Credentials implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials',
+                '/management/credentials',
                 'App\Controller\Credentials:deleteAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:deleteAll');
     }
 
@@ -160,11 +157,10 @@ class Credentials implements RouteInterface {
      *
      * Retrieves all public information from a Credential
      *
-     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}
+     * @apiEndpoint GET /management/credentials/{pubKey}
      * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -180,11 +176,11 @@ class Credentials implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
+                '/management/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:getOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:getOne');
     }
 
@@ -193,11 +189,10 @@ class Credentials implements RouteInterface {
      *
      * Updates Credential's specific information
      *
-     * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}
+     * @apiEndpoint PUT /management/credentials/{pubKey}
      * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -213,11 +208,11 @@ class Credentials implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
+                '/management/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:updateOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:updateOne');
     }
 
@@ -226,11 +221,10 @@ class Credentials implements RouteInterface {
      *
      * Deletes a single Credential that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}
+     * @apiEndpoint DELETE /management/credentials/{pubKey}
      * @apiGroup Company Credentials
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -246,11 +240,11 @@ class Credentials implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
+                '/management/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:deleteOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:deleteOne');
     }
 }

@@ -36,7 +36,7 @@ class RoleAccess extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['role', 'access', 'resource', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'role', 'access', 'resource', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}

@@ -24,7 +24,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class UserPermission implements MiddlewareInterface {
     /**
      * Default permissions for each role.
-     * 
+     *
      * @var array
      */
     private $defaultPermissions;

@@ -10,14 +10,24 @@
             "type": "string",
             "pattern": ""
         },
-        "slug": {
-            "description": "Slug based on Service's name",
-            "type": "string",
-            "pattern": "[a-zA-Z0-9_-]+"
+        "access": {
+            "description": "Access level of the service",
+            "type": "integer",
+            "pattern": ""
         },
         "enabled": {
             "description": "If the service is enabled",
             "type": "boolean",
+            "pattern": ""
+        },
+        "listens": {
+            "description": "Listens attribute",
+            "type": "array",
+            "pattern": ""
+        },
+        "triggers": {
+            "description": "Triggers attribute",
+            "type": "array",
             "pattern": ""
         },
         "created_at": {
@@ -25,8 +35,7 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Unixtime of the last update",
-            "type": "integer"
+            "description": "Unixtime of the last update"
         }
     },
     "dependencies": {
@@ -34,7 +43,10 @@
     },
     "required": [
         "name",
-        "slug",
+        "access",
+        "enabled",
+        "triggers",
+        "triggers",
         "enabled",
         "created_at"
     ]

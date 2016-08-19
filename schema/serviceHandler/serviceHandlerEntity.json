@@ -4,50 +4,28 @@
     "title": "Service Handler",
     "type": "object",
     "properties": {
-        "name": {
-            "description": "Service Handler Name",
-            "type": "string",
-            "pattern": ""
+        "listens": {
+            "description": "Service Handler Listens attribute",
+            "type": "array"
         },
-        "slug": {
-            "description": "Slug based on Service Handler's name",
-            "type": "string",
-            "pattern": "[a-zA-Z0-9_-]+"
-        },
-        "source": {
-        	"description": "The Service Handler source",
-        	"type": "string",
-        	"pattern": ""
-        },
-        "location": {
-            "description": "The url location of the service handler",
-            "type": "string",
-            "pattern": ""
-        },
-        "service_slug": {
-    		"description": "Slug based on the Service's name",
-    		"type": "string",
-    		"pattern": ""
+        "service": {
+            "description": "Service entity",
+            "type": "object",
+            "$ref": "../service/serviceEntity.json"
         },
         "created_at": {
             "description": "Service Handler's creation unixtime",
             "type": "integer"
         },
         "updated_at": {
-        	"description": "Unixtime of the last update",
-        	"type": "integer"
+        	"description": "Unixtime of the last update"
         }
     },
     "dependencies": {
-        "slug": ["name"],
-        "service_slug": ["name"]
     },
     "required": [
-        "name",
-        "slug",
-        "source",
-        "location",
-        "service_slug",
+        "listens",
+        "service",
         "created_at"
     ]
 }

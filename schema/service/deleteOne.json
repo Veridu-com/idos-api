@@ -1,0 +1,14 @@
+{
+    "$schema" : "http://json-schema.org/draft-04/schema#",
+    "title": "DELETE /services/{serviceId}",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        }
+    },
+    "required": [
+        "status"
+    ]
+}

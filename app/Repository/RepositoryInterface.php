@@ -64,7 +64,7 @@ interface RepositoryInterface {
      *
      * @return Illuminate\Support\Collection
      */
-    public function findBy(array $constraints) : Collection;
+    public function findBy(array $constraints,  array $queryParams) : Collection;
 
     /**
      * Delete an entitiy by id.
@@ -80,5 +80,5 @@ interface RepositoryInterface {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getAll() : Collection;
+    public function getAll(array $queryParams = []) : Collection;
 }

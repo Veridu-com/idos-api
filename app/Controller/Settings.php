@@ -71,45 +71,13 @@ class Settings implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $result        = $this->repository->getAllByCompanyId($targetCompany->id, $request->getQueryParams());
 
-        $data = $result['collection'];
+        $entities = $result['collection'];
 
         $body = [
-            'data'       => $data->toArray(),
+            'data'       => $entities->toArray(),
             'pagination' => $result['pagination'],
-            'updated'    => (
-                $data->isEmpty() ? time() : $data->max('updated_at')
-            )
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Lists all Settings that belongs to the Target Company and has the given section.
-     *
-     * @apiEndpointParam query int page 10|1 Current page
-     * @apiEndpointResponse 200 schema/setting/listAllFromSection.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function listAllFromSection(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
-        $settings      = $this->repository->getAllByCompanyIdAndSection($targetCompany->id, $section);
-
-        $body = [
-            'data'    => $settings->toArray(),
             'updated' => (
-                $settings->isEmpty() ? time() : $settings->max('updated_at')
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 
@@ -133,10 +101,8 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
-        $propName      = $request->getAttribute('property');
-        $setting       = $this->repository->findOne($targetCompany->id, $section, $propName);
+        $settingId = (int) $request->getAttribute('decodedSettingId');
+        $setting   = $this->repository->find($settingId);
 
         $body = [
             'data'    => $setting->toArray(),
@@ -230,18 +196,13 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
-        $property      = $request->getAttribute('property');
+        $settingId = $request->getAttribute('decodedSettingId');
 
         $command = $this->commandFactory->create('Setting\\DeleteOne');
-        $command
-            ->setParameter('companyId', $targetCompany->id)
-            ->setParameter('section', $section)
-            ->setParameter('property', $property);
+        $command->setParameter('settingId', $settingId);
 
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'status' => (bool) $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -265,16 +226,12 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $section       = $request->getAttribute('section');
-        $propName      = $request->getAttribute('property');
+        $settingId = $request->getAttribute('decodedSettingId');
 
         $command = $this->commandFactory->create('Setting\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('sectionNameId', $section)
-            ->setParameter('propNameId', $propName)
-            ->setParameter('companyId', $targetCompany->id);
+            ->setParameter('settingId', $settingId);
 
         $setting = $this->commandBus->handle($command);
 

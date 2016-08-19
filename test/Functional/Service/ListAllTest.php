@@ -7,10 +7,12 @@
 namespace Test\Functional\Service;
 
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCompanyPrivKey;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class ListAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    use HasAuthCompanyPrivKey;
 
     protected function setUp() {
         $this->httpMethod = 'GET';

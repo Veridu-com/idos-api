@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\EntityInterface;
+use App\Entity\RoleAccess;
 use App\Entity\User;
 use Illuminate\Support\Collection;
 
@@ -42,22 +42,20 @@ class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $identityId, string $role, string $resource) : EntityInterface {
+    public function findOne(int $identityId, int $roleAccessId) : RoleAccess {
         return $this->findOneBy([
-            'identity_id' => $identityId,
-            'role'        => $role,
-            'resource'    => $resource
+            'id'          => $roleAccessId,
+            'identity_id' => $identityId
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteOne(int $identityId, string $role, string $resource) : int {
+    public function deleteOne(int $identityId, int $roleAccessId) : int {
         return $this->deleteBy([
-            'identity_id' => $identityId,
-            'role'        => $role,
-            'resource'    => $resource
+            'id'          => $roleAccessId,
+            'identity_id' => $identityId
         ]);
     }
 

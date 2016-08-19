@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/credentials and /companies/{companySlug}/credentials/{pubKey}.
+ * Handles requests to /management/credentials and /management/credentials/{pubKey}.
  */
 class Credentials implements ControllerInterface {
     /**
@@ -78,7 +78,7 @@ class Credentials implements ControllerInterface {
             'status'  => true,
             'data'    => $credentials->toArray(),
             'updated' => (
-                $credentials->isEmpty() ? time() : $credentials->max('updated_at')
+                $credentials->isEmpty() ? time() : max($credentials->max('updatedAt'), $credentials->max('createdAt'))
             )
         ];
 

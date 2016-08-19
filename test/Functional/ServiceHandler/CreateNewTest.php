@@ -9,10 +9,12 @@ namespace Test\Functional\ServiceHandler;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCompanyPrivKey;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    use HasAuthCompanyPrivKey;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
@@ -30,12 +32,10 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'         => 'New Service Handler',
-                    'source'       => 'unknown',
-                    'service'      => 'email',
-                    'location'     => 'http://localhost:8001',
-                    'authUsername' => 'idos',
-                    'authPassword' => 'secret'
+                    'service_id' => 1860914067,
+                    'listens'    => [
+                        'source.add.facebook'
+                    ]
                 ]
             )
         );

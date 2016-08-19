@@ -19,6 +19,7 @@ use App\Handler\Company;
 use App\Repository\CompanyInterface;
 use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
+use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
 use Slim\Container;
@@ -285,6 +286,7 @@ class CompanyTest extends AbstractUnit {
             ->setMethods(['delete'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $companyRepository
             ->method('delete')
             ->will($this->returnValue(0));
@@ -304,7 +306,8 @@ class CompanyTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $commandMock->companyId = 0;
+        $entity               = new CompanyEntity(['id' => 0], $this->optimus);
+        $commandMock->company = $entity;
 
         $this->assertEquals(0, $handler->handleDeleteOne($commandMock));
     }
@@ -344,12 +347,21 @@ class CompanyTest extends AbstractUnit {
         $entityFactory->create('Company');
 
         $companyRepository = $this->getMockBuilder(DBCompany::class)
-            ->setMethods(['deleteByParentId'])
+            ->setMethods(['deleteByParentId', 'getAllByParentId'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $companyRepository
             ->method('deleteByParentId')
             ->will($this->returnValue(0));
+
+        $collectionMock = $this
+            ->getMockBuilder(Collection::class)
+            ->getMock();
+
+        $companyRepository
+            ->method('getAllByParentId')
+            ->will($this->returnValue($collectionMock));
 
         $emitterMock = $this
             ->getMockBuilder(Emitter::class)
@@ -363,7 +375,6 @@ class CompanyTest extends AbstractUnit {
 
         $commandMock = $this
             ->getMockBuilder(DeleteAll::class)
-            ->disableOriginalConstructor()
             ->getMock();
 
         $commandMock->parentId = 0;

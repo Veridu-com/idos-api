@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\EntityInterface;
+use App\Entity\RoleAccess;
 use Illuminate\Support\Collection;
 
 /**
@@ -41,24 +41,26 @@ interface RoleAccessInterface extends RepositoryInterface {
     /**
      * Find a role access by the user's identity id.
      *
+     * @param int $roleAccessId
      * @param int $identityId
      *
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return \Illuminate\Database\Eloquent\Model|0
      */
-    public function findOne(int $identityId, string $role, string $resource) :  EntityInterface;
+    public function findOne(int $identityId, int $roleAccessId) :  RoleAccess;
 
     /**
      * Find a role access by the user's identity id.
      *
+     * @param int $roleAccessId
      * @param int $identityId
-     *
+     
      * @throws App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return int affected rows
      */
-    public function deleteOne(int $identityId, string $role, string $resource) : int;
+    public function deleteOne(int $identityId, int $roleAccessId) :  int;
 
     /**
      * Deletes all role access configuration of the gven identity.

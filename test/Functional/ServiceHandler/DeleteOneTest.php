@@ -7,14 +7,16 @@
 namespace Test\Functional\ServiceHandler;
 
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCompanyPrivKey;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    use HasAuthCompanyPrivKey;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/service-handlers/sms/veridu-sms-handler';
+        $this->uri        = '/1.0/services/1321189817';
     }
 
     public function testSuccess() {
@@ -22,6 +24,7 @@ class DeleteOneTest extends AbstractFunctional {
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
         // assertions
+
         $this->assertNotEmpty($body);
         $response->getStatusCode();
         $this->assertEquals(200, $response->getStatusCode());
@@ -32,7 +35,7 @@ class DeleteOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'serviceHandler/deleteOne.json',
+                'service/deleteOne.json',
                 json_decode($response->getBody())
             ),
             $this->schemaErrors
@@ -40,7 +43,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/service-handlers/dummy/dummy-service-slug');
+        $this->uri = sprintf('/1.0/service-handlers/12121212');
         $request   = $this->createRequest($this->createEnvironment());
         $response  = $this->process($request);
         $body      = json_decode($response->getBody(), true);

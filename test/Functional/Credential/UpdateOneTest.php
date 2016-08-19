@@ -13,16 +13,23 @@ use Test\Functional\Traits\HasAuthMiddleware;
 
 class UpdateOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    /**
+     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+     *        but we don't generate tokens yet, so there are no wrong credentials
+     *        when token generations is implemented, please fix this by uncommenting the next line
+     */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961';
+        $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json'
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'QUERY_STRING'      => 'credentialToken=test',
             ]
         );
 
@@ -45,17 +52,18 @@ class UpdateOneTest extends AbstractFunctional {
                 'credential/updateOne.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
 
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/credentials/dummy';
+        $this->uri = '/1.0/management/credentials/dummy';
 
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json'
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'QUERY_STRING'      => 'credentialToken=test',
             ]
         );
 
@@ -81,5 +89,4 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }

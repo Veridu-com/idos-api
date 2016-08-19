@@ -77,7 +77,7 @@ class ServiceHandlers implements ControllerInterface {
         $body = [
             'data'    => $entities->toArray(),
             'updated' => (
-                $entities->isEmpty() ? time() : $entities->max('updated_at')
+                $entities->isEmpty() ? time() : max($entities->max('created_at'), $entities->max('updated_at'))
             )
         ];
 
@@ -91,12 +91,7 @@ class ServiceHandlers implements ControllerInterface {
     }
 
     /**
-     * Retrieves one ServiceHandler of the acting Company and service and has the given serviceHandlerSlug.
-     *
-     * @apiEndpointRequiredParam    route   string  service slug
-     * @apiEndpointRequiredParam    route   string  service handler slug
-     *
-     * @apiEndpointParam            query   int     page 10|1 Current page
+     * Retrieves one Service handler of the acting Company.
      *
      * @apiEndpointResponse 200 schema/services-handlers/getOne.json
      *
@@ -106,10 +101,10 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
-        $serviceSlug   = $request->getAttribute('serviceSlug');
-        $slug          = $request->getAttribute('serviceHandlerSlug');
-        $entity        = $this->repository->findOne($actingCompany->id, $slug, $serviceSlug);
+        $actingCompany    = $request->getAttribute('actingCompany');
+        $serviceHandlerId = (int) $request->getAttribute('decodedServiceHandlerId');
+
+        $entity = $this->repository->findOne($actingCompany->id, $serviceHandlerId);
 
         $body = [
             'data' => $entity->toArray()
@@ -127,12 +122,8 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Creates a new ServiceHandler for the acting Company.
      *
-     * @apiEndpointRequiredParam    body    string      name            Service handler's name.
-     * @apiEndpointRequiredParam    body    string      source          Service handler's source.
-     * @apiEndpointRequiredParam    body    string      location        Service handler's location.
-     * @apiEndpointRequiredParam    body    string      authUsername    Service handler's authUsername.
-     * @apiEndpointRequiredParam    body    string      authPassword    Service handler's authPassword.
-     * @apiEndpointRequiredParam    body    string      service         Service's slug.
+     * @apiEndpointRequiredParam    body    int     service_id      Service's id.
+     * @apiEndpointRequiredParam    body    array   listens         Service handler's listens property.
      *
      * @apiEndpointResponse 201 schema/services-handlers/createNew.json
      *
@@ -196,7 +187,7 @@ class ServiceHandlers implements ControllerInterface {
     }
 
     /**
-     * Deletes one Service handler of the acting Company based on path paramaters service slug and slug.
+     * Deletes one Service handler of the acting Company.
      *
      * @apiEndpointResponse 200 schema/services-handlers/deleteOne.json
      *
@@ -206,18 +197,16 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceSlug        = $request->getAttribute('serviceSlug');
-        $serviceHandlerSlug = $request->getAttribute('serviceHandlerSlug');
+        $actingCompany    = $request->getAttribute('actingCompany');
+        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
         $command
             ->setParameter('companyId', $actingCompany->id)
-            ->setParameter('serviceSlug', $serviceSlug)
-            ->setParameter('slug', $serviceHandlerSlug);
+            ->setParameter('serviceHandlerId', $serviceHandlerId);
 
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'status' => (bool) $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -230,15 +219,10 @@ class ServiceHandlers implements ControllerInterface {
     }
 
     /**
-     * Updates one Service handler of the acting Company based on path paramaters service and slug.
+     * Updates one Service handler of the acting Company.
      *
-     * @apiEndpointRequiredParam    route   string      slug            Service handler's slug.
-     * @apiEndpointRequiredParam    route   string      service         Service's slug.
-     * @apiEndpointRequiredParam    body    string      name            Service handler's name.
-     * @apiEndpointRequiredParam    body    string      source          Service handler's source.
-     * @apiEndpointRequiredParam    body    string      location        Service handler's location.
-     * @apiEndpointRequiredParam    body    string      authUsername    Service handler's authUsername.
-     * @apiEndpointRequiredParam    body    string      authPassword    Service handler's authPassword.
+     * @apiEndpointParam    body    string      name            Service handler's name.
+     * @apiEndpointParam    body    array      listens          Service handler's listens.
      *
      * @apiEndpointResponse 200 schema/services-handlers/updateOne.json
      *
@@ -248,22 +232,19 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany      = $request->getAttribute('actingCompany');
-        $serviceSlug        = $request->getAttribute('serviceSlug');
-        $serviceHandlerSlug = $request->getAttribute('serviceHandlerSlug');
+        $actingCompany    = $request->getAttribute('actingCompany');
+        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('serviceSlug', $serviceSlug)
-            ->setParameter('slug', $serviceHandlerSlug)
+            ->setParameter('serviceHandlerId', $serviceHandlerId)
             ->setParameter('companyId', $actingCompany->id);
 
         $entity = $this->commandBus->handle($command);
 
         $body = [
-            'data'    => $entity->toArray(),
-            'updated' => $entity->updated_at
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

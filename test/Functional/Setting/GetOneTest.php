@@ -9,16 +9,18 @@ namespace Test\Functional\Setting;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCompanyPrivKey;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class GetOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    use HasAuthCompanyPrivKey;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
         $this->populate('/1.0/companies/veridu-ltd/settings');
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/companies/veridu-ltd/settings/%s/%s', $this->entity['section'], $this->entity['property']);
+        $this->uri    = sprintf('/1.0/companies/veridu-ltd/settings/%s', $this->entity['id']);
     }
 
     public function testSuccess() {
@@ -46,7 +48,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/settings/section/property';
+        $this->uri = '/1.0/companies/veridu-ltd/settings/21321414';
         $request   = $this->createRequest($this->createEnvironment());
         $response  = $this->process($request);
         $body      = json_decode($response->getBody(), true);

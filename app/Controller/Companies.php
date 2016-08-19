@@ -79,7 +79,7 @@ class Companies implements ControllerInterface {
         $body = [
             'data'    => $companies->toArray(),
             'updated' => (
-                $companies->isEmpty() ? time() : $companies->max('updated_at')
+                $companies->isEmpty() ? time() : max($companies->max('updatedAt'), $companies->max('createdAt'))
             )
         ];
 
@@ -169,7 +169,8 @@ class Companies implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany = $request->getAttribute('actingCompany');
 
-        $command = $this->commandFactory->create('Company\\DeleteAll', [$actingCompany->id]);
+        $command = $this->commandFactory->create('Company\\DeleteAll');
+        $command->setParameter('parentId', $actingCompany->id);
         $deleted = $this->commandBus->handle($command);
 
         $body = [
@@ -201,7 +202,7 @@ class Companies implements ControllerInterface {
         $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Company\\DeleteOne');
-        $command->setParameter('companyId', $targetCompany->id);
+        $command->setParameter('company', $targetCompany);
         $deleted = $this->commandBus->handle($command);
 
         $body = [

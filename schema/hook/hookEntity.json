@@ -23,14 +23,15 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Hook's updated unixtime",
-            "type": "integer"
+            "description": "Hooks's last updated unixtime",
+            "type": ["integer", "null"]
         }
     },
     "required": [
         "trigger",
         "url",
         "subscribed",
-        "created_at"
+        "created_at",
+        "updated_at"
     ]
 }

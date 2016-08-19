@@ -13,35 +13,30 @@ use App\Command\AbstractCommand;
  */
 class UpdateOne extends AbstractCommand {
     /**
-     * RoleAccess's role name.
+     * RoleAccess's id.
      *
      * @var string
      */
-    public $role;
-    /**
-     * RoleAccess's resource.
-     *
-     * @var string
-     */
-    public $resource;
-    /**
-     * RoleAccess's access value.
-     *
-     * @var int
-     */
-    public $access;
+    public $roleAccessId;
+
     /**
      * RoleAccess's owner's identity id.
      *
-     * @var int
+     * @var string
      */
     public $identityId;
+
+    /**
+     * RoleAccess's access.
+     *
+     * @var string
+     */
+    public $access;
 
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) {
-        // only access is updatable
         if (isset($parameters['access'])) {
             $this->access = $parameters['access'];
         }

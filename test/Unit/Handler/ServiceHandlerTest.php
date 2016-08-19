@@ -10,6 +10,7 @@ use App\Command\ServiceHandler\CreateNew;
 use App\Command\ServiceHandler\DeleteAll;
 use App\Command\ServiceHandler\DeleteOne;
 use App\Command\ServiceHandler\UpdateOne;
+use App\Entity\Service;
 use App\Entity\ServiceHandler as ServiceHandlerEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
@@ -116,7 +117,14 @@ class ServiceHandlerTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $serviceHandlerEntity = new ServiceHandlerEntity([], $this->optimus);
+        $savedEntity = new ServiceHandlerEntity([
+            'id'         => 1,
+            'service_id' => 1,
+            'url'        => 'http://localhost:8080',
+            'listens'    => ['listen1', 'listen2'],
+            'company_id' => 1,
+            'created_at' => time()
+        ], $this->optimus);
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
@@ -125,51 +133,53 @@ class ServiceHandlerTest extends AbstractUnit {
         $entityFactory->create('ServiceHandler');
 
         $serviceHandlerRepository = $this->getMockBuilder(DBServiceHandler::class)
-            ->setMethods(['save'])
+            ->setMethods(['save', 'findOne'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $serviceHandlerRepository
             ->expects($this->once())
             ->method('save')
-            ->willReturn($serviceHandlerEntity);
+            ->willReturn($savedEntity);
+
+        $serviceHandlerRepository
+            ->expects($this->once())
+            ->method('findOne')
+            ->willReturn($savedEntity);
 
         $handler = new ServiceHandler(
             $serviceHandlerRepository,
             new ServiceHandlerValidator()
         );
 
-        $command               = new CreateNew();
-        $command->name         = 'New Service Handler';
-        $command->source       = 'email';
-        $command->companyId    = 1;
-        $command->serviceSlug  = 'slug';
-        $command->authPassword = 'Auth Password';
-        $command->authUsername = 'Auth Username';
-        $command->location     = 'http://localhost:8080';
+        $command            = new CreateNew();
+        $command->companyId = 1;
+        $command->serviceId = 1;
+        $command->url       = 'http://localhost:8080';
+        $command->listens   = ['listen1', 'listen2'];
 
         $result = $handler->handleCreateNew($command);
-        $this->assertSame('New Service Handler', $result->name);
-        $this->assertSame('new-service-handler', $result->slug);
-        $this->assertSame('email', $result->source);
+
         $this->assertSame(1, $result->companyId);
-        $this->assertSame('slug', $result->serviceSlug);
-        $this->assertSame('Auth Password', $result->authPassword);
-        $this->assertSame('Auth Username', $result->authUsername);
-        $this->assertSame('http://localhost:8080', $result->location);
+        $this->assertSame(1, $result->serviceId);
+        $this->assertSame(['listen1', 'listen2'], $result->listens);
+        $this->assertSame('http://localhost:8080', $result->url);
         $this->assertTrue(is_int($result->created_at));
     }
 
     public function testHandleUpdateOne() {
         $serviceHandlerEntity = new ServiceHandlerEntity(
             [
-                'id'           => 1,
-                'name'         => 'New Service Handler',
-                'slug'         => 'new-service-handler',
-                'source'       => 'email',
-                'location'     => 'http://localhost:8080',
-                'service-slug' => 'slug',
-                'created_at'   => time(),
-                'updated_at'   => time()
+                'companyId'          => 1,
+                'serviceHandlerId'   => 1,
+                'listens'            => ['listen1', 'listen2'],
+                'service.id'         => 1,
+                'service'            => new Service(['id' => 1], $this->optimus),
+                'service.name'       => 'my cool service',
+                'service.created_at' => time(),
+                'service.updated_at' => time(),
+                'created_at'         => time(),
+                'updated_at'         => time()
             ],
             $this->optimus
         );
@@ -188,6 +198,15 @@ class ServiceHandlerTest extends AbstractUnit {
             ->expects($this->once())
             ->method('findOne')
             ->will($this->returnValue($serviceHandlerEntity));
+
+        $serviceHandlerEntity->relations = [
+            'service' => new Service(
+                [
+                    'id'      => 1,
+                    'listens' => ['listen1', 'listen2']
+                ], $this->optimus)
+        ];
+
         $serviceHandlerRepository
             ->expects($this->once())
             ->method('save')
@@ -198,23 +217,14 @@ class ServiceHandlerTest extends AbstractUnit {
             new ServiceHandlerValidator()
         );
 
-        $command               = new UpdateOne();
-        $command->name         = 'New Service Handler';
-        $command->slug         = 'new-service-handler';
-        $command->source       = 'email';
-        $command->companyId    = 1;
-        $command->serviceSlug  = 'slug';
-        $command->authPassword = 'Auth Password';
-        $command->authUsername = 'Auth Username';
-        $command->location     = 'http://localhost:8080';
+        $command                   = new UpdateOne();
+        $command->companyId        = 1;
+        $command->serviceHandlerId = 1;
+        $command->listens          = ['listen1', 'listen2'];
 
         $result = $handler->handleUpdateOne($command);
-        $this->assertSame('New Service Handler', $result->name);
-        $this->assertSame('new-service-handler', $result->slug);
-        $this->assertSame('email', $result->source);
-        $this->assertSame('Auth Password', $result->authPassword);
-        $this->assertSame('Auth Username', $result->authUsername);
-        $this->assertSame('http://localhost:8080', $result->location);
+
+        $this->assertSame(['listen1', 'listen2'], $result->listens);
         $this->assertTrue(is_int($result->created_at));
         $this->assertTrue(is_int($result->updated_at));
     }
@@ -265,9 +275,8 @@ class ServiceHandlerTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $commandMock->companyId   = 1;
-        $commandMock->slug        = 'slug';
-        $commandMock->serviceSlug = 'new-service-handler';
+        $commandMock->companyId        = 1;
+        $commandMock->serviceHandlerId = 1;
 
         $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
     }
