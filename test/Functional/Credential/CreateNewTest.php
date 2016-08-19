@@ -13,6 +13,12 @@ use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    /**
+      * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+      *        but we don't generate tokens yet, so there are no wrong credentials
+      *        when token generations is implemented, please fix this by uncommenting the next line
+      */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
@@ -64,9 +70,6 @@ class CreateNewTest extends AbstractFunctional {
      * {@inheritdoc}
      */
     public function getAuthMiddlewareEnvironment() {
-
-
-
         return $this->createEnvironment(
             [
                 'REQUEST_URI'    => $this->uri,
