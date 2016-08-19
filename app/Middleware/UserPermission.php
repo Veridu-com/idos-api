@@ -97,7 +97,7 @@ class UserPermission implements MiddlewareInterface {
         $allowed   = false;
 
         if ($actingCompany && $actingUser) {
-            throw new \RuntimeException('');
+            throw new \RuntimeException('Invalid Request: actingUser and actingCompany cannot be defined simultaneously.');
         }
 
         if (! $targetUser) {
