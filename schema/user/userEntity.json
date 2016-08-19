@@ -10,11 +10,11 @@
             "pattern": ""
         },
         "created_at": {
-            "description": "Member's creation unixtime",
+            "description": "User's creation unixtime",
             "type": "integer"
         },
         "updated_at": {
-            "description": "Hooks's last updated unixtime",
+            "description": "User's last updated unixtime",
             "type": ["integer", "null"]
         }
     },
