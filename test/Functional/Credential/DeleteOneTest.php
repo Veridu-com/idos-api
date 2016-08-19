@@ -11,14 +11,25 @@ use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    /**
+     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+     *        but we don't generate tokens yet, so there are no wrong credentials
+     *        when token generations is implemented, please fix this by uncommenting the next line
+     */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961';
+        $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961';
     }
 
     public function testSuccess() {
-        $request  = $this->createRequest($this->createEnvironment());
+        $request = $this->createRequest($this->createEnvironment(
+                [
+                    'QUERY_STRING' => 'credentialToken=test'
+                ]
+            )
+        );
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
         // assertions
@@ -39,10 +50,15 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/credentials/dummy';
-        $request   = $this->createRequest($this->createEnvironment());
-        $response  = $this->process($request);
-        $body      = json_decode($response->getBody(), true);
+        $this->uri = '/1.0/management/credentials/dummy';
+        $request   = $this->createRequest($this->createEnvironment(
+                [
+                    'QUERY_STRING' => 'credentialToken=test'
+                ]
+            )
+        );
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         // assertions
         $this->assertNotEmpty($body);

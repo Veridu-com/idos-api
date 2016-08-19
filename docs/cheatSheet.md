@@ -272,17 +272,17 @@
 
 ### Company Credentials
 
-[GET /1.0/companies/:companyId/credentials](companies/credentials/listAll.md)
+[GET /1.0/management/credentials](companies/credentials/listAll.md)
 
-[POST /1.0/companies/:companyId/credentials](companies/credentials/createNew.md)
+[POST /1.0/management/credentials](companies/credentials/createNew.md)
 
-[DELETE /1.0/companies/:companyId/credentials](companies/credentials/deleteAll.md)
+[DELETE /1.0/management/credentials](companies/credentials/deleteAll.md)
 
-[GET /1.0/companies/:companyId/credentials/:pubKey](companies/credentials/getCredential.md)
+[GET /1.0/management/credentials/:pubKey](companies/credentials/getCredential.md)
 
-[POST /1.0/companies/:companyId/credentials/:pubKey](companies/credentials/updateCredential.md)
+[POST /1.0/management/credentials/:pubKey](companies/credentials/updateCredential.md)
 
-[DELETE /1.0/companies/:companyId/credentials/:pubKey](companies/credentials/deleteCredential.md)
+[DELETE /1.0/management/credentials/:pubKey](companies/credentials/deleteCredential.md)
 
 ### Credential Hooks
 

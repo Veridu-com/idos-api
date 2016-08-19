@@ -11,14 +11,25 @@ use Test\Functional\Traits\HasAuthMiddleware;
 
 class ListAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    /**
+     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+     *        but we don't generate tokens yet, so there are no wrong credentials
+     *        when token generations is implemented, please fix this by uncommenting the next line
+     */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/companies/veridu-ltd/credentials';
+        $this->uri        = '/1.0/management/credentials';
     }
 
     public function testSuccess() {
-        $request  = $this->createRequest($this->createEnvironment());
+        $request = $this->createRequest($this->createEnvironment(
+                [
+                    'QUERY_STRING' => 'credentialToken=test'
+                ]
+            )
+        );
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
 

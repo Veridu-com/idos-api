@@ -6,13 +6,13 @@
 
 namespace Test\Functional\Traits;
 
-trait HasAuthMiddleware {
-    public function testMissingCredentials() {
+trait HasAuthCredentialToken {
+    public function testWrongCredentials() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'    => $this->uri,
                 'REQUEST_METHOD' => $this->httpMethod,
-                'QUERY_STRING'   => null
+                'QUERY_STRING'   => 'credentialToken=dummy'
             ]
         );
         $request  = $this->createRequest($environment);
@@ -20,7 +20,7 @@ trait HasAuthMiddleware {
         $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-        $this->assertEquals(403, $response->getStatusCode());
+        $this->assertEquals(500, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
