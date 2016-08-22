@@ -72,7 +72,7 @@ class Permissions implements ControllerInterface {
         $permissions   = $this->repository->getAllByCompanyId($targetCompany->id);
 
         $body = [
-            'data' => $permissions->toArray(),
+            'data'    => $permissions->toArray(),
             'updated' => (
                 $permissions->isEmpty() ? time() : $permissions->max('createdAt')
             )

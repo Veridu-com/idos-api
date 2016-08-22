@@ -17,7 +17,7 @@ use Slim\App;
 /**
  * Hooks routing definitions.
  *
- * @link docs/companies/hooks/overview.md
+ * @link docs/management/hooks/overview.md
  * @see App\Controller\Hooks
  */
 class Hooks implements RouteInterface {
@@ -66,11 +66,10 @@ class Hooks implements RouteInterface {
      *
      * Retrieve a complete list of all hooks that belong to the requesting credential.
      *
-     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks
+     * @apiEndpoint GET /management/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -78,7 +77,7 @@ class Hooks implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/hooks/listAll.md
+     * @link docs/management/hooks/listAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Hooks::listAll
@@ -86,11 +85,11 @@ class Hooks implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
+                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:listAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(CompanyPermission::SELF_ACTION))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:listAll');
     }
     /**
@@ -98,11 +97,10 @@ class Hooks implements RouteInterface {
      *
      * Creates a new hook for the requesting credential.
      *
-     * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}/hooks
+     * @apiEndpoint POST /management/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -110,7 +108,7 @@ class Hooks implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/hooks/createNew.md
+     * @link docs/management/hooks/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Hooks::createNew
@@ -118,11 +116,11 @@ class Hooks implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
+                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:createNew'
             )
             ->add($permission(CompanyPermission::SELF_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:createNew');
     }
 
@@ -131,11 +129,10 @@ class Hooks implements RouteInterface {
      *
      * Updates a hook that belongs to the requesting credential.
      *
-     * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
+     * @apiEndpoint PUT /management/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string hookId
      *
      * @param \Slim\App $app
@@ -144,7 +141,7 @@ class Hooks implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/hooks/updateOne.md
+     * @link docs/management/hooks/updateOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Hooks::updateOne
@@ -152,11 +149,11 @@ class Hooks implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
+                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
                 'App\Controller\Hooks:updateOne'
             )
             ->add($permission(CompanyPermission::SELF_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:updateOne');
     }
 
@@ -165,11 +162,10 @@ class Hooks implements RouteInterface {
      *
      * Delete all hooks that belong to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/hooks
+     * @apiEndpoint DELETE /management/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -177,7 +173,7 @@ class Hooks implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/hooks/deleteAll.md
+     * @link docs/management/hooks/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Hooks::deleteAll
@@ -185,11 +181,11 @@ class Hooks implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
+                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:deleteAll'
             )
             ->add($permission(CompanyPermission::SELF_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:deleteAll');
     }
 
@@ -198,11 +194,10 @@ class Hooks implements RouteInterface {
      *
      * Retrieves all public information from a hook
      *
-     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
+     * @apiEndpoint GET /management/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string hookId
      *
      * @param \Slim\App $app
@@ -211,7 +206,7 @@ class Hooks implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/hooks/getOne.md
+     * @link docs/management/hooks/getOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Hooks::getOne
@@ -219,11 +214,11 @@ class Hooks implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
+                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
                 'App\Controller\Hooks:getOne'
             )
             ->add($permission(CompanyPermission::SELF_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:getOne');
     }
 
@@ -232,11 +227,10 @@ class Hooks implements RouteInterface {
      *
      * Deletes a hook that belongs to the requesting credential.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
+     * @apiEndpoint DELETE /management/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string hookId
      *
      * @param \Slim\App $app
@@ -245,7 +239,7 @@ class Hooks implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/hooks/deleteOne.md
+     * @link docs/management/hooks/deleteOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Hooks::deleteOne
@@ -253,11 +247,11 @@ class Hooks implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
+                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
                 'App\Controller\Hooks:deleteOne'
             )
             ->add($permission(CompanyPermission::SELF_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:deleteOne');
     }
 }

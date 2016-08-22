@@ -11,14 +11,24 @@ use Test\Functional\Traits\HasAuthMiddleware;
 
 class ListAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    /**
+     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+     *        but we don't generate tokens yet, so there are no wrong credentials
+     *        when token generations is implemented, please fix this by uncommenting the next line
+     */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks';
+        $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks';
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment());
+        $request = $this->createRequest($this->createEnvironment(
+            [
+                'QUERY_STRING' => 'credentialToken=test',
+            ]
+        ));
 
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
@@ -40,9 +50,12 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testErrorCredentialDoesntBelongToCompany() {
-        $environment = $this->createEnvironment([
-            'REQUEST_URI' => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks',
-        ]);
+        $environment = $this->createEnvironment(
+            [
+                'REQUEST_URI'  => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks',
+                'QUERY_STRING' => 'credentialToken=test',
+            ]
+        );
 
         $request = $this->createRequest($environment);
 
@@ -61,14 +74,17 @@ class ListAllTest extends AbstractFunctional {
                 'error.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
     }
 
     public function testErrorTargetCompanyDifferentFromActingCompany() {
-        $environment = $this->createEnvironment([
-            'REQUEST_URI' => '/1.0/companies/app-deck/credentials/1e772b1e4d57560422e07565600aca48/hooks',
-        ]);
+        $environment = $this->createEnvironment(
+            [
+                'REQUEST_URI'  => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks',
+                'QUERY_STRING' => 'credentialToken=test',
+            ]
+        );
 
         $request = $this->createRequest($environment);
 
@@ -87,8 +103,7 @@ class ListAllTest extends AbstractFunctional {
                 'error.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
     }
-
 }

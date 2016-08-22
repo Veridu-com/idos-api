@@ -286,17 +286,17 @@
 
 ### Credential Hooks
 
-[GET /1.0/companies/:companyId/credentials/:pubKey/hooks](companies/credentials/hooks/listAll.md)
+[GET /1.0/management/credentials/:pubKey/hooks](management/hooks/listAll.md)
 
-[POST /1.0/companies/:companyId/credentials/:pubKey/hooks](companies/credentials/hooks/createNew.md)
+[POST /1.0/management/credentials/:pubKey/hooks](management/hooks/createNew.md)
 
-[DELETE /1.0/companies/:companyId/credentials/:pubKey/hooks](companies/credentials/hooks/deleteAll.md)
+[DELETE /1.0/management/credentials/:pubKey/hooks](management/hooks/deleteAll.md)
 
-[GET /1.0/companies/:companyId/credentials/:pubKey/hooks/:hookId](companies/credentials/hooks/getHook.md)
+[GET /1.0/management/credentials/:pubKey/hooks/:hookId](management/hooks/getHook.md)
 
-[POST /1.0/companies/:companyId/credentials/:pubKey/hooks/:hookId](companies/credentials/hooks/updateHook.md)
+[POST /1.0/management/credentials/:pubKey/hooks/:hookId](management/hooks/updateHook.md)
 
-[DELETE /1.0/companies/:companyId/credentials/:pubKey/hooks/:hookId](companies/credentials/hooks/deleteHook.md)
+[DELETE /1.0/management/credentials/:pubKey/hooks/:hookId](management/hooks/deleteHook.md)
 
 ### Company Settings
 

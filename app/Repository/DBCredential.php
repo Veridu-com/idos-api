@@ -59,4 +59,11 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
     public function deleteByPubKey(string $key) : int {
         return $this->deleteByKey('public', $key);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByCompanyIdAndPubKey(int $companyId, string $key) : Credential {
+        return $this->findOneBy(['company_id' => $companyId, 'public' => $key]);
+    }
 }
