@@ -96,7 +96,6 @@ class Main implements ControllerInterface {
             }
         }
 
-
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('request', $request)

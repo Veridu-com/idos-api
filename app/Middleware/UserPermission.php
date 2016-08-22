@@ -45,7 +45,7 @@ class UserPermission implements MiddlewareInterface {
      */
     private function getAccessFromRole(int $identityId, string $role, string $resource) : int {
         try {
-            $roleAccess = $this->roleAccessRepository->findOne($identityId, $role, $resource);
+            $roleAccess = $this->roleAccessRepository->findByIdentityRoleResource($identityId, $role, $resource);
             $access     = $roleAccess->access;
         } catch (NotFound $e) {
             // fallbacks to default permission
@@ -96,6 +96,10 @@ class UserPermission implements MiddlewareInterface {
         $routeName = $request->getAttribute('route')->getName();
         $allowed   = false;
 
+        if ($actingCompany && $actingUser) {
+            throw new \RuntimeException('Invalid Request: actingUser and actingCompany cannot be defined simultaneously.');
+        }
+
         if (! $targetUser) {
             $response = $this->allow($response);
 
@@ -103,7 +107,7 @@ class UserPermission implements MiddlewareInterface {
         }
 
         // User -> User
-        if ($targetUser && $targetUser->id !== $actingUser->id) {
+        if ($actingUser && $targetUser->id !== $actingUser->id) {
             // @FIXME When company members are developed get back to this middleware and find the specific role for each use case
             $role = Role::USER;
 
@@ -118,7 +122,6 @@ class UserPermission implements MiddlewareInterface {
         if ($actingCompany) {
             $role   = Role::COMPANY;
             $access = $this->getAccessFromRole($targetUser->identityId, $role, $this->resource);
-
             if (($this->accessLevel & $access) !== $this->accessLevel) {
                 throw new NotAllowed();
             }

@@ -9,7 +9,6 @@ namespace Test\Functional\Hook;
 use Test\Functional\AbstractFunctional;
 
 class MainTest extends AbstractFunctional {
-
     protected function setUp() {
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/';
