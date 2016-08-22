@@ -71,4 +71,13 @@ interface CredentialInterface extends RepositoryInterface {
      * @return App/Entity/Credential
      */
     public function findOneByCompanyIdAndPubKey(int $companyId, string $key) : Credential;
+    
+    /**
+     * Generates a signed JWT.
+     *
+     * @param      string  $subjectCredentialPubKey           The public key of subject Credential
+     * @param      string  $issuerCredentialPrivKey  The private key of issuer Credential
+     * @param      string  $issuerCredentialPubKey   The public key of issuer Credential
+     */
+    public function generateToken(string $subjectCredentialPubKey, string $issuerCredentialPrivKey, string $issuerCredentialPubKey) : string;
 }

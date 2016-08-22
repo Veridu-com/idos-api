@@ -10,6 +10,7 @@ namespace App\Repository;
 
 use App\Entity\User;
 use App\Exception\NotFound;
+use Lcobucci\JWT;
 
 /**
  * Database-based User Repository Implementation.
@@ -57,6 +58,23 @@ class DBUser extends AbstractDBRepository implements UserInterface {
     /**
      * {@inheritdoc}
      */
+    public function findByPubKey(string $publicKey) {
+        $result = $this->query()
+            ->selectRaw('users.*')
+            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
+            ->where('credentials.public', '=', $publicKey)
+            ->first();
+
+        if (empty($result)) {
+            throw new NotFound();
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findByPrivKey(string $privateKey) {
         $result = $this->query()
             ->selectRaw('users.*')
@@ -71,6 +89,9 @@ class DBUser extends AbstractDBRepository implements UserInterface {
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findOrCreate(string $userName, int $credentialId) : User {
         $result = $this->query()
             ->where('username', $userName)
@@ -92,6 +113,9 @@ class DBUser extends AbstractDBRepository implements UserInterface {
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByUserNameAndCredential(string $userName, int $credentialId) : User {
         $result = $this->query()
             ->where('username', $userName)
@@ -103,6 +127,23 @@ class DBUser extends AbstractDBRepository implements UserInterface {
         }
 
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function generateToken(string $username, string $credentialPrivKey, string $credentialPubKey) : string {
+        $jwtParser     = new JWT\Parser();
+        $jwtValidation = new JWT\ValidationData();
+        $jwtSigner     = new JWT\Signer\Hmac\Sha256();
+        $jwtBuilder = new JWT\Builder();
+
+        $jwtBuilder->set('iss', $credentialPubKey);
+        $jwtBuilder->set('sub', $username);
+
+        return $jwtBuilder
+                ->sign($jwtSigner, $credentialPrivKey)
+                ->getToken();
     }
 
 }
