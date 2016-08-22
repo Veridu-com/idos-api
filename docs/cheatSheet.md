@@ -300,19 +300,19 @@
 
 ### Company Settings
 
-[GET /1.0/companies/:companyId/settings](companies/settings/listAll.md)
+[GET /1.0/management/settings](management/settings/listAll.md)
 
-[DELETE /1.0/companies/:companyId/settings](companies/settings/deleteAll.md)
+[DELETE /1.0/management/settings](management/settings/deleteAll.md)
 
-[GET /1.0/companies/:companyId/settings/:category](companies/settings/getCategory.md)
+[GET /1.0/management/settings/:category](management/settings/getCategory.md)
 
-[DELETE /1.0/companies/:companyId/settings/:category](companies/settings/deleteCategory.md)
+[DELETE /1.0/management/settings/:category](management/settings/deleteCategory.md)
 
-[GET /1.0/companies/:companyId/settings/:category/:property](companies/settings/getCategoryProperty.md)
+[GET /1.0/management/settings/:category/:property](management/settings/getCategoryProperty.md)
 
-[POST /1.0/companies/:companyId/settings/:category/:property](companies/settings/setCategoryProperty.md)
+[POST /1.0/management/settings/:category/:property](management/settings/setCategoryProperty.md)
 
-[DELETE /1.0/companies/:companyId/settings/:category/:property](companies/settings/unsetCategoryProperty.md)
+[DELETE /1.0/management/settings/:category/:property](management/settings/unsetCategoryProperty.md)
 
 ### Company Members
 

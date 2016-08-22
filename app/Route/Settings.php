@@ -16,7 +16,7 @@ use Slim\App;
 /**
  * Settings routing definitions.
  *
- * @link docs/companies/settings/overview.md
+ * @link docs/management/settings/overview.md
  * @see App\Controller\Settings
  */
 class Settings implements RouteInterface {
@@ -64,18 +64,17 @@ class Settings implements RouteInterface {
      *
      * Retrieve a complete list of all settings that belong to the requesting company.
      *
-     * @apiEndpoint GET /companies/{companySlug}/settings
+     * @apiEndpoint GET /management/settings
      * @apiGroup Company Settings
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/settings/listAll.md
+     * @link docs/management/settings/listAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::listAll
@@ -83,11 +82,11 @@ class Settings implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
+                '/management/settings',
                 'App\Controller\Settings:listAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('settings:listAll');
     }
 
@@ -96,18 +95,17 @@ class Settings implements RouteInterface {
      *
      * Create a new credential for the requesting company.
      *
-     * @apiEndpoint POST /companies/{companySlug}/settings
+     * @apiEndpoint POST /management/settings
      * @apiGroup Company Settings
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/settings/createNew.md
+     * @link docs/management/settings/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::createNew
@@ -115,11 +113,11 @@ class Settings implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
+                '/management/settings',
                 'App\Controller\Settings:createNew'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('settings:createNew');
     }
 
@@ -128,18 +126,17 @@ class Settings implements RouteInterface {
      *
      * Deletes all settings that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/settings
+     * @apiEndpoint DELETE /management/settings
      * @apiGroup Company Settings
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
      *
      * @return void
      *
-     * @link docs/companies/settings/deleteAll.md
+     * @link docs/management/settings/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::deleteAll
@@ -147,11 +144,11 @@ class Settings implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings',
+                '/management/settings',
                 'App\Controller\Settings:deleteAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('settings:deleteAll');
     }
 
@@ -160,11 +157,10 @@ class Settings implements RouteInterface {
      *
      * Retrieves all public information from a Setting.
      *
-     * @apiEndpoint GET /companies/{companySlug}/settings/{section}/{property}
+     * @apiEndpoint GET /management/settings/{section}/{property}
      * @apiGroup Company Settings
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string section lookup
      * @apiEndpointURIFragment string property username
      *
@@ -173,7 +169,7 @@ class Settings implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/settings/getOne.md
+     * @link docs/management/settings/getOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::getOne
@@ -181,11 +177,11 @@ class Settings implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{settingId:[0-9]+}',
+                '/management/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:getOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('settings:getOne');
     }
 
@@ -194,11 +190,10 @@ class Settings implements RouteInterface {
      *
      * Updates Setting's specific information.
      *
-     * @apiEndpoint PUT /companies/{companySlug}/settings/{section}/{property}
+     * @apiEndpoint PUT /management/settings/{section}/{property}
      * @apiGroup Company Settings
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string section lookup
      * @apiEndpointURIFragment string property username
      *
@@ -207,7 +202,7 @@ class Settings implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/settings/updateOne.md
+     * @link docs/management/settings/updateOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::updateOne
@@ -215,11 +210,11 @@ class Settings implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{settingId:[0-9]+}',
+                '/management/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:updateOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('settings:updateOne');
     }
 
@@ -228,11 +223,10 @@ class Settings implements RouteInterface {
      *
      * Deletes a single Setting that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/settings/{section}/{property}
+     * @apiEndpoint DELETE /management/settings/{section}/{property}
      * @apiGroup Company Settings
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string section lookup
      * @apiEndpointURIFragment string property username
      *
@@ -241,7 +235,7 @@ class Settings implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/settings/deleteOne.md
+     * @link docs/management/settings/deleteOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Settings::deleteOne
@@ -249,11 +243,11 @@ class Settings implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/settings/{settingId:[0-9]+}',
+                '/management/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:deleteOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('settings:deleteOne');
     }
 }
