@@ -107,9 +107,6 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             $result = $this->save($user);
         }
 
-        var_dump($result);
-        exit;
-
         return $result;
     }
 
