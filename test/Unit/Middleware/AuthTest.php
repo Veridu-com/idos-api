@@ -104,21 +104,21 @@ class AuthTest extends AbstractUnit {
         $this->jwtBuilder = new JWT\Builder();
 
         $this->requestMock = new class() extends Request {
-        	protected $attributes;
+            protected $attributes;
 
-        	public function __construct() {
-        		$this->attributes = [];
-        	}
+            public function __construct() {
+                $this->attributes = [];
+            }
 
-        	public function getAttributes() {
-        		return $this->attributes;
-        	}
+            public function getAttributes() {
+                return $this->attributes;
+            }
 
-        	public function withAttribute($name, $value) {
-        		$this->attributes[$name] = $value;
+            public function withAttribute($name, $value) {
+                $this->attributes[$name] = $value;
 
-        		return $this;
-        	}
+                return $this;
+            }
         };
     }
 
@@ -203,7 +203,7 @@ class AuthTest extends AbstractUnit {
         $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
 
         $attributes = $this->requestMock->getAttributes();
-        
+
         $this->assertSame($actingUser, $attributes['actingUser']);
         $this->assertSame($targetCompany, $attributes['targetCompany']);
         $this->assertSame($credential, $attributes['credential']);
@@ -211,7 +211,7 @@ class AuthTest extends AbstractUnit {
 
     public function testHandleUserPubKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_PUBKEY);
-     
+
         $credential = new CredentialEntity([
             'id'         => 1,
             'name'       => 'Credential Test',
@@ -224,11 +224,11 @@ class AuthTest extends AbstractUnit {
         );
 
         $targetUser = new UserEntity([
-            'id'         => 1,
+            'id'           => 1,
             'credentialId' => $credential->id,
-            'username'   => 'username-test',
-            'created_at' => time(),
-            'updated_at' => time()],
+            'username'     => 'username-test',
+            'created_at'   => time(),
+            'updated_at'   => time()],
             $this->optimus
         );
 
@@ -239,13 +239,13 @@ class AuthTest extends AbstractUnit {
         $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserPubKey', [$this->requestMock, $credential->public]);
 
         $attributes = $this->requestMock->getAttributes();
-        
+
         $this->assertSame($targetUser, $attributes['targetUser']);
     }
 
     public function testHandleUserPrivKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_PRIVKEY);
-     
+
         $credential = new CredentialEntity([
             'id'         => 1,
             'name'       => 'Credential Test',
@@ -258,11 +258,11 @@ class AuthTest extends AbstractUnit {
         );
 
         $actingUser = new UserEntity([
-            'id'         => 1,
+            'id'           => 1,
             'credentialId' => $credential->id,
-            'username'   => 'username-test',
-            'created_at' => time(),
-            'updated_at' => time()],
+            'username'     => 'username-test',
+            'created_at'   => time(),
+            'updated_at'   => time()],
             $this->optimus
         );
 
@@ -273,20 +273,20 @@ class AuthTest extends AbstractUnit {
         $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserPrivKey', [$this->requestMock, $credential->private]);
 
         $attributes = $this->requestMock->getAttributes();
-        
+
         $this->assertSame($actingUser, $attributes['actingUser']);
     }
 
     public function testHandleCompanyPubKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::COMP_PUBKEY);
-     
+
         $actingCompany = new CompanyEntity([
-            'id'         => 1,
-            'username'   => 'acting-company',
-            'public_key' => md5('public'),
+            'id'          => 1,
+            'username'    => 'acting-company',
+            'public_key'  => md5('public'),
             'private_key' => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+            'created_at'  => time(),
+            'updated_at'  => time()],
             $this->optimus
         );
 
@@ -297,20 +297,20 @@ class AuthTest extends AbstractUnit {
         $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCompanyPubKey', [$this->requestMock, $actingCompany->public_key]);
 
         $attributes = $this->requestMock->getAttributes();
-        
+
         $this->assertSame($actingCompany, $attributes['actingCompany']);
     }
 
     public function testHandleCompanyPrivKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::COMP_PRIVKEY);
-     
+
         $actingCompany = new CompanyEntity([
-            'id'         => 1,
-            'username'   => 'acting-company',
-            'public_key' => md5('public'),
+            'id'          => 1,
+            'username'    => 'acting-company',
+            'public_key'  => md5('public'),
             'private_key' => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+            'created_at'  => time(),
+            'updated_at'  => time()],
             $this->optimus
         );
 
@@ -321,41 +321,88 @@ class AuthTest extends AbstractUnit {
         $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCompanyPrivKey', [$this->requestMock, $actingCompany->private_key]);
 
         $attributes = $this->requestMock->getAttributes();
-        
+
         $this->assertSame($actingCompany, $attributes['actingCompany']);
     }
 
     public function testHandleCredentialTokenSuccess() {
-        /*$authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_TOKEN);
-     
+        $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_TOKEN);
+
         $actingCompany = new CompanyEntity([
+            'id'          => 1,
+            'username'    => 'acting-company',
+            'public_key'  => md5('acting-public'),
+            'private_key' => md5('acting-private'),
+            'created_at'  => time(),
+            'updated_at'  => time()],
+            $this->optimus
+        );
+
+        $targetCompany = new CompanyEntity([
+            'id'          => 2,
+            'username'    => 'target-company',
+            'public_key'  => md5('target-public'),
+            'private_key' => md5('target-private'),
+            'created_at'  => time(),
+            'updated_at'  => time()],
+            $this->optimus
+        );
+
+        $issuerCredential = new CredentialEntity([
             'id'         => 1,
-            'username'   => 'acting-company',
-            'public_key' => md5('public'),
-            'private_key' => md5('private'),
+            'company_id' => $actingCompany->id,
+            'name'       => 'Issuer Credential Test',
+            'slug'       => 'issuer-credential-test',
+            'public'     => md5('issuer-public'),
+            'private'    => md5('issuer-private'),
             'created_at' => time(),
             'updated_at' => time()],
             $this->optimus
         );
 
-        $this->companyRepositoryMock
-            ->method('findByPubKey')
-            ->willReturn($actingCompany);
+        $subjectCredential = new CredentialEntity([
+            'id'         => 2,
+            'company_id' => $targetCompany->id,
+            'name'       => 'Subject Credential Test',
+            'slug'       => 'subject-credential-test',
+            'public'     => md5('subject-public'),
+            'private'    => md5('subject-private'),
+            'created_at' => time(),
+            'updated_at' => time()],
+            $this->optimus
+        );
 
-        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCompanyPrivKey', [$this->requestMock, $actingCompany->private_key]);
+        $this->credentialRepositoryMock
+            ->method('findByPubKey')
+            ->will($this->onConsecutiveCalls($issuerCredential, $subjectCredential));
+
+        $this->companyRepositoryMock
+            ->method('findById')
+            ->will($this->onConsecutiveCalls($actingCompany, $targetCompany));
+
+        $claims = [
+            'iss' => $issuerCredential->public,
+            'sub' => $subjectCredential->public
+        ];
+
+        $token = $this->generateToken($issuerCredential->private, $claims);
+
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialToken', [$this->requestMock, $token]);
 
         $attributes = $this->requestMock->getAttributes();
-        
-        $this->assertSame($actingCompany, $attributes['actingCompany']);*/
+
+        $this->assertSame($actingCompany, $attributes['actingCompany']);
+        $this->assertSame($targetCompany, $attributes['targetCompany']);
+        $this->assertSame($subjectCredential, $attributes['credential']);
     }
 
     public function testHandleCredentialPubKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_PUBKEY);
-     
+
         $actingCompany = new CompanyEntity([
             'id'         => 1,
-            'name'   => 'Company Test',
-            'slug'	=> 'company-test',
+            'name'       => 'Company Test',
+            'slug'       => 'company-test',
             'created_at' => time(),
             'updated_at' => time()],
             $this->optimus
@@ -384,18 +431,18 @@ class AuthTest extends AbstractUnit {
         $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPubKey', [$this->requestMock, $credential->public]);
 
         $attributes = $this->requestMock->getAttributes();
-        
+
         $this->assertSame($actingCompany, $attributes['actingCompany']);
         $this->assertSame($credential, $attributes['credential']);
     }
 
     public function testHandleCredentialPrivKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_PRIVKEY);
-     
+
         $actingCompany = new CompanyEntity([
             'id'         => 1,
-            'name'   => 'Company Test',
-            'slug'	=> 'company-test',
+            'name'       => 'Company Test',
+            'slug'       => 'company-test',
             'created_at' => time(),
             'updated_at' => time()],
             $this->optimus
@@ -424,7 +471,7 @@ class AuthTest extends AbstractUnit {
         $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPubKey', [$this->requestMock, $credential->private]);
 
         $attributes = $this->requestMock->getAttributes();
-        
+
         $this->assertSame($actingCompany, $attributes['actingCompany']);
         $this->assertSame($credential, $attributes['credential']);
     }

@@ -358,28 +358,32 @@ class Auth implements MiddlewareInterface {
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (! $token->validate($this->jwtvalidation))
+        if (! $token->validate($this->jwtValidation))
             throw new AppException('Token Validation Failed');
 
         // Retrieves JWT Issuer
-        $issuerKey        = $token->getClaim('iss');
-        $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
+        $issuerKey = $token->getClaim('iss');
 
-        if ($issuerCredential->isEmpty())
+        try {
+            $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
+        } catch (NotFound $e) {
             throw new AppException('Invalid Issuer Credential');
+        }
 
         // JWT Signature Verification
-        if (! $token->verify($this->jwtSigner, $issuerCredential->private_key))
+        if (! $token->verify($this->jwtSigner, $issuerCredential->private))
             throw new AppException('Token Verification Failed');
 
         // Retrieves JWT Subject
         if (! $token->hasClaim('sub'))
             throw new AppException('Missing Subject Claim');
-        $subjectKey        = $token->getClaim('sub');
-        $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
+        $subjectKey = $token->getClaim('sub');
 
-        if ($subjectCredential->isEmpty())
+        try {
+            $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
+        } catch(NotFound $e) {
             throw new AppException('Invalid Subject Credential');
+        }
 
         // Retrieves Issuer Credential's owner
         $actingCompany = $this->companyRepository->findById($issuerCredential->company_id);
@@ -415,7 +419,7 @@ class Auth implements MiddlewareInterface {
      */
     private function handleCredentialPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         try {
-            $credential = $this->credentialRepository->findByPubKey($reqKey);    
+            $credential = $this->credentialRepository->findByPubKey($reqKey);
         } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
         }
