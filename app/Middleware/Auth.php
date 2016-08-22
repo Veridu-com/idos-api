@@ -220,19 +220,21 @@ class Auth implements MiddlewareInterface {
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (! $token->validate($this->jwtvalidation)) {
+        if (! $token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed');
         }
 
         // Retrieves JWT Issuer
-        $pubKey     = $token->getClaim('iss');
-        $credential = $this->credentialRepository->findByPubKey($pubKey);
-        if ($credential->isEmpty()) {
+        $pubKey = $token->getClaim('iss');
+
+        try {
+            $credential = $this->credentialRepository->findByPubKey($pubKey);
+        } catch(NotFound $e) {
             throw new AppException('Invalid Credential');
         }
 
         // JWT Signature Verification
-        if (! $token->verify($this->jwtSigner, $credential->private_key))
+        if (! $token->verify($this->jwtSigner, $credential->private))
             throw new AppException('Token Verification Failed');
 
         // Retrieves JWT Subject
@@ -246,6 +248,8 @@ class Auth implements MiddlewareInterface {
 
         // Retrieves Credential's owner
         $targetCompany = $this->companyRepository->findById($credential->companyId);
+
+        //var_dump($actingUser);
 
         return $request
             // Stores Acting User for future use
@@ -350,44 +354,44 @@ class Auth implements MiddlewareInterface {
  *        removing the one after
  */
         // -------------the block to be uncommented starts here -------------------------------
-        // $token = $this->jwtParser->parse($reqToken);
+        $token = $this->jwtParser->parse($reqToken);
 
-        // // Ensures JWT Audience is the current API
-        // $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        // if (! $token->validate($this->jwtvalidation))
-        //     throw new AppException('Token Validation Failed');
+        // Ensures JWT Audience is the current API
+        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        if (! $token->validate($this->jwtvalidation))
+            throw new AppException('Token Validation Failed');
 
-        // // Retrieves JWT Issuer
-        // $issuerKey        = $token->getClaim('iss');
-        // $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
+        // Retrieves JWT Issuer
+        $issuerKey        = $token->getClaim('iss');
+        $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
 
-        // if ($issuerCredential->isEmpty())
-        //     throw new AppException('Invalid Issuer Credential');
+        if ($issuerCredential->isEmpty())
+            throw new AppException('Invalid Issuer Credential');
 
-        // // JWT Signature Verification
-        // if (! $token->verify($this->jwtSigner, $issuerCredential->private_key))
-        //     throw new AppException('Token Verification Failed');
+        // JWT Signature Verification
+        if (! $token->verify($this->jwtSigner, $issuerCredential->private_key))
+            throw new AppException('Token Verification Failed');
 
-        // // Retrieves JWT Subject
-        // if (! $token->hasClaim('sub'))
-        //     throw new AppException('Missing Subject Claim');
-        // $subjectKey        = $token->getClaim('sub');
-        // $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
+        // Retrieves JWT Subject
+        if (! $token->hasClaim('sub'))
+            throw new AppException('Missing Subject Claim');
+        $subjectKey        = $token->getClaim('sub');
+        $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
 
-        // if ($subjectCredential->isEmpty())
-        //     throw new AppException('Invalid Subject Credential');
+        if ($subjectCredential->isEmpty())
+            throw new AppException('Invalid Subject Credential');
 
-        // // Retrieves Issuer Credential's owner
-        // $actingCompany = $this->companyRepository->findById($issuerCredential->company_id);
+        // Retrieves Issuer Credential's owner
+        $actingCompany = $this->companyRepository->findById($issuerCredential->company_id);
 
-        // // Retrieves Subject Credential's owner
-        // $targetCompany = $this->companyRepository->findById($subjectCredential->company_id);
+        // Retrieves Subject Credential's owner
+        $targetCompany = $this->companyRepository->findById($subjectCredential->company_id);
         // -------------the block to be uncommented ends here -------------------------------
 
         // -------------the block to be removed starts here -------------------------------
-        $actingCompany     = $this->companyRepository->find(1);
-        $targetCompany     = $this->companyRepository->find(2);
-        $subjectCredential = $this->credentialRepository->find(1);
+        // $actingCompany     = $this->companyRepository->find(1);
+        // $targetCompany     = $this->companyRepository->find(2);
+        // $subjectCredential = $this->credentialRepository->find(1);
         // -------------the block to be removed ends here -------------------------------
 
         return $request
@@ -410,9 +414,11 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleCredentialPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
-        $credential = $this->credentialRepository->findByPubKey($reqKey);
-        if ($credential->isEmpty())
+        try {
+            $credential = $this->credentialRepository->findByPubKey($reqKey);    
+        } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
+        }
 
         // Retrieves Credential's owner
         $actingCompany = $this->companyRepository->findById($credential->company_id);

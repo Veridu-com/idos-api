@@ -49,6 +49,11 @@ class Credential extends AbstractEntity {
     protected $secure = ['private'];
 
     /**
+     * {@inheritdoc}
+     */
+    //public $relationships = ['company' => 'Company'];
+
+    /**
      * Property mutator for $name.
      *
      * @param string $value
