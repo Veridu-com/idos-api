@@ -1,11 +1,12 @@
-image: phpunit/phpunit:latest
+image: veridu/php-ci:latest
 
 pipelines:
   default:
     - step:
         script:
-          - apt-get update && apt-get install libxslt-dev -y
-          - docker-php-ext-install xsl && docker-php-ext-enable xsl
+          - cat phinx.yml.dist | sed s/veridu-api/test/ > phinx.yml
+          - cat config/testing.php.dist | sed s/veridu-api/test/ > config/testing.php
           - composer self-update
           - composer install
-          - phpunit --coverage-text --configuration phpunit.xml.dist
+          - service postgresql start
+          - ./vendor/bin/phpunit --coverage-text --configuration phpunit.xml.dist
