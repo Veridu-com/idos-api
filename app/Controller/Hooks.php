@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/credentials/{pubKey}/hooks.
+ * Handles requests to /management/credentials/{pubKey}/hooks.
  */
 class Hooks implements ControllerInterface {
     /**
@@ -70,7 +70,6 @@ class Hooks implements ControllerInterface {
     /**
      * Lists all hooks associated with given credential.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/listAll.json
      *
@@ -81,16 +80,10 @@ class Hooks implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $actingCompany    = $request->getAttribute('actingCompany');
-        $targetCompany    = $request->getAttribute('targetCompany');
         $credentialPubKey = $request->getAttribute('pubKey');
 
-        $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
-
-        if ($credential->companyId != $targetCompany->id) {
-            throw new NotFound();
-        }
-
-        $hooks = $this->repository->getAllByCredentialId($credential->id);
+        $credential = $this->credentialRepository->findOneByCompanyIdAndPubKey($actingCompany->id, $credentialPubKey);
+        $hooks      = $this->repository->getAllByCredentialId($credential->id);
 
         $body = [
             'data'    => $hooks->toArray(),
@@ -111,7 +104,6 @@ class Hooks implements ControllerInterface {
     /**
      * Creates a new hook for the given credential.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 201 schema/hook/hookEntity.json
      *
@@ -153,7 +145,6 @@ class Hooks implements ControllerInterface {
     /**
      * Updates a hook from the given credential.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/updateOne.json
      *
@@ -195,7 +186,6 @@ class Hooks implements ControllerInterface {
     /**
      * Retrieves a hook from the given credential.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/hookEntity.json
      *
@@ -237,7 +227,6 @@ class Hooks implements ControllerInterface {
     /**
      * Deletes all hooks from the given credential.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/deleteAll.json
      *
@@ -272,7 +261,6 @@ class Hooks implements ControllerInterface {
     /**
      * Deletes a hook from the given credential.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/deleteOne.json
      *

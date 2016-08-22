@@ -84,7 +84,7 @@ class Hook implements HandlerInterface {
      * @return void
      */
     public function __construct(
-        HookInterface   $repository,
+        HookInterface $repository,
         CredentialInterface $credentialRepository,
         HookValidator $validator,
         Emitter $emitter

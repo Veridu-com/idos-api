@@ -13,24 +13,36 @@ use Test\Functional\Traits\HasAuthMiddleware;
 
 class UpdateOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
+    /**
+     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+     *        but we don't generate tokens yet, so there are no wrong credentials
+     *        when token generations is implemented, please fix this by uncommenting the next line
+     */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817';
+        $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json'
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'QUERY_STRING'      => 'credentialToken=test',
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode([
-            'trigger'    => 'trigger.changed',
-            'url'        => 'http://changed.com/test.php',
-            'subscribed' => false
-        ]));
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'trigger'    => 'trigger.changed',
+                    'url'        => 'http://changed.com/test.php',
+                    'subscribed' => false
+                ]
+            )
+        );
 
         $response = $this->process($request);
 
@@ -52,24 +64,29 @@ class UpdateOneTest extends AbstractFunctional {
                 'hook/updateOne.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
-
+            $this->schemaErrors
+        );
     }
 
     public function testNotFound() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
-                'HTTP_CONTENT_TYPE' => 'application/json'
+                'REQUEST_URI'       => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'QUERY_STRING'      => 'credentialToken=test',
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode([
-            'trigger'    => 'trigger.changed',
-            'url'        => 'http://changed.com/test.php',
-            'subscribed' => false
-        ]));
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'trigger'    => 'trigger.changed',
+                    'url'        => 'http://changed.com/test.php',
+                    'subscribed' => false
+                ]
+            )
+        );
 
         $response = $this->process($request);
 
@@ -93,16 +110,24 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testErrorCredentialDoesntBelongToCompany() {
-        $environment = $this->createEnvironment([
-            'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
-            'HTTP_CONTENT_TYPE' => 'application/json'
-        ]);
+        $environment = $this->createEnvironment(
+            [
+                'REQUEST_URI'       => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'QUERY_STRING'      => 'credentialToken=test',
+            ]
+        );
 
-        $request = $this->createRequest($environment, json_encode([
-            'trigger'    => 'trigger.changed',
-            'url'        => 'http://changed.com/test.php',
-            'subscribed' => false
-        ]));
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'trigger'    => 'trigger.changed',
+                    'url'        => 'http://changed.com/test.php',
+                    'subscribed' => false
+                ]
+            )
+        );
 
         $response = $this->process($request);
 
@@ -119,21 +144,29 @@ class UpdateOneTest extends AbstractFunctional {
                 'error.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
     }
 
     public function testErrorTargetCompanyDifferentFromActingCompany() {
-        $environment = $this->createEnvironment([
-            'REQUEST_URI'       => '/1.0/companies/app-deck/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
-            'HTTP_CONTENT_TYPE' => 'application/json'
-        ]);
+        $environment = $this->createEnvironment(
+            [
+                'REQUEST_URI'       => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'QUERY_STRING'      => 'credentialToken=test',
+            ]
+        );
 
-        $request = $this->createRequest($environment, json_encode([
-            'trigger'    => 'trigger.changed',
-            'url'        => 'http://changed.com/test.php',
-            'subscribed' => false
-        ]));
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'trigger'    => 'trigger.changed',
+                    'url'        => 'http://changed.com/test.php',
+                    'subscribed' => false
+                ]
+            )
+        );
 
         $response = $this->process($request);
 
@@ -150,21 +183,29 @@ class UpdateOneTest extends AbstractFunctional {
                 'error.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
     }
 
     public function testErrorHookDoesntBelongToCredential() {
-        $environment = $this->createEnvironment([
-            'REQUEST_URI'       => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1860914067',
-            'HTTP_CONTENT_TYPE' => 'application/json'
-        ]);
+        $environment = $this->createEnvironment(
+            [
+                'REQUEST_URI'       => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1860914067',
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'QUERY_STRING'      => 'credentialToken=test',
+            ]
+        );
 
-        $request = $this->createRequest($environment, json_encode([
-            'trigger'    => 'trigger.changed',
-            'url'        => 'http://changed.com/test.php',
-            'subscribed' => false
-        ]));
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'trigger'    => 'trigger.changed',
+                    'url'        => 'http://changed.com/test.php',
+                    'subscribed' => false
+                ]
+            )
+        );
 
         $response = $this->process($request);
 
@@ -181,7 +222,7 @@ class UpdateOneTest extends AbstractFunctional {
                 'error.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
     }
 }

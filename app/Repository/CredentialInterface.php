@@ -43,4 +43,32 @@ interface CredentialInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByCompanyId(int $companyId) : int;
+
+    /**
+     * Finds a credential by its private key.
+     *
+     * @param string $key The key
+     *
+     * @return App\Entity\Credential
+     */
+    public function findByPrivKey(string $key) : Credential;
+
+    /**
+     * Deletes a set of credentials with the given public key.
+     *
+     * @param string $key The key
+     *
+     * @return int the amount of deleted credentials
+     */
+    public function deleteByPubKey(string $key) : int;
+
+    /**
+     * Finds one credential with the given company id and public key.
+     *
+     * @param int    $companyId The company identifier
+     * @param string $key       The key
+     *
+     * @return App/Entity/Credential
+     */
+    public function findOneByCompanyIdAndPubKey(int $companyId, string $key) : Credential;
 }
