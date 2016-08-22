@@ -216,7 +216,12 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleUserToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
-        $token = $this->jwtParser->parse($reqToken);
+
+        try {
+            $token = $this->jwtParser->parse($reqToken);
+        } catch (\Throwable $e) {
+            throw new AppException('Invalid Token');
+        }
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
@@ -248,8 +253,6 @@ class Auth implements MiddlewareInterface {
 
         // Retrieves Credential's owner
         $targetCompany = $this->companyRepository->findById($credential->companyId);
-
-        //var_dump($actingUser);
 
         return $request
             // Stores Acting User for future use
@@ -309,9 +312,11 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleCompanyPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
-        $actingCompany = $this->companyRepository->findByPubKey($reqKey);
-        if ($actingCompany->isEmpty())
+        try {
+            $actingCompany = $this->companyRepository->findByPubKey($reqKey);
+        } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
+        }
 
         return $request
             // Stores Acting Company for future use
@@ -329,13 +334,13 @@ class Auth implements MiddlewareInterface {
     private function handleCompanyPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         try {
             $actingCompany = $this->companyRepository->findByPrivKey($reqKey);
-
-            return $request
-                // Stores Acting Company for future use
-                ->withAttribute('actingCompany', $actingCompany);
         } catch (NotFound $exception) {
             throw new AppException('Invalid Credential');
         }
+
+        return $request
+            // Stores Acting Company for future use
+            ->withAttribute('actingCompany', $actingCompany);
     }
 
     /**
@@ -354,7 +359,11 @@ class Auth implements MiddlewareInterface {
  *        removing the one after
  */
         // -------------the block to be uncommented starts here -------------------------------
-        $token = $this->jwtParser->parse($reqToken);
+        try {
+            $token = $this->jwtParser->parse($reqToken);
+        } catch (\Throwable $e) {
+            throw new AppException('Invalid Token');
+        }
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
