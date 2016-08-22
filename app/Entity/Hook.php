@@ -62,9 +62,9 @@ class Hook extends AbstractEntity {
      * {@inheritdoc}
      */
     public function getReferenceCacheKeys() : array {
-        return array_merge([
-        ],
-        $this->getCacheKeys());
+        return array_merge(
+            [],
+            $this->getCacheKeys()
+        );
     }
-
 }

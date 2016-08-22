@@ -117,14 +117,20 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      *
      *  @param string $uri URI to be queried
      *  @param string $method URI to be queried
+     *  @param array $params Environment parameters
      *
      *  @return void
      */
-    protected function populate(string $uri, string $method = 'GET') {
-        $environment = $this->createEnvironment([
-            'REQUEST_URI'    => $uri,
-            'REQUEST_METHOD' => $method
-        ]);
+    protected function populate(string $uri, string $method = 'GET', array $params) {
+        $environment = $this->createEnvironment(
+            array_merge(
+                [
+                    'REQUEST_URI'    => $uri,
+                    'REQUEST_METHOD' => $method
+                ],
+                $params
+            )
+        );
 
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
