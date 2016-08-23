@@ -80,7 +80,7 @@ class Tags implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetUser = $request->getAttribute('targetUser');
-        $tagNames   = $request->getParam('tagName', []);
+        $tagNames   = $request->getQueryParam('tagName', []);
 
         if ($tagNames) {
             $tagNames = explode(',', $tagNames);
@@ -182,8 +182,6 @@ class Tags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $body = $request->getParsedBody();
-
         $command = $this->commandFactory->create('Tag\\DeleteAll');
         $command->setParameter('targetUser', $request->getAttribute('targetUser'));
 
