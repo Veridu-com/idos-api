@@ -36,7 +36,7 @@ class DBMemberTest extends AbstractUnit {
                 'user_id'         => 1,
                 'role'            => 'admin',
                 'created_at'      => time(),
-                'updated_at'      => time(),
+                'updated_at'      => null,
                 'user.username'   => 'userName',
                 'user.created_at' => time()
             ],
@@ -49,16 +49,17 @@ class DBMemberTest extends AbstractUnit {
             'id'   => null,
             'user' => [
                 'username'   => 'userName',
-                'created_at' => time()
+                'created_at' => time(),
+                'updated_at' => null
             ],
             'role'       => 'admin',
             'created_at' => time(),
+            'updated_at' => null
         ];
     }
 
     public function testGetAllBycompanyId() {
         $factory = new Entity($this->optimus);
-        $factory->create('Member', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['join', 'where', 'get', 'whereIn'])
@@ -83,9 +84,10 @@ class DBMemberTest extends AbstractUnit {
                             'user_id'         => 1,
                             'role'            => 'admin',
                             'created_at'      => time(),
-                            'updated_at'      => time(),
+                            'updated_at'      => null,
                             'user.username'   => 'userName',
-                            'user.created_at' => time()
+                            'user.created_at' => time(),
+                            'user.updated_at' => null
                         ],
                         $this->optimus
                     )
@@ -108,7 +110,6 @@ class DBMemberTest extends AbstractUnit {
 
     public function testGetAllBycompanyIdAndRole() {
         $factory = new Entity($this->optimus);
-        $factory->create('Member', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -136,7 +137,6 @@ class DBMemberTest extends AbstractUnit {
 
     public function testFindOneNotFound() {
         $factory = new Entity($this->optimus);
-        $factory->create('Member', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -168,7 +168,6 @@ class DBMemberTest extends AbstractUnit {
 
     public function testfFindOne() {
         $factory = new Entity($this->optimus);
-        $factory->create('Member', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -201,7 +200,6 @@ class DBMemberTest extends AbstractUnit {
 
     public function testDeleteOne() {
         $factory = new Entity($this->optimus);
-        $factory->create('Member', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -229,7 +227,6 @@ class DBMemberTest extends AbstractUnit {
 
     public function testDeleteByCompanyId() {
         $factory = new Entity($this->optimus);
-        $factory->create('Member', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])

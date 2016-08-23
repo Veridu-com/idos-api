@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/members.
+ * Handles requests to /management/members.
  */
 class Members implements ControllerInterface {
     /**
@@ -215,10 +215,10 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $body    = $request->getParsedBody();
+        $targetCompany    = $request->getAttribute('targetCompany');
         $command = $this->commandFactory->create('Member\\DeleteAll');
 
-        $command->setParameter('credential', $body['credential']);
+        $command->setParameter('companyId', $targetCompany->id);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

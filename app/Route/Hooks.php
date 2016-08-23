@@ -68,8 +68,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint GET /management/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -99,8 +99,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint POST /management/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -131,8 +131,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint PUT /management/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiEndpointURIFragment string hookId
      *
      * @param \Slim\App $app
@@ -164,8 +164,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint DELETE /management/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -196,8 +196,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint GET /management/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiEndpointURIFragment string hookId
      *
      * @param \Slim\App $app
@@ -229,8 +229,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint DELETE /management/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiEndpointURIFragment string hookId
      *
      * @param \Slim\App $app

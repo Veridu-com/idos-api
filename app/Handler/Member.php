@@ -159,9 +159,6 @@ class Member implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $credential = $this->credentialRepository->findByPubKey($command->credential);
-
-        return $this->repository->deleteByCompanyId($credential->companyId);
+        return $this->repository->deleteByCompanyId($command->companyId);
     }
-
 }

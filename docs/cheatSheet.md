@@ -222,13 +222,13 @@
 
 #### Company Members
 
-[GET /1.0/access/companies/:companyId/members](access/companies/members/listAll.md)
+[GET /1.0/access/management/members](access/management/listAll.md)
 
-[GET /1.0/access/companies/:companyId/members/:roleName](access/companies/members/getRole.md)
+[GET /1.0/access/management/members/:roleName](access/management/getRole.md)
 
-[POST /1.0/access/companies/:companyId/members/:roleName](access/companies/members/updateRole.md)
+[POST /1.0/access/management/members/:roleName](access/management/updateRole.md)
 
-[DELETE /1.0/access/companies/:companyId/members/:roleName](access/companies/members/deleteRole.md)
+[DELETE /1.0/access/management/members/:roleName](access/management/deleteRole.md)
 
 #### Company Users
 

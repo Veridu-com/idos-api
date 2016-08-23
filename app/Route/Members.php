@@ -17,7 +17,7 @@ use Slim\App;
 /**
  * Members routing definitions.
  *
- * @link docs/companies/members/overview.md
+ * @link docs/management/members/overview.md
  * @see App\Controller\Companies
  */
 class Members implements RouteInterface {
@@ -66,11 +66,10 @@ class Members implements RouteInterface {
      *
      * Retrieve a complete list of all members that belong to the requesting company.
      *
-     * @apiEndpoint GET /companies/{companySlug}/members
+     * @apiEndpoint GET /management/members
      * @apiGroup Company Members
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -78,7 +77,7 @@ class Members implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/members/listAll.md
+     * @link docs/management/members/listAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Members::listAll
@@ -86,11 +85,11 @@ class Members implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members',
+                '/management/members',
                 'App\Controller\Members:listAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:listAll');
     }
     /**
@@ -98,11 +97,10 @@ class Members implements RouteInterface {
      *
      * Creates a new member for the requesting company.
      *
-     * @apiEndpoint POST /companies/{companySlug}/members
+     * @apiEndpoint POST /management/members
      * @apiGroup Company Members
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -110,7 +108,7 @@ class Members implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/members/createNew.md
+     * @link docs/management/members/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Members::createNew
@@ -118,11 +116,11 @@ class Members implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members',
+                '/management/members',
                 'App\Controller\Members:createNew'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:createNew');
     }
 
@@ -131,11 +129,10 @@ class Members implements RouteInterface {
      *
      * Updates Member's role
      *
-     * @apiEndpoint PUT /companies/{companySlug}/members/{userName}
+     * @apiEndpoint PUT /management/members/{userName}
      * @apiGroup Company Members
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiEndpointURIFragment string userName johndoe
      *
      * @param \Slim\App $app
@@ -144,7 +141,7 @@ class Members implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/members/updateOne.md
+     * @link docs/management/members/updateOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Members::updateOne
@@ -152,11 +149,11 @@ class Members implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{memberId}',
+                '/management/members/{memberId}',
                 'App\Controller\Members:updateOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:updateOne');
     }
 
@@ -165,11 +162,10 @@ class Members implements RouteInterface {
      *
      * Delete all members that belong to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/members
+     * @apiEndpoint DELETE /management/members
      * @apiGroup Company Members
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -177,7 +173,7 @@ class Members implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/members/deleteAll.md
+     * @link docs/management/members/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Members::deleteAll
@@ -185,11 +181,11 @@ class Members implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members',
+                '/management/members',
                 'App\Controller\Members:deleteAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:deleteAll');
     }
 
@@ -198,11 +194,10 @@ class Members implements RouteInterface {
      *
      * Retrieves all public information from a Member
      *
-     * @apiEndpoint GET /companies/{companySlug}/members/{userName}
+     * @apiEndpoint GET /management/members/{userName}
      * @apiGroup Company Members
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app
@@ -211,7 +206,7 @@ class Members implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/members/getOne.md
+     * @link docs/management/members/getOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Members::getOne
@@ -219,11 +214,11 @@ class Members implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{memberId}',
+                '/management/members/{memberId}',
                 'App\Controller\Members:getOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:getOne');
     }
 
@@ -232,11 +227,10 @@ class Members implements RouteInterface {
      *
      * Deletes a single Member that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/members/{userName}
+     * @apiEndpoint DELETE /management/members/{userName}
      * @apiGroup Company Members
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app
@@ -245,7 +239,7 @@ class Members implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/members/deleteOne.md
+     * @link docs/management/members/deleteOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Members::deleteOne
@@ -253,11 +247,11 @@ class Members implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/members/{memberId}',
+                '/management/members/{memberId}',
                 'App\Controller\Members:deleteOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:deleteOne');
     }
 }

@@ -352,13 +352,6 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleCredentialToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
-
-/**
- * @FIXME The following code relies on token generation, but this is not implemented yet,
- *        when token generation is available, please fix this by uncommenting the next block and
- *        removing the one after
- */
-        // -------------the block to be uncommented starts here -------------------------------
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
@@ -399,13 +392,6 @@ class Auth implements MiddlewareInterface {
 
         // Retrieves Subject Credential's owner
         $targetCompany = $this->companyRepository->findById($subjectCredential->company_id);
-        // -------------the block to be uncommented ends here -------------------------------
-
-        // -------------the block to be removed starts here -------------------------------
-        // $actingCompany     = $this->companyRepository->find(1);
-        // $targetCompany     = $this->companyRepository->find(2);
-        // $subjectCredential = $this->credentialRepository->find(1);
-        // -------------the block to be removed ends here -------------------------------
 
         return $request
             // Stores Acting Company for future use

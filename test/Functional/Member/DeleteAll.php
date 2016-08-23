@@ -12,18 +12,24 @@ use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    use HasAuthCompanyPrivKey;
+    /**
+     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
+     *        but we don't generate tokens yet, so there are no wrong credentials
+     *        when token generations is implemented, please fix this by uncommenting the next line
+     */
+    // use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/companies/veridu-ltd/members';
+        $this->uri        = '/1.0/management/members';
         // $this->populate($this->uri);
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json'
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'QUERY_STRING'      => 'credentialToken=test'
             ]
         );
 
@@ -49,33 +55,4 @@ class DeleteAllTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
-    public function testNotFound() {
-         $environment = $this->createEnvironment(
-            [
-                'HTTP_CONTENT_TYPE' => 'application/json'
-            ]
-        );
-
-        $request = $this->createRequest($environment, json_encode(['credential' => '0000000000000']));
-
-        $response = $this->process($request);
-
-        $body = json_decode($response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
-        $this->assertFalse($body['status']);
-
-        /*
-         * Validates Json Schema with Json Response
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'error.json',
-                json_decode($response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
 }
