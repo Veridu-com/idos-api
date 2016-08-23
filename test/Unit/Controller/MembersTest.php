@@ -358,12 +358,11 @@ public function testCreateNew() {
     public function testDeleteAll() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getParsedBody'])
+            ->setMethods(['getAttribute'])
             ->getMock();
         $requestMock
-            ->expects($this->once())
-            ->method('getParsedBody')
-            ->will($this->returnValue(['credential' => 'pubKey']));
+            ->method('getAttribute')
+            ->will($this->returnValue($this->getCompanyEntity(0)));
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()

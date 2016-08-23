@@ -23,7 +23,13 @@ class DeleteAllTest extends AbstractFunctional {
     protected function setUp() {
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/management/settings?perPage=900';
-        $this->populate($this->uri);
+        $this->populate(
+            $this->uri,
+            'GET',
+            [
+                'QUERY_STRING' => 'credentialToken=test'
+            ]
+        );
     }
 
     public function testSuccess() {

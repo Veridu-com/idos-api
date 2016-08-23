@@ -45,5 +45,4 @@ class MemberTest extends AbstractUnit {
         $this->setExpectedException(ExceptionInterface::class);
         $this->validator->assertUserName(chr(20) . chr(127));
     }
-
 }

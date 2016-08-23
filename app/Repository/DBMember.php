@@ -38,10 +38,14 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
             $this->query()
                 ->join('users', 'users.id', '=', 'members.user_id')
                 ->where('members.company_id', '=', $companyId)
-                ->get(['users.username as user.username',
-                    'users.created_at as user.created_at',
-                    'members.*'])
-            );
+                ->get(
+                    [
+                        'users.username as user.username',
+                        'users.created_at as user.created_at',
+                        'members.*'
+                    ]
+                )
+        );
 
         return $this->castHydrate($items);
     }
