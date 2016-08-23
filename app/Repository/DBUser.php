@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Credential;
 use App\Entity\User;
 use App\Exception\NotFound;
 use Lcobucci\JWT;
@@ -113,7 +114,23 @@ class DBUser extends AbstractDBRepository implements UserInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByUserNameAndCredential(string $userName, int $credentialId) : User {
+    public function findOneByUsernameAndCredential(string $userName, Credential $credential) : User {
+        $result = $this->query()
+            ->where('username', $userName)
+            ->where('credential_id', $credential->id)
+            ->first();
+
+        if (empty($result)) {
+            throw new NotFound('User not found.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByUsernameAndCredentialId(string $userName, int $credentialId) : User {
         $result = $this->query()
             ->where('username', $userName)
             ->where('credential_id', $credentialId)
@@ -133,7 +150,7 @@ class DBUser extends AbstractDBRepository implements UserInterface {
         $jwtParser     = new JWT\Parser();
         $jwtValidation = new JWT\ValidationData();
         $jwtSigner     = new JWT\Signer\Hmac\Sha256();
-        $jwtBuilder = new JWT\Builder();
+        $jwtBuilder    = new JWT\Builder();
 
         $jwtBuilder->set('iss', $credentialPubKey);
         $jwtBuilder->set('sub', $username);
