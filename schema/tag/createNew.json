@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /profiles/{userName}/tags",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Tag response payload",
+            "type": "object",
+            "$ref": "tagEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}
