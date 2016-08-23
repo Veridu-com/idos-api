@@ -17,7 +17,7 @@ use Slim\App;
 /**
  * Tags routing definitions.
  *
- * @link docs/companies/tags/overview.md
+ * @link docs/profiles/tags/overview.md
  * @see App\Controller\Tags
  */
 class Tags implements RouteInterface {
@@ -30,7 +30,6 @@ class Tags implements RouteInterface {
             'tags:createNew',
             'tags:deleteAll',
             'tags:getOne',
-            'tags:updateOne',
             'tags:deleteOne'
         ];
     }
@@ -57,7 +56,6 @@ class Tags implements RouteInterface {
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
-        self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -98,13 +96,15 @@ class Tags implements RouteInterface {
     /**
      * Creates new Tag.
      *
-     * Creates a new member for the requesting company.
+     * Creates a new tag for the requesting user.
      *
-     * @apiEndpoint POST /companies/{companySlug}/tags
-     * @apiGroup Company Tags
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpoint POST /profiles/{userName}/tags
+     * @apiGroup Profile Tags
+     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth query key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -112,7 +112,7 @@ class Tags implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/tags/createNew.md
+     * @link docs/profiles/tags/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Tags::createNew
@@ -129,49 +129,17 @@ class Tags implements RouteInterface {
     }
 
     /**
-     * Update a single Tag.
-     *
-     * Updates Tag's role
-     *
-     * @apiEndpoint PUT /companies/{companySlug}/tags/{userName}
-     * @apiGroup Company Tags
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string userName johndoe
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/companies/tags/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Tags::updateOne
-     */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/tags/{tagName}',
-                'App\Controller\Tags:updateOne'
-            )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
-            ->setName('tags:updateOne');
-    }
-
-    /**
      * Delete All Tags.
      *
-     * Delete all tags that belong to the requesting company.
+     * Delete all tags that belong to the requesting user.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/tags
-     * @apiGroup Company Tags
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpoint DELETE /profiles/{userName}/tags
+     * @apiGroup Profile Tags
+     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth query key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -179,7 +147,7 @@ class Tags implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/tags/deleteAll.md
+     * @link docs/profiles/tags/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Tags::deleteAll
@@ -200,12 +168,14 @@ class Tags implements RouteInterface {
      *
      * Retrieves all public information from a Tag
      *
-     * @apiEndpoint GET /companies/{companySlug}/tags/{userName}
-     * @apiGroup Company Tags
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string userName
+     * @apiEndpoint GET /profiles/{userName}/tags/{tagSlug}
+     * @apiGroup Profile Tags
+     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth query key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string tagSlug tag-test
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -213,7 +183,7 @@ class Tags implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/tags/getOne.md
+     * @link docs/profiles/tags/getOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Tags::getOne
@@ -221,7 +191,7 @@ class Tags implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/tags/{tagName}',
+                '/profiles/{userName:[a-zA-Z0-9]+}/tags/{tagSlug}',
                 'App\Controller\Tags:getOne'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
@@ -232,14 +202,16 @@ class Tags implements RouteInterface {
     /*
      * Deletes a single Tag.
      *
-     * Deletes a single Tag that belongs to the requesting company.
+     * Deletes a single Tag that belongs to the requesting user.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/tags/{userName}
-     * @apiGroup Company Tags
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string userName
+     * @apiEndpoint DELETE /profiles/{userName}/tags/{tagSlug}
+     * @apiGroup Profile Tags
+     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth query key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string tagSlug tag-test
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -247,7 +219,7 @@ class Tags implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/tags/deleteOne.md
+     * @link docs/profiles/tags/deleteOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Tags::deleteOne
@@ -255,7 +227,7 @@ class Tags implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/tags/{tagName}',
+                '/profiles/{userName:[a-zA-Z0-9]+}/tags/{tagSlug}',
                 'App\Controller\Tags:deleteOne'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))

@@ -58,7 +58,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertEquals(1, count($body['data']));
 
         foreach($body['data'] as $tag) {
-            $this->assertContains($tag['name'], ['user-2-tag-1']);
+            $this->assertContains($tag['name'], ['User 2 Tag 1']);
+            $this->assertContains($tag['slug'], ['user-2-tag-1']);
         }
 
         /*
@@ -88,7 +89,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertEquals(2, count($body['data']));
 
         foreach($body['data'] as $tag) {
-            $this->assertContains($tag['name'], ['user-2-tag-1', 'user-2-tag-2']);
+            $this->assertContains($tag['name'], ['User 2 Tag 1', 'User 2 Tag 2']);
+            $this->assertContains($tag['slug'], ['user-2-tag-1', 'user-2-tag-2']);
         }
 
         /*

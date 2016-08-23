@@ -33,7 +33,8 @@ class DBTagTest extends AbstractUnit {
             [
                 'id'         => 1,
                 'user_id'    => 1,
-                'name'       => 'test-tag',
+                'name'       => 'Test Tag',
+                'slug'       => 'test-tag',
                 'created_at' => time(),
                 'updated_at' => time()
             ],
@@ -44,7 +45,8 @@ class DBTagTest extends AbstractUnit {
     private function getAttributes() {
         return [
             'id'         => null,
-            'name'       => 'test-tag',
+            'name'       => 'Test Tag',
+            'slug'       => 'test-tag',
             'created_at' => time(),
             'updated_at' => time()
         ];
@@ -74,7 +76,8 @@ class DBTagTest extends AbstractUnit {
                         [
                             'id'         => 1,
                             'user_id'    => 1,
-                            'name'       => 'test-tag',
+                            'name'       => 'Test Tag',
+                            'slug'       => 'test-tag',
                             'created_at' => time(),
                             'updated_at' => time()
                         ],
@@ -121,7 +124,7 @@ class DBTagTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbTag  = new DBTag($factory, $this->optimus, $connectionMock);
-        $result = $dbTag->getAllByUserIdAndTagNames(1, ['tag-test'])->first();
+        $result = $dbTag->getAllByUserIdAndTagSlugs(1, ['tag-test'])->first();
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
@@ -154,7 +157,7 @@ class DBTagTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
         $this->setExpectedException(NotFound::class);
-        $dbTag->findOneByUserIdAndName(1, 'test-tag');
+        $dbTag->findOneByUserIdAndSlug(1, 'test-tag');
     }
 
     public function testfFindOne() {
@@ -186,7 +189,7 @@ class DBTagTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
 
-        $result = $dbTag->findOneByUserIdAndName(1, 'test-tag');
+        $result = $dbTag->findOneByUserIdAndSlug(1, 'test-tag');
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
@@ -215,7 +218,7 @@ class DBTagTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
-        $this->assertEquals(1, $dbTag->deleteOneByUserIdAndName(1, 'test-tag'));
+        $this->assertEquals(1, $dbTag->deleteOneByUserIdAndSlug(1, 'test-tag'));
     }
 
     public function testDeleteByUserId() {

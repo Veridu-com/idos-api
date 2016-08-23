@@ -11,20 +11,24 @@ class S23TagsSeed extends AbstractSeed {
         $tagsData = [
             [
                 'user_id' => 1,
-                'name'    => 'user-1-tag-1'
+                'name'    => 'User 1 Tag 1',
+                'slug'    => 'user-1-tag-1'
             ],
             [
                 'user_id' => 1,
-                'name'    => 'user-1-tag-2'
+                'name'    => 'User 1 Tag 2',
+                'slug'    => 'user-1-tag-2'
             ],
 
             [
                 'user_id' => 2,
-                'name'    => 'user-2-tag-1'
+                'name'    => 'User 2 Tag 1',
+                'slug'    => 'user-2-tag-1'
             ],
             [
                 'user_id' => 2,
-                'name'    => 'user-2-tag-2'
+                'name'    => 'User 2 Tag 2',
+                'slug'    => 'user-2-tag-2'
             ],
         ];
 

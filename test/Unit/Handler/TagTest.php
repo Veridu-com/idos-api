@@ -41,7 +41,8 @@ class TagTest extends AbstractUnit {
         return new TagEntity(
             [
                 'user_id'    => 1,
-                'name'       => 'tag-test',
+                'name'       => 'Tag Test',
+                'slug'       => 'tag-test',
                 'created_at' => time(),
                 'updated_at' => time()
             ],
@@ -179,7 +180,8 @@ class TagTest extends AbstractUnit {
 
         $command       = new CreateNew();
         $command->user = $this->getUserEntity();
-        $command->name = 'tag-test';
+        $command->name = 'Tag Test';
+        $command->slug = 'tag-test';
 
         $result = $handler->handleCreateNew($command);
         $this->assertSame($tagEntity, $result);

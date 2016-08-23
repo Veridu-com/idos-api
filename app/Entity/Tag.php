@@ -26,7 +26,7 @@ class Tag extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'name', 'slug', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
@@ -40,7 +40,8 @@ class Tag extends AbstractEntity {
      * @return App\Entity\Tag
      */
     public function setNameAttribute(string $value) : self {
-        $this->attributes['name'] = Utils::slugify($value);
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = Utils::slugify($value);
 
         return $this;
     }

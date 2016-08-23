@@ -26,7 +26,8 @@ class TagTest extends AbstractUnit {
         $array = [
             'id'         => 1,
             'user_id'    => 1,
-            'name'       => 'test-tag',
+            'name'       => 'Test Tag',
+            'slug'       => 'test-tag',
             'created_at' => time(),
             'updated_at' => time()
         ];
@@ -41,7 +42,9 @@ class TagTest extends AbstractUnit {
         $this->assertArrayHasKey('user_id', $array);
         $this->assertSame(1, $array['user_id']);
         $this->assertArrayHasKey('name', $array);
-        $this->assertSame('test-tag', $array['name']);
+        $this->assertArrayHasKey('slug', $array);
+        $this->assertSame('Test Tag', $array['name']);
+        $this->assertSame('test-tag', $array['slug']);
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_string($array['created_at']));
         $this->assertTrue(is_int($abstractMock->createdAt));
@@ -54,7 +57,8 @@ class TagTest extends AbstractUnit {
          $array = [
             'id'         => 1,
             'user_id'    => 1,
-            'name'       => 'test-tag',
+            'name'       => 'Test Tag',
+            'slug'       => 'test-tag',
             'created_at' => time(),
             'updated_at' => time()
         ];
@@ -64,7 +68,9 @@ class TagTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $array = $abstractMock->toArray();
         $this->assertArrayHasKey('name', $array);
-        $this->assertSame('test-tag', $array['name']);
+        $this->assertArrayHasKey('slug', $array);
+        $this->assertSame('Test Tag', $array['name']);
+        $this->assertSame('test-tag', $array['slug']);
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($abstractMock->createdAt));
     }

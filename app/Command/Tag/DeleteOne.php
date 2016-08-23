@@ -21,11 +21,11 @@ class DeleteOne extends AbstractCommand {
      */
     public $user;
     /**
-     * New tag name.
+     * New tag slug.
      *
      * @var string
      */
-    public $name;
+    public $slug;
 
     /**
      * {@inheritdoc}
@@ -35,8 +35,8 @@ class DeleteOne extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if(isset($parameters['name'])) {
-            $this->name = $parameters['name'];
+        if(isset($parameters['slug'])) {
+            $this->slug = $parameters['slug'];
         }
 
         return $this;

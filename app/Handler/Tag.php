@@ -88,19 +88,21 @@ class Tag implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : TagEntity {
         $this->validator->assertName($command->name);
+        $this->validator->assertSlug($command->slug);
 
         $user = $command->user;
 
         $tag = $this->repository->create([
             'user_id'    => $user->id,
             'name'       => $command->name,
+            'slug'       => $command->slug,
             'created_at' => time()
         ]);
 
         try {
             $tag = $this->repository->save($tag);
         } catch (QueryException $e) {
-            $tag = $this->repository->findOneByUserIdAndName($user->id, $command->name);
+            $tag = $this->repository->findOneByUserIdAndSlug($user->id, $command->slug);
         }
 
         return $tag;
@@ -114,11 +116,11 @@ class Tag implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertName($command->name);
+        $this->validator->assertSlug($command->slug);
 
         $user = $command->user;
 
-        return $this->repository->deleteOneByUserIdAndName($user->id, $command->name);
+        return $this->repository->deleteOneByUserIdAndSlug($user->id, $command->slug);
     }
 
     /**

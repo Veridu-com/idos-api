@@ -461,6 +461,7 @@ class DatabaseInit extends AbstractMigration {
         $tags
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
             ->addColumn(
                 'created_at',
                 'timestamp',
@@ -479,7 +480,7 @@ class DatabaseInit extends AbstractMigration {
                     'default'  => 'CURRENT_TIMESTAMP'
                 ]
             )
-            ->addIndex(['user_id', 'name'], ['unique' => true])
+            ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addIndex('user_id')
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();

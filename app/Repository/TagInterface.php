@@ -31,7 +31,7 @@ interface TagInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdAndTagNames(int $userId, array $names) : Collection;
+    public function getAllByUserIdAndTagSlugs(int $userId, array $names) : Collection;
     /*
      * Deletes all Tags based on their User Id.
      *
@@ -50,7 +50,7 @@ interface TagInterface extends RepositoryInterface {
      *
      * @return App\Entity\Tag
      */
-    public function findOneByUserIdAndName(int $userId, string $name) : Tag;
+    public function findOneByUserIdAndSlug(int $userId, string $name) : Tag;
     /**
      * Deletes a tag based on their userId and name.
      *
@@ -59,5 +59,5 @@ interface TagInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteOneByUserIdAndName(int $userId, string $name) : int;
+    public function deleteOneByUserIdAndSlug(int $userId, string $name) : int;
 }

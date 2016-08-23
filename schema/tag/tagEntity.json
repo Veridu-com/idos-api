@@ -9,6 +9,11 @@
             "type": "string",
             "pattern": ""
         },
+        "slug": {
+            "description": "Tag slug",
+            "type": "string",
+            "pattern": ""
+        },
         "created_at": {
             "description": "Tag's creation unixtime",
             "type": "integer"
@@ -24,6 +29,7 @@
     },
     "required": [
         "name",
+        "slug",
         "created_at",
         "updated_at"
     ]

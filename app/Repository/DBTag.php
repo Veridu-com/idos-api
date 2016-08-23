@@ -39,11 +39,16 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndTagNames(int $userId, array $tags) : Collection {
+    public function getAllByUserIdAndTagSlugs(int $userId, array $tags) : Collection {
         $result = $this->query()
             ->selectRaw('tags.*')
-            ->where('user_id', '=', $userId)
-            ->whereIn('name', $tags)->get();
+            ->where('user_id', '=', $userId);
+
+        if(! empty($tags)) {
+            $result = $result->whereIn('slug', $tags);
+        }
+
+        $result = $result->get();
 
         return new Collection($result);
     }
@@ -58,8 +63,8 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByUserIdAndName(int $userId, string $name) : Tag {
-        $result = $this->findBy(['user_id' => $userId, 'name' => $name]);
+    public function findOneByUserIdAndSlug(int $userId, string $name) : Tag {
+        $result = $this->findBy(['user_id' => $userId, 'slug' => $name]);
 
         if($result->isEmpty()) {
             throw new NotFound();
@@ -72,8 +77,8 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteOneByUserIdAndName(int $userId, string $name) : int {
-        return $this->deleteBy(['user_id' => $userId, 'name' => $name]);
+    public function deleteOneByUserIdAndSlug(int $userId, string $name) : int {
+        return $this->deleteBy(['user_id' => $userId, 'slug' => $name]);
     }
 
 }

@@ -26,6 +26,12 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $name;
+    /**
+     * New tag slug.
+     *
+     * @var string
+     */
+    public $slug;
 
     /**
      * {@inheritdoc}
@@ -37,6 +43,10 @@ class CreateNew extends AbstractCommand {
 
         if(isset($parameters['name'])) {
             $this->name = $parameters['name'];
+        }
+
+        if(isset($parameters['slug'])) {
+            $this->slug = $parameters['slug'];
         }
 
         return $this;

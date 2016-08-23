@@ -13,7 +13,7 @@ class DeleteOneTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new DeleteOne();
         $this->assertNull($command->user);
-        $this->assertNull($command->name);
+        $this->assertNull($command->slug);
 
         $this->assertInstanceOf(
             DeleteOne::class,
@@ -21,14 +21,14 @@ class DeleteOneTest extends AbstractUnit {
         );
 
         $this->assertNull($command->user);
-        $this->assertNull($command->name);
+        $this->assertNull($command->slug);
 
         $command->setParameters(['user' => 'a']);
         $this->assertSame('a', $command->user);
-        $this->assertNull($command->name);
+        $this->assertNull($command->slug);
 
-        $command->setParameters(['name' => 'b']);
+        $command->setParameters(['slug' => 'b']);
         $this->assertSame('a', $command->user);
-        $this->assertSame('b', $command->name);
+        $this->assertSame('b', $command->slug);
     }
 }

@@ -47,7 +47,8 @@ class TagsTest extends AbstractUnit {
         return new TagEntity(
             [
                 'user_id'    => 1,
-                'name'       => 'tag-test',
+                'name'       => 'Tag Test',
+                'slug'       => 'tag-test',
                 'created_at' => time(),
                 'updated_at' => time()
             ],
@@ -73,11 +74,11 @@ class TagsTest extends AbstractUnit {
 
         $dbTagMock = $this->getMockBuilder(DBTag::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getAllByUserIdAndTagNames'])
+            ->setMethods(['getAllByUserIdAndTagSlugs'])
             ->getMock();
         $dbTagMock
             ->expects($this->once())
-            ->method('getAllByUserIdAndTagNames')
+            ->method('getAllByUserIdAndTagSlugs')
             ->will($this->returnValue(new Collection([$this->getEntity()])));
         $dbUserMock = $this->getMockBuilder(DBUser::class)
             ->disableOriginalConstructor()
@@ -132,11 +133,11 @@ class TagsTest extends AbstractUnit {
 
         $dbTagMock = $this->getMockBuilder(DBTag::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getAllByUserIdAndTagNames'])
+            ->setMethods(['getAllByUserIdAndTagSlugs'])
             ->getMock();
         $dbTagMock
             ->expects($this->once())
-            ->method('getAllByUserIdAndTagNames')
+            ->method('getAllByUserIdAndTagSlugs')
             ->will($this->returnValue(new Collection([$this->getEntity()])));
         $dbUserMock = $this->getMockBuilder(DBUser::class)
             ->disableOriginalConstructor()
@@ -243,11 +244,11 @@ public function testCreateNew() {
 
         $dbTagMock = $this->getMockBuilder(DBTag::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findOneByUserIdAndName'])
+            ->setMethods(['findOneByUserIdAndSlug'])
             ->getMock();
         $dbTagMock
             ->expects($this->once())
-            ->method('findOneByUserIdAndName')
+            ->method('findOneByUserIdAndSlug')
             ->will($this->returnValue($this->getEntity()));
         $dbUserMock = $this->getMockBuilder(DBUser::class)
             ->disableOriginalConstructor()

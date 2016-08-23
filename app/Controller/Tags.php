@@ -87,7 +87,7 @@ class Tags implements ControllerInterface {
             $tags = array_map([Utils::class, 'slugify'], explode(',', $tags));
         }
 
-        $tags = $this->repository->getAllByUserIdAndTagNames($user->id, $tags);
+        $tags = $this->repository->getAllByUserIdAndTagSlugs($user->id, $tags);
 
         $body = [
             'data'    => $tags->toArray(),
@@ -153,9 +153,9 @@ class Tags implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
-        $tagName = $request->getAttribute('tagName');
+        $tagSlug = $request->getAttribute('tagSlug');
 
-        $tag = $this->repository->findOneByUserIdAndName($user->id, $tagName);
+        $tag = $this->repository->findOneByUserIdAndSlug($user->id, $tagSlug);
 
         $body = [
             'data' => $tag->toArray()
@@ -213,7 +213,7 @@ class Tags implements ControllerInterface {
         $command = $this->commandFactory->create('Tag\\DeleteOne');
         $command
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('name', $request->getAttribute('tagName'));
+            ->setParameter('slug', $request->getAttribute('tagSlug'));
 
         $deleted = $this->commandBus->handle($command);
         $body    = [

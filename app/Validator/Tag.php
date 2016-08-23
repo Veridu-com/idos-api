@@ -23,9 +23,21 @@ class Tag implements ValidatorInterface {
      * @return void
      */
     public function assertName(string $name) {
-        Validator::graph()
+        Validator::stringType()
             ->length(1, 50)
             ->assert($name);
+    }
+    /**
+     * Asserts a valid slug, 1-50 chars long.
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertSlug(string $slug) {
+        Validator::graph()
+            ->length(1, 50)
+            ->assert($slug);
     }
 
     /**

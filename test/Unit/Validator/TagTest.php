@@ -41,9 +41,28 @@ class TagTest extends AbstractUnit {
         $this->validator->assertName($username);
     }
 
-    public function testAssertNameInvalidInput() {
+    public function testAssertSlugFiftyChars() {
+        $username = '';
+        for ($i = 0; $i < 50; $i++) {
+            $username .= 'a';
+        }
+
+        $this->validator->assertSlug($username);
+        $this->assertTrue(true);
+    }
+
+    public function testAssertSlugFiftyOneChars() {
         $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertName(chr(20) . chr(127));
+        $username = '';
+        for ($i = 0; $i < 51; $i++) {
+            $username .= 'a';
+        }
+        $this->validator->assertSlug($username);
+    }
+
+    public function testAssertSlugInvalidInput() {
+        $this->setExpectedException(ExceptionInterface::class);
+        $this->validator->assertSlug(chr(20) . chr(127));
     }
 
 }
