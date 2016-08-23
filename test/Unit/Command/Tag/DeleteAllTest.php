@@ -12,15 +12,15 @@ use Test\Unit\AbstractUnit;
 class DeleteAllTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new DeleteAll();
-        $this->assertNull($command->targetUser);
+        $this->assertNull($command->user);
 
         $this->assertInstanceOf(
             DeleteAll::class,
             $command->setParameters([])
         );
-        $this->assertNull($command->targetUser);
+        $this->assertNull($command->user);
 
-        $command->setParameters(['targetUser' => 'a']);
-        $this->assertSame('a', $command->targetUser);
+        $command->setParameters(['user' => 'a']);
+        $this->assertSame('a', $command->user);
     }
 }

@@ -15,18 +15,18 @@ use App\Command\AbstractCommand;
  */
 class DeleteAll extends AbstractCommand {
     /**
-     * Tag's targetUser.
+     * Tag's user.
      *
      * @var App\Entity\User
      */
-    public $targetUser;
+    public $user;
 
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['targetUser'])) {
-            $this->targetUser = $parameters['targetUser'];
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
         }
 
         return $this;

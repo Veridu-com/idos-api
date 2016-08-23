@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Factory\Command;
+use App\Helper\Utils;
 use App\Repository\TagInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
@@ -68,7 +69,7 @@ class Tags implements ControllerInterface {
     }
 
     /**
-     * Lists all Tags that belongs to the Target Company.
+     * Lists all Tags that belongs to the Target User.
      *
      * @apiEndpointParam path string userName
      * @apiEndpointResponse 200 schema/tag/listAll.json
@@ -79,14 +80,14 @@ class Tags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetUser = $request->getAttribute('targetUser');
-        $tagNames   = $request->getQueryParam('tagName', []);
+        $user = $request->getAttribute('targetUser');
+        $tags = $request->getQueryParam('tags', []);
 
-        if ($tagNames) {
-            $tagNames = explode(',', $tagNames);
+        if ($tags) {
+            $tags = array_map([Utils::class, 'slugify'], explode(',', $tags));
         }
 
-        $tags = $this->repository->getAllByUserIdAndTagNames($targetUser->id, $tagNames);
+        $tags = $this->repository->getAllByUserIdAndTagNames($user->id, $tags);
 
         $body = [
             'data'    => $tags->toArray(),
@@ -105,7 +106,7 @@ class Tags implements ControllerInterface {
     }
 
     /**
-     * Creates a new Tag for the Target Company.
+     * Creates a new Tag for the Target User.
      *
      * @apiEndpointResponse 201 schema/tag/tagEntity.json
      *
@@ -115,13 +116,11 @@ class Tags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $bodyRequest = $request->getParsedBody();
-
         $command = $this->commandFactory->create('Tag\\CreateNew');
 
         $command
-            ->setParameters($bodyRequest)
-            ->setParameter('targetUser', $request->getAttribute('targetUser'));
+            ->setParameters($request->getParsedBody())
+            ->setParameter('user', $request->getAttribute('targetUser'));
 
         $tag = $this->commandBus->handle($command);
 
@@ -141,7 +140,7 @@ class Tags implements ControllerInterface {
     }
 
     /**
-     * Retrieves one Tags of the Target Company based on the userName.
+     * Retrieves one Tags of the Target User based on the userName.
      *
      * @apiEndpointRequiredParam path string userName
      * @apiEndpointRequiredParam path string userId
@@ -153,10 +152,10 @@ class Tags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetUser = $request->getAttribute('targetUser');
-        $tagName    = $request->getAttribute('tagName');
+        $user    = $request->getAttribute('targetUser');
+        $tagName = $request->getAttribute('tagName');
 
-        $tag = $this->repository->findOneByUserIdAndName($targetUser->id, $tagName);
+        $tag = $this->repository->findOneByUserIdAndName($user->id, $tagName);
 
         $body = [
             'data' => $tag->toArray()
@@ -172,7 +171,7 @@ class Tags implements ControllerInterface {
     }
 
     /**
-     * Deletes all Tags that belongs to the Target Company.
+     * Deletes all Tags that belongs to the Target User.
      *
      * @apiEndpointResponse 200 schema/tag/deleteAll.json
      *
@@ -183,7 +182,7 @@ class Tags implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Tag\\DeleteAll');
-        $command->setParameter('targetUser', $request->getAttribute('targetUser'));
+        $command->setParameter('user', $request->getAttribute('targetUser'));
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -199,7 +198,7 @@ class Tags implements ControllerInterface {
     }
 
     /**
-     * Deletes one Tag of the Target Company based on the userId.
+     * Deletes one Tag of the Target User based on the userId.
      *
      * @apiEndpointRequiredParam path string userName
      * @apiEndpointRequiredParam path string userId
@@ -213,7 +212,7 @@ class Tags implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Tag\\DeleteOne');
         $command
-            ->setParameter('targetUser', $request->getAttribute('targetUser'))
+            ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('name', $request->getAttribute('tagName'));
 
         $deleted = $this->commandBus->handle($command);

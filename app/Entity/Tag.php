@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Helper\Utils;
+
 /**
  * Tags Entity.
  *
@@ -24,16 +26,24 @@ class Tag extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'user_id', 'name', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'name', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
 
     /**
-     * {@inheritdoc}
+     * Property Mutator for $name.
+     *
+     * @param string $value
+     *
+     * @return App\Entity\Tag
      */
-    //public $relationships = ['user' => 'User'];
+    public function setNameAttribute(string $value) : self {
+        $this->attributes['name'] = Utils::slugify($value);
+
+        return $this;
+    }
 
     /**
      * {@inheritdoc}

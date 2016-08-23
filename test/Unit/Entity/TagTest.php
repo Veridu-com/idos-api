@@ -63,7 +63,6 @@ class TagTest extends AbstractUnit {
             ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
         $array = $abstractMock->toArray();
-        $this->assertArrayHasKey('user_id', $array);
         $this->assertArrayHasKey('name', $array);
         $this->assertSame('test-tag', $array['name']);
         $this->assertArrayHasKey('created_at', $array);

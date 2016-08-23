@@ -215,8 +215,8 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany    = $request->getAttribute('targetCompany');
-        $command = $this->commandFactory->create('Member\\DeleteAll');
+        $targetCompany = $request->getAttribute('targetCompany');
+        $command       = $this->commandFactory->create('Member\\DeleteAll');
 
         $command->setParameter('companyId', $targetCompany->id);
 

@@ -12,7 +12,7 @@ use Test\Unit\AbstractUnit;
 class CreateNewTest extends AbstractUnit {
     public function testSetParameters() {
         $command = new CreateNew();
-        $this->assertNull($command->targetUser);
+        $this->assertNull($command->user);
         $this->assertNull($command->name);
 
         $this->assertInstanceOf(
@@ -20,15 +20,15 @@ class CreateNewTest extends AbstractUnit {
             $command->setParameters([])
         );
 
-        $this->assertNull($command->targetUser);
+        $this->assertNull($command->user);
         $this->assertNull($command->name);
 
-        $command->setParameters(['targetUser' => 'a']);
-        $this->assertSame('a', $command->targetUser);
+        $command->setParameters(['user' => 'a']);
+        $this->assertSame('a', $command->user);
         $this->assertNull($command->name);
 
         $command->setParameters(['name' => 'b']);
-        $this->assertSame('a', $command->targetUser);
+        $this->assertSame('a', $command->user);
         $this->assertSame('b', $command->name);
     }
 }

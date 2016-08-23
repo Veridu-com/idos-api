@@ -89,7 +89,7 @@ class Tag implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : TagEntity {
         $this->validator->assertName($command->name);
 
-        $user = $command->targetUser;
+        $user = $command->user;
 
         $tag = $this->repository->create([
             'user_id'    => $user->id,
@@ -116,7 +116,7 @@ class Tag implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertName($command->name);
 
-        $user = $command->targetUser;
+        $user = $command->user;
 
         return $this->repository->deleteOneByUserIdAndName($user->id, $command->name);
     }
@@ -129,7 +129,7 @@ class Tag implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $user = $command->targetUser;
+        $user = $command->user;
 
         return $this->repository->deleteByUserId($user->id);
     }

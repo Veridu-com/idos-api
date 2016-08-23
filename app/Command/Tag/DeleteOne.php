@@ -15,11 +15,11 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Tag's targetUser.
+     * Tag's user.
      *
      * @var App\Entity\User
      */
-    public $targetUser;
+    public $user;
     /**
      * New tag name.
      *
@@ -31,8 +31,8 @@ class DeleteOne extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['targetUser'])) {
-            $this->targetUser = $parameters['targetUser'];
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
         }
 
         if(isset($parameters['name'])) {

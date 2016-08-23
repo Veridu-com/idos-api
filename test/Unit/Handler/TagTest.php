@@ -141,8 +141,8 @@ class TagTest extends AbstractUnit {
         $commandMock = $this
             ->getMockBuilder(CreateNew::class)
             ->getMock();
-        $commandMock->targetUser = '';
-        $commandMock->name       = '';
+        $commandMock->user = '';
+        $commandMock->name = '';
 
         $handler->handleCreateNew($commandMock);
     }
@@ -177,9 +177,9 @@ class TagTest extends AbstractUnit {
             new TagValidator()
         );
 
-        $command             = new CreateNew();
-        $command->targetUser = $this->getUserEntity();
-        $command->name       = 'tag-test';
+        $command       = new CreateNew();
+        $command->user = $this->getUserEntity();
+        $command->name = 'tag-test';
 
         $result = $handler->handleCreateNew($command);
         $this->assertSame($tagEntity, $result);
@@ -253,7 +253,7 @@ class TagTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $commandMock->targetUser = $this->getUserEntity();
+        $commandMock->user = $this->getUserEntity();
 
         $this->assertEquals(1, $handler->handleDeleteAll($commandMock));
     }

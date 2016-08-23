@@ -59,7 +59,7 @@ class DBMemberTest extends AbstractUnit {
     }
 
     public function testGetAllBycompanyId() {
-        $factory = new Entity($this->optimus);
+        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['join', 'where', 'get', 'whereIn'])
@@ -109,7 +109,7 @@ class DBMemberTest extends AbstractUnit {
     }
 
     public function testGetAllBycompanyIdAndRole() {
-        $factory = new Entity($this->optimus);
+        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -136,7 +136,7 @@ class DBMemberTest extends AbstractUnit {
     }
 
     public function testFindOneNotFound() {
-        $factory = new Entity($this->optimus);
+        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -167,7 +167,7 @@ class DBMemberTest extends AbstractUnit {
     }
 
     public function testfFindOne() {
-        $factory = new Entity($this->optimus);
+        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -199,7 +199,7 @@ class DBMemberTest extends AbstractUnit {
     }
 
     public function testDeleteOne() {
-        $factory = new Entity($this->optimus);
+        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -226,7 +226,7 @@ class DBMemberTest extends AbstractUnit {
     }
 
     public function testDeleteByCompanyId() {
-        $factory = new Entity($this->optimus);
+        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])

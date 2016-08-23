@@ -44,7 +44,6 @@ class DBTagTest extends AbstractUnit {
     private function getAttributes() {
         return [
             'id'         => null,
-            'user_id'    => 1,
             'name'       => 'test-tag',
             'created_at' => time(),
             'updated_at' => time()

@@ -7,7 +7,6 @@
 namespace Test\Functional\Member;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyPrivKey;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteAllTest extends AbstractFunctional {

@@ -7,7 +7,6 @@
 namespace Test\Functional\Member;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyPrivKey;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteOneTest extends AbstractFunctional {
@@ -26,10 +25,10 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request  = $this->createRequest(
+        $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'QUERY_STRING'      => 'credentialToken=test'
+                    'QUERY_STRING' => 'credentialToken=test'
                 ]
             )
         );
@@ -55,15 +54,15 @@ class DeleteOneTest extends AbstractFunctional {
 
     public function testNotFound() {
         $this->uri = sprintf('/1.0/management/members/000000');
-        $request  = $this->createRequest(
+        $request   = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'QUERY_STRING'      => 'credentialToken=test'
+                    'QUERY_STRING' => 'credentialToken=test'
                 ]
             )
         );
-        $response  = $this->process($request);
-        $body      = json_decode($response->getBody(), true);
+        $response = $this->process($request);
+        $body     = json_decode($response->getBody(), true);
 
         // assertions
         $this->assertNotEmpty($body);

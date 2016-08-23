@@ -39,15 +39,11 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndTagNames(int $userId, array $names) : Collection {
+    public function getAllByUserIdAndTagNames(int $userId, array $tags) : Collection {
         $result = $this->query()
             ->selectRaw('tags.*')
             ->where('user_id', '=', $userId)
-            ->where(function ($query) use ($names) {
-                foreach($names as $name) {
-                    $query->orWhere('name', '=', $name);
-                }
-            })->get();
+            ->whereIn('name', $tags)->get();
 
         return new Collection($result);
     }
