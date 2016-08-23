@@ -121,7 +121,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      *
      *  @return void
      */
-    protected function populate(string $uri, string $method = 'GET', array $params) {
+    protected function populate(string $uri, string $method = 'GET', array $params = array()) {
         $environment = $this->createEnvironment(
             array_merge(
                 [

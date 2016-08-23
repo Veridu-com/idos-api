@@ -326,24 +326,12 @@ class MemberTest extends AbstractUnit {
         $repository
             ->method('deleteByCompanyId')
             ->will($this->returnValue(1));
-        $credentialRepositoryMock = $this->getMockBuilder(DBCredential::class)
-            ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
-            ->setMethods(['findByPubKey'])
-            ->getMock();
-        $credentialRepositoryMock
-            ->method('findByPubKey')
-            ->will($this->returnValue(
-                new CredentialEntity(
-                    [
-                        'id'        => 1,
-                        'companyId' => 1
-                    ],
-                    $this->optimus
-                )
-            ));
         $userRepositoryMock = $this->getMockBuilder(DBUser::class)
             ->setMethods(null)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
+            ->getMock();
+        $credentialRepositoryMock = $this
+            ->getMockBuilder(CredentialInterface::class)
             ->getMock();
 
         $handler = new Member(
@@ -357,8 +345,7 @@ class MemberTest extends AbstractUnit {
             ->getMockBuilder(DeleteAll::class)
             ->disableOriginalConstructor()
             ->getMock();
-
-        $commandMock->credential = 'pubKey';
+        $commandMock->companyId = 1;
 
         $this->assertEquals(1, $handler->handleDeleteAll($commandMock));
     }

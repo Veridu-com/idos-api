@@ -359,52 +359,52 @@ class Auth implements MiddlewareInterface {
  *        removing the one after
  */
         // -------------the block to be uncommented starts here -------------------------------
-        try {
-            $token = $this->jwtParser->parse($reqToken);
-        } catch (\Throwable $e) {
-            throw new AppException('Invalid Token');
-        }
+        // try {
+        //     $token = $this->jwtParser->parse($reqToken);
+        // } catch (\Throwable $e) {
+        //     throw new AppException('Invalid Token');
+        // }
 
-        // Ensures JWT Audience is the current API
-        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (! $token->validate($this->jwtValidation))
-            throw new AppException('Token Validation Failed');
+        // // Ensures JWT Audience is the current API
+        // $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        // if (! $token->validate($this->jwtValidation))
+        //     throw new AppException('Token Validation Failed');
 
-        // Retrieves JWT Issuer
-        $issuerKey = $token->getClaim('iss');
+        // // Retrieves JWT Issuer
+        // $issuerKey = $token->getClaim('iss');
 
-        try {
-            $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
-        } catch (NotFound $e) {
-            throw new AppException('Invalid Issuer Credential');
-        }
+        // try {
+        //     $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
+        // } catch (NotFound $e) {
+        //     throw new AppException('Invalid Issuer Credential');
+        // }
 
-        // JWT Signature Verification
-        if (! $token->verify($this->jwtSigner, $issuerCredential->private))
-            throw new AppException('Token Verification Failed');
+        // // JWT Signature Verification
+        // if (! $token->verify($this->jwtSigner, $issuerCredential->private))
+        //     throw new AppException('Token Verification Failed');
 
-        // Retrieves JWT Subject
-        if (! $token->hasClaim('sub'))
-            throw new AppException('Missing Subject Claim');
-        $subjectKey = $token->getClaim('sub');
+        // // Retrieves JWT Subject
+        // if (! $token->hasClaim('sub'))
+        //     throw new AppException('Missing Subject Claim');
+        // $subjectKey = $token->getClaim('sub');
 
-        try {
-            $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
-        } catch(NotFound $e) {
-            throw new AppException('Invalid Subject Credential');
-        }
+        // try {
+        //     $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
+        // } catch(NotFound $e) {
+        //     throw new AppException('Invalid Subject Credential');
+        // }
 
-        // Retrieves Issuer Credential's owner
-        $actingCompany = $this->companyRepository->findById($issuerCredential->company_id);
+        // // Retrieves Issuer Credential's owner
+        // $actingCompany = $this->companyRepository->findById($issuerCredential->company_id);
 
-        // Retrieves Subject Credential's owner
-        $targetCompany = $this->companyRepository->findById($subjectCredential->company_id);
+        // // Retrieves Subject Credential's owner
+        // $targetCompany = $this->companyRepository->findById($subjectCredential->company_id);
         // -------------the block to be uncommented ends here -------------------------------
 
         // -------------the block to be removed starts here -------------------------------
-        // $actingCompany     = $this->companyRepository->find(1);
-        // $targetCompany     = $this->companyRepository->find(2);
-        // $subjectCredential = $this->credentialRepository->find(1);
+        $actingCompany     = $this->companyRepository->find(1);
+        $targetCompany     = $this->companyRepository->find(1);
+        $subjectCredential = $this->credentialRepository->find(1);
         // -------------the block to be removed ends here -------------------------------
 
         return $request
