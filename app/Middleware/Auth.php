@@ -252,7 +252,7 @@ class Auth implements MiddlewareInterface {
         $actingUser = $this->userRepository->findOrCreate($userName, $credential->id);
 
         // Retrieves Credential's owner
-        $targetCompany = $this->companyRepository->findById($credential->companyId);
+        $targetCompany = $this->companyRepository->find($credential->companyId);
 
         return $request
             // Stores Acting User for future use
@@ -388,10 +388,10 @@ class Auth implements MiddlewareInterface {
         }
 
         // Retrieves Issuer Credential's owner
-        $actingCompany = $this->companyRepository->findById($issuerCredential->company_id);
+        $actingCompany = $this->companyRepository->find($issuerCredential->company_id);
 
         // Retrieves Subject Credential's owner
-        $targetCompany = $this->companyRepository->findById($subjectCredential->company_id);
+        $targetCompany = $this->companyRepository->find($subjectCredential->company_id);
 
         return $request
             // Stores Acting Company for future use
@@ -420,7 +420,7 @@ class Auth implements MiddlewareInterface {
         }
 
         // Retrieves Credential's owner
-        $actingCompany = $this->companyRepository->findById($credential->company_id);
+        $actingCompany = $this->companyRepository->find($credential->company_id);
 
         return $request
             // Stores Acting Company for future use
