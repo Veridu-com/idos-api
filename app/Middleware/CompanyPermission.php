@@ -55,7 +55,7 @@ class CompanyPermission implements MiddlewareInterface {
         $routeName            = $request->getAttribute('route')->getName();
         $response             = $this->allow($response);
 
-        $allowed = true;
+        $allowed = false;
 
         if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
             try {
@@ -68,32 +68,13 @@ class CompanyPermission implements MiddlewareInterface {
 
         if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
             $targetCompany = $request->getAttribute('targetCompany');
-            if ($targetCompany->id !== $actingCompany->id) {
+            if ($targetCompany->id === $actingCompany->id) {
                 // deny
-                $allowed = false;
+                $allowed = true;
             }
         }
 
-        if (($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
-            $targetCompany     = $request->getAttribute('targetCompany');
-            $companyRepository = $this->container->get('repositoryFactory')->create('Company');
-            // deny or allow
-            $allowed = $companyRepository->isParent($actingCompany, $targetCompany);
-        }
-
-        if (! $allowed) {
-            throw new NotAllowed();
-        }
-
-        if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
-            $targetCompany = $request->getAttribute('targetCompany');
-            if ($targetCompany->id !== $actingCompany->id) {
-                // deny
-                $allowed = false;
-            }
-        }
-
-        if (($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
+        if ((! $allowed) && ($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
             $targetCompany     = $request->getAttribute('targetCompany');
             $companyRepository = $this->container->get('repositoryFactory')->create('Company');
             // deny or allow
