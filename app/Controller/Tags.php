@@ -10,20 +10,21 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Factory\Command;
-use App\Repository\MemberInterface;
+use App\Helper\Utils;
+use App\Repository\TagInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /management/members.
+ * Handles requests to /profiles/{userName}/tags.
  */
-class Members implements ControllerInterface {
+class Tags implements ControllerInterface {
     /**
-     * Member Repository instance.
+     * Tag Repository instance.
      *
-     * @var App\Repository\MemberInterface
+     * @var App\Repository\TagInterface
      */
     private $repository;
     /**
@@ -48,15 +49,15 @@ class Members implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\MemberInterface $repository
-     * @param App\Repository\UserInterface   $userRepository
-     * @param \League\Tactician\CommandBus   $commandBus
-     * @param App\Factory\Command            $commandFactory
+     * @param App\Repository\TagInterface  $repository
+     * @param App\Repository\UserInterface $userRepository
+     * @param \League\Tactician\CommandBus $commandBus
+     * @param App\Factory\Command          $commandFactory
      *
      * @return void
      */
     public function __construct(
-        MemberInterface $repository,
+        TagInterface $repository,
         UserInterface $userRepository,
         CommandBus $commandBus,
         Command $commandFactory
@@ -68,10 +69,10 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Lists all Members that belongs to the Target Company.
+     * Lists all Tags that belongs to the Target User.
      *
-     * @apiEndpointParam path string companySlug
-     * @apiEndpointResponse 200 schema/member/listAll.json
+     * @apiEndpointParam path string userName
+     * @apiEndpointResponse 200 schema/tag/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -79,23 +80,19 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $roles         = $request->getQueryParam('role', null);
+        $user = $request->getAttribute('targetUser');
+        $tags = $request->getQueryParam('tags', []);
 
-        if ($roles === null) {
-            $members = $this->repository->getAllByCompanyId($targetCompany->id);
+        if ($tags) {
+            $tags = array_map([Utils::class, 'slugify'], explode(',', $tags));
         }
-        else {
-            $members = $this->repository->getAllByCompanyIdAndRole(
-                $targetCompany->id,
-                explode(',', $roles)
-            );
-        }
+
+        $tags = $this->repository->getAllByUserIdAndTagSlugs($user->id, $tags);
 
         $body = [
-            'data'    => $members->toArray(),
+            'data'    => $tags->toArray(),
             'updated' => (
-                $members->isEmpty() ? time() : max($members->max('updatedAt'), $members->max('createdAt'))
+                $tags->isEmpty() ? time() : max($tags->max('updatedAt'), $tags->max('createdAt'))
             )
         ];
 
@@ -109,9 +106,9 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Creates a new Member for the Target Company.
+     * Creates a new Tag for the Target User.
      *
-     * @apiEndpointResponse 201 schema/member/memberEntity.json
+     * @apiEndpointResponse 201 schema/tag/tagEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -119,18 +116,17 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $bodyRequest = $request->getParsedBody();
-
-        $command = $this->commandFactory->create('Member\\CreateNew');
+        $command = $this->commandFactory->create('Tag\\CreateNew');
 
         $command
-            ->setParameters($bodyRequest);
+            ->setParameters($request->getParsedBody())
+            ->setParameter('user', $request->getAttribute('targetUser'));
 
-        $member = $this->commandBus->handle($command);
+        $tag = $this->commandBus->handle($command);
 
         $body = [
             'status' => true,
-            'data'   => $member->toArray()
+            'data'   => $tag->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -144,44 +140,11 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Updates one Member of the Target Company based on the userId.
+     * Retrieves one Tags of the Target User based on the userName.
      *
-     * @apiEndpointRequiredParam body string role
-     * @apiEndpointResponse 200 schema/member/updateOne.json
-     *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Member\\UpdateOne');
-        $command
-            ->setParameter('memberId', $request->getAttribute('decodedMemberId'))
-            ->setParameters($request->getParsedBody());
-
-        $member = $this->commandBus->handle($command);
-
-        $body = [
-            'data'    => $member->toArray(),
-            'updated' => $member->updated_at
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Retrieves one Members of the Target Company based on the userName.
-     *
-     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string userName
      * @apiEndpointRequiredParam path string userId
-     * @apiEndpointResponse 200 schema/member/memberEntity.json
+     * @apiEndpointResponse 200 schema/tag/tagEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -189,10 +152,13 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $member = $this->repository->findOne($request->getAttribute('decodedMemberId'));
+        $user    = $request->getAttribute('targetUser');
+        $tagSlug = $request->getAttribute('tagSlug');
+
+        $tag = $this->repository->findOneByUserIdAndSlug($user->id, $tagSlug);
 
         $body = [
-            'data' => $member->toArray()
+            'data' => $tag->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -205,9 +171,9 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Deletes all Members that belongs to the Target Company.
+     * Deletes all Tags that belongs to the Target User.
      *
-     * @apiEndpointResponse 200 schema/member/deleteAll.json
+     * @apiEndpointResponse 200 schema/tag/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -215,10 +181,8 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $command       = $this->commandFactory->create('Member\\DeleteAll');
-
-        $command->setParameter('companyId', $targetCompany->id);
+        $command = $this->commandFactory->create('Tag\\DeleteAll');
+        $command->setParameter('user', $request->getAttribute('targetUser'));
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -234,11 +198,11 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Deletes one Member of the Target Company based on the userId.
+     * Deletes one Tag of the Target User based on the userId.
      *
-     * @apiEndpointRequiredParam path string companySlug
+     * @apiEndpointRequiredParam path string userName
      * @apiEndpointRequiredParam path string userId
-     * @apiEndpointResponse 200 schema/member/deleteOne.json
+     * @apiEndpointResponse 200 schema/tag/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -246,8 +210,10 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Member\\DeleteOne');
-        $command->setParameter('memberId', $request->getAttribute('decodedMemberId'));
+        $command = $this->commandFactory->create('Tag\\DeleteOne');
+        $command
+            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('slug', $request->getAttribute('tagSlug'));
 
         $deleted = $this->commandBus->handle($command);
         $body    = [

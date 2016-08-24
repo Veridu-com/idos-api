@@ -457,6 +457,34 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
             ->create();
 
+        $tags = $this->table('tags');
+        $tags
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addIndex(['user_id', 'slug'], ['unique' => true])
+            ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         $hooks = $this->table('hooks');
         $hooks
             ->addColumn('credential_id', 'integer', ['null' => false])

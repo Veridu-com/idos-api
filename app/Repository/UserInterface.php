@@ -29,9 +29,9 @@ interface UserInterface extends RepositoryInterface {
     /**
      * Generates a signed JWT.
      *
-     * @param      string  $username           The username
-     * @param      string  $credentialPrivKey  The credential priv key
-     * @param      string  $credentialPubKey   The credential pub key
+     * @param string $username          The username
+     * @param string $credentialPrivKey The credential priv key
+     * @param string $credentialPubKey  The credential pub key
      */
     public function generateToken(string $username, string $credentialPrivKey, string $credentialPubKey) : string;
 }

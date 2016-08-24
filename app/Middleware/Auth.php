@@ -439,12 +439,14 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleCredentialPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
-        $credential = $this->credentialRepository->findByPrivKey($reqKey);
-        if ($credential->isEmpty())
+        try {
+            $credential = $this->credentialRepository->findByPrivKey($reqKey);
+        } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
+        }
 
         // Retrieves Credential's owner
-        $actingCompany = $this->companyRepository->findById($credential->company_id);
+        $actingCompany = $this->companyRepository->find($credential->company_id);
 
         return $request
             // Stores Acting Company for future use
@@ -580,6 +582,7 @@ class Auth implements MiddlewareInterface {
                 }
 
                 $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential'));
+
             }
 
             // Stores Target User for future use

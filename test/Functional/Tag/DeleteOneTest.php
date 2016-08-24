@@ -4,34 +4,26 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Member;
+namespace Test\Functional\Tag;
 
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCredentialToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    /**
-     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
-     *        but we don't generate tokens yet, so there are no wrong credentials
-     *        when token generations is implemented, please fix this by uncommenting the next line
-     */
-    // use HasAuthCredentialToken;
+    use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/management/members/1321189817';
+        $this->uri        = '/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/tags/user-2-tag-1';
         // $this->populate($this->uri);
     }
 
     public function testSuccess() {
-        $request = $this->createRequest(
-            $this->createEnvironment(
-                [
-                    'QUERY_STRING' => 'credentialToken=test'
-                ]
-            )
-        );
+        $request = $this->createRequest($this->createEnvironment([
+            'QUERY_STRING' => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+        ]));
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
         // assertions
@@ -45,7 +37,7 @@ class DeleteOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'member/deleteOne.json',
+                'tag/deleteOne.json',
                 json_decode($response->getBody())
             ),
             $this->schemaErrors
@@ -53,14 +45,10 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/management/members/000000');
-        $request   = $this->createRequest(
-            $this->createEnvironment(
-                [
-                    'QUERY_STRING' => 'credentialToken=test'
-                ]
-            )
-        );
+        $this->uri = sprintf('/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/tags/0000000');
+        $request   = $this->createRequest($this->createEnvironment([
+            'QUERY_STRING' => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+        ]));
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
 
@@ -74,10 +62,11 @@ class DeleteOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'error.json',
+                'tag/deleteOne.json',
                 json_decode($response->getBody())
             ),
             $this->schemaErrors
         );
     }
+
 }

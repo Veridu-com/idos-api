@@ -6,17 +6,17 @@
 
 namespace Test\Unit\Repository;
 
-use App\Entity\Member as MemberEntity;
+use App\Entity\Tag as TagEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
-use App\Repository\DBMember;
+use App\Repository\DBTag;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
-class DBMemberTest extends AbstractUnit {
+class DBTagTest extends AbstractUnit {
     /*
      * Jenssengers\Optimus\Optimus $optimus
      */
@@ -29,16 +29,14 @@ class DBMemberTest extends AbstractUnit {
     }
 
     private function getEntity() {
-        return new MemberEntity(
+        return new TagEntity(
             [
-                'id'              => 1,
-                'companyId'       => 1,
-                'user_id'         => 1,
-                'role'            => 'admin',
-                'created_at'      => time(),
-                'updated_at'      => null,
-                'user.username'   => 'userName',
-                'user.created_at' => time()
+                'id'         => 1,
+                'user_id'    => 1,
+                'name'       => 'Test Tag',
+                'slug'       => 'test-tag',
+                'created_at' => time(),
+                'updated_at' => time()
             ],
             $this->optimus
         );
@@ -46,20 +44,17 @@ class DBMemberTest extends AbstractUnit {
 
     private function getAttributes() {
         return [
-            'id'   => null,
-            'user' => [
-                'username'   => 'userName',
-                'created_at' => time(),
-                'updated_at' => null
-            ],
-            'role'       => 'admin',
+            'id'         => null,
+            'name'       => 'Test Tag',
+            'slug'       => 'test-tag',
             'created_at' => time(),
-            'updated_at' => null
+            'updated_at' => time()
         ];
     }
 
-    public function testGetAllBycompanyId() {
-        $factory   = new Entity($this->optimus);
+    public function testGetAllByUserId() {
+        $factory = new Entity($this->optimus);
+        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['join', 'where', 'get', 'whereIn'])
@@ -77,17 +72,14 @@ class DBMemberTest extends AbstractUnit {
             ->method('get')
             ->will(
                 $this->returnValue([
-                    new MemberEntity(
+                    new TagEntity(
                         [
-                            'id'              => 1,
-                            'companyId'       => 1,
-                            'user_id'         => 1,
-                            'role'            => 'admin',
-                            'created_at'      => time(),
-                            'updated_at'      => null,
-                            'user.username'   => 'userName',
-                            'user.created_at' => time(),
-                            'user.updated_at' => null
+                            'id'         => 1,
+                            'user_id'    => 1,
+                            'name'       => 'Test Tag',
+                            'slug'       => 'test-tag',
+                            'created_at' => time(),
+                            'updated_at' => time()
                         ],
                         $this->optimus
                     )
@@ -103,13 +95,14 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $result   = $dbMember->getAllByCompanyId(1)->first();
+        $dbTag  = new DBTag($factory, $this->optimus, $connectionMock);
+        $result = $dbTag->getAllByUserId(1)->first();
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
-    public function testGetAllBycompanyIdAndRole() {
-        $factory   = new Entity($this->optimus);
+    public function testGetAllByUserIdAndTagNames() {
+        $factory = new Entity($this->optimus);
+        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -130,13 +123,14 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $result   = $dbMember->getAllByCompanyIdAndRole(1, ['admin'])->first();
+        $dbTag  = new DBTag($factory, $this->optimus, $connectionMock);
+        $result = $dbTag->getAllByUserIdAndTagSlugs(1, ['tag-test'])->first();
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
     public function testFindOneNotFound() {
-        $factory   = new Entity($this->optimus);
+        $factory = new Entity($this->optimus);
+        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -161,13 +155,14 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
+        $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
         $this->setExpectedException(NotFound::class);
-        $dbMember->findOne(0, 1);
+        $dbTag->findOneByUserIdAndSlug(1, 'test-tag');
     }
 
     public function testfFindOne() {
-        $factory   = new Entity($this->optimus);
+        $factory = new Entity($this->optimus);
+        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -192,14 +187,15 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
+        $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
 
-        $result = $dbMember->findOne(0, 1);
+        $result = $dbTag->findOneByUserIdAndSlug(1, 'test-tag');
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
     public function testDeleteOne() {
-        $factory   = new Entity($this->optimus);
+        $factory = new Entity($this->optimus);
+        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -221,12 +217,13 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $this->assertEquals(1, $dbMember->deleteOne(0, 1));
+        $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
+        $this->assertEquals(1, $dbTag->deleteOneByUserIdAndSlug(1, 'test-tag'));
     }
 
-    public function testDeleteByCompanyId() {
-        $factory   = new Entity($this->optimus);
+    public function testDeleteByUserId() {
+        $factory = new Entity($this->optimus);
+        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -248,7 +245,7 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $this->assertEquals(3, $dbMember->deleteByCompanyId(1));
+        $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
+        $this->assertEquals(3, $dbTag->deleteByUserId(1));
     }
 }
