@@ -38,11 +38,13 @@
 
 [DELETE /1.0/profiles/:userName/features](profiles/features/deleteAll.md)
 
-[GET /1.0/profiles/:userName/features/:featureName](profiles/features/getFeature.md)
+[POST /1.0/profiles/:userName/features](profiles/features/createNew.md)
 
-[POST /1.0/profiles/:userName/features/:featureName](profiles/features/createFeature.md)
+[PUT /1.0/profiles/:userName/features/:featureSlug](profiles/features/updateOne.md)
 
-[DELETE /1.0/profiles/:userName/features/:featureName](profiles/features/deleteFeature.md)
+[GET /1.0/profiles/:userName/features/:featureSlug](profiles/features/getOne.md)
+
+[DELETE /1.0/profiles/:userName/features/:featureSlug](profiles/features/deleteOne.md)
 
 ### Profile Flags
 

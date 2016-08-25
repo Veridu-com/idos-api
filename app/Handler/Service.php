@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
@@ -97,14 +97,17 @@ class Service implements HandlerInterface {
             $this->validator->assertListens($command->listens);
             $input['listens'] = $command->listens;
         }
+
         if ($command->triggers) {
             $this->validator->assertTriggers($command->triggers);
             $input['triggers'] = $command->triggers;
         }
+
         if ($command->access !== null) {
             $this->validator->assertAccess($command->access);
             $input['access'] = $command->access;
         }
+
         if ($command->enabled !== null) {
             $this->validator->assertEnabled($command->enabled);
             $input['enabled'] = $command->enabled;
@@ -133,30 +136,37 @@ class Service implements HandlerInterface {
             $this->validator->assertName($command->name);
             $input['name'] = $command->name;
         }
+
         if ($command->listens) {
             $this->validator->assertListens($command->listens);
             $input['listens'] = $command->listens;
         }
+
         if ($command->triggers) {
             $this->validator->assertTriggers($command->triggers);
             $input['triggers'] = $command->triggers;
         }
+
         if ($command->url) {
             $this->validator->assertUrl($command->url);
             $input['url'] = $command->url;
         }
+
         if ($command->access !== null) {
             $this->validator->assertAccess($command->access);
             $input['access'] = $command->access;
         }
+
         if ($command->enabled !== null) {
             $this->validator->assertEnabled($command->enabled);
             $input['enabled'] = $command->enabled;
         }
+
         if ($command->authUsername) {
             $this->validator->assertAuthUsername($command->authUsername);
             $input['auth_username'] = $command->authUsername;
         }
+
         if ($command->authPassword) {
             $this->validator->assertAuthPassword($command->authPassword);
             $input['auth_password'] = $command->authPassword;

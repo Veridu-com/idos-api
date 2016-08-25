@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -119,7 +119,7 @@ class Services implements ControllerInterface {
 
     /**
      * Creates a new Service for the acting Company.
-     * 
+     *
      * @apiEndpointRequiredParam    body    string      name             Service's name.
      * @apiEndpointRequiredParam    body    string      url              Service's url.
      * @apiEndpointParam            body    int         access           Service's access.
@@ -133,7 +133,7 @@ class Services implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
-     * 
+     *
      * @see App\Entity\Service
      *
      * @return \Psr\Http\Message\ResponseInterface

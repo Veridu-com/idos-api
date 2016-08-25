@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Validator;
 
@@ -24,13 +24,15 @@ class RoleAccess implements ValidatorInterface {
      * @return void
      */
     public function assertRoleName(string $value) {
-        Validator::in([
+        Validator::in(
+            [
             Role::COMPANY,
             Role::COMPANY_OWNER,
             Role::COMPANY_ADMIN,
             Role::USER,
             Role::GUEST
-        ])->assert($value);
+            ]
+        )->assert($value);
     }
 
     /**
@@ -41,7 +43,8 @@ class RoleAccess implements ValidatorInterface {
      * @return void
      */
     public function assertAccess(int $value) {
-        Validator::digit()->length(1, 1)->in([
+        Validator::digit()->length(1, 1)->in(
+            [
             RoleAccessEntity::ACCESS_NONE,
             RoleAccessEntity::ACCESS_EXECUTE,
             RoleAccessEntity::ACCESS_WRITE,
@@ -50,7 +53,8 @@ class RoleAccess implements ValidatorInterface {
             RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_EXECUTE,
             RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE,
             RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE | RoleAccessEntity::ACCESS_EXECUTE
-        ])->assert($value);
+            ]
+        )->assert($value);
 
     }
 
@@ -76,5 +80,4 @@ class RoleAccess implements ValidatorInterface {
         Validator::digit()
             ->assert($id);
     }
-
 }

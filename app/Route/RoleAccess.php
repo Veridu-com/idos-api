@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Route;
 
@@ -66,7 +66,7 @@ class RoleAccess implements RouteInterface {
      * Retrieve a complete list of all Role Access that belong to the acting User.
      *
      * @apiEndpoint GET /access/roles
-     * 
+     *
      * @apiAuth query   key userPrivKey     User's Private Key
      * @apiAuth header  key userPrivKey     User's Private Key
      *
@@ -97,7 +97,7 @@ class RoleAccess implements RouteInterface {
      * Create a new Role Access for the acting User.
      *
      * @apiEndpoint POST /access/roles
-     * 
+     *
      * @apiAuth query   key userPrivKey     User's Private Key
      * @apiAuth header  key userPrivKey     User's Private Key
      *
@@ -128,7 +128,7 @@ class RoleAccess implements RouteInterface {
      * Deletes all roleAccess that belongs to the acting User.
      *
      * @apiEndpoint DELETE /access/roles
-     * 
+     *
      * @apiAuth query   key userPrivKey     User's Private Key
      * @apiAuth header  key userPrivKey     User's Private Key
      *
@@ -159,7 +159,7 @@ class RoleAccess implements RouteInterface {
      * Retrieves all public information from a RoleAccess.
      *
      * @apiEndpoint GET /access/roles/{roleName}/{resource}
-     * 
+     *
      * @apiAuth query   key userPrivKey     User's Private Key
      * @apiAuth header  key userPrivKey     User's Private Key
      *

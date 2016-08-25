@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Route;
 
@@ -141,7 +141,7 @@ class Companies implements RouteInterface {
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Companies::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth,  callable $permission) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
                 '/companies',

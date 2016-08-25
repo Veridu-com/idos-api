@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Middleware;
 
@@ -63,7 +63,7 @@ class CompanyPermission implements MiddlewareInterface {
             } catch (NotFound $e) {
                 // deny
                 throw new NotAllowed();
-             }
+            }
         }
 
         if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {

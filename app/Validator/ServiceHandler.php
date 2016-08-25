@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Validator;
 
@@ -127,5 +127,4 @@ class ServiceHandler implements ValidatorInterface {
         Validator::arrayType()
             ->assert($value);
     }
-
 }

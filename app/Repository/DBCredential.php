@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -80,8 +80,8 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
         $jwtBuilder->set('iss', $issuerCredentialPubKey);
         $jwtBuilder->set('sub', $subjectCredentialPubKey);
 
-        return $jwtBuilder
-                ->sign($jwtSigner, $issuerCredentialPrivKey)
-                ->getToken();
+        return (string) $jwtBuilder
+            ->sign($jwtSigner, $issuerCredentialPrivKey)
+            ->getToken();
     }
 }

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -69,14 +69,18 @@ class Main implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $files = glob(__DIR__ . '/../Route/*.php');
 
-        $classList = array_map(function ($filename) {
-            return basename($filename, '.php');
-        }, array_filter($files, function ($filename) {
-            $add = true;
-            $add &= strpos($filename, 'Interface') === false;
+        $classList = array_map(
+            function ($filename) {
+                return basename($filename, '.php');
+            }, array_filter(
+                $files, function ($filename) {
+                    $add = true;
+                    $add &= strpos($filename, 'Interface') === false;
 
-            return $add;
-        }));
+                    return $add;
+                }
+            )
+        );
 
         $routeList    = [];
         $publicRoutes = [];

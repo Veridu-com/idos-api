@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -26,32 +26,38 @@ class CachedSetting extends AbstractCachedRepository implements SettingInterface
      * {@inheritdoc}
      */
     public function findOne(int $companyId, string $section, string $propName) : Setting {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'company_id' => $companyId,
             'section'    => $section,
             'property'   => $propName
-        ]);
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function deleteOne(int $companyId, string $section, string $propName) : int {
-        return $this->deleteBy([
+        return $this->deleteBy(
+            [
             'company_id' => $companyId,
             'section'    => $section,
             'property'   => $propName
-        ]);
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'company_id' => $companyId,
             'section'    => $section
-        ]);
+            ]
+        );
     }
 
     /**

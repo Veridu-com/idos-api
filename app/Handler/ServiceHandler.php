@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
@@ -111,11 +111,13 @@ class ServiceHandler implements HandlerInterface {
         $allowedListeners = $entity->service()->listens;
 
         // validates allowed listeners
-        array_map(function ($listener) use ($allowedListeners) {
-            if (! in_array($listener, $allowedListeners)) {
-                throw new NotFound('Listener not found on Service');
-            }
-        }, $command->listens);
+        array_map(
+            function ($listener) use ($allowedListeners) {
+                if (! in_array($listener, $allowedListeners)) {
+                    throw new NotFound('Listener not found on Service');
+                }
+            }, $command->listens
+        );
 
         if ($entity->listens != $command->listens) {
             // updates listen attribute

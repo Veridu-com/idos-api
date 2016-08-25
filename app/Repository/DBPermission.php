@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 /**
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -32,10 +32,12 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
      * {@inheritdoc}
      */
     public function findOne(int $companyId, string $routeName) : Permission {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'company_id' => $companyId,
             'route_name' => $routeName
-        ]);
+            ]
+        );
     }
 
     /**
@@ -66,5 +68,4 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
-
 }

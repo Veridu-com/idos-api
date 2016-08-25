@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -45,7 +45,7 @@ interface TagInterface extends RepositoryInterface {
      *
      * @param int    $userId
      * @param string $name
-     * 
+     *
      * @throws App\Exception\NotFound
      *
      * @return App\Entity\Tag

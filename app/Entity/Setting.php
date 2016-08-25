@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -15,8 +15,8 @@ use App\Extension\SecureFields;
  *
  * @apiEntity schema/setting/settingEntity.json
  *
- * @property int 	$id
- * @property int 	$company_id
+ * @property int    $id
+ * @property int    $company_id
  * @property string $section
  * @property string $property
  * @property string $value
@@ -64,7 +64,8 @@ class Setting extends AbstractEntity {
      * {@inheritdoc}
      */
     public function getReferenceCacheKeys() : array {
-        return array_merge([
+        return array_merge(
+            [
             sprintf(
                 '%s.by.company_id.%s',
                 self::CACHE_PREFIX,
@@ -76,7 +77,8 @@ class Setting extends AbstractEntity {
                 $this->companyId,
                 $this->section
             )
-        ],
-        $this->getCacheKeys());
+            ],
+            $this->getCacheKeys()
+        );
     }
 }

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -55,7 +55,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      *
      * @param int $roleAccessId
      * @param int $identityId
-     
+
      * @throws App\Exception\NotFound
      *
      * @return int affected rows
