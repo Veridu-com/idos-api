@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -53,16 +53,18 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
      /**
       * {@inheritdoc}
       */
-     public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
+    public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
         $items = new Collection();
         $items = $items->merge(
             $this->query()
-            ->join('users', 'users.id', '=', 'members.user_id')
-            ->where('members.company_id', '=', $companyId)
-            ->whereIn('members.role', $roles)
-            ->get(['users.username as user.username',
-                'users.created_at as user.created_at',
-                'members.*'])
+                ->join('users', 'users.id', '=', 'members.user_id')
+                ->where('members.company_id', '=', $companyId)
+                ->whereIn('members.role', $roles)
+                ->get(
+                    ['users.username as user.username',
+                    'users.created_at as user.created_at',
+                    'members.*']
+                )
         );
 
         return $this->castHydrate($items);
@@ -76,9 +78,11 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
             $this->query()
                 ->join('users', 'users.id', '=', 'members.user_id')
                 ->where('members.id', '=', $memberId)
-                ->get(['users.username as user.username',
+                ->get(
+                    ['users.username as user.username',
                     'users.created_at as user.created_at',
-                    'members.*'])
+                    'members.*']
+                )
         );
 
         $member = $this->castHydrate($items)->first();
@@ -112,5 +116,4 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
 
         return $member;
     }
-
 }

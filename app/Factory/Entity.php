@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Factory;
 
@@ -17,7 +17,7 @@ use Jenssegers\Optimus\Optimus;
 class Entity extends AbstractFactory {
     /**
      * Optimus variable.
-     * 
+     *
      * @var \Jessengers\Optimus\Optimus
      */
     private $optimus;

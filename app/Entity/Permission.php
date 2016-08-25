@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -13,8 +13,8 @@ namespace App\Entity;
  *
  * @apiEntity schema/permission/permissionEntity.json
  *
- * @property int 	$id
- * @property int 	$company_id
+ * @property int    $id
+ * @property int    $company_id
  * @property string $route_name
  */
 class Permission extends AbstractEntity {
@@ -54,13 +54,15 @@ class Permission extends AbstractEntity {
      * {@inheritdoc}
      */
     public function getReferenceCacheKeys() : array {
-        return array_merge([
+        return array_merge(
+            [
             sprintf(
                 '%s.by.parent_id.%s',
                 self::CACHE_PREFIX,
                 $this->parentId
             )
-        ],
-        $this->getCacheKeys());
+            ],
+            $this->getCacheKeys()
+        );
     }
 }

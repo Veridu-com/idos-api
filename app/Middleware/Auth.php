@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Middleware;
 
@@ -246,6 +246,7 @@ class Auth implements MiddlewareInterface {
         if (! $token->hasClaim('sub')) {
             throw new AppException('Missing Subject Claim');
         }
+
         $userName = $token->getClaim('sub');
 
         // If it's a new user, creates it
@@ -564,31 +565,31 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
     private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
-            // Loads Target User
-            if ($username === '_self') {
-                // Self Reference for User Token / User Private Key
-                $user = $request->getAttribute('actingUser');
-                if (empty($user)){
-                    throw new AppException('InvalidUserNameReference');
-                }
-            } else {
-                // Load User
-                $company = $request->getAttribute('targetCompany');
-                if (empty($company)) {
-                    $company = $request->getAttribute('actingCompany');
-                }
-                if (empty($company)) {
-                    throw new AppException('InvalidRequest');
-                }
-
-                $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential'));
-
+        // Loads Target User
+        if ($username === '_self') {
+            // Self Reference for User Token / User Private Key
+            $user = $request->getAttribute('actingUser');
+            if (empty($user)) {
+                throw new AppException('InvalidUserNameReference');
+            }
+        } else {
+            // Load User
+            $company = $request->getAttribute('targetCompany');
+            if (empty($company)) {
+                $company = $request->getAttribute('actingCompany');
             }
 
-            // Stores Target User for future use
-            $request = $request->withAttribute('targetUser', $user);
+            if (empty($company)) {
+                throw new AppException('InvalidRequest');
+            }
 
-            return $request;
+            $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential')->id);
+        }
+
+        // Stores Target User for future use
+        $request = $request->withAttribute('targetUser', $user);
+
+        return $request;
     }
 
     /**
@@ -615,7 +616,6 @@ class Auth implements MiddlewareInterface {
             // Checks if access hierarchy is respected (Parent to Child or Company to itself)
             if ($this->authorizationRequirement != self::NONE) {
                 $actingCompany = $request->getAttribute('actingCompany');
-
             }
         }
 

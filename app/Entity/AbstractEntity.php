@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -239,7 +239,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return void
      */
-    public function __construct(array $attributes = [],  Optimus $optimus) {
+    public function __construct(array $attributes = [], Optimus $optimus) {
         $this->cachePrefix = str_replace('App\\Entity\\', '', get_class($this));
 
         if (! empty($attributes)) {
@@ -397,5 +397,4 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         unset($this->attributes[$key]);
         $this->dirty = true;
     }
-
 }

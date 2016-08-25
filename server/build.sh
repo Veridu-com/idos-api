@@ -8,7 +8,7 @@ if [ -d "docker" ]; then
     git pull origin master
     cd ..
 else
-    git clone git@bitbucket.org:veridu/docker.git
+    git clone https://bitbucket.org/veridu/docker.git
 fi
 
 # builds idos/api/nginx
@@ -62,7 +62,7 @@ if [ -d "docker/idos/manager/php/idos-manager" ]; then
     cd -
 else
     cd docker/idos/manager/php
-    git clone git@bitbucket.org:veridu/idos-manager.git -b dev
+    git clone http://bitbucket.org/veridu/idos-manager.git -b dev
     cd -
 fi
 cd docker/idos/manager/php

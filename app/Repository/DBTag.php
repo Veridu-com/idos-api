@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -56,7 +56,7 @@ class DBTag extends AbstractDBRepository implements TagInterface {
      /**
       * {@inheritdoc}
       */
-     public function deleteByUserId(int $userId) : int {
+    public function deleteByUserId(int $userId) : int {
         return $this->deleteBy(['user_id' => $userId]);
     }
 
@@ -80,5 +80,4 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     public function deleteOneByUserIdAndSlug(int $userId, string $name) : int {
         return $this->deleteBy(['user_id' => $userId, 'slug' => $name]);
     }
-
 }

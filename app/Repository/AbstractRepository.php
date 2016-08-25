@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -96,9 +96,11 @@ abstract class AbstractRepository implements RepositoryInterface {
      * @return \Illuminate\Support\Collection Collection with items casted to the matched class
      */
     public function castHydrate(Collection $items) : Collection {
-        return $items->map(function ($item) {
-            return $this->castHydrateEntity($item);
-        });
+        return $items->map(
+            function ($item) {
+                return $this->castHydrateEntity($item);
+            }
+        );
     }
 
     /**
@@ -121,5 +123,4 @@ abstract class AbstractRepository implements RepositoryInterface {
 
         return $entity;
     }
-
 }

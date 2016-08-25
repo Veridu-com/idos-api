@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -67,10 +67,12 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
      * {@inheritdoc}
      */
     public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'company_id' => $companyId,
             'section'    => $section
-        ]);
+            ]
+        );
     }
 
     /**
@@ -79,5 +81,4 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
-
 }

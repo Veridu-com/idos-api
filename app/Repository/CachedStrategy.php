@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -36,7 +36,7 @@ class CachedStrategy implements RepositoryStrategyInterface {
      *
      * @return void
      */
-    public function __construct(Repository $repositoryFactory,  TaggablePool $cache) {
+    public function __construct(Repository $repositoryFactory, TaggablePool $cache) {
         $this->repositoryFactory = $repositoryFactory;
         $this->cache             = $cache;
     }

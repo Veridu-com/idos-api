@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -63,7 +63,7 @@ class RoleAccess implements ControllerInterface {
      * List all child RoleAccess that belongs to the acting User.
      *
      * @apiEndpointParam query              int page 10|1           Current page.
-     * 
+     *
      * @apiEndpointResponse 200 schema/access/roles/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -96,7 +96,7 @@ class RoleAccess implements ControllerInterface {
      *
      * @apiEndpointRequiredParam route      string roleName         The role name.
      * @apiEndpointRequiredParam route      string resource         The resource.
-     * 
+     *
      * @apiEndpointResponse 200 schema/access/roles/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -131,7 +131,7 @@ class RoleAccess implements ControllerInterface {
      * @apiEndpointRequiredParam body       string role             The role.
      * @apiEndpointRequiredParam body       string resource         The resource.
      * @apiEndpointRequiredParam body       int access              The access.
-     * 
+     *
      * @apiEndpointResponse 201 schema/access/roles/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -200,7 +200,7 @@ class RoleAccess implements ControllerInterface {
      *
      * @apiEndpointRequiredParam route      string roleName         The role name.
      * @apiEndpointRequiredParam route      string resource         The resource.
-     * 
+     *
      * @apiEndpointResponse 200 schema/access/roles/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -239,7 +239,7 @@ class RoleAccess implements ControllerInterface {
      * @apiEndpointRequiredParam route      string roleName         The role name.
      * @apiEndpointRequiredParam route      string resource         The resource.
      * @apiEndpointRequiredParam body       int access              The access value.
-     * 
+     *
      * @apiEndpointResponse 200 schema/access/roles/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -276,5 +276,4 @@ class RoleAccess implements ControllerInterface {
         return $this->commandBus->handle($command);
 
     }
-
 }

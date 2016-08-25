@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -50,10 +50,12 @@ class DBUser extends AbstractDBRepository implements UserInterface {
      * {@inheritdoc}
      */
     public function findByUserName(string $username, int $credentialId) : User {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'username'      => $username,
             'credential_id' => $credentialId
-        ]);
+            ]
+        );
     }
 
     /**
@@ -100,10 +102,12 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             ->first();
         if (empty($result)) {
             $user = $this
-                ->create([
+                ->create(
+                    [
                     'username'      => $userName,
                     'credential_id' => $credentialId
-                ]);
+                    ]
+                );
 
             $result = $this->save($user);
         }
@@ -155,9 +159,8 @@ class DBUser extends AbstractDBRepository implements UserInterface {
         $jwtBuilder->set('iss', $credentialPubKey);
         $jwtBuilder->set('sub', $username);
 
-        return $jwtBuilder
-                ->sign($jwtSigner, $credentialPrivKey)
-                ->getToken();
+        return (string) $jwtBuilder
+            ->sign($jwtSigner, $credentialPrivKey)
+            ->getToken();
     }
-
 }

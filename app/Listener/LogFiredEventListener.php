@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Listener;
 
@@ -21,5 +21,4 @@ class LogFiredEventListener extends AbstractListener {
     public function handle(EventInterface $event) {
         $this->logger->debug(sprintf('%s was fired', $event->getName()));
     }
-
 }
