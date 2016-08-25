@@ -16,7 +16,7 @@ use Slim\App;
 /**
  * Features routing definitions.
  *
- * @link docs/management/settings/overview.md
+ * @link docs/profile/features/overview.md
  * @see App\Controller\Features
  */
 class Features implements RouteInterface {

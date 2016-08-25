@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /management/settings.
+ * Handles requests to /profiles/:userName/features.
  */
 class Features implements ControllerInterface {
     /**
