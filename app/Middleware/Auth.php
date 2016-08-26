@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace App\Middleware;
+namespace app\Middleware;
 
 use App\Exception\AppException;
 use App\Exception\NotFound;
@@ -26,43 +26,57 @@ use Psr\Http\Message\ServerRequestInterface;
  * Extracts authorization from request and stores Acting/Target
  * Subjects (User and/or Company) to request.
  */
-class Auth implements MiddlewareInterface {
+class Auth implements MiddlewareInterface
+{
     /**
      * Credential Repository.
      *
      * @var App\Repository\CredentialInterface
      */
     private $credentialRepository;
+
     /**
      * User Repository.
      *
      * @var App\Repository\UserInterface
      */
     private $userRepository;
+
     /**
      * Company Repository.
      *
-     * @var App\Repository\Companyinterface
+     * @var App\Repository\CompanyInterface
      */
     private $companyRepository;
+
+    /**
+     * Service Repository.
+     *
+     * @var App\Repository\ServiceInterface
+     */
+    private $serviceRepository;
+
     /**
      * JWT Parser.
      *
      * @var \Lcobucci\JWT\Parser
      */
     private $jwtParser;
+
     /**
      * JWT Validation Data.
      *
      * @var \Lcobucci\JWT\ValidationData
      */
     private $jwtValidation;
+
     /**
      * JWT SHA256-HMAC Signer.
      *
      * @var \Lcobucci\JWT\Signer\Hmac\Sha256
      */
     private $jwtSigner;
+
     /**
      * Authorization Requirement Bitmask.
      *
@@ -77,62 +91,27 @@ class Auth implements MiddlewareInterface {
      * @const NONE No authorization
      */
     const NONE = 0x00;
+
     /**
-     * Company performing public and private actions on a User's behalf
      * Scope: Integration.
      *
      * @const USER_TOKEN User Token
      */
     const USER_TOKEN = 0x01;
+
     /**
-     * User performing public actions
-     * Scope: System.
-     *
-     * @const USER_PUBKEY User Public Key
-     */
-    const USER_PUBKEY = 0x02;
-    /**
-     * User performing User Management actions
-     * Scope: System.
-     *
-     * @const USER_PRIVKEY User Private Key
-     */
-    const USER_PRIVKEY = 0x04;
-    /**
-     * Company performing public actions
      * Scope: System.
      *
      * @const COMP_PUBKEY Company Public Key
      */
-    const COMP_PUBKEY = 0x08;
+    const COMP_TOKEN = 0x02;
+
     /**
-     * Company performing Company Management actions
-     * Scope: System.
-     *
-     * @const COMP_PRIVKEY Company Private Key
-     */
-    const COMP_PRIVKEY = 0x10;
-    /**
-     * Credential performing public and private actions on a Credential's behalf
      * Scope: Integration.
      *
      * @const CRED_TOKEN Credential Token
      */
-    const CRED_TOKEN = 0x20;
-    /**
-     * Credential performing public actions
-     * Scope: Integration.
-     *
-     * @const CRED_PUBKEY Credential Public Key
-     */
-    const CRED_PUBKEY = 0x30;
-    /**
-     * Credential performing private actions
-     * Scope: Integration.
-     *
-     * @const CRED_PRIVKEY Credential Private Key
-     */
-    const CRED_PRIVKEY = 0x40;
+    const CRED_TOKEN = 0x04;
 
     /**
      * Returns an authorization setup array based on available
@@ -140,48 +119,24 @@ class Auth implements MiddlewareInterface {
      *
      * @return array
      */
-    private function authorizationSetup() : array {
+    private function authorizationSetup() : array
+    {
         return [
             self::USER_TOKEN => [
-                'name'    => 'UserToken',
-                'label'   => 'User Token',
-                'handler' => 'handleUserToken'
+                'name' => 'UserToken',
+                'label' => 'User Token',
+                'handler' => 'handleUserToken',
             ],
-            self::USER_PUBKEY => [
-                'name'    => 'UserPubKey',
-                'label'   => 'User Public Key',
-                'handler' => 'handleUserPubKey'
-            ],
-            self::USER_PRIVKEY => [
-                'name'    => 'UserPrivKey',
-                'label'   => 'User Private Key',
-                'handler' => 'handleUserPrivKey'
-            ],
-            self::COMP_PUBKEY => [
-                'name'    => 'CompanyPubKey',
-                'label'   => 'Company Public Key',
-                'handler' => 'handleCompanyPubKey'
-            ],
-            self::COMP_PRIVKEY => [
-                'name'    => 'CompanyPrivKey',
-                'label'   => 'Company Private Key',
-                'handler' => 'handleCompanyPrivKey'
+            self::COMP_TOKEN => [
+                'name' => 'CompanyToken',
+                'label' => 'Company Token',
+                'handler' => 'handleCompanyToken',
             ],
             self::CRED_TOKEN => [
-                'name'    => 'CredentialToken',
-                'label'   => 'Credential Token',
-                'handler' => 'handleCredentialToken'
+                'name' => 'CredentialToken',
+                'label' => 'Credential Token',
+                'handler' => 'handleCredentialToken',
             ],
-            self::CRED_PUBKEY => [
-                'name'    => 'CredentialPubKey',
-                'label'   => 'Credential Public Key',
-                'handler' => 'handleCredentialPubKey'
-            ],
-            self::CRED_PRIVKEY => [
-                'name'    => 'CredentialPrivKey',
-                'label'   => 'Credential Private Key',
-                'handler' => 'handleCredentialPrivKey'
-            ]
         ];
     }
 
@@ -193,18 +148,19 @@ class Auth implements MiddlewareInterface {
      *
      * @return string|null
      */
-    private function extractAuthorization(ServerRequestInterface $request, string $name) {
-        $name  = ucfirst($name);
+    private function extractAuthorization(ServerRequestInterface $request, string $name)
+    {
+        $name = ucfirst($name);
         $regex = sprintf('/^%s ([a-zA-Z0-9]+)$/', $name);
-        if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches))
+        if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches)) {
             return $matches[1];
+        }
 
-        $name        = lcfirst($name);
+        $name = lcfirst($name);
         $queryParams = $request->getQueryParams();
-        if (isset($queryParams[$name]))
+        if (isset($queryParams[$name])) {
             return $queryParams[$name];
-
-        return;
+        }
     }
 
     /**
@@ -215,8 +171,8 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
-
+    private function handleUserToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface
+    {
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
@@ -225,122 +181,118 @@ class Auth implements MiddlewareInterface {
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (! $token->validate($this->jwtValidation)) {
+        if (!$token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed');
         }
 
         // Retrieves JWT Issuer
-        $pubKey = $token->getClaim('iss');
+        $credentialPubKey = $token->getClaim('iss');
 
         try {
-            $credential = $this->credentialRepository->findByPubKey($pubKey);
-        } catch(NotFound $e) {
+            $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
+        } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
         }
 
         // JWT Signature Verification
-        if (! $token->verify($this->jwtSigner, $credential->private))
+        if (!$token->verify($this->jwtSigner, $credential->private)) {
             throw new AppException('Token Verification Failed');
+        }
 
         // Retrieves JWT Subject
-        if (! $token->hasClaim('sub')) {
+        if (!$token->hasClaim('sub')) {
             throw new AppException('Missing Subject Claim');
         }
+
         $userName = $token->getClaim('sub');
 
         // If it's a new user, creates it
         $actingUser = $this->userRepository->findOrCreate($userName, $credential->id);
 
         // Retrieves Credential's owner
-        $targetCompany = $this->companyRepository->find($credential->companyId);
+        $company = $this->companyRepository->find($credential->companyId);
 
         return $request
             // Stores Acting User for future use
             ->withAttribute('actingUser', $actingUser)
 
-            // Stores Target Company for future use
-            ->withAttribute('targetCompany', $targetCompany)
+            // Stores Company for future use
+            ->withAttribute('company', $company)
 
             // Stores Credential for future use
             ->withAttribute('credential', $credential);
     }
 
     /**
-     * Handles request Authorization based on User Public Key.
+     * Handles request Authorization based on Company Token.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param string                                   $reqKey
+     * @param string                                   $reqToken
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
+    private function handleCompanyToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface
+    {
         try {
-            $targetUser = $this->userRepository->findByPubKey($reqKey);
+            $token = $this->jwtParser->parse($reqToken);
+        } catch (\Throwable $e) {
+            throw new AppException('Invalid Token');
+        }
+
+        // Ensures JWT Audience is the current API
+        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        if (!$token->validate($this->jwtValidation)) {
+            throw new AppException('Token Validation Failed');
+        }
+
+        // Retrieves JWT Issuer
+        $companyPubKey = $token->getClaim('iss');
+
+        try {
+            $company = $this->companyRepository->findByPubKey($companyPubKey);
         } catch (NotFound $e) {
             throw new AppException('Invalid Credential');
         }
 
-        // Stores Target User for future use
-        return $request->withAttribute('targetUser', $targetUser);
-    }
-
-    /**
-     * Handles request Authorization based on User Private Key.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param string                                   $reqKey
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface
-     */
-    private function handleUserPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
-        try {
-            $actingUser = $this->userRepository->findByPrivKey($reqKey);
-        } catch (NotFound $e) {
-            throw new AppException('Invalid Credential');
+        // JWT Signature Verification
+        if (!$token->verify($this->jwtSigner, $company->private_key)) {
+            throw new AppException('Token Verification Failed');
         }
 
-        // Stores Acting User for future use
-        return $request->withAttribute('actingUser', $actingUser);
-    }
+        // Retrieves JWT Subject
+        if ($token->hasClaim('sub')) {
+            $subject = explode(':', $token->getClaim('sub'));
 
-    /**
-     * Handles request Authorization based on Company Public Key.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param string                                   $reqKey
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface
-     */
-    private function handleCompanyPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
-        try {
-            $actingCompany = $this->companyRepository->findByPubKey($reqKey);
-        } catch (NotFound $e) {
-            throw new AppException('Invalid Credential');
+            if (count($subject) != 2) {
+                throw new AppException('Invalid Subject');
+            }
+
+            $credentialPubKey = $subject[0];
+            $userName = $subject[1];
+
+            try {
+                $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
+            } catch (NotFound $e) {
+                throw new AppException('Invalid Credential Public Key');
+            }
+
+            // If it's a new user, creates it
+            $actingUser = $this->userRepository->findOrCreate($userName, $credential->id);
         }
+
+        // Retrieves Credential's owner
+        $company = $this->companyRepository->find($credential->companyId);
 
         return $request
-            // Stores Acting Company for future use
-            ->withAttribute('actingCompany', $actingCompany);
-    }
 
-    /**
-     * Handles request Authorization based on Company Private Key.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param string                                   $reqKey
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface
-     */
-    private function handleCompanyPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
-        try {
-            $actingCompany = $this->companyRepository->findByPrivKey($reqKey);
-        } catch (NotFound $exception) {
-            throw new AppException('Invalid Credential');
-        }
+            // Stores Company for future use
+            ->withAttribute('company', $company)
 
-        return $request
-            // Stores Acting Company for future use
-            ->withAttribute('actingCompany', $actingCompany);
+            //Stores Acting User for future use
+            ->withAttribute('actingUser', ($actingUser ?: null))
+
+            // Stores Credential for future use
+            ->withAttribute('credential', ($credential ?: null));
     }
 
     /**
@@ -351,7 +303,8 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
+    private function handleCredentialToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface
+    {
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
@@ -360,48 +313,48 @@ class Auth implements MiddlewareInterface {
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (! $token->validate($this->jwtValidation))
+        if (!$token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed');
+        }
 
         // Retrieves JWT Issuer
-        $issuerKey = $token->getClaim('iss');
+        $servicePubKey = $token->getClaim('iss');
 
         try {
-            $issuerCredential = $this->credentialRepository->findByPubKey($issuerKey);
+            $issuerService = $this->serviceRepository->findByPubKey($servicePubKey);
         } catch (NotFound $e) {
-            throw new AppException('Invalid Issuer Credential');
+            throw new AppException('Invalid Issuer Service');
         }
 
         // JWT Signature Verification
-        if (! $token->verify($this->jwtSigner, $issuerCredential->private))
+        if (!$token->verify($this->jwtSigner, $issuerService->private)) {
             throw new AppException('Token Verification Failed');
+        }
 
         // Retrieves JWT Subject
-        if (! $token->hasClaim('sub'))
+        if (!$token->hasClaim('sub')) {
             throw new AppException('Missing Subject Claim');
-        $subjectKey = $token->getClaim('sub');
+        }
+        $credentialPubKey = $token->getClaim('sub');
 
         try {
-            $subjectCredential = $this->credentialRepository->findByPubKey($subjectKey);
-        } catch(NotFound $e) {
+            $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
+        } catch (NotFound $e) {
             throw new AppException('Invalid Subject Credential');
         }
 
-        // Retrieves Issuer Credential's owner
-        $actingCompany = $this->companyRepository->find($issuerCredential->company_id);
-
-        // Retrieves Subject Credential's owner
-        $targetCompany = $this->companyRepository->find($subjectCredential->company_id);
+        // Retrieves Credential's Company
+        $company = $this->companyRepository->find($credential->company_id);
 
         return $request
-            // Stores Acting Company for future use
-            ->withAttribute('actingCompany', $actingCompany)
+            // Stores Service for future use
+            ->withAttribute('service', $issuerService)
 
-            // Stores Target Company for future use
-            ->withAttribute('targetCompany', $targetCompany)
+            // Stores Company for future use
+            ->withAttribute('company', $company)
 
             // Stores Credential for future use
-            ->withAttribute('credential', $subjectCredential);
+            ->withAttribute('credential', $credential);
     }
 
     /**
@@ -412,7 +365,8 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
+    private function handleCredentialPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface
+    {
         try {
             $credential = $this->credentialRepository->findByPubKey($reqKey);
         } catch (NotFound $e) {
@@ -438,7 +392,8 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
+    private function handleCredentialPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface
+    {
         try {
             $credential = $this->credentialRepository->findByPrivKey($reqKey);
         } catch (NotFound $e) {
@@ -466,25 +421,25 @@ class Auth implements MiddlewareInterface {
      * @param \Lcobucci\JWT\ValidationData       $jwtValidation
      * @param \Lcobucci\JWT\Signer\Hmac\Sha256   $jwtSigner
      * @param int                                $authorizationRequirement
-     *
-     * @return void
      */
     public function __construct(
         CredentialInterface $credentialRepository,
         UserInterface $userRepository,
         CompanyInterface $companyRepository,
+        ServiceInterface $serviceRepository,
         JWTParser $jwtParser,
         JWTValidation $jwtValidation,
         JWTSigner $jwtSigner,
         int $authorizationRequirement = self::NONE
     ) {
         $this->credentialRepository = $credentialRepository;
-        $this->userRepository       = $userRepository;
-        $this->companyRepository    = $companyRepository;
+        $this->userRepository = $userRepository;
+        $this->companyRepository = $companyRepository;
+        $this->serviceRepository = $serviceRepository;
 
-        $this->jwtParser     = $jwtParser;
+        $this->jwtParser = $jwtParser;
         $this->jwtValidation = $jwtValidation;
-        $this->jwtSigner     = $jwtSigner;
+        $this->jwtSigner = $jwtSigner;
 
         $this->authorizationRequirement = $authorizationRequirement;
     }
@@ -512,21 +467,25 @@ class Auth implements MiddlewareInterface {
         ResponseInterface $response,
         callable $next
     ) : ResponseInterface {
-        $hasAuthorization   = ($this->authorizationRequirement == self::NONE);
+        $hasAuthorization = ($this->authorizationRequirement == self::NONE);
         $validAuthorization = [];
 
         // Authorization Handling Loop
         foreach ($this->authorizationSetup() as $level => $authorizationInfo) {
-            if ($hasAuthorization)
+            if ($hasAuthorization) {
                 break;
+            }
+
             if (($this->authorizationRequirement & $level) == $level) {
                 // Tries to extract Authorization from Request
                 $authorization = $this->extractAuthorization($request, $authorizationInfo['name']);
-                if (empty($authorization))
+
+                if (empty($authorization)) {
                     $validAuthorization[] = $authorizationInfo['label'];
-                else {
+                } else {
                     // Handles Authorization validation and Request Argument creation
                     $request = $this->{$authorizationInfo['handler']}($request, $authorization);
+
                     // Authorization has been found and validated
                     $hasAuthorization = true;
                 }
@@ -535,14 +494,14 @@ class Auth implements MiddlewareInterface {
 
         // Request has proper Authorization, proceed with regular process
         if ($hasAuthorization) {
-            $routeInfo   = $request->getAttribute('routeInfo');
-            $companySlug = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
-            $userName    = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
+            $routeInfo = $request->getAttribute('routeInfo');
+            //$companySlug = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
+            $userName = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
 
             // Resolves {companySlug} route argument
-            if ($companySlug) {
+            /*if ($companySlug) {
                 $request = $this->populateRequestCompanies($companySlug, $request);
-            }
+            }*/
 
             // Resolves {userName} route argument
             if ($userName) {
@@ -552,7 +511,7 @@ class Auth implements MiddlewareInterface {
             return $next($request, $response);
         }
 
-        throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
+        throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: '.implode(', ', $validAuthorization), 403);
     }
 
     /**
@@ -563,32 +522,30 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
-    private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
-            // Loads Target User
+    private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface
+    {
+        // Loads Target User
             if ($username === '_self') {
                 // Self Reference for User Token / User Private Key
                 $user = $request->getAttribute('actingUser');
-                if (empty($user)){
+                if (empty($user)) {
                     throw new AppException('InvalidUserNameReference');
                 }
             } else {
                 // Load User
-                $company = $request->getAttribute('targetCompany');
-                if (empty($company)) {
-                    $company = $request->getAttribute('actingCompany');
-                }
+                $company = $request->getAttribute('company');
+
                 if (empty($company)) {
                     throw new AppException('InvalidRequest');
                 }
 
                 $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential'));
-
             }
 
             // Stores Target User for future use
             $request = $request->withAttribute('targetUser', $user);
 
-            return $request;
+        return $request;
     }
 
     /**
@@ -599,23 +556,25 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
-    private function populateRequestCompanies(string $companySlug, ServerRequestInterface $request) : ServerRequestInterface {
+    private function populateRequestCompanies(string $companySlug, ServerRequestInterface $request) : ServerRequestInterface
+    {
         // Loads Target Company
         if ($companySlug === '_self') {
             // Self Reference for Credential Token / Compamny Private Key
             $targetCompany = $request->getAttribute('actingCompany');
-            if (empty($targetCompany))
+            if (empty($targetCompany)) {
                 throw new AppException('InvalidCompanyNameReference');
+            }
         } else {
             // Load Company
             $targetCompany = $this->companyRepository->findBySlug($companySlug);
 
-            if (empty($targetCompany))
+            if (empty($targetCompany)) {
                 throw new AppException('InvalidCompanyNameReference');
+            }
             // Checks if access hierarchy is respected (Parent to Child or Company to itself)
             if ($this->authorizationRequirement != self::NONE) {
                 $actingCompany = $request->getAttribute('actingCompany');
-
             }
         }
 
