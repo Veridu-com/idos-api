@@ -36,57 +36,62 @@ class CompanyPermission implements MiddlewareInterface {
         $this->permissionType = $permissionType;
     }
 
-    /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     * @param callable                                 $next
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function __invoke(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        callable $next
-    ) : ResponseInterface {
-        // get actingCompany set on Auth middleware
-        $actingCompany = $request->getAttribute('actingCompany');
-        // get permissionRepository for checking
-        $permissionRepository = $this->container->get('repositoryFactory')->create('Permission');
-        $routeName            = $request->getAttribute('route')->getName();
-        $response             = $this->allow($response);
+   /**
+    * @param \Psr\Http\Message\ServerRequestInterface $request
+    * @param \Psr\Http\Message\ResponseInterface      $response
+    * @param callable                                 $next
+    *
+    * @return \Psr\Http\Message\ResponseInterface
+    */
+   public function __invoke(
+       ServerRequestInterface $request,
+       ResponseInterface $response,
+       callable $next
+   ) : ResponseInterface {
+       // get actingCompany set on Auth middleware
+       $actingCompany = $request->getAttribute('actingCompany');
+       // get permissionRepository for checking
+       $permissionRepository = $this->container->get('repositoryFactory')->create('Permission');
+       $routeName            = $request->getAttribute('route')->getName();
+       $response             = $this->allow($response);
 
-        $allowed = false;
+       $allowed = false;
 
-        if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
-            try {
-                $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
-            } catch (NotFound $e) {
-                // deny
-                throw new NotAllowed();
-             }
-        }
+       if (($this->permissionType & self::PUBLIC_ACTION) === self::PUBLIC_ACTION) {
+           $allowed = true;
+       }
 
-        if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
-            $targetCompany = $request->getAttribute('targetCompany');
-            if ($targetCompany->id === $actingCompany->id) {
-                // deny
-                $allowed = true;
-            }
-        }
+       if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
+           try {
+               $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
+               $allowed    = true;
+           } catch (NotFound $e) {
+               // deny
+               throw new NotAllowed();
+           }
+       }
 
-        if ((! $allowed) && ($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
-            $targetCompany     = $request->getAttribute('targetCompany');
-            $companyRepository = $this->container->get('repositoryFactory')->create('Company');
-            // deny or allow
-            $allowed = $companyRepository->isParent($actingCompany, $targetCompany);
-        }
+       if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
+           $targetCompany = $request->getAttribute('targetCompany');
+           if ($targetCompany->id === $actingCompany->id) {
+               // deny
+               $allowed = true;
+           }
+       }
 
-        if (! $allowed) {
-            throw new NotAllowed();
-        }
+       if ((! $allowed) && ($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
+           $targetCompany     = $request->getAttribute('targetCompany');
+           $companyRepository = $this->container->get('repositoryFactory')->create('Company');
+           // deny or allow
+           $allowed = $companyRepository->isParent($actingCompany, $targetCompany);
+       }
 
-        return $next($request, $response);
-    }
+       if (! $allowed) {
+           throw new NotAllowed();
+       }
+
+       return $next($request, $response);
+   }
 
     private function allow(ResponseInterface $response) : ResponseInterface {
         return $response->withHeader('Allowed', 'true');

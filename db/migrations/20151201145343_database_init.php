@@ -854,8 +854,8 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        $normalised = $this->table('normalised');
-        $normalised
+        $mapped = $this->table('mapped');
+        $mapped
             ->addColumn('source_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])

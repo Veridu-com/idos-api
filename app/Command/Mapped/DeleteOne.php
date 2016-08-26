@@ -6,26 +6,32 @@
 
 declare(strict_types=1);
 
-namespace App\Command\Tag;
+namespace App\Command\Mapped;
 
 use App\Command\AbstractCommand;
 
 /**
- * Tag "Delete One" Command.
+ * Mapped "Delete One" Command.
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Tag's user.
+     * Mapped's user.
      *
      * @var App\Entity\User
      */
     public $user;
     /**
-     * New tag slug.
+     * Mapped's Source Id.
+     *
+     * @var int
+     */
+    public $sourceId;
+    /**
+     * New mapped name.
      *
      * @var string
      */
-    public $slug;
+    public $name;
 
     /**
      * {@inheritdoc}
@@ -35,8 +41,12 @@ class DeleteOne extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['slug'])) {
-            $this->slug = $parameters['slug'];
+        if (isset($parameters['sourceId'])) {
+            $this->sourceId = $parameters['sourceId'];
+        }
+
+        if (isset($parameters['name'])) {
+            $this->name = $parameters['name'];
         }
 
         return $this;
