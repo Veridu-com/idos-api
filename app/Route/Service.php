@@ -224,7 +224,7 @@ class Service implements RouteInterface {
      * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
      * @apiEndpointURIFragment int serviceId 1
-     * 
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      *

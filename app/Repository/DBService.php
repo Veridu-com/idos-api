@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -85,9 +85,11 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
      * {@inheritdoc}
      */
     public function deleteByCompanyId(int $companyId) : int {
-        $affectedRows = $this->deleteBy([
+        $affectedRows = $this->deleteBy(
+            [
             'company_id' => $companyId
-        ]);
+            ]
+        );
 
         return $affectedRows;
     }
@@ -101,20 +103,23 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
      * @return Illuminate\Database\Query\Builder The mutated $query
      */
     private function scopeQuery(Builder $query, Company $company) : Builder {
-        return $query->where(function ($q) use ($company) {
+        return $query->where(
+            function ($q) use ($company) {
             // or Visible because it's yours
-            $q->orWhere('company_id', $company->id);
+                $q->orWhere('company_id', $company->id);
             // or Visible because access = 'public'
-            $q->orWhere('access', Service::ACCESS_PUBLIC);
+                $q->orWhere('access', Service::ACCESS_PUBLIC);
 
-            if ($company->parentId) {
-                // or Visible because it belongs to parent and has "protected" access
-                $q->orWhere(function ($q1) use ($company) {
-                    $q1->where('company_id', $company->parentId);
-                    $q1->where('access', Service::ACCESS_PROTECTED);
-                });
+                if ($company->parentId) {
+                    // or Visible because it belongs to parent and has "protected" access
+                    $q->orWhere(
+                        function ($q1) use ($company) {
+                            $q1->where('company_id', $company->parentId);
+                            $q1->where('access', Service::ACCESS_PROTECTED);
+                        }
+                    );
+                }
             }
-        });
+        );
     }
-
 }

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -41,5 +41,4 @@ class DBHook extends AbstractDBRepository implements HookInterface {
     public function deleteByCredentialId(int $credentialId) : int {
         return $this->deleteByKey('credential_id', $credentialId);
     }
-
 }

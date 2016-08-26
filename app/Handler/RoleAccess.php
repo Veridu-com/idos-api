@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
@@ -147,5 +147,4 @@ class RoleAccess implements HandlerInterface {
 
         return $this->repository->deleteOne($command->identityId, $command->roleAccessId);
     }
-
 }

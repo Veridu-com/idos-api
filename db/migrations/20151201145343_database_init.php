@@ -152,24 +152,24 @@ class DatabaseInit extends AbstractMigration
             ->create();
 
         // Identity features
-        $features = $this->table('features');
-        $features
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'binary', ['null' => true])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null' => false,
-                    'timezone' => false,
-                    'default' => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addIndex('identity_id')
-            ->addIndex('name')
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
+        // $features = $this->table('features');
+        // $features
+        //     ->addColumn('identity_id', 'integer', ['null' => false])
+        //     ->addColumn('name', 'text', ['null' => false])
+        //     ->addColumn('value', 'binary', ['null' => true])
+        //     ->addColumn(
+        //         'created_at',
+        //         'timestamp',
+        //         [
+        //             'null'     => false,
+        //             'timezone' => false,
+        //             'default'  => 'CURRENT_TIMESTAMP'
+        //         ]
+        //     )
+        //     ->addIndex('identity_id')
+        //     ->addIndex('name')
+        //     ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+        //     ->create();
 
         // Roles
         $features = $this->table('roles');
@@ -694,6 +694,18 @@ class DatabaseInit extends AbstractMigration
             ->addIndex('user_id')
             ->addIndex('resource')
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $features = $this->table('features');
+        $features
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
+            ->addColumn('value', 'binary')
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 

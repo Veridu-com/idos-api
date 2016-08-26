@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -73,8 +73,10 @@ class ServiceHandler extends AbstractEntity {
      * {@inheritdoc}
      */
     public function getReferenceCacheKeys() : array {
-        return array_merge([
-        ],
-        $this->getCacheKeys());
+        return array_merge(
+            [
+            ],
+            $this->getCacheKeys()
+        );
     }
 }

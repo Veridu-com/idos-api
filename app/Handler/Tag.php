@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
@@ -92,12 +92,14 @@ class Tag implements HandlerInterface {
 
         $user = $command->user;
 
-        $tag = $this->repository->create([
+        $tag = $this->repository->create(
+            [
             'user_id'    => $user->id,
             'name'       => $command->name,
             'slug'       => $command->slug,
             'created_at' => time()
-        ]);
+            ]
+        );
 
         try {
             $tag = $this->repository->save($tag);
@@ -135,5 +137,4 @@ class Tag implements HandlerInterface {
 
         return $this->repository->deleteByUserId($user->id);
     }
-
 }

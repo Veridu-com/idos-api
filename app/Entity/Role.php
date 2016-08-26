@@ -11,7 +11,7 @@ namespace App\Entity;
  *
  * @apiEntity schema/role/roleEntity.json
  *
- * @property int 	    $id
+ * @property int        $id
  * @property string     $name
  * @property int        $created_at
  * @FIXME fix comments
@@ -87,8 +87,10 @@ class Role extends AbstractEntity {
      * {@inheritdoc}
      */
     public function getReferenceCacheKeys() : array {
-        return array_merge([
-        ],
-        $this->getCacheKeys());
+        return array_merge(
+            [
+            ],
+            $this->getCacheKeys()
+        );
     }
 }

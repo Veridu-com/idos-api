@@ -542,8 +542,8 @@ class Auth implements MiddlewareInterface
                 $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential'));
             }
 
-            // Stores Target User for future use
-            $request = $request->withAttribute('targetUser', $user);
+        // Stores Target User for future use
+        $request = $request->withAttribute('targetUser', $user);
 
         return $request;
     }
