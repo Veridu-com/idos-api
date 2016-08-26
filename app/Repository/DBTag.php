@@ -53,9 +53,9 @@ class DBTag extends AbstractDBRepository implements TagInterface {
         return new Collection($result);
     }
 
-     /**
-      * {@inheritdoc}
-      */
+    /**
+     * {@inheritdoc}
+     */
     public function deleteByUserId(int $userId) : int {
         return $this->deleteBy(['user_id' => $userId]);
     }

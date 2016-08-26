@@ -123,18 +123,18 @@ class Auth implements MiddlewareInterface
     {
         return [
             self::USER_TOKEN => [
-                'name' => 'UserToken',
-                'label' => 'User Token',
+                'name'    => 'UserToken',
+                'label'   => 'User Token',
                 'handler' => 'handleUserToken',
             ],
             self::COMP_TOKEN => [
-                'name' => 'CompanyToken',
-                'label' => 'Company Token',
+                'name'    => 'CompanyToken',
+                'label'   => 'Company Token',
                 'handler' => 'handleCompanyToken',
             ],
             self::CRED_TOKEN => [
-                'name' => 'CredentialToken',
-                'label' => 'Credential Token',
+                'name'    => 'CredentialToken',
+                'label'   => 'Credential Token',
                 'handler' => 'handleCredentialToken',
             ],
         ];
@@ -150,13 +150,13 @@ class Auth implements MiddlewareInterface
      */
     private function extractAuthorization(ServerRequestInterface $request, string $name)
     {
-        $name = ucfirst($name);
+        $name  = ucfirst($name);
         $regex = sprintf('/^%s ([a-zA-Z0-9]+)$/', $name);
         if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches)) {
             return $matches[1];
         }
 
-        $name = lcfirst($name);
+        $name        = lcfirst($name);
         $queryParams = $request->getQueryParams();
         if (isset($queryParams[$name])) {
             return $queryParams[$name];
@@ -181,7 +181,7 @@ class Auth implements MiddlewareInterface
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (!$token->validate($this->jwtValidation)) {
+        if (! $token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed');
         }
 
@@ -195,12 +195,12 @@ class Auth implements MiddlewareInterface
         }
 
         // JWT Signature Verification
-        if (!$token->verify($this->jwtSigner, $credential->private)) {
+        if (! $token->verify($this->jwtSigner, $credential->private)) {
             throw new AppException('Token Verification Failed');
         }
 
         // Retrieves JWT Subject
-        if (!$token->hasClaim('sub')) {
+        if (! $token->hasClaim('sub')) {
             throw new AppException('Missing Subject Claim');
         }
 
@@ -241,7 +241,7 @@ class Auth implements MiddlewareInterface
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (!$token->validate($this->jwtValidation)) {
+        if (! $token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed');
         }
 
@@ -255,7 +255,7 @@ class Auth implements MiddlewareInterface
         }
 
         // JWT Signature Verification
-        if (!$token->verify($this->jwtSigner, $company->private_key)) {
+        if (! $token->verify($this->jwtSigner, $company->private_key)) {
             throw new AppException('Token Verification Failed');
         }
 
@@ -268,7 +268,7 @@ class Auth implements MiddlewareInterface
             }
 
             $credentialPubKey = $subject[0];
-            $userName = $subject[1];
+            $userName         = $subject[1];
 
             try {
                 $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
@@ -313,7 +313,7 @@ class Auth implements MiddlewareInterface
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (!$token->validate($this->jwtValidation)) {
+        if (! $token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed');
         }
 
@@ -327,12 +327,12 @@ class Auth implements MiddlewareInterface
         }
 
         // JWT Signature Verification
-        if (!$token->verify($this->jwtSigner, $issuerService->private)) {
+        if (! $token->verify($this->jwtSigner, $issuerService->private)) {
             throw new AppException('Token Verification Failed');
         }
 
         // Retrieves JWT Subject
-        if (!$token->hasClaim('sub')) {
+        if (! $token->hasClaim('sub')) {
             throw new AppException('Missing Subject Claim');
         }
         $credentialPubKey = $token->getClaim('sub');
@@ -433,13 +433,13 @@ class Auth implements MiddlewareInterface
         int $authorizationRequirement = self::NONE
     ) {
         $this->credentialRepository = $credentialRepository;
-        $this->userRepository = $userRepository;
-        $this->companyRepository = $companyRepository;
-        $this->serviceRepository = $serviceRepository;
+        $this->userRepository       = $userRepository;
+        $this->companyRepository    = $companyRepository;
+        $this->serviceRepository    = $serviceRepository;
 
-        $this->jwtParser = $jwtParser;
+        $this->jwtParser     = $jwtParser;
         $this->jwtValidation = $jwtValidation;
-        $this->jwtSigner = $jwtSigner;
+        $this->jwtSigner     = $jwtSigner;
 
         $this->authorizationRequirement = $authorizationRequirement;
     }
@@ -467,7 +467,7 @@ class Auth implements MiddlewareInterface
         ResponseInterface $response,
         callable $next
     ) : ResponseInterface {
-        $hasAuthorization = ($this->authorizationRequirement == self::NONE);
+        $hasAuthorization   = ($this->authorizationRequirement == self::NONE);
         $validAuthorization = [];
 
         // Authorization Handling Loop
@@ -511,7 +511,7 @@ class Auth implements MiddlewareInterface
             return $next($request, $response);
         }
 
-        throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: '.implode(', ', $validAuthorization), 403);
+        throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
     }
 
     /**
