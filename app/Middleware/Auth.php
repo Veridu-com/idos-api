@@ -4,9 +4,9 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
-namespace app\Middleware;
+namespace App\Middleware;
 
 use App\Exception\AppException;
 use App\Exception\NotFound;
@@ -26,8 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * Extracts authorization from request and stores Acting/Target
  * Subjects (User and/or Company) to request.
  */
-class Auth implements MiddlewareInterface
-{
+class Auth implements MiddlewareInterface {
     /**
      * Credential Repository.
      *
@@ -119,8 +118,7 @@ class Auth implements MiddlewareInterface
      *
      * @return array
      */
-    private function authorizationSetup() : array
-    {
+    private function authorizationSetup() : array {
         return [
             self::USER_TOKEN => [
                 'name'    => 'UserToken',
@@ -148,8 +146,7 @@ class Auth implements MiddlewareInterface
      *
      * @return string|null
      */
-    private function extractAuthorization(ServerRequestInterface $request, string $name)
-    {
+    private function extractAuthorization(ServerRequestInterface $request, string $name) {
         $name  = ucfirst($name);
         $regex = sprintf('/^%s ([a-zA-Z0-9]+)$/', $name);
         if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches)) {
@@ -171,8 +168,7 @@ class Auth implements MiddlewareInterface
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleUserToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface
-    {
+    private function handleUserToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
@@ -231,8 +227,7 @@ class Auth implements MiddlewareInterface
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCompanyToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface
-    {
+    private function handleCompanyToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterfac {
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
@@ -303,8 +298,7 @@ class Auth implements MiddlewareInterface
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface
-    {
+    private function handleCredentialToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
@@ -365,8 +359,7 @@ class Auth implements MiddlewareInterface
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface
-    {
+    private function handleCredentialPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         try {
             $credential = $this->credentialRepository->findByPubKey($reqKey);
         } catch (NotFound $e) {
@@ -392,8 +385,7 @@ class Auth implements MiddlewareInterface
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCredentialPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface
-    {
+    private function handleCredentialPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         try {
             $credential = $this->credentialRepository->findByPrivKey($reqKey);
         } catch (NotFound $e) {
@@ -522,8 +514,7 @@ class Auth implements MiddlewareInterface
      *
      * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
-    private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface
-    {
+    private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
         // Loads Target User
             if ($username === '_self') {
                 // Self Reference for User Token / User Private Key
@@ -556,8 +547,7 @@ class Auth implements MiddlewareInterface
      *
      * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
-    private function populateRequestCompanies(string $companySlug, ServerRequestInterface $request) : ServerRequestInterface
-    {
+    private function populateRequestCompanies(string $companySlug, ServerRequestInterface $request) : ServerRequestInterface {
         // Loads Target Company
         if ($companySlug === '_self') {
             // Self Reference for Credential Token / Compamny Private Key
