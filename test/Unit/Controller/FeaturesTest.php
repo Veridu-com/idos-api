@@ -77,10 +77,9 @@ class FeaturesTest extends AbstractUnit {
                 $this->returnValue(
                     [
                         'pagination' => 'pagination',
-                        'collection' =>
-                            new Collection(
-                                new FeatureEntity(
-                                    [
+                        'collection' => new Collection(
+                            new FeatureEntity(
+                                [
                                         'name'       => 'name',
                                         'slug'       => 'slug',
                                         'value'      => 'value',
@@ -88,9 +87,9 @@ class FeaturesTest extends AbstractUnit {
                                         'created_at' => time(),
                                         'updated_at' => null
                                     ],
-                                    $optimus
-                                )
+                                $optimus
                             )
+                        )
                     ]
                 )
             );

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -47,7 +47,7 @@ interface DigestedInterface extends RepositoryInterface {
      *
      * @param int    $sourceId
      * @param string $name
-     * 
+     *
      * @throws App\Exception\NotFound
      *
      * @return App\Entity\Digested

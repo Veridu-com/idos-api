@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Command\Permission;
 
 use App\Command\Permission\DeleteAll;

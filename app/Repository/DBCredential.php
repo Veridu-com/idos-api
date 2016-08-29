@@ -72,8 +72,6 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
      * {@inheritdoc}
      */
     public function generateToken(string $subjectCredentialPubKey, string $issuerCredentialPrivKey, string $issuerCredentialPubKey) : string {
-        $jwtParser     = new JWT\Parser();
-        $jwtValidation = new JWT\ValidationData();
         $jwtSigner     = new JWT\Signer\Hmac\Sha256();
         $jwtBuilder    = new JWT\Builder();
 

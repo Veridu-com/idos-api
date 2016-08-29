@@ -28,7 +28,7 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Feature's last updated unixtime",
+            "description": "Feature's last update unixtime",
             "type": ["integer", "null"]
         }
     },
@@ -39,6 +39,7 @@
         "name",
         "slug",
         "user_id",
-        "created_at"
+        "created_at",
+        "updated_at"
     ]
 }

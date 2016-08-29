@@ -14,7 +14,7 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "User's last updated unixtime",
+            "description": "User's last update unixtime",
             "type": ["integer", "null"]
         }
     },

@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Credential as CredentialEntity;
@@ -54,7 +56,7 @@ class DBCredentialTest extends AbstractUnit {
         $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
         $this->setExpectedException(NotFound::class);
-        $dbCredential->findByPubKey(1);
+        $dbCredential->findByPubKey('x');
     }
 
     public function testFindByPubKey() {
@@ -93,7 +95,8 @@ class DBCredentialTest extends AbstractUnit {
 
         $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
-        $this->assertEquals($array, $dbCredential->findByPubKey(1)->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $dbCredential->findByPubKey('x')->toArray());
     }
 
     public function testGetAllByCompanyIdEmpty() {
@@ -156,10 +159,12 @@ class DBCredentialTest extends AbstractUnit {
             ->method('get')
             ->will(
                 $this->returnValue(
-                    new Collection([
-                        new CredentialEntity($array[0], $this->optimus),
-                        new CredentialEntity($array[1], $this->optimus)
-                    ])
+                    new Collection(
+                        [
+                            new CredentialEntity($array[0], $this->optimus),
+                            new CredentialEntity($array[1], $this->optimus)
+                        ]
+                    )
                 )
             );
         $connectionMock = $this->getMockBuilder(Connection::class)
@@ -175,7 +180,7 @@ class DBCredentialTest extends AbstractUnit {
         $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
         $this->assertInstanceOf(Collection::class, $dbCredential->getAllByCompanyId(1));
-        $this->assertEquals($array, $dbCredential->getAllByCompanyId(1)->toArray());
+        $this->assertSame($array, $dbCredential->getAllByCompanyId(1)->toArray());
     }
 
     public function testDeleteByCompanyId() {
@@ -203,7 +208,7 @@ class DBCredentialTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
-        $this->assertEquals(3, $dbCredential->deleteByCompanyId(1));
+        $this->assertSame(3, $dbCredential->deleteByCompanyId(1));
     }
 
     public function testDeleteByPubKey() {
@@ -231,7 +236,6 @@ class DBCredentialTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
-        $this->assertEquals(2, $dbCredential->deleteByPubKey(1));
+        $this->assertSame(2, $dbCredential->deleteByPubKey('x'));
     }
-
 }

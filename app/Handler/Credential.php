@@ -39,7 +39,7 @@ class Credential implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Credential(
                 $container
                     ->get('repositoryFactory')
@@ -76,13 +76,13 @@ class Credential implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : CredentialEntity {
         $this->validator->assertName($command->name);
-        $this->validator->assertProduction($command->production);
-        $this->validator->assertCompanyId($command->companyId);
+        $this->validator->assertFlag($command->production);
+        $this->validator->assertId($command->companyId);
 
         $credential = $this->repository->create(
             [
                 'name'       => $command->name,
-                'production' => $this->validator->productionValue($command->production),
+                'production' => $this->validator->validateFlag($command->production),
                 'company_id' => $command->companyId,
                 'created_at' => time()
             ]

@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Credential;
 
 use Slim\Http\Response;
@@ -36,12 +38,10 @@ class UpdateOneTest extends AbstractFunctional {
         $request = $this->createRequest($environment, json_encode(['name' => 'New Key Name']));
 
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertSame('New Key Name', $body['data']['name']);
         /*
@@ -70,12 +70,10 @@ class UpdateOneTest extends AbstractFunctional {
         $request = $this->createRequest($environment, json_encode(['name' => 'New Key Name']));
 
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*

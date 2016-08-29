@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -60,10 +60,10 @@ class Mapped implements ControllerInterface {
     /**
      * Retrieve a complete list of the data mapped by a given source.
      *
-     * @apiEndpointParam path string userName
-     * @apiEndpointParam path int sourceId
-     * @apiEndpointParam query string names
-     * @apiEndpointResponse 200 schema/mapped/listAll.json
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointURIFragment int    sourceId 1
+     * @apiEndpointParam       query  string   names firstName
+     * @apiEndpointResponse    200    schema/mapped/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -100,6 +100,8 @@ class Mapped implements ControllerInterface {
     /**
      * Created a new mapped data for a given source.
      *
+     * @apiEndpointRequiredParam body   string     name  firstName
+     * @apiEndpointRequiredParam body   string     value John
      * @apiEndpointResponse 201 schema/mapped/mappedEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -135,8 +137,9 @@ class Mapped implements ControllerInterface {
     /**
      * Updates a mapped data from the given source.
      *
-     * @apiEndpointRequiredParam body string value
-     * @apiEndpointResponse 200 schema/mapped/updateOne.json
+     * @apiEndpointURIFragment   string mappedName firstName
+     * @apiEndpointRequiredParam body   string     value     John
+     * @apiEndpointResponse      200    schema/mapped/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -170,9 +173,9 @@ class Mapped implements ControllerInterface {
     /**
      * Retrieves a mapped data from the given source.
      *
-     * @apiEndpointParam path string userName
-     * @apiEndpointParam path int sourceId
-     * @apiEndpointParam query string mappedName
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointURIFragment int    sourceId 1
+     * @apiEndpointParam       query  string   mappedName firstName
      * @apiEndpointResponse 200 schema/mapped/mappedEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -232,9 +235,9 @@ class Mapped implements ControllerInterface {
     /**
      * Deletes a mapped data from a given source.
      *
-     * @apiEndpointParam path string userName
-     * @apiEndpointParam path int sourceId
-     * @apiEndpointParam query string mappedName
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointURIFragment int    sourceId 1
+     * @apiEndpointURIFragment string mappedName firstName
      * @apiEndpointResponse 200 schema/mapped/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

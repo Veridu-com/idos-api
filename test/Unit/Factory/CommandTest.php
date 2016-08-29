@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Factory;
 
 use App\Factory\Command;
@@ -25,8 +27,8 @@ class CommandTest extends AbstractUnit {
         }
     }
 
-    private function getCommandNames()
-    {
+    private function getCommandNames() {
+
         $commandPaths = glob(__DIR__ . '/../../../app/Command/*/*.php');
         $commands     = [];
         foreach ($commandPaths as $commandPath) {

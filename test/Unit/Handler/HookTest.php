@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Handler;
 
 use App\Command\Hook\CreateNew;
@@ -294,12 +296,14 @@ class HookTest extends AbstractUnit {
 
         $result = $handler->handleUpdateOne($command);
         $this->assertInstanceOf(HookEntity::class, $result);
-        $this->assertSame([
+        $this->assertSame(
+            [
             'trigger'    => 'trigger.testChanged',
             'url'        => 'http://example.com/changed.php',
             'subscribed' => true,
             'created_at' => $hookEntity->created_at
-        ], $result);
+            ], $result
+        );
     }
 
     public function testHandleDeleteOne() {
@@ -352,7 +356,7 @@ class HookTest extends AbstractUnit {
         $commandMock->credentialPubKey = '4c9184f37cff01bcdc32dc486ec36961';
         $commandMock->company          = $this->getCompanyEntity();
 
-        $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(1, $handler->handleDeleteOne($commandMock));
     }
 
     public function testHandleDeleteAll() {
@@ -403,6 +407,6 @@ class HookTest extends AbstractUnit {
         $commandMock->credentialPubKey = '4c9184f37cff01bcdc32dc486ec36961';
         $commandMock->company          = $this->getCompanyEntity();
 
-        $this->assertEquals(1, $handler->handleDeleteAll($commandMock));
+        $this->assertSame(1, $handler->handleDeleteAll($commandMock));
     }
 }

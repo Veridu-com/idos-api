@@ -37,6 +37,12 @@ class Companies implements ControllerInterface {
      * @var App\Factory\Command
      */
     private $commandFactory;
+    /**
+     * Optimus instance.
+     *
+     * @var \Jenssegers\Optimus\Optimus
+     */
+    private $optimus;
 
     /**
      * Class constructor.

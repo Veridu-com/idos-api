@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Entity;
 
 use App\Entity\ServiceHandler;
@@ -33,7 +35,8 @@ class ServiceHandlerTest extends AbstractUnit {
     public function testSerialize() {
         $abstractMock = $this->getMockBuilder(ServiceHandler::class)
             ->setMethods(null)
-            ->setConstructorArgs([
+            ->setConstructorArgs(
+                [
                 array_merge(
                     [
                         'companyId'    => 1,
@@ -45,7 +48,8 @@ class ServiceHandlerTest extends AbstractUnit {
                     $this->getAttributes()
                 ),
                 $this->optimus
-            ])
+                ]
+            )
             ->getMockForAbstractClass();
 
         $array = $abstractMock->serialize();
@@ -74,7 +78,8 @@ class ServiceHandlerTest extends AbstractUnit {
     public function testToArray() {
         $abstractMock = $this->getMockBuilder(ServiceHandler::class)
             ->setMethods(null)
-            ->setConstructorArgs([
+            ->setConstructorArgs(
+                [
                 array_merge(
                     [
                         'companyId' => 1,
@@ -84,7 +89,8 @@ class ServiceHandlerTest extends AbstractUnit {
                     $this->getAttributes()
                 ),
                 $this->optimus
-            ])
+                ]
+            )
             ->getMockForAbstractClass();
 
         $array = $abstractMock->toArray();

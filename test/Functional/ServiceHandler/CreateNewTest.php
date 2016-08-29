@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\ServiceHandler;
 
 use Slim\Http\Response;
@@ -41,11 +43,10 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $this->assertEquals(201, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertNotEmpty($body['data']);
 
@@ -57,7 +58,7 @@ class CreateNewTest extends AbstractFunctional {
                 'serviceHandler/createNew.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
     }
 }

@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Service;
 
 use Test\Functional\AbstractFunctional;
@@ -22,19 +24,17 @@ class DeleteAllTest extends AbstractFunctional {
         // then creates the DELETE request
         $request  = $this->createRequest();
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
-        // success assertions
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
         // checks if listAll retrived the number of deleted objects
-        $this->assertEquals(count($this->entities), $body['deleted']);
+        $this->assertSame(count($this->entities), $body['deleted']);
         // refreshes the $entities prop
         $this->populate($this->uri);
         // checks if all entities were deleted
-        $this->assertEquals(0, sizeof($this->entities));
+        $this->assertSame(0, count($this->entities));
 
         /*
          * Validates Json Schema with Json Response
@@ -47,5 +47,4 @@ class DeleteAllTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }

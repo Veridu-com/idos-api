@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Controller;
 
 use App\Command\Company\CreateNew;
@@ -99,7 +101,8 @@ class CompaniesTest extends AbstractUnit {
         $requestMock
             ->method('getAttribute')
             ->will(
-                $this->returnValue($this->getEntity(0)));
+                $this->returnValue($this->getEntity(0))
+            );
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -250,7 +253,8 @@ class CompaniesTest extends AbstractUnit {
             ->expects($this->once())
             ->method('getAttribute')
             ->will(
-                $this->returnValue($this->getEntity(0)));
+                $this->returnValue($this->getEntity(0))
+            );
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -298,7 +302,8 @@ class CompaniesTest extends AbstractUnit {
             ->expects($this->once())
             ->method('getAttribute')
             ->will(
-                $this->returnValue($this->getEntity(0)));
+                $this->returnValue($this->getEntity(0))
+            );
         $requestMock
             ->expects($this->once())
             ->method('getParsedBody')

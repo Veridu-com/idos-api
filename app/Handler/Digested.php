@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
@@ -79,12 +79,14 @@ class Digested implements HandlerInterface {
 
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
 
-        $digested = $this->repository->create([
+        $digested = $this->repository->create(
+            [
             'source_id'  => $command->sourceId,
             'name'       => $command->name,
             'value'      => $command->value,
             'created_at' => time()
-        ]);
+            ]
+        );
 
         $digested = $this->repository->save($digested);
 
@@ -137,5 +139,4 @@ class Digested implements HandlerInterface {
 
         return $this->repository->deleteBySourceId($command->sourceId);
     }
-
 }
