@@ -39,6 +39,26 @@ interface ServiceInterface extends RepositoryInterface {
     public function findOne(int $serviceId, Company $company) : Service;
 
     /**
+     * Finds a Service based on its Public Key.
+     *
+     * @param string $pubKey
+     *
+     * @throws App\Exception\NotFound
+     *
+     * @return App\Entity\Service
+     */
+    public function findByPubKey(string $pubKey) : Service;
+
+    /**
+     * Finds a Service by its private key.
+     *
+     * @param string $key The key
+     *
+     * @return App\Entity\Service
+     */
+    public function findByPrivKey(string $key) : Service;
+
+    /**
      * Deletes one Service.
      *
      * @param int                 $serviceId The service identifier

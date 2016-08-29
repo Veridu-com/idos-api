@@ -79,5 +79,5 @@ interface CredentialInterface extends RepositoryInterface {
      * @param string $issuerCredentialPrivKey The private key of issuer Credential
      * @param string $issuerCredentialPubKey  The public key of issuer Credential
      */
-    public function generateToken(string $subjectCredentialPubKey, string $issuerCredentialPrivKey, string $issuerCredentialPubKey) : string;
+    public function generateToken($credentialPubKey, string $servicePrivKey, string $servicePubKey) : string;
 }

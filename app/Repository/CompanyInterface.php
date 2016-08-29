@@ -65,4 +65,13 @@ interface CompanyInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByParentId(int $parentId) : int;
+
+    /**
+     * Generates a signed JWT.
+     *
+     * @param string $subject        The subject
+     * @param string $companyPrivKey The company priv key
+     * @param string $companyPubKey  The company pub key
+     */
+    public static function generateToken($subject, string $companyPrivKey, string $companyPubKey) : string;
 }

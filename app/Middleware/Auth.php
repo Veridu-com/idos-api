@@ -12,8 +12,8 @@ use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\CompanyInterface;
 use App\Repository\CredentialInterface;
-use App\Repository\UserInterface;
 use App\Repository\ServiceInterface;
+use App\Repository\UserInterface;
 use Lcobucci\JWT\Parser as JWTParser;
 use Lcobucci\JWT\Signer\Hmac\Sha256 as JWTSigner;
 use Lcobucci\JWT\ValidationData as JWTValidation;
@@ -203,6 +203,11 @@ class Auth implements MiddlewareInterface {
 
         $userName = $token->getClaim('sub');
 
+        //@FIXME delegate this verification to a validator
+        if (preg_match('/[^a-zA-Z0-9_-]+/', $userName) === 1) {
+            throw new AppException('Invalid Subject Claim');
+        }
+
         // If it's a new user, creates it
         $actingUser = $this->userRepository->findOrCreate($userName, $credential->id);
 
@@ -228,7 +233,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
-    private function handleCompanyToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterfac {
+    private function handleCompanyToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
@@ -247,13 +252,16 @@ class Auth implements MiddlewareInterface {
         try {
             $company = $this->companyRepository->findByPubKey($companyPubKey);
         } catch (NotFound $e) {
-            throw new AppException('Invalid Credential');
+            throw new AppException('Invalid Company');
         }
 
         // JWT Signature Verification
         if (! $token->verify($this->jwtSigner, $company->private_key)) {
             throw new AppException('Token Verification Failed');
         }
+
+        $actingUser = null;
+        $credential = null;
 
         // Retrieves JWT Subject
         if ($token->hasClaim('sub')) {
@@ -272,12 +280,14 @@ class Auth implements MiddlewareInterface {
                 throw new AppException('Invalid Credential Public Key');
             }
 
+            //@FIXME delegate this verification to a validator
+            if (preg_match('/[^a-zA-Z0-9_-]+/', $userName) === 1) {
+                throw new AppException('Invalid Subject Username');
+            }
+
             // If it's a new user, creates it
             $actingUser = $this->userRepository->findOrCreate($userName, $credential->id);
         }
-
-        // Retrieves Credential's owner
-        $company = $this->companyRepository->find($credential->companyId);
 
         return $request
 
@@ -318,7 +328,7 @@ class Auth implements MiddlewareInterface {
         try {
             $issuerService = $this->serviceRepository->findByPubKey($servicePubKey);
         } catch (NotFound $e) {
-            throw new AppException('Invalid Issuer Service');
+            throw new AppException('Invalid Service');
         }
 
         // JWT Signature Verification
@@ -327,7 +337,7 @@ class Auth implements MiddlewareInterface {
         }
 
         // Retrieves JWT Subject
-        if (! $token->hasClaim('sub')) {
+        if (! $token->hasClaim('sub') || ! $token->getClaim('sub')) {
             throw new AppException('Missing Subject Claim');
         }
 
@@ -336,7 +346,7 @@ class Auth implements MiddlewareInterface {
         try {
             $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
         } catch (NotFound $e) {
-            throw new AppException('Invalid Subject Credential');
+            throw new AppException('Invalid Credential');
         }
 
         // Retrieves Credential's Company

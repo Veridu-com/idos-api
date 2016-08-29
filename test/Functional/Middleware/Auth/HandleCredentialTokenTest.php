@@ -7,11 +7,11 @@
 namespace Test\Functional\Middleware\Auth;
 
 use App\Middleware\Auth;
-use App\Repository\DBUser;
+use App\Repository\DBCredential;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class HandleUserTokenTest extends AbstractAuthFunctional {
+class HandleCredentialTokenTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->httpMethod = 'GET';
         $this->uri        = '/';
@@ -19,28 +19,28 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
     }
 
     public function testSuccess() {
-        $token = DBUser::generateToken('JohnDoe', md5('private'), md5('public'));
+        $token = DBCredential::generateToken(md5('public'), md5('private-1'), md5('public-1'));
 
         $container      = $this->getApp()->getContainer();
         $authMiddleware = $container->get('authMiddleware');
         $this->getApp()
             ->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
-                $actingUser = $request->getAttribute('actingUser');
+                $service = $request->getAttribute('service');
                 $company = $request->getAttribute('company');
                 $credential = $request->getAttribute('credential');
 
                 $data = [
-                    'actingUser' => $actingUser->serialize(),
+                    'service'    => $service->serialize(),
                     'company'    => $company->serialize(),
                     'credential' => $credential->serialize()
                 ];
 
                 return $response->withJson($data, 200);
             })
-            ->add($authMiddleware(Auth::USER_TOKEN));
+            ->add($authMiddleware(Auth::CRED_TOKEN));
 
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'userToken=' . $token
+            'QUERY_STRING' => 'credentialToken=' . $token
         ]));
 
         $response = $this->process($request);
@@ -49,8 +49,8 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
         $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
 
-        $this->assertSame('JohnDoe', $body['actingUser']['username']);
-        $this->assertSame($body['credential']['id'], $body['actingUser']['credential_id']);
+        $this->assertSame(md5('public-1'), $body['service']['public']);
+        $this->assertSame('secure:' . md5('private-1'), $body['service']['private']);
 
         $this->assertSame(md5('public'), $body['credential']['public']);
         $this->assertSame('secure:' . md5('private'), $body['credential']['private']);
@@ -66,10 +66,10 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
             ->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
                 return $response;
             })
-            ->add($authMiddleware(Auth::USER_TOKEN));
+            ->add($authMiddleware(Auth::CRED_TOKEN));
 
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'userToken=' . $token
+            'QUERY_STRING' => 'credentialToken=' . $token
         ]));
 
         $response = $this->process($request);
@@ -81,8 +81,8 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
         $this->assertSame('Invalid Token', $body['error']['message']);
     }
 
-    public function testInvalidCredential() {
-        $token = DBUser::generateToken('JohnDoe', md5('private'), md5('invalid-public'));
+    public function testInvalidService() {
+        $token = DBCredential::generateToken(md5('public'), md5('private-1'), md5('invalid-service-public'));
 
         $container      = $this->getApp()->getContainer();
         $authMiddleware = $container->get('authMiddleware');
@@ -90,10 +90,10 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
             ->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
                 return $response;
             })
-            ->add($authMiddleware(Auth::USER_TOKEN));
+            ->add($authMiddleware(Auth::CRED_TOKEN));
 
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'userToken=' . $token
+            'QUERY_STRING' => 'credentialToken=' . $token
         ]));
 
         $response = $this->process($request);
@@ -102,11 +102,11 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
         $this->assertNotEmpty($body);
         $this->assertSame(500, $response->getStatusCode());
         $this->assertFalse($body['status']);
-        $this->assertSame('Invalid Credential', $body['error']['message']);
+        $this->assertSame('Invalid Service', $body['error']['message']);
     }
 
     public function testInvalidTokenSign() {
-        $token = DBUser::generateToken('JohnDoe', md5('invalid-private'), md5('public'));
+        $token = DBCredential::generateToken(md5('public'), md5('invalid-service-private'), md5('public-1'));
 
         $container      = $this->getApp()->getContainer();
         $authMiddleware = $container->get('authMiddleware');
@@ -114,10 +114,10 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
             ->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
                 return $response;
             })
-            ->add($authMiddleware(Auth::USER_TOKEN));
+            ->add($authMiddleware(Auth::CRED_TOKEN));
 
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'userToken=' . $token
+            'QUERY_STRING' => 'credentialToken=' . $token
         ]));
 
         $response = $this->process($request);
@@ -130,7 +130,7 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
     }
 
     public function testNullSubject() {
-        $token = DBUser::generateToken(null, md5('private'), md5('public'));
+        $token = DBCredential::generateToken(null, md5('private-1'), md5('public-1'));
 
         $container      = $this->getApp()->getContainer();
         $authMiddleware = $container->get('authMiddleware');
@@ -138,10 +138,10 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
             ->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
                 return $response;
             })
-            ->add($authMiddleware(Auth::USER_TOKEN));
+            ->add($authMiddleware(Auth::CRED_TOKEN));
 
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'userToken=' . $token
+            'QUERY_STRING' => 'credentialToken=' . $token
         ]));
 
         $response = $this->process($request);
@@ -154,7 +154,7 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
     }
 
     public function testEmptySubject() {
-        $token = DBUser::generateToken('', md5('private'), md5('public'));
+        $token = DBCredential::generateToken('', md5('private-1'), md5('public-1'));
 
         $container      = $this->getApp()->getContainer();
         $authMiddleware = $container->get('authMiddleware');
@@ -162,10 +162,10 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
             ->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
                 return $response;
             })
-            ->add($authMiddleware(Auth::USER_TOKEN));
+            ->add($authMiddleware(Auth::CRED_TOKEN));
 
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'userToken=' . $token
+            'QUERY_STRING' => 'credentialToken=' . $token
         ]));
 
         $response = $this->process($request);
@@ -178,7 +178,7 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
     }
 
     public function testInvalidSubject() {
-        $token = DBUser::generateToken('invalid*subject', md5('private'), md5('public'));
+        $token = DBCredential::generateToken(md5('invalid-credential-public'), md5('private-1'), md5('public-1'));
 
         $container      = $this->getApp()->getContainer();
         $authMiddleware = $container->get('authMiddleware');
@@ -186,10 +186,10 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
             ->get('/', function (ServerRequestInterface $request, ResponseInterface $response) {
                 return $response;
             })
-            ->add($authMiddleware(Auth::USER_TOKEN));
+            ->add($authMiddleware(Auth::CRED_TOKEN));
 
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'userToken=' . $token
+            'QUERY_STRING' => 'credentialToken=' . $token
         ]));
 
         $response = $this->process($request);
@@ -198,6 +198,6 @@ class HandleUserTokenTest extends AbstractAuthFunctional {
         $this->assertNotEmpty($body);
         $this->assertSame(500, $response->getStatusCode());
         $this->assertFalse($body['status']);
-        $this->assertSame('Invalid Subject Claim', $body['error']['message']);
+        $this->assertSame('Invalid Credential', $body['error']['message']);
     }
 }
