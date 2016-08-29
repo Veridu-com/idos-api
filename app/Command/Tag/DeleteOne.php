@@ -35,7 +35,7 @@ class DeleteOne extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if(isset($parameters['slug'])) {
+        if (isset($parameters['slug'])) {
             $this->slug = $parameters['slug'];
         }
 

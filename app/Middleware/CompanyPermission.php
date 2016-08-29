@@ -37,12 +37,12 @@ class CompanyPermission implements MiddlewareInterface {
     }
 
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     * @param callable                                 $next
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
+    * @param \Psr\Http\Message\ServerRequestInterface $request
+    * @param \Psr\Http\Message\ResponseInterface      $response
+    * @param callable                                 $next
+    *
+    * @return \Psr\Http\Message\ResponseInterface
+    */
     public function __invoke(
         ServerRequestInterface $request,
         ResponseInterface $response,
@@ -55,7 +55,7 @@ class CompanyPermission implements MiddlewareInterface {
         $routeName            = $request->getAttribute('route')->getName();
         $response             = $this->allow($response);
 
-        $allowed = false;
+         $allowed = false;
 
         if (($this->permissionType & self::PUBLIC_ACTION) === self::PUBLIC_ACTION) {
             $allowed = true;
@@ -90,7 +90,7 @@ class CompanyPermission implements MiddlewareInterface {
             throw new NotAllowed();
         }
 
-        return $next($request, $response);
+         return $next($request, $response);
     }
 
     private function allow(ResponseInterface $response) : ResponseInterface {
