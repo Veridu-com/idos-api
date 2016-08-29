@@ -50,9 +50,9 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
         return $this->castHydrate($items);
     }
 
-     /**
-      * {@inheritdoc}
-      */
+    /**
+     * {@inheritdoc}
+     */
     public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
         $items = new Collection();
         $items = $items->merge(

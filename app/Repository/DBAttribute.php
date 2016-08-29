@@ -4,30 +4,30 @@
  * All rights reserved.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Tag;
+use App\Entity\Attribute;
 use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
- * Database-based Tag Repository Implementation.
+ * Database-based Attribute Repository Implementation.
  */
-class DBTag extends AbstractDBRepository implements TagInterface {
+class DBAttribute extends AbstractDBRepository implements AttributeInterface {
     /**
      * The table associated with the repository.
      *
      * @var string
      */
-    protected $tableName = 'tags';
+    protected $tableName = 'attributes';
     /**
      * The entity associated with the repository.
      *
      * @var string
      */
-    protected $entityName = 'Tag';
+    protected $entityName = 'Attribute';
 
     /**
      * {@inheritdoc}
@@ -39,13 +39,13 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndTagSlugs(int $userId, array $tags) : Collection {
+    public function getAllByUserIdAndNames(int $userId, array $names) : Collection {
         $result = $this->query()
-            ->selectRaw('tags.*')
+            ->selectRaw('attributes.*')
             ->where('user_id', '=', $userId);
 
-        if(! empty($tags)) {
-            $result = $result->whereIn('slug', $tags);
+        if(! empty($names)) {
+            $result = $result->whereIn('name', $names);
         }
 
         $result = $result->get();
@@ -63,21 +63,20 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByUserIdAndSlug(int $userId, string $name) : Tag {
-        $result = $this->findBy(['user_id' => $userId, 'slug' => $name]);
+    public function findOneByUserIdAndName(int $userId, string $name) : Attribute {
+        $result = $this->findBy(['user_id' => $userId, 'name' => $name]);
 
         if($result->isEmpty()) {
             throw new NotFound();
         }
 
         return $result->first();
-
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteOneByUserIdAndSlug(int $userId, string $name) : int {
-        return $this->deleteBy(['user_id' => $userId, 'slug' => $name]);
+    public function deleteOneByUserIdAndName(int $userId, string $name) : int {
+        return $this->deleteBy(['user_id' => $userId, 'name' => $name]);
     }
 }

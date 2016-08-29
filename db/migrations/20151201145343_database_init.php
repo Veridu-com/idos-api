@@ -79,35 +79,6 @@ class DatabaseInit extends AbstractMigration {
          * IDENTITY RELATED TABLES
          *
          */
-
-        // Identity attributes values
-        $attributes = $this->table('attributes');
-        $attributes
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'binary', ['null' => true])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addIndex('identity_id')
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         // Identity flags
         $flags = $this->table('flags');
         $flags
@@ -211,40 +182,6 @@ class DatabaseInit extends AbstractMigration {
             ->create();
 
         $roleLogs = $this->table('role_logs');
-
-        /*
-         *
-         * ATTRIBUTE RELATED TABLES
-         *
-         */
-
-        // Attribute scores
-        $scores = $this->table('scores');
-        $scores
-            ->addColumn('attribute_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'float', ['null' => false, 'default' => 0.0])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP'
-                ]
-            )
-            ->addIndex('attribute_id')
-            ->addForeignKey('attribute_id', 'attributes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
 
         /*
          *
@@ -603,6 +540,34 @@ class DatabaseInit extends AbstractMigration {
          *
          */
 
+        // Identity attributes values
+        $attributes = $this->table('attributes');
+        $attributes
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('value', 'binary', ['null' => true])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         // User sources
         $sources = $this->table('sources');
         $sources
@@ -701,6 +666,40 @@ class DatabaseInit extends AbstractMigration {
             ->addIndex('user_id')
             ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        /*
+         *
+         * ATTRIBUTE RELATED TABLES
+         *
+         */
+
+        // Attribute scores
+        $scores = $this->table('scores');
+        $scores
+            ->addColumn('attribute_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('value', 'float', ['null' => false, 'default' => 0.0])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP'
+                ]
+            )
+            ->addIndex('attribute_id')
+            ->addForeignKey('attribute_id', 'attributes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         /*
