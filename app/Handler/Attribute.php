@@ -13,9 +13,14 @@ use App\Command\Attribute\DeleteAll;
 use App\Command\Attribute\DeleteOne;
 use App\Command\Attribute\UpdateOne;
 use App\Entity\Attribute as AttributeEntity;
+use App\Event\Attribute\Created;
+use App\Event\Attribute\Deleted;
+use App\Event\Attribute\DeletedMulti;
+use App\Event\Attribute\Updated;
 use App\Repository\AttributeInterface;
 use App\Validator\Attribute as AttributeValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Attribute commands.
@@ -33,6 +38,12 @@ class Attribute implements HandlerInterface {
      * @var App\Validator\Attribute
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var \League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -45,7 +56,9 @@ class Attribute implements HandlerInterface {
                     ->create('Attribute'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Attribute')
+                    ->create('Attribute'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -60,10 +73,12 @@ class Attribute implements HandlerInterface {
      */
     public function __construct(
         AttributeInterface $repository,
-        AttributeValidator $validator
+        AttributeValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -84,7 +99,13 @@ class Attribute implements HandlerInterface {
             'created_at' => time()
         ]);
 
-        $attribute = $this->repository->save($attribute);
+        try {
+            $attribute = $this->repository->save($attribute);
+            $event = new Created($attribute);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while creating an attribute');
+        }
 
         return $attribute;
     }
@@ -101,7 +122,14 @@ class Attribute implements HandlerInterface {
 
         $attribute        = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
         $attribute->value = $command->value;
-        $attribute        = $this->repository->save($attribute);
+
+        try {
+            $attribute = $this->repository->save($attribute);
+            $event = new Updated($attribute);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while updating attribute');
+        }
 
         return $attribute;
     }
@@ -116,7 +144,13 @@ class Attribute implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertName($command->name);
 
-        return $this->repository->deleteOneByUserIdAndName($command->user->id, $command->name);
+        $attribute        = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
+
+        try {
+            $affectedRows = $this->repository->deleteOneByUserIdAndName($command->user->id, $command->name);
+            $event = new Deleted($attribute);
+            $this->emitter->emit($event);
+        }
     }
 
     /**
