@@ -70,7 +70,7 @@ class Members implements ControllerInterface {
     /**
      * Lists all Members that belongs to the Target Company.
      *
-     * @apiEndpointParam path string companySlug
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointResponse 200 schema/member/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -146,7 +146,7 @@ class Members implements ControllerInterface {
     /**
      * Updates one Member of the Target Company based on the userId.
      *
-     * @apiEndpointRequiredParam body string role
+     * @apiEndpointRequiredParam body string role company:owner
      * @apiEndpointResponse 200 schema/member/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -179,8 +179,8 @@ class Members implements ControllerInterface {
     /**
      * Retrieves one Members of the Target Company based on the userName.
      *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string userId
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int    userId 1
      * @apiEndpointResponse 200 schema/member/memberEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -236,8 +236,8 @@ class Members implements ControllerInterface {
     /**
      * Deletes one Member of the Target Company based on the userId.
      *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string userId
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int    userId 1
      * @apiEndpointResponse 200 schema/member/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

@@ -43,7 +43,7 @@ class Company implements HandlerInterface {
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     protected $emitter;
 
@@ -51,7 +51,7 @@ class Company implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Company(
                 $container
                     ->get('repositoryFactory')
@@ -68,8 +68,9 @@ class Company implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CompanyInterface
-     * @param App\Validator\Company
+     * @param App\Repository\CompanyInterface $repository
+     * @param App\Validator\Company           $validator
+     * @param \League\Event\Emitter           $emitter
      *
      * @return void
      */
@@ -106,8 +107,7 @@ class Company implements HandlerInterface {
         $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
 
         if ($this->repository->save($company)) {
-            $event = new Created($company);
-            $this->emitter->emit($event);
+            $this->emitter->emit(new Created($company));
         } else {
             throw new AppException('Error while creating a company');
         }
@@ -148,6 +148,7 @@ class Company implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
+        $this->validator->assertCompany($command->company);
         $this->validator->assertId($command->company->id);
 
         $deletedAmount = $this->repository->delete($command->company->id);

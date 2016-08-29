@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Member as MemberEntity;
@@ -59,7 +61,6 @@ class DBMemberTest extends AbstractUnit {
     }
 
     public function testGetAllBycompanyId() {
-        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['join', 'where', 'get', 'whereIn'])
@@ -76,7 +77,8 @@ class DBMemberTest extends AbstractUnit {
         $queryMock
             ->method('get')
             ->will(
-                $this->returnValue([
+                $this->returnValue(
+                    [
                     new MemberEntity(
                         [
                             'id'              => 1,
@@ -91,8 +93,10 @@ class DBMemberTest extends AbstractUnit {
                         ],
                         $this->optimus
                     )
-                ])
+                    ]
+                )
             );
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -103,23 +107,30 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $result   = $dbMember->getAllByCompanyId(1)->first();
+        $dbMember = new DBMember(
+            new Entity($this->optimus),
+            $this->optimus,
+            $connectionMock
+        );
+        $result = $dbMember->getAllByCompanyId(1)->first();
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
     public function testGetAllBycompanyIdAndRole() {
-        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'get'])
+            ->setMethods(['join', 'where', 'get'])
             ->getMock();
+        $queryMock
+            ->method('join')
+            ->will($this->returnValue($queryMock));
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
             ->will($this->returnValue([$this->getEntity()]));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -130,17 +141,24 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $result   = $dbMember->getAllByCompanyIdAndRole(1, ['admin'])->first();
+
+        $dbMember = new DBMember(
+            new Entity($this->optimus),
+            $this->optimus,
+            $connectionMock
+        );
+        $result = $dbMember->getAllByCompanyIdAndRole(1, ['admin'])->first();
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
     public function testFindOneNotFound() {
-        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'get', 'first'])
+            ->setMethods(['join', 'where', 'get', 'first'])
             ->getMock();
+        $queryMock
+            ->method('join')
+            ->will($this->returnValue($queryMock));
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
@@ -161,17 +179,24 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
+
+        $dbMember = new DBMember(
+            new Entity($this->optimus),
+            $this->optimus,
+            $connectionMock
+        );
         $this->setExpectedException(NotFound::class);
         $dbMember->findOne(0, 1);
     }
 
     public function testfFindOne() {
-        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
-            ->setMethods(['where', 'get', 'first'])
+            ->setMethods(['join', 'where', 'get', 'first'])
             ->getMock();
+        $queryMock
+            ->method('join')
+            ->will($this->returnValue($queryMock));
         $queryMock
             ->method('where')
             ->will($this->returnValue($queryMock));
@@ -192,14 +217,18 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
+
+        $dbMember = new DBMember(
+            new Entity($this->optimus),
+            $this->optimus,
+            $connectionMock
+        );
 
         $result = $dbMember->findOne(0, 1);
         $this->assertSame($this->getAttributes(), $result->toArray());
     }
 
     public function testDeleteOne() {
-        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -221,12 +250,16 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $this->assertEquals(1, $dbMember->deleteOne(0, 1));
+
+        $dbMember = new DBMember(
+            new Entity($this->optimus),
+            $this->optimus,
+            $connectionMock
+        );
+        $this->assertSame(1, $dbMember->deleteOne(0, 1));
     }
 
     public function testDeleteByCompanyId() {
-        $factory   = new Entity($this->optimus);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -248,7 +281,12 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbMember = new DBMember($factory, $this->optimus, $connectionMock);
-        $this->assertEquals(3, $dbMember->deleteByCompanyId(1));
+
+        $dbMember = new DBMember(
+            new Entity($this->optimus),
+            $this->optimus,
+            $connectionMock
+        );
+        $this->assertSame(3, $dbMember->deleteByCompanyId(1));
     }
 }

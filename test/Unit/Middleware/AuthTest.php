@@ -4,6 +4,10 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
+namespace Test\Unit\Middleware;
+
 use App\Entity\Company as CompanyEntity;
 use App\Entity\Credential as CredentialEntity;
 use App\Entity\User as UserEntity;
@@ -20,83 +24,86 @@ use Slim\Http\Request;
 use Test\Unit\AbstractUnit;
 
 class AuthTest extends AbstractUnit {
-    /*
-     * Jenssengers\Optimus\Optimus $optimus
+    /**
+     * @var \Jenssengers\Optimus\Optimus
      */
     private $optimus;
 
     /**
-     * App\Repository\DBCredential $credentialRepositoryMock.
+     * @var App\Repository\DBCredential
      */
     private $credentialRepositoryMock;
 
     /**
-     * App\Repository\DBUser $userRepositoryMock.
+     * @var App\Repository\DBUser
      */
     private $userRepositoryMock;
 
     /**
-     * App\Repository\DBCompany $companyRepositoryMock.
+     * @var App\Repository\DBCompany
      */
     private $companyRepositoryMock;
 
     /**
-     * Lcobucci\JWT\Parser $jwtParser.
+     * @var \Lcobucci\JWT\Parser
      */
     private $jwtParser;
 
     /**
-     * Lcobucci\JWT\ValidationData $jwtValidation.
+     * @var \Lcobucci\JWT\ValidationData
      */
     private $jwtValidation;
 
     /**
-     * Lcobucci\JWT\Signer\Hmac\Sha256 $jwtSigner.
+     * @var \Lcobucci\JWT\Signer\Hmac\Sha256
      */
     private $jwtSigner;
 
     /**
-     * Lcobucci\JWT\Builder $jwtBuilder.
+     * @var \Lcobucci\JWT\Builder
      */
     private $jwtBuilder;
 
     /**
-     * Slim\Http\Request $requestMock.
+     * @var \Slim\Http\Request
      */
     private $requestMock;
 
     public function setUp() {
-        $this->optimus = $this->getMockBuilder(Optimus::class)
+        $this->optimus = $this
+            ->getMockBuilder(Optimus::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this
+            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->disableOriginalConstructor()
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Credential');
-        $entityFactory->create('User');
-        $entityFactory->create('Company');
+        // $entityFactory->create('Credential');
+        // $entityFactory->create('User');
+        // $entityFactory->create('Company');
 
         $this->credentialRepositoryMock = $this
             ->getMockBuilder(DBCredential::class)
-            ->setMethods(['findByPubKey'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
-            ->disableOriginalConstructor()
+            // ->disableOriginalConstructor()
+            ->setMethods(['findByPubKey'])
             ->getMock();
 
         $this->userRepositoryMock = $this
             ->getMockBuilder(DBUser::class)
-            ->setMethods(['findOrCreate'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
-            ->disableOriginalConstructor()
+            // ->disableOriginalConstructor()
+            ->setMethods(['findOrCreate'])
             ->getMock();
 
         $this->companyRepositoryMock = $this
             ->getMockBuilder(DBCompany::class)
-            ->setMethods(['findById'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
-            ->disableOriginalConstructor()
+            // ->disableOriginalConstructor()
+            ->setMethods(['findById'])
             ->getMock();
 
         $this->jwtParser     = new JWT\Parser();
@@ -132,18 +139,27 @@ class AuthTest extends AbstractUnit {
      * @return AuthMiddleware The auth middleware.
      */
     private function getAuthMiddleware(int $authRequest) : AuthMiddleware {
-        return new AuthMiddleware($this->credentialRepositoryMock, $this->userRepositoryMock, $this->companyRepositoryMock, $this->jwtParser, $this->jwtValidation, $this->jwtSigner, $authRequest);
+        return new AuthMiddleware(
+            $this->credentialRepositoryMock,
+            $this->userRepositoryMock,
+            $this->companyRepositoryMock,
+            $this->jwtParser,
+            $this->jwtValidation,
+            $this->jwtSigner,
+            $authRequest
+        );
     }
 
     private function getCredentialEntity() {
-        return new CredentialEntity([
+        return new CredentialEntity(
+            [
             ],
             $this->optimus
         );
     }
 
     private function generateToken(string $privateKey, array $claims) {
-        foreach($claims as $key => $value) {
+        foreach ($claims as $key => $value) {
             $this->jwtBuilder->set($key, $value);
         }
 
@@ -155,31 +171,37 @@ class AuthTest extends AbstractUnit {
     public function testHandleUserTokenSuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_TOKEN);
 
-        $targetCompany = new CompanyEntity([
-            'id'         => 1,
-            'username'   => 'acting-user',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $targetCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'username'   => 'acting-user',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'companyId'  => $targetCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'companyId'  => $targetCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $actingUser = new UserEntity([
-            'id'         => 1,
-            'username'   => $targetCompany->username,
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingUser = new UserEntity(
+            [
+                'id'         => 1,
+                'username'   => $targetCompany->username,
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -214,14 +236,8 @@ class AuthTest extends AbstractUnit {
     public function testHandleUserTokenErrorInvalidToken() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_TOKEN);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, 'jwt.invalid.token']);
-
-            return $this->fail('Expecting AppException');
-        } catch (AppException $e) {
-
-        }
-
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, 'jwt.invalid.token']);
     }
 
     public function testHandleUserTokenErrorCredentialNotFound() {
@@ -238,43 +254,44 @@ class AuthTest extends AbstractUnit {
 
         $token = $this->generateToken('test', $claims);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
-
-            return $this->fail('Expecting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     }
 
     public function testHandleUserTokenErrorSignatureVerificationFailed() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_TOKEN);
 
-        $targetCompany = new CompanyEntity([
-            'id'         => 1,
-            'username'   => 'acting-user',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $targetCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'username'   => 'acting-user',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'companyId'  => $targetCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'companyId'  => $targetCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $actingUser = new UserEntity([
-            'id'         => 1,
-            'username'   => $targetCompany->username,
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingUser = new UserEntity(
+            [
+                'id'         => 1,
+                'username'   => $targetCompany->username,
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -297,35 +314,34 @@ class AuthTest extends AbstractUnit {
 
         $token = $this->generateToken('wrong-sign-key', $claims);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
-
-            return $this->fail('Expecting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     }
 
     public function testHandleUserTokenErrorMissingSubClaim() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_TOKEN);
 
-        $targetCompany = new CompanyEntity([
-            'id'         => 1,
-            'username'   => 'acting-user',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $targetCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'username'   => 'acting-user',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'companyId'  => $targetCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'companyId'  => $targetCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -343,43 +359,44 @@ class AuthTest extends AbstractUnit {
 
         $token = $this->generateToken($credential->private, $claims);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
-
-            return $this->fail('Expecting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     }
 
     public function testHandleUserTokenErrorActingUserNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_TOKEN);
 
-        $targetCompany = new CompanyEntity([
-            'id'         => 1,
-            'username'   => 'acting-user',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $targetCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'username'   => 'acting-user',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'companyId'  => $targetCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'companyId'  => $targetCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $actingUser = new UserEntity([
-            'id'         => 1,
-            'username'   => $targetCompany->username,
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingUser = new UserEntity(
+            [
+                'id'         => 1,
+                'username'   => $targetCompany->username,
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -403,38 +420,43 @@ class AuthTest extends AbstractUnit {
 
             return $this->fail('Expecting NotFound exception');
         } catch (NotFound $e) {
-
         }
     }
 
     public function testHandleUserTokenErrorTargetCompanyNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_TOKEN);
 
-        $targetCompany = new CompanyEntity([
-            'id'         => 1,
-            'username'   => 'acting-user',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $targetCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'username'   => 'acting-user',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'companyId'  => $targetCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'companyId'  => $targetCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $actingUser = new UserEntity([
-            'id'         => 1,
-            'username'   => $targetCompany->username,
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingUser = new UserEntity(
+            [
+                'id'         => 1,
+                'username'   => $targetCompany->username,
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -462,30 +484,33 @@ class AuthTest extends AbstractUnit {
 
             return $this->fail('Expecting NotFound exception');
         } catch (NotFound $e) {
-
         }
     }
 
     public function testHandleUserPubKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_PUBKEY);
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $targetUser = new UserEntity([
-            'id'           => 1,
-            'credentialId' => $credential->id,
-            'username'     => 'username-test',
-            'created_at'   => time(),
-            'updated_at'   => time()],
+        $targetUser = new UserEntity(
+            [
+                'id'           => 1,
+                'credentialId' => $credential->id,
+                'username'     => 'username-test',
+                'created_at'   => time(),
+                'updated_at'   => time()
+            ],
             $this->optimus
         );
 
@@ -503,23 +528,27 @@ class AuthTest extends AbstractUnit {
     public function testHandleUserPubKeyTargetUserNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_PUBKEY);
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $targetUser = new UserEntity([
-            'id'           => 1,
-            'credentialId' => $credential->id,
-            'username'     => 'username-test',
-            'created_at'   => time(),
-            'updated_at'   => time()],
+        $targetUser = new UserEntity(
+            [
+                'id'           => 1,
+                'credentialId' => $credential->id,
+                'username'     => 'username-test',
+                'created_at'   => time(),
+                'updated_at'   => time()
+            ],
             $this->optimus
         );
 
@@ -527,35 +556,34 @@ class AuthTest extends AbstractUnit {
             ->method('findByPubKey')
             ->will($this->throwException(new NotFound()));
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserPubKey', [$this->requestMock, $credential->public]);
-
-            return $this->fail('Expecting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserPubKey', [$this->requestMock, $credential->public]);
     }
 
     public function testHandleUserPrivKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_PRIVKEY);
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $actingUser = new UserEntity([
-            'id'           => 1,
-            'credentialId' => $credential->id,
-            'username'     => 'username-test',
-            'created_at'   => time(),
-            'updated_at'   => time()],
+        $actingUser = new UserEntity(
+            [
+                'id'           => 1,
+                'credentialId' => $credential->id,
+                'username'     => 'username-test',
+                'created_at'   => time(),
+                'updated_at'   => time()
+            ],
             $this->optimus
         );
 
@@ -573,23 +601,27 @@ class AuthTest extends AbstractUnit {
     public function testHandleUserPrivKeyErrorTargetUserNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER_PRIVKEY);
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $actingUser = new UserEntity([
-            'id'           => 1,
-            'credentialId' => $credential->id,
-            'username'     => 'username-test',
-            'created_at'   => time(),
-            'updated_at'   => time()],
+        $actingUser = new UserEntity(
+            [
+                'id'           => 1,
+                'credentialId' => $credential->id,
+                'username'     => 'username-test',
+                'created_at'   => time(),
+                'updated_at'   => time()
+            ],
             $this->optimus
         );
 
@@ -597,25 +629,22 @@ class AuthTest extends AbstractUnit {
             ->method('findByPrivKey')
             ->will($this->throwException(new NotFound()));
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserPrivKey', [$this->requestMock, $credential->private]);
-
-            return $this->fail('Expecting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserPrivKey', [$this->requestMock, $credential->private]);
     }
 
     public function testHandleCompanyPubKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::COMP_PUBKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'          => 1,
-            'username'    => 'acting-company',
-            'public_key'  => md5('public'),
-            'private_key' => md5('private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'          => 1,
+                'username'    => 'acting-company',
+                'public_key'  => md5('public'),
+                'private_key' => md5('private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
@@ -633,13 +662,15 @@ class AuthTest extends AbstractUnit {
     public function testHandleCompanyPubKeyErrorActingCompanyNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::COMP_PUBKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'          => 1,
-            'username'    => 'acting-company',
-            'public_key'  => md5('public'),
-            'private_key' => md5('private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'          => 1,
+                'username'    => 'acting-company',
+                'public_key'  => md5('public'),
+                'private_key' => md5('private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
@@ -647,25 +678,22 @@ class AuthTest extends AbstractUnit {
             ->method('findByPubKey')
             ->will($this->throwException(new NotFound()));
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCompanyPubKey', [$this->requestMock, $actingCompany->public_key]);
-
-            return $this->fail('Expecting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCompanyPubKey', [$this->requestMock, $actingCompany->public_key]);
     }
 
     public function testHandleCompanyPrivKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::COMP_PRIVKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'          => 1,
-            'username'    => 'acting-company',
-            'public_key'  => md5('public'),
-            'private_key' => md5('private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'          => 1,
+                'username'    => 'acting-company',
+                'public_key'  => md5('public'),
+                'private_key' => md5('private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
@@ -683,13 +711,15 @@ class AuthTest extends AbstractUnit {
     public function testHandleCompanyPrivKeyErrorActingCompanyNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::COMP_PRIVKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'          => 1,
-            'username'    => 'acting-company',
-            'public_key'  => md5('public'),
-            'private_key' => md5('private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'          => 1,
+                'username'    => 'acting-company',
+                'public_key'  => md5('public'),
+                'private_key' => md5('private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
@@ -697,59 +727,62 @@ class AuthTest extends AbstractUnit {
             ->method('findByPubKey')
             ->will($this->throwException(new NotFound()));
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCompanyPrivKey', [$this->requestMock, $actingCompany->private_key]);
-
-            return $this->fail('Expecting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCompanyPrivKey', [$this->requestMock, $actingCompany->private_key]);
     }
 
     public function testHandleCredentialTokenSuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_TOKEN);
 
-        $actingCompany = new CompanyEntity([
-            'id'          => 1,
-            'username'    => 'acting-company',
-            'public_key'  => md5('acting-public'),
-            'private_key' => md5('acting-private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'          => 1,
+                'username'    => 'acting-company',
+                'public_key'  => md5('acting-public'),
+                'private_key' => md5('acting-private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
-        $targetCompany = new CompanyEntity([
-            'id'          => 2,
-            'username'    => 'target-company',
-            'public_key'  => md5('target-public'),
-            'private_key' => md5('target-private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $targetCompany = new CompanyEntity(
+            [
+                'id'          => 2,
+                'username'    => 'target-company',
+                'public_key'  => md5('target-public'),
+                'private_key' => md5('target-private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
-        $issuerCredential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Issuer Credential Test',
-            'slug'       => 'issuer-credential-test',
-            'public'     => md5('issuer-public'),
-            'private'    => md5('issuer-private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $issuerCredential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Issuer Credential Test',
+                'slug'       => 'issuer-credential-test',
+                'public'     => md5('issuer-public'),
+                'private'    => md5('issuer-private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $subjectCredential = new CredentialEntity([
-            'id'         => 2,
-            'company_id' => $targetCompany->id,
-            'name'       => 'Subject Credential Test',
-            'slug'       => 'subject-credential-test',
-            'public'     => md5('subject-public'),
-            'private'    => md5('subject-private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $subjectCredential = new CredentialEntity(
+            [
+                'id'         => 2,
+                'company_id' => $targetCompany->id,
+                'name'       => 'Subject Credential Test',
+                'slug'       => 'subject-credential-test',
+                'public'     => md5('subject-public'),
+                'private'    => md5('subject-private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -780,59 +813,62 @@ class AuthTest extends AbstractUnit {
     public function testHandleCredentialTokenErrorInvalidToken() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_TOKEN);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialToken', [$this->requestMock, 'invalid.token']);
-
-            return $this->fail('Expecting AppException');
-        } catch(AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialToken', [$this->requestMock, 'invalid.token']);
     }
 
     public function testHandleCredentialTokenErrorIssuerCredentialNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_TOKEN);
 
-        $actingCompany = new CompanyEntity([
-            'id'          => 1,
-            'username'    => 'acting-company',
-            'public_key'  => md5('acting-public'),
-            'private_key' => md5('acting-private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'          => 1,
+                'username'    => 'acting-company',
+                'public_key'  => md5('acting-public'),
+                'private_key' => md5('acting-private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
-        $targetCompany = new CompanyEntity([
-            'id'          => 2,
-            'username'    => 'target-company',
-            'public_key'  => md5('target-public'),
-            'private_key' => md5('target-private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $targetCompany = new CompanyEntity(
+            [
+                'id'          => 2,
+                'username'    => 'target-company',
+                'public_key'  => md5('target-public'),
+                'private_key' => md5('target-private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
-        $issuerCredential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Issuer Credential Test',
-            'slug'       => 'issuer-credential-test',
-            'public'     => md5('issuer-public'),
-            'private'    => md5('issuer-private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $issuerCredential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Issuer Credential Test',
+                'slug'       => 'issuer-credential-test',
+                'public'     => md5('issuer-public'),
+                'private'    => md5('issuer-private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $subjectCredential = new CredentialEntity([
-            'id'         => 2,
-            'company_id' => $targetCompany->id,
-            'name'       => 'Subject Credential Test',
-            'slug'       => 'subject-credential-test',
-            'public'     => md5('subject-public'),
-            'private'    => md5('subject-private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $subjectCredential = new CredentialEntity(
+            [
+                'id'         => 2,
+                'company_id' => $targetCompany->id,
+                'name'       => 'Subject Credential Test',
+                'slug'       => 'subject-credential-test',
+                'public'     => md5('subject-public'),
+                'private'    => md5('subject-private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -847,59 +883,62 @@ class AuthTest extends AbstractUnit {
 
         $token = $this->generateToken($issuerCredential->private, $claims);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialToken', [$this->requestMock, $token]);
-
-            return $this->fail('Expecting AppException');
-        } catch(AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialToken', [$this->requestMock, $token]);
     }
 
     public function testHandleCredentialTokenErrorMissingSub() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_TOKEN);
 
-        $actingCompany = new CompanyEntity([
-            'id'          => 1,
-            'username'    => 'acting-company',
-            'public_key'  => md5('acting-public'),
-            'private_key' => md5('acting-private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'          => 1,
+                'username'    => 'acting-company',
+                'public_key'  => md5('acting-public'),
+                'private_key' => md5('acting-private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
-        $targetCompany = new CompanyEntity([
-            'id'          => 2,
-            'username'    => 'target-company',
-            'public_key'  => md5('target-public'),
-            'private_key' => md5('target-private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $targetCompany = new CompanyEntity(
+            [
+                'id'          => 2,
+                'username'    => 'target-company',
+                'public_key'  => md5('target-public'),
+                'private_key' => md5('target-private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
-        $issuerCredential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Issuer Credential Test',
-            'slug'       => 'issuer-credential-test',
-            'public'     => md5('issuer-public'),
-            'private'    => md5('issuer-private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $issuerCredential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Issuer Credential Test',
+                'slug'       => 'issuer-credential-test',
+                'public'     => md5('issuer-public'),
+                'private'    => md5('issuer-private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $subjectCredential = new CredentialEntity([
-            'id'         => 2,
-            'company_id' => $targetCompany->id,
-            'name'       => 'Subject Credential Test',
-            'slug'       => 'subject-credential-test',
-            'public'     => md5('subject-public'),
-            'private'    => md5('subject-private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $subjectCredential = new CredentialEntity(
+            [
+                'id'         => 2,
+                'company_id' => $targetCompany->id,
+                'name'       => 'Subject Credential Test',
+                'slug'       => 'subject-credential-test',
+                'public'     => md5('subject-public'),
+                'private'    => md5('subject-private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -917,59 +956,62 @@ class AuthTest extends AbstractUnit {
 
         $token = $this->generateToken($issuerCredential->private, $claims);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialToken', [$this->requestMock, $token]);
-
-            return $this->fail('Expecting AppException');
-        } catch(AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialToken', [$this->requestMock, $token]);
     }
 
     public function testHandleCredentialTokenErrorActingCompanyNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_TOKEN);
 
-        $actingCompany = new CompanyEntity([
-            'id'          => 1,
-            'username'    => 'acting-company',
-            'public_key'  => md5('acting-public'),
-            'private_key' => md5('acting-private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'          => 1,
+                'username'    => 'acting-company',
+                'public_key'  => md5('acting-public'),
+                'private_key' => md5('acting-private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
-        $targetCompany = new CompanyEntity([
-            'id'          => 2,
-            'username'    => 'target-company',
-            'public_key'  => md5('target-public'),
-            'private_key' => md5('target-private'),
-            'created_at'  => time(),
-            'updated_at'  => time()],
+        $targetCompany = new CompanyEntity(
+            [
+                'id'          => 2,
+                'username'    => 'target-company',
+                'public_key'  => md5('target-public'),
+                'private_key' => md5('target-private'),
+                'created_at'  => time(),
+                'updated_at'  => time()
+            ],
             $this->optimus
         );
 
-        $issuerCredential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Issuer Credential Test',
-            'slug'       => 'issuer-credential-test',
-            'public'     => md5('issuer-public'),
-            'private'    => md5('issuer-private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $issuerCredential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Issuer Credential Test',
+                'slug'       => 'issuer-credential-test',
+                'public'     => md5('issuer-public'),
+                'private'    => md5('issuer-private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $subjectCredential = new CredentialEntity([
-            'id'         => 2,
-            'company_id' => $targetCompany->id,
-            'name'       => 'Subject Credential Test',
-            'slug'       => 'subject-credential-test',
-            'public'     => md5('subject-public'),
-            'private'    => md5('subject-private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $subjectCredential = new CredentialEntity(
+            [
+                'id'         => 2,
+                'company_id' => $targetCompany->id,
+                'name'       => 'Subject Credential Test',
+                'slug'       => 'subject-credential-test',
+                'public'     => md5('subject-public'),
+                'private'    => md5('subject-private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -988,36 +1030,35 @@ class AuthTest extends AbstractUnit {
 
         $token = $this->generateToken($issuerCredential->private, $claims);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialToken', [$this->requestMock, $token]);
-
-            return $this->fail('Expecting AppException');
-        } catch(AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialToken', [$this->requestMock, $token]);
     }
 
     public function testHandleCredentialPubKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_PUBKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'         => 1,
-            'name'       => 'Company Test',
-            'slug'       => 'company-test',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Company Test',
+                'slug'       => 'company-test',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -1040,24 +1081,28 @@ class AuthTest extends AbstractUnit {
     public function testHandleCredentialPubKeyErrorCredentialNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_PUBKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'         => 1,
-            'name'       => 'Company Test',
-            'slug'       => 'company-test',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Company Test',
+                'slug'       => 'company-test',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -1069,36 +1114,35 @@ class AuthTest extends AbstractUnit {
             ->method('findById')
             ->willReturn($actingCompany);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPubKey', [$this->requestMock, $credential->public]);
-
-            $this->fail('Excepting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPubKey', [$this->requestMock, $credential->public]);
     }
 
     public function testHandleCredentialPubKeyErrorActingCompanyNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_PUBKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'         => 1,
-            'name'       => 'Company Test',
-            'slug'       => 'company-test',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Company Test',
+                'slug'       => 'company-test',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -1110,36 +1154,35 @@ class AuthTest extends AbstractUnit {
             ->method('findById')
             ->will($this->throwException(new NotFound()));
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPubKey', [$this->requestMock, $credential->public]);
-
-            $this->fail('Excepting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPubKey', [$this->requestMock, $credential->public]);
     }
 
     public function testHandleCredentialPrivKeySuccess() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_PRIVKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'         => 1,
-            'name'       => 'Company Test',
-            'slug'       => 'company-test',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Company Test',
+                'slug'       => 'company-test',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -1162,24 +1205,28 @@ class AuthTest extends AbstractUnit {
     public function testHandleCredentialPrivKeyErrorCredentialNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_PUBKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'         => 1,
-            'name'       => 'Company Test',
-            'slug'       => 'company-test',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Company Test',
+                'slug'       => 'company-test',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -1191,36 +1238,35 @@ class AuthTest extends AbstractUnit {
             ->method('findById')
             ->willReturn($actingCompany);
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPrivKey', [$this->requestMock, $credential->public]);
-
-            $this->fail('Excepting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPrivKey', [$this->requestMock, $credential->public]);
     }
 
     public function testHandleCredentialPrivKeyErrorActingCompanyNotFound() {
         $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CRED_PUBKEY);
 
-        $actingCompany = new CompanyEntity([
-            'id'         => 1,
-            'name'       => 'Company Test',
-            'slug'       => 'company-test',
-            'created_at' => time(),
-            'updated_at' => time()],
+        $actingCompany = new CompanyEntity(
+            [
+                'id'         => 1,
+                'name'       => 'Company Test',
+                'slug'       => 'company-test',
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
-        $credential = new CredentialEntity([
-            'id'         => 1,
-            'company_id' => $actingCompany->id,
-            'name'       => 'Credential Test',
-            'slug'       => 'credential-test',
-            'public'     => md5('public'),
-            'private'    => md5('private'),
-            'created_at' => time(),
-            'updated_at' => time()],
+        $credential = new CredentialEntity(
+            [
+                'id'         => 1,
+                'company_id' => $actingCompany->id,
+                'name'       => 'Credential Test',
+                'slug'       => 'credential-test',
+                'public'     => md5('public'),
+                'private'    => md5('private'),
+                'created_at' => time(),
+                'updated_at' => time()
+            ],
             $this->optimus
         );
 
@@ -1232,13 +1278,7 @@ class AuthTest extends AbstractUnit {
             ->method('findById')
             ->will($this->throwException(new NotFound()));
 
-        try {
-            $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPrivKey', [$this->requestMock, $credential->public]);
-
-            $this->fail('Excepting AppException');
-        } catch (AppException $e) {
-
-        }
+        $this->setExpectedException(AppException::class);
+        $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPrivKey', [$this->requestMock, $credential->public]);
     }
-
 }

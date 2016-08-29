@@ -57,6 +57,8 @@ logs:
 dependencies:
 	docker exec --interactive --tty ${PHPSRV} /usr/local/bin/composer update
 
+deps: dependencies
+
 test:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phpunit --coverage-text
 

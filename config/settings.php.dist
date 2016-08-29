@@ -4,12 +4,14 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 $appSettings = [
     'debug' => true,
     'displayErrorDetails' => true,
     'determineRouteBeforeAppMiddleware' => true,
+    'trustedProxies'                    => [
+    ],
     'db' => [
         'driver'    => 'pgsql',
         // 'read' => [
@@ -27,6 +29,7 @@ $appSettings = [
         'collation' => 'utf8_unicode_ci',
         'prefix'    => '',
         'options'   => [
+            \PDO::ATTR_TIMEOUT    => 5,
             \PDO::ATTR_PERSISTENT => true
         ]
     ],

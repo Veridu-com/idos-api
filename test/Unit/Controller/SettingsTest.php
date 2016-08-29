@@ -54,16 +54,15 @@ class SettingsTest extends AbstractUnit {
                 $this->returnValue(
                     [
                         'pagination' => 'pagination',
-                        'collection' =>
-                            new Collection(
-                                new SettingEntity(
-                                    [
+                        'collection' => new Collection(
+                            new SettingEntity(
+                                [
                                         'section'    => 'section',
                                         'updated_at' => time()
                                     ],
-                                    $optimus
-                                )
+                                $optimus
                             )
+                        )
                     ]
                 )
             );
@@ -294,7 +293,8 @@ class SettingsTest extends AbstractUnit {
             ->expects($this->exactly(2))
             ->method('handle')
             ->will(
-                $this->onConsecutiveCalls(7, $responseMock));
+                $this->onConsecutiveCalls(7, $responseMock)
+            );
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()
@@ -351,7 +351,8 @@ class SettingsTest extends AbstractUnit {
             ->expects($this->exactly(2))
             ->method('handle')
             ->will(
-                $this->onConsecutiveCalls(1, $responseMock));
+                $this->onConsecutiveCalls(1, $responseMock)
+            );
 
         $commandFactory = $this->getMockBuilder(Command::class)
             ->disableOriginalConstructor()

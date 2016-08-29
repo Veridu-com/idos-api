@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Traits;
 
 trait HasAuthMiddleware {
@@ -17,10 +19,10 @@ trait HasAuthMiddleware {
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(403, $response->getStatusCode());
 
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(403, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*

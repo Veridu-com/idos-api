@@ -196,15 +196,15 @@ class Auth implements MiddlewareInterface {
     private function extractAuthorization(ServerRequestInterface $request, string $name) {
         $name  = ucfirst($name);
         $regex = sprintf('/^%s ([a-zA-Z0-9]+)$/', $name);
-        if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches))
+        if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches)) {
             return $matches[1];
+        }
 
         $name        = lcfirst($name);
         $queryParams = $request->getQueryParams();
-        if (isset($queryParams[$name]))
+        if (isset($queryParams[$name])) {
             return $queryParams[$name];
-
-        return;
+        }
     }
 
     /**
@@ -216,7 +216,6 @@ class Auth implements MiddlewareInterface {
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleUserToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
-
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
@@ -239,8 +238,9 @@ class Auth implements MiddlewareInterface {
         }
 
         // JWT Signature Verification
-        if (! $token->verify($this->jwtSigner, $credential->private))
+        if (! $token->verify($this->jwtSigner, $credential->private)) {
             throw new AppException('Token Verification Failed');
+        }
 
         // Retrieves JWT Subject
         if (! $token->hasClaim('sub')) {
@@ -334,6 +334,8 @@ class Auth implements MiddlewareInterface {
      */
     private function handleCompanyPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
         try {
+            var_dump($reqKey);
+            exit;
             $actingCompany = $this->companyRepository->findByPrivKey($reqKey);
         } catch (NotFound $exception) {
             throw new AppException('Invalid Credential');
@@ -361,8 +363,9 @@ class Auth implements MiddlewareInterface {
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
-        if (! $token->validate($this->jwtValidation))
+        if (! $token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed');
+        }
 
         // Retrieves JWT Issuer
         $issuerKey = $token->getClaim('iss');
@@ -374,12 +377,15 @@ class Auth implements MiddlewareInterface {
         }
 
         // JWT Signature Verification
-        if (! $token->verify($this->jwtSigner, $issuerCredential->private))
+        if (! $token->verify($this->jwtSigner, $issuerCredential->private)) {
             throw new AppException('Token Verification Failed');
+        }
 
         // Retrieves JWT Subject
-        if (! $token->hasClaim('sub'))
+        if (! $token->hasClaim('sub')) {
             throw new AppException('Missing Subject Claim');
+        }
+
         $subjectKey = $token->getClaim('sub');
 
         try {
@@ -458,6 +464,80 @@ class Auth implements MiddlewareInterface {
     }
 
     /**
+     * Populates the request with the found user on the request.
+     *
+     * @param string                                   $username The username
+     * @param \Psr\Http\Message\ServerRequestInterface $request  The request object
+     *
+     * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
+     */
+    private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
+        // Loads Target User
+        if ($username === '_self') {
+            // Self Reference for User Token / User Private Key
+            $user = $request->getAttribute('actingUser');
+            if (empty($user)) {
+                throw new AppException('InvalidUserNameReference');
+            }
+        } else {
+            // Load User
+            $company = $request->getAttribute('targetCompany');
+            if (empty($company)) {
+                $company = $request->getAttribute('actingCompany');
+            }
+
+            if (empty($company)) {
+                throw new AppException('InvalidRequest');
+            }
+
+            $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential'));
+        }
+
+            // Stores Target User for future use
+            $request = $request->withAttribute('targetUser', $user);
+
+            return $request;
+    }
+
+    /**
+     * Populates the request with the found companies on the request.
+     *
+     * @param string                                   $username The username
+     * @param \Psr\Http\Message\ServerRequestInterface $request  The request object
+     *
+     * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
+     */
+    private function populateRequestCompanies(string $companySlug, ServerRequestInterface $request) : ServerRequestInterface {
+        // Loads Target Company
+        if ($companySlug === '_self') {
+            // Self Reference for Credential Token / Compamny Private Key
+            $targetCompany = $request->getAttribute('actingCompany');
+            if (empty($targetCompany)) {
+                throw new AppException('InvalidCompanyNameReference');
+            }
+        } else {
+            // Load Company
+            $targetCompany = $this->companyRepository->findBySlug($companySlug);
+
+            if (empty($targetCompany)) {
+                throw new AppException('InvalidCompanyNameReference');
+            }
+
+            // Checks if access hierarchy is respected (Parent to Child or Company to itself)
+            if ($this->authorizationRequirement != self::NONE) {
+                $actingCompany = $request->getAttribute('actingCompany');
+            }
+        }
+
+        // TODO: When there is a acting user there's no need for this test
+        // if (($actingCompany->id != $targetCompany->id) && ($actingCompany->id != $targetCompany->parent_id))
+        //     throw new AppException('AccessDenied');
+
+        // Stores Target Company for future use
+        return $request->withAttribute('targetCompany', $targetCompany);
+    }
+
+    /**
      * Class constructor.
      *
      * @param App\Repository\CredentialInterface $credentialRepository
@@ -513,19 +593,21 @@ class Auth implements MiddlewareInterface {
         ResponseInterface $response,
         callable $next
     ) : ResponseInterface {
-        $hasAuthorization   = ($this->authorizationRequirement == self::NONE);
+        $hasAuthorization   = ($this->authorizationRequirement === self::NONE);
         $validAuthorization = [];
 
         // Authorization Handling Loop
         foreach ($this->authorizationSetup() as $level => $authorizationInfo) {
-            if ($hasAuthorization)
+            if ($hasAuthorization) {
                 break;
+            }
+
             if (($this->authorizationRequirement & $level) == $level) {
                 // Tries to extract Authorization from Request
                 $authorization = $this->extractAuthorization($request, $authorizationInfo['name']);
-                if (empty($authorization))
+                if (empty($authorization)) {
                     $validAuthorization[] = $authorizationInfo['label'];
-                else {
+                } else {
                     // Handles Authorization validation and Request Argument creation
                     $request = $this->{$authorizationInfo['handler']}($request, $authorization);
                     // Authorization has been found and validated
@@ -554,76 +636,5 @@ class Auth implements MiddlewareInterface {
         }
 
         throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
-    }
-
-    /**
-     * Populates the request with the found user on the request.
-     *
-     * @param string                                   $username The username
-     * @param \Psr\Http\Message\ServerRequestInterface $request  The request object
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
-     */
-    private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
-        // Loads Target User
-        if ($username === '_self') {
-            // Self Reference for User Token / User Private Key
-            $user = $request->getAttribute('actingUser');
-            if (empty($user)) {
-                throw new AppException('InvalidUserNameReference');
-            }
-        } else {
-            // Load User
-            $company = $request->getAttribute('targetCompany');
-            if (empty($company)) {
-                $company = $request->getAttribute('actingCompany');
-            }
-
-            if (empty($company)) {
-                throw new AppException('InvalidRequest');
-            }
-
-            $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential')->id);
-        }
-
-        // Stores Target User for future use
-        $request = $request->withAttribute('targetUser', $user);
-
-        return $request;
-    }
-
-    /**
-     * Populates the request with the found companies on the request.
-     *
-     * @param string                                   $username The username
-     * @param \Psr\Http\Message\ServerRequestInterface $request  The request object
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
-     */
-    private function populateRequestCompanies(string $companySlug, ServerRequestInterface $request) : ServerRequestInterface {
-        // Loads Target Company
-        if ($companySlug === '_self') {
-            // Self Reference for Credential Token / Compamny Private Key
-            $targetCompany = $request->getAttribute('actingCompany');
-            if (empty($targetCompany))
-                throw new AppException('InvalidCompanyNameReference');
-        } else {
-            // Load Company
-            $targetCompany = $this->companyRepository->findBySlug($companySlug);
-
-            if (empty($targetCompany))
-                throw new AppException('InvalidCompanyNameReference');
-            // Checks if access hierarchy is respected (Parent to Child or Company to itself)
-            if ($this->authorizationRequirement != self::NONE) {
-                $actingCompany = $request->getAttribute('actingCompany');
-            }
-        }
-
-        // TODO: When there is a acting user there's no need for this test
-        // if (($actingCompany->id != $targetCompany->id) && ($actingCompany->id != $targetCompany->parent_id))
-        //     throw new AppException('AccessDenied');
-
-        // Stores Target Company for future use
-        return $request->withAttribute('targetCompany', $targetCompany);
     }
 }

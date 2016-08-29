@@ -20,11 +20,7 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Member's updated unixtime",
-            "type": "integer"
-        },
-        "updated_at": {
-            "description": "Member's last updated unixtime",
+            "description": "Member's last update unixtime",
             "type": ["integer", "null"]
         }
     },

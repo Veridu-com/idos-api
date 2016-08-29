@@ -92,7 +92,7 @@ class Permissions implements ControllerInterface {
     /**
      * Lists all Permissions that belongs to the Target Company and has the given section.
      *
-     * @apiEndpointRequiredParam path string section
+     * @apiEndpointURIFragment string section xxx
      *
      * @apiEndpointParam query int page Current page
      * @apiEndpointResponse 200 Permission[]
@@ -126,8 +126,8 @@ class Permissions implements ControllerInterface {
     /**
      * Retrieves one Permission of the Target Company based on path paramaters routeName.
      *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string routeName
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string routeName company:listAll
      * @apiEndpointResponse 200 Permission
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -220,8 +220,8 @@ class Permissions implements ControllerInterface {
     /**
      * Deletes one Permission of the Target Company based on path paramater routeName.
      *
-     * @apiEndpointRequiredParam path string companySlug
-     * @apiEndpointRequiredParam path string routeName
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string routeName company:listAll
      * @apiEndpointResponse 200 -
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

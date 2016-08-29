@@ -39,7 +39,7 @@ class Setting implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Setting(
                 $container
                     ->get('repositoryFactory')
@@ -75,8 +75,8 @@ class Setting implements HandlerInterface {
      * @return App\Entity\Setting
      */
     public function handleCreateNew(CreateNew $command) : SettingEntity {
-        $this->validator->assertSectionName($command->section);
-        $this->validator->assertPropName($command->property);
+        $this->validator->assertMediumName($command->section);
+        $this->validator->assertMediumName($command->property);
         $this->validator->assertId($command->companyId);
 
         $setting = $this->repository->create(

@@ -32,8 +32,8 @@ class S10CompaniesSeed extends AbstractSeed {
             [
                 'name'        => 'Another company',
                 'slug'        => 'another-company',
-                'public_key'  => md5('another-company'),
-                'private_key' => md5('an-co'),
+                'public_key'  => md5('another-company'), // 3a1663d01ea4329060a31befef9e42ef
+                'private_key' => md5('ynapmoc-rehtona'), // 852ef4e8a4cc7c5b37cc5b27ebe7de85
                 'personal'    => 0,
                 'parent_id'   => null,
                 'created_at'  => date('Y-m-d H:i:s'),
