@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -50,7 +50,7 @@ class Attributes implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -88,7 +88,7 @@ class Attributes implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/attributes',
                 'App\Controller\Attributes:listAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('attribute:listAll');
     }
@@ -120,7 +120,7 @@ class Attributes implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/attributes',
                 'App\Controller\Attributes:createNew'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('attribute:createNew');
     }
@@ -154,7 +154,7 @@ class Attributes implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName}',
                 'App\Controller\Attributes:updateOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('attribute:updateOne');
     }
@@ -188,7 +188,7 @@ class Attributes implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName}',
                 'App\Controller\Attributes:getOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('attribute:getOne');
     }
@@ -221,7 +221,7 @@ class Attributes implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/attributes',
                 'App\Controller\Attributes:deleteAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('attribute:deleteAll');
     }
@@ -255,7 +255,7 @@ class Attributes implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName}',
                 'App\Controller\Attributes:deleteOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('attribute:deleteOne');
     }

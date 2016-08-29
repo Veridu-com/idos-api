@@ -151,8 +151,8 @@ class DBUser extends AbstractDBRepository implements UserInterface {
      * {@inheritdoc}
      */
     public function generateToken(string $username, string $credentialPrivKey, string $credentialPubKey) : string {
-        $jwtSigner     = new JWT\Signer\Hmac\Sha256();
-        $jwtBuilder    = new JWT\Builder();
+        $jwtSigner  = new JWT\Signer\Hmac\Sha256();
+        $jwtBuilder = new JWT\Builder();
 
         $jwtBuilder->set('iss', $credentialPubKey);
         $jwtBuilder->set('sub', $username);

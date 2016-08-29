@@ -13,12 +13,12 @@ use Test\Functional\Traits\HasAuthCredentialToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    //use HasAuthMiddleware;
+    //use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/attributes';
+        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes';
     }
 
     public function testSuccess() {
