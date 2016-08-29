@@ -4,34 +4,34 @@
  * All rights reserved.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace App\Command\Tag;
+namespace App\Command\Digested;
 
 use App\Command\AbstractCommand;
 
 /**
- * Tag "Create New" Command.
+ * Digested "Delete One" Command.
  */
-class CreateNew extends AbstractCommand {
+class DeleteOne extends AbstractCommand {
     /**
-     * Tag's user.
+     * Digested's user.
      *
      * @var App\Entity\User
      */
     public $user;
     /**
-     * New tag name.
+     * Digested's Source Id.
+     *
+     * @var int
+     */
+    public $sourceId;
+    /**
+     * New digested name.
      *
      * @var string
      */
     public $name;
-    /**
-     * New tag slug.
-     *
-     * @var string
-     */
-    public $slug;
 
     /**
      * {@inheritdoc}
@@ -41,12 +41,12 @@ class CreateNew extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
+        if (isset($parameters['sourceId'])) {
+            $this->sourceId = $parameters['sourceId'];
         }
 
-        if (isset($parameters['slug'])) {
-            $this->slug = $parameters['slug'];
+        if (isset($parameters['name'])) {
+            $this->name = $parameters['name'];
         }
 
         return $this;

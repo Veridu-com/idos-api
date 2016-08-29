@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /profiles/{userName}/sources/{sourceId}/mapped",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Mapped response payload",
+            "type": "array",
+            "items": {
+                "$ref": "mappedEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "status",
+        "data",
+        "updated"
+    ]
+}
+
