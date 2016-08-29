@@ -1,11 +1,10 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Test\Unit\Factory;
 
@@ -14,14 +13,6 @@ use App\Factory\Command;
 use Test\Unit\AbstractUnit;
 
 class AbstractFactoryTest extends AbstractUnit {
-    private function setProtectedMethod($object, $method) {
-        $reflection        = new \ReflectionClass($object);
-        $reflection_method = $reflection->getMethod($method);
-        $reflection_method->setAccessible(true);
-
-        return $reflection_method;
-    }
-
     public function testGetFormatedNameNotString() {
         $abstractMock = $this->getMockBuilder(AbstractFactory::class)
             ->setMethods(['getNamespace'])

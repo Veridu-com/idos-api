@@ -44,7 +44,7 @@ class DBTag extends AbstractDBRepository implements TagInterface {
             ->selectRaw('tags.*')
             ->where('user_id', '=', $userId);
 
-        if(! empty($tags)) {
+        if (! empty($tags)) {
             $result = $result->whereIn('slug', $tags);
         }
 
@@ -66,7 +66,7 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     public function findOneByUserIdAndSlug(int $userId, string $name) : Tag {
         $result = $this->findBy(['user_id' => $userId, 'slug' => $name]);
 
-        if($result->isEmpty()) {
+        if ($result->isEmpty()) {
             throw new NotFound();
         }
 

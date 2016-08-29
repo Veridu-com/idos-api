@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\ServiceHandler;
 
 use Slim\Http\Response;
@@ -40,11 +42,10 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertSame(['idos:source.facebook.added'], $body['data']['listens']);
 
@@ -56,8 +57,8 @@ class UpdateOneTest extends AbstractFunctional {
                 'serviceHandler/updateOne.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
 
     }
 
@@ -82,12 +83,10 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
@@ -101,5 +100,4 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }

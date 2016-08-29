@@ -94,8 +94,8 @@ class RoleAccess implements ControllerInterface {
     /**
      * Retrieves role access defined to certain role and resource for the acting User.
      *
-     * @apiEndpointRequiredParam route      string roleName         The role name.
-     * @apiEndpointRequiredParam route      string resource         The resource.
+     * @apiEndpointURIFragment     string roleName         The role name.
+     * @apiEndpointURIFragment     string resource         The resource.
      *
      * @apiEndpointResponse 200 schema/access/roles/getOne.json
      *
@@ -198,8 +198,8 @@ class RoleAccess implements ControllerInterface {
     /**
      * Deletes a RoleAccess of the acting User.
      *
-     * @apiEndpointRequiredParam route      string roleName         The role name.
-     * @apiEndpointRequiredParam route      string resource         The resource.
+     * @apiEndpointURIFragment     string roleName         The role name.
+     * @apiEndpointURIFragment     string resource         The resource.
      *
      * @apiEndpointResponse 200 schema/access/roles/deleteOne.json
      *
@@ -236,8 +236,8 @@ class RoleAccess implements ControllerInterface {
     /**
      * Updates the Target RoleAccess, a child of the Acting RoleAccess.
      *
-     * @apiEndpointRequiredParam route      string roleName         The role name.
-     * @apiEndpointRequiredParam route      string resource         The resource.
+     * @apiEndpointURIFragment     string roleName         The role name.
+     * @apiEndpointURIFragment     string resource         The resource.
      * @apiEndpointRequiredParam body       int access              The access value.
      *
      * @apiEndpointResponse 200 schema/access/roles/updateOne.json

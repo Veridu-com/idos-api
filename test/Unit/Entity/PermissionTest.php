@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Entity;
 
 use App\Entity\Permission;
@@ -59,7 +61,7 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testToArray() {
-        $abstractMock = $this->getMockBuilder(CompanyPermission::class)
+        $abstractMock = $this->getMockBuilder(EndpointPermission::class)
             ->setMethods(null)
             ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
@@ -73,9 +75,9 @@ class PermissionTest extends AbstractUnit {
         $this->assertTrue(is_int($array['created_at']));
     }
 
-     public function testGetCachedKeysEmptyAttributes() {
+    public function testGetCachedKeysEmptyAttributes() {
         $array        = ['Permission.id.', 'Permission.public.'];
-        $abstractMock = $this->getMockBuilder(CompanyPermission::class)
+        $abstractMock = $this->getMockBuilder(EndpointPermission::class)
             ->setMethods(null)
             ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
@@ -86,7 +88,7 @@ class PermissionTest extends AbstractUnit {
 
     public function testGetCachedKeys() {
         $array        = ['Permission.id.0', 'Permission.public.public'];
-        $abstractMock = $this->getMockBuilder(CompanyPermission::class)
+        $abstractMock = $this->getMockBuilder(EndpointPermission::class)
             ->setMethods(null)
             ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
@@ -97,7 +99,7 @@ class PermissionTest extends AbstractUnit {
 
     public function testReferenceCacheKeysNoParentId() {
         $array        = ['Permission.by.parent_id.', 'Permission.id.0', 'Permission.public.public'];
-        $abstractMock = $this->getMockBuilder(CompanyPermission::class)
+        $abstractMock = $this->getMockBuilder(EndpointPermission::class)
             ->setMethods(null)
             ->setConstructorArgs([$this->getAttributes(), $this->optimus])
             ->getMockForAbstractClass();
@@ -109,7 +111,7 @@ class PermissionTest extends AbstractUnit {
 
     public function testReferenceCacheKeysEmptyAttributes() {
         $array        = ['Permission.by.parent_id.', 'Permission.id.', 'Permission.public.'];
-        $abstractMock = $this->getMockBuilder(CompanyPermission::class)
+        $abstractMock = $this->getMockBuilder(EndpointPermission::class)
             ->setMethods(null)
             ->setConstructorArgs([[], $this->optimus])
             ->getMockForAbstractClass();
@@ -121,7 +123,7 @@ class PermissionTest extends AbstractUnit {
 
     public function testReferenceCacheKeys() {
         $array        = ['Permission.by.parent_id.0', 'Permission.id.0', 'Permission.public.public'];
-        $abstractMock = $this->getMockBuilder(CompanyPermission::class)
+        $abstractMock = $this->getMockBuilder(EndpointPermission::class)
             ->setMethods(null)
             ->setConstructorArgs(
                 [

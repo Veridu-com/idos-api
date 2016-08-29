@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Permission;
 
 use Test\Functional\AbstractFunctional;
@@ -30,14 +32,13 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request          = $this->createRequest($this->createEnvironment());
-        $response         = $this->process($request);
-        $body             = json_decode($response->getBody(), true);
-        $numberOfEntities = sizeof($this->entities); // total number of entities
+        $request  = $this->createRequest($this->createEnvironment());
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
-        // assertions
+        $body             = json_decode($response->getBody(), true);
+        $numberOfEntities = count($this->entities); // total number of entities
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -66,10 +67,10 @@ class DeleteOneTest extends AbstractFunctional {
         $this->uri        = $uri;
         $request          = $this->createRequest($this->createEnvironment());
         $response         = $this->process($request);
-        $body             = json_decode($response->getBody(), true);
+        $this->assertSame(403, $response->getStatusCode());
 
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(403, $response->getStatusCode());
         $this->assertFalse($body['status']);
     }
 
@@ -87,11 +88,10 @@ class DeleteOneTest extends AbstractFunctional {
 
         $getOneRequest  = $this->createRequest($getOneEnvironment);
         $getOneResponse = $this->process($getOneRequest);
-        $getOneBody     = json_decode($getOneResponse->getBody(), true);
+        $this->assertSame(404, $getOneResponse->getStatusCode());
 
-        // error assertions
+        $getOneBody = json_decode($getOneResponse->getBody(), true);
         $this->assertNotEmpty($getOneBody);
-        $this->assertEquals(404, $getOneResponse->getStatusCode());
 
         $this->assertTrue(
             $this->validateSchema(
@@ -106,11 +106,10 @@ class DeleteOneTest extends AbstractFunctional {
         $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
         $request   = $this->createRequest($this->createEnvironment());
         $response  = $this->process($request);
-        $body      = json_decode($response->getBody(), true);
+        $this->assertSame(404, $response->getStatusCode());
 
-        // assertions
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
@@ -124,5 +123,4 @@ class DeleteOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }

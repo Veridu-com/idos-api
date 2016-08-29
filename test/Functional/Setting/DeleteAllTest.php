@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Setting;
 
 use Slim\Http\Response;
@@ -41,18 +43,15 @@ class DeleteAllTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
-        // success assertions
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
-
         // refreshes the $entities prop
         $this->populate($this->uri);
         // checks if all entities were deleted
-        $this->assertEquals(0, count($this->entities));
+        $this->assertSame(0, count($this->entities));
 
         /*
          * Validates Json Schema with Json Response

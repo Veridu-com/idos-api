@@ -22,5 +22,4 @@ class S00RolesSeed extends AbstractSeed {
             ->insert($roles)
             ->save();
     }
-
 }

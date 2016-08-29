@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -51,7 +51,7 @@ class Hooks implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -88,7 +88,7 @@ class Hooks implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:listAll'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION))
+            ->add($permission(EndpointPermission::SELF_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:listAll');
     }
@@ -119,7 +119,7 @@ class Hooks implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:createNew'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION))
+            ->add($permission(EndpointPermission::SELF_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:createNew');
     }
@@ -133,7 +133,7 @@ class Hooks implements RouteInterface {
      * @apiGroup Company Hooks
      * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiEndpointURIFragment string hookId
+     * @apiEndpointURIFragment int hookId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -152,7 +152,7 @@ class Hooks implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
                 'App\Controller\Hooks:updateOne'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION))
+            ->add($permission(EndpointPermission::SELF_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:updateOne');
     }
@@ -184,12 +184,12 @@ class Hooks implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:deleteAll'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION))
+            ->add($permission(EndpointPermission::SELF_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:deleteAll');
     }
 
-    /*
+    /**
      * Retrieve a single hook.
      *
      * Retrieves all public information from a hook
@@ -198,7 +198,7 @@ class Hooks implements RouteInterface {
      * @apiGroup Company Hooks
      * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiEndpointURIFragment string hookId
+     * @apiEndpointURIFragment int hookId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -217,12 +217,12 @@ class Hooks implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
                 'App\Controller\Hooks:getOne'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION))
+            ->add($permission(EndpointPermission::SELF_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:getOne');
     }
 
-    /*
+    /**
      * Deletes a single hook.
      *
      * Deletes a hook that belongs to the requesting credential.
@@ -231,7 +231,7 @@ class Hooks implements RouteInterface {
      * @apiGroup Company Hooks
      * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiEndpointURIFragment string hookId
+     * @apiEndpointURIFragment int hookId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -250,7 +250,7 @@ class Hooks implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId}',
                 'App\Controller\Hooks:deleteOne'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION))
+            ->add($permission(EndpointPermission::SELF_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('hooks:deleteOne');
     }

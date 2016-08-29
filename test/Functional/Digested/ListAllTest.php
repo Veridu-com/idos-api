@@ -20,9 +20,13 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                'QUERY_STRING' => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
+                ]
+            )
+        );
 
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
@@ -44,9 +48,13 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testFilter() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'names=source-3-digested-1&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                'QUERY_STRING' => 'names=source-3-digested-1&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
+                ]
+            )
+        );
 
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
@@ -75,9 +83,13 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testFilterMultiple() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'names=source-3-digested-1,source-3-digested-2&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                'QUERY_STRING' => 'names=source-3-digested-1,source-3-digested-2&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
+                ]
+            )
+        );
 
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
@@ -104,5 +116,4 @@ class ListAllTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }

@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Hook;
 
 use Test\Functional\AbstractFunctional;
@@ -36,12 +38,10 @@ class DeleteAllTest extends AbstractFunctional {
         $request = $this->createRequest($environment);
 
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $response->getStatusCode();
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -68,12 +68,12 @@ class DeleteAllTest extends AbstractFunctional {
         $request = $this->createRequest($environment);
 
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
+
         /*
          * Validates Json Schema against Json Response'
          */
@@ -98,12 +98,12 @@ class DeleteAllTest extends AbstractFunctional {
         $request = $this->createRequest($environment);
 
         $response = $this->process($request);
+        $this->assertSame(403, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $this->assertEquals(403, $response->getStatusCode());
         $this->assertFalse($body['status']);
+
         /*
          * Validates Json Schema against Json Response'
          */

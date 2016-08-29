@@ -174,7 +174,7 @@ class TagsTest extends AbstractUnit {
          $this->assertSame($responseMock, $tagMock->listAll($requestMock, $responseMock));
     }
 
-public function testCreateNew() {
+    public function testCreateNew() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getParsedBody', 'getAttribute'])

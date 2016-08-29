@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Member;
 
 use Test\Functional\AbstractFunctional;
@@ -17,10 +19,10 @@ class GetOneTest extends AbstractFunctional {
     public function testSuccess() {
         $request  = $this->createRequest($this->createEnvironment());
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -40,12 +42,10 @@ class GetOneTest extends AbstractFunctional {
         $this->uri = '/1.0/companies/veridu-ltd/members/0000000';
         $request   = $this->createRequest($this->createEnvironment());
         $response  = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
-        // assertions
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
@@ -59,5 +59,4 @@ class GetOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }
