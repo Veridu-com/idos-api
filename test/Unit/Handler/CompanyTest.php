@@ -41,9 +41,11 @@ class CompanyTest extends AbstractUnit {
         $repositoryMock = $this
             ->getMockBuilder(CompanyInterface::class)
             ->getMock();
+
         $validatorMock = $this
             ->getMockBuilder(CompanyValidator::class)
             ->getMock();
+
         $emitterMock = $this
             ->getMockBuilder(Emitter::class)
             ->getMock();
@@ -69,6 +71,7 @@ class CompanyTest extends AbstractUnit {
             ->getMockBuilder(Repository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $repositoryFactoryMock
             ->method('create')
             ->willReturn($repositoryMock);
@@ -101,6 +104,23 @@ class CompanyTest extends AbstractUnit {
             return $validatorFactoryMock;
         };
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
+        $emitterFactoryMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $emitterFactoryMock
+            ->method('create')
+            ->willReturn($emitterMock);
+
+        $container['emitterFactory'] = function () use ($emitterFactoryMock) {
+            return $emitterFactoryMock;
+        };
+
         Company::register($container);
         $this->assertInstanceOf(Company::class, $container[Company::class]);
     }
@@ -130,7 +150,14 @@ class CompanyTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $companyEntity = new CompanyEntity([], $this->optimus);
+        $companyEntity = new CompanyEntity(
+            [
+                'name'       => 'valid co',
+                'slug'       => 'valid-co',
+                'public_key' => 'test',
+            ],
+            $this->optimus
+        );
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
@@ -139,6 +166,7 @@ class CompanyTest extends AbstractUnit {
             ->getMockBuilder(Emitter::class)
             ->setMethods(['emit'])
             ->getMock();
+
         $emitterMock
             ->method('emit')
             ->will($this->returnValue(new Created($companyEntity)));
@@ -150,6 +178,7 @@ class CompanyTest extends AbstractUnit {
             ->setMethods(['save'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $companyRepository
             ->expects($this->once())
             ->method('save')
@@ -166,6 +195,7 @@ class CompanyTest extends AbstractUnit {
         $command->parentId = 1;
 
         $result = $handler->handleCreateNew($command);
+
         $this->assertSame('valid co', $result->name);
         $this->assertSame('valid-co', $result->slug);
         $this->assertNotEmpty($result->public_key);

@@ -116,7 +116,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function save(EntityInterface &$entity) : EntityInterface {
+    public function save(EntityInterface $entity) : EntityInterface {
         $serialized = $entity->serialize();
 
         if (! $entity->id) {

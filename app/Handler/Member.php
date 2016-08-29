@@ -13,11 +13,18 @@ use App\Command\Member\DeleteAll;
 use App\Command\Member\DeleteOne;
 use App\Command\Member\UpdateOne;
 use App\Entity\Member as MemberEntity;
+use App\Event\Member\Created;
+use App\Event\Member\Deleted;
+use App\Event\Member\DeletedMulti;
+use App\Event\Member\Updated;
+use App\Exception\AppException as AppException;
+use App\Exception\NotFound;
 use App\Repository\CredentialInterface;
 use App\Repository\MemberInterface;
 use App\Repository\UserInterface;
 use App\Validator\Member as MemberValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Member commands.
@@ -47,6 +54,12 @@ class Member implements HandlerInterface {
      * @var App\Validator\Member
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -65,7 +78,9 @@ class Member implements HandlerInterface {
                     ->create('User'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Member')
+                    ->create('Member'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -83,12 +98,14 @@ class Member implements HandlerInterface {
         MemberInterface $repository,
         CredentialInterface $credentialRepository,
         UserInterface $userRepository,
-        MemberValidator $validator
+        MemberValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
         $this->userRepository       = $userRepository;
         $this->validator            = $validator;
+        $this->emitter              = $emitter;
     }
 
     /**
@@ -114,7 +131,13 @@ class Member implements HandlerInterface {
             ]
         );
 
-        $member = $this->repository->save($member);
+        try {
+            $member = $this->repository->save($member);
+            $event  = new Created($member);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to create a member');
+        }
 
         $member->relations['user'] = $user;
 
@@ -133,7 +156,14 @@ class Member implements HandlerInterface {
         $member            = $this->repository->findOne($command->memberId);
         $member->role      = $command->role;
         $member->updatedAt = time();
-        $member            = $this->repository->saveOne($member);
+
+        try {
+            $member = $this->repository->saveOne($member);
+            $event  = new Updated($member);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to update a member id ' . $command->memberId);
+        }
 
         return $member;
     }
@@ -148,7 +178,17 @@ class Member implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->memberId);
 
-        return $this->repository->delete($command->memberId);
+        try {
+            $rowsAffected = $this->repository->delete($command->memberId);
+            $event        = new Deleted($member);
+            $this->emitter->emit($event);
+
+            if (! $rowsAffected) {
+                throw new NotFound();
+            }
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to delete a member id ' . $command->memberId);
+        }
     }
 
     /**
@@ -159,6 +199,16 @@ class Member implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        return $this->repository->deleteByCompanyId($command->companyId);
+
+        try {
+            $members      = $this->repository->getAllByCompanyId($command->companyId);
+            $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
+            $event        = new DeletedMulti($members);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to delete all members under company id ' . $command->memberId);
+        }
+
+        return $rowsAffected;
     }
 }

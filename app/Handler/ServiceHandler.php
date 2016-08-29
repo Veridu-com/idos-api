@@ -13,10 +13,16 @@ use App\Command\ServiceHandler\DeleteAll;
 use App\Command\ServiceHandler\DeleteOne;
 use App\Command\ServiceHandler\UpdateOne;
 use App\Entity\ServiceHandler as ServiceHandlerEntity;
+use App\Event\ServiceHandler\Created;
+use App\Event\ServiceHandler\Deleted;
+use App\Event\ServiceHandler\DeletedMulti;
+use App\Event\ServiceHandler\Updated;
+use App\Exception\AppException as AppException;
 use App\Exception\NotFound;
 use App\Repository\ServiceHandlerInterface;
 use App\Validator\ServiceHandler as ServiceHandlerValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles ServiceHandler commands.
@@ -34,6 +40,12 @@ class ServiceHandler implements HandlerInterface {
      * @var App\Validator\ServiceHandler
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -46,7 +58,9 @@ class ServiceHandler implements HandlerInterface {
                     ->create('ServiceHandler'),
                 $container
                     ->get('validatorFactory')
-                    ->create('ServiceHandler')
+                    ->create('ServiceHandler'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -56,15 +70,18 @@ class ServiceHandler implements HandlerInterface {
      *
      * @param App\Repository\ServiceHandlerInterface $repository
      * @param App\Validator\ServiceHandler           $validator
+     * @param \League\Event\Emitter                  $emitter
      *
      * @return void
      */
     public function __construct(
         ServiceHandlerInterface $repository,
-        ServiceHandlerValidator $validator
+        ServiceHandlerValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -89,9 +106,15 @@ class ServiceHandler implements HandlerInterface {
             ]
         );
 
-        $entity = $this->repository->save($entity);
+        try {
+            $entity = $this->repository->save($entity);
+            $event  = new Created($entity);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to create a service handler');
+        }
 
-        return $this->repository->findOne($command->companyId, $entity->id);
+        return $entity;
     }
 
     /**
@@ -124,7 +147,16 @@ class ServiceHandler implements HandlerInterface {
             $entity->listens   = $command->listens;
             $entity->updatedAt = time();
             // save entity
-            $success = $this->repository->save($entity);
+            try {
+                $entity = $this->repository->save($entity);
+                $event  = new Updated($entity);
+                $this->emitter->emit($event);
+            } catch (\Exception $e) {
+                throw new AppException(
+                    'Error while trying to update a service handler id ' .
+                    $command->serviceHandlerId
+                );
+            }
         }
 
         return $entity;
@@ -140,7 +172,20 @@ class ServiceHandler implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->companyId);
 
-        return $this->repository->deleteByCompanyId($command->companyId);
+        $serviceHandlers = $this->repository->findByCompanyId($command->companyId);
+
+        try {
+            $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
+            $event        = new DeletedMulti($serviceHandlers);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException(
+                'Error while trying to delete all service handlers under company id ' .
+                $command->companyId
+            );
+        }
+
+        return $rowsAffected;
     }
 
     /**
@@ -156,10 +201,15 @@ class ServiceHandler implements HandlerInterface {
         $this->validator->assertId($command->companyId);
         $this->validator->assertId($command->serviceHandlerId);
 
-        $rowsAffected = $this->repository->deleteOne($command->companyId, $command->serviceHandlerId);
-
-        if (! $rowsAffected) {
-            throw new NotFound();
+        try {
+            $serviceHandler = $this->repository->find($command->serviceHandlerId);
+            $rowsAffected   = $this->repository->deleteOne($command->companyId, $command->serviceHandlerId);
+            $event          = new Deleted($serviceHandler);
+            $this->emitter->emit($event);
+            if (! $rowsAffected)
+                throw new NotFound();
+        } catch (Exception $e) {
+            throw new AppException('Error while trying to delete a service handler id ' . $command->serviceHandlerId);
         }
 
         return $rowsAffected;

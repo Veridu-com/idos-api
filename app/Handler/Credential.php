@@ -13,10 +13,16 @@ use App\Command\Credential\DeleteAll;
 use App\Command\Credential\DeleteOne;
 use App\Command\Credential\UpdateOne;
 use App\Entity\Credential as CredentialEntity;
+use App\Event\Credential\Created;
+use App\Event\Credential\Deleted;
+use App\Event\Credential\DeletedMulti;
+use App\Event\Credential\Updated;
+use App\Exception\AppException as AppException;
 use App\Repository\CredentialInterface;
 use App\Validator\Credential as CredentialValidator;
 use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Credential commands.
@@ -34,6 +40,12 @@ class Credential implements HandlerInterface {
      * @var App\Validator\Credential
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -46,7 +58,9 @@ class Credential implements HandlerInterface {
                     ->create('Credential'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Credential')
+                    ->create('Credential'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -61,10 +75,12 @@ class Credential implements HandlerInterface {
      */
     public function __construct(
         CredentialInterface $repository,
-        CredentialValidator $validator
+        CredentialValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -91,7 +107,16 @@ class Credential implements HandlerInterface {
         $credential->public  = md5((string) time()); // Key::createNewRandomKey()->saveToAsciiSafeString();
         $credential->private = md5((string) time()); // Key::createNewRandomKey()->saveToAsciiSafeString();
 
-        return $this->repository->save($credential);
+        try {
+            $credential = $this->repository->save($credential);
+            $event      = new Created($credential);
+            $this->emitter->emit($event);
+        }
+        catch(\Exception $exception) {
+            throw new AppException('Error while creating a credential');
+        }
+
+        return $credential;
     }
 
     /**
@@ -109,7 +134,16 @@ class Credential implements HandlerInterface {
         $credential->name      = $command->name;
         $credential->updatedAt = time();
 
-        return $this->repository->save($credential);
+        try {
+            $credential = $this->repository->save($credential);
+            $event      = new Updated($credential);
+            $this->emitter->emit($event);
+        }
+        catch(\Exception $exception) {
+            throw new AppException('Error while updating a credential id' . $command->credentialId);
+        }
+
+        return $credential;
     }
 
     /**
@@ -121,8 +155,22 @@ class Credential implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->credentialId);
+        $credential = $this->repository->find($command->credentialId);
 
-        return $this->repository->delete($command->credentialId);
+        try {
+            $event        = new Deleted($credential);
+            $rowsAffected = $this->repository->delete($command->credentialId);
+            $this->emitter->emit($event);
+
+            if (! $rowsAffected) {
+                throw new \NotFound();
+            }
+        }
+        catch(\Exception $exception) {
+            throw new AppException('Error while deleting a credential id' . $command->credentialId);
+        }
+
+        return $rowsAffected;
     }
 
     /**
@@ -134,7 +182,22 @@ class Credential implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->companyId);
+        $credentials = $this->repository->findByCompanyId($command->companyId);
 
-        return $this->repository->deleteByCompanyId($command->companyId);
+        try {
+            $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
+            $event        = new DeletedMulti($credentials);
+            $this->emitter->emit($event);
+        }
+        catch(\Exception $exception) {
+            $ids = [];
+            foreach ($credentials as $credential) {
+                $ids[] = $credential->id;
+            }
+
+            throw new AppException('Error while deleting a credential id' . implode(' ', $ids));
+        }
+
+        return $rowsAffected;
     }
 }

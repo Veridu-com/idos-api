@@ -13,9 +13,16 @@ use App\Command\RoleAccess\DeleteAll;
 use App\Command\RoleAccess\DeleteOne;
 use App\Command\RoleAccess\UpdateOne;
 use App\Entity\RoleAccess as RoleAccessEntity;
+use App\Event\RoleAccess\Created;
+use App\Event\RoleAccess\Deleted;
+use App\Event\RoleAccess\DeletedMulti;
+use App\Event\RoleAccess\Updated;
+use App\Exception\AppException as AppException;
+use App\Exception\NotFound;
 use App\Repository\RoleAccessInterface;
 use App\Validator\RoleAccess as RoleAccessValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles RoleAccess commands.
@@ -34,6 +41,12 @@ class RoleAccess implements HandlerInterface {
      * @var App\Validator\RoleAccess
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -46,7 +59,9 @@ class RoleAccess implements HandlerInterface {
                     ->create('RoleAccess'),
                 $container
                     ->get('validatorFactory')
-                    ->create('RoleAccess')
+                    ->create('RoleAccess'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -61,10 +76,12 @@ class RoleAccess implements HandlerInterface {
      */
     public function __construct(
         RoleAccessInterface $repository,
-        RoleAccessValidator $validator
+        RoleAccessValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -93,7 +110,13 @@ class RoleAccess implements HandlerInterface {
             ]
         );
 
-        $this->repository->save($entity);
+        try {
+            $entity = $this->repository->save($entity);
+            $event  = new Created($entity);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to create a role access');
+        }
 
         return $entity;
     }
@@ -107,8 +130,20 @@ class RoleAccess implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->identityId);
+        $roleAccesses = $this->repository->findByIdentity($command->identityId);
 
-        return $this->repository->deleteAllFromIdentity($command->identityId);
+        try {
+            $rowsAffected = $this->repository->deleteAllFromIdentity($command->identityId);
+            $event        = new DeletedMulti($roleAccesses);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException(
+                'Error while trying to delete all role accesses under identity id ' .
+                $command->identityId
+            );
+        }
+
+        return $rowsAffected;
     }
 
     /**
@@ -129,7 +164,18 @@ class RoleAccess implements HandlerInterface {
         $entity->updatedAt = time();
 
         // saves entity
-        $this->repository->save($entity);
+        try {
+            $entity = $this->repository->save($entity);
+            $event  = new Updated($entity);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException(
+                'Error while trying to update a role access identity_id ' .
+                $command->identityId .
+                ' role_access_id ' .
+                $command->roleAccessId
+            );
+        }
 
         return $entity;
     }
@@ -145,6 +191,24 @@ class RoleAccess implements HandlerInterface {
         $this->validator->assertId($command->identityId);
         $this->validator->assertId($command->roleAccessId);
 
-        return $this->repository->deleteOne($command->identityId, $command->roleAccessId);
+        try {
+            $roleAccess   = $this->repository->findOne($command->identityId, $command->roleAccessId);
+            $rowsAffected = $this->repository->deleteOne($command->identityId, $command->roleAccessId);
+            $event        = new Deleted($roleAccess);
+            $this->emitter->emit($event);
+
+            if (! $rowsAffected) {
+                throw new NotFound();
+            }
+        } catch (\Exception $e) {
+            throw new AppException(
+                'Error while trying to update a role access identity_id ' .
+                $command->identityId .
+                ' role_access_id ' .
+                $command->roleAccessId
+            );
+        }
+
+        return $rowsAffected;
     }
 }

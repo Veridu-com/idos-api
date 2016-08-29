@@ -17,7 +17,7 @@ use App\Event\Company\Created;
 use App\Event\Company\Deleted;
 use App\Event\Company\DeletedMulti;
 use App\Event\Company\Updated;
-use App\Exception as AppException;
+use App\Exception\AppException as AppException;
 use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
@@ -70,6 +70,7 @@ class Company implements HandlerInterface {
      *
      * @param App\Repository\CompanyInterface
      * @param App\Validator\Company
+     * @param \League\Event\Emitter
      *
      * @return void
      */
@@ -105,10 +106,12 @@ class Company implements HandlerInterface {
         $company->public_key  = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
         $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
 
-        if ($this->repository->save($company)) {
-            $event = new Created($company);
+        try {
+            $company = $this->repository->save($company);
+            $event   = new Created($company);
             $this->emitter->emit($event);
-        } else {
+        }
+        catch(\Exception $exception) {
             throw new AppException('Error while creating a company');
         }
 
@@ -130,10 +133,11 @@ class Company implements HandlerInterface {
         $company->name      = $command->name;
         $company->updatedAt = time();
 
-        if ($this->repository->save($company)) {
-            $event = new Updated($company);
+        try {
+            $company = $this->repository->save($company);
+            $event   = new Updated($company);
             $this->emitter->emit($event);
-        } else {
+        } catch (\Exception $exception) {
             throw new AppException('Error while updating a company id ' . $command->companyId);
         }
 

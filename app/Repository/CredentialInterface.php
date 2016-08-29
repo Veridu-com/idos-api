@@ -45,6 +45,15 @@ interface CredentialInterface extends RepositoryInterface {
     public function deleteByCompanyId(int $companyId) : int;
 
     /**
+     * Returns all Credentials based on their Company Id.
+     *
+     * @param int $companyId
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function findByCompanyId(int $companyId) : Collection;
+
+    /**
      * Finds a credential by its private key.
      *
      * @param string $key The key

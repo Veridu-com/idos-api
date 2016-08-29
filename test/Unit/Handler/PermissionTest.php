@@ -17,7 +17,9 @@ use App\Handler\Permission;
 use App\Repository\DBPermission;
 use App\Repository\PermissionInterface;
 use App\Validator\Permission as PermissionValidator;
+use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
+use League\Event\Emitter;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
@@ -37,15 +39,21 @@ class PermissionTest extends AbstractUnit {
         $repositoryMock = $this
             ->getMockBuilder(PermissionInterface::class)
             ->getMock();
+
         $validatorMock = $this
             ->getMockBuilder(PermissionValidator::class)
+            ->getMock();
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
             ->getMock();
 
         $this->assertInstanceOf(
             'App\\Handler\\HandlerInterface',
             new Permission(
                 $repositoryMock,
-                $validatorMock
+                $validatorMock,
+                $emitterMock
             )
         );
     }
@@ -61,6 +69,7 @@ class PermissionTest extends AbstractUnit {
             ->getMockBuilder(Repository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $repositoryFactoryMock
             ->method('create')
             ->willReturn($repositoryMock);
@@ -77,12 +86,21 @@ class PermissionTest extends AbstractUnit {
             ->getMockBuilder(Validator::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $validatorFactoryMock
             ->method('create')
             ->willReturn($validatorMock);
 
         $container['validatorFactory'] = function () use ($validatorFactoryMock) {
             return $validatorFactoryMock;
+        };
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
+        $container['eventEmitter'] = function () use ($emitterMock) {
+            return $emitterMock;
         };
 
         Permission::register($container);
@@ -94,10 +112,16 @@ class PermissionTest extends AbstractUnit {
             ->getMockBuilder(PermissionInterface::class)
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Permission(
             $repositoryMock,
-            new PermissionValidator()
+            new PermissionValidator(),
+            $emitterMock
         );
+
         $this->setExpectedException('InvalidArgumentException');
 
         $commandMock = $this
@@ -110,7 +134,13 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $permissionEntity = new PermissionEntity([], $this->optimus);
+        $permissionEntity = new PermissionEntity(
+            [
+                'company_id' => 1,
+                'route_name' => 'companies:listAll'
+            ],
+            $this->optimus
+        );
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
@@ -127,9 +157,14 @@ class PermissionTest extends AbstractUnit {
             ->method('save')
             ->willReturn($permissionEntity);
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Permission(
             $permissionRepository,
-            new PermissionValidator()
+            new PermissionValidator(),
+            $emitterMock
         );
 
         $command            = new CreateNew();
@@ -152,9 +187,14 @@ class PermissionTest extends AbstractUnit {
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Permission(
             $permissionRepository,
-            new PermissionValidator()
+            new PermissionValidator(),
+            $emitterMock
         );
 
         $this->setExpectedException('InvalidArgumentException');
@@ -178,15 +218,36 @@ class PermissionTest extends AbstractUnit {
 
         $permissionRepository = $this->getMockBuilder(DBPermission::class)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
-            ->setMethods(['deleteByCompanyId'])
+            ->setMethods(['deleteByCompanyId', 'getAllByCompanyId'])
             ->getMock();
+
         $permissionRepository
             ->method('deleteByCompanyId')
             ->will($this->returnValue(0));
 
+        $permissionRepository
+            ->method('getAllByCompanyId')
+            ->will(
+                $this->returnValue(
+                    new Collection(
+                        [
+                            [
+                                'id'         => 1,
+                                'route_name' => 'companies:listAll'
+                            ]
+                        ]
+                    )
+                )
+            );
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Permission(
             $permissionRepository,
-            new PermissionValidator()
+            new PermissionValidator(),
+            $emitterMock
         );
 
         $commandMock = $this
@@ -203,9 +264,14 @@ class PermissionTest extends AbstractUnit {
             ->getMockBuilder(PermissionInterface::class)
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Permission(
             $repositoryMock,
-            new PermissionValidator()
+            new PermissionValidator(),
+            $emitterMock
         );
 
         $this->setExpectedException('InvalidArgumentException');
@@ -231,15 +297,33 @@ class PermissionTest extends AbstractUnit {
 
         $permissionRepository = $this->getMockBuilder(DBPermission::class)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
-            ->setMethods(['deleteOne'])
+            ->setMethods(['deleteOne', 'findOne'])
             ->getMock();
+
         $permissionRepository
             ->method('deleteOne')
-            ->will($this->returnValue(0));
+            ->will($this->returnValue(1));
+
+        $entityMock = $this->getMockBuilder(PermissionEntity::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $permissionRepository
+            ->method('findOne')
+            ->will(
+                $this->returnValue(
+                    $entityMock
+                )
+            );
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
 
         $handler = new Permission(
             $permissionRepository,
-            new PermissionValidator()
+            new PermissionValidator(),
+            $emitterMock
         );
 
         $commandMock = $this
@@ -249,7 +333,6 @@ class PermissionTest extends AbstractUnit {
 
         $commandMock->companyId = 0;
         $commandMock->routeName = 'Companies:listAll';
-        $this->assertEquals(0, $handler->handleDeleteOne($commandMock));
+        $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
     }
-
 }

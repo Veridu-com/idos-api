@@ -27,43 +27,6 @@ class DBFeatureTest extends AbstractUnit {
             ->getMock();
     }
 
-    public function testUpdate() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Feature', []);
-
-        $queryMock = $this->getMockBuilder(Builder::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['where', 'update'])
-            ->getMock();
-
-        $queryMock
-            ->method('where')
-            ->will($this->returnValue($queryMock));
-
-        $queryMock
-            ->method('update')
-            ->will($this->returnValue(1));
-
-        $connectionMock = $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['setFetchMode', 'table'])
-            ->getMock();
-
-        $connectionMock
-            ->method('setFetchMode')
-            ->will($this->returnValue([1]));
-
-        $connectionMock
-            ->method('table')
-            ->will($this->returnValue($queryMock));
-
-        $dbFeature = new DBFeature($factory, $this->optimus, $connectionMock);
-
-        $featureEntity = new FeatureEntity(['user_id' => $userId], $this->optimus);
-
-        $this->assertSame(1, $dbFeature->update($featureEntity));
-    }
-
     public function testGetAllByUserIdUnfiltered() {
         $factory = new Entity($this->optimus);
         $factory->create('Feature', []);

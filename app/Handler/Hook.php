@@ -17,6 +17,7 @@ use App\Event\Hook\Created;
 use App\Event\Hook\Deleted;
 use App\Event\Hook\DeletedMulti;
 use App\Event\Hook\Updated;
+use App\Exception\AppException as AppException;
 use App\Exception\NotFound;
 use App\Repository\CredentialInterface;
 use App\Repository\HookInterface;
@@ -122,11 +123,12 @@ class Hook implements HandlerInterface {
             ]
         );
 
-        $hook = $this->repository->save($hook);
-
-        if ($hook) {
+        try {
+            $hook  = $this->repository->save($hook);
             $event = new Created($hook);
             $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to create a hook');
         }
 
         return $hook;
@@ -160,11 +162,13 @@ class Hook implements HandlerInterface {
         $hook->url        = $command->url;
         $hook->subscribed = $command->subscribed;
         $hook->updatedAt  = time();
-        $hook             = $this->repository->save($hook);
 
-        if ($hook) {
+        try {
+            $hook  = $this->repository->save($hook);
             $event = new Updated($hook);
             $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to update a hook id ' . $command->hookId);
         }
 
         return $hook;
@@ -192,11 +196,16 @@ class Hook implements HandlerInterface {
             throw new NotFound();
         }
 
-        $result = $this->repository->delete($command->hookId);
-
-        if ($result) {
-            $event = new Deleted($hook);
+        try {
+            $result = $this->repository->delete($command->hookId);
+            $event  = new Deleted($hook);
             $this->emitter->emit($event);
+
+            if (! $result) {
+                throw new NotFound();
+            }
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to delete a hook id ' . $command->hookId);
         }
 
         return $result;
@@ -216,12 +225,20 @@ class Hook implements HandlerInterface {
             throw new NotFound();
         }
 
-        $hooks  = $this->repository->getAllByCredentialId($credential->id);
-        $result = $this->repository->deleteByCredentialId($credential->id);
+        $hooks = $this->repository->getAllByCredentialId($credential->id);
 
-        if ($result) {
-            $event = new DeletedMulti($hooks);
+        try {
+            $result = $this->repository->deleteByCredentialId($credential->id);
+            $event  = new DeletedMulti($hooks);
             $this->emitter->emit($event);
+        } catch (Exception $e) {
+            $ids = [];
+
+            foreach ($hooks as $hook) {
+                $ids[] = $hook->id;
+            }
+
+            throw new AppException('Error while trying to delete hooks id ' . implode(' ', $ids));
         }
 
         return $result;

@@ -19,8 +19,8 @@ class UpdatedTest extends AbstractUnit {
 
         $hook = new Hook([], $optimus);
 
-        $created = new Updated($hook);
+        $updated = new Updated($hook);
 
-        $this->assertInstanceOf(Hook::class, $created->hook);
+        $this->assertInstanceOf(Hook::class, $updated->hook);
     }
 }

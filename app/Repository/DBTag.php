@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Tag;
-use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -44,7 +43,7 @@ class DBTag extends AbstractDBRepository implements TagInterface {
             ->selectRaw('tags.*')
             ->where('user_id', '=', $userId);
 
-        if(! empty($tags)) {
+        if (! empty($tags)) {
             $result = $result->whereIn('slug', $tags);
         }
 
@@ -53,9 +52,9 @@ class DBTag extends AbstractDBRepository implements TagInterface {
         return new Collection($result);
     }
 
-     /**
-      * {@inheritdoc}
-      */
+    /**
+     * {@inheritdoc}
+     */
     public function deleteByUserId(int $userId) : int {
         return $this->deleteBy(['user_id' => $userId]);
     }
@@ -63,15 +62,8 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByUserIdAndSlug(int $userId, string $name) : Tag {
-        $result = $this->findBy(['user_id' => $userId, 'slug' => $name]);
-
-        if($result->isEmpty()) {
-            throw new NotFound();
-        }
-
-        return $result->first();
-
+    public function findOneByUserIdAndSlug(int $userId, string $slug) : Tag {
+        return $this->findOneBy(['user_id' => $userId, 'slug' => $slug]);
     }
 
     /**

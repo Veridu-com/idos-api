@@ -57,9 +57,14 @@ class CompanyPermission implements MiddlewareInterface {
 
         $allowed = false;
 
+        if (($this->permissionType & self::PUBLIC_ACTION) === self::PUBLIC_ACTION) {
+            $allowed = true;
+        }
+
         if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
             try {
                 $permission = $permissionRepository->findOne($actingCompany->id, $routeName);
+                $allowed    = true;
             } catch (NotFound $e) {
                 // deny
                 throw new NotAllowed();

@@ -44,11 +44,11 @@ interface SettingInterface extends RepositoryInterface {
     public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection;
 
     /**
-     * Updates one setting.
+     * Returns a collection of settings based on their compani_id.
      *
-     * @param App\Entity\Setting $setting instance
+     * @param int $companyId The company identifier
      *
-     * @return int
+     * @return \Illuminate\Support\Collection
      */
-    public function update(Setting &$setting) : int;
+    public function findByCompanyId(int $companyId) : Collection;
 }

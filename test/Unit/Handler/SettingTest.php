@@ -18,7 +18,9 @@ use App\Handler\Setting;
 use App\Repository\DBSetting;
 use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
+use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
+use League\Event\Emitter;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
@@ -38,15 +40,21 @@ class SettingTest extends AbstractUnit {
         $repositoryMock = $this
             ->getMockBuilder(SettingInterface::class)
             ->getMock();
+
         $validatorMock = $this
             ->getMockBuilder(SettingValidator::class)
+            ->getMock();
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
             ->getMock();
 
         $this->assertInstanceOf(
             'App\\Handler\\HandlerInterface',
             new Setting(
                 $repositoryMock,
-                $validatorMock
+                $validatorMock,
+                $emitterMock
             )
         );
     }
@@ -62,6 +70,7 @@ class SettingTest extends AbstractUnit {
             ->getMockBuilder(Repository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $repositoryFactoryMock
             ->method('create')
             ->willReturn($repositoryMock);
@@ -78,12 +87,21 @@ class SettingTest extends AbstractUnit {
             ->getMockBuilder(Validator::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $validatorFactoryMock
             ->method('create')
             ->willReturn($validatorMock);
 
         $container['validatorFactory'] = function () use ($validatorFactoryMock) {
             return $validatorFactoryMock;
+        };
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
+        $container['eventEmitter'] = function () use ($emitterMock) {
+            return $emitterMock;
         };
 
         Setting::register($container);
@@ -95,15 +113,22 @@ class SettingTest extends AbstractUnit {
             ->getMockBuilder(SettingInterface::class)
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Setting(
             $repositoryMock,
-            new SettingValidator()
+            new SettingValidator(),
+            $emitterMock
         );
+
         $this->setExpectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(CreateNew::class)
             ->getMock();
+
         $commandMock->setParameters(
             [
                 'section'    => 'section',
@@ -133,14 +158,20 @@ class SettingTest extends AbstractUnit {
             ->setMethods(['save'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $settingRepository
             ->expects($this->once())
             ->method('save')
             ->willReturn($settingEntity);
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Setting(
             $settingRepository,
-            new SettingValidator()
+            new SettingValidator(),
+            $emitterMock
         );
 
         $command            = new CreateNew();
@@ -161,9 +192,14 @@ class SettingTest extends AbstractUnit {
             ->getMockBuilder(SettingInterface::class)
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Setting(
             $repositoryMock,
-            new SettingValidator()
+            new SettingValidator(),
+            $emitterMock
         );
 
         $this->setExpectedException('InvalidArgumentException');
@@ -188,17 +224,36 @@ class SettingTest extends AbstractUnit {
         $entityFactory->create('Setting');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
-            ->setMethods(['deleteByCompanyId'])
+            ->setMethods(['deleteByCompanyId', 'findByCompanyId'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $settingRepository
             ->expects($this->once())
             ->method('deleteByCompanyId')
             ->willReturn(1);
 
+        $settingRepository
+            ->expects($this->once())
+            ->method('findByCompanyId')
+            ->willReturn(
+                new Collection(
+                    [
+                        [
+                            'id' => 1
+                        ]
+                    ]
+                )
+            );
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Setting(
             $settingRepository,
-            new SettingValidator()
+            new SettingValidator(),
+            $emitterMock
         );
 
         $command            = new DeleteAll();
@@ -212,9 +267,14 @@ class SettingTest extends AbstractUnit {
             ->getMockBuilder(SettingInterface::class)
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Setting(
             $repositoryMock,
-            new SettingValidator()
+            new SettingValidator(),
+            $emitterMock
         );
 
         $this->setExpectedException('InvalidArgumentException');
@@ -243,21 +303,32 @@ class SettingTest extends AbstractUnit {
         $entityFactory->create('Setting');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
-            ->setMethods(['find', 'update'])
+            ->setMethods(['find', 'save'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $settingRepository
             ->expects($this->once())
             ->method('find')
             ->willReturn($settingEntity);
+
+        $entityMock = $this->getMockBuilder(SettingEntity::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $settingRepository
             ->expects($this->once())
-            ->method('update')
-            ->will($this->returnValue(1));
+            ->method('save')
+            ->will($this->returnValue($entityMock));
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
 
         $handler = new Setting(
             $settingRepository,
-            new SettingValidator()
+            new SettingValidator(),
+            $emitterMock
         );
 
         $command            = new UpdateOne();
@@ -275,9 +346,14 @@ class SettingTest extends AbstractUnit {
             ->getMockBuilder(SettingInterface::class)
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Setting(
             $repositoryMock,
-            new SettingValidator()
+            new SettingValidator(),
+            $emitterMock
         );
 
         $this->setExpectedException('InvalidArgumentException');
@@ -304,17 +380,32 @@ class SettingTest extends AbstractUnit {
         $entityFactory->create('Setting');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
-            ->setMethods(['delete'])
+            ->setMethods(['delete', 'find'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $settingRepository
             ->expects($this->once())
             ->method('delete')
             ->willReturn(1);
 
+        $entityMock = $this->getMockBuilder(SettingEntity::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $settingRepository
+            ->expects($this->once())
+            ->method('find')
+            ->willReturn($entityMock);
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Setting(
             $settingRepository,
-            new SettingValidator()
+            new SettingValidator(),
+            $emitterMock
         );
 
         $command            = new DeleteOne();
@@ -322,5 +413,4 @@ class SettingTest extends AbstractUnit {
 
         $this->assertEquals(1, $handler->handleDeleteOne($command));
     }
-
 }

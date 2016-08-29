@@ -50,9 +50,9 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
         return $this->castHydrate($items);
     }
 
-     /**
-      * {@inheritdoc}
-      */
+    /**
+     * {@inheritdoc}
+     */
     public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
         $items = new Collection();
         $items = $items->merge(
@@ -109,9 +109,12 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
         return $this->deleteByKey('company_id', $companyId);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function saveOne(Member $member) : Member {
-        $user = $member->relations['user'];
-        $this->save($member);
+        $user                      = $member->relations['user'];
+        $member                    = $this->save($member);
         $member->relations['user'] = $user;
 
         return $member;

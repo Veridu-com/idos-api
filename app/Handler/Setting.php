@@ -13,10 +13,16 @@ use App\Command\Setting\DeleteAll;
 use App\Command\Setting\DeleteOne;
 use App\Command\Setting\UpdateOne;
 use App\Entity\Setting as SettingEntity;
+use App\Event\Setting\Created;
+use App\Event\Setting\Deleted;
+use App\Event\Setting\DeletedMulti;
+use App\Event\Setting\Updated;
+use App\Exception\AppException as AppException;
 use App\Exception\NotFound;
 use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Setting commands.
@@ -34,6 +40,12 @@ class Setting implements HandlerInterface {
      * @var App\Validator\Setting
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -46,7 +58,9 @@ class Setting implements HandlerInterface {
                     ->create('Setting'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Setting')
+                    ->create('Setting'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -56,15 +70,18 @@ class Setting implements HandlerInterface {
      *
      * @param App\Repository\SettingInterface $repository
      * @param App\Validator\Setting           $validator
+     * @param League\Event\Emitter            $emitter
      *
      * @return void
      */
     public function __construct(
         SettingInterface $repository,
-        SettingValidator $validator
+        SettingValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -89,7 +106,13 @@ class Setting implements HandlerInterface {
             ]
         );
 
-        $setting = $this->repository->save($setting);
+        try {
+            $setting = $this->repository->save($setting);
+            $event   = new Created($setting);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to create a setting');
+        }
 
         return $setting;
     }
@@ -111,9 +134,15 @@ class Setting implements HandlerInterface {
             $setting->updatedAt = time();
         }
 
-        $success = $this->repository->update($setting);
+        try {
+            $setting = $this->repository->save($setting);
+            $event   = new Updated($setting);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to update a setting id ' . $command->settingId);
+        }
 
-        return $success ? $setting : false;
+        return $setting;
     }
 
     /**
@@ -126,7 +155,20 @@ class Setting implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->companyId);
 
-        return $this->repository->deleteByCompanyId($command->companyId);
+        $settings = $this->repository->findByCompanyId($command->companyId);
+
+        try {
+            $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
+            $event        = new DeletedMulti($settings);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException(
+                'Error while trying to delete all settings under the company id ' .
+                $command->companyId
+            );
+        }
+
+        return $rowsAffected;
     }
 
     /**
@@ -139,10 +181,19 @@ class Setting implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->settingId);
 
-        $rowsAffected = $this->repository->delete($command->settingId);
+        $setting = $this->repository->find($command->settingId);
 
-        if (! $rowsAffected) {
-            throw new NotFound();
+        try {
+            $rowsAffected = $this->repository->delete($command->settingId);
+
+            $event = new Deleted($setting);
+            $this->emitter->emit($event);
+
+            if (! $rowsAffected) {
+                throw new NotFound();
+            }
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to delete a setting id ' . $command->settingId);
         }
 
         return $rowsAffected;
