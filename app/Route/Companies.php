@@ -86,7 +86,7 @@ class Companies implements RouteInterface {
                 'App\Controller\Companies:listAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('companies:listAll');
     }
 
@@ -117,7 +117,7 @@ class Companies implements RouteInterface {
                 'App\Controller\Companies:createNew'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('companies:createNew');
     }
 
@@ -148,7 +148,7 @@ class Companies implements RouteInterface {
                 'App\Controller\Companies:deleteAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('companies:deleteAll');
     }
 
@@ -208,7 +208,7 @@ class Companies implements RouteInterface {
                 'App\Controller\Companies:updateOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('companies:updateOne');
     }
 
@@ -240,7 +240,7 @@ class Companies implements RouteInterface {
                 'App\Controller\Companies:deleteOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('companies:deleteOne');
     }
 }

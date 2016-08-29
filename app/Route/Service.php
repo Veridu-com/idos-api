@@ -84,7 +84,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:listAll'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service:listAll');
     }
 
@@ -115,7 +115,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:createNew'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service:createNew');
     }
 
@@ -146,7 +146,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:deleteAll'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service:deleteAll');
     }
 
@@ -178,7 +178,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:getOne'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service:getOne');
     }
 
@@ -210,7 +210,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:updateOne'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service:updateOne');
     }
 
@@ -242,7 +242,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:deleteOne'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service:deleteOne');
     }
 }

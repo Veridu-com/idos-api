@@ -13,6 +13,7 @@ use App\Exception\NotFound;
 use App\Repository\CompanyInterface;
 use App\Repository\CredentialInterface;
 use App\Repository\UserInterface;
+use App\Repository\ServiceInterface;
 use Lcobucci\JWT\Parser as JWTParser;
 use Lcobucci\JWT\Signer\Hmac\Sha256 as JWTSigner;
 use Lcobucci\JWT\ValidationData as JWTValidation;
@@ -196,7 +197,7 @@ class Auth implements MiddlewareInterface {
         }
 
         // Retrieves JWT Subject
-        if (! $token->hasClaim('sub')) {
+        if (! $token->hasClaim('sub') || ! $token->getClaim('sub')) {
             throw new AppException('Missing Subject Claim');
         }
 
@@ -329,6 +330,7 @@ class Auth implements MiddlewareInterface {
         if (! $token->hasClaim('sub')) {
             throw new AppException('Missing Subject Claim');
         }
+
         $credentialPubKey = $token->getClaim('sub');
 
         try {
@@ -346,58 +348,6 @@ class Auth implements MiddlewareInterface {
 
             // Stores Company for future use
             ->withAttribute('company', $company)
-
-            // Stores Credential for future use
-            ->withAttribute('credential', $credential);
-    }
-
-    /**
-     * Handles request Authorization based on Credential Public Key.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param string                                   $reqKey
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface
-     */
-    private function handleCredentialPubKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
-        try {
-            $credential = $this->credentialRepository->findByPubKey($reqKey);
-        } catch (NotFound $e) {
-            throw new AppException('Invalid Credential');
-        }
-
-        // Retrieves Credential's owner
-        $actingCompany = $this->companyRepository->find($credential->company_id);
-
-        return $request
-            // Stores Acting Company for future use
-            ->withAttribute('actingCompany', $actingCompany)
-
-            // Stores Credential for future use
-            ->withAttribute('credential', $credential);
-    }
-
-    /**
-     * Handles request Authorization based on Credential Private Key.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param string                                   $reqKey
-     *
-     * @return \Psr\Http\Message\ServerRequestInterface
-     */
-    private function handleCredentialPrivKey(ServerRequestInterface $request, string $reqKey) : ServerRequestInterface {
-        try {
-            $credential = $this->credentialRepository->findByPrivKey($reqKey);
-        } catch (NotFound $e) {
-            throw new AppException('Invalid Credential');
-        }
-
-        // Retrieves Credential's owner
-        $actingCompany = $this->companyRepository->find($credential->company_id);
-
-        return $request
-            // Stores Acting Company for future use
-            ->withAttribute('actingCompany', $actingCompany)
 
             // Stores Credential for future use
             ->withAttribute('credential', $credential);
@@ -524,13 +474,9 @@ class Auth implements MiddlewareInterface {
                 }
             } else {
                 // Load User
-                $company = $request->getAttribute('company');
+                $credential = $request->getAttribute('credential');
 
-                if (empty($company)) {
-                    throw new AppException('InvalidRequest');
-                }
-
-                $user = $this->userRepository->findOneByUsernameAndCredential($username, $request->getAttribute('credential'));
+                $user = $this->userRepository->findOneByUsernameAndCredential($username, $credential->id);
             }
 
         // Stores Target User for future use

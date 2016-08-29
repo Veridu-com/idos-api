@@ -83,7 +83,7 @@ class Permissions implements RouteInterface {
                 'App\Controller\Permissions:listAll'
             )
             ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:listAll');
     }
 
@@ -113,7 +113,7 @@ class Permissions implements RouteInterface {
                 'App\Controller\Permissions:createNew'
             )
             ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:createNew');
     }
 
@@ -143,7 +143,7 @@ class Permissions implements RouteInterface {
                 'App\Controller\Permissions:deleteAll'
             )
             ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:deleteAll');
     }
 
@@ -172,7 +172,7 @@ class Permissions implements RouteInterface {
                 'App\Controller\Permissions:getOne'
             )
             ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:getOne');
     }
 
@@ -202,7 +202,7 @@ class Permissions implements RouteInterface {
                 'App\Controller\Permissions:deleteOne'
             )
             ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:deleteOne');
     }
 }

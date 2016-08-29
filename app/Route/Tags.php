@@ -90,7 +90,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:listAll'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_TOKEN))
             ->setName('tags:listAll');
     }
     /**
@@ -124,7 +124,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:createNew'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_TOKEN))
             ->setName('tags:createNew');
     }
 
@@ -159,7 +159,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:deleteAll'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_TOKEN))
             ->setName('tags:deleteAll');
     }
 
@@ -195,7 +195,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:getOne'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_TOKEN))
             ->setName('tags:getOne');
     }
 
@@ -231,7 +231,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:deleteOne'
             )
             ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_TOKEN))
             ->setName('tags:deleteOne');
     }
 }

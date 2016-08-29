@@ -33,5 +33,5 @@ interface UserInterface extends RepositoryInterface {
      * @param string $credentialPrivKey The credential priv key
      * @param string $credentialPubKey  The credential pub key
      */
-    public function generateToken(string $username, string $credentialPrivKey, string $credentialPubKey) : string;
+    public static function generateToken($username, string $credentialPrivKey, string $credentialPubKey) : string;
 }

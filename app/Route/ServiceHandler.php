@@ -84,7 +84,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:listAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:listAll');
     }
 
@@ -115,7 +115,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:createNew'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:createNew');
     }
 
@@ -146,7 +146,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:deleteAll'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:deleteAll');
     }
 
@@ -178,7 +178,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:getOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:getOne');
     }
 
@@ -210,7 +210,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:updateOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:updateOne');
     }
 
@@ -242,7 +242,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:deleteOne'
             )
             ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:deleteOne');
     }
 }
