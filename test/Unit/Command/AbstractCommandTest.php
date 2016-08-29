@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Command;
 
 use App\Command\AbstractCommand;
@@ -13,14 +15,6 @@ use Test\Unit\AbstractUnit;
  * Abstract Command Implementation.
  */
 class AbstractCommandTest extends AbstractUnit {
-    private function setProtectedMethod($object, $method) {
-        $reflection        = new \ReflectionClass($object);
-        $reflection_method = $reflection->getMethod($method);
-        $reflection_method->setAccessible(true);
-
-        return $reflection_method;
-    }
-
     public function testSetParameter() {
         $abstractMock = $this->getMockBuilder(AbstractCommand::class)
             ->getMockForAbstractclass();
@@ -31,12 +25,12 @@ class AbstractCommandTest extends AbstractUnit {
 
     /**
      * Given the associative array, this function test public and private properties.
-     * 
+     *
      * @example [ 'name' => 'public', 'companyId' => 'private' ]
-     * 
+     *
      * Where "public" keys can be assign by the Command@setParameters method.
      * Where "private" kes can't be assigned by the Command@setParameters method.
-     * 
+     *
      * @param array $parameters The parameters
      */
     public function assertSetParameters(string $commandClassName, array $parameters) {
@@ -54,7 +48,6 @@ class AbstractCommandTest extends AbstractUnit {
                         $this->assertNull($command->$prop);
                     }
                 }
-
             } else {
                 $command->setParameters([$parameter => 1]);
 
@@ -65,5 +58,4 @@ class AbstractCommandTest extends AbstractUnit {
             }
         }
     }
-
 }

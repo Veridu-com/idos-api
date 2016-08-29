@@ -41,11 +41,11 @@ class CreateNew extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if(isset($parameters['name'])) {
+        if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
 
-        if(isset($parameters['slug'])) {
+        if (isset($parameters['slug'])) {
             $this->slug = $parameters['slug'];
         }
 

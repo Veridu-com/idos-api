@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Entity;
 
 use App\Entity\Member;
@@ -65,28 +67,28 @@ class HookTest extends AbstractUnit {
             'subscribed'    => true,
             'created_at'    => time(),
             'updated_at'    => time()
-        ];
-        $abstractMock = $this->getMockBuilder(Hook::class)
-            ->setMethods(null)
-            ->setConstructorArgs([$array, $this->optimus])
-            ->getMockForAbstractClass();
-        $array = $abstractMock->toArray();
-        $this->assertArrayHasKey('id', $array);
-        $this->assertSame(1, $array['id']);
-        $this->assertArrayHasKey('credential_id', $array);
-        $this->assertSame(1, $array['credential_id']);
-        $this->assertArrayHasKey('trigger', $array);
-        $this->assertSame('trigger.test', $array['trigger']);
-        $this->assertArrayHasKey('url', $array);
-        $this->assertSame('http://example.com/test.php', $array['url']);
-        $this->assertArrayHasKey('subscribed', $array);
-        $this->assertSame(true, $array['subscribed']);
-        $this->assertArrayHasKey('created_at', $array);
-        $this->assertTrue(is_string($array['created_at']));
-        $this->assertTrue(is_int($abstractMock->createdAt));
-        $this->assertArrayHasKey('updated_at', $array);
-        $this->assertTrue(is_string($array['updated_at']));
-        $this->assertTrue(is_int($abstractMock->updatedAt));
+         ];
+         $abstractMock = $this->getMockBuilder(Hook::class)
+             ->setMethods(null)
+             ->setConstructorArgs([$array, $this->optimus])
+             ->getMockForAbstractClass();
+         $array = $abstractMock->toArray();
+         $this->assertArrayHasKey('id', $array);
+         $this->assertSame(1, $array['id']);
+         $this->assertArrayHasKey('credential_id', $array);
+         $this->assertSame(1, $array['credential_id']);
+         $this->assertArrayHasKey('trigger', $array);
+         $this->assertSame('trigger.test', $array['trigger']);
+         $this->assertArrayHasKey('url', $array);
+         $this->assertSame('http://example.com/test.php', $array['url']);
+         $this->assertArrayHasKey('subscribed', $array);
+         $this->assertSame(true, $array['subscribed']);
+         $this->assertArrayHasKey('created_at', $array);
+         $this->assertTrue(is_string($array['created_at']));
+         $this->assertTrue(is_int($abstractMock->createdAt));
+         $this->assertArrayHasKey('updated_at', $array);
+         $this->assertTrue(is_string($array['updated_at']));
+         $this->assertTrue(is_int($abstractMock->updatedAt));
     }
 
     /*public function testGetCachedKeysEmptyAttributes() {

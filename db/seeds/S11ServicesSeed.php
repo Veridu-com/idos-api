@@ -12,7 +12,7 @@ class S11ServicesSeed extends AbstractSeed {
 
         $servicesData = [
             [
-                'name'          => 'idos FB Scraper',
+                'name'          => 'idOS FB Scraper',
                 'url'           => 'https://scraper.idos.io',
                 'company_id'    => 1,
                 'auth_username' => 'idos',
@@ -24,7 +24,7 @@ class S11ServicesSeed extends AbstractSeed {
                 'enabled'       => true,
             ],
             [
-                'name'          => 'idos FB Data Mapper',
+                'name'          => 'idOS FB Data Mapper',
                 'url'           => 'https://data-mapper.idos.io',
                 'company_id'    => 1,
                 'auth_username' => 'idos',
@@ -36,7 +36,7 @@ class S11ServicesSeed extends AbstractSeed {
                 'enabled'       => true,
             ],
             [
-                'name'          => 'idos Overall Model',
+                'name'          => 'idOS Overall Model',
                 'url'           => 'https://overall.idos.io',
                 'company_id'    => 1,
                 'auth_username' => 'idos',

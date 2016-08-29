@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Controller;
 
 use App\Command\Member\CreateNew;
@@ -192,7 +194,7 @@ class MembersTest extends AbstractUnit {
          $this->assertSame($responseMock, $memberMock->listAll($requestMock, $responseMock));
     }
 
-public function testCreateNew() {
+    public function testCreateNew() {
         $requestMock = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->setMethods(['getParsedBody'])

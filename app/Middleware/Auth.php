@@ -364,109 +364,6 @@ class Auth implements MiddlewareInterface {
     }
 
     /**
-     * Class constructor.
-     *
-     * @param App\Repository\CredentialInterface $credentialRepository
-     * @param App\Repository\UserInterface       $userRepository
-     * @param App\Repository\CompanyInterface    $companyRepository
-     * @param \Lcobucci\JWT\Parser               $jwtParser
-     * @param \Lcobucci\JWT\ValidationData       $jwtValidation
-     * @param \Lcobucci\JWT\Signer\Hmac\Sha256   $jwtSigner
-     * @param int                                $authorizationRequirement
-     */
-    public function __construct(
-        CredentialInterface $credentialRepository,
-        UserInterface $userRepository,
-        CompanyInterface $companyRepository,
-        ServiceInterface $serviceRepository,
-        JWTParser $jwtParser,
-        JWTValidation $jwtValidation,
-        JWTSigner $jwtSigner,
-        int $authorizationRequirement = self::NONE
-    ) {
-        $this->credentialRepository = $credentialRepository;
-        $this->userRepository       = $userRepository;
-        $this->companyRepository    = $companyRepository;
-        $this->serviceRepository    = $serviceRepository;
-
-        $this->jwtParser     = $jwtParser;
-        $this->jwtValidation = $jwtValidation;
-        $this->jwtSigner     = $jwtSigner;
-
-        $this->authorizationRequirement = $authorizationRequirement;
-    }
-
-    /**
-     * Middleware execution, tries to extract authorization key from request and creates
-     * request arguments for Acting User, Target User, Acting Company, Target Company and Credential.
-     *
-     * Acting User: the user that is performing the system action
-     * Target User: the user that is receiving the system action
-     * Acting Company: the company that is performing the system action
-     * Target Company: the company that is receiving the system action
-     * Credential: the credential used during the request (may be missing)
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     * @param callable                                 $next
-     *
-     * @throws App\Exception\AppException
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function __invoke(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        callable $next
-    ) : ResponseInterface {
-        $hasAuthorization   = ($this->authorizationRequirement == self::NONE);
-        $validAuthorization = [];
-
-        // Authorization Handling Loop
-        foreach ($this->authorizationSetup() as $level => $authorizationInfo) {
-            if ($hasAuthorization) {
-                break;
-            }
-
-            if (($this->authorizationRequirement & $level) == $level) {
-                // Tries to extract Authorization from Request
-                $authorization = $this->extractAuthorization($request, $authorizationInfo['name']);
-
-                if (empty($authorization)) {
-                    $validAuthorization[] = $authorizationInfo['label'];
-                } else {
-                    // Handles Authorization validation and Request Argument creation
-                    $request = $this->{$authorizationInfo['handler']}($request, $authorization);
-
-                    // Authorization has been found and validated
-                    $hasAuthorization = true;
-                }
-            }
-        }
-
-        // Request has proper Authorization, proceed with regular process
-        if ($hasAuthorization) {
-            $routeInfo = $request->getAttribute('routeInfo');
-            //$companySlug = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
-            $userName = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
-
-            // Resolves {companySlug} route argument
-            /*if ($companySlug) {
-                $request = $this->populateRequestCompanies($companySlug, $request);
-            }*/
-
-            // Resolves {userName} route argument
-            if ($userName) {
-                $request = $this->populateRequestUsers($userName, $request);
-            }
-
-            return $next($request, $response);
-        }
-
-        throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
-    }
-
-    /**
      * Populates the request with the found user on the request.
      *
      * @param string                                   $username The username
@@ -530,5 +427,108 @@ class Auth implements MiddlewareInterface {
 
         // Stores Target Company for future use
         return $request->withAttribute('targetCompany', $targetCompany);
+    }
+
+    /**
+     * Class constructor.
+     *
+     * @param App\Repository\CredentialInterface $credentialRepository
+     * @param App\Repository\UserInterface       $userRepository
+     * @param App\Repository\CompanyInterface    $companyRepository
+     * @param \Lcobucci\JWT\Parser               $jwtParser
+     * @param \Lcobucci\JWT\ValidationData       $jwtValidation
+     * @param \Lcobucci\JWT\Signer\Hmac\Sha256   $jwtSigner
+     * @param int                                $authorizationRequirement
+     */
+    public function __construct(
+        CredentialInterface $credentialRepository,
+        UserInterface $userRepository,
+        CompanyInterface $companyRepository,
+        ServiceInterface $serviceRepository,
+        JWTParser $jwtParser,
+        JWTValidation $jwtValidation,
+        JWTSigner $jwtSigner,
+        int $authorizationRequirement = self::NONE
+    ) {
+        $this->credentialRepository = $credentialRepository;
+        $this->userRepository       = $userRepository;
+        $this->companyRepository    = $companyRepository;
+        $this->serviceRepository    = $serviceRepository;
+
+        $this->jwtParser     = $jwtParser;
+        $this->jwtValidation = $jwtValidation;
+        $this->jwtSigner     = $jwtSigner;
+
+        $this->authorizationRequirement = $authorizationRequirement;
+    }
+
+    /**
+     * Middleware execution, tries to extract authorization key from request and creates
+     * request arguments for Acting User, Target User, Acting Company, Target Company and Credential.
+     *
+     * Acting User: the user that is performing the system action
+     * Target User: the user that is receiving the system action
+     * Acting Company: the company that is performing the system action
+     * Target Company: the company that is receiving the system action
+     * Credential: the credential used during the request (may be missing)
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     * @param callable                                 $next
+     *
+     * @throws App\Exception\AppException
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function __invoke(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        callable $next
+    ) : ResponseInterface {
+        $hasAuthorization   = ($this->authorizationRequirement === self::NONE);
+        $validAuthorization = [];
+
+        // Authorization Handling Loop
+        foreach ($this->authorizationSetup() as $level => $authorizationInfo) {
+            if ($hasAuthorization) {
+                break;
+            }
+
+            if (($this->authorizationRequirement & $level) == $level) {
+                // Tries to extract Authorization from Request
+                $authorization = $this->extractAuthorization($request, $authorizationInfo['name']);
+
+                if (empty($authorization)) {
+                    $validAuthorization[] = $authorizationInfo['label'];
+                } else {
+                    // Handles Authorization validation and Request Argument creation
+                    $request = $this->{$authorizationInfo['handler']}($request, $authorization);
+
+                    // Authorization has been found and validated
+                    $hasAuthorization = true;
+                }
+            }
+        }
+
+        // Request has proper Authorization, proceed with regular process
+        if ($hasAuthorization) {
+            $routeInfo = $request->getAttribute('routeInfo');
+            //$companySlug = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
+            $userName = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
+
+            // Resolves {companySlug} route argument
+            /*if ($companySlug) {
+                $request = $this->populateRequestCompanies($companySlug, $request);
+            }*/
+
+            // Resolves {userName} route argument
+            if ($userName) {
+                $request = $this->populateRequestUsers($userName, $request);
+            }
+
+            return $next($request, $response);
+        }
+
+        throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
     }
 }

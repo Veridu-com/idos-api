@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Entity;
 
 use App\Entity\AbstractEntity;
@@ -16,14 +18,6 @@ class AbstractEntityTest extends AbstractUnit {
      * Jenssengers\Optimus\Optimus $optimus
      */
     private $optimus;
-
-    private function setProtectedMethod($object, $method) {
-        $reflection        = new \ReflectionClass($object);
-        $reflection_method = $reflection->getMethod($method);
-        $reflection_method->setAccessible(true);
-
-        return $reflection_method;
-    }
 
     public function setUp() {
         $this->optimus = $this->getMockBuilder(Optimus::class)
@@ -61,16 +55,16 @@ class AbstractEntityTest extends AbstractUnit {
         $this->assertSame('_abc_de', $method->invoke($abstractMock, 'AbcDe'));
     }
 
-      public function testHasSetMutator() {
+    public function testHasSetMutator() {
         $abstractMock = $this->getMockBuilder(Company::class)
             ->setMethods(['getReferenceCacheKeys', 'setNameAttribute'])
             ->setConstructorArgs(
                 [
-                    [
-                        'id'   => 1,
-                        'name' => 'abc'
-                    ],
-                    $this->optimus
+                [
+                    'id'   => 1,
+                    'name' => 'abc'
+                ],
+                $this->optimus
                 ]
             )
             ->getMockForAbstractClass();
@@ -122,8 +116,7 @@ class AbstractEntityTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $abstractMock
             ->method('hasSetMutator')
-            ->will($this->returnValue(true))
-            ;
+            ->will($this->returnValue(true));
         $method = $this->setProtectedMethod($abstractMock, 'setAttribute');
 
         $this->assertInstanceOf(AbstractEntity::class, $method->invoke($abstractMock, 'name', 'value'));
@@ -147,7 +140,7 @@ class AbstractEntityTest extends AbstractUnit {
         $method->invoke($abstractMock, 'endpoint.created_at', time());
         $method->invoke($abstractMock, 'endpoint.updated_at', time());
         $this->assertArrayHasKey('endpoint', $abstractMock->relations);
-        $this->assertEquals('Endpoint Name', $abstractMock->relations['endpoint']['name']);
+        $this->assertSame('Endpoint Name', $abstractMock->relations['endpoint']['name']);
         $this->assertTrue(is_int($abstractMock->relations['endpoint']['created_at']));
         $this->assertTrue(is_int($abstractMock->relations['endpoint']['updated_at']));
     }
@@ -163,11 +156,10 @@ class AbstractEntityTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $abstractMock
             ->method('hasGetMutator')
-            ->will($this->returnValue(true))
-            ;
+            ->will($this->returnValue(true));
         $method = $this->setProtectedMethod($abstractMock, 'getAttribute');
 
-        $this->assertEquals('abc', $method->invoke($abstractMock, 'name'));
+        $this->assertSame('abc', $method->invoke($abstractMock, 'name'));
     }
 
     public function testHydrate() {
@@ -176,17 +168,17 @@ class AbstractEntityTest extends AbstractUnit {
             'name'       => 'Abstract Entity',
             'created_at' => time(),
             'updated_at' => time()
-        ];
-        $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-            ->setMethods(['getReferenceCacheKeys'])
-            ->setConstructorArgs([$array, $this->optimus])
-            ->getMockForAbstractClass();
+         ];
+         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
+             ->setMethods(['getReferenceCacheKeys'])
+             ->setConstructorArgs([$array, $this->optimus])
+             ->getMockForAbstractClass();
 
-        $abstractMock->hydrate($array);
-        $this->assertEquals(1, $abstractMock->id);
-        $this->assertEquals('Abstract Entity', $abstractMock->name);
-        $this->assertTrue(is_int($abstractMock->createdAt));
-        $this->assertTrue(is_int($abstractMock->updatedAt));
+         $abstractMock->hydrate($array);
+         $this->assertSame(1, $abstractMock->id);
+         $this->assertSame('Abstract Entity', $abstractMock->name);
+         $this->assertTrue(is_int($abstractMock->createdAt));
+         $this->assertTrue(is_int($abstractMock->updatedAt));
     }
 
     public function testToArray() {

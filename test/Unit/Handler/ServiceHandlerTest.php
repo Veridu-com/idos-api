@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Handler;
 
 use App\Command\ServiceHandler\CreateNew;
@@ -117,14 +119,16 @@ class ServiceHandlerTest extends AbstractUnit {
     }
 
     public function testHandleCreateNew() {
-        $savedEntity = new ServiceHandlerEntity([
+        $savedEntity = new ServiceHandlerEntity(
+            [
             'id'         => 1,
             'service_id' => 1,
             'url'        => 'http://localhost:8080',
             'listens'    => ['listen1', 'listen2'],
             'company_id' => 1,
             'created_at' => time()
-        ], $this->optimus);
+            ], $this->optimus
+        );
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
@@ -204,7 +208,9 @@ class ServiceHandlerTest extends AbstractUnit {
                 [
                     'id'      => 1,
                     'listens' => ['listen1', 'listen2']
-                ], $this->optimus)
+                ],
+                $this->optimus
+            )
         ];
 
         $serviceHandlerRepository
@@ -225,8 +231,8 @@ class ServiceHandlerTest extends AbstractUnit {
         $result = $handler->handleUpdateOne($command);
 
         $this->assertSame(['listen1', 'listen2'], $result->listens);
-        $this->assertTrue(is_int($result->created_at));
-        $this->assertTrue(is_int($result->updated_at));
+        $this->assertTrue(is_int($result->createdAt));
+        $this->assertTrue(is_int($result->updatedAt));
     }
 
     public function testHandleDeleteOneInvalidServiceSlug() {
@@ -278,7 +284,7 @@ class ServiceHandlerTest extends AbstractUnit {
         $commandMock->companyId        = 1;
         $commandMock->serviceHandlerId = 1;
 
-        $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(1, $handler->handleDeleteOne($commandMock));
     }
 
     public function testHandleDeleteAllInvalidServiceSlug() {
@@ -350,6 +356,6 @@ class ServiceHandlerTest extends AbstractUnit {
 
         $commandMock->companyId = 1;
 
-        $this->assertEquals(3, $handler->handleDeleteAll($commandMock));
+        $this->assertSame(3, $handler->handleDeleteAll($commandMock));
     }
 }

@@ -1,0 +1,32 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/member/memberEntity.json",
+    "title": "Mapped",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Name of mapped data",
+            "type": "string",
+            "pattern": ""
+        },
+        "value": {
+            "description": "Mapped data",
+            "type": "string",
+            "pattern": ""
+        },
+        "created_at": {
+            "description": "Mapped's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Mapped's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "name",
+        "value",
+        "created_at",
+        "updated_at"
+    ]
+}

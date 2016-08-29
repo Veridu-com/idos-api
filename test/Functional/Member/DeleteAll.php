@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Member;
 
 use Test\Functional\AbstractFunctional;
@@ -35,12 +37,10 @@ class DeleteAllTest extends AbstractFunctional {
         $request = $this->createRequest($environment, json_encode(['credential' => '4c9184f37cff01bcdc32dc486ec36961']));
 
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $response->getStatusCode();
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*

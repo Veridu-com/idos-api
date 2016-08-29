@@ -52,4 +52,14 @@ interface PermissionInterface extends RepositoryInterface {
      * @return App\Entity\Permission
      */
     public function deleteOne(int $companyId, string $routeName) : int;
+
+    /**
+     * Checks if a $companyId is allowed to access a $routeName.
+     *
+     * @param int    $companyId
+     * @param string $routeName
+     *
+     * @return bool
+     */
+    public function isAllowed(int $companyId, string $routeName) : bool;
 }

@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Validator;
 
 use App\Validator\Hook;
@@ -28,7 +30,7 @@ class HookTest extends AbstractUnit {
             $trigger .= 'a';
         }
 
-        $this->validator->assertTrigger($trigger);
+        $this->validator->assertTriggerName($trigger);
         $this->assertTrue(true);
     }
 
@@ -38,12 +40,13 @@ class HookTest extends AbstractUnit {
         for ($i = 0; $i < 51; $i++) {
             $trigger .= 'a';
         }
-        $this->validator->assertTrigger($trigger);
+
+        $this->validator->assertTriggerName($trigger);
     }
 
     public function testAssertTriggerInvalidInput() {
         $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertTrigger(chr(20) . chr(127));
+        $this->validator->assertTriggerName(chr(20) . chr(127));
     }
 
     public function testAssertUrl() {
@@ -52,5 +55,4 @@ class HookTest extends AbstractUnit {
         $this->validator->assertUrl($url);
         $this->assertTrue(true);
     }
-
 }

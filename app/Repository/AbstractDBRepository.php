@@ -79,8 +79,14 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @return string
      */
     protected function getTableName() : string {
-        if (empty($this->tableName))
-            throw new \RuntimeException(sprintf('$tableName property not set in %s', get_class($this)));
+        if (empty($this->tableName)) {
+            throw new \RuntimeException(
+                sprintf(
+                    '$tableName property not set in "%s".',
+                    get_class($this)
+                )
+            );
+        }
 
         return $this->tableName;
     }
@@ -116,7 +122,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function save(EntityInterface &$entity) : EntityInterface {
+    public function save(EntityInterface $entity) : EntityInterface {
         $serialized = $entity->serialize();
 
         if (! $entity->id) {
@@ -129,7 +135,12 @@ abstract class AbstractDBRepository extends AbstractRepository {
                 ->where('id', $entity->id)
                 ->update($serialized);
             if (! $affectedRows) {
-                throw new Exception('No rows were updated when saving ' . get_class($entity));
+                throw new \RuntimeException(
+                    sprintf(
+                        'No rows were updated when saving "%s".',
+                        get_class($entity)
+                    )
+                );
             }
         }
 
@@ -142,8 +153,9 @@ abstract class AbstractDBRepository extends AbstractRepository {
     public function find(int $id) : EntityInterface {
         $result = $this->query()
             ->find($id);
-        if (empty($result))
+        if (empty($result)) {
             throw new NotFound();
+        }
 
         return $result;
     }
@@ -178,7 +190,12 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     public function deleteBy(array $constraints) : int {
         if (! count($constraints)) {
-            throw new \RuntimeException(sprintf('%s@deleteBy method was called without constraints.', get_class($this)));
+            throw new \RuntimeException(
+                sprintf(
+                    '%s::deleteBy method was called without constraints.',
+                    get_class($this)
+                )
+            );
         }
 
         $query = $this->query();
@@ -198,7 +215,12 @@ abstract class AbstractDBRepository extends AbstractRepository {
      */
     public function updateBy(array $constraints, array $fields) : int {
         if (! count($constraints)) {
-            throw new \RuntimeException(sprintf('%s@updateBy method was called without constraints.', get_class($this)));
+            throw new \RuntimeException(
+                sprintf(
+                    '%s::updateBy method was called without constraints.',
+                    get_class($this)
+                )
+            );
         }
 
         $query = $this->query();

@@ -39,7 +39,7 @@ class ServiceHandler implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\ServiceHandler(
                 $container
                     ->get('repositoryFactory')
@@ -77,7 +77,7 @@ class ServiceHandler implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : ServiceHandlerEntity {
         $this->validator->assertId($command->companyId);
         $this->validator->assertId($command->serviceId);
-        $this->validator->assertListens($command->listens);
+        $this->validator->assertArray($command->listens);
 
         $now    = time();
         $entity = $this->repository->create(
@@ -104,7 +104,7 @@ class ServiceHandler implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : ServiceHandlerEntity {
         $this->validator->assertId($command->companyId);
         $this->validator->assertId($command->serviceHandlerId);
-        $this->validator->assertListens($command->listens);
+        $this->validator->assertArray($command->listens);
 
         $entity = $this->repository->findOne($command->companyId, $command->serviceHandlerId);
 
@@ -119,13 +119,11 @@ class ServiceHandler implements HandlerInterface {
             }, $command->listens
         );
 
-        if ($entity->listens != $command->listens) {
-            // updates listen attribute
-            $entity->listens   = $command->listens;
-            $entity->updatedAt = time();
-            // save entity
-            $success = $this->repository->save($entity);
-        }
+        // updates listen attribute
+        $entity->listens   = $command->listens;
+        $entity->updatedAt = time();
+        // save entity
+        $this->repository->save($entity);
 
         return $entity;
     }

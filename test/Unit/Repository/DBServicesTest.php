@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Service as ServiceEntity;
@@ -44,26 +46,26 @@ class DBServiceTest extends AbstractUnit {
             'updated_at' => time()
          ];
 
-        $factory = new Entity($this->optimus);
-        $factory->create('Service', $array);
-        $queryMock = $this->getMockBuilder(Builder::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['get'])
-            ->getMock();
-        $queryMock
-            ->method('get')
-            ->will($this->returnValue(new Collection(new ServiceEntity($array, $this->optimus))));
+         $factory = new Entity($this->optimus);
+         $factory->create('Service', $array);
+         $queryMock = $this->getMockBuilder(Builder::class)
+             ->disableOriginalConstructor()
+             ->setMethods(['get'])
+             ->getMock();
+         $queryMock
+             ->method('get')
+             ->will($this->returnValue(new Collection(new ServiceEntity($array, $this->optimus))));
 
-        $connectionMock = $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['setFetchMode', 'table'])
-            ->getMock();
-        $connectionMock
-            ->method('setFetchMode')
-            ->will($this->returnValue(1));
-        $connectionMock
-            ->method('table')
-            ->will($this->returnValue($queryMock));
+         $connectionMock = $this->getMockBuilder(Connection::class)
+             ->disableOriginalConstructor()
+             ->setMethods(['setFetchMode', 'table'])
+             ->getMock();
+         $connectionMock
+             ->method('setFetchMode')
+             ->will($this->returnValue(1));
+         $connectionMock
+             ->method('table')
+             ->will($this->returnValue($queryMock));
 
          $dbService = new DBService($factory, $this->optimus, $connectionMock);
 
@@ -78,26 +80,26 @@ class DBServiceTest extends AbstractUnit {
             'created_at' => time(),
             // 'updated_at' => time()
          ];
-        $factory = new Entity($this->optimus);
-        $factory->create('Service', $array);
-        $queryMock = $this->getMockBuilder(Builder::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['get'])
-            ->getMock();
-        $queryMock
-            ->method('get')
-            ->will($this->returnValue(new Collection()));
+         $factory = new Entity($this->optimus);
+         $factory->create('Service', $array);
+         $queryMock = $this->getMockBuilder(Builder::class)
+             ->disableOriginalConstructor()
+             ->setMethods(['get'])
+             ->getMock();
+         $queryMock
+             ->method('get')
+             ->will($this->returnValue(new Collection()));
 
-        $connectionMock = $this->getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['setFetchMode', 'table'])
-            ->getMock();
-        $connectionMock
-            ->method('setFetchMode')
-            ->will($this->returnValue(1));
-        $connectionMock
-            ->method('table')
-            ->will($this->returnValue($queryMock));
+         $connectionMock = $this->getMockBuilder(Connection::class)
+             ->disableOriginalConstructor()
+             ->setMethods(['setFetchMode', 'table'])
+             ->getMock();
+         $connectionMock
+             ->method('setFetchMode')
+             ->will($this->returnValue(1));
+         $connectionMock
+             ->method('table')
+             ->will($this->returnValue($queryMock));
 
          $dbService = new DBService($factory, $this->optimus, $connectionMock);
 

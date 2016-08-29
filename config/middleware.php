@@ -4,22 +4,24 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use App\Middleware\Debugger;
 use App\Middleware\GateKeeper;
 use App\Middleware\OptimusDecode;
 use App\Middleware\Watcher;
+use RKA\Middleware\IpAddress;
 use Slim\HttpCache\Cache;
 
 if (! isset($app)) {
     die('$app is not set!');
 }
 
-$optimus = $app->getContainer()->get('optimus');
+$settings = $container->get('settings');
 
 $app
-    ->add(new OptimusDecode($optimus))
+    ->add(new IpAddress(true, $settings['trustedProxies']))
+    ->add(new OptimusDecode($app->getContainer()->get('optimus')))
     ->add(new GateKeeper($app->getContainer()))
     ->add(new Watcher($app->getContainer()))
     ->add(new Cache('private, no-cache, no-store', 0, true))

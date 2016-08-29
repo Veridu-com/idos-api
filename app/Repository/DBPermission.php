@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Permission;
+use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -67,5 +68,18 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
      */
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAllowed(int $companyId, string $routeName) : bool {
+        try {
+            $this->findOne($companyId, $routeName);
+
+            return true;
+        } catch (NotFound $exception) {
+            return false;
+        }
     }
 }

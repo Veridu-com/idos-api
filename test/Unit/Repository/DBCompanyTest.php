@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Company as CompanyEntity;
@@ -76,12 +78,15 @@ class DBCompanyTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(
-                new Collection([
-                    new CompanyEntity($array, $this->optimus)
-                ])
-            )
-        );
+            ->will(
+                $this->returnValue(
+                    new Collection(
+                        [
+                        new CompanyEntity($array, $this->optimus)
+                        ]
+                    )
+                )
+            );
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])

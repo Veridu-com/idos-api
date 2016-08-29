@@ -16,6 +16,8 @@ use Respect\Validation\Validator;
  * RoleAccess Validation Rules.
  */
 class RoleAccess implements ValidatorInterface {
+    use Traits\AssertId,
+        Traits\AssertName;
     /**
      * Asserts a valid role name.
      *
@@ -67,17 +69,5 @@ class RoleAccess implements ValidatorInterface {
      */
     public function assertResource($value) {
         Validator::stringType()->assert($value);
-    }
-
-    /**
-     * Asserts a valid id.
-     *
-     * @throws \Respect\Validation\Exceptions\ExceptionInterface
-     *
-     * @return void
-     */
-    public function assertId($id) {
-        Validator::digit()
-            ->assert($id);
     }
 }

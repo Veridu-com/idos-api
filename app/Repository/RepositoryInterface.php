@@ -31,7 +31,7 @@ interface RepositoryInterface {
      *
      * @return void
      */
-    public function save(EntityInterface &$entity) : EntityInterface;
+    public function save(EntityInterface $entity) : EntityInterface;
 
     /**
      * Find an entity by id.

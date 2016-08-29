@@ -33,7 +33,7 @@ class Secure {
      */
     public function __construct(string $encodedKey, string $secureKey) {
         $protectedKey = KeyProtectedByPassword::loadFromAsciiSafeString($encodedKey);
-        $this->key = $protectedKey->unlockKey($secureKey);
+        $this->key    = $protectedKey->unlockKey($secureKey);
     }
 
     /**
@@ -44,7 +44,7 @@ class Secure {
      * @return string
      */
     public function lock(string $plainText) : string {
-        return Crypto::($plainText, $this->key);
+        return Crypto::encrypt($plainText, $this->key);
     }
 
     /**

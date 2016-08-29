@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Setting;
 
 use Slim\Http\Response;
@@ -44,13 +46,12 @@ class UpdateOneTest extends AbstractFunctional {
         $request = $this->createRequest($environment, json_encode(['value' => 'New biscuit']));
 
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
-        // assertions
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
+
         /*
          * Validates Json Schema with Json Response
          */
@@ -78,12 +79,10 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
-        // assertions
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*

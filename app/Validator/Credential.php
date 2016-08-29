@@ -8,93 +8,14 @@ declare(strict_types = 1);
 
 namespace App\Validator;
 
-use Respect\Validation\Validator;
-
 /**
  * Credential Validation Rules.
  */
 class Credential implements ValidatorInterface {
-    /**
-     * Asserts a valid name, 1-15 chars long.
-     *
-     * @param mixed $name
-     *
-     * @throws \Respect\Validation\Exceptions\ExceptionInterface
-     *
-     * @return void
-     */
-    public function assertName($name) {
-        Validator::prnt()
-            ->length(1, 15)
-            ->assert($name);
-    }
-
-    /**
-     * Asserts a valid slug, 1-15 chars long.
-     *
-     * @param mixed $slug
-     *
-     * @throws \Respect\Validation\Exceptions\ExceptionInterface
-     *
-     * @return void
-     */
-    public function assertSlug($slug) {
-        Validator::slug()
-            ->length(1, 15)
-            ->assert($slug);
-    }
-
-    /**
-     * Asserts a valid production flag, boolean.
-     *
-     * @param mixed $production
-     *
-     * @throws \Respect\Validation\Exceptions\ExceptionInterface
-     *
-     * @return void
-     */
-    public function assertProduction($production) {
-        Validator::boolVal()
-            ->assert($production);
-    }
-
-    /**
-     * Asserts a valid company id, integer.
-     *
-     * @param mixed $id
-     *
-     * @throws \Respect\Validation\Exceptions\ExceptionInterface
-     *
-     * @return void
-     */
-    public function assertCompanyId($id) {
-        Validator::digit()
-            ->assert($id);
-    }
-
-    /**
-     * Asserts a valid id, integer.
-     *
-     * @param mixed $id
-     *
-     * @throws \Respect\Validation\Exceptions\ExceptionInterface
-     *
-     * @return void
-     */
-    public function assertId($id) {
-        Validator::digit()
-            ->assert($id);
-    }
-
-    /**
-     * Validates a production flag value.
-     *
-     * @param mixed $production
-     *
-     * @return bool
-     */
-    public function productionValue($production) : bool {
-        return Validator::trueVal()
-            ->validate($production);
-    }
+    use Traits\AssertFlag,
+        Traits\AssertId,
+        Traits\AssertName,
+        Traits\AssertSlug,
+        Traits\ValidateFlag,
+        Traits\AssertCredential;
 }

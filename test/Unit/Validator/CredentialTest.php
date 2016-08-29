@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Validator;
 
 use App\Validator\Credential;
@@ -18,79 +20,29 @@ class CredentialTest extends AbstractUnit {
         $this->validator = new Credential();
     }
 
-    public function testAssertNameEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertName('');
-    }
-
-    public function testAssertNameExcededCharacters() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertName('abcdefghijklmnopqrstuv');
-    }
-
-    public function testAssertSlugEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertSlug('');
-    }
-
-    public function testAssertSlugInvalid() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertSlug('abcdefghijklmnopqrstuv');
-    }
-
     public function testAssertProductionEmpty() {
         $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertProduction([]);
+        $this->validator->assertFlag([]);
     }
 
     public function testAssertProductionInvalid() {
         $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertProduction('dummy');
-    }
-
-    public function testAssertCompanyIdEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertCompanyId([]);
-    }
-
-    public function testAssertCompanyIdInvalidNumberWithString() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertCompanyId('dummy');
-    }
-
-    public function testAssertCompanyIdInvalidNumberWithBoolean() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertCompanyId(false);
-    }
-
-    public function testAssertIdEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertId([]);
-    }
-
-    public function testAssertIdInvalidNumberWithString() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertId('dummy');
-    }
-
-    public function testAssertIdInvalidNumberWithBoolean() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertId(false);
+        $this->validator->assertFlag('dummy');
     }
 
     public function testProductionValueEmpty() {
-        $this->assertFalse($this->validator->productionValue([]));
+        $this->assertFalse($this->validator->validateFlag([]));
     }
 
     public function testProductionValueInvalid() {
-        $this->assertFalse($this->validator->productionValue('dummy'));
+        $this->assertFalse($this->validator->validateFlag('dummy'));
     }
 
     public function testProductionValue() {
-        $this->assertFalse($this->validator->productionValue(false));
-        $this->assertTrue($this->validator->productionValue(true));
-        $this->assertTrue($this->validator->productionValue('true'));
-        $this->assertTrue($this->validator->productionValue(1));
-        $this->assertFalse($this->validator->productionValue(0));
+        $this->assertFalse($this->validator->validateFlag(false));
+        $this->assertTrue($this->validator->validateFlag(true));
+        $this->assertTrue($this->validator->validateFlag('true'));
+        $this->assertTrue($this->validator->validateFlag(1));
+        $this->assertFalse($this->validator->validateFlag(0));
     }
 }
