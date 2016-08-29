@@ -12,25 +12,24 @@ use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 
 /**
- * Deleted event for multiple members.
+ * Deleted event for multiple attributes.
  */
-Add a comment to this line
 class DeletedMulti extends AbstractEvent {
     /**
      * Event related Companies.
      *
      * @var \Illuminate\Support\Collection
      */
-    public $members;
+    public $attributes;
 
     /**
      * Class constructor.
      *
-     * @param \Illuminate\Support\Collection $members
+     * @param \Illuminate\Support\Collection $attributes
      *
      * @return void
      */
-    public function __construct(Collection $members) {
-        $this->members = $members;
+    public function __construct(Collection $attributes) {
+        $this->attributes = $attributes;
     }
 }

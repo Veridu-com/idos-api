@@ -101,7 +101,7 @@ class Attribute implements HandlerInterface {
 
         try {
             $attribute = $this->repository->save($attribute);
-            $event = new Created($attribute);
+            $event     = new Created($attribute);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while creating an attribute');
@@ -125,7 +125,7 @@ class Attribute implements HandlerInterface {
 
         try {
             $attribute = $this->repository->save($attribute);
-            $event = new Updated($attribute);
+            $event     = new Updated($attribute);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while updating attribute');
@@ -144,13 +144,17 @@ class Attribute implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertName($command->name);
 
-        $attribute        = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
+        $attribute = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
 
         try {
             $affectedRows = $this->repository->deleteOneByUserIdAndName($command->user->id, $command->name);
-            $event = new Deleted($attribute);
+            $event        = new Deleted($attribute);
             $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while deleting attribute');
         }
+
+        return $affectedRows;
     }
 
     /**
@@ -161,7 +165,17 @@ class Attribute implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        return $this->repository->deleteByUserId($command->user->id);
+        $attributes = $this->repository->getAllByUserId($command->user->id);
+
+        try {
+            $affectedRows = $this->repository->deleteByUserId($command->user->id);
+            $event        = new DeletedMulti($attributes);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while deleting attributes');
+        }
+
+        return $affectedRows;
     }
 
 }

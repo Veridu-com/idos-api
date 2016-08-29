@@ -20,16 +20,16 @@ class Created extends AbstractEvent {
      *
      * @var App\Entity\Attribute
      */
-    public $member;
+    public $attribute;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Attribute $member
+     * @param App\Entity\Attribute $attribute
      *
      * @return void
      */
-    public function __construct(Attribute $member) {
-        $this->member = $member;
+    public function __construct(Attribute $attribute) {
+        $this->attribute = $attribute;
     }
 }
