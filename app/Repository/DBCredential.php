@@ -36,10 +36,6 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
         return $this->findOneBy(['public' => $key]);
     }
 
-    public function findByPrivKey(string $key) : Credential {
-        return $this->findOneBy(['private' => $key]);
-    }
-
     /**
      * {@inheritdoc}
      */

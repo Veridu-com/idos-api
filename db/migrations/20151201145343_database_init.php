@@ -389,7 +389,6 @@ class DatabaseInit extends AbstractMigration
             ->addIndex('company_id')
             ->addIndex('slug')
             ->addIndex('public', ['unique' => true])
-            ->addIndex('private', ['unique' => true])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
@@ -415,7 +414,6 @@ class DatabaseInit extends AbstractMigration
             ->addColumn('access', 'integer', ['null' => false, 'default' => 0x01]) // 0x00 => 'private', 0x01 => 'company' (visible by children), 0x02 => 'public'
             ->addTimestamps()
             ->addIndex('public', ['unique' => true])
-            ->addIndex('private', ['unique' => true])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 

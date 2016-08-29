@@ -27,17 +27,6 @@ interface CompanyInterface extends RepositoryInterface {
     public function findByPubKey(string $pubKey) : Company;
 
     /**
-     * Finds a Company based on its Private Key.
-     *
-     * @param string $privKey
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Company
-     */
-    public function findByPrivKey(string $privKey) : Company;
-
-    /**
      * Finds a Company based on its Slug.
      *
      * @param string $slug
