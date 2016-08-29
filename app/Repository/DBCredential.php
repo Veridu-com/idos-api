@@ -36,10 +36,6 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
         return $this->findOneBy(['public' => $key]);
     }
 
-    public function findByPrivKey(string $key) : Credential {
-        return $this->findOneBy(['private' => $key]);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -71,15 +67,17 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
     /**
      * {@inheritdoc}
      */
-    public function generateToken(string $subjectCredentialPubKey, string $issuerCredentialPrivKey, string $issuerCredentialPubKey) : string {
-        $jwtSigner  = new JWT\Signer\Hmac\Sha256();
-        $jwtBuilder = new JWT\Builder();
+    public function generateToken($credentialPubKey, string $servicePrivKey, string $servicePubKey) : string {
+        $jwtParser     = new JWT\Parser();
+        $jwtValidation = new JWT\ValidationData();
+        $jwtSigner     = new JWT\Signer\Hmac\Sha256();
+        $jwtBuilder    = new JWT\Builder();
 
-        $jwtBuilder->set('iss', $issuerCredentialPubKey);
-        $jwtBuilder->set('sub', $subjectCredentialPubKey);
+        $jwtBuilder->set('iss', $servicePubKey);
+        $jwtBuilder->set('sub', $credentialPubKey);
 
         return (string) $jwtBuilder
-            ->sign($jwtSigner, $issuerCredentialPrivKey)
+            ->sign($jwtSigner, $servicePrivKey)
             ->getToken();
     }
 }

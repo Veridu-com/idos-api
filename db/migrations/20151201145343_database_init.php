@@ -63,6 +63,7 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('pass', 'boolean', ['null' => false, 'default' => 'FALSE'])
+
             ->addTimestamps()
             ->addIndex('identity_id')
             ->addIndex('name')
@@ -181,7 +182,6 @@ class DatabaseInit extends AbstractMigration {
             ->addIndex('company_id')
             ->addIndex('slug')
             ->addIndex('public', ['unique' => true])
-            ->addIndex('private', ['unique' => true])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
@@ -199,11 +199,14 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('url', 'text', ['null' => false])
             ->addColumn('auth_username', 'text', ['null' => false])
             ->addColumn('auth_password', 'text', ['null' => false])
+            ->addColumn('public', 'text', ['null' => false])
+            ->addColumn('private', 'text', ['null' => false])
             ->addColumn('listens', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addColumn('triggers', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
             ->addColumn('access', 'integer', ['null' => false, 'default' => 0x01]) // 0x00 => 'private', 0x01 => 'company' (visible by children), 0x02 => 'public'
             ->addTimestamps()
+            ->addIndex('public', ['unique' => true])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
@@ -396,6 +399,134 @@ class DatabaseInit extends AbstractMigration {
          *
          */
 
+        $social = $this->table('social');
+        $social
+            ->addColumn('source_id', 'integer', ['null' => false])
+            ->addColumn('provider', 'text', ['null' => false])
+            ->addColumn('uuid', 'text', ['null' => true])
+            ->addColumn('token', 'binary', ['null' => false])
+            ->addColumn('secret', 'binary', ['null' => true])
+            ->addColumn('refresh', 'binary', ['null' => true])
+            ->addColumn('application_id', 'integer', ['null' => true])
+            ->addColumn('sso', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addColumn('ipaddr', 'text', ['null' => true])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP',
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP',
+                ]
+            )
+            ->addIndex('source_id')
+            ->addIndex('application_id')
+            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('application_id', 'applications', 'id', ['delete' => 'RESTRICT', 'update' => 'CASCADE'])
+            ->create();
+
+        $email = $this->table('email');
+        $email
+            ->addColumn('source_id', 'integer', ['null' => false])
+            ->addColumn('email', 'binary', ['null' => false])
+            ->addColumn('code', 'text', ['null' => false])
+            ->addColumn('verified', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addColumn('expires', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('ipaddr', 'text', ['null' => true])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP',
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP',
+                ]
+            )
+            ->addIndex('source_id')
+            ->addIndex('email')
+            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $sms = $this->table('sms');
+        $sms
+            ->addColumn('source_id', 'integer', ['null' => false])
+            ->addColumn('phone', 'binary', ['null' => false])
+            ->addColumn('code', 'text', ['null' => false])
+            ->addColumn('verified', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addColumn('expires', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
+            ->addColumn('ipaddr', 'text', ['null' => true])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP',
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP',
+                ]
+            )
+            ->addIndex('source_id')
+            ->addIndex('phone')
+            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $spotafriend = $this->table('spotafriend');
+        $spotafriend
+            ->addColumn('source_id', 'integer', ['null' => false])
+            ->addColumn('provider', 'text', ['null' => false])
+            ->addColumn('target', 'text', ['null' => false])
+            ->addColumn('setup', 'text', ['null' => false])
+            ->addColumn('verified', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addColumn('voided', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addColumn('ipaddr', 'text', ['null' => true])
+            ->addColumn(
+                'created_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP',
+                ]
+            )
+            ->addColumn(
+                'updated_at',
+                'timestamp',
+                [
+                    'null'     => false,
+                    'timezone' => false,
+                    'default'  => 'CURRENT_TIMESTAMP',
+                ]
+            )
+            ->addIndex('source_id')
+            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         $tasks = $this->table('tasks');
         $tasks
             ->addColumn('source_id', 'integer', ['null' => false])
@@ -497,7 +628,7 @@ class DatabaseInit extends AbstractMigration {
             'country_list',
             [
                 'id'          => false,
-                'primary_key' => 'code'
+                'primary_key' => 'code',
             ]
         );
         $countryList
@@ -509,7 +640,7 @@ class DatabaseInit extends AbstractMigration {
             'known_name_list',
             [
                 'id'          => false,
-                'primary_key' => ['name', 'type']
+                'primary_key' => ['name', 'type'],
             ]
         );
         $knownNameList
@@ -529,7 +660,7 @@ class DatabaseInit extends AbstractMigration {
             'name_list',
             [
                 'id'          => false,
-                'primary_key' => ['country', 'name']
+                'primary_key' => ['country', 'name'],
             ]
         );
         $nameList
