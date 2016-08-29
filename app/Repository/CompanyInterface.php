@@ -27,17 +27,6 @@ interface CompanyInterface extends RepositoryInterface {
     public function findByPubKey(string $pubKey) : Company;
 
     /**
-     * Finds a Company based on its Private Key.
-     *
-     * @param string $privKey
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Company
-     */
-    public function findByPrivKey(string $privKey) : Company;
-
-    /**
      * Finds a Company based on its Slug.
      *
      * @param string $slug
@@ -65,4 +54,13 @@ interface CompanyInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByParentId(int $parentId) : int;
+
+    /**
+     * Generates a signed JWT.
+     *
+     * @param string $subject        The subject
+     * @param string $companyPrivKey The company priv key
+     * @param string $companyPubKey  The company pub key
+     */
+    public static function generateToken($subject, string $companyPrivKey, string $companyPubKey) : string;
 }

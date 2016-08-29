@@ -68,6 +68,20 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
     /**
      * {@inheritdoc}
      */
+    public function findByPubKey(string $key) : Service {
+        return $this->findOneBy(['public' => $key]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByPrivKey(string $key) : Service {
+        return $this->findOneBy(['private' => $key]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function deleteOne(int $serviceId, Company $company) : int {
         $affectedRows = $this->query()
             ->where('id', $serviceId)

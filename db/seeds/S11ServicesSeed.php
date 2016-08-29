@@ -17,6 +17,8 @@ class S11ServicesSeed extends AbstractSeed {
                 'company_id'    => 1,
                 'auth_username' => 'idos',
                 'auth_password' => 'secret',
+                'public'        => md5('public-1'),
+                'private'       => md5('private-1'),
                 'listens'       => json_encode(['idos:source.facebook.added']),
                 'triggers'      => json_encode(['idos:scraper.facebook.completed']),
                 'enabled'       => true,
@@ -27,6 +29,8 @@ class S11ServicesSeed extends AbstractSeed {
                 'company_id'    => 1,
                 'auth_username' => 'idos',
                 'auth_password' => 'secret',
+                'public'        => md5('public-2'),
+                'private'       => md5('private-2'),
                 'listens'       => json_encode(['idos:scraper.facebook.completed']),
                 'triggers'      => json_encode(['idos:data-mapper.facebook.completed']),
                 'enabled'       => true,
@@ -37,14 +41,10 @@ class S11ServicesSeed extends AbstractSeed {
                 'company_id'    => 1,
                 'auth_username' => 'idos',
                 'auth_password' => 'secret',
-                // Why wildcard again??
-                'listens' => json_encode(
-                    ['
-                    idos:feature-extractor.facebook.completed',
-                    'idos:feature-extractor.twitter.completed',
-                    'idos:feature-extractor.linkedin.completed'
-                    ]
-                ),
+                'public'        => md5('public-3'),
+                'private'       => md5('private-3'),
+                // Why wildcard again?? 
+                'listens'  => json_encode(['idos:feature-extractor.facebook.completed', 'idos:feature-extractor.twitter.completed', 'idos:feature-extractor.linkedin.completed']),
                 'triggers' => json_encode(['idos:overall.completed']),
                 'enabled'  => true,
             ],
