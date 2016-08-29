@@ -4,7 +4,7 @@ w * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -19,10 +19,12 @@ class CachedPermission extends AbstractCachedRepository implements PermissionInt
      * {@inheritdoc}
      */
     public function findOne(int $companyId, string $routeName) : Permission {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'company_id' => $companyId,
             'route_name' => $routeName
-        ]);
+            ]
+        );
     }
 
     /**
@@ -49,7 +51,8 @@ class CachedPermission extends AbstractCachedRepository implements PermissionInt
         return $this->deleteBy(
             'company_id' => $companyId,
             'route_name' => $routeName
-        ]);
+            ]
+        );
     }
 
     /**
@@ -58,5 +61,4 @@ class CachedPermission extends AbstractCachedRepository implements PermissionInt
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteBy(['company_id' => $companyId]);
     }
-
 }

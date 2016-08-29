@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -64,7 +64,7 @@ interface RepositoryInterface {
      *
      * @return Illuminate\Support\Collection
      */
-    public function findBy(array $constraints,  array $queryParams) : Collection;
+    public function findBy(array $constraints, array $queryParams) : Collection;
 
     /**
      * Delete an entitiy by id.

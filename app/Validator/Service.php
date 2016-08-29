@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Validator;
 
@@ -53,11 +53,13 @@ class Service implements ValidatorInterface {
      * @return void
      */
     public function assertAccess($value) {
-        Validator::intType()->in([
+        Validator::intType()->in(
+            [
             0x00,
             0x01,
             0x02
-        ])->assert($value);
+            ]
+        )->assert($value);
     }
 
     /**

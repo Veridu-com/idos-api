@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -301,7 +301,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
                         $query = $query->whereDate($key, '<=', $to);
                     } else {
                         // no comma
-                        $query = $query->whereDate($key,  '=', $value);
+                        $query = $query->whereDate($key, '=', $value);
                     }
                     break;
 
@@ -328,7 +328,6 @@ abstract class AbstractDBRepository extends AbstractRepository {
                     $query = $query->where($key, '=', $value);
                     break;
             }
-
         }
 
         return $query;

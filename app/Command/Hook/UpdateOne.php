@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Command\Hook;
 
@@ -58,18 +58,23 @@ class UpdateOne extends AbstractCommand {
         if (isset($parameters['hookId'])) {
             $this->hookId = $parameters['hookId'];
         }
+
         if (isset($parameters['trigger'])) {
             $this->trigger = $parameters['trigger'];
         }
+
         if (isset($parameters['url'])) {
             $this->url = $parameters['url'];
         }
+
         if (isset($parameters['subscribed'])) {
             $this->subscribed = $parameters['subscribed'];
         }
+
         if (isset($parameters['credentialPubKey'])) {
             $this->credentialPubKey = $parameters['credentialPubKey'];
         }
+
         if (isset($parameters['company'])) {
             $this->company = $parameters['company'];
         }

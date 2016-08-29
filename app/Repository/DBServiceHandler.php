@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -53,10 +53,10 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
      */
     public function findOne(int $companyId, int $serviceHandlerId) : ServiceHandler {
         $entity = $this->query()
-                    ->join('services', 'services.id', '=', 'service_handlers.service_id')
-                    ->where('service_handlers.id', $serviceHandlerId)
-                    ->where('service_handlers.company_id', $companyId)
-                    ->first($this->queryAttributes);
+            ->join('services', 'services.id', '=', 'service_handlers.service_id')
+            ->where('service_handlers.id', $serviceHandlerId)
+            ->where('service_handlers.company_id', $companyId)
+            ->first($this->queryAttributes);
 
         if (! $entity) {
             throw new NotFound();
@@ -69,10 +69,12 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
      * {@inheritdoc}
      */
     public function findAllFromService(int $companyId, string $serviceSlug) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'company_id'   => $companyId,
             'service_slug' => $serviceSlug,
-        ]);
+            ]
+        );
     }
 
     /**
@@ -82,8 +84,8 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
         $query = $this->query();
 
         $array = $query
-                    ->join('services', 'services.id', '=', 'service_handlers.service_id')
-                    ->get($this->queryAttributes);
+            ->join('services', 'services.id', '=', 'service_handlers.service_id')
+            ->get($this->queryAttributes);
 
         return $this->castHydrate(new Collection($array));
     }
@@ -92,10 +94,12 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
      * {@inheritdoc}
      */
     public function deleteOne(int $companyId, int $serviceHandlerId) : int {
-        return $this->deleteBy([
+        return $this->deleteBy(
+            [
             'company_id' => $companyId,
             'id'         => $serviceHandlerId
-        ]);
+            ]
+        );
     }
 
     /**
@@ -104,5 +108,4 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
-
 }

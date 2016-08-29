@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -33,50 +33,60 @@ class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
      * {@inheritdoc}
      */
     public function findByIdentityRoleResource(int $identityId, string $role, string $resource) : RoleAccess {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'identity_id' => $identityId,
             'role'        => $role,
             'resource'    => $resource
-        ]);
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function findByIdentityAndRole(int $identityId, string $role) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'identity_id' => $identityId,
             'role'        => $role
-        ]);
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function findOne(int $identityId, int $roleAccessId) : RoleAccess {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'id'          => $roleAccessId,
             'identity_id' => $identityId
-        ]);
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function deleteOne(int $identityId, int $roleAccessId) : int {
-        return $this->deleteBy([
+        return $this->deleteBy(
+            [
             'id'          => $roleAccessId,
             'identity_id' => $identityId
-        ]);
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function deleteAllFromIdentity(int $identityId) : int {
-        return $this->deleteBy([
+        return $this->deleteBy(
+            [
             'identity_id' => $identityId
-        ]);
+            ]
+        );
     }
 
     /**
@@ -92,5 +102,4 @@ class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
 
         return $this->findBy($constraints);
     }
-
 }

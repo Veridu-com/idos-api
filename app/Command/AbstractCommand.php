@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Command;
 
@@ -24,5 +24,4 @@ abstract class AbstractCommand implements CommandInterface {
 
         throw new \RuntimeException(sprintf('Invalid property name "%s"', $name));
     }
-
 }

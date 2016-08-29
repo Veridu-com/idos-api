@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -13,11 +13,11 @@ namespace App\Entity;
  *
  * @apiEntity schema/setting/settingEntity.json
  *
- * @property int 	    $id
+ * @property int        $id
  * @property int        $identity_id
  * @property string     $role
  * @property string     $resource
- * @property int 	    $access
+ * @property int        $access
  */
 class RoleAccess extends AbstractEntity {
     /**
@@ -55,8 +55,10 @@ class RoleAccess extends AbstractEntity {
      * {@inheritdoc}
      */
     public function getReferenceCacheKeys() : array {
-        return array_merge([
-        ],
-        $this->getCacheKeys());
+        return array_merge(
+            [
+            ],
+            $this->getCacheKeys()
+        );
     }
 }

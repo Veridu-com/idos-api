@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -21,7 +21,7 @@ interface ServiceInterface extends RepositoryInterface {
      *
      * @param App\Entity\Company $company     The company
      * @param array              $queryParams The query parameters
-     * 
+     *
      * @return Illuminate\Support\Collection
      */
     public function getAllByCompany(Company $company, array $queryParams = []) : Collection;
@@ -31,9 +31,9 @@ interface ServiceInterface extends RepositoryInterface {
      *
      * @param int                $serviceId The service identifier
      * @param App\Entity\Company $company   The company
-     * 
+     *
      * @throws App\Exception\NotFound
-     * 
+     *
      * @return App\Entity\Service
      */
     public function findOne(int $serviceId, Company $company) : Service;
@@ -43,9 +43,9 @@ interface ServiceInterface extends RepositoryInterface {
      *
      * @param int                 $serviceId The service identifier
      * @param \App\Entity\Company $company   The company
-     * 
+     *
      * @throws App\Exception\NotFound
-     * 
+     *
      * @return int
      */
     public function deleteOne(int $serviceId, Company $company) : int;
@@ -60,5 +60,4 @@ interface ServiceInterface extends RepositoryInterface {
      * @return int Number of deleted rows
      */
     public function deleteByCompanyId(int $companyId) : int;
-
 }
