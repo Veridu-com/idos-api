@@ -383,7 +383,7 @@ class Auth implements MiddlewareInterface {
                 // Load User
                 $credential = $request->getAttribute('credential');
 
-                $user = $this->userRepository->findOneByUsernameAndCredential($username, $credential->id);
+                $user = $this->userRepository->findOneByUsernameAndCredential($username, $credential);
             }
 
         // Stores Target User for future use

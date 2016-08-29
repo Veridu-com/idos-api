@@ -6,48 +6,48 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class S22AttributesSeed extends AbstractSeed {
+class S23ScoresSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
-                'user_id'    => 1,
-                'name'       => 'user1Attribute1',
-                'value'      => 'value-1',
+                'attribute_id' => 1,
+                'name'       => 'user-1-attribute-1-score-1',
+                'value'      => 1.2,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
-                'user_id'    => 1,
-                'name'       => 'user1Attribute2',
-                'value'      => 'value-2',
+                'attribute_id' => 1,
+                'name'       => 'user-1-attribute-1-score-2',
+                'value'      => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
-                'user_id'    => 2,
-                'name'       => 'user2Attribute-1',
-                'value'      => 'value-3',
+                'attribute_id' => 4,
+                'name'       => 'user-2-attribute-2-score-1',
+                'value'      => 1.4,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
-                'user_id'    => 2,
-                'name'       => 'user2Attribute-2',
-                'value'      => 'value-4',
+                'attribute_id' => 4,
+                'name'       => 'user-2-attribute-2-score-2',
+                'value'      => 1.0,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
-                'user_id'    => 2,
-                'name'       => 'user2Attribute-3',
-                'value'      => 'value-5',
+                'attribute_id' => 4,
+                'name'       => 'user-2-attribute-2-score-3',
+                'value'      => 1.6,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]
         ];
 
-        $attributes = $this->table('attributes');
-        $attributes
+        $scores = $this->table('scores');
+        $scores
             ->insert($data)
             ->save();
     }
