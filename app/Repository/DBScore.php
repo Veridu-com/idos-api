@@ -63,8 +63,8 @@ class DBScore extends AbstractDBRepository implements ScoreInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteByAttributeName(string $attributeName) : int {
-        return $this->deleteBy(['attribute_id' => $attributeName]);
+    public function deleteByAttributeId(int $attributeId) : int {
+        return $this->deleteBy(['attribute_id' => $attributeId]);
     }
 
     /**
@@ -91,7 +91,7 @@ class DBScore extends AbstractDBRepository implements ScoreInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteOneByAttributeNameAndName(string $attributeName, string $name) : int {
-        return $this->deleteBy(['attribute_id' => $attributeName, 'name' => $name]);
+    public function deleteOneByAttributeIdAndName(int $attributeId, string $name) : int {
+        return $this->deleteBy(['attribute_id' => $attributeId, 'name' => $name]);
     }
 }

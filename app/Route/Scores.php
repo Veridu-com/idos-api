@@ -64,7 +64,7 @@ class Scores implements RouteInterface {
     /**
      * List all scores.
      *
-     * Retrieve a complete list of the scores of a given attribute.
+     * Retrieve a complete list of the scores from a given attribute.
      *
      * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}/scores
      * @apiGroup Profile Attribute Score
@@ -166,7 +166,7 @@ class Scores implements RouteInterface {
     /*
      * Retrieves a score.
      *
-     * Retrieves a score for a given attribute.
+     * Retrieves a score from a given attribute.
      *
      * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}/scores/{scoreName}
      * @apiGroup Profile Attribute Score
@@ -201,7 +201,7 @@ class Scores implements RouteInterface {
     /**
      * Deletes all scores.
      *
-     * Deletes all scores for a given attribute.
+     * Deletes all scores of a given attribute.
      *
      * @apiEndpoint DELETE /profiles/{userName}/attributes/{attributeName}/scores
      * @apiGroup Profile Attribute Score

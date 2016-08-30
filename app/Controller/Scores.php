@@ -10,8 +10,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Factory\Command;
-use App\Repository\ScoreInterface;
 use App\Repository\AttributeInterface;
+use App\Repository\ScoreInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -49,8 +49,8 @@ class Scores implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\ScoreInterface $repository
-     * @param \League\Tactician\CommandBus   $commandBus
-     * @param App\Factory\Command            $commandFactory
+     * @param \League\Tactician\CommandBus  $commandBus
+     * @param App\Factory\Command           $commandFactory
      *
      * @return void
      */
@@ -60,10 +60,10 @@ class Scores implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository     = $repository;
+        $this->repository          = $repository;
         $this->attributeRepository = $attributeRepository;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
+        $this->commandBus          = $commandBus;
+        $this->commandFactory      = $commandFactory;
     }
 
     /**
@@ -80,9 +80,9 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
+        $user          = $request->getAttribute('targetUser');
         $attributeName = $request->getAttribute('attributeName');
-        $names    = $request->getQueryParam('names', []);
+        $names         = $request->getQueryParam('names', []);
 
         if ($names) {
             $names = explode(',', $names);
@@ -109,8 +109,10 @@ class Scores implements ControllerInterface {
     /**
      * Created a new score for a given attribute.
      *
-     * @apiEndpointRequiredParam body   string     name  firstName
-     * @apiEndpointRequiredParam body   float     value 1.2
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointURIFragment string    attributeName firstName
+     * @apiEndpointRequiredParam body   string     name  overall
+     * @apiEndpointRequiredParam body   float     value 0.2
      * @apiEndpointResponse 201 schema/score/scoreEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -121,12 +123,12 @@ class Scores implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Score\\CreateNew');
 
-        $user = $request->getAttribute('targetUser');
+        $user          = $request->getAttribute('targetUser');
         $attributeName = $request->getAttribute('attributeName');
 
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('user', $targetUseruser)
+            ->setParameter('user', $user)
             ->setParameter('attribute', $this->attributeRepository->findOneByUserIdAndName($user->id, $attributeName));
 
         $score = $this->commandBus->handle($command);
@@ -149,8 +151,10 @@ class Scores implements ControllerInterface {
     /**
      * Updates a score from the given attribute.
      *
-     * @apiEndpointURIFragment   string scoreName overall
-     * @apiEndpointRequiredParam body   float     value     1.2
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointURIFragment string    attributeName firstName
+     * @apiEndpointRequiredParam body   string     name  overall
+     * @apiEndpointRequiredParam body   float     value 0.2
      * @apiEndpointResponse      200    schema/score/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -161,7 +165,7 @@ class Scores implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Score\\UpdateOne');
 
-        $user = $request->getAttribute('targetUser');
+        $user          = $request->getAttribute('targetUser');
         $attributeName = $request->getAttribute('attributeName');
 
         $command
@@ -200,9 +204,9 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
+        $user          = $request->getAttribute('targetUser');
         $attributeName = $request->getAttribute('attributeName');
-        $name     = $request->getAttribute('scoreName');
+        $name          = $request->getAttribute('scoreName');
 
         $score = $this->repository->findOneByUserIdAttributeNameAndName($user->id, $attributeName, $name);
 
@@ -222,6 +226,8 @@ class Scores implements ControllerInterface {
     /**
      * Deletes all scores from a given attribute.
      *
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointURIFragment string    attributeName firstName
      * @apiEndpointResponse 200 schema/score/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -232,7 +238,7 @@ class Scores implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Score\\DeleteAll');
 
-        $user = $request->getAttribute('targetUser');
+        $user          = $request->getAttribute('targetUser');
         $attributeName = $request->getAttribute('attributeName');
 
         $command
@@ -268,7 +274,7 @@ class Scores implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Score\\DeleteOne');
 
-        $user = $request->getAttribute('targetUser');
+        $user          = $request->getAttribute('targetUser');
         $attributeName = $request->getAttribute('attributeName');
 
         $command

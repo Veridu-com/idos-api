@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Command\Score;
 
-use App\Entity\Attribute;
 use App\Command\AbstractCommand;
+use App\Entity\Attribute;
 
 /**
  * Score "Delete One" Command.
@@ -28,7 +28,7 @@ class DeleteOne extends AbstractCommand {
      */
     public $attribute;
     /**
-     * New mapped name.
+     * New score name.
      *
      * @var string
      */

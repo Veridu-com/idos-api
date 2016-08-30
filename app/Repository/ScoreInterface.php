@@ -18,7 +18,7 @@ interface ScoreInterface extends RepositoryInterface {
     /**
      * Gets all Score entities based on their user_id and attribute name.
      *
-     * @param int $userId
+     * @param int    $userId
      * @param string $attributeName
      *
      * @return \Illuminate\Database\Eloquent\Collection
@@ -27,25 +27,25 @@ interface ScoreInterface extends RepositoryInterface {
     /**
      * Gets all Score entities based on their user_id, attribute name and filtering them by name.
      *
-     * @param int   $userId
-     * @param string   $attributeName
-     * @param array $names
+     * @param int    $userId
+     * @param string $attributeName
+     * @param array  $names
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllByUserIdAttributeNameAndNames(int $userId, string $attributeName, array $names) : Collection;
     /*
-     * Deletes all Score entities based on attribute name.
+     * Deletes all Score entities based on attribute id.
      *
-     * @param int $attributeName
+     * @param int $attributeId
      *
      * @return int
      */
-    public function deleteByAttributeName(string $attributeName) : int;
+    public function deleteByAttributeId(int $attributeId) : int;
     /**
      * Find a Score entity based on its user_id, attribute name and name.
      *
-     * @param string    $attributeName
+     * @param string $attributeName
      * @param string $name
      *
      * @throws App\Exception\NotFound
@@ -54,12 +54,12 @@ interface ScoreInterface extends RepositoryInterface {
      */
     public function findOneByUserIdAttributeNameAndName(int $userId, string $attributeName, string $name) : Score;
     /**
-     * Deletes a Score entity based on their attribute name and name.
+     * Deletes a Score entity based on their attribute id and name.
      *
-     * @param string    $attributeName
+     * @param int    $attributeId
      * @param string $name
      *
      * @return int
      */
-    public function deleteOneByAttributeNameAndName(string $attributeName, string $name) : int;
+    public function deleteOneByAttributeIdAndName(int $attributeId, string $name) : int;
 }

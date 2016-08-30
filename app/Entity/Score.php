@@ -22,7 +22,7 @@ use App\Extension\SecureFields;
  * @property int    $updated_at
  */
 class Score extends AbstractEntity {
-    use SecureFields;
+    //use SecureFields;
     /**
      * {@inheritdoc}
      */
@@ -41,7 +41,7 @@ class Score extends AbstractEntity {
      *
      * @var array
      */
-    protected $secure = ['value'];
+    //protected $secure = ['value'];
 
     /**
      * {@inheritdoc}

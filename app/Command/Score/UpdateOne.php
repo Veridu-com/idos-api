@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Command\Score;
 
-use App\Entity\Attribute;
 use App\Command\AbstractCommand;
+use App\Entity\Attribute;
 
 /**
  * Score "Update One" Command.
@@ -28,13 +28,13 @@ class UpdateOne extends AbstractCommand {
      */
     public $attribute;
     /**
-     * New mapped name.
+     * New score name.
      *
      * @var string
      */
     public $name;
     /**
-     * New mapped value.
+     * New score value.
      *
      * @var string
      */
