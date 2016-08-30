@@ -11,32 +11,28 @@ class S24SourcesSeed extends AbstractSeed {
         $data = [
             [
                 'user_id'    => 1,
-                'type'       => 'source-1',
-                'valid'      => 'true',
+                'name'       => 'source-1',
                 'ipaddr'     => '192.168.0.1',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'type'       => 'source-2',
-                'valid'      => 'true',
+                'name'       => 'source-2',
                 'ipaddr'     => '192.168.0.2',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'type'       => 'source-3',
-                'valid'      => 'false',
+                'name'       => 'source-3',
                 'ipaddr'     => '192.168.0.3',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'type'       => 'source-4',
-                'valid'      => 'true',
+                'name'       => 'source-4',
                 'ipaddr'     => '192.168.0.4',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')

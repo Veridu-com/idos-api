@@ -45,24 +45,6 @@ interface CredentialInterface extends RepositoryInterface {
     public function deleteByCompanyId(int $companyId) : int;
 
     /**
-     * Returns all Credentials based on their Company Id.
-     *
-     * @param int $companyId
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function findByCompanyId(int $companyId) : Collection;
-
-    /**
-     * Finds a credential by its private key.
-     *
-     * @param string $key The key
-     *
-     * @return App\Entity\Credential
-     */
-    public function findByPrivKey(string $key) : Credential;
-
-    /**
      * Deletes a set of credentials with the given public key.
      *
      * @param string $key The key
@@ -88,5 +70,5 @@ interface CredentialInterface extends RepositoryInterface {
      * @param string $issuerCredentialPrivKey The private key of issuer Credential
      * @param string $issuerCredentialPubKey  The public key of issuer Credential
      */
-    public function generateToken(string $subjectCredentialPubKey, string $issuerCredentialPrivKey, string $issuerCredentialPubKey) : string;
+    public function generateToken($credentialPubKey, string $servicePrivKey, string $servicePubKey) : string;
 }
