@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Hook;
 
 use Slim\Http\Response;
@@ -45,12 +47,10 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertSame('trigger.changed', $body['data']['trigger']);
         $this->assertSame('http://changed.com/test.php', $body['data']['url']);
@@ -89,12 +89,10 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
@@ -130,12 +128,12 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
+
         /*
          * Validates Json Schema against Json Response'
          */
@@ -169,12 +167,12 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(403, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $this->assertEquals(403, $response->getStatusCode());
         $this->assertFalse($body['status']);
+
         /*
          * Validates Json Schema against Json Response'
          */
@@ -208,12 +206,12 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
+
         /*
          * Validates Json Schema against Json Response'
          */

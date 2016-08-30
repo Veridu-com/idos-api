@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Company;
 
 use Slim\Http\Response;
@@ -31,13 +33,10 @@ class CreateNewTest extends AbstractFunctional {
         $request = $this->createRequest($environment, json_encode(['name' => 'New Company']));
 
         $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(201, $response->getStatusCode());
-
         $this->assertTrue($body['status']);
         $this->assertSame('New Company', $body['data']['name']);
         /*

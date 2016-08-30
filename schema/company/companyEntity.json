@@ -24,7 +24,7 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Company's last updated unixtime",
+            "description": "Company's last update unixtime",
             "type": ["integer", "null"]
         }
     },

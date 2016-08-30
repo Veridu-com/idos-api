@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit;
 
 abstract class AbstractUnit extends \PHPUnit_Framework_TestCase {
@@ -19,10 +21,26 @@ abstract class AbstractUnit extends \PHPUnit_Framework_TestCase {
      * @return void
      */
     protected function setProtectedProperty($object, string $property, $value) {
-        $reflection          = new \ReflectionClass($object);
-        $reflection_property = $reflection->getProperty($property);
-        $reflection_property->setAccessible(true);
-        $reflection_property->setValue($object, $value);
+        $reflection         = new \ReflectionClass($object);
+        $reflectionProperty = $reflection->getProperty($property);
+        $reflectionProperty->setAccessible(true);
+        $reflectionProperty->setValue($object, $value);
+    }
+
+    /**
+     * Manipulates a protected method's visibility on a given object via reflection.
+     *
+     * @param mixed  $object instance in which protected method is being manipulated
+     * @param string $method instance's method name being modified
+     *
+     * @return \ReflectionMethod
+     */
+    protected function setProtectedMethod($object, string $method) : \ReflectionMethod{
+        $reflection       = new \ReflectionClass($object);
+        $reflectionMethod = $reflection->getMethod($method);
+        $reflectionMethod->setAccessible(true);
+
+        return $reflectionMethod;
     }
 
     /**

@@ -188,5 +188,4 @@ class DBMappedTest extends AbstractUnit {
         $this->setExpectedException(NotFound::class);
         $dbMapped->findOneByUserIdSourceIdAndName(1, 1, 'mapped-1');
     }
-
 }

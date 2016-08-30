@@ -31,10 +31,12 @@ class CreateNewTest extends AbstractFunctional {
 
         $request = $this->createRequest(
             $environment,
-            json_encode([
+            json_encode(
+                [
                     'name' => 'Tag Test',
                     'slug' => 'tag-test'
-            ])
+                ]
+            )
         );
 
         $response = $this->process($request);
@@ -56,8 +58,8 @@ class CreateNewTest extends AbstractFunctional {
                 'tag/createNew.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
 
     }
 }

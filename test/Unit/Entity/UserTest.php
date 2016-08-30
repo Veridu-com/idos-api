@@ -4,12 +4,14 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Entity;
 
 use Test\Unit\AbstractUnit;
 
 class UserTest extends AbstractUnit {
-   public function testSerialize() {
+    public function testSerialize() {
 
         $updated = time();
         $array   = [
@@ -164,5 +166,4 @@ class UserTest extends AbstractUnit {
         $this->assertSame($array, $result);
 
     }
-
 }

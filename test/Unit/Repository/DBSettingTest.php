@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Setting as SettingEntity;
@@ -126,10 +128,12 @@ class DBSettingTest extends AbstractUnit {
             ->method('get')
             ->will(
                 $this->returnValue(
-                    new Collection([
+                    new Collection(
+                        [
                         new SettingEntity($array[0], $this->optimus),
                         new SettingEntity($array[1], $this->optimus)
-                    ])
+                        ]
+                    )
                 )
             );
         $connectionMock = $this->getMockBuilder(Connection::class)
@@ -210,10 +214,16 @@ class DBSettingTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $queryMock
             ->method('get')
-            ->will($this->returnValue(new Collection([
-                new SettingEntity($array[0], $this->optimus),
-                new SettingEntity($array[1], $this->optimus)
-            ])));
+            ->will(
+                $this->returnValue(
+                    new Collection(
+                        [
+                        new SettingEntity($array[0], $this->optimus),
+                        new SettingEntity($array[1], $this->optimus)
+                        ]
+                    )
+                )
+            );
 
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()

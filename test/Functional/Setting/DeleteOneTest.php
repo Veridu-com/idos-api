@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Setting;
 
 use Slim\Http\Response;
@@ -42,11 +44,11 @@ class DeleteOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
-        // success assertions
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
+
         /*
          * Validates Json Schema with Json Response
          */

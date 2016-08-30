@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Command\Company;
 
 use App\Command\Company\DeleteOne;
@@ -21,8 +23,8 @@ class DeleteOneTest extends AbstractUnit {
         $this->assertNull($command->company);
 
         $entityMock = $this->getMockBuilder(Entity::class)
-           ->disableOriginalConstructor()
-           ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $command->setParameters(['company' => $entityMock]);
         $this->assertSame($entityMock, $command->company);

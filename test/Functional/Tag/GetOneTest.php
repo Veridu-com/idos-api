@@ -15,9 +15,13 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                'QUERY_STRING' => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                ]
+            )
+        );
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
 
@@ -40,9 +44,13 @@ class GetOneTest extends AbstractFunctional {
 
     public function testNotFound() {
         $this->uri = '/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/tags/0000000';
-        $request   = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
-        ]));
+        $request   = $this->createRequest(
+            $this->createEnvironment(
+                [
+                'QUERY_STRING' => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                ]
+            )
+        );
         $response = $this->process($request);
 
         $body = json_decode($response->getBody(), true);
@@ -63,5 +71,4 @@ class GetOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }

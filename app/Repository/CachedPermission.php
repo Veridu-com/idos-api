@@ -49,6 +49,7 @@ class CachedPermission extends AbstractCachedRepository implements PermissionInt
      */
     public function deleteOne(int $companyId, string $routeName) : int {
         return $this->deleteBy(
+            [
             'company_id' => $companyId,
             'route_name' => $routeName
             ]

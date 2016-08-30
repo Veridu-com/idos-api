@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Handler;
 
 use App\Command\Permission\CreateNew;
@@ -256,7 +258,7 @@ class PermissionTest extends AbstractUnit {
             ->getMock();
 
         $commandMock->companyId = 0;
-        $this->assertEquals(0, $handler->handleDeleteAll($commandMock));
+        $this->assertSame(0, $handler->handleDeleteAll($commandMock));
     }
 
     public function testHandleDeleteOneInvalidRouteName() {

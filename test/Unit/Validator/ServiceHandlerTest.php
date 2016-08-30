@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Validator;
 
 use App\Validator\ServiceHandler;
@@ -17,68 +19,44 @@ class ServiceHandlerTest extends AbstractUnit {
         $this->validator = new ServiceHandler();
     }
 
-    public function testAssertSourceInvalid() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertName([]);
-    }
+    // What is the source after all..?
+    // public function testAssertSourceInvalid() {
+    //     $this->setExpectedException(ExceptionInterface::class);
+    //     $this->validator->assertName([]);
+    // }
 
-    public function testAssertSource() {
-        $this->validator->assertSource('source');
-        $this->assertTrue(true);
-    }
-
-    public function testAssertSlugInvalid() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertName([]);
-    }
-
-    public function testAssertSlug() {
-        $this->validator->assertSlug('slug');
-        $this->assertTrue(true);
-    }
+    // public function testAssertSource() {
+    //     $this->validator->assertSource('source');
+    //     $this->assertTrue(true);
+    // }
 
     public function testAssertLocationInvalidUrl() {
         $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertLocation('url');
+        $this->validator->assertUrl('url');
     }
 
     public function testAssertLocation() {
-        $this->validator->assertLocation('http://localhost:8080');
+        $this->validator->assertUrl('http://localhost:8080');
         $this->assertTrue(true);
     }
 
     public function testAuthUsernameInvalid() {
         $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertAuthUsername([]);
+        $this->validator->assertUserName([]);
     }
 
     public function testAuthUsername() {
-        $this->validator->assertAuthUsername('Auth Username');
+        $this->validator->assertUserName('us3rn4m3');
         $this->assertTrue(true);
     }
 
     public function testAuthPasswordInvalid() {
         $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertAuthPassword([]);
+        $this->validator->assertPassword([]);
     }
 
     public function testAuthPassword() {
-        $this->validator->assertAuthPassword('Auth Password');
-        $this->assertTrue(true);
-    }
-
-    public function testAssertIdEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
-        $this->validator->assertId('');
-    }
-
-    public function testAssertIdInvalidValue() {
-        $this->setExpectedException(Exceptioninterface::class);
-        $this->validator->assertId('0a');
-    }
-
-    public function testAssertId() {
-        $this->validator->assertId(1);
+        $this->validator->assertPassword('Auth_P4ssw0rd$');
         $this->assertTrue(true);
     }
 }

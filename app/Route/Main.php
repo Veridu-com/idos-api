@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -38,7 +38,7 @@ class Main implements RouteInterface {
             );
         };
 
-        $permissionMiddleware = $app->getContainer()->get('companyPermissionMiddleware');
+        $permissionMiddleware = $app->getContainer()->get('endpointPermissionMiddleware');
 
         self::listAll($app, $permissionMiddleware);
     }
@@ -65,7 +65,7 @@ class Main implements RouteInterface {
                 '/',
                 'App\Controller\Main:listAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->setName('main:listAll');
     }
 }

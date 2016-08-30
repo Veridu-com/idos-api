@@ -4,10 +4,12 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -47,7 +49,7 @@ class ServiceHandler implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
@@ -83,8 +85,8 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers',
                 'App\Controller\ServiceHandlers:listAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:listAll');
     }
 
@@ -114,8 +116,8 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers',
                 'App\Controller\ServiceHandlers:createNew'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:createNew');
     }
 
@@ -145,8 +147,8 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers',
                 'App\Controller\ServiceHandlers:deleteAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:deleteAll');
     }
 
@@ -177,8 +179,8 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:getOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:getOne');
     }
 
@@ -209,8 +211,8 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:updateOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:updateOne');
     }
 
@@ -241,8 +243,8 @@ class ServiceHandler implements RouteInterface {
                 '/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:deleteOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('service-handlers:deleteOne');
     }
 }

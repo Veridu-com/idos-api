@@ -156,12 +156,14 @@ class FeatureTest extends AbstractUnit {
         $value  = 'value';
         $userId = 1;
 
-        $featureEntity = new FeatureEntity([
+        $featureEntity = new FeatureEntity(
+            [
             'name'    => $name,
             'slug'    => $slug,
             'value'   => $value,
             'user_id' => $userId
-        ], $this->optimus);
+            ], $this->optimus
+        );
 
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();

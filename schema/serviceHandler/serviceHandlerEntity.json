@@ -18,7 +18,8 @@
             "type": "integer"
         },
         "updated_at": {
-        	"description": "Unixtime of the last update"
+        	"description": "Unixtime of the last update",
+            "type": ["integer", "null"]
         }
     },
     "dependencies": {
@@ -26,6 +27,7 @@
     "required": [
         "listens",
         "service",
-        "created_at"
+        "created_at",
+        "updated_at"
     ]
 }

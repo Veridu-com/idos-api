@@ -4,13 +4,20 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 if (! isset($app)) {
     die('$app is not set!');
 }
 
 $routes = $app->getContainer()->globFiles['routes'];
+
+$app->get(
+    '/',
+    function () {
+        throw new \Exception('what does the fox says?');
+    }
+);
 
 $app->group(
     '/' . __VERSION__,

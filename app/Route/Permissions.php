@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -48,7 +48,7 @@ class Permissions implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
@@ -82,8 +82,8 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:listAll'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:listAll');
     }
 
@@ -112,8 +112,8 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:createNew'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:createNew');
     }
 
@@ -142,8 +142,8 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
                 'App\Controller\Permissions:deleteAll'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:deleteAll');
     }
 
@@ -171,8 +171,8 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
                 'App\Controller\Permissions:getOne'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:getOne');
     }
 
@@ -201,8 +201,8 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
                 'App\Controller\Permissions:deleteOne'
             )
-            ->add($permission(CompanyPermission::SELF_ACTION | CompanyPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
+            ->add($auth(Auth::COMP_TOKEN))
             ->setName('permissions:deleteOne');
     }
 }

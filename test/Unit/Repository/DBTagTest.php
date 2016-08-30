@@ -71,7 +71,8 @@ class DBTagTest extends AbstractUnit {
         $queryMock
             ->method('get')
             ->will(
-                $this->returnValue([
+                $this->returnValue(
+                    [
                     new TagEntity(
                         [
                             'id'         => 1,
@@ -83,7 +84,8 @@ class DBTagTest extends AbstractUnit {
                         ],
                         $this->optimus
                     )
-                ])
+                    ]
+                )
             );
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()

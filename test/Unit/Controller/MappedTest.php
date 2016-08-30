@@ -79,14 +79,18 @@ class MappedTest extends AbstractUnit {
             ->getMock();
         $dbMappedMock
             ->method('getAllByUserIdSourceIdAndNames')
-            ->will($this->returnValueMap([
-                [
+            ->will(
+                $this->returnValueMap(
+                    [
+                    [
                     1,
                     1,
                     ['mapped-1'],
                     new Collection([$this->getEntity(1, 1)])
-                ]
-            ]));
+                    ]
+                    ]
+                )
+            );
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()
@@ -137,14 +141,18 @@ class MappedTest extends AbstractUnit {
             ->getMock();
         $dbMappedMock
             ->method('findOneByUserIdSourceIdAndName')
-            ->will($this->returnValueMap([
-                [
+            ->will(
+                $this->returnValueMap(
+                    [
+                    [
                     1,
                     1,
                     'mapped-1',
                     $this->getEntity(1, 1)
-                ]
-            ]));
+                    ]
+                    ]
+                )
+            );
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()

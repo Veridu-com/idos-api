@@ -69,6 +69,7 @@ class DBMember extends AbstractDBRepository implements MemberInterface {
 
         return $this->castHydrate($items);
     }
+
     /**
      * {@inheritdoc}
      */

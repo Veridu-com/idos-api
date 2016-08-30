@@ -23,7 +23,7 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Hooks's last updated unixtime",
+            "description": "Hooks's last update unixtime",
             "type": ["integer", "null"]
         }
     },

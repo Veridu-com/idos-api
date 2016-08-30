@@ -20,9 +20,13 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                'QUERY_STRING' => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                ]
+            )
+        );
 
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
@@ -44,9 +48,13 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testFilter() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'tags=user 2 tag 1&credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                'QUERY_STRING' => 'tags=user 2 tag 1&credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                ]
+            )
+        );
 
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
@@ -75,9 +83,13 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testFilterMultiple() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'tags=User 2 tag-1,user-2-tag-2&credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                'QUERY_STRING' => 'tags=User 2 tag-1,user-2-tag-2&credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                ]
+            )
+        );
 
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
@@ -104,5 +116,4 @@ class ListAllTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }

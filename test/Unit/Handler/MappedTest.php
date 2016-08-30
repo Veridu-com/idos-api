@@ -194,12 +194,16 @@ class MappedTest extends AbstractUnit {
         $mappedRepository
             ->expects($this->once())
             ->method('findOneByUserIdSourceIdAndName')
-            ->will($this->returnValueMap([[
-                1,
-                $mappedEntity->sourceId,
-                $mappedEntity->name,
-                $mappedEntity
-        ]]));
+            ->will(
+                $this->returnValueMap(
+                    [[
+                    1,
+                    $mappedEntity->sourceId,
+                    $mappedEntity->name,
+                    $mappedEntity
+                    ]]
+                )
+            );
 
         $mappedRepository
             ->expects($this->once())
@@ -235,11 +239,15 @@ class MappedTest extends AbstractUnit {
 
         $mappedRepository
             ->method('deleteOneBySourceIdAndName')
-            ->will($this->returnValueMap([[
-                1,
-                'mapped-1',
-                1
-            ]]));
+            ->will(
+                $this->returnValueMap(
+                    [[
+                    1,
+                    'mapped-1',
+                    1
+                    ]]
+                )
+            );
 
         $handler = new Mapped(
             $mappedRepository,
@@ -271,10 +279,14 @@ class MappedTest extends AbstractUnit {
 
         $mappedRepository
             ->method('deleteBySourceId')
-            ->will($this->returnValueMap([[
-                1,
-                1
-            ]]));
+            ->will(
+                $this->returnValueMap(
+                    [[
+                    1,
+                    1
+                    ]]
+                )
+            );
 
         $collectionMock = $this
             ->getMockBuilder(Collection::class)
@@ -293,5 +305,4 @@ class MappedTest extends AbstractUnit {
 
         $this->assertEquals(1, $handler->handleDeleteAll($commandMock));
     }
-
 }

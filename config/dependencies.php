@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use Apix\Cache;
 use App\Command;
@@ -294,6 +294,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
             $repositoryFactory->create('Credential'),
             $repositoryFactory->create('User'),
             $repositoryFactory->create('Company'),
+            $repositoryFactory->create('Service'),
             $jwt('parser'),
             $jwt('validation'),
             $jwt('signer'),
@@ -303,9 +304,13 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
 };
 
 // Permission Middleware
-$container['companyPermissionMiddleware'] = function (ContainerInterface $container) : callable {
+$container['endpointPermissionMiddleware'] = function (ContainerInterface $container) : callable {
     return function ($permissionType) use ($container) {
-        return new Middleware\CompanyPermission($container, $permissionType);
+        return new Middleware\EndpointPermission(
+            $container->get('repositoryFactory')->create('Permission'),
+            $container->get('repositoryFactory')->create('Company'),
+            $permissionType
+        );
     };
 };
 
@@ -331,7 +336,11 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
     switch ($settings['repository']['strategy']) {
         case 'db':
         default:
-            $strategy = new Repository\DBStrategy($container->get('entityFactory'), $container->get('optimus'), $container->get('db'));
+            $strategy = new Repository\DBStrategy(
+                $container->get('entityFactory'),
+                $container->get('optimus'),
+                $container->get('db')
+            );
     }
 
     if ((isset($settings['repository']['cached'])) && ($settings['repository']['cached'])) {
@@ -397,9 +406,16 @@ $container['globFiles'] = function () : array {
 $container['eventEmitter'] = function (ContainerInterface $container) : Emitter {
     $emitter = new Emitter();
 
-    $providers = array_map(function ($providerFile) {
-        return preg_replace('/.*?Listener\/(.*)\/ListenerProvider.php/', 'App\\Listener\\\$1\\ListenerProvider', $providerFile);
-    }, $container->get('globFiles')['listenerProviders']);
+    $providers = array_map(
+        function ($providerFile) {
+            return preg_replace(
+                '/.*?Listener\/(.*)\/ListenerProvider.php/',
+                'App\\Listener\\\$1\\ListenerProvider',
+                $providerFile
+            );
+        },
+        $container->get('globFiles')['listenerProviders']
+    );
 
     foreach ($providers as $provider) {
         $emitter->useListenerProvider(new $provider($container));
