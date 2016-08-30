@@ -61,17 +61,17 @@ class TagTest extends AbstractUnit {
             'slug'       => 'test-tag',
             'created_at' => time(),
             'updated_at' => time()
-        ];
-        $abstractMock = $this->getMockBuilder(Tag::class)
-            ->setMethods(null)
-            ->setConstructorArgs([$array, $this->optimus])
-            ->getMockForAbstractClass();
-        $array = $abstractMock->toArray();
-        $this->assertArrayHasKey('name', $array);
-        $this->assertArrayHasKey('slug', $array);
-        $this->assertSame('Test Tag', $array['name']);
-        $this->assertSame('test-tag', $array['slug']);
-        $this->assertArrayHasKey('created_at', $array);
-        $this->assertTrue(is_int($abstractMock->createdAt));
+         ];
+         $abstractMock = $this->getMockBuilder(Tag::class)
+             ->setMethods(null)
+             ->setConstructorArgs([$array, $this->optimus])
+             ->getMockForAbstractClass();
+         $array = $abstractMock->toArray();
+         $this->assertArrayHasKey('name', $array);
+         $this->assertArrayHasKey('slug', $array);
+         $this->assertSame('Test Tag', $array['name']);
+         $this->assertSame('test-tag', $array['slug']);
+         $this->assertArrayHasKey('created_at', $array);
+         $this->assertTrue(is_int($abstractMock->createdAt));
     }
 }

@@ -60,8 +60,9 @@ abstract class AbstractRepository implements RepositoryInterface {
      * @return string
      */
     protected function getEntityName() : string {
-        if (empty($this->entityName))
+        if (empty($this->entityName)) {
             throw new \RuntimeException(sprintf('$entityName property not set in %s', get_class($this)));
+        }
 
         return $this->entityName;
     }

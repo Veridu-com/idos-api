@@ -194,12 +194,16 @@ class DigestedTest extends AbstractUnit {
         $digestedRepository
             ->expects($this->once())
             ->method('findOneByUserIdSourceIdAndName')
-            ->will($this->returnValueMap([[
-                1,
-                $digestedEntity->sourceId,
-                $digestedEntity->name,
-                $digestedEntity
-        ]]));
+            ->will(
+                $this->returnValueMap(
+                    [[
+                    1,
+                    $digestedEntity->sourceId,
+                    $digestedEntity->name,
+                    $digestedEntity
+                    ]]
+                )
+            );
 
         $digestedRepository
             ->expects($this->once())
@@ -235,11 +239,15 @@ class DigestedTest extends AbstractUnit {
 
         $digestedRepository
             ->method('deleteOneBySourceIdAndName')
-            ->will($this->returnValueMap([[
-                1,
-                'digested-1',
-                1
-            ]]));
+            ->will(
+                $this->returnValueMap(
+                    [[
+                    1,
+                    'digested-1',
+                    1
+                    ]]
+                )
+            );
 
         $handler = new Digested(
             $digestedRepository,
@@ -271,10 +279,14 @@ class DigestedTest extends AbstractUnit {
 
         $digestedRepository
             ->method('deleteBySourceId')
-            ->will($this->returnValueMap([[
-                1,
-                1
-            ]]));
+            ->will(
+                $this->returnValueMap(
+                    [[
+                    1,
+                    1
+                    ]]
+                )
+            );
 
         $collectionMock = $this
             ->getMockBuilder(Collection::class)
@@ -293,5 +305,4 @@ class DigestedTest extends AbstractUnit {
 
         $this->assertEquals(1, $handler->handleDeleteAll($commandMock));
     }
-
 }

@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Setting;
 
 use Slim\Http\Response;
@@ -45,12 +47,10 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
-        // assertions
         $this->assertNotEmpty($body);
-        $this->assertEquals(201, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertSame('velit', $body['data']['section']);
         $this->assertSame('bicxuito', $body['data']['property']);

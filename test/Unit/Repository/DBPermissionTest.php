@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Permission;
@@ -94,5 +96,4 @@ class DBPermissionTest extends AbstractUnit {
         $this->assertInstanceOf(Permission::class, $entity);
         $this->assertSame($array, $entity->toArray());
     }
-
 }

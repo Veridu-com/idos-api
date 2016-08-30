@@ -22,8 +22,8 @@ use Test\Unit\AbstractUnit;
 class CredentialsTest extends AbstractUnit {
     private function getCompanyEntity($id) {
          $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+             ->disableOriginalConstructor()
+             ->getMock();
 
         return new CompanyEntity(
             [
@@ -166,7 +166,8 @@ class CredentialsTest extends AbstractUnit {
             ->expects($this->once())
             ->method('getAttribute')
             ->will(
-                $this->returnValue($this->getCompanyEntity(0)));
+                $this->returnValue($this->getCompanyEntity(0))
+            );
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -203,7 +204,8 @@ class CredentialsTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertEquals($responseMock, $credentialsMock->deleteAll($requestMock, $responseMock));
+        // $this->assertEquals($responseMock, $credentialsMock->deleteAll($requestMock, $responseMock));
+        $this->assertSame($responseMock, $credentialsMock->deleteAll($requestMock, $responseMock));
     }
 
     public function testGetOne() {
@@ -294,7 +296,7 @@ class CredentialsTest extends AbstractUnit {
             ->method('findByPubKey')
             ->will(
                 $this->returnValue(
-                   $this->getEntity(0)
+                    $this->getEntity(0)
                 )
             );
 
@@ -355,7 +357,7 @@ class CredentialsTest extends AbstractUnit {
             ->method('findByPubKey')
             ->will(
                 $this->returnValue(
-                   $this->getEntity(0)
+                    $this->getEntity(0)
                 )
             );
 

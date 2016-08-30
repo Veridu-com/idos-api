@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -79,7 +79,7 @@ class DBDigested extends AbstractDBRepository implements DigestedInterface {
                 ->where('sources.id', '=', $sourceId)
                 ->where('digested.name', '=', $name)
                 ->get(['digested.*'])
-            );
+        );
 
         if ($result->isEmpty()) {
             throw new NotFound();

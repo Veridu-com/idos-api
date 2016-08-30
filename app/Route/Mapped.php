@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -50,7 +50,7 @@ class Mapped implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -89,7 +89,7 @@ class Mapped implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/mapped',
                 'App\Controller\Mapped:listAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('mapped:listAll');
     }
@@ -122,7 +122,7 @@ class Mapped implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/mapped',
                 'App\Controller\Mapped:createNew'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('mapped:createNew');
     }
@@ -157,7 +157,7 @@ class Mapped implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/mapped/{mappedName}',
                 'App\Controller\Mapped:updateOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('mapped:updateOne');
     }
@@ -192,7 +192,7 @@ class Mapped implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/mapped/{mappedName}',
                 'App\Controller\Mapped:getOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('mapped:getOne');
     }
@@ -226,7 +226,7 @@ class Mapped implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/mapped',
                 'App\Controller\Mapped:deleteAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('mapped:deleteAll');
     }
@@ -261,7 +261,7 @@ class Mapped implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/mapped/{mappedName}',
                 'App\Controller\Mapped:deleteOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('mapped:deleteOne');
     }

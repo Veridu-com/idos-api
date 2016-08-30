@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Validator;
 
 use App\Validator\Member;
@@ -15,11 +17,6 @@ class MemberTest extends AbstractUnit {
 
     protected function setUp() {
         $this->validator = new Member();
-    }
-
-    public function testAssertId() {
-        $this->validator->assertId(1);
-        $this->assertTrue(true);
     }
 
     public function testAssertUserNameFiftyChars() {
@@ -38,6 +35,7 @@ class MemberTest extends AbstractUnit {
         for ($i = 0; $i < 51; $i++) {
             $username .= 'a';
         }
+
         $this->validator->assertUserName($username);
     }
 

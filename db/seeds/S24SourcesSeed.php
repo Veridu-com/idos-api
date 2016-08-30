@@ -130,8 +130,8 @@ class S24SourcesSeed extends AbstractSeed {
     }
 
     public function run() {
-        $this->seedSources();
-        $this->seedMapped();
-        $this->seedDigested();
+        // $this->seedSources();
+        // $this->seedMapped();
+        // $this->seedDigested();
     }
 }

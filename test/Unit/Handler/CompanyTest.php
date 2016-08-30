@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Handler;
 
 use App\Command\Company\CreateNew;
@@ -199,17 +201,20 @@ class CompanyTest extends AbstractUnit {
         $this->assertSame('valid co', $result->name);
         $this->assertSame('valid-co', $result->slug);
         $this->assertNotEmpty($result->public_key);
+        $this->assertSame(1, $result->parentId);
     }
 
     public function testHandleUpdateOne() {
+        // forged created_at
+        $createdAt     = time();
         $companyEntity = new CompanyEntity(
             [
                 'id'         => 0,
                 'name'       => 'New Company',
                 'slug'       => 'new-company',
                 'public_key' => 'public_key',
-                'created_at' => time(),
-                'updated_at' => time()
+                'created_at' => $createdAt,
+                'updated_at' => null
             ],
             $this->optimus
         );
@@ -248,12 +253,16 @@ class CompanyTest extends AbstractUnit {
         $command->companyId = 0;
 
         $result = $handler->handleUpdateOne($command);
+        $this->assertInstanceOf(CompanyEntity::class, $result);
+        $this->assertSame(0, $result->id);
         $this->assertSame('valid co', $result->name);
         $this->assertSame('valid-co', $result->slug);
-        $this->assertNotEmpty($result->public_key);
+        $this->assertSame('public_key', $result->publicKey);
+        $this->assertSame($createdAt, $result->createdAt);
+        $this->assertNotEmpty($result->updatedAt);
     }
 
-    public function testHandleDeleteOneInvalidCompanySlug() {
+    public function testHandleDeleteOneInvalidCompany() {
         $repositoryMock = $this
             ->getMockBuilder(CompanyInterface::class)
             ->getMock();
@@ -274,7 +283,8 @@ class CompanyTest extends AbstractUnit {
             ->getMockBuilder(DeleteOne::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $commandMock->companySlug = '';
+
+        $commandMock->company = null;
 
         $handler->handleDeleteOne($commandMock);
     }
@@ -339,7 +349,7 @@ class CompanyTest extends AbstractUnit {
         $entity               = new CompanyEntity(['id' => 0], $this->optimus);
         $commandMock->company = $entity;
 
-        $this->assertEquals(0, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(0, $handler->handleDeleteOne($commandMock));
     }
 
     public function testHandleDeleteAllCompanyIdNotFound() {
@@ -409,7 +419,6 @@ class CompanyTest extends AbstractUnit {
 
         $commandMock->parentId = 0;
 
-        $this->assertEquals(0, $handler->handleDeleteAll($commandMock));
+        $this->assertSame(0, $handler->handleDeleteAll($commandMock));
     }
-
 }

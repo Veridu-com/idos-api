@@ -17,11 +17,16 @@
         "created_at": {
             "description": "Digested's creation unixtime",
             "type": "integer"
+        },
+        "updated_at": {
+            "description": "Digested's last update unixtime",
+            "type": ["integer", "null"]
         }
     },
     "required": [
         "name",
         "value",
-        "created_at"
+        "created_at",
+        "updated_at"
     ]
 }

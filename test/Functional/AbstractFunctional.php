@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional;
 
 use JsonSchema\RefResolver;
@@ -118,6 +120,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      *  @param string $uri URI to be queried
      *  @param string $method URI to be queried
      *  @param array $params Environment parameters
+     *  @param array $body Request body
      *
      *  @return void
      */
@@ -134,7 +137,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
 
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $body     = json_decode((string) $response->getBody(), true);
 
         if ($response->getStatusCode() === 403) {
             $this->entities = [];

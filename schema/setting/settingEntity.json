@@ -28,7 +28,7 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Setting's last updated unixtime",
+            "description": "Setting's last update unixtime",
             "type": ["integer", "null"]
         }
     },

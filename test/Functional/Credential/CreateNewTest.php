@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Credential;
 
 use Slim\Http\Response;
@@ -44,38 +46,21 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(201, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertSame('New Credential', $body['data']['name']);
         $this->assertSame('new-credential', $body['data']['slug']);
 
-        /*
-         * Validates Json Schema against Json Response
-         */
+        // Validates Json Schema against Json Response
         $this->assertTrue(
             $this->validateSchema(
                 'credential/createNew.json',
                 json_decode($response->getBody())
             ),
             $this->schemaErrors
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAuthMiddlewareEnvironment() {
-        return $this->createEnvironment(
-            [
-                'REQUEST_URI'    => $this->uri,
-                'REQUEST_METHOD' => $this->httpMethod,
-                'QUERY_STRING'   => 'credentialToken=dummy'
-            ]
         );
     }
 
@@ -105,12 +90,10 @@ class CreateNewTest extends AbstractFunctional {
         // );
 
         // $response = $this->process($request);
+        // $this->assertSame(404, $response->getStatusCode());
 
         // $body = json_decode($response->getBody(), true);
-
         // $this->assertNotEmpty($body);
-
-        // $this->assertEquals(404, $response->getStatusCode());
         // $this->assertFalse($body['status']);
 
         // /*

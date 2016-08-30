@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Member;
 
 use Test\Functional\AbstractFunctional;
@@ -33,11 +35,10 @@ class DeleteOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-        // assertions
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-        $response->getStatusCode();
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -62,11 +63,10 @@ class DeleteOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(404, $response->getStatusCode());
 
-        // assertions
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*

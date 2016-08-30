@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Validator;
 
 use App\Validator\Permission;
@@ -15,10 +17,6 @@ class PermissionTest extends AbstractUnit {
 
     protected function setUp() {
         $this->validator = new Permission();
-    }
-
-    public function testAssertId() {
-        $this->validator->assertId(1);
     }
 
     public function testAssertRouteNameEmpty() {
@@ -35,5 +33,4 @@ class PermissionTest extends AbstractUnit {
         $this->setExpectedException(ExceptionInterface::class);
         $this->validator->assertRouteName('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
     }
-
 }

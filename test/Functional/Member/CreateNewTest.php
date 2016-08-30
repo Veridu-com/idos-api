@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Member;
 
 use Slim\Http\Response;
@@ -38,23 +40,21 @@ class CreateNewTest extends AbstractFunctional {
             json_encode(
                 [
                     'credential' => '4c9184f37cff01bcdc32dc486ec36961',
-                    'userName'   => '9fd9f63e0d6487537569075da85a0c7f2',
+                    'userName'   => 'f67b96dcf96b49d713a520ce9f54053c',
                     'role'       => 'admin',
                 ]
             )
         );
 
         $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(201, $response->getStatusCode());
-
         $this->assertTrue($body['status']);
         $this->assertSame('admin', $body['data']['role']);
-        $this->assertSame('9fd9f63e0d6487537569075da85a0c7f2', $body['data']['user']['username']);
+        $this->assertSame('f67b96dcf96b49d713a520ce9f54053c', $body['data']['user']['username']);
+
         /*
          * Validates Json Schema against Json Response'
          */

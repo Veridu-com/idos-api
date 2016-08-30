@@ -104,7 +104,7 @@ class Hook implements HandlerInterface {
      * @return App\Entity\Hook
      */
     public function handleCreateNew(CreateNew $command) : HookEntity {
-        $this->validator->assertTrigger($command->trigger);
+        $this->validator->assertTriggerName($command->trigger);
         $this->validator->assertUrl($command->url);
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
@@ -143,7 +143,7 @@ class Hook implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : HookEntity {
         $this->validator->assertId($command->hookId);
-        $this->validator->assertTrigger($command->trigger);
+        $this->validator->assertTriggerName($command->trigger);
         $this->validator->assertUrl($command->url);
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);

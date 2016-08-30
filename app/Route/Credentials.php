@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -49,7 +49,7 @@ class Credentials implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -85,7 +85,7 @@ class Credentials implements RouteInterface {
                 '/management/credentials',
                 'App\Controller\Credentials:listAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:listAll');
     }
@@ -116,7 +116,7 @@ class Credentials implements RouteInterface {
                 '/management/credentials',
                 'App\Controller\Credentials:createNew'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:createNew');
     }
@@ -147,7 +147,7 @@ class Credentials implements RouteInterface {
                 '/management/credentials',
                 'App\Controller\Credentials:deleteAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:deleteAll');
     }
@@ -179,7 +179,7 @@ class Credentials implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:getOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:getOne');
     }
@@ -211,7 +211,7 @@ class Credentials implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:updateOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:updateOne');
     }
@@ -243,7 +243,7 @@ class Credentials implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:deleteOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('credentials:deleteOne');
     }

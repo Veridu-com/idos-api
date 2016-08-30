@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -51,7 +51,7 @@ class Members implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -88,7 +88,7 @@ class Members implements RouteInterface {
                 '/management/members',
                 'App\Controller\Members:listAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:listAll');
     }
@@ -119,7 +119,7 @@ class Members implements RouteInterface {
                 '/management/members',
                 'App\Controller\Members:createNew'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:createNew');
     }
@@ -152,7 +152,7 @@ class Members implements RouteInterface {
                 '/management/members/{memberId}',
                 'App\Controller\Members:updateOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:updateOne');
     }
@@ -184,7 +184,7 @@ class Members implements RouteInterface {
                 '/management/members',
                 'App\Controller\Members:deleteAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:deleteAll');
     }
@@ -217,7 +217,7 @@ class Members implements RouteInterface {
                 '/management/members/{memberId}',
                 'App\Controller\Members:getOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:getOne');
     }
@@ -250,7 +250,7 @@ class Members implements RouteInterface {
                 '/management/members/{memberId}',
                 'App\Controller\Members:deleteOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CRED_TOKEN))
             ->setName('members:deleteOne');
     }
