@@ -135,9 +135,6 @@ class Gate implements HandlerInterface {
             $event   = new Updated($gate);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            var_dump($exception);
-            die;
-
             throw new AppException(
                 'Error while updating a gate user id: ' .
                 $command->userId .
