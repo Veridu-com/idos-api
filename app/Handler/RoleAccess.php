@@ -17,7 +17,7 @@ use App\Event\RoleAccess\Created;
 use App\Event\RoleAccess\Deleted;
 use App\Event\RoleAccess\DeletedMulti;
 use App\Event\RoleAccess\Updated;
-use App\Exception\AppException as AppException;
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\RoleAccessInterface;
 use App\Validator\RoleAccess as RoleAccessValidator;
@@ -130,18 +130,13 @@ class RoleAccess implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->identityId);
+
         $roleAccesses = $this->repository->findByIdentity($command->identityId);
 
-        try {
-            $rowsAffected = $this->repository->deleteAllFromIdentity($command->identityId);
-            $event        = new DeletedMulti($roleAccesses);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException(
-                'Error while trying to delete all role accesses under identity id ' .
-                $command->identityId
-            );
-        }
+        $rowsAffected = $this->repository->deleteAllFromIdentity($command->identityId);
+
+        $event = new DeletedMulti($roleAccesses);
+        $this->emitter->emit($event);
 
         return $rowsAffected;
     }
@@ -191,22 +186,14 @@ class RoleAccess implements HandlerInterface {
         $this->validator->assertId($command->identityId);
         $this->validator->assertId($command->roleAccessId);
 
-        try {
-            $roleAccess   = $this->repository->findOne($command->identityId, $command->roleAccessId);
-            $rowsAffected = $this->repository->deleteOne($command->identityId, $command->roleAccessId);
-            $event        = new Deleted($roleAccess);
-            $this->emitter->emit($event);
+        $roleAccess   = $this->repository->findOne($command->identityId, $command->roleAccessId);
+        $rowsAffected = $this->repository->deleteOne($command->identityId, $command->roleAccessId);
 
-            if (! $rowsAffected) {
+        if ($rowsAffected) {
+            $event = new Deleted($roleAccess);
+            $this->emitter->emit($event);
+        } else {
                 throw new NotFound();
-            }
-        } catch (\Exception $e) {
-            throw new AppException(
-                'Error while trying to update a role access identity_id ' .
-                $command->identityId .
-                ' role_access_id ' .
-                $command->roleAccessId
-            );
         }
 
         return $rowsAffected;

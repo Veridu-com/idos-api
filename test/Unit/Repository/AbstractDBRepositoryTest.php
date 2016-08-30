@@ -145,7 +145,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue($this->getEntity(1)));
 
         $entity = $this->getEntity('');
-        $this->assertInstanceOf(CompanyEntity::class, $abstractDBMock->save($entity))
+        $this->assertInstanceOf(CompanyEntity::class, $abstractDBMock->save($entity));
     }
 
     public function testGetEntityNameRuntimeException() {
