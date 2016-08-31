@@ -55,7 +55,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      *
      * @param int $roleAccessId
      * @param int $identityId
-     
+
      * @throws App\Exception\NotFound
      *
      * @return int affected rows

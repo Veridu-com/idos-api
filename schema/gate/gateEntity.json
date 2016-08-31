@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/user/gateEntity.json",
+    "title": "Gate",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Gate Name",
+            "type": "string",
+            "pattern": ""
+        },
+        "slug": {
+            "description": "Slug based on Gate's name",
+            "type": "string",
+            "pattern": "[a-zA-Z0-9_-]+"
+        },
+        "pass": {
+            "description": "Gate value",
+            "type": "boolean"
+        },
+        "user_id": {
+            "description": "User owner of the gate",
+            "type": "integer"
+        },
+        "created_at": {
+            "description": "Gate's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Gate's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "dependencies": {
+        "slug": ["name"]
+    },
+    "required": [
+        "name",
+        "pass",
+        "slug",
+        "user_id",
+        "created_at",
+        "updated_at"
+    ]
+}
