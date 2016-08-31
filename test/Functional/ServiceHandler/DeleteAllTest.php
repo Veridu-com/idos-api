@@ -4,15 +4,17 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\ServiceHandler;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyPrivKey;
+use Test\Functional\Traits\HasAuthCompanyToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    use HasAuthCompanyPrivKey;
+    use HasAuthCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
@@ -22,21 +24,25 @@ class DeleteAllTest extends AbstractFunctional {
 
     public function testSuccess() {
         // then creates the DELETE request
-        $request  = $this->createRequest();
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                ]
+            )
+        );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
-        // success assertions
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
         // checks if listAll retrived the number of deleted objects
-        $this->assertEquals(count($this->entities), $body['deleted']);
+        $this->assertSame(count($this->entities), $body['deleted']);
         // refreshes the $entities prop
         $this->populate($this->uri);
         // checks if all entities were deleted
-        $this->assertEquals(0, sizeof($this->entities));
+        $this->assertCount(0, $this->entities);
 
         /*
          * Validates Json Schema with Json Response
@@ -44,10 +50,9 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'serviceHandler/deleteAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
-
 }

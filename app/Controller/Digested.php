@@ -60,9 +60,9 @@ class Digested implements ControllerInterface {
     /**
      * Retrieve a complete list of the data digested by a given source.
      *
-     * @apiEndpointParam path string userName
-     * @apiEndpointParam path int sourceId
-     * @apiEndpointParam query string names
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointURIFragment int    sourceId 1
+     * @apiEndpointParam       query  string   names  numOfFriends
      * @apiEndpointResponse 200 schema/digested/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -135,7 +135,8 @@ class Digested implements ControllerInterface {
     /**
      * Updates a digested data from the given source.
      *
-     * @apiEndpointRequiredParam body string value
+     * @apiEndpointURIFragment   string digestedName numOfFriends
+     * @apiEndpointRequiredParam body   string       value        1
      * @apiEndpointResponse 200 schema/digested/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -170,9 +171,9 @@ class Digested implements ControllerInterface {
     /**
      * Retrieves a digested data from the given source.
      *
-     * @apiEndpointParam path string userName
-     * @apiEndpointParam path int sourceId
-     * @apiEndpointParam query string digestedName
+     * @apiEndpointURIFragment string userName     usr001
+     * @apiEndpointURIFragment int    sourceId     1
+     * @apiEndpointURIFragment string digestedName numOfFriends
      * @apiEndpointResponse 200 schema/digested/digestedEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -232,10 +233,10 @@ class Digested implements ControllerInterface {
     /**
      * Deletes a digested data from a given source.
      *
-     * @apiEndpointParam path string userName
-     * @apiEndpointParam path int sourceId
-     * @apiEndpointParam query string digestedName
-     * @apiEndpointResponse 200 schema/digested/deleteOne.json
+     * @apiEndpointURIFragment string userName     usr001
+     * @apiEndpointURIFragment int    sourceId     1
+     * @apiEndpointURIFragment string digestedName numOfFriends
+     * @apiEndpointResponse    200    schema/digested/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

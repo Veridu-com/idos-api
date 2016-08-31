@@ -111,7 +111,7 @@ class Service implements HandlerInterface {
 
         // optional params
         if ($command->listens) {
-            $this->validator->assertListens($command->listens);
+            $this->validator->assertArray($command->listens);
             $input['listens'] = $command->listens;
         }
 
@@ -126,7 +126,7 @@ class Service implements HandlerInterface {
         }
 
         if ($command->enabled !== null) {
-            $this->validator->assertEnabled($command->enabled);
+            $this->validator->assertFlag($command->enabled);
             $input['enabled'] = $command->enabled;
         }
 
@@ -161,7 +161,7 @@ class Service implements HandlerInterface {
         }
 
         if ($command->listens) {
-            $this->validator->assertListens($command->listens);
+            $this->validator->assertArray($command->listens);
             $input['listens'] = $command->listens;
         }
 
@@ -181,7 +181,7 @@ class Service implements HandlerInterface {
         }
 
         if ($command->enabled !== null) {
-            $this->validator->assertEnabled($command->enabled);
+            $this->validator->assertFlag($command->enabled);
             $input['enabled'] = $command->enabled;
         }
 

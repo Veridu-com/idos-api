@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Hook as HookEntity;
@@ -73,7 +75,8 @@ class DBHookTest extends AbstractUnit {
         $queryMock
             ->method('get')
             ->will(
-                $this->returnValue([
+                $this->returnValue(
+                    [
                     new HookEntity(
                         [
                             'id'            => 1,
@@ -86,7 +89,8 @@ class DBHookTest extends AbstractUnit {
                         ],
                         $this->optimus
                     )
-                ])
+                    ]
+                )
             );
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
@@ -193,7 +197,7 @@ class DBHookTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbHook = new DBHook($factory, $this->optimus, $connectionMock);
-        $this->assertEquals(1, $dbHook->delete(1));
+        $this->assertSame(1, $dbHook->delete(1));
     }
 
     public function testDeleteByCredentialId() {
@@ -221,6 +225,6 @@ class DBHookTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbHook = new DBHook($factory, $this->optimus, $connectionMock);
-        $this->assertEquals(3, $dbHook->deleteByCredentialId(1));
+        $this->assertSame(3, $dbHook->deleteByCredentialId(1));
     }
 }

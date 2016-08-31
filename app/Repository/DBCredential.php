@@ -10,7 +10,6 @@ namespace App\Repository;
 
 use App\Entity\Credential;
 use Illuminate\Support\Collection;
-use Lcobucci\JWT;
 
 /**
  * Database-based Credential Repository Implementation.
@@ -34,10 +33,6 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
      */
     public function findByPubKey(string $key) : Credential {
         return $this->findOneBy(['public' => $key]);
-    }
-
-    public function findByPrivKey(string $key) : Credential {
-        return $this->findOneBy(['private' => $key]);
     }
 
     /**
@@ -73,22 +68,5 @@ class DBCredential extends AbstractDBRepository implements CredentialInterface {
      */
     public function findOneByCompanyIdAndPubKey(int $companyId, string $key) : Credential {
         return $this->findOneBy(['company_id' => $companyId, 'public' => $key]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generateToken(string $subjectCredentialPubKey, string $issuerCredentialPrivKey, string $issuerCredentialPubKey) : string {
-        $jwtParser     = new JWT\Parser();
-        $jwtValidation = new JWT\ValidationData();
-        $jwtSigner     = new JWT\Signer\Hmac\Sha256();
-        $jwtBuilder    = new JWT\Builder();
-
-        $jwtBuilder->set('iss', $issuerCredentialPubKey);
-        $jwtBuilder->set('sub', $subjectCredentialPubKey);
-
-        return (string) $jwtBuilder
-            ->sign($jwtSigner, $issuerCredentialPrivKey)
-            ->getToken();
     }
 }

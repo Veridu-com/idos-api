@@ -1,4 +1,10 @@
 <?php
+/*
+ * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
+ * All rights reserved.
+ */
+
+declare(strict_types = 1);
 
 namespace Test\Unit\Handler;
 
@@ -141,6 +147,21 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testHandleUpdateOne() {
+        // forged created_at
+        $createdAt        = time();
+        $credentialEntity = new CredentialEntity(
+            [
+                'id'         => 0,
+                'name'       => 'valid cred',
+                'slug'       => 'valid-cred',
+                'public'     => 'public',
+                'private'    => 'private',
+                'created_at' => $createdAt,
+                'updated_at' => null
+            ],
+            $this->optimus
+        );
+
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->disableOriginalConstructor()
             ->setMethods([])
@@ -149,20 +170,18 @@ class CredentialTest extends AbstractUnit {
         $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Credential');
 
-        $builderMock = $this->getMockBuilder(Builder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $credentialRepository = $this->getMockBuilder(DBCredential::class)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->setMethods(['query', 'find'])
             ->getMock();
         $credentialRepository
-            ->method('query')
-            ->will($this->returnValue($builderMock));
-        $credentialRepository
+            ->expects($this->once())
             ->method('find')
-            ->will($this->returnValue(new CredentialEntity([], $this->optimus)));
+            ->willReturn($credentialEntity);
+        $credentialRepository
+            ->expects($this->once())
+            ->method('save')
+            ->willReturn($credentialEntity);
 
         $handler = new Credential(
             $credentialRepository,
@@ -171,13 +190,17 @@ class CredentialTest extends AbstractUnit {
         );
 
         $command               = new UpdateOne();
-        $command->credentialId = 0;
         $command->name         = 'valid cred';
+        $command->credentialId = 0;
 
         $result = $handler->handleUpdateOne($command);
+        $this->assertSame(0, $result->id);
         $this->assertSame('valid cred', $result->name);
         $this->assertSame('valid-cred', $result->slug);
-        $this->assertEquals(0, $result->credentialId);
+        $this->assertSame('public', $result->public);
+        $this->assertSame('private', $result->private);
+        $this->assertSame($createdAt, $result->createdAt);
+        $this->assertNotEmpty($result->updatedAt);
     }
 
     public function testHandleDeleteOne() {
@@ -213,7 +236,7 @@ class CredentialTest extends AbstractUnit {
         $command               = new DeleteOne();
         $command->credentialId = 0;
 
-        $this->assertEquals(1, $handler->handleDeleteOne($command));
+        $this->assertSame(1, $handler->handleDeleteOne($command));
     }
 
     public function testHandleDeleteAll() {
@@ -264,6 +287,6 @@ class CredentialTest extends AbstractUnit {
         $command            = new DeleteAll();
         $command->companyId = 0;
 
-        $this->assertEquals(3, $handler->handleDeleteAll($command));
+        $this->assertSame(3, $handler->handleDeleteAll($command));
     }
 }

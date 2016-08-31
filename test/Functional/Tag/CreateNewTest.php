@@ -9,42 +9,41 @@ namespace Test\Functional\Tag;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\HasAuthCompanyToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use HasAuthCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/tags';
+        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING'      => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
         $request = $this->createRequest(
             $environment,
-            json_encode([
+            json_encode(
+                [
                     'name' => 'Tag Test',
                     'slug' => 'tag-test'
-            ])
+                ]
+            )
         );
 
         $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
-
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(201, $response->getStatusCode());
-
         $this->assertTrue($body['status']);
         $this->assertSame('Tag Test', $body['data']['name']);
         $this->assertSame('tag-test', $body['data']['slug']);
@@ -54,10 +53,10 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'tag/createNew.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
 
     }
 }

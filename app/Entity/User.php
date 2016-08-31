@@ -11,7 +11,7 @@ namespace App\Entity;
 /**
  * Users Entity.
  *
- * @apiEntity schema/credential/credentialEntity.json
+ * @apiEntity schema/user/credentialEntity.json
  */
 class User extends AbstractEntity {
     /**

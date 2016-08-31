@@ -16,20 +16,23 @@ class DeleteOneTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/sources/3/digested/source-3-digested-1';
+        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/sources/3/digested/source3Digested1';
         // $this->populate($this->uri);
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                ]
+            )
+        );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-        // assertions
-        $this->assertNotEmpty($body);
-        $response->getStatusCode();
         $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
         /*
@@ -38,23 +41,26 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'digested/deleteOne.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/sources/3/digested/00000');
-        $request   = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
-        ]));
+        $this->uri = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/sources/3/digested/00000';
+        $request   = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                ]
+            )
+        );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(404, $response->getStatusCode());
 
-        // assertions
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
@@ -63,10 +69,9 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'digested/deleteOne.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
-
 }

@@ -4,17 +4,19 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Member;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyPrivKey;
+use Test\Functional\Traits\HasAuthCompanyToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class UpdateOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    use HasAuthCompanyPrivKey;
+    use HasAuthCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
@@ -24,19 +26,18 @@ class UpdateOneTest extends AbstractFunctional {
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json'
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
         $request = $this->createRequest($environment, json_encode(['role' => 'member']));
 
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
-
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -45,10 +46,10 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'member/updateOne.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
 
     }
 
@@ -57,19 +58,18 @@ class UpdateOneTest extends AbstractFunctional {
 
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json'
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
         $request = $this->createRequest($environment, json_encode(['role' => 'member']));
 
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
-
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
@@ -78,10 +78,9 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
-
 }

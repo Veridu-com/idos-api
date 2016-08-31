@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -49,7 +49,7 @@ class Features implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
@@ -85,8 +85,8 @@ class Features implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/features',
                 'App\Controller\Features:listAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:listAll');
     }
 
@@ -116,8 +116,8 @@ class Features implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/features',
                 'App\Controller\Features:createNew'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:createNew');
     }
 
@@ -147,8 +147,8 @@ class Features implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureSlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Features:deleteOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:deleteOne');
     }
 
@@ -178,8 +178,8 @@ class Features implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/features',
                 'App\Controller\Features:deleteAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:deleteAll');
     }
 
@@ -209,8 +209,8 @@ class Features implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/features/{featureSlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Features:getOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:getOne');
     }
 
@@ -240,8 +240,8 @@ class Features implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureSlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Features:updateOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:updateOne');
     }
 }

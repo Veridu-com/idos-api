@@ -16,19 +16,23 @@ class ListAllTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/sources/3/digested';
+        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/sources/3/digested';
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                ]
+            )
+        );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -37,28 +41,33 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'digested/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
 
     public function testFilter() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'names=source-3-digested-1&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING'       => 'names=source3Digested1'
+                ]
+            )
+        );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode(), (string) $response->getBody());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
-        $this->assertEquals(1, count($body['data']));
+        $this->assertCount(1, $body['data']);
 
-        foreach($body['data'] as $digested) {
-            $this->assertContains($digested['name'], ['source-3-digested-1']);
+        foreach ($body['data'] as $digested) {
+            $this->assertContains($digested['name'], ['source3Digested1']);
             $this->assertContains($digested['value'], ['value-3']);
         }
 
@@ -68,28 +77,32 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'digested/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
 
     public function testFilterMultiple() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'names=source-3-digested-1,source-3-digested-2&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING'       => 'names=source3Digested1,source3Digested2'
+                ]
+            )
+        );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
+        $this->assertCount(2, $body['data']);
 
-        $this->assertEquals(2, count($body['data']));
-
-        foreach($body['data'] as $digested) {
-            $this->assertContains($digested['name'], ['source-3-digested-1', 'source-3-digested-2']);
+        foreach ($body['data'] as $digested) {
+            $this->assertContains($digested['name'], ['source3Digested1', 'source3Digested2']);
             $this->assertContains($digested['value'], ['value-3', 'value-32']);
         }
 
@@ -99,10 +112,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'digested/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
-
 }

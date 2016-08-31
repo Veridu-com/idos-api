@@ -4,21 +4,19 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Hook;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCompanyToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    /**
-     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
-     *        but we don't generate tokens yet, so there are no wrong credentials
-     *        when token generations is implemented, please fix this by uncommenting the next line
-     */
-    // use HasAuthCredentialToken;
+    use HasAuthCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
@@ -28,9 +26,9 @@ class CreateNewTest extends AbstractFunctional {
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'       => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks',
-                'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING'      => 'credentialToken=test'
+                'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
@@ -46,24 +44,22 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
-
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(201, $response->getStatusCode());
-
         $this->assertTrue($body['status']);
         $this->assertSame('trigger.test', $body['data']['trigger']);
         $this->assertSame('http://test.com/example.php', $body['data']['url']);
         $this->assertSame(false, $body['data']['subscribed']);
+
         /*
          * Validates Json Schema against Json Response'
          */
         $this->assertTrue(
             $this->validateSchema(
                 'hook/createNew.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -72,9 +68,9 @@ class CreateNewTest extends AbstractFunctional {
     public function testErrorCredentialDoesntBelongToCompany() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'       => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks',
-                'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING'      => 'credentialToken=test'
+                'REQUEST_URI'        => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
@@ -90,58 +86,19 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
-
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
+
         /*
          * Validates Json Schema against Json Response'
          */
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
-                json_decode($response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testErrorTargetCompanyDifferentFromActingCompany() {
-        $environment = $this->createEnvironment(
-            [
-                'REQUEST_URI'       => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks',
-                'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING'      => 'credentialToken=test'
-            ]
-        );
-
-        $request = $this->createRequest(
-            $environment,
-            json_encode(
-                [
-                    'trigger'    => 'trigger.test',
-                    'url'        => 'http://test.com/example.php',
-                    'subscribed' => false,
-                ]
-            )
-        );
-
-        $response = $this->process($request);
-
-        $body = json_decode($response->getBody(), true);
-
-        $this->assertNotEmpty($body);
-        $this->assertEquals(403, $response->getStatusCode());
-        $this->assertFalse($body['status']);
-        /*
-         * Validates Json Schema against Json Response'
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'error.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

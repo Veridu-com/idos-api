@@ -188,5 +188,4 @@ class DBDigestedTest extends AbstractUnit {
         $this->setExpectedException(NotFound::class);
         $dbDigested->findOneByUserIdSourceIdAndName(1, 1, 'digested-1');
     }
-
 }

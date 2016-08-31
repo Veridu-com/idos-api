@@ -87,7 +87,7 @@ class RoleAccess implements RouteInterface {
                 'App\Controller\RoleAccess:listAll'
             )
             ->add($userPermission('roleAccess:listAll', RoleAccessEntity::ACCESS_READ))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($auth(Auth::USER))
             ->setName('roleAccess:listAll');
     }
 
@@ -118,7 +118,7 @@ class RoleAccess implements RouteInterface {
                 'App\Controller\RoleAccess:createNew'
             )
             ->add($userPermission('roleAccess:createNew', RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($auth(Auth::USER))
             ->setName('roleAccess:createNew');
     }
 
@@ -149,7 +149,7 @@ class RoleAccess implements RouteInterface {
                 'App\Controller\RoleAccess:deleteAll'
             )
             ->add($userPermission('roleAccess:createNew', RoleAccessEntity::ACCESS_EXECUTE))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($auth(Auth::USER))
             ->setName('roleAccess:deleteAll');
     }
 
@@ -180,7 +180,7 @@ class RoleAccess implements RouteInterface {
                 'App\Controller\RoleAccess:getOne'
             )
             ->add($userPermission('roleAccess:createNew', RoleAccessEntity::ACCESS_READ))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($auth(Auth::USER))
             ->setName('roleAccess:getOne');
     }
 
@@ -208,7 +208,7 @@ class RoleAccess implements RouteInterface {
                 'App\Controller\RoleAccess:updateOne'
             )
             ->add($userPermission('roleAccess:createNew', RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($auth(Auth::USER))
             ->setName('roleAccess:updateOne');
     }
 
@@ -238,7 +238,7 @@ class RoleAccess implements RouteInterface {
                 'App\Controller\RoleAccess:deleteOne'
             )
             ->add($userPermission('roleAccess:createNew', RoleAccessEntity::ACCESS_EXECUTE))
-            ->add($auth(Auth::USER_PRIVKEY))
+            ->add($auth(Auth::USER))
             ->setName('roleAccess:deleteOne');
     }
 }

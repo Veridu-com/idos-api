@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Controller;
 
 use App\Command\Permission\CreateNew;
@@ -185,11 +187,13 @@ class PermissionsTest extends AbstractUnit {
         $requestMock
             ->method('getAttribute')
             ->will(
-                $this->returnValueMap([
+                $this->returnValueMap(
+                    [
                     ['targetCompany', null, new PermissionEntity(['id' => 0], $optimus)],
                     ['routeName', null, 'companies:listAll']
-                ]
-            ));
+                    ]
+                )
+            );
 
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
@@ -202,12 +206,17 @@ class PermissionsTest extends AbstractUnit {
 
         $dbPermissionMock
             ->method('findOne')
-            ->will($this->returnValue(new PermissionEntity([
-                'id'         => 0,
-                'created_at' => (new \DateTime())->format('YYYY-MM-DD')
-                ],
-                $optimus)
-            ));
+            ->will(
+                $this->returnValue(
+                    new PermissionEntity(
+                        [
+                        'id'         => 0,
+                        'created_at' => (new \DateTime())->format('YYYY-MM-DD')
+                        ],
+                        $optimus
+                    )
+                )
+            );
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()

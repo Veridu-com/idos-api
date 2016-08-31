@@ -23,7 +23,7 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Tag's last updated unixtime",
+            "description": "Tag's last update unixtime",
             "type": ["integer", "null"]
         }
     },

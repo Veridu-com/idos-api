@@ -45,13 +45,6 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey(string $privKey) : Company {
-        return $this->findOneBy(['private_key' => $privKey]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAllByParentId(int $parentId) : Collection {
         return $this->findBy(['parent_id' => $parentId]);
     }

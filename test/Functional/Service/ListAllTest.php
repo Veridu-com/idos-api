@@ -4,15 +4,17 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Service;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyPrivKey;
+use Test\Functional\Traits\HasAuthCompanyToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class ListAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    use HasAuthCompanyPrivKey;
+    use HasAuthCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -20,13 +22,19 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment());
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                ]
+            )
+        );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -35,10 +43,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'service/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
-
 }

@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -50,7 +50,7 @@ class Tags implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -89,8 +89,8 @@ class Tags implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/tags',
                 'App\Controller\Tags:listAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('tags:listAll');
     }
     /**
@@ -123,8 +123,8 @@ class Tags implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/tags',
                 'App\Controller\Tags:createNew'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('tags:createNew');
     }
 
@@ -158,8 +158,8 @@ class Tags implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/tags',
                 'App\Controller\Tags:deleteAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('tags:deleteAll');
     }
 
@@ -194,8 +194,8 @@ class Tags implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/tags/{tagSlug}',
                 'App\Controller\Tags:getOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('tags:getOne');
     }
 
@@ -230,8 +230,8 @@ class Tags implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/tags/{tagSlug}',
                 'App\Controller\Tags:deleteOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN | Auth::CRED_PRIVKEY))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('tags:deleteOne');
     }
 }

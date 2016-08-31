@@ -8,8 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -38,7 +39,7 @@ class Companies implements RouteInterface {
      * {@inheritdoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Companies::class] = function (ContainerInterface $container) {
+        $app->getContainer()[\App\Controller\Companies::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Companies(
                 $container->get('repositoryFactory')->create('Company'),
                 $container->get('commandBus'),
@@ -49,7 +50,7 @@ class Companies implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -71,6 +72,7 @@ class Companies implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -85,8 +87,8 @@ class Companies implements RouteInterface {
                 '/companies',
                 'App\Controller\Companies:listAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('companies:listAll');
     }
 
@@ -116,8 +118,8 @@ class Companies implements RouteInterface {
                 '/companies',
                 'App\Controller\Companies:createNew'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('companies:createNew');
     }
 
@@ -147,8 +149,8 @@ class Companies implements RouteInterface {
                 '/companies',
                 'App\Controller\Companies:deleteAll'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('companies:deleteAll');
     }
 
@@ -175,7 +177,7 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Companies:getOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::NONE))
             ->setName('companies:getOne');
     }
@@ -207,8 +209,8 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Companies:updateOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('companies:updateOne');
     }
 
@@ -239,8 +241,8 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}',
                 'App\Controller\Companies:deleteOne'
             )
-            ->add($permission(CompanyPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMP_PRIVKEY))
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMPANY))
             ->setName('companies:deleteOne');
     }
 }

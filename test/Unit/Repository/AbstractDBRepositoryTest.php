@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Company as CompanyEntity;
@@ -27,14 +29,6 @@ class AbstractDBRepositoryTest extends AbstractUnit {
         $this->optimus = $this->getMockBuilder(Optimus::class)
             ->disableOriginalConstructor()
             ->getMock();
-    }
-
-    private function setProtectedMethod($object, $method) {
-        $reflection        = new \ReflectionClass($object);
-        $reflection_method = $reflection->getMethod($method);
-        $reflection_method->setAccessible(true);
-
-        return $reflection_method;
     }
 
     private function getEntity($id) {
@@ -146,6 +140,9 @@ class AbstractDBRepositoryTest extends AbstractUnit {
 
         $entity = $this->getEntity('');
         $this->assertInstanceOf(CompanyEntity::class, $abstractDBMock->save($entity));
+
+        // assertEquals: we want the properties to be the same but not to reference the same object
+        $this->assertEquals($this->getEntity(1), $abstractDBMock->save($entity));
     }
 
     public function testGetEntityNameRuntimeException() {
@@ -260,11 +257,6 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
 
-        $queryMock = $this
-            ->getMockBuilder(Builder::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $abstractDBMock = $this
             ->getMockBuilder(AbstractDBRepository::class)
             ->setMethods(null)
@@ -299,7 +291,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('query')
             ->will($this->returnValue($queryMock));
 
-        $this->assertEquals(1, $abstractDBMock->deleteBy(['id' => 0]));
+        $this->assertSame(1, $abstractDBMock->deleteBy(['id' => 0]));
     }
 
     public function testFindByKeyNotFound() {

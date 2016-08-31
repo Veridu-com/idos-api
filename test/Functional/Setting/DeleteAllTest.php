@@ -4,21 +4,19 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Setting;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCompanyToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    /**
-     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
-     *        but we don't generate tokens yet, so there are no wrong credentials
-     *        when token generations is implemented, please fix this by uncommenting the next line
-     */
-    // use HasAuthCredentialToken;
+    use HasAuthCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
@@ -27,7 +25,7 @@ class DeleteAllTest extends AbstractFunctional {
             $this->uri,
             'GET',
             [
-                'QUERY_STRING' => 'credentialToken=test'
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
     }
@@ -36,23 +34,20 @@ class DeleteAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'QUERY_STRING' => 'credentialToken=test'
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
                 ]
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
-        // success assertions
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
-
         // refreshes the $entities prop
         $this->populate($this->uri);
         // checks if all entities were deleted
-        $this->assertEquals(0, count($this->entities));
+        $this->assertSame(0, count($this->entities));
 
         /*
          * Validates Json Schema with Json Response
@@ -60,7 +55,7 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'setting/deleteAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

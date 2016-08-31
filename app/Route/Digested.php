@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Middleware\Auth;
-use App\Middleware\CompanyPermission;
+use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -50,7 +50,7 @@ class Digested implements RouteInterface {
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('companyPermissionMiddleware');
+        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -89,8 +89,8 @@ class Digested implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested',
                 'App\Controller\Digested:listAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('digested:listAll');
     }
     /**
@@ -122,8 +122,8 @@ class Digested implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested',
                 'App\Controller\Digested:createNew'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('digested:createNew');
     }
 
@@ -154,11 +154,11 @@ class Digested implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested/{digestedName}',
+                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested/{digestedName:[a-zA-Z0-9]+}',
                 'App\Controller\Digested:updateOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('digested:updateOne');
     }
 
@@ -189,11 +189,11 @@ class Digested implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested/{digestedName}',
+                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested/{digestedName:[a-zA-Z0-9]+}',
                 'App\Controller\Digested:getOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('digested:getOne');
     }
 
@@ -226,8 +226,8 @@ class Digested implements RouteInterface {
                 '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested',
                 'App\Controller\Digested:deleteAll'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('digested:deleteAll');
     }
 
@@ -258,11 +258,11 @@ class Digested implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested/{digestedName}',
+                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested/{digestedName:[a-zA-Z0-9]+}',
                 'App\Controller\Digested:deleteOne'
             )
-            ->add($permission(CompanyPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('digested:deleteOne');
     }
 }

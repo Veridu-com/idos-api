@@ -4,19 +4,17 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Credential;
 
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCompanyToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class GetOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    /**
-     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
-     *        but we don't generate tokens yet, so there are no wrong credentials
-     *        when token generations is implemented, please fix this by uncommenting the next line
-     */
-    // use HasAuthCredentialToken;
+    use HasAuthCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -24,17 +22,18 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment(
+        $request = $this->createRequest(
+            $this->createEnvironment(
                 [
-                    'QUERY_STRING' => 'credentialToken=test'
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
                 ]
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -43,7 +42,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'credential/getOne.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -53,18 +52,18 @@ class GetOneTest extends AbstractFunctional {
     public function testNotFound() {
         $this->uri = '/1.0/management/credentials/dummy';
 
-        $request = $this->createRequest($this->createEnvironment(
+        $request = $this->createRequest(
+            $this->createEnvironment(
                 [
-                    'QUERY_STRING' => 'credentialToken=test'
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
                 ]
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(404, $response->getStatusCode());
 
-        // assertions
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
@@ -73,10 +72,9 @@ class GetOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
-
 }

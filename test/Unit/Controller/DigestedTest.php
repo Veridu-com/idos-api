@@ -79,14 +79,18 @@ class DigestedTest extends AbstractUnit {
             ->getMock();
         $dbDigestedMock
             ->method('getAllByUserIdSourceIdAndNames')
-            ->will($this->returnValueMap([
-                [
-                    1,
-                    1,
-                    ['digested-1'],
-                    new Collection([$this->getEntity(1, 1)])
-                ]
-            ]));
+            ->will(
+                $this->returnValueMap(
+                    [
+                        [
+                            1,
+                            1,
+                            ['digested-1'],
+                            new Collection([$this->getEntity(1, 1)])
+                        ]
+                    ]
+                )
+            );
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()
@@ -137,14 +141,18 @@ class DigestedTest extends AbstractUnit {
             ->getMock();
         $dbDigestedMock
             ->method('findOneByUserIdSourceIdAndName')
-            ->will($this->returnValueMap([
-                [
-                    1,
-                    1,
-                    'digested-1',
-                    $this->getEntity(1, 1)
-                ]
-            ]));
+            ->will(
+                $this->returnValueMap(
+                    [
+                        [
+                            1,
+                            1,
+                            'digested-1',
+                            $this->getEntity(1, 1)
+                        ]
+                    ]
+                )
+            );
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()

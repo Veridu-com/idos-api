@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Hook;
 
 use Test\Functional\AbstractFunctional;
@@ -18,10 +20,10 @@ class MainTest extends AbstractFunctional {
         $request = $this->createRequest($this->createEnvironment());
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -30,10 +32,9 @@ class MainTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
-
 }

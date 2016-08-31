@@ -54,10 +54,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -77,10 +74,9 @@ class FeaturesTest extends AbstractUnit {
                 $this->returnValue(
                     [
                         'pagination' => 'pagination',
-                        'collection' =>
-                            new Collection(
-                                new FeatureEntity(
-                                    [
+                        'collection' => new Collection(
+                            new FeatureEntity(
+                                [
                                         'name'       => 'name',
                                         'slug'       => 'slug',
                                         'value'      => 'value',
@@ -88,9 +84,9 @@ class FeaturesTest extends AbstractUnit {
                                         'created_at' => time(),
                                         'updated_at' => null
                                     ],
-                                    $optimus
-                                )
+                                $optimus
                             )
+                        )
                     ]
                 )
             );
@@ -105,10 +101,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -159,10 +152,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->onConsecutiveCalls(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     ),
                     $featureSlug
                 )
@@ -205,10 +195,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -257,10 +244,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -287,10 +271,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -371,10 +352,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => 1], $optimus
                     )
                 )
             );
@@ -441,10 +419,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => 1], $optimus
                     )
                 )
             );

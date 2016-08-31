@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Handler;
 
 use App\Command\ServiceHandler\CreateNew;
@@ -323,7 +325,7 @@ class ServiceHandlerTest extends AbstractUnit {
         $commandMock->companyId        = 1;
         $commandMock->serviceHandlerId = 1;
 
-        $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(1, $handler->handleDeleteOne($commandMock));
     }
 
     public function testHandleDeleteAllInvalidServiceSlug() {
@@ -431,6 +433,6 @@ class ServiceHandlerTest extends AbstractUnit {
 
         $commandMock->companyId = 1;
 
-        $this->assertEquals(3, $handler->handleDeleteAll($commandMock));
+        $this->assertSame(3, $handler->handleDeleteAll($commandMock));
     }
 }
