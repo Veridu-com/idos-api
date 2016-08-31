@@ -29,12 +29,10 @@ class DeleteAllTest extends AbstractFunctional {
 
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $response->getStatusCode();
-        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
