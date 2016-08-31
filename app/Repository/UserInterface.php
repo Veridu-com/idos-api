@@ -8,7 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\User;
+use Illuminate\Support\Collection;
 
 /**
  * User Repository Interface.
