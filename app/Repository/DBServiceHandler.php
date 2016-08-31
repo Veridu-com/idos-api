@@ -80,6 +80,17 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
     /**
      * {@inheritdoc}
      */
+    public function findByCompanyId(int $companyId) : Collection {
+        return $this->findBy(
+            [
+                'company_id' => $companyId
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAllByCompanyId(int $companyId) : Collection {
         $query = $this->query();
 

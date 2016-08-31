@@ -21,8 +21,8 @@ class DeletedTest extends AbstractUnit {
 
         $hook = new Hook([], $optimus);
 
-        $created = new Deleted($hook);
+        $deleted = new Deleted($hook);
 
-        $this->assertSame($hook, $created->hook);
+        $this->assertSame($hook, $deleted->hook);
     }
 }

@@ -206,11 +206,13 @@
 
 [GET /1.0/access/roles](access/roles/listAll.md)
 
-[GET /1.0/access/roles/:roleName](access/roles/getRole.md)
+[GET /1.0/access/roles/:roleName](access/roles/getGetOne.md)
 
-[POST /1.0/access/roles/:roleName](access/roles/updateRole.md)
+[POST /1.0/access/roles/:roleName](access/roles/createNew.md)
 
-[DELETE /1.0/access/roles/:roleName](access/roles/deleteRole.md)
+[DELETE /1.0/access/roles](access/roles/deleteAll.md)
+
+[DELETE /1.0/access/roles/:roleName](access/roles/deleteOne.md)
 
 ### Company Access
 

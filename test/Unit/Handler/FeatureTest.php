@@ -314,7 +314,7 @@ class FeatureTest extends AbstractUnit {
         $entityFactory->create('Feature');
 
         $featureRepository = $this->getMockBuilder(DBFeature::class)
-            ->setMethods(['findByUserIdAndSlug', 'update'])
+            ->setMethods(['findByUserIdAndSlug', 'save'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
 
@@ -325,8 +325,8 @@ class FeatureTest extends AbstractUnit {
 
         $featureRepository
             ->expects($this->once())
-            ->method('update')
-            ->will($this->returnValue(1));
+            ->method('save')
+            ->will($this->returnValue($featureEntity));
 
         $emitterMock = $this
             ->getMockBuilder(Emitter::class)

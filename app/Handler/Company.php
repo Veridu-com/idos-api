@@ -17,7 +17,8 @@ use App\Event\Company\Created;
 use App\Event\Company\Deleted;
 use App\Event\Company\DeletedMulti;
 use App\Event\Company\Updated;
-use App\Exception as AppException;
+use App\Exception\AppException;
+use App\Exception\NotFound;
 use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
@@ -106,9 +107,12 @@ class Company implements HandlerInterface {
         $company->public_key  = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
         $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
 
-        if ($this->repository->save($company)) {
-            $this->emitter->emit(new Created($company));
-        } else {
+        try {
+            $company = $this->repository->save($company);
+            $event   = new Created($company);
+            $this->emitter->emit($event);
+        }
+        catch(\Exception $exception) {
             throw new AppException('Error while creating a company');
         }
 
@@ -130,10 +134,11 @@ class Company implements HandlerInterface {
         $company->name      = $command->name;
         $company->updatedAt = time();
 
-        if ($this->repository->save($company)) {
-            $event = new Updated($company);
+        try {
+            $company = $this->repository->save($company);
+            $event   = new Updated($company);
             $this->emitter->emit($event);
-        } else {
+        } catch (\Exception $exception) {
             throw new AppException('Error while updating a company id ' . $command->companyId);
         }
 
@@ -151,16 +156,16 @@ class Company implements HandlerInterface {
         $this->validator->assertCompany($command->company);
         $this->validator->assertId($command->company->id);
 
-        $deletedAmount = $this->repository->delete($command->company->id);
+        $rowsAffected = $this->repository->delete($command->company->id);
 
-        if ($deletedAmount == 1 || $deletedAmount == 0) {
+        if ($rowsAffected) {
             $event = new Deleted($command->company);
             $this->emitter->emit($event);
         } else {
-            throw new AppException('Error while deleting a company id ' . $command->company->id);
+            throw new NotFound();
         }
 
-        return $deletedAmount;
+        return $rowsAffected;
     }
 
     /**
@@ -174,15 +179,12 @@ class Company implements HandlerInterface {
         $this->validator->assertId($command->parentId);
 
         $deletedCompanies = $this->repository->getAllByParentId($command->parentId);
-        $deletedAmount    = $this->repository->deleteByParentId($command->parentId);
 
-        if ($deletedAmount >= 0) {
-            $event = new DeletedMulti($deletedCompanies);
-            $this->emitter->emit($event);
-        } else {
-            throw new AppException('Error while deleting all companies under parent ' . $command->parentId);
-        }
+        $rowsAffected = $this->repository->deleteByParentId($command->parentId);
 
-        return $deletedAmount;
+        $event = new DeletedMulti($deletedCompanies);
+        $this->emitter->emit($event);
+
+        return $rowsAffected;
     }
 }

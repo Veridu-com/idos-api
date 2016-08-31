@@ -12,9 +12,15 @@ use App\Command\Permission\CreateNew;
 use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
 use App\Entity\Permission as PermissionEntity;
+use App\Event\Permission\Created;
+use App\Event\Permission\Deleted;
+use App\Event\Permission\DeletedMulti;
+use App\Exception\AppException;
+use App\Exception\NotFound;
 use App\Repository\PermissionInterface;
 use App\Validator\Permission as PermissionValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Permission commands.
@@ -32,6 +38,12 @@ class Permission implements HandlerInterface {
      * @var App\Validator\Permission
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -44,7 +56,9 @@ class Permission implements HandlerInterface {
                     ->create('Permission'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Permission')
+                    ->create('Permission'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -54,15 +68,18 @@ class Permission implements HandlerInterface {
      *
      * @param App\Repository\PermissionInterface
      * @param App\Validator\Permission
+     * @param \League\Event\Emitter
      *
      * @return void
      */
     public function __construct(
         PermissionInterface $repository,
-        PermissionValidator $validator
+        PermissionValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -84,7 +101,13 @@ class Permission implements HandlerInterface {
             ]
         );
 
-        $this->repository->save($permission);
+        try {
+            $permission = $this->repository->save($permission);
+            $event      = new Created($permission);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to create a permission');
+        }
 
         return $permission;
     }
@@ -99,7 +122,14 @@ class Permission implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->companyId);
 
-        return $this->repository->deleteByCompanyId($command->companyId);
+        $permissions = $this->repository->getAllByCompanyId($command->companyId);
+
+        $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
+
+        $event = new DeletedMulti($permissions);
+        $this->emitter->emit($event);
+
+        return $affectedRows;
     }
 
     /**
@@ -113,6 +143,17 @@ class Permission implements HandlerInterface {
         $this->validator->assertId($command->companyId);
         $this->validator->assertRouteName($command->routeName);
 
-        return $this->repository->deleteOne($command->companyId, $command->routeName);
+        $permission = $this->repository->findOne($command->companyId, $command->routeName);
+
+        $affectedRows = $this->repository->deleteOne($command->companyId, $command->routeName);
+
+        if ($affectedRows) {
+            $event = new Deleted($permission);
+            $this->emitter->emit($event);
+        } else {
+            throw new NotFound();
+        }
+
+        return $affectedRows;
     }
 }
