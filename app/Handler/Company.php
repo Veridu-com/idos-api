@@ -111,8 +111,7 @@ class Company implements HandlerInterface {
             $company = $this->repository->save($company);
             $event   = new Created($company);
             $this->emitter->emit($event);
-        }
-        catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new AppException('Error while creating a company');
         }
 

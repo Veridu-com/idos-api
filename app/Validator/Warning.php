@@ -13,7 +13,7 @@ namespace App\Validator;
  */
 class Warning implements ValidatorInterface {
     use Traits\AssertId,
-       Traits\AssertName,
-       Traits\AssertSlug,
-       Traits\AssertParentId;
+        Traits\AssertName,
+        Traits\AssertSlug,
+        Traits\AssertParentId;
 }

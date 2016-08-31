@@ -12,7 +12,8 @@ namespace App\Validator;
  * Company Validation Rules.
  */
 class Company implements ValidatorInterface {
-    use Traits\AssertId,
+    use Traits\AssertCompany,
+        Traits\AssertId,
         Traits\AssertName,
         Traits\AssertParentId,
         Traits\AssertSlug,
