@@ -13,8 +13,8 @@ use Test\Functional\Traits\HasAuthCredentialToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
-    //use HasAuthMiddleware;
-    //use HasAuthCredentialToken;
+    use HasAuthMiddleware;
+    use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
@@ -25,7 +25,7 @@ class CreateNewTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING'      => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
 

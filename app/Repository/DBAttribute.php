@@ -45,7 +45,7 @@ class DBAttribute extends AbstractDBRepository implements AttributeInterface {
             ->where('user_id', '=', $userId);
 
         if(! empty($names)) {
-            $result = $result->whereIn('name', $names);
+            $result = $result->whereIn('attributes.name', $names);
         }
 
         $result = $result->get();
