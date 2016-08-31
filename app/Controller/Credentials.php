@@ -70,9 +70,9 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $company = $request->getAttribute('company');
 
-        $credentials = $this->repository->getAllByCompanyId($targetCompany->id);
+        $credentials = $this->repository->getAllByCompanyId($company->id);
 
         $body = [
             'status'  => true,
@@ -104,12 +104,12 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $company = $request->getAttribute('company');
 
         $command = $this->commandFactory->create('Credential\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetCompany->id);
+            ->setParameter('companyId', $company->id);
 
         $credential = $this->commandBus->handle($command);
 
@@ -138,9 +138,9 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $company = $request->getAttribute('company');
 
-        $command = $this->commandFactory->create('Credential\\DeleteAll', [$targetCompany->id]);
+        $command = $this->commandFactory->create('Credential\\DeleteAll', [$company->id]);
         $deleted = $this->commandBus->handle($command);
 
         $body = [
@@ -167,9 +167,9 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $company = $request->getAttribute('company');
 
-        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $company->id);
 
         $body = [
             'data'    => $credential->toArray(),
@@ -197,8 +197,8 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $credential    = $this->repository->findByPubKey($request->getAttribute('pubKey'));
+        $company    = $request->getAttribute('company');
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
         $command = $this->commandFactory->create('Credential\\UpdateOne');
         $command
@@ -232,9 +232,9 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $company = $request->getAttribute('company');
 
-        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $targetCompany->id);
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $company->id);
 
         $command = $this->commandFactory->create('Credential\\DeleteOne');
         $command

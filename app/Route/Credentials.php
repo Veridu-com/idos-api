@@ -86,7 +86,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('credentials:listAll');
     }
 
@@ -117,7 +117,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('credentials:createNew');
     }
 
@@ -148,7 +148,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('credentials:deleteAll');
     }
 
@@ -180,7 +180,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('credentials:getOne');
     }
 
@@ -212,7 +212,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('credentials:updateOne');
     }
 
@@ -244,7 +244,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('credentials:deleteOne');
     }
 }

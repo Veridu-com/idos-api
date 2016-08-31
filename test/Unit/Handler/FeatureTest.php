@@ -271,7 +271,7 @@ class FeatureTest extends AbstractUnit {
         $command         = new DeleteAll();
         $command->userId = 0;
 
-        $this->assertEquals($amount, $handler->handleDeleteAll($command));
+        $this->assertSame($amount, $handler->handleDeleteAll($command));
     }
 
     public function testHandleUpdateOneInvalidProperties() {
@@ -346,7 +346,7 @@ class FeatureTest extends AbstractUnit {
         $feature = $handler->handleUpdateOne($command);
 
         $this->assertInstanceOf(FeatureEntity::class, $feature);
-        $this->assertEquals($userId, $feature->user_id);
+        $this->assertSame($userId, $feature->user_id);
     }
 
     public function testHandleDeleteOneInvalidFeatureSlug() {
@@ -419,6 +419,6 @@ class FeatureTest extends AbstractUnit {
         $commandMock->userId      = $userId;
         $commandMock->featureSlug = $featureSlug;
 
-        $this->assertEquals($amount, $handler->handleDeleteOne($commandMock));
+        $this->assertSame($amount, $handler->handleDeleteOne($commandMock));
     }
 }

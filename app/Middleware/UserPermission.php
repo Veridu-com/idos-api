@@ -89,15 +89,15 @@ class UserPermission implements MiddlewareInterface {
      * @return Function Next callable function
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
-        $actingUser    = $request->getAttribute('actingUser');
-        $targetUser    = $request->getAttribute('targetUser');
-        $actingCompany = $request->getAttribute('actingCompany');
+        $user       = $request->getAttribute('user');
+        $targetUser = $request->getAttribute('targetUser');
+        $company    = $request->getAttribute('company');
 
         $routeName = $request->getAttribute('route')->getName();
         $allowed   = false;
 
-        if ($actingCompany && $actingUser) {
-            throw new \RuntimeException('Invalid Request: actingUser and actingCompany cannot be defined simultaneously.');
+        if ($company && $user) {
+            throw new \RuntimeException('Invalid Request: user and company cannot be defined simultaneously.');
         }
 
         if (! $targetUser) {
@@ -107,7 +107,7 @@ class UserPermission implements MiddlewareInterface {
         }
 
         // User -> User
-        if ($actingUser && $targetUser->id !== $actingUser->id) {
+        if ($user && $targetUser->id !== $user->id) {
             // @FIXME When company members are developed get back to this middleware and find the specific role for each use case
             $role = Role::USER;
 
@@ -119,7 +119,7 @@ class UserPermission implements MiddlewareInterface {
         }
 
         // use case: Company -> User
-        if ($actingCompany) {
+        if ($company) {
             $role   = Role::COMPANY;
             $access = $this->getAccessFromRole($targetUser->identityId, $role, $this->resource);
             if (($this->accessLevel & $access) !== $this->accessLevel) {
