@@ -45,17 +45,6 @@ class DatabaseInit extends AbstractMigration {
          * IDENTITY RELATED TABLES
          *
          */
-        // Identity attributes values
-        $attributes = $this->table('attributes');
-        $attributes
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'binary', ['null' => true])
-            ->addTimestamps()
-            ->addIndex('identity_id')
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         // Identity features
         // $features = $this->table('features');
         // $features

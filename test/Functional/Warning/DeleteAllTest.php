@@ -11,30 +11,21 @@ use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\HasAuthCredentialToken;
 
 class DeleteAllTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    /**
-     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
-     *        but we don't generate tokens yet, so there are no wrong credentials
-     *        when token generations is implemented, please fix this by uncommenting the next line
-     */
-    // use HasAuthCredentialToken;
+    use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->token      = Token::generateCredentialToken(
-            '4c9184f37cff01bcdc32dc486ec36961', // Credential id 1 public key
-            '2c17c6393771ee3048ae34d6b380c5ec', // Credential id 1 private key
-            '4c9184f37cff01bcdc32dc486ec36961'  // Credential id 1 public key
-        );
-        $this->userName = '9fd9f63e0d6487537569075da85a0c7f';
+        $this->userName = 'f67b96dcf96b49d713a520ce9f54053c';
 
         $this->populate(
             sprintf('/1.0/profiles/%s/warnings', $this->userName),
-            'POST',
+            'GET',
             [
-                'QUERY_STRING' => sprintf('credentialToken=%s', $this->token),
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
@@ -48,7 +39,7 @@ class DeleteAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'QUERY_STRING' => sprintf('credentialToken=%s', $this->token)
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
                 ]
             )
         );
@@ -59,13 +50,13 @@ class DeleteAllTest extends AbstractFunctional {
         // success assertions
         $this->assertNotEmpty($body);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         // refreshes the $entities prop
         $this->populate($this->uri);
         // checks if all entities were deleted
-        $this->assertEquals(0, count($this->entities));
+        $this->assertSame(0, count($this->entities));
 
         /*
          * Validates Json Schema with Json Response

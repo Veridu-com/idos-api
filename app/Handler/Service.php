@@ -20,7 +20,6 @@ use App\Event\Service\Updated;
 use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Exception\NotAllowed;
-use App\Exception\NotFound;
 use App\Repository\ServiceInterface;
 use App\Validator\Service as ServiceValidator;
 use Interop\Container\ContainerInterface;
