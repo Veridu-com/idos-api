@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Digested;
 
 use Slim\Http\Response;
@@ -18,7 +20,7 @@ class CreateNewTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/sources/3/digested';
+        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/sources/1860914067/digested';
     }
 
     public function testSuccess() {

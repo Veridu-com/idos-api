@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Normalised;
 
 use Test\Functional\AbstractFunctional;

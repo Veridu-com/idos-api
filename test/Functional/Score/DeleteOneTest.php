@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Score;
 
 use Test\Functional\AbstractFunctional;
@@ -22,7 +24,7 @@ class DeleteOneTest extends AbstractFunctional {
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
@@ -31,7 +33,7 @@ class DeleteOneTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body     = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
@@ -59,7 +61,7 @@ class DeleteOneTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
 
-        $body     = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
 

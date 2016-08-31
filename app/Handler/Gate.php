@@ -97,15 +97,15 @@ class Gate implements HandlerInterface {
         $gate = $this->repository->create(
             [
                 'name'       => $command->name,
-                'pass'      => $command->pass,
+                'pass'       => $command->pass,
                 'user_id'    => $command->userId,
                 'created_at' => time()
             ]
         );
 
         try {
-            $gate = $this->repository->save($gate);
-            $event   = new Created($gate);
+            $gate  = $this->repository->save($gate);
+            $event = new Created($gate);
             $this->emitter->emit($event);
         } catch(\Exception $exception) {
             throw new AppException('Error while creating a gate');
@@ -127,12 +127,12 @@ class Gate implements HandlerInterface {
 
         $gate = $this->repository->findByUserIdAndSlug($command->userId, $command->gateSlug);
 
-        $gate->pass     = $command->pass;
+        $gate->pass      = $command->pass;
         $gate->updatedAt = time();
 
         try {
-            $gate = $this->repository->save($gate);
-            $event   = new Updated($gate);
+            $gate  = $this->repository->save($gate);
+            $event = new Updated($gate);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new AppException(

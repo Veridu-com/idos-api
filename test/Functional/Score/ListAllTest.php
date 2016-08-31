@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Source;
 
 use Test\Functional\AbstractFunctional;
@@ -22,7 +24,7 @@ class ListAllTest extends AbstractFunctional {
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
@@ -31,7 +33,7 @@ class ListAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body     = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
@@ -52,7 +54,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING' => 'names=source-3-score-1'
+                    'QUERY_STRING'       => 'names=source-3-score-1'
                 ]
             )
         );
@@ -60,7 +62,7 @@ class ListAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body     = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(1, $body['data']);
@@ -84,7 +86,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING' => 'names=source-3-score-1,source-3-score-2'
+                    'QUERY_STRING'       => 'names=source-3-score-1,source-3-score-2'
                 ]
             )
         );
@@ -92,7 +94,7 @@ class ListAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body     = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
