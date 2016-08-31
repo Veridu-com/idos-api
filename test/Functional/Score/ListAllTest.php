@@ -7,6 +7,8 @@
 namespace Test\Functional\Mapped;
 
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class ListAllTest extends AbstractFunctional {
     protected function setUp() {
@@ -15,15 +17,16 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request = $this->createRequest(
-            $this->createEnvironment(
-                [
-                'QUERY_STRING' => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
-                ]
-            )
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
         );
 
+        $request  = $this->createRequest($environment);
         $response = $this->process($request);
+        
         $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
