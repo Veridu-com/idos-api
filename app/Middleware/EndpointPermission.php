@@ -78,33 +78,36 @@ class EndpointPermission implements MiddlewareInterface {
             return $next($request, $response);
         }
 
-        // get actingCompany set on Auth middleware
-        $actingCompany = $request->getAttribute('actingCompany');
+        // get company set on Auth middleware
+        $company = $request->getAttribute('company');
         // get current route name
         $routeName = $request->getAttribute('route')->getName();
 
         $allowed = false;
 
         if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
-            // checks if the $actingCompany has access to $routeName
+            // checks if the $company has access to $routeName
             $allowed = $this->permissionRepository->isAllowed(
-                $actingCompany->id,
+                $company->id,
                 $routeName
             );
         }
 
         if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
             $targetCompany = $request->getAttribute('targetCompany');
-            if ($targetCompany->id === $actingCompany->id) {
+
+            if ($targetCompany === null) {
+                $allowed = true;
+            } elseif ($targetCompany->id === $company->id) {
                 $allowed = true;
             }
         }
 
         if ((! $allowed) && ($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
             $targetCompany = $request->getAttribute('targetCompany');
-            // checks if the $actingCompany is a parent of $targetCompany
+            // checks if the $company is a parent of $targetCompany
             $allowed = $this->companyRepository->isParent(
-                $actingCompany,
+                $company,
                 $targetCompany
             );
         }

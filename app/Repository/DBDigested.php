@@ -52,7 +52,7 @@ class DBDigested extends AbstractDBRepository implements DigestedInterface {
             ->where('sources.id', '=', $sourceId);
 
         if (! empty($names)) {
-            $result = $result->whereIn('name', $names);
+            $result = $result->whereIn('digested.name', $names);
         }
 
         $result = $result->get(['digested.*']);

@@ -165,7 +165,7 @@ class UserPermissionTest extends AbstractUnit {
     }
 
     /**
-     * Test that we cannot have an actingCompany and an actingUser defined at the same time.
+     * Test that we cannot have an company and an user defined at the same time.
      *
      * @return void
      */
@@ -494,13 +494,13 @@ class UserPermissionTest extends AbstractUnit {
 
         $this->mockBasic($dbConnectionMock, $entityFactory, $routeMock, $requestMock, $responseMock, $nextMock);
 
-        //A company is acessing a route, so an actingUser should not be defined
+        //A company is acessing a route, so an user should not be defined
         $requestMock
             ->method('getAttribute')
             ->will(
                 $this->returnValueMap(
                     [
-                    ['actingUser', null, null], //acting-user
+                    ['user', null, null], //acting-user
                     ['targetUser', null, new UserEntity(
                         [
                         'id'         => 1,
@@ -511,7 +511,7 @@ class UserPermissionTest extends AbstractUnit {
                         ],
                         $this->optimus
                     )],
-                    ['actingCompany', null, new CompanyEntity(
+                    ['company', null, new CompanyEntity(
                         [
                         'name'       => 'New Company',
                         'id'         => 1,
@@ -551,13 +551,13 @@ class UserPermissionTest extends AbstractUnit {
             $nextMock
         );
 
-        //A user is acessing a route, so an actingCompany should not be defined
+        //A user is acessing a route, so an company should not be defined
         $requestMock
             ->method('getAttribute')
             ->will(
                 $this->returnValueMap(
                     [
-                    ['actingUser', null, new UserEntity(
+                    ['user', null, new UserEntity(
                         [
                         'id'         => 2,
                         'username'   => 'acting-username',
@@ -577,7 +577,7 @@ class UserPermissionTest extends AbstractUnit {
                         ],
                         $this->optimus
                     )],
-                    ['actingCompany', null, null],
+                    ['company', null, null],
                     ['route', null, $routeMock]
                     ]
                 )

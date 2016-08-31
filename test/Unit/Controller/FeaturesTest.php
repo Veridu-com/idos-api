@@ -54,10 +54,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -104,10 +101,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -158,10 +152,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->onConsecutiveCalls(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     ),
                     $featureSlug
                 )
@@ -204,10 +195,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -256,10 +244,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -286,10 +271,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => $userId], $optimus
                     )
                 )
             );
@@ -370,10 +352,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => 1], $optimus
                     )
                 )
             );
@@ -440,10 +419,7 @@ class FeaturesTest extends AbstractUnit {
             ->will(
                 $this->returnValue(
                     new User(
-                        [
-                            'id' => $userId
-                        ],
-                        $optimus
+                        ['id' => 1], $optimus
                     )
                 )
             );

@@ -95,23 +95,23 @@ class Auth implements MiddlewareInterface {
     /**
      * Scope: Integration.
      *
-     * @const USER_TOKEN User Token
+     * @const USER User Token
      */
-    const USER_TOKEN = 0x01;
+    const USER = 0x01;
 
     /**
      * Scope: System.
      *
-     * @const COMP_PUBKEY Company Public Key
+     * @const COMPANY Company Token
      */
-    const COMP_TOKEN = 0x02;
+    const COMPANY = 0x02;
 
     /**
      * Scope: Integration.
      *
-     * @const CRED_TOKEN Credential Token
+     * @const CREDENTIAL Credential Token
      */
-    const CRED_TOKEN = 0x04;
+    const CREDENTIAL = 0x04;
 
     /**
      * Returns an authorization setup array based on available
@@ -121,17 +121,17 @@ class Auth implements MiddlewareInterface {
      */
     private function authorizationSetup() : array {
         return [
-            self::USER_TOKEN => [
+            self::USER => [
                 'name'    => 'UserToken',
                 'label'   => 'User Token',
                 'handler' => 'handleUserToken',
             ],
-            self::COMP_TOKEN => [
+            self::COMPANY => [
                 'name'    => 'CompanyToken',
                 'label'   => 'Company Token',
                 'handler' => 'handleCompanyToken',
             ],
-            self::CRED_TOKEN => [
+            self::CREDENTIAL => [
                 'name'    => 'CredentialToken',
                 'label'   => 'Credential Token',
                 'handler' => 'handleCredentialToken',
@@ -149,7 +149,7 @@ class Auth implements MiddlewareInterface {
      */
     private function extractAuthorization(ServerRequestInterface $request, string $name) {
         $name  = ucfirst($name);
-        $regex = sprintf('/^%s ([a-zA-Z0-9]+)$/', $name);
+        $regex = sprintf('/^%s ([a-zA-Z0-9.-]+)$/', $name);
         if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches)) {
             return $matches[1];
         }
@@ -209,14 +209,14 @@ class Auth implements MiddlewareInterface {
         }
 
         // If it's a new user, creates it
-        $actingUser = $this->userRepository->findOrCreate($userName, $credential->id);
+        $user = $this->userRepository->findOrCreate($userName, $credential->id);
 
         // Retrieves Credential's owner
         $company = $this->companyRepository->find($credential->companyId);
 
         return $request
-            // Stores Acting User for future use
-            ->withAttribute('actingUser', $actingUser)
+            // Stores User for future use
+            ->withAttribute('user', $user)
 
             // Stores Company for future use
             ->withAttribute('company', $company)
@@ -260,7 +260,7 @@ class Auth implements MiddlewareInterface {
             throw new AppException('Token Verification Failed');
         }
 
-        $actingUser = null;
+        $user       = null;
         $credential = null;
 
         // Retrieves JWT Subject
@@ -280,13 +280,18 @@ class Auth implements MiddlewareInterface {
                 throw new AppException('Invalid Credential Public Key');
             }
 
+            // Ensures that the credential belongs to the company
+            if ($credential->companyId !== $company->id) {
+                throw new AppException('Invalid Credential');
+            }
+
             //@FIXME delegate this verification to a validator
             if (preg_match('/[^a-zA-Z0-9_-]+/', $userName) === 1) {
                 throw new AppException('Invalid Subject Username');
             }
 
             // If it's a new user, creates it
-            $actingUser = $this->userRepository->findOrCreate($userName, $credential->id);
+            $user = $this->userRepository->findOrCreate($userName, $credential->id);
         }
 
         return $request
@@ -294,8 +299,8 @@ class Auth implements MiddlewareInterface {
             // Stores Company for future use
             ->withAttribute('company', $company)
 
-            //Stores Acting User for future use
-            ->withAttribute('actingUser', ($actingUser ?: null))
+            // Stores User for future use
+            ->withAttribute('user', ($user ?: null))
 
             // Stores Credential for future use
             ->withAttribute('credential', ($credential ?: null));
@@ -337,7 +342,7 @@ class Auth implements MiddlewareInterface {
         }
 
         // Retrieves JWT Subject
-        if (! $token->hasClaim('sub') || ! $token->getClaim('sub')) {
+        if ((! $token->hasClaim('sub')) || (! $token->getClaim('sub'))) {
             throw new AppException('Missing Subject Claim');
         }
 
@@ -374,17 +379,15 @@ class Auth implements MiddlewareInterface {
     private function populateRequestUsers(string $username, ServerRequestInterface $request) : ServerRequestInterface {
         // Loads Target User
         if ($username === '_self') {
-            // Self Reference for User Token / User Private Key
-            $user = $request->getAttribute('actingUser');
+            // User Self Reference
+            $user = $request->getAttribute('user');
             if (empty($user)) {
                 throw new AppException('InvalidUserNameReference');
             }
         } else {
             // Load User
             $credential = $request->getAttribute('credential');
-
-            // $user = $this->userRepository->findOneByUsernameAndCredential($username, $credential->id);
-            $user = $this->userRepository->find(1);
+            $user = $this->userRepository->findOneByUsernameAndCredentialId($username, $credential->id);
         }
 
         // Stores Target User for future use
@@ -405,7 +408,7 @@ class Auth implements MiddlewareInterface {
         // Loads Target Company
         if ($companySlug === '_self') {
             // Self Reference for Credential Token / Compamny Private Key
-            $targetCompany = $request->getAttribute('actingCompany');
+            $targetCompany = $request->getAttribute('company');
             if (empty($targetCompany)) {
                 throw new AppException('InvalidCompanyNameReference');
             }
@@ -419,12 +422,12 @@ class Auth implements MiddlewareInterface {
 
             // Checks if access hierarchy is respected (Parent to Child or Company to itself)
             if ($this->authorizationRequirement != self::NONE) {
-                $actingCompany = $request->getAttribute('actingCompany');
+                $company = $request->getAttribute('company');
             }
         }
 
         // TODO: When there is a acting user there's no need for this test
-        // if (($actingCompany->id != $targetCompany->id) && ($actingCompany->id != $targetCompany->parent_id))
+        // if (($company->id != $targetCompany->id) && ($company->id != $targetCompany->parent_id))
         //     throw new AppException('AccessDenied');
 
         // Stores Target Company for future use
@@ -515,14 +518,14 @@ class Auth implements MiddlewareInterface {
         // Request has proper Authorization, proceed with regular process
         if ($hasAuthorization) {
             $routeInfo = $request->getAttribute('routeInfo');
-            //$companySlug = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
-            $userName = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
 
+            $companySlug = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
             // Resolves {companySlug} route argument
-            /*if ($companySlug) {
+            if ($companySlug) {
                 $request = $this->populateRequestCompanies($companySlug, $request);
-            }*/
+            }
 
+            $userName = empty($routeInfo[2]['userName']) ? null : $routeInfo[2]['userName'];
             // Resolves {userName} route argument
             if ($userName) {
                 $request = $this->populateRequestUsers($userName, $request);

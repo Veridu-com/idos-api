@@ -71,8 +71,8 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
-        $entities      = $this->repository->getAllByCompanyId($actingCompany->id);
+        $company  = $request->getAttribute('company');
+        $entities = $this->repository->getAllByCompanyId($company->id);
 
         $body = [
             'data'    => $entities->toArray(),
@@ -101,10 +101,10 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany    = $request->getAttribute('actingCompany');
+        $company          = $request->getAttribute('company');
         $serviceHandlerId = (int) $request->getAttribute('decodedServiceHandlerId');
 
-        $entity = $this->repository->findOne($actingCompany->id, $serviceHandlerId);
+        $entity = $this->repository->findOne($company->id, $serviceHandlerId);
 
         $body = [
             'data' => $entity->toArray()
@@ -133,12 +133,12 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
+        $company = $request->getAttribute('company');
 
         $command = $this->commandFactory->create('ServiceHandler\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $actingCompany->id);
+            ->setParameter('companyId', $company->id);
 
         $entity = $this->commandBus->handle($command);
 
@@ -168,10 +168,10 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
+        $company = $request->getAttribute('company');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteAll');
-        $command->setParameter('companyId', $actingCompany->id);
+        $command->setParameter('companyId', $company->id);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -197,12 +197,12 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany    = $request->getAttribute('actingCompany');
+        $company          = $request->getAttribute('company');
         $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
         $command
-            ->setParameter('companyId', $actingCompany->id)
+            ->setParameter('companyId', $company->id)
             ->setParameter('serviceHandlerId', $serviceHandlerId);
 
         $body = [
@@ -232,14 +232,14 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany    = $request->getAttribute('actingCompany');
+        $company          = $request->getAttribute('company');
         $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('serviceHandlerId', $serviceHandlerId)
-            ->setParameter('companyId', $actingCompany->id);
+            ->setParameter('companyId', $company->id);
 
         $entity = $this->commandBus->handle($command);
 
