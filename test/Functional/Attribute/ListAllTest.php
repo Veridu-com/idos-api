@@ -32,7 +32,7 @@ class ListAllTest extends AbstractFunctional {
         $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -56,10 +56,10 @@ class ListAllTest extends AbstractFunctional {
         $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
-        $this->assertEquals(1, count($body['data']));
+        $this->assertSame(1, count($body['data']));
 
         foreach($body['data'] as $attribute) {
             $this->assertContains($attribute['name'], ['user2Attribute1']);
@@ -87,10 +87,10 @@ class ListAllTest extends AbstractFunctional {
         $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
-        $this->assertEquals(2, count($body['data']));
+        $this->assertSame(2, count($body['data']));
 
         foreach($body['data'] as $attribute) {
             $this->assertContains($attribute['name'], ['user2Attribute1', 'user2Attribute2']);

@@ -34,7 +34,7 @@ class DeleteAllTest extends AbstractFunctional {
 
         $this->assertNotEmpty($body);
         $response->getStatusCode();
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*

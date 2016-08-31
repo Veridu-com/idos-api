@@ -43,7 +43,7 @@ class CreateNewTest extends AbstractFunctional {
 
         $this->assertNotEmpty($body);
 
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertSame(201, $response->getStatusCode());
 
         $this->assertTrue($body['status']);
         $this->assertSame('attribute-test', $body['data']['name']);

@@ -30,7 +30,7 @@ class GetOneTest extends AbstractFunctional {
         $body     = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -57,7 +57,7 @@ class GetOneTest extends AbstractFunctional {
 
         // assertions
         $this->assertNotEmpty($body);
-        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertSame(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
