@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Handler;
 
 use App\Command\Tag\CreateNew;
@@ -21,7 +23,9 @@ use App\Repository\DBUser;
 use App\Repository\TagInterface;
 use App\Repository\UserInterface;
 use App\Validator\Tag as TagValidator;
+use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
+use League\Event\Emitter;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
@@ -65,11 +69,17 @@ class TagTest extends AbstractUnit {
         $repositoryMock = $this
             ->getMockBuilder(TagInterface::class)
             ->getMock();
+
         $userRepositoryMock = $this
             ->getMockBuilder(UserInterface::class)
             ->getMock();
+
         $validatorMock = $this
             ->getMockBuilder(TagValidator::class)
+            ->getMock();
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
             ->getMock();
 
         $this->assertInstanceOf(
@@ -77,7 +87,8 @@ class TagTest extends AbstractUnit {
             new Tag(
                 $repositoryMock,
                 $userRepositoryMock,
-                $validatorMock
+                $validatorMock,
+                $emitterMock
             )
         );
     }
@@ -88,13 +99,16 @@ class TagTest extends AbstractUnit {
         $repositoryMock = $this
             ->getMockBuilder(TagInterface::class)
             ->getMock();
+
         $userRepositoryMock = $this
             ->getMockBuilder(UserInterface::class)
             ->getMock();
+
         $repositoryFactoryMock = $this
             ->getMockBuilder(Repository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $repositoryFactoryMock
             ->expects($this->exactly(2))
             ->method('create')
@@ -112,12 +126,21 @@ class TagTest extends AbstractUnit {
             ->getMockBuilder(Validator::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $validatorFactoryMock
             ->method('create')
             ->willReturn($validatorMock);
 
         $container['validatorFactory'] = function () use ($validatorFactoryMock) {
             return $validatorFactoryMock;
+        };
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
+        $container['eventEmitter'] = function () use ($emitterMock) {
+            return $emitterMock;
         };
 
         Tag::register($container);
@@ -128,13 +151,20 @@ class TagTest extends AbstractUnit {
         $repositoryMock = $this
             ->getMockBuilder(TagInterface::class)
             ->getMock();
+
         $userRepositoryMock = $this
             ->getMockBuilder(UserInterface::class)
             ->getMock();
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Tag(
             $repositoryMock,
             $userRepositoryMock,
-            new TagValidator()
+            new TagValidator(),
+            $emitterMock
         );
 
         $this->setExpectedException('InvalidArgumentException');
@@ -160,22 +190,30 @@ class TagTest extends AbstractUnit {
             ->setMethods(['create', 'save'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $repository
             ->expects($this->once())
             ->method('create')
             ->will($this->returnValue($tagEntity));
+
         $repository
             ->expects($this->once())
             ->method('save')
             ->willReturn($tagEntity);
+
         $userRepositoryMock = $this->getMockBuilder(DBUser::class)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
+            ->getMock();
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
             ->getMock();
 
         $handler = new Tag(
             $repository,
             $userRepositoryMock,
-            new TagValidator()
+            new TagValidator(),
+            $emitterMock
         );
 
         $command       = new CreateNew();
@@ -198,20 +236,28 @@ class TagTest extends AbstractUnit {
             ->setMethods(['delete'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $repository
             ->method('deleteOne')
             ->will($this->returnValue(1));
+
         $credentialRepositoryMock = $this
             ->getMockBuilder(CredentialInterface::class)
             ->getMock();
+
         $userRepositoryMock = $this->getMockBuilder(DBUser::class)
             ->disableOriginalConstructor()
+            ->getMock();
+
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
             ->getMock();
 
         $handler = new Tag(
             $repository,
             $userRepositoryMock,
-            new TagValidator()
+            new TagValidator(),
+            $emitterMock
         );
 
         $commandMock = $this
@@ -222,7 +268,7 @@ class TagTest extends AbstractUnit {
         $commandMock->companyId = 1;
         $commandMock->userId    = 1;
 
-        $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(1, $handler->handleDeleteOne($commandMock));
     }
 
     public function testHandleDeleteAll() {
@@ -233,21 +279,40 @@ class TagTest extends AbstractUnit {
         $entityFactory->create('Tag');
 
         $repository = $this->getMockBuilder(DBTag::class)
-            ->setMethods(['deleteByUserId'])
+            ->setMethods(['deleteByUserId', 'getAllByUserId'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
+
         $repository
             ->method('deleteByUserId')
             ->will($this->returnValue(1));
+
+        $repository
+            ->method('getAllByUserId')
+            ->will(
+                $this->returnValue(
+                    new Collection(
+                        [
+                            ['id' => 1]
+                        ]
+                    )
+                )
+            );
+
         $userRepositoryMock = $this->getMockBuilder(DBUser::class)
             ->setMethods(null)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
 
+        $emitterMock = $this
+            ->getMockBuilder(Emitter::class)
+            ->getMock();
+
         $handler = new Tag(
             $repository,
             $userRepositoryMock,
-            new TagValidator()
+            new TagValidator(),
+            $emitterMock
         );
 
         $commandMock = $this
@@ -257,6 +322,6 @@ class TagTest extends AbstractUnit {
 
         $commandMock->user = $this->getUserEntity();
 
-        $this->assertEquals(1, $handler->handleDeleteAll($commandMock));
+        $this->assertSame(1, $handler->handleDeleteAll($commandMock));
     }
 }

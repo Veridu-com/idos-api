@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Controller;
 
 use App\Command\Digested\CreateNew;
@@ -82,12 +84,12 @@ class DigestedTest extends AbstractUnit {
             ->will(
                 $this->returnValueMap(
                     [
-                    [
-                    1,
-                    1,
-                    ['digested-1'],
-                    new Collection([$this->getEntity(1, 1)])
-                    ]
+                        [
+                            1,
+                            1,
+                            ['digested-1'],
+                            new Collection([$this->getEntity(1, 1)])
+                        ]
                     ]
                 )
             );
@@ -144,12 +146,12 @@ class DigestedTest extends AbstractUnit {
             ->will(
                 $this->returnValueMap(
                     [
-                    [
-                    1,
-                    1,
-                    'digested-1',
-                    $this->getEntity(1, 1)
-                    ]
+                        [
+                            1,
+                            1,
+                            'digested-1',
+                            $this->getEntity(1, 1)
+                        ]
                     ]
                 )
             );

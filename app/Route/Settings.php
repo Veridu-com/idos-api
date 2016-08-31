@@ -86,7 +86,7 @@ class Settings implements RouteInterface {
                 'App\Controller\Settings:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('settings:listAll');
     }
 
@@ -117,7 +117,7 @@ class Settings implements RouteInterface {
                 'App\Controller\Settings:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('settings:createNew');
     }
 
@@ -148,7 +148,7 @@ class Settings implements RouteInterface {
                 'App\Controller\Settings:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('settings:deleteAll');
     }
 
@@ -181,7 +181,7 @@ class Settings implements RouteInterface {
                 'App\Controller\Settings:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('settings:getOne');
     }
 
@@ -214,7 +214,7 @@ class Settings implements RouteInterface {
                 'App\Controller\Settings:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('settings:updateOne');
     }
 
@@ -247,7 +247,7 @@ class Settings implements RouteInterface {
                 'App\Controller\Settings:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('settings:deleteOne');
     }
 }

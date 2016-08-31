@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Feature as FeatureEntity;
@@ -28,9 +30,6 @@ class DBFeatureTest extends AbstractUnit {
     }
 
     public function testUpdate() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Feature', []);
-
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'update'])
@@ -57,17 +56,18 @@ class DBFeatureTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbFeature = new DBFeature($factory, $this->optimus, $connectionMock);
+        $dbFeature = new DBFeature(
+            new Entity($this->optimus),
+            $this->optimus,
+            $connectionMock
+        );
 
-        $featureEntity = new FeatureEntity(['user_id' => $userId], $this->optimus);
+        $featureEntity = new FeatureEntity(['user_id' => 1], $this->optimus);
 
         $this->assertSame(1, $dbFeature->update($featureEntity));
     }
 
     public function testGetAllByUserIdUnfiltered() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Feature', []);
-
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where'])
@@ -91,7 +91,13 @@ class DBFeatureTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $dbFeatureMock = $this->getMockBuilder(DBFeature::class)
-            ->setConstructorArgs([$factory, $this->optimus, $connectionMock])
+            ->setConstructorArgs(
+                [
+                    new Entity($this->optimus),
+                    $this->optimus,
+                    $connectionMock
+                ]
+            )
             ->setMethods(['filter', 'paginate'])
             ->getMock();
 
@@ -123,9 +129,6 @@ class DBFeatureTest extends AbstractUnit {
     }
 
     public function testGetAllByUserIdFiltered() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Feature', []);
-
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where'])
@@ -149,7 +152,13 @@ class DBFeatureTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $dbFeatureMock = $this->getMockBuilder(DBFeature::class)
-            ->setConstructorArgs([$factory, $this->optimus, $connectionMock])
+            ->setConstructorArgs(
+                [
+                    new Entity($this->optimus),
+                    $this->optimus,
+                    $connectionMock
+                ]
+            )
             ->setMethods(['filter', 'paginate'])
             ->getMock();
 
@@ -181,9 +190,6 @@ class DBFeatureTest extends AbstractUnit {
     }
 
     public function testDeleteByUserId() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Feature', []);
-
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -202,7 +208,13 @@ class DBFeatureTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $dbFeatureMock = $this->getMockBuilder(DBFeature::class)
-            ->setConstructorArgs([$factory, $this->optimus, $connectionMock])
+            ->setConstructorArgs(
+                [
+                    new Entity($this->optimus),
+                    $this->optimus,
+                    $connectionMock
+                ]
+            )
             ->setMethods(['deleteByKey'])
             ->getMock();
 
@@ -215,9 +227,6 @@ class DBFeatureTest extends AbstractUnit {
     }
 
     public function testFindByUserId() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Feature', []);
-
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -236,7 +245,13 @@ class DBFeatureTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $dbFeatureMock = $this->getMockBuilder(DBFeature::class)
-            ->setConstructorArgs([$factory, $this->optimus, $connectionMock])
+            ->setConstructorArgs(
+                [
+                    new Entity($this->optimus),
+                    $this->optimus,
+                    $connectionMock
+                ]
+            )
             ->setMethods(['findBy'])
             ->getMock();
 
@@ -271,9 +286,6 @@ class DBFeatureTest extends AbstractUnit {
     }
 
     public function testFindByUserIdAndSlug() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Feature', []);
-
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -292,7 +304,13 @@ class DBFeatureTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $dbFeatureMock = $this->getMockBuilder(DBFeature::class)
-            ->setConstructorArgs([$factory, $this->optimus, $connectionMock])
+            ->setConstructorArgs(
+                [
+                    new Entity($this->optimus),
+                    $this->optimus,
+                    $connectionMock
+                ]
+            )
             ->setMethods(['findBy'])
             ->getMock();
 

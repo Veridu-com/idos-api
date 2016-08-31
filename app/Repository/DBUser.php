@@ -8,10 +8,12 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\Credential;
 use App\Entity\User;
+use App\Exception\AppException;
 use App\Exception\NotFound;
-use Lcobucci\JWT;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based User Repository Implementation.
@@ -130,23 +132,24 @@ class DBUser extends AbstractDBRepository implements UserInterface {
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function generateToken($username, string $credentialPrivKey, string $credentialPubKey) : string {
-        $jwtParser     = new JWT\Parser();
-        $jwtValidation = new JWT\ValidationData();
-        $jwtSigner     = new JWT\Signer\Hmac\Sha256();
-        $jwtBuilder    = new JWT\Builder();
-
-        $jwtBuilder->set('iss', $credentialPubKey);
-
-        if ($username !== null) {
-            $jwtBuilder->set('sub', $username);
+    public function findAllRelatedToCompany(User $user, Company $company) : Collection {
+        if (! $user->identityId) {
+            throw new AppException('User without identity');
         }
 
-        return (string) $jwtBuilder
-            ->sign($jwtSigner, $credentialPrivKey)
-            ->getToken();
+        $result = $this->query()
+            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
+            ->join('roles', 'users.role', '=', 'roles.name')
+            ->where('users.identity_id', '=', $user->identityId)
+            ->where('users.role', 'LIKE', 'company%')
+            ->where('credentials.company_id', '=', $company->id)
+            ->orderBy('roles.rank', 'asc')
+            ->get(['users.*', 'credentials.public']);
+
+        if (empty($result)) {
+            throw new NotFound('No users related to given company found');
+        }
+
+        return new Collection($result);
     }
 }

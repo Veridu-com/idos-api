@@ -40,17 +40,6 @@ class DBFeature extends AbstractDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function update(Feature &$entity) : int {
-        $serialized = $entity->serialize();
-
-        return $this->query()
-            ->where('id', $entity->id)
-            ->update($serialized);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAllByUserId(int $userId, array $queryParams = []) : array {
         $dbQuery = $this->query()->where('user_id', $userId);
 

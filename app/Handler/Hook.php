@@ -17,6 +17,7 @@ use App\Event\Hook\Created;
 use App\Event\Hook\Deleted;
 use App\Event\Hook\DeletedMulti;
 use App\Event\Hook\Updated;
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\CredentialInterface;
 use App\Repository\HookInterface;
@@ -122,11 +123,12 @@ class Hook implements HandlerInterface {
             ]
         );
 
-        $hook = $this->repository->save($hook);
-
-        if ($hook) {
+        try {
+            $hook  = $this->repository->save($hook);
             $event = new Created($hook);
             $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to create a hook');
         }
 
         return $hook;
@@ -160,11 +162,13 @@ class Hook implements HandlerInterface {
         $hook->url        = $command->url;
         $hook->subscribed = $command->subscribed;
         $hook->updatedAt  = time();
-        $hook             = $this->repository->save($hook);
 
-        if ($hook) {
+        try {
+            $hook  = $this->repository->save($hook);
             $event = new Updated($hook);
             $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to update a hook id ' . $command->hookId);
         }
 
         return $hook;
@@ -192,14 +196,16 @@ class Hook implements HandlerInterface {
             throw new NotFound();
         }
 
-        $result = $this->repository->delete($command->hookId);
+        $rowsAffected = $this->repository->delete($command->hookId);
 
-        if ($result) {
+        if ($rowsAffected) {
             $event = new Deleted($hook);
             $this->emitter->emit($event);
+        } else {
+                throw new NotFound();
         }
 
-        return $result;
+        return $rowsAffected;
     }
 
     /**
@@ -216,14 +222,13 @@ class Hook implements HandlerInterface {
             throw new NotFound();
         }
 
-        $hooks  = $this->repository->getAllByCredentialId($credential->id);
-        $result = $this->repository->deleteByCredentialId($credential->id);
+        $hooks = $this->repository->getAllByCredentialId($credential->id);
 
-        if ($result) {
-            $event = new DeletedMulti($hooks);
-            $this->emitter->emit($event);
-        }
+        $rowsAffected = $this->repository->deleteByCredentialId($credential->id);
 
-        return $result;
+        $event = new DeletedMulti($hooks);
+        $this->emitter->emit($event);
+
+        return $rowsAffected;
     }
 }

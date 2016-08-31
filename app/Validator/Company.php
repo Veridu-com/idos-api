@@ -15,6 +15,5 @@ class Company implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertName,
         Traits\AssertSlug,
-        Traits\AssertParentId,
-        Traits\AssertCompany;
+        Traits\AssertUserId;
 }

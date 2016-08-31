@@ -17,6 +17,7 @@ use App\Event\Feature\Created;
 use App\Event\Feature\Deleted;
 use App\Event\Feature\DeletedMulti;
 use App\Event\Feature\Updated;
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\FeatureInterface;
 use App\Validator\Feature as FeatureValidator;
@@ -102,10 +103,11 @@ class Feature implements HandlerInterface {
             ]
         );
 
-        if ($this->repository->save($feature)) {
-            $event = new Created($feature);
+        try {
+            $feature = $this->repository->save($feature);
+            $event   = new Created($feature);
             $this->emitter->emit($event);
-        } else {
+        } catch(\Exception $exception) {
             throw new AppException('Error while creating a feature');
         }
 
@@ -130,14 +132,20 @@ class Feature implements HandlerInterface {
             $feature->updatedAt = time();
         }
 
-        if ($success = $this->repository->update($feature)) {
-            $event = new Updated($feature);
+        try {
+            $feature = $this->repository->save($feature);
+            $event   = new Updated($feature);
             $this->emitter->emit($event);
-        } else {
-            throw new AppException('Error while updating a feature' . $command->companyId);
+        } catch (\Exception $exception) {
+            throw new AppException(
+                'Error while updating a feature user id: ' .
+                $command->userId .
+                ' slug: ' .
+                $command->featureSlug
+            );
         }
 
-        return $success ? $feature : false;
+        return $feature;
     }
 
     /**
@@ -151,16 +159,13 @@ class Feature implements HandlerInterface {
         $this->validator->assertId($command->userId);
 
         $deletedFeatures = $this->repository->findByUserId($command->userId);
-        $deletedAmount   = $this->repository->deleteByUserId($command->userId);
 
-        if ($deletedAmount >= 0) {
-            $event = new DeletedMulti($deletedFeatures);
-            $this->emitter->emit($event);
-        } else {
-            throw new AppException('Error while deleting all features under user ' . $command->userId);
-        }
+        $rowsAffected = $this->repository->deleteByUserId($command->userId);
 
-        return $deletedAmount;
+        $event = new DeletedMulti($deletedFeatures);
+        $this->emitter->emit($event);
+
+        return $rowsAffected;
     }
 
     /**
@@ -174,17 +179,14 @@ class Feature implements HandlerInterface {
         $this->validator->assertSlug($command->featureSlug);
         $this->validator->assertId($command->userId);
 
-        $feature      = $this->repository->findByUserIdAndSlug($command->userId, $command->featureSlug);
+        $feature = $this->repository->findByUserIdAndSlug($command->userId, $command->featureSlug);
+
         $rowsAffected = $this->repository->delete($feature->id);
 
-        if ($rowsAffected == 1 || $rowsAffected == 0) {
+        if ($rowsAffected) {
             $event = new Deleted($feature);
             $this->emitter->emit($event);
         } else {
-            throw new AppException('Error while deleting a feature id ' . $feature->id);
-        }
-
-        if (! $rowsAffected) {
             throw new NotFound();
         }
 

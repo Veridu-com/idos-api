@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Repository;
 
 use App\Entity\Tag as TagEntity;
@@ -220,7 +222,7 @@ class DBTagTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
-        $this->assertEquals(1, $dbTag->deleteOneByUserIdAndSlug(1, 'test-tag'));
+        $this->assertSame(1, $dbTag->deleteOneByUserIdAndSlug(1, 'test-tag'));
     }
 
     public function testDeleteByUserId() {
@@ -248,6 +250,6 @@ class DBTagTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
-        $this->assertEquals(3, $dbTag->deleteByUserId(1));
+        $this->assertSame(3, $dbTag->deleteByUserId(1));
     }
 }

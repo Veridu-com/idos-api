@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Event\Feature;
 
 use App\Entity\Feature;
@@ -24,8 +26,8 @@ class DeletedMultiTest extends AbstractUnit {
 
         $collection = new Collection($features);
 
-        $created = new DeletedMulti($collection);
+        $deleted = new DeletedMulti($collection);
 
-        $this->assertSame($collection, $created->features);
+        $this->assertSame($collection, $deleted->features);
     }
 }

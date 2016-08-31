@@ -13,10 +13,17 @@ use App\Command\Service\DeleteAll;
 use App\Command\Service\DeleteOne;
 use App\Command\Service\UpdateOne;
 use App\Entity\Service as ServiceEntity;
+use App\Event\Service\Created;
+use App\Event\Service\Deleted;
+use App\Event\Service\DeletedMulti;
+use App\Event\Service\Updated;
+use App\Exception\AppException;
 use App\Exception\NotAllowed;
+use App\Exception\NotFound;
 use App\Repository\ServiceInterface;
 use App\Validator\Service as ServiceValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Service commands.
@@ -34,6 +41,12 @@ class Service implements HandlerInterface {
      * @var App\Validator\Service
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -46,7 +59,9 @@ class Service implements HandlerInterface {
                     ->create('Service'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Service')
+                    ->create('Service'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -61,10 +76,12 @@ class Service implements HandlerInterface {
      */
     public function __construct(
         ServiceInterface $repository,
-        ServiceValidator $validator
+        ServiceValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -115,9 +132,15 @@ class Service implements HandlerInterface {
 
         $input['created_at'] = time();
 
-        $entity = $this->repository->create($input);
+        try {
+            $entity = $this->repository->save($this->repository->create($input));
+            $event  = new Created($entity);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while trying to create a service');
+        }
 
-        return $this->repository->save($entity);
+        return $entity;
     }
 
     /**
@@ -186,8 +209,14 @@ class Service implements HandlerInterface {
         }
 
         if ($backup != $entity->toArray()) {
-            $entity->updatedAt = time();
-            $this->repository->save($entity);
+            try {
+                $entity->updatedAt = time();
+                $entity            = $this->repository->save($entity);
+                $event             = new Updated($entity);
+                $this->emitter->emit($event);
+            } catch (\Exception $e) {
+                throw new AppException('Error while trying to update a service id ' . $command->serviceId);
+            }
         }
 
         return $entity;
@@ -203,7 +232,14 @@ class Service implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertCompany($command->company);
 
-        return $this->repository->deleteByCompanyId($command->company->id);
+        $services = $this->repository->getAllByCompanyId($command->company->id);
+
+        $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
+
+        $event = new DeletedMulti($services);
+        $this->emitter->emit($event);
+
+        return $affectedRows;
     }
 
     /**
@@ -219,7 +255,16 @@ class Service implements HandlerInterface {
         $this->validator->assertCompany($command->company);
         $this->validator->assertId($command->serviceId);
 
+        $service = $this->repository->find($command->serviceId);
+
         $rowsAffected = $this->repository->deleteOne($command->serviceId, $command->company);
+
+        if ($rowsAffected) {
+            $event = new Deleted($service);
+            $this->emitter->emit($event);
+        } else {
+            throw new NotFound();
+        }
 
         return $rowsAffected;
     }

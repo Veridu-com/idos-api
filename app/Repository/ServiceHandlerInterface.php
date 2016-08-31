@@ -62,4 +62,13 @@ interface ServiceHandlerInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteOne(int $companyId, int $serviceHandlerId) : int;
+
+    /**
+     * Returns a set of service handles based on thei company_id.
+     *
+     * @param int $companyId The company identifier
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function findByCompanyId(int $companyId) : Collection;
 }

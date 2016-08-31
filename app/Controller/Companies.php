@@ -79,8 +79,8 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
-        $companies     = $this->repository->getAllByParentId($actingCompany->id);
+        $company   = $request->getAttribute('company');
+        $companies = $this->repository->getAllByParentId($company->id);
 
         $body = [
             'data'    => $companies->toArray(),
@@ -115,7 +115,7 @@ class Companies implements ControllerInterface {
 
         $body = [
             'data'    => $targetCompany->toArray(),
-            'updated' => $targetCompany->updated_at
+            'updated' => $targetCompany->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -139,12 +139,12 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
+        $company = $request->getAttribute('company');
 
         $command = $this->commandFactory->create('Company\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('parentId', $actingCompany->id);
+            ->setParameter('parentId', $company->id);
         $company = $this->commandBus->handle($command);
 
         $body = [
@@ -173,10 +173,10 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
+        $company = $request->getAttribute('company');
 
         $command = $this->commandFactory->create('Company\\DeleteAll');
-        $command->setParameter('parentId', $actingCompany->id);
+        $command->setParameter('parentId', $company->id);
         $deleted = $this->commandBus->handle($command);
 
         $body = [

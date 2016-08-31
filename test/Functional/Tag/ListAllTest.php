@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Tag;
 
 use Test\Functional\AbstractFunctional;
@@ -16,23 +18,23 @@ class ListAllTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/tags';
+        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags';
     }
 
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                'QUERY_STRING' => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
                 ]
             )
         );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -41,7 +43,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'tag/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -51,21 +53,21 @@ class ListAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                'QUERY_STRING' => 'tags=user 2 tag 1&credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader(),
+                    'QUERY_STRING'       => 'tags=user%202%20tag%201'
                 ]
             )
         );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
+        $this->assertSame(1, count($body['data']));
 
-        $this->assertEquals(1, count($body['data']));
-
-        foreach($body['data'] as $tag) {
+        foreach ($body['data'] as $tag) {
             $this->assertContains($tag['name'], ['User 2 Tag 1']);
             $this->assertContains($tag['slug'], ['user-2-tag-1']);
         }
@@ -76,7 +78,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'tag/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -86,21 +88,21 @@ class ListAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                'QUERY_STRING' => 'tags=User 2 tag-1,user-2-tag-2&credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader(),
+                    'QUERY_STRING'       => 'tags=User 2 tag-1,user-2-tag-2'
                 ]
             )
         );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
+        $this->assertSame(2, count($body['data']));
 
-        $this->assertEquals(2, count($body['data']));
-
-        foreach($body['data'] as $tag) {
+        foreach ($body['data'] as $tag) {
             $this->assertContains($tag['name'], ['User 2 Tag 1', 'User 2 Tag 2']);
             $this->assertContains($tag['slug'], ['user-2-tag-1', 'user-2-tag-2']);
         }
@@ -111,7 +113,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'tag/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

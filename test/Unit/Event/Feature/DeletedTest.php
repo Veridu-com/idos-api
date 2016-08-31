@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Event\Feature;
 
 use App\Entity\Feature;
@@ -19,8 +21,8 @@ class DeletedTest extends AbstractUnit {
 
         $feature = new Feature([], $optimus);
 
-        $created = new Deleted($feature);
+        $deleted = new Deleted($feature);
 
-        $this->assertSame($feature, $created->feature);
+        $this->assertSame($feature, $deleted->feature);
     }
 }

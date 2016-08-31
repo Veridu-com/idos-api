@@ -52,6 +52,17 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
     /**
      * {@inheritdoc}
      */
+    public function getAllByCompanyId(int $companyId) : Collection {
+        return $this->findBy(
+            [
+                'company_id' => $companyId,
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOne(int $serviceId, Company $company) : Service {
         $query = $this->query()->where('id', $serviceId);
         $query = $this->scopeQuery($query, $company);

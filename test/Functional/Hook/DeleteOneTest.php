@@ -9,16 +9,12 @@ declare(strict_types = 1);
 namespace Test\Functional\Hook;
 
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCompanyToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    /**
-     * @FIXME The HasAuthCredentialToken runs a wrong credentials test
-     *        but we don't generate tokens yet, so there are no wrong credentials
-     *        when token generations is implemented, please fix this by uncommenting the next line
-     */
-    // use HasAuthCredentialToken;
+    use HasAuthCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
@@ -30,15 +26,14 @@ class DeleteOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'REQUEST_URI'  => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817',
-                    'QUERY_STRING' => 'credentialToken=test',
-                ]
+                    'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817',
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()]
             )
         );
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
@@ -48,7 +43,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'hook/deleteOne.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -57,8 +52,8 @@ class DeleteOneTest extends AbstractFunctional {
     public function testErrorNotFound() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'  => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
-                'QUERY_STRING' => 'credentialToken=test',
+                'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
@@ -67,7 +62,7 @@ class DeleteOneTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
 
@@ -77,7 +72,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -86,8 +81,8 @@ class DeleteOneTest extends AbstractFunctional {
     public function testErrorCredentialDoesntBelongToCompany() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'  => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
-                'QUERY_STRING' => 'credentialToken=test',
+                'REQUEST_URI'        => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
@@ -96,7 +91,7 @@ class DeleteOneTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
 
@@ -106,36 +101,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
-                json_decode($response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testErrorTargetCompanyDifferentFromActingCompany() {
-        $environment = $this->createEnvironment(
-            [
-                'REQUEST_URI'  => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
-                'QUERY_STRING' => 'credentialToken=test',
-            ]
-        );
-
-        $request = $this->createRequest($environment);
-
-        $response = $this->process($request);
-        $this->assertSame(403, $response->getStatusCode());
-
-        $body = json_decode($response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
-
-        /*
-         * Validates Json Schema against Json Response'
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'error.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -144,8 +110,8 @@ class DeleteOneTest extends AbstractFunctional {
     public function testErrorHookDoesntBelongToCredential() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'  => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1860914067',
-                'QUERY_STRING' => 'credentialToken=test',
+                'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1860914067',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
@@ -154,7 +120,7 @@ class DeleteOneTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
 
@@ -164,7 +130,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

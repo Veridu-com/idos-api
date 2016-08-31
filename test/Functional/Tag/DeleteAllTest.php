@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Tag;
 
 use Test\Functional\AbstractFunctional;
@@ -16,25 +18,23 @@ class DeleteAllTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/tags';
+        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING'      => 'credentialPrivKey=2c17c6393771ee3048ae34d6b380c5ec'
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
-
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $response->getStatusCode();
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -43,7 +43,7 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'tag/deleteAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

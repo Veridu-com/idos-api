@@ -4,7 +4,9 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Tag;
+declare(strict_types = 1);
+
+namespace Test\Functional\Digested;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
@@ -18,14 +20,14 @@ class CreateNewTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/9fd9f63e0d6487537569075da85a0c7f2/sources/3/digested';
+        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/sources/1860914067/digested';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING'      => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
 
@@ -40,13 +42,10 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
-
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-
-        $this->assertEquals(201, $response->getStatusCode());
-
         $this->assertTrue($body['status']);
         $this->assertSame('name-test', $body['data']['name']);
         $this->assertSame('value-test', $body['data']['value']);
@@ -56,7 +55,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'digested/createNew.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

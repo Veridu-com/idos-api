@@ -45,44 +45,6 @@ class DatabaseInit extends AbstractMigration {
          * IDENTITY RELATED TABLES
          *
          */
-
-        // Identity attributes values
-        $attributes = $this->table('attributes');
-        $attributes
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'binary', ['null' => true])
-            ->addTimestamps()
-            ->addIndex('identity_id')
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        // Identity flags
-        $flags = $this->table('flags');
-        $flags
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex('identity_id')
-            ->addIndex('name')
-            ->addIndex(['identity_id', 'name'], ['unique' => true])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        // Identity gates status
-        $gates = $this->table('gates');
-        $gates
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('pass', 'boolean', ['null' => false, 'default' => 'FALSE'])
-
-            ->addTimestamps()
-            ->addIndex('identity_id')
-            ->addIndex('name')
-            ->addIndex(['identity_id', 'name'], ['unique' => true])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         // Identity features
         // $features = $this->table('features');
         // $features
@@ -107,6 +69,7 @@ class DatabaseInit extends AbstractMigration {
         $features = $this->table('roles');
         $features
             ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('rank', 'integer', ['null' => false])
             ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
             ->addIndex('name', ['unique' => true])
             ->create();
@@ -128,23 +91,6 @@ class DatabaseInit extends AbstractMigration {
             ->create();
 
         $roleLogs = $this->table('role_logs');
-
-        /*
-         *
-         * ATTRIBUTE RELATED TABLES
-         *
-         */
-
-        // Attribute scores
-        $scores = $this->table('scores');
-        $scores
-            ->addColumn('attribute_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'float', ['null' => false, 'default' => 0.0])
-            ->addTimestamps()
-            ->addIndex('attribute_id')
-            ->addForeignKey('attribute_id', 'attributes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
 
         /*
          *
@@ -275,31 +221,41 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
             ->create();
 
+        $warnings = $this->table('warnings');
+        $warnings
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addIndex('name')
+            ->addIndex(['user_id', 'name'], ['unique' => true])
+            ->addIndex(['user_id', 'slug'], ['unique' => true])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         $tags = $this->table('tags');
         $tags
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
+            ->addTimestamps()
             ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $gates = $this->table('gates');
+        $gates
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
+            ->addColumn('pass', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addIndex('name')
+            ->addIndex(['user_id', 'name'], ['unique' => true])
+            ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
@@ -348,6 +304,17 @@ class DatabaseInit extends AbstractMigration {
          * USER RELATED TABLES
          *
          */
+
+        // Identity attributes values
+        $attributes = $this->table('attributes');
+        $attributes
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('value', 'binary', ['null' => true])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
 
         // User sources
         $sources = $this->table('sources');
@@ -436,140 +403,28 @@ class DatabaseInit extends AbstractMigration {
 
         /*
          *
-         * SOURCE RELATED TABLES
+         * ATTRIBUTE RELATED TABLES
          *
          */
 
-        $social = $this->table('social');
-        $social
-            ->addColumn('source_id', 'integer', ['null' => false])
-            ->addColumn('provider', 'text', ['null' => false])
-            ->addColumn('uuid', 'text', ['null' => true])
-            ->addColumn('token', 'binary', ['null' => false])
-            ->addColumn('secret', 'binary', ['null' => true])
-            ->addColumn('refresh', 'binary', ['null' => true])
-            ->addColumn('application_id', 'integer', ['null' => true])
-            ->addColumn('sso', 'boolean', ['null' => false, 'default' => 'FALSE'])
-            ->addColumn('ipaddr', 'text', ['null' => true])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addIndex('source_id')
-            ->addIndex('application_id')
-            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('application_id', 'applications', 'id', ['delete' => 'RESTRICT', 'update' => 'CASCADE'])
+        // Attribute scores
+        $scores = $this->table('scores');
+        $scores
+            ->addColumn('attribute_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('value', 'float', ['null' => false, 'default' => 0.0])
+            ->addTimestamps()
+            ->addIndex('attribute_id')
+            ->addForeignKey('attribute_id', 'attributes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        $email = $this->table('email');
-        $email
-            ->addColumn('source_id', 'integer', ['null' => false])
-            ->addColumn('email', 'binary', ['null' => false])
-            ->addColumn('code', 'text', ['null' => false])
-            ->addColumn('verified', 'boolean', ['null' => false, 'default' => 'FALSE'])
-            ->addColumn('expires', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('ipaddr', 'text', ['null' => true])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addIndex('source_id')
-            ->addIndex('email')
-            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $sms = $this->table('sms');
-        $sms
-            ->addColumn('source_id', 'integer', ['null' => false])
-            ->addColumn('phone', 'binary', ['null' => false])
-            ->addColumn('code', 'text', ['null' => false])
-            ->addColumn('verified', 'boolean', ['null' => false, 'default' => 'FALSE'])
-            ->addColumn('expires', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
-            ->addColumn('ipaddr', 'text', ['null' => true])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addIndex('source_id')
-            ->addIndex('phone')
-            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $spotafriend = $this->table('spotafriend');
-        $spotafriend
-            ->addColumn('source_id', 'integer', ['null' => false])
-            ->addColumn('provider', 'text', ['null' => false])
-            ->addColumn('target', 'text', ['null' => false])
-            ->addColumn('setup', 'text', ['null' => false])
-            ->addColumn('verified', 'boolean', ['null' => false, 'default' => 'FALSE'])
-            ->addColumn('voided', 'boolean', ['null' => false, 'default' => 'FALSE'])
-            ->addColumn('ipaddr', 'text', ['null' => true])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addIndex('source_id')
-            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $mapped = $this->table('mapped');
-        $mapped
+        /*
+         *
+         * SOURCE RELATED TABLES
+         *
+         */
+        $normalised = $this->table('normalised');
+        $normalised
             ->addColumn('source_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])

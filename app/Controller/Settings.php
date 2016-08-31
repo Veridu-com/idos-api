@@ -68,8 +68,8 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $result        = $this->repository->getAllByCompanyId($targetCompany->id, $request->getQueryParams());
+        $company = $request->getAttribute('company');
+        $result  = $this->repository->getAllByCompanyId($company->id, $request->getQueryParams());
 
         $entities = $result['collection'];
 
@@ -132,12 +132,12 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $company = $request->getAttribute('company');
 
         $command = $this->commandFactory->create('Setting\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetCompany->id);
+            ->setParameter('companyId', $company->id);
 
         $setting = $this->commandBus->handle($command);
 
@@ -167,10 +167,10 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
+        $company = $request->getAttribute('company');
 
         $command = $this->commandFactory->create('Setting\\DeleteAll');
-        $command->setParameter('companyId', $targetCompany->id);
+        $command->setParameter('companyId', $company->id);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
+use App\Entity\Member;
 use Illuminate\Support\Collection;
 
 /**
@@ -22,6 +23,7 @@ interface MemberInterface extends RepositoryInterface {
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllByCompanyId(int $companyId) : Collection;
+
     /**
      * Gets all Members basedon their Company Id and role.
      *
@@ -31,6 +33,7 @@ interface MemberInterface extends RepositoryInterface {
      * @return Illuminate\Support\Collection
      */
     public function getAllByCompanyIdAndRole(int $companyId, array $role) : Collection;
+
     /*
      * Deletes all Members based on their Company Id.
      *
@@ -39,6 +42,7 @@ interface MemberInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByCompanyId(int $companyId) : int;
+
     /**
      * Find one member based on their companyId and username.
      *
@@ -47,6 +51,7 @@ interface MemberInterface extends RepositoryInterface {
      * @return App\Entity\Member
      */
     public function findOne(int $memberId);
+
     /**
      * Deletes one member from company.
      *
@@ -56,4 +61,13 @@ interface MemberInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteOne(int $companyId, int $userId) : int;
+
+    /**
+     * Saves a member.
+     *
+     * @param \App\Entity\Member $member The member
+     *
+     * @return \App\Entity\Member
+     */
+    public function saveOne(Member $member) : Member;
 }

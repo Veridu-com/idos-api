@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -89,7 +88,7 @@ class Members implements RouteInterface {
                 'App\Controller\Members:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('members:listAll');
     }
     /**
@@ -120,7 +119,7 @@ class Members implements RouteInterface {
                 'App\Controller\Members:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('members:createNew');
     }
 
@@ -153,7 +152,7 @@ class Members implements RouteInterface {
                 'App\Controller\Members:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('members:updateOne');
     }
 
@@ -185,7 +184,7 @@ class Members implements RouteInterface {
                 'App\Controller\Members:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('members:deleteAll');
     }
 
@@ -218,7 +217,7 @@ class Members implements RouteInterface {
                 'App\Controller\Members:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('members:getOne');
     }
 
@@ -251,7 +250,7 @@ class Members implements RouteInterface {
                 'App\Controller\Members:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('members:deleteOne');
     }
 }

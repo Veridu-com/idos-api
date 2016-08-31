@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
@@ -89,7 +88,7 @@ class Hooks implements RouteInterface {
                 'App\Controller\Hooks:listAll'
             )
             ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('hooks:listAll');
     }
     /**
@@ -120,7 +119,7 @@ class Hooks implements RouteInterface {
                 'App\Controller\Hooks:createNew'
             )
             ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('hooks:createNew');
     }
 
@@ -153,7 +152,7 @@ class Hooks implements RouteInterface {
                 'App\Controller\Hooks:updateOne'
             )
             ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('hooks:updateOne');
     }
 
@@ -185,7 +184,7 @@ class Hooks implements RouteInterface {
                 'App\Controller\Hooks:deleteAll'
             )
             ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('hooks:deleteAll');
     }
 
@@ -218,7 +217,7 @@ class Hooks implements RouteInterface {
                 'App\Controller\Hooks:getOne'
             )
             ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('hooks:getOne');
     }
 
@@ -251,7 +250,7 @@ class Hooks implements RouteInterface {
                 'App\Controller\Hooks:deleteOne'
             )
             ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::COMPANY))
             ->setName('hooks:deleteOne');
     }
 }

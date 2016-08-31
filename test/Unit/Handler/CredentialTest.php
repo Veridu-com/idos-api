@@ -21,7 +21,9 @@ use App\Repository\CredentialInterface;
 use App\Repository\DBCredential;
 use App\Validator\Credential as CredentialValidator;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
+use League\Event\Emitter;
 use Slim\Container;
 use Test\Unit\AbstractUnit;
 
@@ -34,6 +36,10 @@ class CredentialTest extends AbstractUnit {
     public function setUp() {
         $this->optimus = $this->getMockBuilder(Optimus::class)
             ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->emitter = $this
+            ->getMockBuilder(Emitter::class)
             ->getMock();
     }
 
@@ -49,7 +55,8 @@ class CredentialTest extends AbstractUnit {
             'App\\Handler\\HandlerInterface',
             new Credential(
                 $repositoryMock,
-                $validatorMock
+                $validatorMock,
+                $this->emitter
             )
         );
     }
@@ -65,6 +72,7 @@ class CredentialTest extends AbstractUnit {
             ->getMockBuilder(Repository::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $repositoryFactoryMock
             ->method('create')
             ->willReturn($repositoryMock);
@@ -81,12 +89,18 @@ class CredentialTest extends AbstractUnit {
             ->getMockBuilder(Validator::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $validatorFactoryMock
             ->method('create')
             ->willReturn($validatorMock);
 
         $container['validatorFactory'] = function () use ($validatorFactoryMock) {
             return $validatorFactoryMock;
+        };
+
+        $emitter                   = $this->emitter;
+        $container['eventEmitter'] = function () use ($emitter) {
+            return $this->emitter;
         };
 
         Credential::register($container);
@@ -116,7 +130,8 @@ class CredentialTest extends AbstractUnit {
 
         $handler = new Credential(
             $credentialRepository,
-            new CredentialValidator()
+            new CredentialValidator(),
+            $this->emitter
         );
 
         $command             = new CreateNew();
@@ -170,7 +185,8 @@ class CredentialTest extends AbstractUnit {
 
         $handler = new Credential(
             $credentialRepository,
-            new CredentialValidator()
+            new CredentialValidator(),
+            $this->emitter
         );
 
         $command               = new UpdateOne();
@@ -196,15 +212,25 @@ class CredentialTest extends AbstractUnit {
 
         $credentialRepository = $this->getMockBuilder(DBCredential::class)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
-            ->setMethods(['delete'])
+            ->setMethods(['delete', 'find'])
             ->getMock();
+
         $credentialRepository
             ->method('delete')
             ->will($this->returnValue(1));
 
+        $entityMock = $this->getMockBuilder(CredentialEntity::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $credentialRepository
+            ->method('find')
+            ->will($this->returnValue($entityMock));
+
         $handler = new Credential(
             $credentialRepository,
-            new CredentialValidator()
+            new CredentialValidator(),
+            $this->emitter
         );
 
         $command               = new DeleteOne();
@@ -222,15 +248,40 @@ class CredentialTest extends AbstractUnit {
 
         $credentialRepository = $this->getMockBuilder(DBCredential::class)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
-            ->setMethods(['deleteByCompanyId'])
+            ->setMethods(['deleteByCompanyId', 'findByCompanyId'])
             ->getMock();
+
         $credentialRepository
             ->method('deleteByCompanyId')
             ->will($this->returnValue(3));
 
+        $credentialRepository
+            ->method('deleteByCompanyId')
+            ->will(
+                $this->returnValue(
+                    new Collection(
+                        [
+                            [
+                                'id'   => 1,
+                                'name' => 'credential 1',
+                            ],
+                            [
+                                'id'   => 2,
+                                'name' => 'credential 2',
+                            ],
+                            [
+                                'id'   => 3,
+                                'name' => 'credential 3',
+                            ],
+                        ]
+                    )
+                )
+            );
+
         $handler = new Credential(
             $credentialRepository,
-            new CredentialValidator()
+            new CredentialValidator(),
+            $this->emitter
         );
 
         $command            = new DeleteAll();
