@@ -28,11 +28,10 @@ class ListAllTest extends AbstractFunctional {
 
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body     = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -48,20 +47,24 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testFilter() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'names=user2Attribute1&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING' => 'names=user2Attribute1'
+                ]
+            )
+        );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-
-        $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
+
+        $body     = json_decode($response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
 
-        $this->assertSame(1, count($body['data']));
-
-        foreach($body['data'] as $attribute) {
+        foreach ($body['data'] as $attribute) {
             $this->assertContains($attribute['name'], ['user2Attribute1']);
             $this->assertContains($attribute['value'], ['value-3']);
         }
@@ -79,20 +82,24 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testFilterMultiple() {
-        $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'names=user2Attribute1,user2Attribute2&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
-        ]));
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING' => 'names=user2Attribute1,user2Attribute2'
+                ]
+            )
+        );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-
-        $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
+
+        $body     = json_decode($response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertCount(2, $body['data']);
 
-        $this->assertSame(2, count($body['data']));
-
-        foreach($body['data'] as $attribute) {
+        foreach ($body['data'] as $attribute) {
             $this->assertContains($attribute['name'], ['user2Attribute1', 'user2Attribute2']);
             $this->assertContains($attribute['value'], ['value-3', 'value-4']);
         }

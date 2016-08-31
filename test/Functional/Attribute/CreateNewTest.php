@@ -31,20 +31,19 @@ class CreateNewTest extends AbstractFunctional {
 
         $request = $this->createRequest(
             $environment,
-            json_encode([
+            json_encode(
+                [
                     'name'  => 'attribute-test',
                     'value' => 'value-test'
-            ])
+                ]
+            )
         );
 
         $response = $this->process($request);
-
-        $body = json_decode($response->getBody(), true);
-
-        $this->assertNotEmpty($body);
-
         $this->assertSame(201, $response->getStatusCode());
 
+        $body = json_decode($response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('attribute-test', $body['data']['name']);
         $this->assertSame('value-test', $body['data']['value']);
@@ -56,8 +55,8 @@ class CreateNewTest extends AbstractFunctional {
                 'attribute/createNew.json',
                 json_decode($response->getBody())
             ),
-                $this->schemaErrors
-            );
+            $this->schemaErrors
+        );
 
     }
 }

@@ -48,16 +48,18 @@ class GetOneTest extends AbstractFunctional {
 
     public function testNotFound() {
         $this->uri = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes/0000000';
-        $request   = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
-        ]));
+        $request   = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                ]
+            )
+        );
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
-        // assertions
         $this->assertNotEmpty($body);
-        $this->assertSame(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*
