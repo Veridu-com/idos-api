@@ -14,6 +14,11 @@
             "type": "string",
             "pattern": "[a-zA-Z0-9_-]+"
         },
+        "reference": {
+            "description": "Warning Reference",
+            "type": "string",
+            "pattern": ""
+        },
         "user_id": {
             "description": "User owner of the warning",
             "type": "integer"
@@ -33,6 +38,7 @@
     "required": [
         "name",
         "slug",
+        "reference",
         "user_id",
         "created_at"
     ]

@@ -234,12 +234,8 @@ class UserPermissionTest extends AbstractUnit {
                 )
             );
 
-        try {
-            $userPermissionMiddleware($requestMock, $responseMock, $nextMock);
-
-            return $this->fail('Expected \RuntimeException');
-        } catch(\RuntimeException $e) {
-        }
+        $this->setExpectedException('RuntimeException');
+        $userPermissionMiddleware($requestMock, $responseMock, $nextMock);
     }
 
     /**
@@ -277,11 +273,11 @@ class UserPermissionTest extends AbstractUnit {
         try {
             $userPermissionMiddleware($requestMock, $responseMock, $nextMock);
 
-            if(! $shouldPass) {
+            if (! $shouldPass) {
                 return $this->fail("Expected Exception\NotAllowed; routeAccessLevel: $routeAccessLevel; actingAccessLevel: $actingAccessLevel");
             }
-        } catch(NotAllowedException $e) {
-            if($shouldPass) {
+        } catch (NotAllowedException $e) {
+            if ($shouldPass) {
                 return $this->fail("Not Expecting Exception\NotAllowed; routeAccessLevel: $routeAccessLevel; actingAccessLevel: $actingAccessLevel");
             }
         }
@@ -312,7 +308,7 @@ class UserPermissionTest extends AbstractUnit {
         ];
 
         //We have 4 possible access levels, so we need 4 nested loops to archieve all possible combinations
-        foreach($possibleAccessLevels as $accessLevel1) {
+        foreach ($possibleAccessLevels as $accessLevel1) {
             $routeAccessLevel = $accessLevel1;
             $shouldPass       = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
             $this->doTestRouteWithAccessLevel(
@@ -325,7 +321,7 @@ class UserPermissionTest extends AbstractUnit {
                 $shouldPass
             );
 
-            foreach($possibleAccessLevels as $accessLevel2) {
+            foreach ($possibleAccessLevels as $accessLevel2) {
                 //We can sum the access levels since their definition in Entity\RoleAccess are not bit-colliding
                 $routeAccessLevel = $accessLevel1 + $accessLevel2;
 
@@ -341,7 +337,7 @@ class UserPermissionTest extends AbstractUnit {
                     $shouldPass
                 );
 
-                foreach($possibleAccessLevels as $accessLevel3) {
+                foreach ($possibleAccessLevels as $accessLevel3) {
                     $routeAccessLevel = $accessLevel1 + $accessLevel2 + $accessLevel3;
                     $shouldPass       = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
                     $this->doTestRouteWithAccessLevel(
@@ -354,7 +350,7 @@ class UserPermissionTest extends AbstractUnit {
                         $shouldPass
                     );
 
-                    foreach($possibleAccessLevels as $accessLevel4) {
+                    foreach ($possibleAccessLevels as $accessLevel4) {
                         $routeAccessLevel = $accessLevel1 + $accessLevel2 + $accessLevel3 + $accessLevel4;
                         $shouldPass       = ($routeAccessLevel & $actingAccessLevel) == $routeAccessLevel;
                         $this->doTestRouteWithAccessLevel(
@@ -433,7 +429,7 @@ class UserPermissionTest extends AbstractUnit {
         ];
 
         //We have 4 possible access levels, so we need 4 nested loops to archieve all possible combinations
-        foreach($possibleAccessLevels as $accessLevel1) {
+        foreach ($possibleAccessLevels as $accessLevel1) {
             $routeAccessLevel = $accessLevel1;
             $this->doTestWithAccessLevel(
                 $dbConnectionMock,
@@ -445,7 +441,7 @@ class UserPermissionTest extends AbstractUnit {
                 $actingRole
             );
 
-            foreach($possibleAccessLevels as $accessLevel2) {
+            foreach ($possibleAccessLevels as $accessLevel2) {
                 //We can sum the access levels since their definition in Entity\RoleAccess are not bit-colliding
                 $routeAccessLevel = $accessLevel1 + $accessLevel2;
                 $this->doTestWithAccessLevel(
@@ -458,7 +454,7 @@ class UserPermissionTest extends AbstractUnit {
                     $actingRole
                 );
 
-                foreach($possibleAccessLevels as $accessLevel3) {
+                foreach ($possibleAccessLevels as $accessLevel3) {
                     $routeAccessLevel = $accessLevel1 + $accessLevel2 + $accessLevel3;
                     $this->doTestWithAccessLevel(
                         $dbConnectionMock,
@@ -470,7 +466,7 @@ class UserPermissionTest extends AbstractUnit {
                         $actingRole
                     );
 
-                    foreach($possibleAccessLevels as $accessLevel4) {
+                    foreach ($possibleAccessLevels as $accessLevel4) {
                         $routeAccessLevel = $accessLevel1 + $accessLevel2 + $accessLevel3 + $accessLevel4;
                         $this->doTestWithAccessLevel(
                             $dbConnectionMock,

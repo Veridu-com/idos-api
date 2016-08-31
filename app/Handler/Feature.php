@@ -91,7 +91,7 @@ class Feature implements HandlerInterface {
      * @return App\Entity\Feature
      */
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
-        $this->validator->assertName($command->name);
+        $this->validator->assertLongName($command->name);
         $this->validator->assertId($command->userId);
 
         $feature = $this->repository->create(
@@ -107,7 +107,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $event   = new Created($feature);
             $this->emitter->emit($event);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new AppException('Error while creating a feature');
         }
 

@@ -107,7 +107,7 @@ class Gate implements HandlerInterface {
             $gate  = $this->repository->save($gate);
             $event = new Created($gate);
             $this->emitter->emit($event);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new AppException('Error while creating a gate');
         }
 

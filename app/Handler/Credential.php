@@ -111,8 +111,7 @@ class Credential implements HandlerInterface {
             $credential = $this->repository->save($credential);
             $event      = new Created($credential);
             $this->emitter->emit($event);
-        }
-        catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new AppException('Error while creating a credential');
         }
 
@@ -138,8 +137,7 @@ class Credential implements HandlerInterface {
             $credential = $this->repository->save($credential);
             $event      = new Updated($credential);
             $this->emitter->emit($event);
-        }
-        catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new AppException('Error while updating a credential id' . $command->credentialId);
         }
 

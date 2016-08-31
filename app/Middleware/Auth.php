@@ -149,7 +149,7 @@ class Auth implements MiddlewareInterface {
      */
     private function extractAuthorization(ServerRequestInterface $request, string $name) {
         $name  = ucfirst($name);
-        $regex = sprintf('/^%s ([a-zA-Z0-9.-]+)$/', $name);
+        $regex = sprintf('/^%s ([a-zA-Z0-9._-]+)$/', $name);
         if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches)) {
             return $matches[1];
         }
@@ -392,6 +392,7 @@ class Auth implements MiddlewareInterface {
 
         // Stores Target User for future use
         $request = $request->withAttribute('targetUser', $user);
+
         return $request;
     }
 

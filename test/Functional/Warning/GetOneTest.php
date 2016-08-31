@@ -6,10 +6,9 @@
 
 namespace Test\Functional\Warning;
 
-use App\Helper\Token;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
 use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class GetOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
@@ -18,16 +17,15 @@ class GetOneTest extends AbstractFunctional {
     protected function setUp() {
         $this->httpMethod = 'GET';
 
-        $this->userName = 'f67b96dcf96b49d713a520ce9f54053c';
         $this->populate(
-            sprintf('/1.0/profiles/%s/warnings', $this->userName),
+            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings',
             'GET',
             [
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/%s/warnings/%s', $this->userName, $this->entity['slug']);
+        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings/%s', $this->entity['slug']);
     }
 
     public function testSuccess() {
@@ -60,7 +58,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/profiles/%s/warnings/dummy-ltd', $this->userName);
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings/dummy-ltd';
 
         $request = $this->createRequest(
             $this->createEnvironment(
