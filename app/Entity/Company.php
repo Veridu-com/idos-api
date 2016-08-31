@@ -89,11 +89,11 @@ class Company extends AbstractEntity {
     public function getReferenceCacheKeys() : array {
         return array_merge(
             [
-            sprintf(
-                '%s.by.parent_id.%s',
-                self::CACHE_PREFIX,
-                $this->parentId
-            )
+                sprintf(
+                    '%s.by.parent_id.%s',
+                    self::CACHE_PREFIX,
+                    $this->parentId
+                )
             ],
             $this->getCacheKeys()
         );

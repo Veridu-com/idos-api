@@ -19,8 +19,8 @@ class DeletedTest extends AbstractUnit {
 
         $feature = new Feature([], $optimus);
 
-        $created = new Deleted($feature);
+        $deleted = new Deleted($feature);
 
-        $this->assertSame($feature, $created->feature);
+        $this->assertSame($feature, $deleted->feature);
     }
 }
