@@ -24,8 +24,8 @@ class DeletedMultiTest extends AbstractUnit {
 
         $collection = new Collection($features);
 
-        $created = new DeletedMulti($collection);
+        $deleted = new DeletedMulti($collection);
 
-        $this->assertSame($collection, $created->features);
+        $this->assertSame($collection, $deleted->features);
     }
 }

@@ -109,7 +109,6 @@ class AbstractDBRepositoryTest extends AbstractUnit {
         $this->setExpectedException(\Exception::class);
         $entity = $this->getEntity(1);
         $abstractDBMock->save($entity);
-
     }
 
     public function testSaveEmptyId() {
@@ -140,6 +139,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue($this->getEntity(1)));
 
         $entity = $this->getEntity('');
+        $this->assertInstanceOf(CompanyEntity::class, $abstractDBMock->save($entity));
 
         // assertEquals: we want the properties to be the same but not to reference the same object
         $this->assertEquals($this->getEntity(1), $abstractDBMock->save($entity));

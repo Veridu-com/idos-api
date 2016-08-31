@@ -43,15 +43,6 @@ interface FeatureInterface extends RepositoryInterface {
     public function findByUserId(int $userId) : Collection;
 
     /**
-     * Updates a feature.
-     *
-     * @param App\Entity\Feature $feature instance
-     *
-     * @return int
-     */
-    public function update(Feature &$feature) : int;
-
-    /**
      * Returns a Feature based on the user id and the slug.
      *
      * @param int    $userId      The user identifier

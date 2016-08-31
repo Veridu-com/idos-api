@@ -27,6 +27,7 @@ class DBFeatureTest extends AbstractUnit {
             ->getMock();
     }
 
+
     public function testUpdate() {
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()

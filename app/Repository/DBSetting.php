@@ -41,25 +41,23 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function update(Setting &$entity) : int {
-        $serialized = $entity->serialize();
-
-        return $this->query()
-            ->where('company_id', $entity->company_id)
-            ->where('section', $entity->section)
-            ->where('property', $entity->property)
-            ->update($serialized);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAllByCompanyId(int $companyId, array $queryParams = []) : array {
         $dbQuery = $this->query()->where('company_id', $companyId);
 
         return $this->paginate(
             $this->filter($dbQuery, $queryParams),
             $queryParams
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByCompanyId(int $companyId) : Collection {
+        return $this->findBy(
+            [
+                'company_id' => $companyId
+            ]
         );
     }
 
