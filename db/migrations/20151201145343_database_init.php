@@ -45,18 +45,6 @@ class DatabaseInit extends AbstractMigration {
          * IDENTITY RELATED TABLES
          *
          */
-
-        // Identity attributes values
-        $attributes = $this->table('attributes');
-        $attributes
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'binary', ['null' => true])
-            ->addTimestamps()
-            ->addIndex('identity_id')
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         // Identity flags
         $flags = $this->table('flags');
         $flags
@@ -128,23 +116,6 @@ class DatabaseInit extends AbstractMigration {
             ->create();
 
         $roleLogs = $this->table('role_logs');
-
-        /*
-         *
-         * ATTRIBUTE RELATED TABLES
-         *
-         */
-
-        // Attribute scores
-        $scores = $this->table('scores');
-        $scores
-            ->addColumn('attribute_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'float', ['null' => false, 'default' => 0.0])
-            ->addTimestamps()
-            ->addIndex('attribute_id')
-            ->addForeignKey('attribute_id', 'attributes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
 
         /*
          *
@@ -280,24 +251,7 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])
-            ->addColumn(
-                'created_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
-            ->addColumn(
-                'updated_at',
-                'timestamp',
-                [
-                    'null'     => false,
-                    'timezone' => false,
-                    'default'  => 'CURRENT_TIMESTAMP',
-                ]
-            )
+            ->addTimestamps()
             ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addIndex('user_id')
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -348,6 +302,17 @@ class DatabaseInit extends AbstractMigration {
          * USER RELATED TABLES
          *
          */
+
+        // Identity attributes values
+        $attributes = $this->table('attributes');
+        $attributes
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('value', 'binary', ['null' => true])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
 
         // User sources
         $sources = $this->table('sources');
@@ -409,6 +374,23 @@ class DatabaseInit extends AbstractMigration {
             ->addIndex('user_id')
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        /*
+         *
+         * ATTRIBUTE RELATED TABLES
+         *
+         */
+
+        // Attribute scores
+        $scores = $this->table('scores');
+        $scores
+            ->addColumn('attribute_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('value', 'float', ['null' => false, 'default' => 0.0])
+            ->addTimestamps()
+            ->addIndex('attribute_id')
+            ->addForeignKey('attribute_id', 'attributes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         /*
