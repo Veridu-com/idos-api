@@ -52,7 +52,7 @@ class DBScore extends AbstractDBRepository implements ScoreInterface {
             ->where('attributes.name', '=', $attributeName);
 
         if (! empty($names)) {
-            $result = $result->whereIn('name', $names);
+            $result = $result->whereIn('scores.name', $names);
         }
 
         $result = $result->get(['scores.*']);

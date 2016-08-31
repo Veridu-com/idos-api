@@ -24,7 +24,8 @@ trait AssertScore {
      * @return void
      */
     public function assertScore($score) {
-        //Validator::digit()
-        //    ->assert($score);
+        Validator::floatType()
+            ->between(0, 1, true)
+            ->assert($score);
     }
 }
