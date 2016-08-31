@@ -13,8 +13,8 @@ use Test\Functional\Traits\HasAuthCredentialToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
-    //use HasAuthMiddleware;
-    //use HasAuthCredentialToken;
+    use HasAuthMiddleware;
+    use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
@@ -25,7 +25,7 @@ class CreateNewTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING'      => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
 
@@ -43,7 +43,7 @@ class CreateNewTest extends AbstractFunctional {
 
         $this->assertNotEmpty($body);
 
-        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertSame(201, $response->getStatusCode());
 
         $this->assertTrue($body['status']);
         $this->assertSame('attribute-test', $body['data']['name']);

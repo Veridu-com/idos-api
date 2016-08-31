@@ -60,8 +60,8 @@ class Attributes implements ControllerInterface {
     /**
      * Retrieve a complete list of the data attribute by a given source.
      *
-     * @apiEndpointParam path string userName
-     * @apiEndpointParam query string names
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointParam query string names firstName,middleName,lastName
      * @apiEndpointResponse 200 schema/attribute/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -166,8 +166,8 @@ class Attributes implements ControllerInterface {
     /**
      * Retrieves a attribute data from the given source.
      *
-     * @apiEndpointParam path string userName
-     * @apiEndpointParam query string attributeName
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointParam query string attributeName firstName
      * @apiEndpointResponse 200 schema/attribute/attributeEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -225,8 +225,8 @@ class Attributes implements ControllerInterface {
     /**
      * Deletes a attribute data from a given source.
      *
-     * @apiEndpointParam path string userName
-     * @apiEndpointParam query string attributeName
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointParam query string attributeName firstName
      * @apiEndpointResponse 200 schema/attribute/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
