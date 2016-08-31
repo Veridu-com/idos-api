@@ -8,10 +8,13 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Event\Token\ExchangeRequested;
+use App\Event\Token\Exchanged;
 use App\Helper\Token as TokenHelper;
 use App\Command\Token\Exchange;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Token commands.
@@ -23,6 +26,12 @@ class Token implements HandlerInterface {
      * @var App\Repository\UserInterface
      */
     protected $userRepository;
+    /**
+     * Event emitter instance.
+     *
+     * @var League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -32,7 +41,9 @@ class Token implements HandlerInterface {
             return new \App\Handler\Token(
                 $container
                     ->get('repositoryFactory')
-                    ->create('User')
+                    ->create('User'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -45,9 +56,11 @@ class Token implements HandlerInterface {
      * @return void
      */
     public function __construct(
-        UserInterface $userRepository
+        UserInterface $userRepository,
+        Emitter $emitter
     ) {
         $this->userRepository = $userRepository;
+        $this->emitter              = $emitter;
     }
 
     /**
@@ -64,11 +77,22 @@ class Token implements HandlerInterface {
         $actingCompany = $command->actingCompany;
         $targetCompany = $command->targetCompany;
         $credential    = $command->credential;
+        $companyToken = '';
 
-        $relatedUsers    = $this->userRepository->findAllRelatedToCompany($user, $targetCompany);
-        $highestRoleUser = $relatedUsers->first();
+        $event = new ExchangeRequested($user, $actingCompany, $targetCompany, $credential);
+        $this->emitter->emit($event);
 
-        $companyToken = TokenHelper::generateCompanyToken(implode(':', [$highestRoleUser->public, $highestRoleUser->username]), $targetCompany->public_key, $targetCompany->private_key);
+        try {
+            $relatedUsers    = $this->userRepository->findAllRelatedToCompany($user, $targetCompany);
+            $highestRoleUser = $relatedUsers->first();
+
+            $companyToken = TokenHelper::generateCompanyToken(implode(':', [$highestRoleUser->public, $highestRoleUser->username]), $targetCompany->public_key, $targetCompany->private_key);
+
+            $event = new Exchanged($user, $highestRoleUser, $actingCompany, $targetCompany, $credential);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Unable to exchange the user token by a company token');
+        }
 
         return $companyToken;
     }
