@@ -21,7 +21,7 @@ class ListAllTest extends AbstractFunctional {
 
     public function testSuccess() {
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
+            'QUERY_STRING' => 'credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
         ]));
 
         $response = $this->process($request);
@@ -45,7 +45,7 @@ class ListAllTest extends AbstractFunctional {
 
     public function testFilter() {
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'names=user-2-attribute-1&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
+            'QUERY_STRING' => 'names=user2Attribute1&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
         ]));
 
         $response = $this->process($request);
@@ -58,7 +58,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertEquals(1, count($body['data']));
 
         foreach($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['user-2-attribute-1']);
+            $this->assertContains($attribute['name'], ['user2Attribute1']);
             $this->assertContains($attribute['value'], ['value-3']);
         }
 
@@ -76,7 +76,7 @@ class ListAllTest extends AbstractFunctional {
 
     public function testFilterMultiple() {
         $request = $this->createRequest($this->createEnvironment([
-            'QUERY_STRING' => 'names=user-2-attribute-1,user-2-attribute-2&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.0CO4bGUlOYaEp58QqfKK3v8cZxst3hOXgVrQQ79n2Qk'
+            'QUERY_STRING' => 'names=user2Attribute1,user2Attribute2&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
         ]));
 
         $response = $this->process($request);
@@ -89,7 +89,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertEquals(2, count($body['data']));
 
         foreach($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['user-2-attribute-1', 'user-2-attribute-2']);
+            $this->assertContains($attribute['name'], ['user2Attribute1', 'user2Attribute2']);
             $this->assertContains($attribute['value'], ['value-3', 'value-4']);
         }
 
