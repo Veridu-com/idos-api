@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /profiles/{userName}/warnings/{warningSlug}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Feature response payload",
+            "type": "object",
+            "$ref": "warningEntity.json"
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

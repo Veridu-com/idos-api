@@ -1,0 +1,55 @@
+
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/service/serviceEntity.json",
+    "title": "Service",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Service Name",
+            "type": "string",
+            "pattern": ""
+        },
+        "access": {
+            "description": "Access level of the service",
+            "type": "integer",
+            "pattern": ""
+        },
+        "enabled": {
+            "description": "If the service is enabled",
+            "type": "boolean",
+            "pattern": ""
+        },
+        "listens": {
+            "description": "Listens attribute",
+            "type": "array",
+            "pattern": ""
+        },
+        "triggers": {
+            "description": "Triggers attribute",
+            "type": "array",
+            "pattern": ""
+        },
+        "created_at": {
+            "description": "Company's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Unixtime of the last update",
+            "type": ["integer", "null"]
+        }
+    },
+    "dependencies": {
+        "slug": ["name"]
+    },
+    "required": [
+        "name",
+        "access",
+        "enabled",
+        "triggers",
+        "triggers",
+        "enabled",
+        "created_at",
+        "updated_at"
+    ]
+}

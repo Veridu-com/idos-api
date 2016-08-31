@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/user/featureEntity.json",
+    "title": "Feature",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Feature Name",
+            "type": "string",
+            "pattern": ""
+        },
+        "slug": {
+            "description": "Slug based on Feature's name",
+            "type": "string",
+            "pattern": "[a-zA-Z0-9_-]+"
+        },
+        "value": {
+            "description": "Feature value",
+            "type": "string",
+            "pattern": ""
+        },
+        "user_id": {
+            "description": "User owner of the feature",
+            "type": "integer"
+        },
+        "created_at": {
+            "description": "Feature's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Feature's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "dependencies": {
+        "slug": ["name"]
+    },
+    "required": [
+        "name",
+        "slug",
+        "user_id",
+        "created_at",
+        "updated_at"
+    ]
+}

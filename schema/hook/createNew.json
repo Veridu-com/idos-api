@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /management/credentials/{pubKey}/hooks",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Hook response payload",
+            "type": "object",
+            "$ref": "hookEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

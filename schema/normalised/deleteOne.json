@@ -1,0 +1,14 @@
+{
+    "$schema" : "http://json-schema.org/draft-04/schema#",
+    "title": "DELETE /profiles/{userName}/sources/{sourceId}/normalised/{normalisedName}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "status"
+    ]
+}

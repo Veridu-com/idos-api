@@ -38,11 +38,13 @@
 
 [DELETE /1.0/profiles/:userName/features](profiles/features/deleteAll.md)
 
-[GET /1.0/profiles/:userName/features/:featureName](profiles/features/getFeature.md)
+[POST /1.0/profiles/:userName/features](profiles/features/createNew.md)
 
-[POST /1.0/profiles/:userName/features/:featureName](profiles/features/createFeature.md)
+[PUT /1.0/profiles/:userName/features/:featureSlug](profiles/features/updateOne.md)
 
-[DELETE /1.0/profiles/:userName/features/:featureName](profiles/features/deleteFeature.md)
+[GET /1.0/profiles/:userName/features/:featureSlug](profiles/features/getOne.md)
+
+[DELETE /1.0/profiles/:userName/features/:featureSlug](profiles/features/deleteOne.md)
 
 ### Profile Flags
 
@@ -204,11 +206,13 @@
 
 [GET /1.0/access/roles](access/roles/listAll.md)
 
-[GET /1.0/access/roles/:roleName](access/roles/getRole.md)
+[GET /1.0/access/roles/:roleName](access/roles/getGetOne.md)
 
-[POST /1.0/access/roles/:roleName](access/roles/updateRole.md)
+[POST /1.0/access/roles/:roleName](access/roles/createNew.md)
 
-[DELETE /1.0/access/roles/:roleName](access/roles/deleteRole.md)
+[DELETE /1.0/access/roles](access/roles/deleteAll.md)
+
+[DELETE /1.0/access/roles/:roleName](access/roles/deleteOne.md)
 
 ### Company Access
 
@@ -222,13 +226,13 @@
 
 #### Company Members
 
-[GET /1.0/access/companies/:companyId/members](access/companies/members/listAll.md)
+[GET /1.0/access/management/members](access/management/listAll.md)
 
-[GET /1.0/access/companies/:companyId/members/:roleName](access/companies/members/getRole.md)
+[GET /1.0/access/management/members/:roleName](access/management/getRole.md)
 
-[POST /1.0/access/companies/:companyId/members/:roleName](access/companies/members/updateRole.md)
+[POST /1.0/access/management/members/:roleName](access/management/updateRole.md)
 
-[DELETE /1.0/access/companies/:companyId/members/:roleName](access/companies/members/deleteRole.md)
+[DELETE /1.0/access/management/members/:roleName](access/management/deleteRole.md)
 
 #### Company Users
 
@@ -239,22 +243,6 @@
 [POST /1.0/access/companies/:companyId/users/:userName](access/companies/users/updateUser.md)
 
 [DELETE /1.0/access/companies/:companyId/users/:userName](access/companies/users/deleteUser.md)
-
-## Permissions API
-
-[GET /1.0/permissions](permissions/listAll.md)
-
-[GET /1.0/permissions/:companyId](permissions/getCompany.md)
-
-[DELETE /1.0/permissions/:companyId](permissions/deleteCompany.md)
-
-### Endpoint Permission
-
-[GET /1.0/permissions/:companyId/:endpointName](permissions/getCompanyEndpoint.md)
-
-[POST /1.0/permissions/:companyId/:endpointName](permissions/updateCompanyEndpoint.md)
-
-[DELETE /1.0/permissions/:companyId/:endpointName](permissions/deleteCompanyEndpoint.md)
 
 ## Companies API
 
@@ -268,53 +256,67 @@
 
 [GET /1.0/companies/:companyId](companies/getCompany.md)
 
-[POST /1.0/companies/:companyId](companies/updateCompany.md)
+[PUT /1.0/companies/:companyId](companies/updateCompany.md)
 
 [DELETE /1.0/companies/:companyId](companies/deleteCompany.md)
 
+### Company Permissions
+
+[GET /1.0/commpanies/:companyId/permissions](companies/permissions/listAll.md)
+
+[POST /1.0/companies/:companyId/permissions](companies/permissions/createNew.md)
+
+[DELETE /1.0/companies/:companyId/permissions](companies/permissions/deleteAll.md)
+
+[GET /1.0/companies/:companyId/permissions/:endpointName](companies/permissions/getOne.md)
+
+[PUT /1.0/companies/:companyId/permissions/:endpointName](companies/permissions/updateOne.md)
+
+[DELETE /1.0/companies/:companyId/permissions/:endpointName](companies/permissions/deleteOne.md)
+
 ### Company Credentials
 
-[GET /1.0/companies/:companyId/credentials](companies/credentials/listAll.md)
+[GET /1.0/management/credentials](companies/credentials/listAll.md)
 
-[POST /1.0/companies/:companyId/credentials](companies/credentials/createNew.md)
+[POST /1.0/management/credentials](companies/credentials/createNew.md)
 
-[DELETE /1.0/companies/:companyId/credentials](companies/credentials/deleteAll.md)
+[DELETE /1.0/management/credentials](companies/credentials/deleteAll.md)
 
-[GET /1.0/companies/:companyId/credentials/:pubKey](companies/credentials/getCredential.md)
+[GET /1.0/management/credentials/:pubKey](companies/credentials/getCredential.md)
 
-[POST /1.0/companies/:companyId/credentials/:pubKey](companies/credentials/updateCredential.md)
+[POST /1.0/management/credentials/:pubKey](companies/credentials/updateCredential.md)
 
-[DELETE /1.0/companies/:companyId/credentials/:pubKey](companies/credentials/deleteCredential.md)
+[DELETE /1.0/management/credentials/:pubKey](companies/credentials/deleteCredential.md)
 
 ### Credential Hooks
 
-[GET /1.0/companies/:companyId/credentials/:pubKey/hooks](companies/credentials/hooks/listAll.md)
+[GET /1.0/management/credentials/:pubKey/hooks](management/hooks/listAll.md)
 
-[POST /1.0/companies/:companyId/credentials/:pubKey/hooks](companies/credentials/hooks/createNew.md)
+[POST /1.0/management/credentials/:pubKey/hooks](management/hooks/createNew.md)
 
-[DELETE /1.0/companies/:companyId/credentials/:pubKey/hooks](companies/credentials/hooks/deleteAll.md)
+[DELETE /1.0/management/credentials/:pubKey/hooks](management/hooks/deleteAll.md)
 
-[GET /1.0/companies/:companyId/credentials/:pubKey/hooks/:hookId](companies/credentials/hooks/getHook.md)
+[GET /1.0/management/credentials/:pubKey/hooks/:hookId](management/hooks/getHook.md)
 
-[POST /1.0/companies/:companyId/credentials/:pubKey/hooks/:hookId](companies/credentials/hooks/updateHook.md)
+[POST /1.0/management/credentials/:pubKey/hooks/:hookId](management/hooks/updateHook.md)
 
-[DELETE /1.0/companies/:companyId/credentials/:pubKey/hooks/:hookId](companies/credentials/hooks/deleteHook.md)
+[DELETE /1.0/management/credentials/:pubKey/hooks/:hookId](management/hooks/deleteHook.md)
 
 ### Company Settings
 
-[GET /1.0/companies/:companyId/settings](companies/settings/listAll.md)
+[GET /1.0/management/settings](management/settings/listAll.md)
 
-[DELETE /1.0/companies/:companyId/settings](companies/settings/deleteAll.md)
+[DELETE /1.0/management/settings](management/settings/deleteAll.md)
 
-[GET /1.0/companies/:companyId/settings/:category](companies/settings/getCategory.md)
+[GET /1.0/management/settings/:category](management/settings/getCategory.md)
 
-[DELETE /1.0/companies/:companyId/settings/:category](companies/settings/deleteCategory.md)
+[DELETE /1.0/management/settings/:category](management/settings/deleteCategory.md)
 
-[GET /1.0/companies/:companyId/settings/:category/:property](companies/settings/getCategoryProperty.md)
+[GET /1.0/management/settings/:category/:property](management/settings/getCategoryProperty.md)
 
-[POST /1.0/companies/:companyId/settings/:category/:property](companies/settings/setCategoryProperty.md)
+[POST /1.0/management/settings/:category/:property](management/settings/setCategoryProperty.md)
 
-[DELETE /1.0/companies/:companyId/settings/:category/:property](companies/settings/unsetCategoryProperty.md)
+[DELETE /1.0/management/settings/:category/:property](management/settings/unsetCategoryProperty.md)
 
 ### Company Members
 
@@ -371,7 +373,7 @@
 [GET /1.0/services](services/listAll.md)
 
 ### Service Handlers
-
+// Atualmente está assim:
 [GET /1.0/services/:serviceName](services/listServiceHandlers.md)
 
 [DELETE /1.0/services/:serviceName](services/deleteServiceHandlers.md)
@@ -383,6 +385,20 @@
 [PUT /1.0/services/:serviceName/:handlerName](services/updateServiceHandler.md)
 
 [DELETE /1.0/services/:serviceName/:handlerName](services/deleteServiceHandler.md)
+
+// Proposta:
+[GET /1.0/service-handlers](service-handlers/listAll.md)  (com sistema de filtragem)
+// get one
+[GET /1.0/service-handlers/:serviceSlug/:serviceHandlerSlug](service-handlers/getOne.md)
+// delete all
+[DELETE /1.0/service-handlers](service-handlers/deleteAll.md)
+// create ( { serviceSlug: 'email-service' ... } )
+[POST /1.0/service-handlers](service-handlers/createNew.md)
+// update
+[PUT /1.0/service-handlers/:serviceSlug/:serviceHandlerSlug](service-handlers/updateOne.md)
+// delete one
+[DELETE /1.0/service-handlers/:serviceSlug/:serviceHandlerSlug](service-handlers/deletOne.md)
+
 
 ## Daemons API
 

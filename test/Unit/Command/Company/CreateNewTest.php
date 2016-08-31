@@ -1,0 +1,35 @@
+<?php
+/*
+ * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
+ * All rights reserved.
+ */
+
+declare(strict_types = 1);
+
+namespace Test\Unit\Command\Company;
+
+use App\Command\Company\CreateNew;
+use Test\Unit\AbstractUnit;
+
+class CreateNewTest extends AbstractUnit {
+    public function testSetParameters() {
+        $command = new CreateNew();
+        $this->assertNull($command->name);
+        $this->assertNull($command->parentId);
+
+        $this->assertInstanceOf(
+            CreateNew::class,
+            $command->setParameters([])
+        );
+        $this->assertNull($command->name);
+        $this->assertNull($command->parentId);
+
+        $command->setParameters(['name' => 'a']);
+        $this->assertSame('a', $command->name);
+        $this->assertNull($command->parentId);
+
+        $command->setParameters(['parentId' => 1]);
+        $this->assertSame('a', $command->name);
+        $this->assertSame(1, $command->parentId);
+    }
+}
