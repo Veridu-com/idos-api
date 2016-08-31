@@ -142,7 +142,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
         $this->assertInstanceOf(CompanyEntity::class, $abstractDBMock->save($entity));
 
         // assertEquals: we want the properties to be the same but not to reference the same object
-        $this->assertSame($this->getEntity(1), $abstractDBMock->save($entity));
+        $this->assertEquals($this->getEntity(1), $abstractDBMock->save($entity));
     }
 
     public function testGetEntityNameRuntimeException() {

@@ -349,7 +349,7 @@ class CompanyTest extends AbstractUnit {
         $entity               = new CompanyEntity(['id' => 0], $this->optimus);
         $commandMock->company = $entity;
 
-        $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(1, $handler->handleDeleteOne($commandMock));
     }
 
     public function testHandleDeleteAllCompanyIdNotFound() {
