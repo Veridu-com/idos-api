@@ -19,7 +19,7 @@ use App\Helper\Utils;
  * @property int    $id
  * @property string $name
  * @property string $slug
- * @property boolean $pass
+ * @property bool $pass
  * @property int    $user_id
  * @property int    $created_at
  * @property int    $updated_at

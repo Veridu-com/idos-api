@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Unit\Event\ServiceHandler;
 
 use App\Entity\ServiceHandler;

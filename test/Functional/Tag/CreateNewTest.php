@@ -4,8 +4,9 @@
  * All rights reserved.
  */
 
-// namespace Test\Functional\Tag;
+declare(strict_types = 1);
 
+namespace Test\Functional\Tag;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;

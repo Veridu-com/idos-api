@@ -18,7 +18,6 @@ use App\Event\Credential\Deleted;
 use App\Event\Credential\DeletedMulti;
 use App\Event\Credential\Updated;
 use App\Exception\AppException;
-use App\Exception\NotFound;
 use App\Repository\CredentialInterface;
 use App\Validator\Credential as CredentialValidator;
 use Defuse\Crypto\Key;

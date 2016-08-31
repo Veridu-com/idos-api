@@ -8,9 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Event\Token;
 
-use App\Entity\User;
 use App\Entity\Company;
 use App\Entity\Credential;
+use App\Entity\User;
 use App\Event\AbstractEvent;
 
 /**
@@ -51,19 +51,19 @@ class Exchanged extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\User $user
-     * @param App\Entity\User $highestRoleUser
-     * @param App\Entity\Company $actingCompany
-     * @param App\Entity\Company $targetCompany
+     * @param App\Entity\User       $user
+     * @param App\Entity\User       $highestRoleUser
+     * @param App\Entity\Company    $actingCompany
+     * @param App\Entity\Company    $targetCompany
      * @param App\Entity\Credential $credential
      *
      * @return void
      */
     public function __construct(User $user, User $highestRoleUser, Company $actingCompany, Company $targetCompany, Credential $credential) {
-        $this->user = $user;
+        $this->user            = $user;
         $this->highestRoleUser = $highestRoleUser;
-        $this->actingCompany = $actingCompany;
-        $this->targetCompany = $targetCompany;
-        $this->credential = $credential;
+        $this->actingCompany   = $actingCompany;
+        $this->targetCompany   = $targetCompany;
+        $this->credential      = $credential;
     }
 }

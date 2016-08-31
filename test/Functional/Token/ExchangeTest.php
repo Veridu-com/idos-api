@@ -4,10 +4,12 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Token;
 
-use App\Middleware\Auth;
 use App\Helper\Token as TokenHelper;
+use App\Middleware\Auth;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 
@@ -24,7 +26,7 @@ class ExchangeTest extends AbstractFunctional {
         $token       = TokenHelper::generateUserToken(md5('JohnDoe1'), md5('public'), md5('private'));
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->userTokenHeader($token)
             ]
         );
