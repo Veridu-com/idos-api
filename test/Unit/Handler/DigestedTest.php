@@ -262,7 +262,7 @@ class DigestedTest extends AbstractUnit {
         $commandMock->name     = 'digested-1';
         $commandMock->sourceId = 1;
 
-        $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(1, $handler->handleDeleteOne($commandMock));
     }
 
     public function testHandleDeleteAll() {
@@ -303,6 +303,6 @@ class DigestedTest extends AbstractUnit {
 
         $commandMock->sourceId = 1;
 
-        $this->assertEquals(1, $handler->handleDeleteAll($commandMock));
+        $this->assertSame(1, $handler->handleDeleteAll($commandMock));
     }
 }

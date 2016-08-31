@@ -25,13 +25,4 @@ interface UserInterface extends RepositoryInterface {
      * @return App\Entity\User
      */
     public function findByUserName(string $userName, int $credentialId) : User;
-
-    /**
-     * Generates a signed JWT.
-     *
-     * @param string $username          The username
-     * @param string $credentialPrivKey The credential priv key
-     * @param string $credentialPubKey  The credential pub key
-     */
-    public static function generateToken($username, string $credentialPrivKey, string $credentialPubKey) : string;
 }

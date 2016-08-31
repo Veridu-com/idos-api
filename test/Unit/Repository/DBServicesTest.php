@@ -39,6 +39,7 @@ class DBServiceTest extends AbstractUnit {
             'url'        => 'url',
             'access'     => 0x01,
             'enabled'    => true,
+            'public'     => 'publicKey',
             'listens'    => ['listen1', 'listen2'],
             'triggers'   => ['trigger1', 'trigger2'],
             'enabled'    => true,
@@ -69,7 +70,7 @@ class DBServiceTest extends AbstractUnit {
 
          $dbService = new DBService($factory, $this->optimus, $connectionMock);
 
-         $this->assertSame($array, $dbService->getAll()->toArray());
+         $this->assertEquals($array, $dbService->getAll()->toArray());
     }
 
     public function testGetAllEmpty() {

@@ -9,12 +9,12 @@ declare(strict_types = 1);
 namespace Test\Functional\Permission;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyPrivKey;
+use Test\Functional\Traits\HasAuthCompanyToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class GetOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
-    use HasAuthCompanyPrivKey;
+    use HasAuthCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -24,11 +24,17 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request  = $this->createRequest($this->createEnvironment());
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                ]
+            )
+        );
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame($this->entity, $body['data']); // asserts it fetches the right entity
@@ -39,7 +45,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'permission/getOne.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -49,11 +55,17 @@ class GetOneTest extends AbstractFunctional {
     public function testNotFound() {
         $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
 
-        $request  = $this->createRequest($this->createEnvironment());
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                ]
+            )
+        );
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
 
@@ -63,7 +75,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

@@ -11,7 +11,6 @@ namespace App\Repository;
 use App\Entity\Credential;
 use App\Entity\User;
 use App\Exception\NotFound;
-use Lcobucci\JWT;
 
 /**
  * Database-based User Repository Implementation.
@@ -128,25 +127,5 @@ class DBUser extends AbstractDBRepository implements UserInterface {
         }
 
         return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function generateToken($username, string $credentialPrivKey, string $credentialPubKey) : string {
-        $jwtParser     = new JWT\Parser();
-        $jwtValidation = new JWT\ValidationData();
-        $jwtSigner     = new JWT\Signer\Hmac\Sha256();
-        $jwtBuilder    = new JWT\Builder();
-
-        $jwtBuilder->set('iss', $credentialPubKey);
-
-        if ($username !== null) {
-            $jwtBuilder->set('sub', $username);
-        }
-
-        return (string) $jwtBuilder
-            ->sign($jwtSigner, $credentialPrivKey)
-            ->getToken();
     }
 }

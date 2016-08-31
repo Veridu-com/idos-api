@@ -67,6 +67,7 @@ class DBServiceHandlerTest extends AbstractUnit {
                 'url'        => 'url',
                 'access'     => 'access',
                 'enabled'    => 'enabled',
+                'public'     => 'publicKey',
                 'listens'    => ['listen1', 'listen2'],
                 'triggers'   => ['trigger1', 'trigger2'],
                 'created_at' => time(),
@@ -155,7 +156,7 @@ class DBServiceHandlerTest extends AbstractUnit {
         $entity = $dbServiceHandler->findOne(1, 1);
         $this->assertInstanceOf(ServiceHandlerEntity::class, $entity);
 
-        $this->assertSame(
+        $this->assertEquals(
             $this->getToArray(),
             $entity->toArray()
         );
