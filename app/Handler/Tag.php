@@ -138,16 +138,13 @@ class Tag implements HandlerInterface {
 
         $tag = $this->repository->findOneByUserIdAndSlug($command->user->id, $command->slug);
 
-        try {
-            $rowsAffected = $this->repository->deleteOneByUserIdAndSlug($command->user->id, $command->slug);
-            $event        = new Deleted($tag);
-            $this->emitter->emit($event);
+        $rowsAffected = $this->repository->deleteOneByUserIdAndSlug($command->user->id, $command->slug);
 
-            if (! $rowsAffected) {
-                throw new NotFound();
-            }
-        } catch (\Exception $e) {
-            throw new AppException('Error while trying to delete a tag id ' . $tag->id);
+        if ($rowsAffected) {
+            $event = new Deleted($tag);
+            $this->emitter->emit($event);
+        } else {
+            throw new NotFound();
         }
 
         return $rowsAffected;
@@ -161,14 +158,12 @@ class Tag implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $tags         = $this->repository->getAllByUserId($command->user->id);
-            $rowsAffected = $this->repository->deleteByUserId($command->user->id);
-            $event        = new DeletedMulti($tags);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException('Error while trying to delete all tags under user id ' . $command->user->id);
-        }
+        $tags = $this->repository->getAllByUserId($command->user->id);
+
+        $rowsAffected = $this->repository->deleteByUserId($command->user->id);
+
+        $event = new DeletedMulti($tags);
+        $this->emitter->emit($event);
 
         return $rowsAffected;
     }

@@ -17,7 +17,7 @@ use App\Event\ServiceHandler\Created;
 use App\Event\ServiceHandler\Deleted;
 use App\Event\ServiceHandler\DeletedMulti;
 use App\Event\ServiceHandler\Updated;
-use App\Exception\AppException as AppException;
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\ServiceHandlerInterface;
 use App\Validator\ServiceHandler as ServiceHandlerValidator;
@@ -172,16 +172,10 @@ class ServiceHandler implements HandlerInterface {
 
         $serviceHandlers = $this->repository->findByCompanyId($command->companyId);
 
-        try {
-            $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
-            $event        = new DeletedMulti($serviceHandlers);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException(
-                'Error while trying to delete all service handlers under company id ' .
-                $command->companyId
-            );
-        }
+        $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
+
+        $event = new DeletedMulti($serviceHandlers);
+        $this->emitter->emit($event);
 
         return $rowsAffected;
     }
@@ -199,15 +193,15 @@ class ServiceHandler implements HandlerInterface {
         $this->validator->assertId($command->companyId);
         $this->validator->assertId($command->serviceHandlerId);
 
-        try {
-            $serviceHandler = $this->repository->find($command->serviceHandlerId);
-            $rowsAffected   = $this->repository->deleteOne($command->companyId, $command->serviceHandlerId);
-            $event          = new Deleted($serviceHandler);
+        $serviceHandler = $this->repository->find($command->serviceHandlerId);
+
+        $rowsAffected = $this->repository->deleteOne($command->companyId, $command->serviceHandlerId);
+
+        if ($rowsAffected) {
+            $event = new Deleted($serviceHandler);
             $this->emitter->emit($event);
-            if (! $rowsAffected)
-                throw new NotFound();
-        } catch (Exception $e) {
-            throw new AppException('Error while trying to delete a service handler id ' . $command->serviceHandlerId);
+        } else {
+            throw new NotFound();
         }
 
         return $rowsAffected;

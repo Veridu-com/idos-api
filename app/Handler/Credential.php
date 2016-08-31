@@ -17,7 +17,8 @@ use App\Event\Credential\Created;
 use App\Event\Credential\Deleted;
 use App\Event\Credential\DeletedMulti;
 use App\Event\Credential\Updated;
-use App\Exception\AppException as AppException;
+use App\Exception\AppException;
+use App\Exception\NotFound;
 use App\Repository\CredentialInterface;
 use App\Validator\Credential as CredentialValidator;
 use Defuse\Crypto\Key;
@@ -155,19 +156,16 @@ class Credential implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->credentialId);
+
         $credential = $this->repository->find($command->credentialId);
 
-        try {
-            $event        = new Deleted($credential);
-            $rowsAffected = $this->repository->delete($command->credentialId);
-            $this->emitter->emit($event);
+        $rowsAffected = $this->repository->delete($command->credentialId);
 
-            if (! $rowsAffected) {
-                throw new \NotFound();
-            }
-        }
-        catch(\Exception $exception) {
-            throw new AppException('Error while deleting a credential id' . $command->credentialId);
+        if ($rowsAffected) {
+            $event = new Deleted($credential);
+            $this->emitter->emit($event);
+        } else {
+            throw new \NotFound();
         }
 
         return $rowsAffected;
@@ -182,21 +180,13 @@ class Credential implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->companyId);
+
         $credentials = $this->repository->findByCompanyId($command->companyId);
 
-        try {
-            $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
-            $event        = new DeletedMulti($credentials);
-            $this->emitter->emit($event);
-        }
-        catch(\Exception $exception) {
-            $ids = [];
-            foreach ($credentials as $credential) {
-                $ids[] = $credential->id;
-            }
+        $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
 
-            throw new AppException('Error while deleting a credential id' . implode(' ', $ids));
-        }
+        $event = new DeletedMulti($credentials);
+        $this->emitter->emit($event);
 
         return $rowsAffected;
     }

@@ -17,7 +17,8 @@ use App\Event\Service\Created;
 use App\Event\Service\Deleted;
 use App\Event\Service\DeletedMulti;
 use App\Event\Service\Updated;
-use App\Exception\AppException as AppException;
+use App\Exception\AppException;
+use App\Exception\NotFound;
 use App\Exception\NotAllowed;
 use App\Exception\NotFound;
 use App\Repository\ServiceInterface;
@@ -234,16 +235,10 @@ class Service implements HandlerInterface {
 
         $services = $this->repository->getAllByCompanyId($command->company->id);
 
-        try {
-            $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
-            $event        = new DeletedMulti($services);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException(
-                'Error while trying to delete all services under company id ' .
-                $command->company->id
-            );
-        }
+        $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
+
+        $event = new DeletedMulti($services);
+        $this->emitter->emit($event);
 
         return $affectedRows;
     }
@@ -262,16 +257,14 @@ class Service implements HandlerInterface {
         $this->validator->assertId($command->serviceId);
 
         $service = $this->repository->find($command->serviceId);
-        try {
-            $rowsAffected = $this->repository->deleteOne($command->serviceId, $command->company);
-            $event        = new Deleted($service);
-            $this->emitter->emit($event);
 
-            if (! $rowsAffected) {
-                throw new NotFound();
-            }
-        } catch (\Exception $e) {
-            throw new AppException('Error while trying to delete a service id ' . $command->serviceId);
+        $rowsAffected = $this->repository->deleteOne($command->serviceId, $command->company);
+
+        if ($rowsAffected) {
+            $event = new Deleted($service);
+            $this->emitter->emit($event);
+        } else {
+            throw new NotFound();
         }
 
         return $rowsAffected;

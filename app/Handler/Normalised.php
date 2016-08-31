@@ -81,10 +81,10 @@ class Normalised implements HandlerInterface {
 
         $normalised = $this->repository->create(
             [
-            'source_id'  => $command->sourceId,
-            'name'       => $command->name,
-            'value'      => $command->value,
-            'created_at' => time()
+                'source_id'  => $command->sourceId,
+                'name'       => $command->name,
+                'value'      => $command->value,
+                'created_at' => time()
             ]
         );
 

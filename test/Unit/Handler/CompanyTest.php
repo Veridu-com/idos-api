@@ -329,7 +329,7 @@ class CompanyTest extends AbstractUnit {
 
         $companyRepository
             ->method('delete')
-            ->will($this->returnValue(0));
+            ->will($this->returnValue(1));
 
         $emitterMock = $this
             ->getMockBuilder(Emitter::class)
@@ -349,7 +349,7 @@ class CompanyTest extends AbstractUnit {
         $entity               = new CompanyEntity(['id' => 0], $this->optimus);
         $commandMock->company = $entity;
 
-        $this->assertSame(0, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(1, $handler->handleDeleteOne($commandMock));
     }
 
     public function testHandleDeleteAllCompanyIdNotFound() {

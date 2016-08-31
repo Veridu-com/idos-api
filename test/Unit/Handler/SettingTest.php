@@ -333,7 +333,7 @@ class SettingTest extends AbstractUnit {
         $settingRepository
             ->expects($this->once())
             ->method('save')
-            ->will($this->returnValue($entityMock));
+            ->willReturn($settingEntity);
 
         $emitterMock = $this
             ->getMockBuilder(Emitter::class)

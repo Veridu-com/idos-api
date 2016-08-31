@@ -17,7 +17,8 @@ use App\Event\Feature\Created;
 use App\Event\Feature\Deleted;
 use App\Event\Feature\DeletedMulti;
 use App\Event\Feature\Updated;
-use App\Exception\AppException as AppException;
+use App\Exception\AppException;
+use App\Exception\NotFound;
 use App\Repository\FeatureInterface;
 use App\Validator\Feature as FeatureValidator;
 use Interop\Container\ContainerInterface;
@@ -156,17 +157,15 @@ class Feature implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->userId);
+
         $deletedFeatures = $this->repository->findByUserId($command->userId);
 
-        try {
-            $deletedAmount = $this->repository->deleteByUserId($command->userId);
-            $event         = new DeletedMulti($deletedFeatures);
-            $this->emitter->emit($event);
-        } catch (Exception $exception) {
-            throw new AppException('Error while deleting all features under user ' . $command->userId);
-        }
+        $rowsAffected = $this->repository->deleteByUserId($command->userId);
 
-        return $deletedAmount;
+        $event = new DeletedMulti($deletedFeatures);
+        $this->emitter->emit($event);
+
+        return $rowsAffected;
     }
 
     /**
@@ -179,21 +178,16 @@ class Feature implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertSlug($command->featureSlug);
         $this->validator->assertId($command->userId);
+
         $feature = $this->repository->findByUserIdAndSlug($command->userId, $command->featureSlug);
 
-        try {
-            $rowsAffected = $this->repository->delete($feature->id);
-            $event        = new Deleted($feature);
+        $rowsAffected = $this->repository->delete($feature->id);
+
+        if ($rowsAffected) {
+            $event = new Deleted($feature);
             $this->emitter->emit($event);
-            if (! $rowsAffected)
-                throw new AppException('Error while deleting a feature id ' . $feature->id);
-        } catch (Exception $exception) {
-            throw new AppException(
-                'Error while deleting a feature user id: ' .
-                $command->userId .
-                ' slug: ' .
-                $command->featureSlug
-            );
+        } else {
+            throw new NotFound();
         }
 
         return $rowsAffected;

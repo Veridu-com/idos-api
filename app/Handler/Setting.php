@@ -17,7 +17,7 @@ use App\Event\Setting\Created;
 use App\Event\Setting\Deleted;
 use App\Event\Setting\DeletedMulti;
 use App\Event\Setting\Updated;
-use App\Exception\AppException as AppException;
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\SettingInterface;
 use App\Validator\Setting as SettingValidator;
@@ -157,16 +157,10 @@ class Setting implements HandlerInterface {
 
         $settings = $this->repository->findByCompanyId($command->companyId);
 
-        try {
-            $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
-            $event        = new DeletedMulti($settings);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException(
-                'Error while trying to delete all settings under the company id ' .
-                $command->companyId
-            );
-        }
+        $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
+
+        $event = new DeletedMulti($settings);
+        $this->emitter->emit($event);
 
         return $rowsAffected;
     }
@@ -183,17 +177,13 @@ class Setting implements HandlerInterface {
 
         $setting = $this->repository->find($command->settingId);
 
-        try {
-            $rowsAffected = $this->repository->delete($command->settingId);
+        $rowsAffected = $this->repository->delete($command->settingId);
 
+        if ($rowsAffected) {
             $event = new Deleted($setting);
             $this->emitter->emit($event);
-
-            if (! $rowsAffected) {
-                throw new NotFound();
-            }
-        } catch (\Exception $e) {
-            throw new AppException('Error while trying to delete a setting id ' . $command->settingId);
+        } else {
+            throw new NotFound();
         }
 
         return $rowsAffected;

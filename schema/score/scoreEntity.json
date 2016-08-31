@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/score/scoreEntity.json",
+    "title": "Score",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Name of score data",
+            "type": "string",
+            "pattern": ""
+        },
+        "value": {
+            "description": "Score data"
+        },
+        "created_at": {
+            "description": "Score's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Score's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "name",
+        "value",
+        "created_at"
+    ]
+}

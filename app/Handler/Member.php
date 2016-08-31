@@ -17,7 +17,7 @@ use App\Event\Member\Created;
 use App\Event\Member\Deleted;
 use App\Event\Member\DeletedMulti;
 use App\Event\Member\Updated;
-use App\Exception\AppException as AppException;
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\CredentialInterface;
 use App\Repository\MemberInterface;
@@ -178,17 +178,16 @@ class Member implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->memberId);
 
-        try {
-            $rowsAffected = $this->repository->delete($command->memberId);
-            $event        = new Deleted($member);
-            $this->emitter->emit($event);
+        $rowsAffected = $this->repository->delete($command->memberId);
 
-            if (! $rowsAffected) {
-                throw new NotFound();
-            }
-        } catch (\Exception $e) {
-            throw new AppException('Error while trying to delete a member id ' . $command->memberId);
+        if ($rowsAffected) {
+            $event = new Deleted($member);
+            $this->emitter->emit($event);
+        } else {
+            throw new NotFound();
         }
+
+        return $rowsAffected;
     }
 
     /**
@@ -199,15 +198,12 @@ class Member implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
+        $members = $this->repository->getAllByCompanyId($command->companyId);
 
-        try {
-            $members      = $this->repository->getAllByCompanyId($command->companyId);
-            $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
-            $event        = new DeletedMulti($members);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException('Error while trying to delete all members under company id ' . $command->memberId);
-        }
+        $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
+
+        $event = new DeletedMulti($members);
+        $this->emitter->emit($event);
 
         return $rowsAffected;
     }

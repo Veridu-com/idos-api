@@ -15,7 +15,7 @@ use App\Entity\Permission as PermissionEntity;
 use App\Event\Permission\Created;
 use App\Event\Permission\Deleted;
 use App\Event\Permission\DeletedMulti;
-use App\Exception\AppException as AppException;
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\PermissionInterface;
 use App\Validator\Permission as PermissionValidator;
@@ -122,17 +122,12 @@ class Permission implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertId($command->companyId);
 
-        try {
-            $permissions  = $this->repository->getAllByCompanyId($command->companyId);
-            $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
-            $event        = new DeletedMulti($permissions);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException(
-                'Error while trying to delete all permissions under company id ' .
-                $command->companyId
-            );
-        }
+        $permissions = $this->repository->getAllByCompanyId($command->companyId);
+
+        $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
+
+        $event = new DeletedMulti($permissions);
+        $this->emitter->emit($event);
 
         return $affectedRows;
     }
@@ -148,21 +143,15 @@ class Permission implements HandlerInterface {
         $this->validator->assertId($command->companyId);
         $this->validator->assertRouteName($command->routeName);
 
-        try {
-            $permission   = $this->repository->findOne($command->companyId, $command->routeName);
-            $affectedRows = $this->repository->deleteOne($command->companyId, $command->routeName);
-            $event        = new Deleted($permission);
-            $this->emitter->emit($event);
+        $permission = $this->repository->findOne($command->companyId, $command->routeName);
 
-            if (! $affectedRows)
-                throw new NotFound();
-        } catch (Exception $e) {
-            throw new AppException(
-                'Error while trying to delete a permission company_id ' .
-                $command->companyId .
-                ' route_name ' .
-                $command->routeName
-            );
+        $affectedRows = $this->repository->deleteOne($command->companyId, $command->routeName);
+
+        if ($affectedRows) {
+            $event = new Deleted($permission);
+            $this->emitter->emit($event);
+        } else {
+            throw new NotFound();
         }
 
         return $affectedRows;
