@@ -22,6 +22,17 @@ class UserInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
+        // Profile references values
+        $references = $this->table('references');
+        $references
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('value', 'binary', ['null' => true])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         // User sources
         $sources = $this->table('sources');
         $sources
