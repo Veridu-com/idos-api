@@ -48,9 +48,9 @@ class Gates implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\GateInterface $repository
-     * @param App\Repository\UserInterface    $userRepository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param App\Repository\UserInterface $userRepository
+     * @param \League\Tactician\CommandBus $commandBus
+     * @param App\Factory\Command          $commandFactory
      *
      * @return void
      */
@@ -111,7 +111,7 @@ class Gates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user        = $request->getAttribute('targetUser');
+        $user     = $request->getAttribute('targetUser');
         $gateSlug = $request->getAttribute('gateSlug');
 
         $gate = $this->repository->findByUserIdAndSlug($user->id, $gateSlug);
@@ -207,7 +207,7 @@ class Gates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user        = $request->getAttribute('targetUser');
+        $user     = $request->getAttribute('targetUser');
         $gateSlug = $request->getAttribute('gateSlug');
 
         $command = $this->commandFactory->create('Gate\\DeleteOne');
@@ -240,7 +240,7 @@ class Gates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user        = $request->getAttribute('targetUser');
+        $user     = $request->getAttribute('targetUser');
         $gateSlug = $request->getAttribute('gateSlug');
 
         $command = $this->commandFactory->create('Gate\\UpdateOne');

@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
@@ -92,12 +92,14 @@ class Attribute implements HandlerInterface {
         $this->validator->assertName($command->name);
         $this->validator->assertValue($command->value);
 
-        $attribute = $this->repository->create([
+        $attribute = $this->repository->create(
+            [
             'user_id'    => $command->user->id,
             'name'       => $command->name,
             'value'      => $command->value,
             'created_at' => time()
-        ]);
+            ]
+        );
 
         try {
             $attribute = $this->repository->save($attribute);
@@ -177,5 +179,4 @@ class Attribute implements HandlerInterface {
 
         return $affectedRows;
     }
-
 }

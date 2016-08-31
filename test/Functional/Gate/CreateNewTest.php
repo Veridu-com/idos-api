@@ -4,14 +4,15 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Gate;
 
-use App\Helper\Token;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
 use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
     use HasAuthMiddleware;
@@ -25,7 +26,7 @@ class CreateNewTest extends AbstractFunctional {
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
@@ -35,19 +36,20 @@ class CreateNewTest extends AbstractFunctional {
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                    'name'  => $name,
+                    'name' => $name,
                     'pass' => $pass
                 ]
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-
-        $this->assertNotEmpty($body);
         $this->assertSame(201, $response->getStatusCode());
+
+        $body = json_decode($response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame($name, $body['data']['name']);
         $this->assertSame($pass, $body['data']['pass']);
+
         /*
          * Validates Json Schema against Json Response'
          */

@@ -45,7 +45,7 @@ interface GateInterface extends RepositoryInterface {
     /**
      * Returns a Gate based on the user id and the slug.
      *
-     * @param int    $userId      The user identifier
+     * @param int    $userId   The user identifier
      * @param string $gateSlug The gate slug
      */
     public function findByUserIdAndSlug(int $userId, string $gateSlug) : Gate;

@@ -4,12 +4,13 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Gate;
 
-use App\Helper\Token;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
 use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class DeleteOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
@@ -17,17 +18,16 @@ class DeleteOneTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->userName = 'f67b96dcf96b49d713a520ce9f54053c';
 
         $this->populate(
-            sprintf('/1.0/profiles/%s/gates', $this->userName),
+            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates',
             'GET',
             [
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/%s/gates/%s', $this->userName, $this->entity['slug']);
+        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/%s', $this->entity['slug']);
     }
 
     public function testSuccess() {
@@ -40,11 +40,10 @@ class DeleteOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-        // assertions
-        $this->assertNotEmpty($body);
-        $response->getStatusCode();
         $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode($response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
         /*
@@ -60,7 +59,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/profiles/%s/gates/dummy-ltd', $this->userName);
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/dummy-ltd';
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [
@@ -69,11 +68,10 @@ class DeleteOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-
-        // assertions
-        $this->assertNotEmpty($body);
         $this->assertSame(404, $response->getStatusCode());
+
+        $body = json_decode($response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
 
         /*

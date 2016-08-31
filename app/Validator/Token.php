@@ -9,9 +9,10 @@ declare(strict_types = 1);
 namespace App\Validator;
 
 /**
- * Member Validation Rules.
+ * Token Validation Rules.
  */
-class Member implements ValidatorInterface {
-    use Traits\AssertId,
-        Traits\AssertUserName;
+class Token implements ValidatorInterface {
+    use Traits\AssertCompany,
+        Traits\AssertCredential,
+        Traits\AssertUser;
 }

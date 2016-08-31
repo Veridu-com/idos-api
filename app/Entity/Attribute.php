@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -75,13 +75,15 @@ class Attribute extends AbstractEntity {
      * {@inheritdoc}
      */
     public function getReferenceCacheKeys() : array {
-        return array_merge([
+        return array_merge(
+            [
             sprintf(
                 '%s.by.user_id.%s',
                 self::CACHE_PREFIX,
                 $this->sourceId
             )
-        ],
-        $this->getCacheKeys());
+            ],
+            $this->getCacheKeys()
+        );
     }
 }

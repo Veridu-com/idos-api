@@ -4,14 +4,15 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Gate;
 
-use App\Helper\Token;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
 use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class UpdateOneTest extends AbstractFunctional {
     use HasAuthMiddleware;
@@ -19,16 +20,15 @@ class UpdateOneTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
-        $this->userName = 'f67b96dcf96b49d713a520ce9f54053c';
         $this->populate(
-            sprintf('/1.0/profiles/%s/gates', $this->userName),
+            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates',
             'GET',
             [
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/%s/gates/%s', $this->userName, $this->entity['slug']);
+        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/%s', $this->entity['slug']);
     }
 
     /**
@@ -37,22 +37,20 @@ class UpdateOneTest extends AbstractFunctional {
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
 
-        $newPass = true;
-        $request  = $this->createRequest($environment, json_encode(['pass' => $newPass]));
-
+        $request  = $this->createRequest($environment, json_encode(['pass' => true]));
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
-        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
-        $this->assertSame($newPass, $body['data']['pass']);
+        $this->assertSame(true, $body['data']['pass']);
 
         /*
          * Validates Json Schema against Json Response'
@@ -67,24 +65,21 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/profiles/%s/gates/dummy-ltd', $this->userName);
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/dummy-ltd';
 
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode(['pass' => false]));
-
+        $request  = $this->createRequest($environment, json_encode(['pass' => false]));
         $response = $this->process($request);
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
-
-        $this->assertSame(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*

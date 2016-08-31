@@ -23,7 +23,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Gate's value (user input).
      *
-     * @var boolean
+     * @var bool
      */
     public $pass;
     /**

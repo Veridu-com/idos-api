@@ -4,13 +4,17 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Attribute;
 
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class GetOneTest extends AbstractFunctional {
-    //use HasAuthMiddleware;
-    //use HasAuthCredentialToken;
+    use HasAuthMiddleware;
+    use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -27,7 +31,7 @@ class GetOneTest extends AbstractFunctional {
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
 
-        $body     = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
@@ -73,5 +77,4 @@ class GetOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }

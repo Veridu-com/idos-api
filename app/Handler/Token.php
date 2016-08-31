@@ -4,14 +4,14 @@
  * All rights reserved.
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Handler;
 
-use App\Event\Token\ExchangeRequested;
-use App\Event\Token\Exchanged;
-use App\Helper\Token as TokenHelper;
 use App\Command\Token\Exchange;
+use App\Event\Token\Exchanged;
+use App\Event\Token\Requested;
+use App\Helper\Token as TokenHelper;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -60,7 +60,7 @@ class Token implements HandlerInterface {
         Emitter $emitter
     ) {
         $this->userRepository = $userRepository;
-        $this->emitter              = $emitter;
+        $this->emitter        = $emitter;
     }
 
     /**
@@ -71,22 +71,28 @@ class Token implements HandlerInterface {
      * @return string
      */
     public function handleExchange(Exchange $command) : string {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertCompany($command->actingCompany);
+        $this->validator->assertCompany($command->targetCompany);
+        $this->validator->assertCredential($command->credential);
 
-        $companyToken  = null;
         $user          = $command->user;
         $actingCompany = $command->actingCompany;
         $targetCompany = $command->targetCompany;
         $credential    = $command->credential;
-        $companyToken = '';
 
-        $event = new ExchangeRequested($user, $actingCompany, $targetCompany, $credential);
+        $event = new Requested($user, $actingCompany, $targetCompany, $credential);
         $this->emitter->emit($event);
 
         try {
             $relatedUsers    = $this->userRepository->findAllRelatedToCompany($user, $targetCompany);
             $highestRoleUser = $relatedUsers->first();
 
-            $companyToken = TokenHelper::generateCompanyToken(implode(':', [$highestRoleUser->public, $highestRoleUser->username]), $targetCompany->public_key, $targetCompany->private_key);
+            $companyToken = TokenHelper::generateCompanyToken(
+                implode(':', [$highestRoleUser->public, $highestRoleUser->username]),
+                $targetCompany->public_key,
+                $targetCompany->private_key
+            );
 
             $event = new Exchanged($user, $highestRoleUser, $actingCompany, $targetCompany, $credential);
             $this->emitter->emit($event);
@@ -96,5 +102,4 @@ class Token implements HandlerInterface {
 
         return $companyToken;
     }
-
 }

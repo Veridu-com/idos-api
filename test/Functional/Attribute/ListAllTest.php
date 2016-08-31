@@ -4,6 +4,8 @@
  * All rights reserved.
  */
 
+declare(strict_types = 1);
+
 namespace Test\Functional\Attribute;
 
 use Test\Functional\AbstractFunctional;
@@ -11,8 +13,8 @@ use Test\Functional\Traits\HasAuthCredentialToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class ListAllTest extends AbstractFunctional {
-    //use HasAuthMiddleware;
-    //use HasAuthCredentialToken;
+    use HasAuthMiddleware;
+    use HasAuthCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -30,7 +32,7 @@ class ListAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body     = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
@@ -51,7 +53,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING' => 'names=user2Attribute1'
+                    'QUERY_STRING'       => 'names=user2Attribute1'
                 ]
             )
         );
@@ -59,7 +61,7 @@ class ListAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body     = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(1, $body['data']);
@@ -86,7 +88,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING' => 'names=user2Attribute1,user2Attribute2'
+                    'QUERY_STRING'       => 'names=user2Attribute1,user2Attribute2'
                 ]
             )
         );
@@ -94,7 +96,7 @@ class ListAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body     = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
@@ -115,5 +117,4 @@ class ListAllTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 }
