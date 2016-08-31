@@ -74,7 +74,7 @@ class Digested implements HandlerInterface {
      * @return App\Entity\Digested
      */
     public function handleCreateNew(CreateNew $command) : DigestedEntity {
-        $this->validator->assertName($command->name);
+        $this->validator->assertLongName($command->name);
         $this->validator->assertValue($command->value);
 
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
@@ -101,11 +101,18 @@ class Digested implements HandlerInterface {
      * @return App\Entity\Digested
      */
     public function handleUpdateOne(UpdateOne $command) : DigestedEntity {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertId($command->user->id);
         $this->validator->assertValue($command->value);
+        $this->validator->assertId($command->sourceId);
 
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
 
-        $digested        = $this->repository->findOneByUserIdSourceIdAndName($command->user->id, $command->sourceId, $command->name);
+        $digested = $this->repository->findOneByUserIdSourceIdAndName(
+            $command->user->id,
+            $command->sourceId,
+            $command->name
+        );
         $digested->value = $command->value;
         $digested        = $this->repository->save($digested);
 
@@ -120,7 +127,7 @@ class Digested implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertName($command->name);
+        $this->validator->assertLongName($command->name);
 
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
 

@@ -6,12 +6,11 @@
 
 namespace Test\Functional\Warning;
 
-use App\Helper\Token;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
 use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\HasAuthMiddleware;
 
 class CreateNewTest extends AbstractFunctional {
     use HasAuthMiddleware;
@@ -25,7 +24,7 @@ class CreateNewTest extends AbstractFunctional {
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );

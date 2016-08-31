@@ -103,7 +103,7 @@ class Warning implements HandlerInterface {
             $warning = $this->repository->save($warning);
             $event   = new Created($warning);
             $this->emitter->emit($event);
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw new AppException('Error while creating a warning');
         }
 
