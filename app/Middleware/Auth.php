@@ -392,6 +392,7 @@ class Auth implements MiddlewareInterface {
 
         // Stores Target User for future use
         $request = $request->withAttribute('targetUser', $user);
+
         return $request;
     }
 

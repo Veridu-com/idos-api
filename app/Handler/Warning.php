@@ -89,11 +89,13 @@ class Warning implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : WarningEntity {
         $this->validator->assertName($command->name);
+        $this->validator->assertName($command->reference);
         $this->validator->assertId($command->userId);
 
         $warning = $this->repository->create(
             [
                 'name'       => $command->name,
+                'reference'  => $command->reference,
                 'user_id'    => $command->userId,
                 'created_at' => time()
             ]

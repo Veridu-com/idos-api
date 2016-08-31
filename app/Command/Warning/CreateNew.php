@@ -21,6 +21,12 @@ class CreateNew extends AbstractCommand {
      */
     public $name;
     /**
+     * Warning's reference (user input).
+     *
+     * @var string
+     */
+    public $reference;
+    /**
      * Warning's user Id.
      *
      * @var int
@@ -35,6 +41,10 @@ class CreateNew extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
+        }
+
+        if (isset($parameters['reference'])) {
+            $this->reference = $parameters['reference'];
         }
 
         if (isset($parameters['userId'])) {
