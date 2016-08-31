@@ -91,7 +91,7 @@ class Scores implements RouteInterface {
                 'App\Controller\Scores:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('score:listAll');
     }
     /**
@@ -124,7 +124,7 @@ class Scores implements RouteInterface {
                 'App\Controller\Scores:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('score:createNew');
     }
 
@@ -159,7 +159,7 @@ class Scores implements RouteInterface {
                 'App\Controller\Scores:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('score:updateOne');
     }
 
@@ -194,7 +194,7 @@ class Scores implements RouteInterface {
                 'App\Controller\Scores:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('score:getOne');
     }
 
@@ -228,7 +228,7 @@ class Scores implements RouteInterface {
                 'App\Controller\Scores:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('score:deleteAll');
     }
 
@@ -263,7 +263,7 @@ class Scores implements RouteInterface {
                 'App\Controller\Scores:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('score:deleteOne');
     }
 }

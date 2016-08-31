@@ -89,7 +89,7 @@ class Attributes implements RouteInterface {
                 'App\Controller\Attributes:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('attribute:listAll');
     }
     /**
@@ -121,7 +121,7 @@ class Attributes implements RouteInterface {
                 'App\Controller\Attributes:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('attribute:createNew');
     }
 
@@ -155,7 +155,7 @@ class Attributes implements RouteInterface {
                 'App\Controller\Attributes:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('attribute:updateOne');
     }
 
@@ -189,7 +189,7 @@ class Attributes implements RouteInterface {
                 'App\Controller\Attributes:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('attribute:getOne');
     }
 
@@ -222,7 +222,7 @@ class Attributes implements RouteInterface {
                 'App\Controller\Attributes:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('attribute:deleteAll');
     }
 
@@ -256,7 +256,7 @@ class Attributes implements RouteInterface {
                 'App\Controller\Attributes:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('attribute:deleteOne');
     }
 }
