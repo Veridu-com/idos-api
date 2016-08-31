@@ -86,7 +86,7 @@ class Gates implements RouteInterface {
                 'App\Controller\Gates:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('gates:listAll');
     }
 
@@ -117,7 +117,7 @@ class Gates implements RouteInterface {
                 'App\Controller\Gates:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('gates:createNew');
     }
 
@@ -148,7 +148,7 @@ class Gates implements RouteInterface {
                 'App\Controller\Gates:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('gates:deleteOne');
     }
 
@@ -179,7 +179,7 @@ class Gates implements RouteInterface {
                 'App\Controller\Gates:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('gates:deleteAll');
     }
 
@@ -210,7 +210,7 @@ class Gates implements RouteInterface {
                 'App\Controller\Gates:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('gates:getOne');
     }
 
@@ -241,7 +241,7 @@ class Gates implements RouteInterface {
                 'App\Controller\Gates:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('gates:updateOne');
     }
 }

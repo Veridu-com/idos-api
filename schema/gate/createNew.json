@@ -10,7 +10,7 @@
         "data": {
             "description": "Feature response payload",
             "type": "object",
-            "$ref": "featureEntity.json"
+            "$ref": "gateEntity.json"
         }
     },
     "required": [
