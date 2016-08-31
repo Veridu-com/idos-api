@@ -9,11 +9,11 @@ declare(strict_types = 1);
 namespace App\Validator;
 
 /**
- * Company Validation Rules.
+ * Warning Validation Rules.
  */
-class Company implements ValidatorInterface {
+class Warning implements ValidatorInterface {
     use Traits\AssertId,
-        Traits\AssertName,
-        Traits\AssertSlug,
-        Traits\AssertUserId;
+       Traits\AssertName,
+       Traits\AssertSlug,
+       Traits\AssertParentId;
 }

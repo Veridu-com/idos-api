@@ -335,6 +335,6 @@ class PermissionTest extends AbstractUnit {
 
         $commandMock->companyId = 0;
         $commandMock->routeName = 'Companies:listAll';
-        $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(1, $handler->handleDeleteOne($commandMock));
     }
 }

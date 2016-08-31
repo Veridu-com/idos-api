@@ -121,6 +121,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      *  @param string $uri URI to be queried
      *  @param string $method URI to be queried
      *  @param array $params Environment parameters
+     *  @param array $body Request body
      *
      *  @return void
      */

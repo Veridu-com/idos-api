@@ -45,18 +45,6 @@ class DatabaseInit extends AbstractMigration {
          * IDENTITY RELATED TABLES
          *
          */
-        // Identity flags
-        $flags = $this->table('flags');
-        $flags
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex('identity_id')
-            ->addIndex('name')
-            ->addIndex(['identity_id', 'name'], ['unique' => true])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         // Identity features
         // $features = $this->table('features');
         // $features
@@ -231,6 +219,19 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
+            ->create();
+
+        $warnings = $this->table('warnings');
+        $warnings
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addIndex('name')
+            ->addIndex(['user_id', 'name'], ['unique' => true])
+            ->addIndex(['user_id', 'slug'], ['unique' => true])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $tags = $this->table('tags');
