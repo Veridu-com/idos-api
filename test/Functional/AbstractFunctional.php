@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Functional;
 
+use App\Helper\Token;
 use JsonSchema\RefResolver;
 use JsonSchema\Uri\UriResolver;
 use JsonSchema\Uri\UriRetriever;
@@ -255,5 +256,128 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         foreach ($validator->getErrors() as $error) {
             $this->schemaErrors .= sprintf("[%s] %s\n", $error['property'], $error['message']);
         }
+    }
+
+    /**
+     * Generates a valid user token to be used on requests.
+     *
+     * @param string|null $userName          Overrides the default userName value (usr001)
+     * @param string|null $credentialPubKey  Overrides the default credential
+     * @param string|null $credentialPrivKey Overrides the default credential
+     *
+     * @return string
+     */
+    protected function userToken(
+        $userName = 'usr001',
+        $credentialPubKey = null,
+        $credentialPrivKey = null
+    ) {
+        if ((empty($credentialPubKey)) || (empty($credentialPrivKey))) {
+            $credentialPubKey  = '4c9184f37cff01bcdc32dc486ec36961';
+            $credentialPrivKey = '2c17c6393771ee3048ae34d6b380c5ec';
+        }
+
+        return Token::generateUserToken(
+            $userName,
+            $credentialPubKey,
+            $credentialPrivKey
+        );
+    }
+
+    /**
+     * Generates a valid user token header to be used on requests.
+     *
+     * @param string|null $token Overrides the default token
+     *
+     * @return string
+     */
+    protected function userTokenHeader($token = null) {
+        if (empty($token)) {
+            $token = $this->userToken();
+        }
+
+        return sprintf('UserToken %s', $token);
+    }
+
+    /**
+     * Generates a valid company token to be used on requests.
+     *
+     * @param string|null $subject        Overrides the default subject value (4c9184f37cff01bcdc32dc486ec36961:usr001)
+     * @param string|null $companyPubKey  Overrides the default company
+     * @param string|null $companyPrivKey Overrides the default company
+     *
+     * @return string
+     */
+    protected function companyToken(
+        $subject = '4c9184f37cff01bcdc32dc486ec36961:usr001',
+        $companyPubKey = null,
+        $companyPrivKey = null
+    ) {
+        if ((empty($companyPubKey)) || (empty($companyPrivKey))) {
+            $companyPubKey  = '8b5fe9db84e338b424ed6d59da3254a0';
+            $companyPrivKey = '4e37dae79456985ae0d27a67639cf335';
+        }
+
+        return Token::generateCompanyToken(
+            $subject,
+            $companyPubKey,
+            $companyPrivKey
+        );
+    }
+
+    /**
+     * Generates a valid company token header to be used on requests.
+     *
+     * @param string|null $token Overrides the default token
+     *
+     * @return string
+     */
+    protected function companyTokenHeader($token = null) {
+        if (empty($token)) {
+            $token = $this->companyToken();
+        }
+
+        return sprintf('CompanyToken %s', $token);
+    }
+
+    /**
+     * Generates a valid company token to be used on requests.
+     *
+     * @param string|null $credentialPubKey Overrides the default credentialPubKey value (4c9184f37cff01bcdc32dc486ec36961)
+     * @param string|null $handlerPubKey    Overrides the default handler
+     * @param string|null $handlerPrivKey   Overrides the default handler
+     *
+     * @return string
+     */
+    protected function credentialToken(
+        $credentialPubKey = '4c9184f37cff01bcdc32dc486ec36961',
+        $handlerPubKey = null,
+        $handlerPrivKey = null
+    ) {
+        if ((empty($handlerPubKey)) || (empty($handlerPrivKey))) {
+            $handlerPubKey  = 'ef970ffad1f1253a2182a88667233991';
+            $handlerPrivKey = '213b83392b80ee98c8eb2a9fed9bb84d';
+        }
+
+        return Token::generateCredentialToken(
+            $credentialPubKey,
+            $handlerPubKey,
+            $handlerPrivKey
+        );
+    }
+
+    /**
+     * Generates a valid credential token header to be used on requests.
+     *
+     * @param string|null $token Overrides the default token
+     *
+     * @return string
+     */
+    protected function credentialTokenHeader($token = null) {
+        if (empty($token)) {
+            $token = $this->credentialToken();
+        }
+
+        return sprintf('CredentialToken %s', $token);
     }
 }

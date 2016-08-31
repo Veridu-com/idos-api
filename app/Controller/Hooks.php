@@ -79,10 +79,10 @@ class Hooks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany    = $request->getAttribute('actingCompany');
+        $company          = $request->getAttribute('company');
         $credentialPubKey = $request->getAttribute('pubKey');
 
-        $credential = $this->credentialRepository->findOneByCompanyIdAndPubKey($actingCompany->id, $credentialPubKey);
+        $credential = $this->credentialRepository->findOneByCompanyIdAndPubKey($company->id, $credentialPubKey);
         $hooks      = $this->repository->getAllByCredentialId($credential->id);
 
         $body = [
@@ -115,14 +115,13 @@ class Hooks implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $bodyRequest = $request->getParsedBody();
 
-        $actingCompany    = $request->getAttribute('actingCompany');
-        $targetCompany    = $request->getAttribute('targetCompany');
+        $company          = $request->getAttribute('company');
         $credentialPubKey = $request->getAttribute('pubKey');
 
         $command = $this->commandFactory->create('Hook\\CreateNew');
         $command
             ->setParameter('credentialPubKey', $credentialPubKey)
-            ->setParameter('company', $targetCompany)
+            ->setParameter('company', $company)
             ->setParameters($bodyRequest);
 
         $hook = $this->commandBus->handle($command);
@@ -156,15 +155,14 @@ class Hooks implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $bodyRequest = $request->getParsedBody();
 
-        $actingCompany    = $request->getAttribute('actingCompany');
-        $targetCompany    = $request->getAttribute('targetCompany');
+        $company          = $request->getAttribute('company');
         $credentialPubKey = $request->getAttribute('pubKey');
 
         $command = $this->commandFactory->create('Hook\\UpdateOne');
         $command
             ->setParameter('hookId', $request->getAttribute('decodedHookId'))
             ->setParameter('credentialPubKey', $credentialPubKey)
-            ->setParameter('company', $targetCompany)
+            ->setParameter('company', $company)
             ->setParameters($bodyRequest);
 
         $hook = $this->commandBus->handle($command);
@@ -195,13 +193,12 @@ class Hooks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany    = $request->getAttribute('actingCompany');
-        $targetCompany    = $request->getAttribute('targetCompany');
+        $company          = $request->getAttribute('company');
         $credentialPubKey = $request->getAttribute('pubKey');
 
         $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
 
-        if ($credential->companyId != $targetCompany->id) {
+        if ($credential->companyId != $company->id) {
             throw new NotFound();
         }
 
@@ -236,14 +233,13 @@ class Hooks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany    = $request->getAttribute('actingCompany');
-        $targetCompany    = $request->getAttribute('targetCompany');
+        $company          = $request->getAttribute('company');
         $credentialPubKey = $request->getAttribute('pubKey');
 
         $command = $this->commandFactory->create('Hook\\DeleteAll');
         $command
             ->setParameter('credentialPubKey', $credentialPubKey)
-            ->setParameter('company', $targetCompany);
+            ->setParameter('company', $company);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -270,15 +266,14 @@ class Hooks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany    = $request->getAttribute('actingCompany');
-        $targetCompany    = $request->getAttribute('targetCompany');
+        $company          = $request->getAttribute('company');
         $credentialPubKey = $request->getAttribute('pubKey');
 
         $command = $this->commandFactory->create('Hook\\DeleteOne');
         $command
             ->setParameter('hookId', $request->getAttribute('decodedHookId'))
             ->setParameter('credentialPubKey', $credentialPubKey)
-            ->setParameter('company', $targetCompany);
+            ->setParameter('company', $company);
 
         $deleted = $this->commandBus->handle($command);
         $body    = [

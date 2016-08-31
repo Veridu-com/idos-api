@@ -69,8 +69,8 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
-        $entities      = $this->repository->getAllByCompany($actingCompany, $request->getQueryParams());
+        $company  = $request->getAttribute('company');
+        $entities = $this->repository->getAllByCompany($company, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),
@@ -99,10 +99,10 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
-        $serviceId     = (int) $request->getAttribute('decodedServiceId');
+        $company   = $request->getAttribute('company');
+        $serviceId = (int) $request->getAttribute('decodedServiceId');
 
-        $entity = $this->repository->findOne($serviceId, $actingCompany);
+        $entity = $this->repository->findOne($serviceId, $company);
 
         $body = [
             'data' => $entity->toArray()
@@ -139,12 +139,12 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
+        $company = $request->getAttribute('company');
 
         $command = $this->commandFactory->create('Service\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('company', $actingCompany);
+            ->setParameter('company', $company);
 
         $entity = $this->commandBus->handle($command);
 
@@ -174,10 +174,10 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
+        $company = $request->getAttribute('company');
 
         $command = $this->commandFactory->create('Service\\DeleteAll');
-        $command->setParameter('company', $actingCompany);
+        $command->setParameter('company', $company);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -203,12 +203,12 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
-        $serviceId     = $request->getAttribute('decodedServiceId');
+        $company   = $request->getAttribute('company');
+        $serviceId = $request->getAttribute('decodedServiceId');
 
         $command = $this->commandFactory->create('Service\\DeleteOne');
         $command
-            ->setParameter('company', $actingCompany)
+            ->setParameter('company', $company)
             ->setParameter('serviceId', $serviceId);
 
         $body = [
@@ -244,14 +244,14 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingCompany = $request->getAttribute('actingCompany');
-        $serviceId     = $request->getAttribute('decodedServiceId');
+        $company   = $request->getAttribute('company');
+        $serviceId = $request->getAttribute('decodedServiceId');
 
         $command = $this->commandFactory->create('Service\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('serviceId', $serviceId)
-            ->setParameter('company', $actingCompany);
+            ->setParameter('company', $company);
 
         $entity = $this->commandBus->handle($command);
 

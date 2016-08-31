@@ -72,8 +72,8 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
-        $entities   = $this->repository->findByIdentity($actingUser->identity_id);
+        $user     = $request->getAttribute('user');
+        $entities = $this->repository->findByIdentity($user->identity_id);
 
         $body = [
             'data'    => $entities->toArray(),
@@ -107,10 +107,10 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser          = $request->getAttribute('actingUser');
+        $user                = $request->getAttribute('user');
         $decodedRoleAccessId = $request->getAttribute('decodedRoleAccessId');
 
-        $entity = $this->repository->findOne($actingUser->identityId, $decodedRoleAccessId);
+        $entity = $this->repository->findOne($user->identityId, $decodedRoleAccessId);
 
         $body = [
             'data' => $entity->toArray()
@@ -140,13 +140,13 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
-        $body       = $request->getParsedBody();
+        $user = $request->getAttribute('user');
+        $body = $request->getParsedBody();
 
         $command = $this->commandFactory->create('RoleAccess\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('identityId', $actingUser->identityId);
+            ->setParameter('identityId', $user->identityId);
         $entity = $this->commandBus->handle($command);
 
         $body = [
@@ -175,10 +175,10 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser = $request->getAttribute('actingUser');
+        $user = $request->getAttribute('user');
 
         $command = $this->commandFactory->create('RoleAccess\\DeleteAll');
-        $command->setParameter('identityId', $actingUser->identityId);
+        $command->setParameter('identityId', $user->identityId);
 
         $deleted = $this->commandBus->handle($command);
 
@@ -211,11 +211,11 @@ class RoleAccess implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser          = $request->getAttribute('actingUser');
+        $user                = $request->getAttribute('user');
         $decodedRoleAccessId = $request->getAttribute('decodedRoleAccessId');
 
         $command = $this->commandFactory->create('RoleAccess\\DeleteOne');
-        $command->setParameter('identityId', $actingUser->identityId);
+        $command->setParameter('identityId', $user->identityId);
         $command->setParameter('roleAccessId', $decodedRoleAccessId);
 
         $deleted = $this->commandBus->handle($command);
@@ -252,14 +252,14 @@ class RoleAccess implements ControllerInterface {
      * @see App\Command\RoleAccess\UpdateOne
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $actingUser          = $request->getAttribute('actingUser');
+        $user                = $request->getAttribute('user');
         $decodedRoleAccessId = $request->getAttribute('decodedRoleAccessId');
 
         $command = $this->commandFactory->create('RoleAccess\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('roleAccessId', $decodedRoleAccessId)
-            ->setParameter('identityId', $actingUser->identityId);
+            ->setParameter('identityId', $user->identityId);
 
         $entity = $this->commandBus->handle($command);
 
