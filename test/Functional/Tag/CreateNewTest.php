@@ -59,6 +59,5 @@ class CreateNewTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
-
     }
 }

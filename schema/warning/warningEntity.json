@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/user/warningEntity.json",
+    "title": "Warning",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Warning Name",
+            "type": "string",
+            "pattern": ""
+        },
+        "slug": {
+            "description": "Slug based on Warning's name",
+            "type": "string",
+            "pattern": "[a-zA-Z0-9_-]+"
+        },
+        "user_id": {
+            "description": "User owner of the warning",
+            "type": "integer"
+        },
+        "created_at": {
+            "description": "Warning's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Warning's last updated unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "dependencies": {
+        "slug": ["name"]
+    },
+    "required": [
+        "name",
+        "slug",
+        "user_id",
+        "created_at"
+    ]
+}

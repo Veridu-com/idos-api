@@ -4,60 +4,53 @@
  * All rights reserved.
  */
 
-declare(strict_types = 1);
+namespace Test\Functional\Warning;
 
-namespace Test\Functional\Normalised;
-
+use App\Helper\Token;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
 use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\HasAuthCredentialToken;
 
 class CreateNewTest extends AbstractFunctional {
     use HasAuthMiddleware;
     use HasAuthCredentialToken;
 
-
     protected function setUp() {
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/sources/1860914067/normalised';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_CONTENT_TYPE' => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
 
+        $name    = 'Testing';
+        $value   = 'testing';
         $request = $this->createRequest(
-            $environment,
-            json_encode(
+            $environment, json_encode(
                 [
-                    'name'  => 'name-test',
-                    'value' => 'value-test'
+                    'name' => $name,
                 ]
             )
         );
-
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode());
+        $body     = json_decode($response->getBody(), true);
 
-        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
+        $this->assertSame(201, $response->getStatusCode());
         $this->assertTrue($body['status']);
-        $this->assertSame('name-test', $body['data']['name']);
-        $this->assertSame('value-test', $body['data']['value']);
+        $this->assertSame($name, $body['data']['name']);
         /*
          * Validates Json Schema against Json Response'
          */
         $this->assertTrue(
-            $this->validateSchema(
-                'normalised/createNew.json',
-                json_decode((string) $response->getBody())
-            ),
+            $this->validateSchema('warning/createNew.json', json_decode($response->getBody())),
             $this->schemaErrors
         );
     }
