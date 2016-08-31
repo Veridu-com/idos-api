@@ -57,20 +57,6 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        // Identity gates status
-        $gates = $this->table('gates');
-        $gates
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('pass', 'boolean', ['null' => false, 'default' => 'FALSE'])
-
-            ->addTimestamps()
-            ->addIndex('identity_id')
-            ->addIndex('name')
-            ->addIndex(['identity_id', 'name'], ['unique' => true])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         // Identity features
         // $features = $this->table('features');
         // $features
@@ -255,6 +241,20 @@ class DatabaseInit extends AbstractMigration {
             ->addTimestamps()
             ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $gates = $this->table('gates');
+        $gates
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
+            ->addColumn('pass', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addIndex('name')
+            ->addIndex(['user_id', 'name'], ['unique' => true])
+            ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
