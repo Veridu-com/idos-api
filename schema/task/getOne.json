@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /profiles/{userName}/processes/{processId}/{taskId}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Task response payload",
+            "type": "object",
+            "$ref": "taskEntity.json"
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

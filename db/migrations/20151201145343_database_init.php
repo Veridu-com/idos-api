@@ -411,6 +411,29 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
+        $processes = $this->table('processes');
+        $processes
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('event', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $tasks = $this->table('tasks');
+        $tasks
+            ->addColumn('process_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('event', 'text', ['null' => false])
+            ->addColumn('running', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addColumn('success', 'boolean', ['null' => true])
+            ->addColumn('message', 'binary', ['null' => true])
+            ->addTimestamps()
+            ->addIndex('process_id')
+            ->addForeignKey('process_id', 'processes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         /*
          *
          * SOURCE RELATED TABLES
@@ -541,18 +564,6 @@ class DatabaseInit extends AbstractMigration {
                     'default'  => 'CURRENT_TIMESTAMP',
                 ]
             )
-            ->addIndex('source_id')
-            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $tasks = $this->table('tasks');
-        $tasks
-            ->addColumn('source_id', 'integer', ['null' => false])
-            ->addColumn('type', 'text', ['null' => false])
-            ->addColumn('running', 'boolean', ['null' => false, 'default' => 'FALSE'])
-            ->addColumn('success', 'boolean', ['null' => false, 'default' => 'FALSE'])
-            ->addColumn('message', 'binary', ['null' => true])
-            ->addTimestamps()
             ->addIndex('source_id')
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();

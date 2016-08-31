@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /profiles/{userName}/processes/{processId}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Task response payload",
+            "type": "object",
+            "$ref": "taskEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}
