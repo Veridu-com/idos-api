@@ -7,7 +7,7 @@
 namespace Test\Functional\Token;
 
 use App\Middleware\Auth;
-use App\Repository\DBUser;
+use App\Helper\Token as TokenHelper;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 
@@ -21,11 +21,11 @@ class ExchangeTest extends AbstractFunctional {
         /**
          * First part, where we make a request to exchange out user token by a company token.
          */
-        $token       = DBUser::generateToken(md5('JohnDoe1'), md5('private'), md5('public'));
+        $token       = TokenHelper::generateUserToken(md5('JohnDoe1'), md5('public'), md5('private'));
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE' => 'application/json',
-                'QUERY_STRING'      => 'userToken=' . $token
+                'HTTP_AUTHORIZATION' => $this->userTokenHeader($token)
             ]
         );
 
@@ -51,7 +51,7 @@ class ExchangeTest extends AbstractFunctional {
         /**
          * Second part, decode the token and test for its integrity.
          */
-        $authMiddleware = $this->getApp()->getContainer()->get('authMiddleware')(Auth::COMP_TOKEN);
+        $authMiddleware = $this->getApp()->getContainer()->get('authMiddleware')(Auth::COMPANY);
         $reflection     = new \ReflectionClass($authMiddleware);
         $method         = $reflection->getMethod('handleCompanyToken');
         $method->setAccessible(true);
@@ -59,7 +59,7 @@ class ExchangeTest extends AbstractFunctional {
         $request = $method->invokeArgs($authMiddleware, [$request, $companyToken]);
 
         $company    = $request->getAttribute('company');
-        $actingUser = $request->getAttribute('actingUser');
+        $actingUser = $request->getAttribute('user');
         $credential = $request->getAttribute('credential');
 
         $this->assertSame($company->id, $credential->companyId);

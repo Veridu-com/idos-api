@@ -81,7 +81,7 @@ class Tokens implements ControllerInterface {
         $targetCompany = $this->companyRepository->findBySlug($slug);
 
         $command
-            ->setParameter('user', $request->getAttribute('actingUser'))
+            ->setParameter('user', $request->getAttribute('user'))
             ->setParameter('actingCompany', $request->getAttribute('company'))
             ->setParameter('targetCompany', $targetCompany)
             ->setParameter('credential', $request->getAttribute('credential'));

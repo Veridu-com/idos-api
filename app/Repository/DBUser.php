@@ -13,6 +13,7 @@ use App\Entity\Credential;
 use App\Entity\User;
 use App\Exception\AppException;
 use App\Exception\NotFound;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based User Repository Implementation.

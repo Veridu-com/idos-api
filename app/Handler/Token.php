@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
+use App\Helper\Token as TokenHelper;
 use App\Command\Token\Exchange;
-use App\Repository\DBCompany;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 
@@ -68,7 +68,7 @@ class Token implements HandlerInterface {
         $relatedUsers    = $this->userRepository->findAllRelatedToCompany($user, $targetCompany);
         $highestRoleUser = $relatedUsers->first();
 
-        $companyToken = DBCompany::generateToken(implode(':', [$highestRoleUser->public, $highestRoleUser->username]), $targetCompany->private_key, $targetCompany->public_key);
+        $companyToken = TokenHelper::generateCompanyToken(implode(':', [$highestRoleUser->public, $highestRoleUser->username]), $targetCompany->public_key, $targetCompany->private_key);
 
         return $companyToken;
     }

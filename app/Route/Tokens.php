@@ -80,7 +80,7 @@ class Tokens implements RouteInterface {
                 'App\Controller\Tokens:exchange'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::USER_TOKEN))
+            ->add($auth(Auth::USER))
             ->setName('token:exchange');
     }
 }
