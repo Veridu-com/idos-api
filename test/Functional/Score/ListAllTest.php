@@ -4,13 +4,16 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Mapped;
+namespace Test\Functional\Source;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits\HasAuthCredentialToken;
 use Test\Functional\Traits\HasAuthMiddleware;
 
 class ListAllTest extends AbstractFunctional {
+    use HasAuthMiddleware;
+    use HasAuthCredentialToken;
+
     protected function setUp() {
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/user1Attribute1/scores';
@@ -26,11 +29,10 @@ class ListAllTest extends AbstractFunctional {
 
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        
-        $body     = json_decode($response->getBody(), true);
+        $this->assertSame(200, $response->getStatusCode());
 
+        $body     = json_decode($response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertEquals(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -45,25 +47,25 @@ class ListAllTest extends AbstractFunctional {
         );
     }
 
-    /*public function testFilter() {
+    public function testFilter() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                'QUERY_STRING' => 'names=source-3-score-1&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING' => 'names=source-3-score-1'
                 ]
             )
         );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-
-        $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
+
+        $body     = json_decode($response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
 
-        $this->assertEquals(1, count($body['data']));
-
-        foreach($body['data'] as $score) {
+        foreach ($body['data'] as $score) {
             $this->assertContains($score['name'], ['source-3-score-1']);
             $this->assertContains($score['value'], ['value-3']);
         }
@@ -81,21 +83,21 @@ class ListAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                'QUERY_STRING' => 'names=source-3-score-1,source-3-score-2&credentialToken=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc'
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING' => 'names=source-3-score-1,source-3-score-2'
                 ]
             )
         );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-
-        $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
+
+        $body     = json_decode($response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertCount(2, $body['data']);
 
-        $this->assertSame(2, count($body['data']));
-
-        foreach($body['data'] as $score) {
+        foreach ($body['data'] as $score) {
             $this->assertContains($score['name'], ['source-3-score-1', 'source-3-score-2']);
             $this->assertContains($score['value'], ['value-3', 'value-32']);
         }
@@ -107,5 +109,5 @@ class ListAllTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
-    }*/
+    }
 }
