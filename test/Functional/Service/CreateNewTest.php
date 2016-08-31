@@ -24,7 +24,8 @@ class CreateNewTest extends AbstractFunctional {
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
-                'HTTP_CONTENT_TYPE' => 'application/json'
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
@@ -51,7 +52,7 @@ class CreateNewTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(201, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertNotEmpty($body['data']);
@@ -62,7 +63,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'service/createNew.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

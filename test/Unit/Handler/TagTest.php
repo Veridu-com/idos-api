@@ -222,7 +222,7 @@ class TagTest extends AbstractUnit {
         $commandMock->companyId = 1;
         $commandMock->userId    = 1;
 
-        $this->assertEquals(1, $handler->handleDeleteOne($commandMock));
+        $this->assertSame(1, $handler->handleDeleteOne($commandMock));
     }
 
     public function testHandleDeleteAll() {
@@ -257,6 +257,6 @@ class TagTest extends AbstractUnit {
 
         $commandMock->user = $this->getUserEntity();
 
-        $this->assertEquals(1, $handler->handleDeleteAll($commandMock));
+        $this->assertSame(1, $handler->handleDeleteAll($commandMock));
     }
 }

@@ -86,7 +86,7 @@ class Features implements RouteInterface {
                 'App\Controller\Features:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:listAll');
     }
 
@@ -117,7 +117,7 @@ class Features implements RouteInterface {
                 'App\Controller\Features:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:createNew');
     }
 
@@ -148,7 +148,7 @@ class Features implements RouteInterface {
                 'App\Controller\Features:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:deleteOne');
     }
 
@@ -179,7 +179,7 @@ class Features implements RouteInterface {
                 'App\Controller\Features:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:deleteAll');
     }
 
@@ -210,7 +210,7 @@ class Features implements RouteInterface {
                 'App\Controller\Features:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:getOne');
     }
 
@@ -241,7 +241,7 @@ class Features implements RouteInterface {
                 'App\Controller\Features:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('features:updateOne');
     }
 }

@@ -10,7 +10,6 @@ namespace App\Repository;
 
 use App\Entity\Company;
 use Illuminate\Support\Collection;
-use Lcobucci\JWT;
 
 /**
  * Database-based Company Repository Implementation.
@@ -84,25 +83,5 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
         $parent = $this->find($child->parentId);
 
         return $this->isParent($parent, $child);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function generateToken($subject, string $companyPrivKey, string $companyPubKey) : string {
-        $jwtParser     = new JWT\Parser();
-        $jwtValidation = new JWT\ValidationData();
-        $jwtSigner     = new JWT\Signer\Hmac\Sha256();
-        $jwtBuilder    = new JWT\Builder();
-
-        $jwtBuilder->set('iss', $companyPubKey);
-
-        if ($subject !== null) {
-            $jwtBuilder->set('sub', $subject);
-        }
-
-        return (string) $jwtBuilder
-            ->sign($jwtSigner, $companyPrivKey)
-            ->getToken();
     }
 }
