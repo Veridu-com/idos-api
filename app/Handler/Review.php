@@ -85,7 +85,9 @@ class Review implements HandlerInterface {
      * @return App\Entity\Review
      */
     public function handleCreateNew(CreateNew $command) : ReviewEntity {
+        $this->validator->assertUser($command->user);
         $this->validator->assertId($command->warningId);
+        $this->validator->assertFlag($command->positive);
 
         $review = $this->repository->create(
             [
@@ -115,6 +117,10 @@ class Review implements HandlerInterface {
      * @return App\Entity\Review
      */
     public function handleUpdateOne(UpdateOne $command) : ReviewEntity {
+        $this->validator->assertId($command->id);
+        $this->validator->assertUser($command->user);
+        $this->validator->assertFlag($command->positive);
+
         $review           = $this->repository->findOneByUserIdAndId($command->user->id, $command->id);
         $review->positive = $command->positive;
 
