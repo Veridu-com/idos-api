@@ -37,7 +37,6 @@ class Processes implements RouteInterface {
         $app->getContainer()[\App\Controller\Processes::class] = function (ContainerInterface $container) {
             return new \App\Controller\Processes(
                 $container->get('repositoryFactory')->create('Process'),
-                $container->get('repositoryFactory')->create('Task'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );

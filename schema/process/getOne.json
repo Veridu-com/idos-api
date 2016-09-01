@@ -13,7 +13,7 @@
             "data": {
                 "description": "Process response payload",
                 "type": "object",
-                "$ref": "../task/taskEntity.json"
+                "$ref": "processEntity.json"
             },
             "properties":
             {

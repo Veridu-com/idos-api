@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "GET /profiles/{userName}/processes/{processId}/{taskId}",
+    "title": "GET /profiles/{userName}/processes/{processId}/tasks/{taskId}",
     "type": "object",
     "properties": {
         "status": {

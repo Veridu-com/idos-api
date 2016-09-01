@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "POST /profiles/{userName}/processes/{processId}",
+    "title": "POST /profiles/{userName}/processes/{processId}/tasks",
     "type": "object",
     "properties": {
         "status": {

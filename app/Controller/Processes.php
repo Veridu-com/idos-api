@@ -10,7 +10,6 @@ namespace App\Controller;
 
 use App\Factory\Command;
 use App\Repository\ProcessInterface;
-use App\Repository\TaskInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -25,12 +24,6 @@ class Processes implements ControllerInterface {
      * @var App\Repository\ProcessInterface
      */
     private $repository;
-    /**
-     * Task Repository instance.
-     *
-     * @var App\Repository\TaskInterface
-     */
-    private $taskRepository;
     /**
      * Command Bus instance.
      *
@@ -55,12 +48,10 @@ class Processes implements ControllerInterface {
      */
     public function __construct(
         ProcessInterface $repository,
-        TaskInterface $taskRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->repository     = $repository;
-        $this->taskRepository = $taskRepository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }
@@ -113,16 +104,10 @@ class Processes implements ControllerInterface {
         $processId = $request->getAttribute('decodedProcessId');
 
         $process = $this->repository->find($processId);
-        $result  = $this->taskRepository->getAllByProcessId($process->id, $request->getQueryParams());
-
-        $entities = $result['collection'];
 
         $body = [
-            'data'       => $entities->toArray(),
-            'pagination' => $result['pagination'],
-            'updated'    => (
-                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
-            )
+            'data'    => $process->toArray(),
+            'updated' => $process->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

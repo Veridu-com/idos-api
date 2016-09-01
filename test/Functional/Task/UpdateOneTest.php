@@ -30,7 +30,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->process = $this->getRandomEntity();
 
         $this->populate(
-            sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes/%s', $this->process['id']),
+            sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes/%s/tasks', $this->process['id']),
             'GET',
             [
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
@@ -39,7 +39,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->task = $this->getRandomEntity();
 
         $this->uri = sprintf(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes/%s/%s',
+            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes/%s/tasks/%s',
             $this->process['id'],
             $this->task['id']
         );
@@ -78,7 +78,10 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes/1111/123';
+        $this->uri = sprintf(
+            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes/%s/tasks/1234',
+            $this->process['id']
+        );
 
         $environment = $this->createEnvironment(
             [

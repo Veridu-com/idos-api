@@ -168,11 +168,13 @@
 
 [GET /1.0/profiles/:userName/processes/:processId](profiles/processes/getOne.md)
 
-[POST /1.0/profiles/:userName/processes/:processId](profiles/tasks/createNew.md)
+[GET /1.0/profiles/:userName/processes/:processId/tasks](profiles/tasks/listAll.md)
 
-[GET /1.0/profiles/:userName/processes/:processId/:taskId](profiles/tasks/getOne.md)
+[POST /1.0/profiles/:userName/processes/:processId/tasks](profiles/tasks/createNew.md)
 
-[PUT /1.0/profiles/:userName/processes/:processId/:taskId](profiles/tasks/updateOne.md)
+[GET /1.0/profiles/:userName/processes/:processId/tasks/:taskId](profiles/tasks/getOne.md)
+
+[PUT /1.0/profiles/:userName/processes/:processId/tasks/:taskId](profiles/tasks/updateOne.md)
 
 ## Tokens API
 
