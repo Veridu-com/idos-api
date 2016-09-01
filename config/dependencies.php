@@ -40,6 +40,7 @@ use Slim\HttpCache\CacheProvider;
 use Stash\Driver\FileSystem;
 use Stash\Driver\Redis;
 use Whoops\Handler\PrettyPageHandler;
+use MongoDB\Driver as MongoDB;
 
 if (! isset($app)) {
     die('$app is not set!');
@@ -376,6 +377,13 @@ $container['db'] = function (ContainerInterface $container) : Connection {
 
     return $capsule->getConnection();
 };
+
+// MongoDB Access
+$container['mongoDb'] = function (ContainerInterface $container) : MongoDB\Manager {
+    $mongoDbSettings = $container->get('settings')['mongoDb'];
+
+    return new MongoDB\Manager('mongodb://' . $mongoDbSettings['host'] . ':' . $mongoDbSettings['port']);
+}
 
 // Respect Validator
 $container['validator'] = function (ContainerInterface $container) : Validator {
