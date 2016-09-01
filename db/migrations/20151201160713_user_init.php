@@ -124,5 +124,28 @@ class UserInit extends AbstractMigration {
             ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
+
+        $processes = $this->table('processes');
+        $processes
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('event', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $tasks = $this->table('tasks');
+        $tasks
+            ->addColumn('process_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('event', 'text', ['null' => false])
+            ->addColumn('running', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addColumn('success', 'boolean', ['null' => true])
+            ->addColumn('message', 'binary', ['null' => true])
+            ->addTimestamps()
+            ->addIndex('process_id')
+            ->addForeignKey('process_id', 'processes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
     }
 }

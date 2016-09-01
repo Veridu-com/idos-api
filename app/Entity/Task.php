@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Entity;
 
 use App\Extension\SecureFields;
-use App\Helper\Utils;
 
 /**
  * Task Entity.
@@ -20,8 +19,8 @@ use App\Helper\Utils;
  * @property string  $name
  * @property string  $event
  * @property string  $message
- * @property boolean $running
- * @property boolean $success
+ * @property bool $running
+ * @property bool $success
  * @property int     $process_id
  * @property int     $created_at
  * @property int     $updated_at
@@ -36,7 +35,7 @@ class Task extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'event', 'running', 'success', 'process_id', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'name', 'event', 'running', 'success', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */

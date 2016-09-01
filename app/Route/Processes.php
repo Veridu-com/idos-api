@@ -37,6 +37,7 @@ class Processes implements RouteInterface {
         $app->getContainer()[\App\Controller\Processes::class] = function (ContainerInterface $container) {
             return new \App\Controller\Processes(
                 $container->get('repositoryFactory')->create('Process'),
+                $container->get('repositoryFactory')->create('Task'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );
@@ -77,7 +78,7 @@ class Processes implements RouteInterface {
                 'App\Controller\Processes:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('processes:listAll');
     }
 
@@ -108,7 +109,7 @@ class Processes implements RouteInterface {
                 'App\Controller\Processes:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CRED_TOKEN))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('processes:getOne');
     }
 }

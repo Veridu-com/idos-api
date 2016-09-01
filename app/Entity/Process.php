@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Entity;
 
 use App\Extension\SecureFields;
-use App\Helper\Utils;
 
 /**
  * Process Entity.
@@ -25,6 +24,7 @@ use App\Helper\Utils;
  */
 class Process extends AbstractEntity {
     use SecureFields;
+
     /**
      * {@inheritdoc}
      */
@@ -33,7 +33,7 @@ class Process extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'event', 'user_id', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'name', 'event', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */

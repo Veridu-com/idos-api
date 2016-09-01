@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Factory\Command;
 use App\Repository\ProcessInterface;
+use App\Repository\TaskInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,11 +20,17 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Processes implements ControllerInterface {
     /**
-     * Setting Repository instance.
+     * Process Repository instance.
      *
      * @var App\Repository\ProcessInterface
      */
     private $repository;
+    /**
+     * Task Repository instance.
+     *
+     * @var App\Repository\TaskInterface
+     */
+    private $taskRepository;
     /**
      * Command Bus instance.
      *
@@ -48,10 +55,12 @@ class Processes implements ControllerInterface {
      */
     public function __construct(
         ProcessInterface $repository,
+        TaskInterface $taskRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->repository     = $repository;
+        $this->taskRepository = $taskRepository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }
@@ -103,14 +112,13 @@ class Processes implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $processId = $request->getAttribute('decodedProcessId');
 
-        $result = $this->repository->findWithTasks((int) $processId, $request->getQueryParams());
-
-        var_dump($result); die;
+        $process = $this->repository->find($processId);
+        $result  = $this->taskRepository->getAllByProcessId($process->id, $request->getQueryParams());
 
         $entities = $result['collection'];
 
         $body = [
-            'data'    => $entities->toArray(),
+            'data'       => $entities->toArray(),
             'pagination' => $result['pagination'],
             'updated'    => (
                 $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))

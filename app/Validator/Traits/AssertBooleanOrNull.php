@@ -13,7 +13,7 @@ use Respect\Validation\Validator;
 /**
  * Trait to add event assertion.
  */
-trait AssertBoolean {
+trait AssertBooleanOrNull {
     /**
      * Asserts a valid boolean.
      *
@@ -23,8 +23,10 @@ trait AssertBoolean {
      *
      * @return void
      */
-    public function assertBoolean($boolean) {
-        Validator::boolType()
-            ->assert($boolean);
+    public function assertBooleanOrNull($boolean) {
+        Validator::oneOf(
+            Validator::boolType(),
+            Validator::nullType()
+        )->assert($boolean);
     }
 }

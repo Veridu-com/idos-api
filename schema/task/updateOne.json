@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "PUT /profiles/{userName}/features/{featureSlug}",
+    "title": "PUT /profiles/{userName}/processes/{processId}/{taskId}",
     "type": "object",
     "properties": {
         "status": {
@@ -10,7 +10,7 @@
         "data": {
             "description": "Settings response payload",
             "type": "object",
-            "$ref": "featureEntity.json"
+            "$ref": "taskEntity.json"
         },
         "updated": {
             "description": "Unixtime of the last update",

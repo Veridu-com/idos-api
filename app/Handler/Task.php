@@ -87,24 +87,24 @@ class Task implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : TaskEntity {
         $this->validator->assertName($command->name);
         $this->validator->assertName($command->event);
-        $this->validator->assertBoolean($command->running);
-        $this->validator->assertBoolean($command->success);
+        $this->validator->assertBooleanOrNull($command->running);
+        $this->validator->assertBooleanOrNull($command->success);
         $this->validator->assertId($command->processId);
 
         $task = $this->repository->create(
             [
                 'name'       => $command->name,
                 'event'      => $command->event,
-                'running'      => $command->running,
-                'success'      => $command->success,
-                'message'      => $command->message,
-                'process_id'    => $command->processId,
+                'running'    => $command->running,
+                'success'    => $command->success,
+                'message'    => $command->message,
+                'process_id' => $command->processId,
                 'created_at' => time()
             ]
         );
 
         try {
-            $this->repository->save($task);
+            $task  = $this->repository->save($task);
             $event = new Created($task);
             $this->emitter->emit($event);
         } catch (Exception $e) {
@@ -122,24 +122,39 @@ class Task implements HandlerInterface {
      * @return App\Entity\Task
      */
     public function handleUpdateOne(UpdateOne $command) : TaskEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertName($command->event);
-        $this->validator->assertBoolean($command->running);
-        $this->validator->assertBoolean($command->success);
+        $this->validator->assertBooleanOrNull($command->success);
         $this->validator->assertId($command->id);
 
         $task = $this->repository->find($command->id);
 
-        $task->name       = $command->name;
-        $task->event      = $command->event;
-        $task->running      = $command->running;
-        $task->success      = $command->success;
-        $task->message      = $command->message;
-        $task->process_id    = $command->processId;
+        if ($command->name) {
+            $this->validator->assertName($command->name);
+            $task->name = $command->name;
+        }
+
+        if ($command->event) {
+            $this->validator->assertName($command->event);
+            $task->event = $command->event;
+        }
+
+        if ($command->running) {
+            $this->validator->assertBooleanOrNull($command->running);
+            $task->running = $command->running;
+        }
+
+        if ($command->success) {
+            $this->validator->assertBooleanOrNull($command->success);
+            $task->success = $command->success;
+        }
+
+        if ($command->message) {
+            $task->message = $command->message;
+        }
+
         $task->updatedAt = time();
 
         try {
-            $task = $this->repository->save($task);
+            $task  = $this->repository->save($task);
             $event = new Updated($task);
             $this->emitter->emit($event);
         } catch (Exception $e) {

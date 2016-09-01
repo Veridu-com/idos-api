@@ -14,10 +14,6 @@
             "type": "string",
             "pattern": ""
         },
-        "user_id": {
-            "description": "User owner of the process",
-            "type": "integer"
-        },
         "created_at": {
             "description": "Process's creation unixtime",
             "type": "integer"
@@ -32,7 +28,6 @@
     "required": [
         "name",
         "event",
-        "user_id",
         "created_at",
         "updated_at"
     ]

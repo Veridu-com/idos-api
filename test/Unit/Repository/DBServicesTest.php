@@ -29,9 +29,6 @@ class DBServiceTest extends AbstractUnit {
             ->getMock();
     }
 
-    /**
-     * @group failing
-     */
     public function testGetAll() {
          $array = [
             'id'         => null,

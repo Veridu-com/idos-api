@@ -189,12 +189,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         // tries to populate relations array mapped by the "." character
         $split = explode('.', $key);
         if (count($split) > 1) {
-            if ($this->relations[$split[0]][$split[1]]) {
-                $this->relations[$split[0]][$split[1]] = [$this->relations[$split[0]][$split[1]]];
-                if (sizeof($this->relations[$split[0]][$split[1]])) {
-                    # code...
-                }
-            }
             $this->relations[$split[0]][$split[1]] = $value;
         } else {
             $this->attributes[$key] = $value;
@@ -390,6 +384,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     public function __isset(string $key) : bool {
         return $this->getAttribute($key) !== null;
     }
+
     /**
      * Unset an attribute on the entity.
      *

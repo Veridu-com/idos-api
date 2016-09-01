@@ -35,13 +35,13 @@ class UpdateOne extends AbstractCommand {
     /**
      * Task's running flag.
      *
-     * @var boolean
+     * @var bool
      */
     public $running;
     /**
      * Task's success flag.
      *
-     * @var boolean
+     * @var bool
      */
     public $success;
     /**

@@ -168,7 +168,7 @@
 
 [GET /1.0/profiles/:userName/processes/:processId](profiles/processes/getOne.md)
 
-[POST /1.0/profiles/:userName/processes/:processId](profiles/processes/createNew.md)
+[POST /1.0/profiles/:userName/processes/:processId](profiles/tasks/createNew.md)
 
 [GET /1.0/profiles/:userName/processes/:processId/:taskId](profiles/tasks/getOne.md)
 

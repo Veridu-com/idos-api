@@ -4,6 +4,10 @@
     "title": "Task",
     "type": "object",
     "properties": {
+        "id": {
+            "description": "Task Id",
+            "type": "integer"
+        },
         "name": {
             "description": "Task Name",
             "type": "string",
@@ -14,22 +18,13 @@
             "type": "string",
             "pattern": ""
         },
-        "message": {
-            "description": "Task message",
-            "type": "string",
-            "pattern": ""
-        },
         "running": {
             "description": "Task running flag",
             "type": "boolean"
         },
-        "sucess": {
-            "description": "Task sucess flag",
-            "type": "boolean"
-        },
-        "process_id": {
-            "description": "Process owner of the task",
-            "type": "integer"
+        "success": {
+            "description": "Task success flag",
+            "type": ["boolean", "null"]
         },
         "created_at": {
             "description": "Task's creation unixtime",
@@ -41,12 +36,13 @@
         }
     },
     "dependencies": {
-        "slug": ["name"]
     },
     "required": [
+        "id",
         "name",
-        "slug",
-        "user_id",
+        "event",
+        "running",
+        "success",
         "created_at",
         "updated_at"
     ]

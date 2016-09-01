@@ -8,13 +8,11 @@ declare(strict_types = 1);
 
 namespace App\Validator;
 
-use Respect\Validation\Validator;
-
 /**
  * Task Validation Rules.
  */
 class Task implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertName,
-        Traits\AssertBoolean;
+        Traits\AssertBooleanOrNull;
 }

@@ -41,8 +41,8 @@ class Tasks implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\TaskInterface $repository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param \League\Tactician\CommandBus $commandBus
+     * @param App\Factory\Command          $commandFactory
      *
      * @return void
      */
@@ -67,7 +67,7 @@ class Tasks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $taskId = $request->getAttribute('taskId');
+        $taskId = $request->getAttribute('decodedTaskId');
 
         $task = $this->repository->find($taskId);
 
@@ -101,7 +101,7 @@ class Tasks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $processId = $request->getAttribute('processId');
+        $processId = $request->getAttribute('decodedProcessId');
 
         $command = $this->commandFactory->create('Task\\CreateNew');
         $command
@@ -141,13 +141,12 @@ class Tasks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $taskId        = $request->getAttribute('taskId');
-        $taskSlug = $request->getAttribute('taskSlug');
+        $taskId = $request->getAttribute('decodedTaskId');
 
         $command = $this->commandFactory->create('Task\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('taskId', $taskId);
+            ->setParameter('id', $taskId);
 
         $task = $this->commandBus->handle($command);
 

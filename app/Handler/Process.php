@@ -123,13 +123,13 @@ class Process implements HandlerInterface {
 
         $process = $this->repository->find($command->id);
 
-        $process->name     = $command->name;
+        $process->name      = $command->name;
         $process->event     = $command->event;
         $process->updatedAt = time();
 
         try {
             $process = $this->repository->save($process);
-            $event = new Updated($process);
+            $event   = new Updated($process);
             $this->emitter->emit($event);
         } catch (Exception $e) {
             throw new AppException('Error while updating a process' . $command->id);
