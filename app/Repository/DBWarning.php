@@ -70,6 +70,18 @@ class DBWarning extends AbstractDBRepository implements WarningInterface {
     /**
      * {@inheritdoc}
      */
+    public function findByUserIdAndId(int $userId, int $id) : Warning {
+        return $this->findOneBy(
+            [
+                'user_id' => $userId,
+                'id'      => $this->optimus->decode($id)
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findByUserIdAndSlug(int $userId, string $warningSlug) : Warning {
         return $this->findOneBy(
             [
