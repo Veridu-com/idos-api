@@ -65,10 +65,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/tags
      * @apiGroup Profile Tags
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth header key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -85,7 +83,7 @@ class Tags implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/tags',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags',
                 'App\Controller\Tags:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -99,10 +97,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/tags
      * @apiGroup Profile Tags
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth header key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -119,7 +115,7 @@ class Tags implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/tags',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags',
                 'App\Controller\Tags:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -134,10 +130,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/tags
      * @apiGroup Profile Tags
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth header key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -154,7 +148,7 @@ class Tags implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/tags',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags',
                 'App\Controller\Tags:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -169,10 +163,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/tags/{tagSlug}
      * @apiGroup Profile Tags
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth header key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string tagSlug tag-test
      *
@@ -190,7 +182,7 @@ class Tags implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/tags/{tagSlug}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags/{tagSlug:[a-z0-9_-]+}',
                 'App\Controller\Tags:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -205,10 +197,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/tags/{tagSlug}
      * @apiGroup Profile Tags
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth header key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Credential's Private Key
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string tagSlug tag-test
      *
@@ -226,7 +216,7 @@ class Tags implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/tags/{tagSlug}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags/{tagSlug:[a-z0-9_-]+}',
                 'App\Controller\Tags:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

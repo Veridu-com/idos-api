@@ -9,12 +9,12 @@ declare(strict_types = 1);
 namespace Test\Functional\Tag;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class ListAllTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -65,7 +65,8 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(1, count($body['data']));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $tag) {
             $this->assertContains($tag['name'], ['User 2 Tag 1']);
@@ -100,7 +101,7 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(2, count($body['data']));
+        $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $tag) {
             $this->assertContains($tag['name'], ['User 2 Tag 1', 'User 2 Tag 2']);

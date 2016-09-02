@@ -107,7 +107,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $serviceHandlerMock->listAll($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $serviceHandlerMock->listAll($requestMock, $responseMock));
     }
 
     public function testGetOne() {
@@ -162,7 +163,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $serviceHandlerMock->getOne($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $serviceHandlerMock->getOne($requestMock, $responseMock));
     }
 
     public function testCreateNew() {
@@ -212,7 +214,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $serviceHandlerMock->createNew($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $serviceHandlerMock->createNew($requestMock, $responseMock));
     }
 
     public function testDeleteAll() {
@@ -256,7 +259,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $serviceHandlerMock->deleteAll($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $serviceHandlerMock->deleteAll($requestMock, $responseMock));
     }
 
     public function testDeleteOne() {
@@ -306,7 +310,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $serviceHandlerMock->deleteOne($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $serviceHandlerMock->deleteOne($requestMock, $responseMock));
     }
 
     public function testUpdateOne() {
@@ -360,6 +365,7 @@ class ServiceHandlersTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $serviceHandlerMock->updateOne($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $serviceHandlerMock->updateOne($requestMock, $responseMock));
     }
 }

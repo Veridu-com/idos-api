@@ -107,13 +107,17 @@ class DBMemberTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
+
         $dbMember = new DBMember(
             new Entity($this->optimus),
             $this->optimus,
             $connectionMock
         );
+
         $result = $dbMember->getAllByCompanyId(1)->first();
-        $this->assertSame($this->getAttributes(), $result->toArray());
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($this->getAttributes(), $result->toArray());
     }
 
     public function testGetAllBycompanyIdAndRole() {
@@ -147,8 +151,11 @@ class DBMemberTest extends AbstractUnit {
             $this->optimus,
             $connectionMock
         );
+
         $result = $dbMember->getAllByCompanyIdAndRole(1, ['admin'])->first();
-        $this->assertSame($this->getAttributes(), $result->toArray());
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($this->getAttributes(), $result->toArray());
     }
 
     public function testFindOneNotFound() {
@@ -185,6 +192,7 @@ class DBMemberTest extends AbstractUnit {
             $this->optimus,
             $connectionMock
         );
+
         $this->setExpectedException(NotFound::class);
         $dbMember->findOne(0, 1);
     }
@@ -225,7 +233,9 @@ class DBMemberTest extends AbstractUnit {
         );
 
         $result = $dbMember->findOne(0, 1);
-        $this->assertSame($this->getAttributes(), $result->toArray());
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($this->getAttributes(), $result->toArray());
     }
 
     public function testDeleteOne() {
@@ -256,6 +266,7 @@ class DBMemberTest extends AbstractUnit {
             $this->optimus,
             $connectionMock
         );
+
         $this->assertSame(1, $dbMember->deleteOne(0, 1));
     }
 
@@ -287,6 +298,7 @@ class DBMemberTest extends AbstractUnit {
             $this->optimus,
             $connectionMock
         );
+
         $this->assertSame(3, $dbMember->deleteByCompanyId(1));
     }
 }

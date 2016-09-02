@@ -67,8 +67,8 @@ class Scores implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}/scores
      * @apiGroup Profile Attribute Score
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName firstName
      *
@@ -86,7 +86,7 @@ class Scores implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores',
                 'App\Controller\Scores:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -100,8 +100,8 @@ class Scores implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/attributes/{attributeName}/scores
      * @apiGroup Profile Attribute Score
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName firstName
      *
@@ -119,7 +119,7 @@ class Scores implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores',
                 'App\Controller\Scores:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -134,8 +134,8 @@ class Scores implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/attributes/{attributeName}/scores/{scoreName}
      * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName firstName
      * @apiEndpointURIFragment string scoreName overall
@@ -154,7 +154,7 @@ class Scores implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores/{scoreName}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores/{scoreName:[a-zA-Z0-9]+}',
                 'App\Controller\Scores:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -169,8 +169,8 @@ class Scores implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}/scores/{scoreName}
      * @apiGroup Profile Attribute Score
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName firstName
      * @apiEndpointURIFragment string scoreName overall
@@ -189,7 +189,7 @@ class Scores implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores/{scoreName}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores/{scoreName:[a-zA-Z0-9]+}',
                 'App\Controller\Scores:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -204,8 +204,8 @@ class Scores implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/attributes/{attributeName}/scores
      * @apiGroup Profile Attribute Score
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName firstName
      *
@@ -223,7 +223,7 @@ class Scores implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores',
                 'App\Controller\Scores:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -238,8 +238,8 @@ class Scores implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/attributes/{attributeName}/scores/{scoreName}
      * @apiGroup Profile Attribute Score
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName firstName
      * @apiEndpointURIFragment string scoreName overall
@@ -258,7 +258,7 @@ class Scores implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores/{scoreName}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores/{scoreName:[a-zA-Z0-9]+}',
                 'App\Controller\Scores:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

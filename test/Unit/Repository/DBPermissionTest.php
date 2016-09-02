@@ -31,8 +31,6 @@ class DBPermissionTest extends AbstractUnit {
     }
 
     public function testFindOneNotFound() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Permission', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -43,6 +41,7 @@ class DBPermissionTest extends AbstractUnit {
         $queryMock
             ->method('get')
             ->will($this->returnValue(new Collection([])));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -53,7 +52,12 @@ class DBPermissionTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbPermission = new DBPermission($factory, $this->optimus, $connectionMock);
+
+        $dbPermission = new DBPermission(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $this->setExpectedException(NotFound::class);
         $dbPermission->findOne(1, 'notAExistingRoutName');
     }
@@ -94,6 +98,7 @@ class DBPermissionTest extends AbstractUnit {
         $entity = $dbPermission->findOne(0, 'companies:listAll');
 
         $this->assertInstanceOf(Permission::class, $entity);
-        $this->assertSame($array, $entity->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $entity->toArray());
     }
 }

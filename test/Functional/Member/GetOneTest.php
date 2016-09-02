@@ -9,16 +9,16 @@ declare(strict_types = 1);
 namespace Test\Functional\Member;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class GetOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCompanyToken;
+    use RequiresAuth;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/companies/veridu-ltd/members/1321189817';
+        $this->uri        = '/1.0/management/members/1321189817';
     }
 
     public function testSuccess() {
@@ -50,7 +50,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/members/0000000';
+        $this->uri = '/1.0/management/members/0000000';
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [

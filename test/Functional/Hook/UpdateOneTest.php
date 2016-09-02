@@ -11,12 +11,12 @@ namespace Test\Functional\Hook;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class UpdateOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCompanyToken;
+    use RequiresAuth;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
@@ -50,7 +50,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertSame('trigger.changed', $body['data']['trigger']);
         $this->assertSame('http://changed.com/test.php', $body['data']['url']);
-        $this->assertSame(false, $body['data']['subscribed']);
+        $this->assertFalse($body['data']['subscribed']);
 
         /*
          * Validates Json Schema against Json Response'

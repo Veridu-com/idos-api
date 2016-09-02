@@ -78,6 +78,7 @@ class Tag implements HandlerInterface {
      * @param App\Repository\TagInterface        $repository
      * @param App\Repository\CredentialInterface $repository
      * @param App\Validator\Tag                  $validator
+     * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */

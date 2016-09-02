@@ -57,8 +57,6 @@ class DBHookTest extends AbstractUnit {
     }
 
     public function testGetAllByCredentialId() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Hook', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['join', 'where', 'get', 'whereIn'])
@@ -92,6 +90,7 @@ class DBHookTest extends AbstractUnit {
                     ]
                 )
             );
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -102,14 +101,19 @@ class DBHookTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbHook = new DBHook($factory, $this->optimus, $connectionMock);
+
+        $dbHook = new DBHook(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $result = $dbHook->getAllByCredentialId(1)->first();
-        $this->assertSame($this->getAttributes(), $result->toArray());
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($this->getAttributes(), $result->toArray());
     }
 
     public function testFindOneNotFound() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Hook', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -134,14 +138,17 @@ class DBHookTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbHook = new DBHook($factory, $this->optimus, $connectionMock);
+
+        $dbHook = new DBHook(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $this->setExpectedException(NotFound::class);
         $dbHook->find(1);
     }
 
     public function testFindOne() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Hook', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -166,15 +173,19 @@ class DBHookTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbHook = new DBHook($factory, $this->optimus, $connectionMock);
+
+        $dbHook = new DBHook(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
 
         $result = $dbHook->find(1);
-        $this->assertSame($this->getAttributes(), $result->toArray());
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($this->getAttributes(), $result->toArray());
     }
 
     public function testDeleteOne() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Hook', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -196,13 +207,16 @@ class DBHookTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbHook = new DBHook($factory, $this->optimus, $connectionMock);
+
+        $dbHook = new DBHook(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $this->assertSame(1, $dbHook->delete(1));
     }
 
     public function testDeleteByCredentialId() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Hook', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -224,7 +238,12 @@ class DBHookTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbHook = new DBHook($factory, $this->optimus, $connectionMock);
+
+        $dbHook = new DBHook(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $this->assertSame(3, $dbHook->deleteByCredentialId(1));
     }
 }
