@@ -33,7 +33,7 @@ class Warning extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'user_id', 'created_at', 'updated_at'];
+    protected $visible = ['name', 'slug', 'reference', 'user_id', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
@@ -67,6 +67,11 @@ class Warning extends AbstractEntity {
                 '%s.slug.%s',
                 self::CACHE_PREFIX,
                 $this->slug
+            ),
+            sprintf(
+                '%s.reference.%s',
+                self::CACHE_PREFIX,
+                $this->reference
             ),
         ];
     }

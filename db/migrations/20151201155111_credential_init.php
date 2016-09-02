@@ -28,44 +28,6 @@ class CredentialInit extends AbstractMigration {
             ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
             ->create();
 
-        $warnings = $this->table('warnings');
-        $warnings
-            ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('slug', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex('user_id')
-            ->addIndex('name')
-            ->addIndex(['user_id', 'name'], ['unique' => true])
-            ->addIndex(['user_id', 'slug'], ['unique' => true])
-            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $tags = $this->table('tags');
-        $tags
-            ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('slug', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['user_id', 'slug'], ['unique' => true])
-            ->addIndex('user_id')
-            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $gates = $this->table('gates');
-        $gates
-            ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('slug', 'text', ['null' => false])
-            ->addColumn('pass', 'boolean', ['null' => false, 'default' => 'FALSE'])
-            ->addTimestamps()
-            ->addIndex('user_id')
-            ->addIndex('name')
-            ->addIndex(['user_id', 'name'], ['unique' => true])
-            ->addIndex(['user_id', 'slug'], ['unique' => true])
-            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         // Credential WebHooks
         $hooks = $this->table('hooks');
         $hooks

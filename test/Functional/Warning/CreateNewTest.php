@@ -29,12 +29,13 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name    = 'Testing';
-        $value   = 'testing';
-        $request = $this->createRequest(
+        $name      = 'Testing';
+        $reference = 'firstName';
+        $request   = $this->createRequest(
             $environment, json_encode(
                 [
-                    'name' => $name,
+                    'name'      => $name,
+                    'reference' => $reference
                 ]
             )
         );
@@ -45,6 +46,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame(201, $response->getStatusCode());
         $this->assertTrue($body['status']);
         $this->assertSame($name, $body['data']['name']);
+        $this->assertSame($reference, $body['data']['reference']);
         /*
          * Validates Json Schema against Json Response'
          */
