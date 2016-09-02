@@ -86,7 +86,8 @@ class SettingTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 
     public function testGetCachedKeys() {
@@ -97,7 +98,8 @@ class SettingTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 
     public function testReferenceCacheKeysNoCompanyId() {
@@ -108,7 +110,8 @@ class SettingTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
 
     }
 
@@ -120,7 +123,8 @@ class SettingTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
 
     }
 
@@ -132,7 +136,8 @@ class SettingTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
 
     }
 }

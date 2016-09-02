@@ -8,18 +8,17 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Traits;
 
-trait HasAuthCredentialToken {
-    public function testWrongCredentials() {
+trait RequiresAuth {
+    public function testMissingCredentials() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'    => $this->uri,
-                'REQUEST_METHOD' => $this->httpMethod,
-                'QUERY_STRING'   => 'credentialToken=dummy'
+                'REQUEST_METHOD' => $this->httpMethod
             ]
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame(403, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

@@ -275,7 +275,8 @@ class MemberTest extends AbstractUnit {
         $command->credential = 'pubKey';
 
         $result = $handler->handleCreateNew($command);
-        $this->assertSame($memberEntity, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($memberEntity, $result);
         $this->assertSame('admin', $result->role);
     }
 

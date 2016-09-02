@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/sources/{sourceId}/digested.
+ * Handles requests to /profiles/{userName}/sources/{sourceId:[0-9]+}/digested.
  */
 class Digested implements ControllerInterface {
     /**
@@ -72,7 +72,7 @@ class Digested implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
-        $sourceId = (int) $request->getAttribute('sourceId');
+        $sourceId = (int) $request->getAttribute('decodedSourceId');
         $names    = $request->getQueryParam('names', []);
 
         if ($names) {
@@ -113,7 +113,7 @@ class Digested implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('sourceId', (int) $request->getAttribute('sourceId'));
+            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'));
 
         $digested = $this->commandBus->handle($command);
 
@@ -149,7 +149,7 @@ class Digested implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('sourceId', (int) $request->getAttribute('sourceId'))
+            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'))
             ->setParameter('name', $request->getAttribute('digestedName'));
 
         $digested = $this->commandBus->handle($command);
@@ -183,7 +183,7 @@ class Digested implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
-        $sourceId = (int) $request->getAttribute('sourceId');
+        $sourceId = (int) $request->getAttribute('decodedSourceId');
         $name     = $request->getAttribute('digestedName');
 
         $digested = $this->repository->findOneByUserIdSourceIdAndName($user->id, $sourceId, $name);
@@ -215,7 +215,7 @@ class Digested implements ControllerInterface {
         $command = $this->commandFactory->create('Digested\\DeleteAll');
         $command
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('sourceId', (int) $request->getAttribute('sourceId'));
+            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'));
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -247,7 +247,7 @@ class Digested implements ControllerInterface {
         $command = $this->commandFactory->create('Digested\\DeleteOne');
         $command
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('sourceId', (int) $request->getAttribute('sourceId'))
+            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'))
             ->setParameter('name', $request->getAttribute('digestedName'));
 
         $deleted = $this->commandBus->handle($command);

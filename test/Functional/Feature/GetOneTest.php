@@ -9,12 +9,12 @@ declare(strict_types = 1);
 namespace Test\Functional\Feature;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class GetOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -50,9 +50,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'feature/getOne.json',
-                json_decode(
-                    $response->getBody()
-                )
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

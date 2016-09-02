@@ -6,19 +6,19 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Source;
+namespace Test\Functional\Score;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class ListAllTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/user1Attribute1/scores';
+        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes/user2Attribute2/scores';
     }
 
     public function testSuccess() {
@@ -33,9 +33,10 @@ class ListAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertCount(3, $body['data']);
 
         /*
          * Validates Json Schema against Json Response
@@ -43,7 +44,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'score/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -54,7 +55,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=source-3-score-1'
+                    'QUERY_STRING'       => 'names=user2Attribute2Score1'
                 ]
             )
         );
@@ -62,20 +63,17 @@ class ListAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(1, $body['data']);
-
-        foreach ($body['data'] as $score) {
-            $this->assertContains($score['name'], ['source-3-score-1']);
-            $this->assertContains($score['value'], ['value-3']);
-        }
+        $this->assertSame($body['data'][0]['name'], 'user2Attribute2Score1');
+        $this->assertSame($body['data'][0]['value'], 1.4);
 
         $this->assertTrue(
             $this->validateSchema(
                 'score/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
@@ -86,7 +84,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=source-3-score-1,source-3-score-2'
+                    'QUERY_STRING'       => 'names=user2Attribute2Score1,user2Attribute2Score3'
                 ]
             )
         );
@@ -94,20 +92,20 @@ class ListAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $score) {
-            $this->assertContains($score['name'], ['source-3-score-1', 'source-3-score-2']);
-            $this->assertContains($score['value'], ['value-3', 'value-32']);
+            $this->assertContains($score['name'], ['user2Attribute2Score1', 'user2Attribute2Score3']);
+            $this->assertContains($score['value'], [1.4, 1.6]);
         }
 
         $this->assertTrue(
             $this->validateSchema(
                 'score/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

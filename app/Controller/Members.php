@@ -79,15 +79,15 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $roles         = $request->getQueryParam('role', null);
+        $company = $request->getAttribute('company');
+        $roles   = $request->getQueryParam('role', null);
 
         if ($roles === null) {
-            $members = $this->repository->getAllByCompanyId($targetCompany->id);
+            $members = $this->repository->getAllByCompanyId($company->id);
         }
         else {
             $members = $this->repository->getAllByCompanyIdAndRole(
-                $targetCompany->id,
+                $company->id,
                 explode(',', $roles)
             );
         }
@@ -215,10 +215,10 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $command       = $this->commandFactory->create('Member\\DeleteAll');
+        $company = $request->getAttribute('company');
+        $command = $this->commandFactory->create('Member\\DeleteAll');
 
-        $command->setParameter('companyId', $targetCompany->id);
+        $command->setParameter('companyId', $company->id);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

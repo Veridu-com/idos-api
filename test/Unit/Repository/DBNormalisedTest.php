@@ -48,9 +48,6 @@ class DBNormalisedTest extends AbstractUnit {
     }
 
     public function testGetAllByUserIdAndSourceId() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Normalised', []);
-
         $collection = new Collection([$this->getEntity(1, 1), $this->getEntity(1, 2)]);
 
         $queryMock = $this->getMockBuilder(Builder::class)
@@ -78,14 +75,16 @@ class DBNormalisedTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbNormalised = new DBNormalised($factory, $this->optimus, $connectionMock);
+        $dbNormalised = new DBNormalised(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($collection, $dbNormalised->getAllByUserIdAndSourceId(0, 0));
     }
 
     public function testGetAllByUserIdSourceIdAndNames() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Normalised', []);
-
         $collection = new Collection([$this->getEntity(1, 1), $this->getEntity(1, 2)]);
 
         $queryMock = $this->getMockBuilder(Builder::class)
@@ -116,14 +115,16 @@ class DBNormalisedTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbNormalised = new DBNormalised($factory, $this->optimus, $connectionMock);
+        $dbNormalised = new DBNormalised(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($collection, $dbNormalised->getAllByUserIdSourceIdAndNames(0, 0, ['mapped-1', 'mapped-2']));
     }
 
     public function testFindOneByUserIdSourceIdAndName() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Normalised', []);
-
         $entity = $this->getEntity(1, 1);
 
         $queryMock = $this->getMockBuilder(Builder::class)
@@ -151,14 +152,16 @@ class DBNormalisedTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbNormalised = new DBNormalised($factory, $this->optimus, $connectionMock);
+        $dbNormalised = new DBNormalised(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($entity, $dbNormalised->findOneByUserIdSourceIdAndName(1, 1, 'mapped-1'));
     }
 
     public function testFindOneByUserIdSourceIdAndNameNotFound() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Normalised', []);
-
         $entity = $this->getEntity(1, 1);
 
         $queryMock = $this->getMockBuilder(Builder::class)
@@ -186,7 +189,11 @@ class DBNormalisedTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbNormalised = new DBNormalised($factory, $this->optimus, $connectionMock);
+        $dbNormalised = new DBNormalised(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $this->setExpectedException(NotFound::class);
         $dbNormalised->findOneByUserIdSourceIdAndName(1, 1, 'mapped-1');
     }

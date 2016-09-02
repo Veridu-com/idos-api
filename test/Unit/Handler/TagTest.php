@@ -222,7 +222,8 @@ class TagTest extends AbstractUnit {
         $command->slug = 'tag-test';
 
         $result = $handler->handleCreateNew($command);
-        $this->assertSame($tagEntity, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($tagEntity, $result);
     }
 
     public function testHandleDeleteOne() {
