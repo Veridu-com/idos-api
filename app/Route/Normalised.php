@@ -64,10 +64,10 @@ class Normalised implements RouteInterface {
      *
      * Retrieve a complete list of the data normalised by a given source.
      *
-     * @apiEndpoint GET /profiles/{userName}/sources/{sourceId}/normalised
+     * @apiEndpoint GET /profiles/{userName}/sources/{sourceId:[0-9]+}/normalised
      * @apiGroup Sources Normalised
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -85,22 +85,23 @@ class Normalised implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/normalised',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/normalised',
                 'App\Controller\Normalised:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('normalised:listAll');
     }
+
     /**
      * Creates a new normalised source data.
      *
      * Creates a new normalised data for the given source.
      *
-     * @apiEndpoint POST /profiles/{userName}/source/{sourceId}/normalised
+     * @apiEndpoint POST /profiles/{userName}/source/{sourceId:[0-9]+}/normalised
      * @apiGroup Sources Normalised
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -118,7 +119,7 @@ class Normalised implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/normalised',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/normalised',
                 'App\Controller\Normalised:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -131,10 +132,10 @@ class Normalised implements RouteInterface {
      *
      * Updates a normalised data in the given source.
      *
-     * @apiEndpoint PUT /profiles/{userName}/source/{sourceId}/normalised/{normalisedName}
+     * @apiEndpoint PUT /profiles/{userName}/source/{sourceId:[0-9]+}/normalised/{normalisedName}
      * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string normalisedName data-name
@@ -153,7 +154,7 @@ class Normalised implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/normalised/{normalisedName:[a-zA-Z0-9]}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/normalised/{normalisedName:[a-zA-Z0-9]+}',
                 'App\Controller\Normalised:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -166,10 +167,10 @@ class Normalised implements RouteInterface {
      *
      * Retrieves a normalised data from a given source.
      *
-     * @apiEndpoint GET /profiles/{userName}/source/{sourceId}/normalised/{normalisedName}
+     * @apiEndpoint GET /profiles/{userName}/source/{sourceId:[0-9]+}/normalised/{normalisedName}
      * @apiGroup Sources Normalised
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string normalisedName data-name
@@ -188,7 +189,7 @@ class Normalised implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/normalised/{normalisedName:[a-zA-Z0-9]}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/normalised/{normalisedName:[a-zA-Z0-9]+}',
                 'App\Controller\Normalised:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -201,10 +202,10 @@ class Normalised implements RouteInterface {
      *
      * Deletes all normalised data from the given source.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId}/normalised
+     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId:[0-9]+}/normalised
      * @apiGroup Sources Normalised
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -222,7 +223,7 @@ class Normalised implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/normalised',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/normalised',
                 'App\Controller\Normalised:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -235,10 +236,10 @@ class Normalised implements RouteInterface {
      *
      * Deletes a normalised data from the given source.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId}/normalised/{normalisedName}
+     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId:[0-9]+}/normalised/{normalisedName}
      * @apiGroup Sources Normalised
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string normalisedName data-name
@@ -257,7 +258,7 @@ class Normalised implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/normalised/{normalisedName:[a-zA-Z0-9]}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/normalised/{normalisedName:[a-zA-Z0-9]+}',
                 'App\Controller\Normalised:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

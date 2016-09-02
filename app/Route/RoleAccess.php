@@ -67,8 +67,8 @@ class RoleAccess implements RouteInterface {
      *
      * @apiEndpoint GET /access/roles
      *
-     * @apiAuth query   key userPrivKey     User's Private Key
-     * @apiAuth header  key userPrivKey     User's Private Key
+     * @apiAuth query   token UserToken     XXX A valid User Token
+     * @apiAuth header  token userToken     XXX A valid User Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -98,8 +98,8 @@ class RoleAccess implements RouteInterface {
      *
      * @apiEndpoint POST /access/roles
      *
-     * @apiAuth query   key userPrivKey     User's Private Key
-     * @apiAuth header  key userPrivKey     User's Private Key
+     * @apiAuth query   token UserToken     XXX A valid User Token
+     * @apiAuth header  token userToken     XXX A valid User Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -129,8 +129,8 @@ class RoleAccess implements RouteInterface {
      *
      * @apiEndpoint DELETE /access/roles
      *
-     * @apiAuth query   key userPrivKey     User's Private Key
-     * @apiAuth header  key userPrivKey     User's Private Key
+     * @apiAuth query   token UserToken     XXX A valid User Token
+     * @apiAuth header  token userToken     XXX A valid User Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -160,8 +160,8 @@ class RoleAccess implements RouteInterface {
      *
      * @apiEndpoint GET /access/roles/{roleName}/{resource}
      *
-     * @apiAuth query   key userPrivKey     User's Private Key
-     * @apiAuth header  key userPrivKey     User's Private Key
+     * @apiAuth query   token UserToken     XXX A valid User Token
+     * @apiAuth header  token userToken     XXX A valid User Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -218,8 +218,8 @@ class RoleAccess implements RouteInterface {
      * Deletes a single RoleAccess that belongs to the requesting user.
      *
      * @apiEndpoint DELETE /access/roles/{companySlug}/{userName}/{routeName}
-     * @apiAuth header key compPrivKey User's Private Key
-     * @apiAuth query key compPrivKey User's Private Key
+     * @apiAuth header token CompanyToken User's Private Key
+     * @apiAuth query token companyToken User's Private Key
      *
      * @param \Slim\App $app
      * @param \callable $auth

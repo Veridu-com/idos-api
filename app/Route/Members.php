@@ -67,8 +67,8 @@ class Members implements RouteInterface {
      *
      * @apiEndpoint GET /management/members
      * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -98,8 +98,8 @@ class Members implements RouteInterface {
      *
      * @apiEndpoint POST /management/members
      * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -130,8 +130,8 @@ class Members implements RouteInterface {
      *
      * @apiEndpoint PUT /management/members/{userName}
      * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName johndoe
      *
      * @param \Slim\App $app
@@ -148,7 +148,7 @@ class Members implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/management/members/{memberId}',
+                '/management/members/{memberId:[0-9]+}',
                 'App\Controller\Members:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -163,8 +163,8 @@ class Members implements RouteInterface {
      *
      * @apiEndpoint DELETE /management/members
      * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -195,8 +195,8 @@ class Members implements RouteInterface {
      *
      * @apiEndpoint GET /management/members/{userName}
      * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app
@@ -213,7 +213,7 @@ class Members implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/management/members/{memberId}',
+                '/management/members/{memberId:[0-9]+}',
                 'App\Controller\Members:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -228,8 +228,8 @@ class Members implements RouteInterface {
      *
      * @apiEndpoint DELETE /management/members/{userName}
      * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app
@@ -246,7 +246,7 @@ class Members implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/management/members/{memberId}',
+                '/management/members/{memberId:[0-9]+}',
                 'App\Controller\Members:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))

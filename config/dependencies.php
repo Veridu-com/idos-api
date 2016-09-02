@@ -60,6 +60,15 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
             ->denyCache($response);
 
         $log = $container->get('log');
+        $log('Foundation')->error(
+            sprintf(
+                '%s [%s:%d]',
+                $exception->getMessage(),
+                $exception->getFile(),
+                $exception->getLine()
+            )
+        );
+        $log('Foundation')->error($exception->getTraceAsString());
 
         if ($exception instanceof AppException) {
             $log('API')->info(
@@ -74,11 +83,11 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
             $body = [
                 'status' => false,
                 'error'  => [
-                    'code' => $exception->getCode(),
-                    // 'type' => $exception->getType(),
-                    // 'link' => $exception->getLink(),
+                    'code'    => $exception->getCode(),
+                    'type'    => 'EXCEPTION_TYPE', // $exception->getType(),
+                    'link'    => 'https://docs.idos.io/errors/EXCEPTION_TYPE', // $exception->getLink(),
                     'message' => $exception->getMessage(),
-                    'trace'   => $exception->getTraceAsString()
+                    'trace'   => $exception->getTrace()
                 ]
             ];
 
@@ -93,16 +102,6 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
 
             return $container->get('commandBus')->handle($command);
         }
-
-        $log('Foundation')->error(
-            sprintf(
-                '%s [%s:%d]',
-                $exception->getMessage(),
-                $exception->getFile(),
-                $exception->getLine()
-            )
-        );
-        $log('Foundation')->error($exception->getTraceAsString());
 
         $settings = $container->get('settings');
         if ($settings['debug']) {
@@ -136,7 +135,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
             'error'  => [
                 'code'    => 500,
                 'type'    => 'APPLICATION_ERROR',
-                'link'    => null,
+                'link'    => 'https://docs.idos.io/errors/APPLICATION_ERROR',
                 'message' => 'Internal Application Error'
             ]
         ];

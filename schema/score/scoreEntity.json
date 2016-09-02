@@ -5,12 +5,13 @@
     "type": "object",
     "properties": {
         "name": {
-            "description": "Name of score data",
+            "description": "Score name",
             "type": "string",
             "pattern": ""
         },
         "value": {
-            "description": "Score data"
+            "description": "Score value",
+            "type": "number"
         },
         "created_at": {
             "description": "Score's creation unixtime",

@@ -9,12 +9,12 @@ declare(strict_types = 1);
 namespace Test\Functional\Normalised;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class ListAllTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -65,7 +65,7 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(1, count($body['data']));
+        $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $normalised) {
             $this->assertContains($normalised['name'], ['source3Normalised1']);
@@ -100,7 +100,7 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(2, count($body['data']));
+        $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $normalised) {
             $this->assertContains($normalised['name'], ['source3Normalised1', 'source3Normalised2']);

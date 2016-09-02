@@ -9,12 +9,9 @@ declare(strict_types = 1);
 namespace Test\Functional\Company;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyToken;
-use Test\Functional\Traits\HasAuthMiddleware;
 
 class GetOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCompanyToken;
+    // REQUIRES NO AUTH :-)
 
     protected function setUp() {
         $this->httpMethod = 'GET';

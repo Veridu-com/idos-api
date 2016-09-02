@@ -125,7 +125,8 @@ class DBFeatureTest extends AbstractUnit {
             ->method('paginate')
             ->will($this->returnValue($expectedResult));
 
-        $this->assertSame($expectedResult, $dbFeatureMock->getAllByUserId(1, []));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($expectedResult, $dbFeatureMock->getAllByUserId(1, []));
     }
 
     public function testGetAllByUserIdFiltered() {
@@ -186,7 +187,8 @@ class DBFeatureTest extends AbstractUnit {
             ->method('paginate')
             ->will($this->returnValue($expectedResult));
 
-        $this->assertSame($expectedResult, $dbFeatureMock->getAllByUserId(1, ['slug' => 'new-test']));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($expectedResult, $dbFeatureMock->getAllByUserId(1, ['slug' => 'new-test']));
     }
 
     public function testDeleteByUserId() {
@@ -218,12 +220,11 @@ class DBFeatureTest extends AbstractUnit {
             ->setMethods(['deleteByKey'])
             ->getMock();
 
-        $amount = 1;
         $dbFeatureMock
             ->method('deleteByKey')
-            ->will($this->returnValue($amount));
+            ->will($this->returnValue(1));
 
-        $this->assertSame($amount, $dbFeatureMock->deleteByUserId(1));
+        $this->assertSame(1, $dbFeatureMock->deleteByUserId(1));
     }
 
     public function testFindByUserId() {
@@ -282,7 +283,8 @@ class DBFeatureTest extends AbstractUnit {
             ->method('findBy')
             ->will($this->returnValue($expectedResult));
 
-        $this->assertSame($expectedResult, $dbFeatureMock->findByUserId(1));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($expectedResult, $dbFeatureMock->findByUserId(1));
     }
 
     public function testFindByUserIdAndSlug() {

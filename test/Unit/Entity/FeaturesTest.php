@@ -113,7 +113,8 @@ class FeatureTest extends AbstractUnit {
         $result = $abstractMock->getCacheKeys();
 
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 
     public function testGetCachedKeys() {
@@ -131,7 +132,8 @@ class FeatureTest extends AbstractUnit {
         $result = $abstractMock->getCacheKeys();
 
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 
     public function testReferenceCacheKeysNoUserId() {
@@ -145,7 +147,8 @@ class FeatureTest extends AbstractUnit {
         $result = $abstractMock->getReferenceCacheKeys();
 
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 
     public function testReferenceCacheKeysEmptyAttributes() {
@@ -159,7 +162,8 @@ class FeatureTest extends AbstractUnit {
         $result = $abstractMock->getReferenceCacheKeys();
 
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 
     public function testReferenceCacheKeys() {
@@ -173,6 +177,7 @@ class FeatureTest extends AbstractUnit {
         $result = $abstractMock->getReferenceCacheKeys();
 
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 }

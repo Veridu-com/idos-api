@@ -349,13 +349,13 @@ class SettingTest extends AbstractUnit {
         $command->settingId = 0;
         $command->value     = 'updated-value';
 
-        $setting = $handler->handleUpdateOne($command);
-        $this->assertInstanceOf(SettingEntity::class, $setting);
-        $this->assertSame(0, $setting->id);
-        $this->assertSame(1, $setting->companyId);
-        $this->assertSame('original-section', $setting->section);
-        $this->assertSame('original-property', $setting->property);
-        $this->assertSame('updated-value', $setting->value);
+        $result = $handler->handleUpdateOne($command);
+        $this->assertInstanceOf(SettingEntity::class, $result);
+        $this->assertSame(0, $result->id);
+        $this->assertSame(1, $result->companyId);
+        $this->assertSame('original-section', $result->section);
+        $this->assertSame('original-property', $result->property);
+        $this->assertSame('updated-value', $result->value);
         $this->assertNotEmpty($result->createdAt);
         $this->assertNotEmpty($result->updatedAt);
     }

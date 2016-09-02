@@ -14,7 +14,7 @@ namespace App\Validator;
 class Service implements ValidatorInterface {
     use Traits\AssertAccessMode,
         Traits\AssertArray,
-        Traits\ASsertCompany,
+        Traits\AssertCompany,
         Traits\AssertFlag,
         Traits\AssertId,
         Traits\AssertName,

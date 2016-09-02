@@ -31,8 +31,6 @@ class DBSettingTest extends AbstractUnit {
     }
 
     public function testFindOneNotFound() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Setting', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -46,6 +44,7 @@ class DBSettingTest extends AbstractUnit {
         $queryMock
             ->method('get')
             ->will($this->returnValue(new Collection([])));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -56,15 +55,17 @@ class DBSettingTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbSetting = new DBSetting($factory, $this->optimus, $connectionMock);
+
+        $dbSetting = new DBSetting(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
 
         $this->setExpectedException(NotFound::class);
         $dbSetting->find(0);
     }
 
     public function testGetAllByCompanyIdEmpty() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Setting', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -86,7 +87,11 @@ class DBSettingTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbSetting = new DBSetting($factory, $this->optimus, $connectionMock);
+
+        $dbSetting = new DBSetting(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
 
         $result = $dbSetting->getAllByCompanyId(1);
 
@@ -115,8 +120,6 @@ class DBSettingTest extends AbstractUnit {
             ]
         ];
 
-        $factory = new Entity($this->optimus);
-        $factory->create('Setting', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -130,12 +133,13 @@ class DBSettingTest extends AbstractUnit {
                 $this->returnValue(
                     new Collection(
                         [
-                        new SettingEntity($array[0], $this->optimus),
-                        new SettingEntity($array[1], $this->optimus)
+                            new SettingEntity($array[0], $this->optimus),
+                            new SettingEntity($array[1], $this->optimus)
                         ]
                     )
                 )
             );
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -146,19 +150,22 @@ class DBSettingTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbSetting = new DBSetting($factory, $this->optimus, $connectionMock);
+
+        $dbSetting = new DBSetting(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
 
         $result = $dbSetting->getAllByCompanyId(1);
         $this->assertInstanceOf(Collection::class, $result['collection']);
 
         // @FIXME - Problems testing the paginator with the Builder mock.
         // $this->assertInstanceOf(SettingEntity::class, $result['collection']->first());
-        // $this->assertSame($array[0], $result['collection']->first()->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        // $this->assertEquals($array[0], $result['collection']->first()->toArray());
     }
 
     public function testGetAllByCompanyIdAndSectionEmpty() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Setting', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -179,7 +186,11 @@ class DBSettingTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbSetting = new DBSetting($factory, $this->optimus, $connectionMock);
+
+        $dbSetting = new DBSetting(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
 
         $this->assertEmpty($dbSetting->getAllByCompanyIdAndSection(0, '')->toArray());
     }
@@ -202,9 +213,6 @@ class DBSettingTest extends AbstractUnit {
             ]
         ];
 
-        $factory = new Entity($this->optimus);
-        $factory->create('Setting', []);
-
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -236,9 +244,13 @@ class DBSettingTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbSetting = new DBSetting($factory, $this->optimus, $connectionMock);
+        $dbSetting = new DBSetting(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
 
         $this->assertInstanceOf(Collection::class, $dbSetting->getAllByCompanyIdAndSection(1, 'section'));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         // $this->assertEquals($array, $dbSetting->getAllByCompanyIdAndSection(1, 'section')->toArray());
     }
 }

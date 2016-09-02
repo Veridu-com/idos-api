@@ -12,8 +12,13 @@ use App\Helper\Token as TokenHelper;
 use App\Middleware\Auth;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresUserToken;
 
 class ExchangeTest extends AbstractFunctional {
+    use RequiresAuth;
+    use RequiresUserToken;
+
     protected function setUp() {
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/token';
@@ -41,10 +46,10 @@ class ExchangeTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
-
-        $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertNotEmpty($body['data']);
 

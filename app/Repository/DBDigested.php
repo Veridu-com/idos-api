@@ -33,13 +33,11 @@ class DBDigested extends AbstractDBRepository implements DigestedInterface {
      * {@inheritdoc}
      */
     public function getAllByUserIdAndSourceId(int $userId, int $sourceId) : Collection {
-        $result = $this->query()
+        return $this->query()
             ->join('sources', 'sources.id', '=', 'digested.source_id')
             ->where('sources.user_id', '=', $userId)
             ->where('sources.id', '=', $sourceId)
             ->get(['digested.*']);
-
-        return new Collection($result);
     }
 
     /**
@@ -55,9 +53,7 @@ class DBDigested extends AbstractDBRepository implements DigestedInterface {
             $result = $result->whereIn('digested.name', $names);
         }
 
-        $result = $result->get(['digested.*']);
-
-        return new Collection($result);
+        return $result->get(['digested.*']);
     }
 
     /**

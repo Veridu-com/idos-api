@@ -66,8 +66,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint GET /service-handlers
      * @apiGroup Company ServiceHandler
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -97,8 +97,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint POST /service-handlers
      * @apiGroup Company ServiceHandler
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -128,8 +128,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint DELETE /service-handlers
      * @apiGroup Company ServiceHandler
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -157,10 +157,10 @@ class ServiceHandler implements RouteInterface {
      *
      * Retrieves all public information from a Service handler.
      *
-     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
+     * @apiEndpoint GET /service-handlers/{serviceHandlerId:[0-9]+}
      * @apiGroup Company ServiceHandler
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment string serviceHandlerId 1
      *
      * @param \Slim\App $app
@@ -189,10 +189,10 @@ class ServiceHandler implements RouteInterface {
      *
      * Updates a single Service handler instance.
      *
-     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
+     * @apiEndpoint GET /service-handlers/{serviceHandlerId:[0-9]+}
      * @apiGroup Company ServiceHandler
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment  string  serviceHandlerId 1
      *
      * @param \Slim\App $app
@@ -221,10 +221,10 @@ class ServiceHandler implements RouteInterface {
      *
      * Deletes a single Service handler that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /service-handlers/{serviceHandlerId}
+     * @apiEndpoint DELETE /service-handlers/{serviceHandlerId:[0-9]+}
      * @apiGroup Company ServiceHandler
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment  string  serviceHandlerId 1
      *
      * @param \Slim\App $app

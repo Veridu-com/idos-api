@@ -177,8 +177,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         $defaults = [
             'REQUEST_URI'    => $this->uri,
             'REQUEST_METHOD' => $this->httpMethod,
-            'SCRIPT_NAME'    => '/index.php',
-            'QUERY_STRING'   => 'companyPrivKey=4e37dae79456985ae0d27a67639cf335'
+            'SCRIPT_NAME'    => '/index.php'
         ];
 
         return Environment::mock(array_merge($defaults, $options));

@@ -24,7 +24,7 @@ trait AssertUser {
      * @return void
      */
     public function assertUser($user) {
-        Validator::instance('App\\Entity\Source')
+        Validator::instance('App\\Entity\\User')
             ->assert($user);
     }
 }
