@@ -39,6 +39,15 @@ class Watcher implements MiddlewareInterface {
         ResponseInterface $response,
         callable $next
     ) : ResponseInterface {
+        $log = $this->container->get('log');
+        $log('Watcher')->debug(
+            sprintf(
+                '%s [%s]',
+                $request->getUri(),
+                $request->getMethod()
+            )
+        );
+
         $response = $next($request, $response);
 
         return $response->withHeader('X-Watcher', 'was-here');

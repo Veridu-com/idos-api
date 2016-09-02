@@ -67,8 +67,6 @@ class DBCompanyTest extends AbstractUnit {
             'updated_at' => time()
         ];
 
-        $factory = new Entity($this->optimus);
-        $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -87,6 +85,7 @@ class DBCompanyTest extends AbstractUnit {
                     )
                 )
             );
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -98,13 +97,16 @@ class DBCompanyTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
-        $this->assertSame($array, $dbCompany->findBySlug('slug')->toArray());
+        $dbCompany = new DBCompany(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $dbCompany->findBySlug('slug')->toArray());
     }
 
     public function testFindByPubKeyNotFound() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -115,6 +117,7 @@ class DBCompanyTest extends AbstractUnit {
         $queryMock
             ->method('get')
             ->will($this->returnValue(new Collection([])));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -125,7 +128,12 @@ class DBCompanyTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
+
+        $dbCompany = new DBCompany(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $this->setExpectedException(NotFound::class);
         $dbCompany->findByPubKey('');
     }
@@ -139,8 +147,6 @@ class DBCompanyTest extends AbstractUnit {
             'updated_at' => time()
          ];
 
-        $factory = new Entity($this->optimus);
-        $factory->create('Company', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -151,6 +157,7 @@ class DBCompanyTest extends AbstractUnit {
         $queryMock
             ->method('get')
             ->will($this->returnValue(new Collection([new CompanyEntity($array, $this->optimus)])));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -161,7 +168,13 @@ class DBCompanyTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-         $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
-         $this->assertSame($array, $dbCompany->findByPubKey('public_key')->toArray());
+
+        $dbCompany = new DBCompany(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $dbCompany->findByPubKey('public_key')->toArray());
     }
 }

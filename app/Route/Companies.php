@@ -67,8 +67,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint GET /companies
      * @apiGroup Company
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -99,8 +99,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint POST /companies
      * @apiGroup Company
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -130,8 +130,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies
      * @apiGroup Company
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -174,7 +174,7 @@ class Companies implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -189,8 +189,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint PUT /companies/{companySlug}
      * @apiGroup Company
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
@@ -206,7 +206,7 @@ class Companies implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -221,8 +221,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}
      * @apiGroup Company
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
@@ -238,7 +238,7 @@ class Companies implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))

@@ -43,7 +43,8 @@ class EntityClass extends AbstractUnit {
         $entity  = new Entity($this->optimus);
         $company = $entity->create('company', []);
         $this->assertInstanceOf(Company::class, $company);
-        $this->assertSame($array, $company->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $company->toArray());
     }
 
     public function testCreateWithAttributes() {
@@ -58,6 +59,7 @@ class EntityClass extends AbstractUnit {
         $entity  = new Entity($this->optimus);
         $company = $entity->create('company', $array);
         $this->assertInstanceOf(Company::class, $company);
-        $this->assertSame($array, $company->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $company->toArray());
     }
 }

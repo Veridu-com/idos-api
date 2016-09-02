@@ -11,12 +11,12 @@ namespace Test\Functional\Service;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class UpdateOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCompanyToken;
+    use RequiresAuth;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
@@ -48,7 +48,8 @@ class UpdateOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(['idos:source.facebook.added'], $body['data']['listens']);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals(['idos:source.facebook.added'], $body['data']['listens']);
 
         /*
          * Validates Json Schema against Json Response'

@@ -93,50 +93,37 @@ class Service implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : ServiceEntity {
         $this->validator->assertCompany($command->company);
-
-        $input = ['company_id' => $command->company->id];
-
-        // required params
         $this->validator->assertName($command->name);
-        $input['name'] = $command->name;
-
         $this->validator->assertUrl($command->url);
-        $input['url'] = $command->url;
-
-        $this->validator->assertAuthUsername($command->authUsername);
-        $input['auth_username'] = $command->authUsername;
-
-        $this->validator->assertAuthPassword($command->authPassword);
-        $input['auth_password'] = $command->authPassword;
-
-        // optional params
-        if ($command->listens) {
-            $this->validator->assertArray($command->listens);
-            $input['listens'] = $command->listens;
-        }
-
-        if ($command->triggers) {
-            $this->validator->assertTriggers($command->triggers);
-            $input['triggers'] = $command->triggers;
-        }
-
-        if ($command->access !== null) {
-            $this->validator->assertAccess($command->access);
-            $input['access'] = $command->access;
-        }
-
-        if ($command->enabled !== null) {
-            $this->validator->assertFlag($command->enabled);
-            $input['enabled'] = $command->enabled;
-        }
-
-        $input['created_at'] = time();
+        $this->validator->assertName($command->authUsername);
+        $this->validator->assertPassword($command->authPassword);
+        $this->validator->assertArray($command->listens);
+        $this->validator->assertArray($command->triggers);
+        $this->validator->assertAccessMode($command->access);
+        $this->validator->assertFlag($command->enabled);
 
         try {
-            $entity = $this->repository->save($this->repository->create($input));
+            $entity = $this->repository->create(
+                [
+                    'company_id'    => $command->company->id,
+                    'name'          => $command->name,
+                    'url'           => $command->url,
+                    'auth_username' => $command->authUsername,
+                    'auth_password' => $command->authPassword,
+                    'public'        => sha1('pub' . $command->company->id . microtime()),
+                    'private'       => sha1('priv' . $command->company->id . microtime()),
+                    'listens'       => $command->listens,
+                    'triggers'      => $command->triggers,
+                    'access'        => $command->access,
+                    'enabled'       => $command->enabled,
+                    'created_at'    => time()
+                ]
+            );
+            $entity = $this->repository->save($entity);
             $event  = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
+                throw $e;
             throw new AppException('Error while trying to create a service');
         }
 

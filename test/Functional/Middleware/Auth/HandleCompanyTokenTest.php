@@ -247,7 +247,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -285,7 +285,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -323,7 +323,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -361,7 +361,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -399,7 +399,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -437,7 +437,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

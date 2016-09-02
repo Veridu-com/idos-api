@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
-class DBServiceTest extends AbstractUnit {
+class DBServicesTest extends AbstractUnit {
     /*
      * Jenssengers\Optimus\Optimus $optimus
      */
@@ -30,7 +30,7 @@ class DBServiceTest extends AbstractUnit {
     }
 
     public function testGetAll() {
-         $array = [
+        $array = [
             'id'         => null,
             'name'       => 'New Service',
             'url'        => 'url',
@@ -42,65 +42,67 @@ class DBServiceTest extends AbstractUnit {
             'enabled'    => true,
             'created_at' => time(),
             'updated_at' => time()
-         ];
+        ];
 
-         $factory = new Entity($this->optimus);
-         $factory->create('Service', $array);
-         $queryMock = $this->getMockBuilder(Builder::class)
-             ->disableOriginalConstructor()
-             ->setMethods(['get'])
-             ->getMock();
-         $queryMock
-             ->method('get')
-             ->will($this->returnValue(new Collection(new ServiceEntity($array, $this->optimus))));
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get'])
+            ->getMock();
+        $queryMock
+            ->method('get')
+            ->willReturn(
+                new Collection(
+                    [
+                        new ServiceEntity($array, $this->optimus)
+                    ]
+                )
+            );
 
-         $connectionMock = $this->getMockBuilder(Connection::class)
-             ->disableOriginalConstructor()
-             ->setMethods(['setFetchMode', 'table'])
-             ->getMock();
-         $connectionMock
-             ->method('setFetchMode')
-             ->will($this->returnValue(1));
-         $connectionMock
-             ->method('table')
-             ->will($this->returnValue($queryMock));
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
 
-         $dbService = new DBService($factory, $this->optimus, $connectionMock);
+        $dbService = new DBService(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
 
-         $this->assertEquals($array, $dbService->getAll()->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $dbService->getAll()->first()->toArray());
     }
 
     public function testGetAllEmpty() {
-         $array = [
-            'name'       => 'New Service',
-            'slug'       => 'new-service',
-            'enabled'    => true,
-            'created_at' => time(),
-            // 'updated_at' => time()
-         ];
-         $factory = new Entity($this->optimus);
-         $factory->create('Service', $array);
-         $queryMock = $this->getMockBuilder(Builder::class)
-             ->disableOriginalConstructor()
-             ->setMethods(['get'])
-             ->getMock();
-         $queryMock
-             ->method('get')
-             ->will($this->returnValue(new Collection()));
+        $queryMock = $this->getMockBuilder(Builder::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['get'])
+            ->getMock();
+        $queryMock
+            ->method('get')
+            ->will($this->returnValue(new Collection()));
 
-         $connectionMock = $this->getMockBuilder(Connection::class)
-             ->disableOriginalConstructor()
-             ->setMethods(['setFetchMode', 'table'])
-             ->getMock();
-         $connectionMock
-             ->method('setFetchMode')
-             ->will($this->returnValue(1));
-         $connectionMock
-             ->method('table')
-             ->will($this->returnValue($queryMock));
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setFetchMode', 'table'])
+            ->getMock();
+        $connectionMock
+            ->method('setFetchMode')
+            ->will($this->returnValue(1));
+        $connectionMock
+            ->method('table')
+            ->will($this->returnValue($queryMock));
 
-         $dbService = new DBService($factory, $this->optimus, $connectionMock);
+        $dbService = new DBService(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
 
-         $this->assertEmpty($dbService->getAll()->toArray());
+        $this->assertEmpty($dbService->getAll()->toArray());
     }
 }

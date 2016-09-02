@@ -121,7 +121,7 @@ class NormalisedTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $mappedMock->listAll($requestMock, $responseMock));
+        $this->assertEquals($responseMock, $mappedMock->listAll($requestMock, $responseMock));
     }
 
     public function testGetOne() {
@@ -183,7 +183,7 @@ class NormalisedTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $mappedMock->getOne($requestMock, $responseMock));
+        $this->assertEquals($responseMock, $mappedMock->getOne($requestMock, $responseMock));
     }
 
     public function testCreateNew() {
@@ -237,7 +237,7 @@ class NormalisedTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $mappedMock->createNew($requestMock, $responseMock));
+        $this->assertEquals($responseMock, $mappedMock->createNew($requestMock, $responseMock));
     }
 
     public function testDeleteAll() {
@@ -284,7 +284,7 @@ class NormalisedTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $mappedMock->deleteAll($requestMock, $responseMock));
+        $this->assertEquals($responseMock, $mappedMock->deleteAll($requestMock, $responseMock));
     }
 
     public function testDeleteOne() {
@@ -331,7 +331,7 @@ class NormalisedTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $mappedMock->deleteOne($requestMock, $responseMock));
+        $this->assertEquals($responseMock, $mappedMock->deleteOne($requestMock, $responseMock));
     }
 
     public function testUpdateOne() {
@@ -385,6 +385,6 @@ class NormalisedTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $mappedMock->updateOne($requestMock, $responseMock));
+        $this->assertEquals($responseMock, $mappedMock->updateOne($requestMock, $responseMock));
     }
 }

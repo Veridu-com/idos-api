@@ -66,8 +66,8 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/features
      * @apiGroup Profile Features
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -82,7 +82,7 @@ class Features implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/features',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
                 'App\Controller\Features:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -97,8 +97,8 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint POST profiles/{userName}/features
      * @apiGroup Profile Features
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -113,7 +113,7 @@ class Features implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/features',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
                 'App\Controller\Features:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -128,8 +128,8 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/features/{featureSlug}
      * @apiGroup Profile Features
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -144,7 +144,7 @@ class Features implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureSlug:[a-zA-Z0-9_-]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureSlug:[a-z0-9_-]+}',
                 'App\Controller\Features:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -159,8 +159,8 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/features
      * @apiGroup Profile Features
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -175,7 +175,7 @@ class Features implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/features',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
                 'App\Controller\Features:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -190,8 +190,8 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/features/{featureSlug}
      * @apiGroup Profile Features
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -206,7 +206,7 @@ class Features implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/features/{featureSlug:[a-zA-Z0-9_-]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureSlug:[a-z0-9_-]+}',
                 'App\Controller\Features:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -221,8 +221,8 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/features/{featureSlug}
      * @apiGroup Profile Features
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -237,7 +237,7 @@ class Features implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureSlug:[a-zA-Z0-9_-]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureSlug:[a-z0-9_-]+}',
                 'App\Controller\Features:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))

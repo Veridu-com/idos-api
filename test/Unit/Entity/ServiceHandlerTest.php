@@ -63,7 +63,8 @@ class ServiceHandlerTest extends AbstractUnit {
         $this->assertSame(2, $array['service_id']);
 
         $this->assertArrayHasKey('listens', $array);
-        $this->assertSame(['listen1', 'listen2'], json_decode($array['listens']));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals(['listen1', 'listen2'], json_decode($array['listens']));
 
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_string($array['created_at']));
@@ -96,7 +97,8 @@ class ServiceHandlerTest extends AbstractUnit {
         $array = $abstractMock->toArray();
 
         $this->assertArrayHasKey('listens', $array);
-        $this->assertSame(['listen1', 'listen2'], $array['listens']);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals(['listen1', 'listen2'], $array['listens']);
 
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($array['created_at']));

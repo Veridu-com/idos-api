@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/sources/{sourceId}/normalised.
+ * Handles requests to /profiles/{userName}/sources/{sourceId:[0-9]+}/normalised.
  */
 class Normalised implements ControllerInterface {
     /**
@@ -72,19 +72,19 @@ class Normalised implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
-        $sourceId = (int) $request->getAttribute('sourceId');
+        $sourceId = (int) $request->getAttribute('decodedSourceId');
         $names    = $request->getQueryParam('names', []);
 
         if ($names) {
             $names = explode(',', $names);
         }
 
-        $normaliseds = $this->repository->getAllByUserIdSourceIdAndNames($user->id, $sourceId, $names);
+        $data = $this->repository->getAllByUserIdSourceIdAndNames($user->id, $sourceId, $names);
 
         $body = [
-            'data'    => $normaliseds->toArray(),
+            'data'    => $data->toArray(),
             'updated' => (
-                $normaliseds->isEmpty() ? time() : max($normaliseds->max('updatedAt'), $normaliseds->max('createdAt'))
+                $data->isEmpty() ? time() : max($data->max('updatedAt'), $data->max('createdAt'))
             )
         ];
 
@@ -115,7 +115,7 @@ class Normalised implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('sourceId', (int) $request->getAttribute('sourceId'));
+            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'));
 
         $normalised = $this->commandBus->handle($command);
 
@@ -151,7 +151,7 @@ class Normalised implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('sourceId', (int) $request->getAttribute('sourceId'))
+            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'))
             ->setParameter('name', $request->getAttribute('normalisedName'));
 
         $normalised = $this->commandBus->handle($command);
@@ -185,7 +185,7 @@ class Normalised implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
-        $sourceId = (int) $request->getAttribute('sourceId');
+        $sourceId = (int) $request->getAttribute('decodedSourceId');
         $name     = $request->getAttribute('normalisedName');
 
         $normalised = $this->repository->findOneByUserIdSourceIdAndName($user->id, $sourceId, $name);
@@ -217,7 +217,7 @@ class Normalised implements ControllerInterface {
         $command = $this->commandFactory->create('Normalised\\DeleteAll');
         $command
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('sourceId', (int) $request->getAttribute('sourceId'));
+            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'));
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -249,7 +249,7 @@ class Normalised implements ControllerInterface {
         $command = $this->commandFactory->create('Normalised\\DeleteOne');
         $command
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('sourceId', (int) $request->getAttribute('sourceId'))
+            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'))
             ->setParameter('name', $request->getAttribute('normalisedName'));
 
         $deleted = $this->commandBus->handle($command);
