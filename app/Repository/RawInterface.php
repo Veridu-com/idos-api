@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Raw;
+use App\Entity\Source;
 use Illuminate\Support\Collection;
 
 /**
@@ -16,50 +17,67 @@ use Illuminate\Support\Collection;
  */
 interface RawInterface extends RepositoryInterface {
     /**
-     * Gets all Raw entities based on their user_id and source_id.
+     * Gets all Raw entities based on Source.
      *
-     * @param int $userId
-     * @param int $sourceId
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAllByUserIdAndSourceId(int $userId, int $sourceId) : Collection;
-    /**
-     * Gets all Raw entities based on their user_id, source_id and filtering them by name.
-     *
-     * @param int   $userId
-     * @param int   $sourceId
-     * @param array $names
+     * @param App\Entity\Source $source
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdSourceIdAndNames(int $userId, int $sourceId, array $names) : Collection;
+    public function getAllBySource(Source $source) : Collection;
+
     /*
-     * Deletes all Raw entities based on source_id.
+     * Deletes all Raw entities based on source.
      *
-     * @param int $sourceId
+     * @param App\Entity\Source $source
      *
      * @return int
      */
-    public function deleteBySourceId(int $sourceId) : int;
+    public function deleteBySource(Source $source) : int;
+
     /**
-     * Find a Raw entity based on its user_id, source_id and name.
+     * Creates a new Raw entity.
      *
-     * @param int    $sourceId
+     * @param App\Entity\Source    $source
+     * @param App\Entity\Raw $raw
+     *
+     * @throws App\Exception\NotFound
+     *
+     * @return App\Entity\Raw
+     */
+    public function create(Source $source, Raw $raw) : Raw;
+
+    /**
+     * Find a Raw entity based on its source and name.
+     *
+     * @param App\Entity\Source    $source
      * @param string $name
      *
      * @throws App\Exception\NotFound
      *
      * @return App\Entity\Raw
      */
-    public function findOneByUserIdSourceIdAndName(int $userId, int $sourceId, string $name) : Raw;
+    public function findOneBySourceAndName(Source $source, string $name) : Raw;
+
     /**
-     * Deletes a Raw entity based on their source_id and name.
+     * Update a Raw entity based on its source and name.
      *
-     * @param int    $sourceId
+     * @param App\Entity\Source    $source
+     * @param string $name
+     * @param string $data
+     *
+     * @throws App\Exception\NotFound
+     *
+     * @return App\Entity\Raw
+     */
+    public function updateOneBySourceAndName(Source $source, string $name, string $data) : Raw;
+    
+    /**
+     * Deletes a Raw entity based on their source and name.
+     *
+     * @param App\Entity\Source    $source
      * @param string $name
      *
      * @return int
      */
-    public function deleteOneBySourceIdAndName(int $sourceId, string $name) : int;
+    public function deleteOneBySourceAndName(Source $source, string $name) : int;
 }
