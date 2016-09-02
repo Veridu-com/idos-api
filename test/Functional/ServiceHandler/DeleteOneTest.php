@@ -9,12 +9,12 @@ declare(strict_types = 1);
 namespace Test\Functional\ServiceHandler;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class DeleteOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCompanyToken;
+    use RequiresAuth;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';

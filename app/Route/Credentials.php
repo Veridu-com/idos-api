@@ -66,8 +66,8 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint GET /management/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -97,8 +97,8 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint POST /management/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -128,8 +128,8 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint DELETE /management/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -159,8 +159,8 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint GET /management/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -191,8 +191,8 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint PUT /management/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -223,8 +223,8 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint DELETE /management/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app

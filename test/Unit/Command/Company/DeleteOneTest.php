@@ -27,6 +27,7 @@ class DeleteOneTest extends AbstractUnit {
             ->getMock();
 
         $command->setParameters(['company' => $entityMock]);
-        $this->assertSame($entityMock, $command->company);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($entityMock, $command->company);
     }
 }

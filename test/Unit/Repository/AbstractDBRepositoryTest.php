@@ -248,7 +248,8 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('query')
             ->will($this->returnValue($queryMock));
 
-        $this->assertSame($array, $abstractMock->find(0)->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $abstractMock->find(0)->toArray());
     }
 
     public function testDeleteByEmptyConstraintsException() {
@@ -358,6 +359,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $findBy = $this->setProtectedMethod($abstractMock, 'findBy');
-        $this->assertSame($array, $findBy->invoke($abstractMock, ['key' => 'value'])->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $findBy->invoke($abstractMock, ['key' => 'value'])->toArray());
     }
 }

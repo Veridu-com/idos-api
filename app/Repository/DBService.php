@@ -46,6 +46,8 @@ class DBService extends AbstractDBRepository implements ServiceInterface {
         $query = $this->scopeQuery($query, $company);
         $query = $this->filter($query, $queryParams);
 
+        return $query->get();
+
         return new Collection($query->get());
     }
 

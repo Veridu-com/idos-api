@@ -66,8 +66,8 @@ class Attributes implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/attributes
      * @apiGroup Sources Attribute
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -84,7 +84,7 @@ class Attributes implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes',
                 'App\Controller\Attributes:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -98,8 +98,8 @@ class Attributes implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/attributes
      * @apiGroup Sources Attribute
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -116,7 +116,7 @@ class Attributes implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes',
                 'App\Controller\Attributes:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -131,8 +131,8 @@ class Attributes implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/attributes/{attributeName}
      * @apiGroup Profile Attributes
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName data-name
      *
@@ -150,7 +150,7 @@ class Attributes implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
                 'App\Controller\Attributes:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -165,8 +165,8 @@ class Attributes implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}
      * @apiGroup Sources Attribute
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName data-name
      *
@@ -184,7 +184,7 @@ class Attributes implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
                 'App\Controller\Attributes:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -199,8 +199,8 @@ class Attributes implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/attributes
      * @apiGroup Sources Attribute
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -217,7 +217,7 @@ class Attributes implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes',
                 'App\Controller\Attributes:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -232,8 +232,8 @@ class Attributes implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/attributes/{attributeName}
      * @apiGroup Sources Attribute
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName data-name
      *
@@ -251,7 +251,7 @@ class Attributes implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/attributes/{attributeName}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
                 'App\Controller\Attributes:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

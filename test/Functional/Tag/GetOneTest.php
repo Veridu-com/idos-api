@@ -9,8 +9,13 @@ declare(strict_types = 1);
 namespace Test\Functional\Tag;
 
 use Test\Functional\AbstractFunctional;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class GetOneTest extends AbstractFunctional {
+    use RequiresAuth;
+    use RequiresCompanyToken;
+
     protected function setUp() {
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags/user-2-tag-1';

@@ -178,6 +178,7 @@ class Member implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->memberId);
 
+        $member       = $this->repository->findOne($command->memberId);
         $rowsAffected = $this->repository->delete($command->memberId);
 
         if ($rowsAffected) {

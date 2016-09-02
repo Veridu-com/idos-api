@@ -79,6 +79,7 @@ class DBDigestedTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $dbDigested = new DBDigested($factory, $this->optimus, $connectionMock);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($collection, $dbDigested->getAllByUserIdAndSourceId(0, 0));
     }
 
@@ -117,6 +118,7 @@ class DBDigestedTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $dbDigested = new DBDigested($factory, $this->optimus, $connectionMock);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($collection, $dbDigested->getAllByUserIdSourceIdAndNames(0, 0, ['digested-1', 'digested-2']));
     }
 
@@ -152,6 +154,7 @@ class DBDigestedTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $dbDigested = new DBDigested($factory, $this->optimus, $connectionMock);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($entity, $dbDigested->findOneByUserIdSourceIdAndName(1, 1, 'digested-1'));
     }
 

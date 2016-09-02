@@ -11,16 +11,16 @@ namespace Test\Functional\Member;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class UpdateOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCompanyToken;
+    use RequiresAuth;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/companies/veridu-ltd/members/1321189817';
+        $this->uri        = '/1.0/management/members/1321189817';
     }
 
     public function testSuccess() {
@@ -54,7 +54,7 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/members/0000000';
+        $this->uri = '/1.0/management/members/0000000';
 
         $environment = $this->createEnvironment(
             [

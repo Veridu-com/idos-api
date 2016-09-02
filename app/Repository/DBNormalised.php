@@ -33,13 +33,11 @@ class DBNormalised extends AbstractDBRepository implements NormalisedInterface {
      * {@inheritdoc}
      */
     public function getAllByUserIdAndSourceId(int $userId, int $sourceId) : Collection {
-        $result = $this->query()
+        return $this->query()
             ->join('sources', 'sources.id', '=', 'normalised.source_id')
             ->where('sources.user_id', '=', $userId)
             ->where('sources.id', '=', $sourceId)
             ->get(['normalised.*']);
-
-        return new Collection($result);
     }
 
     /**
@@ -55,9 +53,7 @@ class DBNormalised extends AbstractDBRepository implements NormalisedInterface {
             $result = $result->whereIn('normalised.name', $names);
         }
 
-        $result = $result->get(['normalised.*']);
-
-        return new Collection($result);
+        return $result->get(['normalised.*']);
     }
 
     /**

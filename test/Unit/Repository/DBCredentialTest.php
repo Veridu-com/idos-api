@@ -177,10 +177,13 @@ class DBCredentialTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
+
         $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
         $this->assertInstanceOf(Collection::class, $dbCredential->getAllByCompanyId(1));
-        $this->assertSame($array, $dbCredential->getAllByCompanyId(1)->toArray());
+
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $dbCredential->getAllByCompanyId(1)->toArray());
     }
 
     public function testDeleteByCompanyId() {

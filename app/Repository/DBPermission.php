@@ -35,8 +35,8 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
     public function findOne(int $companyId, string $routeName) : Permission {
         return $this->findOneBy(
             [
-            'company_id' => $companyId,
-            'route_name' => $routeName
+                'company_id' => $companyId,
+                'route_name' => $routeName
             ]
         );
     }

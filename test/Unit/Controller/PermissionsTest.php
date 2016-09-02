@@ -113,7 +113,8 @@ class PermissionsTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $permissionMock->listAll($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $permissionMock->listAll($requestMock, $responseMock));
     }
 
     public function testListAllFromSection() {
@@ -172,7 +173,8 @@ class PermissionsTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $permissionsMock->listAllFromSection($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $permissionsMock->listAllFromSection($requestMock, $responseMock));
     }
 
     public function testGetOne() {
@@ -241,7 +243,8 @@ class PermissionsTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $permissionMock->getOne($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $permissionMock->getOne($requestMock, $responseMock));
     }
 
     public function testCreateNew() {
@@ -297,7 +300,8 @@ class PermissionsTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $permissionMock->createNew($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $permissionMock->createNew($requestMock, $responseMock));
     }
 
     public function testDeleteAll() {
@@ -351,7 +355,8 @@ class PermissionsTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $permissionMock->deleteAll($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $permissionMock->deleteAll($requestMock, $responseMock));
     }
 
     public function testDeleteOne() {
@@ -405,6 +410,7 @@ class PermissionsTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $permissionMock->deleteOne($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $permissionMock->deleteOne($requestMock, $responseMock));
     }
 }

@@ -173,13 +173,13 @@ class Auth implements MiddlewareInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
-            throw new AppException('Invalid Token');
+            throw new AppException('Invalid Token', 400);
         }
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
         if (! $token->validate($this->jwtValidation)) {
-            throw new AppException('Token Validation Failed');
+            throw new AppException('Token Validation Failed', 400);
         }
 
         // Retrieves JWT Issuer
@@ -188,24 +188,24 @@ class Auth implements MiddlewareInterface {
         try {
             $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
         } catch (NotFound $e) {
-            throw new AppException('Invalid Credential');
+            throw new AppException('Invalid Credential', 400);
         }
 
         // JWT Signature Verification
         if (! $token->verify($this->jwtSigner, $credential->private)) {
-            throw new AppException('Token Verification Failed');
+            throw new AppException('Token Verification Failed', 400);
         }
 
         // Retrieves JWT Subject
         if (! $token->hasClaim('sub') || ! $token->getClaim('sub')) {
-            throw new AppException('Missing Subject Claim');
+            throw new AppException('Missing Subject Claim', 400);
         }
 
         $userName = $token->getClaim('sub');
 
         //@FIXME delegate this verification to a validator
         if (preg_match('/[^a-zA-Z0-9_-]+/', $userName) === 1) {
-            throw new AppException('Invalid Subject Claim');
+            throw new AppException('Invalid Subject Claim', 400);
         }
 
         // If it's a new user, creates it
@@ -237,13 +237,13 @@ class Auth implements MiddlewareInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
-            throw new AppException('Invalid Token');
+            throw new AppException('Invalid Token', 400);
         }
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
         if (! $token->validate($this->jwtValidation)) {
-            throw new AppException('Token Validation Failed');
+            throw new AppException('Token Validation Failed', 400);
         }
 
         // Retrieves JWT Issuer
@@ -252,12 +252,12 @@ class Auth implements MiddlewareInterface {
         try {
             $company = $this->companyRepository->findByPubKey($companyPubKey);
         } catch (NotFound $e) {
-            throw new AppException('Invalid Company');
+            throw new AppException('Invalid Company', 400);
         }
 
         // JWT Signature Verification
         if (! $token->verify($this->jwtSigner, $company->private_key)) {
-            throw new AppException('Token Verification Failed');
+            throw new AppException('Token Verification Failed', 400);
         }
 
         $user       = null;
@@ -268,7 +268,7 @@ class Auth implements MiddlewareInterface {
             $subject = explode(':', $token->getClaim('sub'));
 
             if (count($subject) != 2) {
-                throw new AppException('Invalid Subject');
+                throw new AppException('Invalid Subject', 400);
             }
 
             $credentialPubKey = $subject[0];
@@ -277,17 +277,17 @@ class Auth implements MiddlewareInterface {
             try {
                 $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
             } catch (NotFound $e) {
-                throw new AppException('Invalid Credential Public Key');
+                throw new AppException('Invalid Credential Public Key', 400);
             }
 
             // Ensures that the credential belongs to the company
             if ($credential->companyId !== $company->id) {
-                throw new AppException('Invalid Credential');
+                throw new AppException('Invalid Credential', 400);
             }
 
             //@FIXME delegate this verification to a validator
             if (preg_match('/[^a-zA-Z0-9_-]+/', $userName) === 1) {
-                throw new AppException('Invalid Subject Username');
+                throw new AppException('Invalid Subject Username', 400);
             }
 
             // If it's a new user, creates it
@@ -318,13 +318,13 @@ class Auth implements MiddlewareInterface {
         try {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
-            throw new AppException('Invalid Token');
+            throw new AppException('Invalid Token', 400);
         }
 
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
         if (! $token->validate($this->jwtValidation)) {
-            throw new AppException('Token Validation Failed');
+            throw new AppException('Token Validation Failed', 400);
         }
 
         // Retrieves JWT Issuer
@@ -333,17 +333,17 @@ class Auth implements MiddlewareInterface {
         try {
             $issuerService = $this->serviceRepository->findByPubKey($servicePubKey);
         } catch (NotFound $e) {
-            throw new AppException('Invalid Service');
+            throw new AppException('Invalid Service', 400);
         }
 
         // JWT Signature Verification
         if (! $token->verify($this->jwtSigner, $issuerService->private)) {
-            throw new AppException('Token Verification Failed');
+            throw new AppException('Token Verification Failed', 400);
         }
 
         // Retrieves JWT Subject
         if ((! $token->hasClaim('sub')) || (! $token->getClaim('sub'))) {
-            throw new AppException('Missing Subject Claim');
+            throw new AppException('Missing Subject Claim', 400);
         }
 
         $credentialPubKey = $token->getClaim('sub');
@@ -351,7 +351,7 @@ class Auth implements MiddlewareInterface {
         try {
             $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
         } catch (NotFound $e) {
-            throw new AppException('Invalid Credential');
+            throw new AppException('Invalid Credential', 400);
         }
 
         // Retrieves Credential's Company
@@ -382,7 +382,7 @@ class Auth implements MiddlewareInterface {
             // User Self Reference
             $user = $request->getAttribute('user');
             if (empty($user)) {
-                throw new AppException('InvalidUserNameReference');
+                throw new AppException('InvalidUserNameReference', 400);
             }
         } else {
             // Load User
@@ -392,6 +392,7 @@ class Auth implements MiddlewareInterface {
 
         // Stores Target User for future use
         $request = $request->withAttribute('targetUser', $user);
+
         return $request;
     }
 
@@ -409,14 +410,14 @@ class Auth implements MiddlewareInterface {
             // Self Reference for Credential Token / Compamny Private Key
             $targetCompany = $request->getAttribute('company');
             if (empty($targetCompany)) {
-                throw new AppException('InvalidCompanyNameReference');
+                throw new AppException('InvalidCompanyNameReference', 400);
             }
         } else {
             // Load Company
             $targetCompany = $this->companyRepository->findBySlug($companySlug);
 
             if (empty($targetCompany)) {
-                throw new AppException('InvalidCompanyNameReference');
+                throw new AppException('InvalidCompanyNameReference', 400);
             }
 
             // Checks if access hierarchy is respected (Parent to Child or Company to itself)
@@ -493,23 +494,25 @@ class Auth implements MiddlewareInterface {
         $validAuthorization = [];
 
         // Authorization Handling Loop
-        foreach ($this->authorizationSetup() as $level => $authorizationInfo) {
-            if ($hasAuthorization) {
-                break;
-            }
+        if (! $hasAuthorization) {
+            foreach ($this->authorizationSetup() as $level => $authorizationInfo) {
+                if ($hasAuthorization) {
+                    break;
+                }
 
-            if (($this->authorizationRequirement & $level) == $level) {
-                // Tries to extract Authorization from Request
-                $authorization = $this->extractAuthorization($request, $authorizationInfo['name']);
+                if (($this->authorizationRequirement & $level) == $level) {
+                    // Tries to extract Authorization from Request
+                    $authorization = $this->extractAuthorization($request, $authorizationInfo['name']);
 
-                if (empty($authorization)) {
-                    $validAuthorization[] = $authorizationInfo['label'];
-                } else {
-                    // Handles Authorization validation and Request Argument creation
-                    $request = $this->{$authorizationInfo['handler']}($request, $authorization);
+                    if (empty($authorization)) {
+                        $validAuthorization[] = $authorizationInfo['label'];
+                    } else {
+                        // Handles Authorization validation and Request Argument creation
+                        $request = $this->{$authorizationInfo['handler']}($request, $authorization);
 
-                    // Authorization has been found and validated
-                    $hasAuthorization = true;
+                        // Authorization has been found and validated
+                        $hasAuthorization = true;
+                    }
                 }
             }
         }

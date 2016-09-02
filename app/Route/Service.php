@@ -66,8 +66,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint GET /services
      * @apiGroup Company Service
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -97,8 +97,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint POST /services
      * @apiGroup Company Service
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -128,8 +128,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint DELETE /services
      * @apiGroup Company Service
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -157,10 +157,10 @@ class Service implements RouteInterface {
      *
      * Retrieves all public information from a Service.
      *
-     * @apiEndpoint GET /services/{serviceId}
+     * @apiEndpoint GET /services/{serviceId:[0-9]+}
      * @apiGroup Company Service
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment  int  serviceId 12345
      *
      * @param \Slim\App $app
@@ -189,10 +189,10 @@ class Service implements RouteInterface {
      *
      * Updates Service's specific information.
      *
-     * @apiEndpoint PUT /services/{serviceId}
+     * @apiEndpoint PUT /services/{serviceId:[0-9]+}
      * @apiGroup Company Service
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment int serviceId 1
      *
      * @param \Slim\App $app
@@ -221,10 +221,10 @@ class Service implements RouteInterface {
      *
      * Deletes a single Service that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /services/{serviceId}
+     * @apiEndpoint DELETE /services/{serviceId:[0-9]+}
      * @apiGroup Company Service
-     * @apiAuth header key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
-     * @apiAuth query key compPrivKey 2f476be4f457ef606f3b9177b5bf19c9 Company's Private Key
+     * @apiAuth header token CompanyToken XXX A valid Company Token
+     * @apiAuth query token CompanyToken XXX A valid Company Token
      * @apiEndpointURIFragment int serviceId 1
      *
      * @param \Slim\App $app

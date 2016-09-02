@@ -11,12 +11,12 @@ namespace Test\Functional\Setting;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCompanyToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class DeleteAllTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCompanyToken;
+    use RequiresAuth;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
@@ -47,7 +47,7 @@ class DeleteAllTest extends AbstractFunctional {
         // refreshes the $entities prop
         $this->populate($this->uri);
         // checks if all entities were deleted
-        $this->assertSame(0, count($this->entities));
+        $this->assertCount(0, $this->entities);
 
         /*
          * Validates Json Schema with Json Response
