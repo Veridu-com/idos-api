@@ -67,10 +67,4 @@ class DBReview extends AbstractDBRepository implements ReviewInterface {
 
         return $result->first();
     }
-
-    public function create(array $attributes) : EntityInterface {
-        $attributes['warning_id'] = $this->optimus->decode($attributes['warning_id']);
-
-        return parent::create($attributes);
-    }
 }

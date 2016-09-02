@@ -41,8 +41,8 @@ class CreateNew extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['warningId'])) {
-            $this->warningId = $parameters['warningId'];
+        if (isset($parameters['decoded_warning_id'])) {
+            $this->warningId = $parameters['decoded_warning_id'];
         }
 
         if (isset($parameters['positive'])) {

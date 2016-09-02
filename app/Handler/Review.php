@@ -17,6 +17,7 @@ use App\Repository\ReviewInterface;
 use App\Validator\Review as ReviewValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use App\Exception\AppException;
 
 /**
  * Handles Review commands.
