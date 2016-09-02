@@ -59,7 +59,7 @@ class DBReview extends AbstractDBRepository implements ReviewInterface {
      * {@inheritdoc}
      */
     public function findOneByUserIdAndId(int $userId, int $id) : Review {
-        $result = $this->findBy(['user_id' => $userId, 'id' => $this->optimus->decode($id)]);
+        $result = $this->findBy(['user_id' => $userId, 'id' => $id]);
 
         if($result->isEmpty()) {
             throw new NotFound();

@@ -7,12 +7,12 @@
 namespace Test\Functional\Review;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits\RequiresCompanyToken;
 use Test\Functional\Traits\RequiresAuth;
 
 class ListAllTest extends AbstractFunctional {
     use RequiresAuth;
-    use RequiresCredentialToken;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -23,7 +23,7 @@ class ListAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
                 ]
             )
         );

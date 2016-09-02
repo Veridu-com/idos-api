@@ -74,7 +74,7 @@ class DBWarning extends AbstractDBRepository implements WarningInterface {
         return $this->findOneBy(
             [
                 'user_id' => $userId,
-                'id'      => $this->optimus->decode($id)
+                'id'      => $id
             ]
         );
     }

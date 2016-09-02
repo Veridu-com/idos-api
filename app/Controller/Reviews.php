@@ -145,13 +145,13 @@ class Reviews implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('id', (int) $request->getAttribute('reviewId'));
+            ->setParameter('id', (int) $request->getAttribute('decodedReviewId'));
 
         $review = $this->commandBus->handle($command);
 
         $body = [
             'data'    => $review->toArray(),
-            'updated' => $review->updated_at
+            'updated' => $review->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -178,7 +178,7 @@ class Reviews implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
 
-        $review = $this->repository->findOneByUserIdAndId($user->id, (int) $request->getAttribute('reviewId'));
+        $review = $this->repository->findOneByUserIdAndId($user->id, (int) $request->getAttribute('decodedReviewId'));
 
         $body = [
             'data' => $review->toArray()

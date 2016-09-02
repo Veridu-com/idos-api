@@ -7,12 +7,12 @@
 namespace Test\Functional\Review;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits\RequiresCompanyToken;
 use Test\Functional\Traits\RequiresAuth;
 
 class GetOneTest extends AbstractFunctional {
     use RequiresAuth;
-    use RequiresCredentialToken;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -21,7 +21,7 @@ class GetOneTest extends AbstractFunctional {
             '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/reviews',
             'GET',
             [
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
@@ -32,7 +32,7 @@ class GetOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
                 ]
             )
         );
@@ -63,7 +63,7 @@ class GetOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
                 ]
             )
         );

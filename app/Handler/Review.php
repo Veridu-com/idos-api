@@ -93,7 +93,7 @@ class Review implements HandlerInterface {
             [
             'user_id'    => $command->user->id,
             'warning_id' => $command->warningId,
-            'positive'   => $command->positive,
+            'positive'   => $this->validator->validateFlag($command->positive),
             'created_at' => time()
             ]
         );

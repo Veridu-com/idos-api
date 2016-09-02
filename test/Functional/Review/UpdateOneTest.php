@@ -11,12 +11,12 @@ namespace Test\Functional\Review;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits\RequiresCompanyToken;
 use Test\Functional\Traits\RequiresAuth;
 
 class UpdateOneTest extends AbstractFunctional {
     use RequiresAuth;
-    use RequiresCredentialToken;
+    use RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
@@ -25,7 +25,7 @@ class UpdateOneTest extends AbstractFunctional {
             '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/reviews',
             'GET',
             [
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
@@ -36,7 +36,7 @@ class UpdateOneTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 
@@ -70,7 +70,7 @@ class UpdateOneTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
             ]
         );
 

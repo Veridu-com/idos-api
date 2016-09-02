@@ -80,11 +80,11 @@ class Reviews implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/reviews',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews',
                 'App\Controller\Reviews:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
+            ->add($auth(Auth::COMPANY))
             ->setName('review:listAll');
     }
     /**
@@ -112,11 +112,11 @@ class Reviews implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/reviews',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews',
                 'App\Controller\Reviews:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
+            ->add($auth(Auth::COMPANY))
             ->setName('review:createNew');
     }
 
@@ -146,11 +146,11 @@ class Reviews implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/reviews/{reviewId}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews/{reviewId}',
                 'App\Controller\Reviews:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
+            ->add($auth(Auth::COMPANY))
             ->setName('review:updateOne');
     }
 
@@ -180,11 +180,11 @@ class Reviews implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/reviews/{reviewId}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews/{reviewId}',
                 'App\Controller\Reviews:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
+            ->add($auth(Auth::COMPANY))
             ->setName('review:getOne');
     }
 }

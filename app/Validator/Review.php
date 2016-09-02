@@ -15,5 +15,6 @@ class Review implements ValidatorInterface {
     use Traits\AssertId,
     	Traits\AssertUser,
     	Traits\AssertFlag,
-        Traits\AssertName;
+        Traits\AssertName,
+        Traits\ValidateFlag;
 }
