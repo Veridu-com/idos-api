@@ -23,11 +23,11 @@ class DBStrategy implements RepositoryStrategyInterface {
      */
     public $entityFactory;
     /**
-     * DB Connection.
+     * DB Connections.
      *
-     * @var \Illuminate\Database\Connection
+     * @var array
      */
-    protected $connection;
+    protected $connections;
 
     /**
      * Optimus instance.
@@ -41,18 +41,18 @@ class DBStrategy implements RepositoryStrategyInterface {
      *
      * @param App\Factory\Entity              $entityFactory
      * @param \Jenssegers\Optimus\Optimus     $optimus
-     * @param \Illuminate\Database\Connection $connection
+     * @param array $connections
      *
      * @return void
      */
     public function __construct(
         Entity $entityFactory,
         Optimus $optimus,
-        Connection $connection
+        array $connections
     ) {
         $this->entityFactory = $entityFactory;
         $this->optimus       = $optimus;
-        $this->connection    = $connection;
+        $this->connections    = $connections;
     }
 
     /**
@@ -66,6 +66,6 @@ class DBStrategy implements RepositoryStrategyInterface {
      * {@inheritdoc}
      */
     public function build(string $className) : RepositoryInterface {
-        return new $className($this->entityFactory, $this->optimus, $this->connection);
+        return new $className($this->entityFactory, $this->optimus, $this->connections);
     }
 }
