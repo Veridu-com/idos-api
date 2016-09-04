@@ -9,6 +9,8 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Raw;
+use App\Entity\Source;
+use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
@@ -32,33 +34,62 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllBySource(Source $source) : Collection {
+    public function getAllBySourceAndNames(Source $source, array $names) : Collection {
+        $this->selectDatabase($source->name);
 
+        $collections = $this->listCollections();
+        $entities = new Collection();
+
+        foreach($collections as $collection) {
+            if (!empty($names) && !in_array($collection->getName(), $names)) {
+                continue;
+            }
+
+            $this->selectCollection($collection->getName());
+
+            $entity = $this->find($source->id);
+            $entity->name = $collection->getName();
+
+            $entities->push($entity);
+        }
+
+        return $entities;
     }
 
     /**
      * {@inheritdoc}
      */
     public function deleteBySource(Source $source) : int {
+        $this->selectDatabase($source->name);
 
+        $collections = $this->listCollections();
+        $affectedRows = 0;
+
+        foreach($collections as $collection) {
+            $affectedRows++;
+        }
+
+        if (! $this->dropDatabase()->ok) {
+            throw new AppException('Could not drop MongoDB database');
+        }
+
+        return $affectedRows;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(Source $source, Raw $raw) : Raw {
-        $this->selectDatabase($source->name);
+    public function save(EntityInterface $entity) : EntityInterface {
+        $this->selectDatabase($entity->source->name);
+        $this->selectCollection($entity->name);
 
-        $_id = md5($source->id);
-        $success = $this->query($raw->name)->insert([
-            '_id' => $_id,
-            'data' => $raw->data]);
-
-        if(! $success) {
-            throw new AppException('Error while creating Raw entity');
+        if (! $entity->id) {
+            $entity->id = $entity->source->id;
         }
 
-        return $this->findOneBySourceAndName($source, $raw->name);
+        unset($entity->source);
+
+        return parent::save($entity);
     }
 
     /**
@@ -66,33 +97,32 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
      */
     public function findOneBySourceAndName(Source $source, string $name) : Raw {
         $this->selectDatabase($source->name);
+        $this->selectCollection($name);
 
-        $data = $this->query($name)->find(md5($source->id));
-
-        if(! $data) {
-            throw new NotFound('A Raw with the given source and name could not be found.');
-        }
-
-        $raw = new Raw([
-            'id' => $data['_id'],
-            'name' => $name,
-            'data' => $data['data']
-        ]);
-
-        return $raw;
+        return $this->find($source->id);
     }
 
     /**
      * {@inheritdoc}
      */
     public function updateOneBySourceAndName(Source $source, string $name, string $data) : Raw {
+        $entity = $this->findOneBySourceAndName($source, $name);
 
+        $entity->source = $source;
+        $entity->data = $data;
+
+        return $this->save($entity);
     }
     
     /**
      * {@inheritdoc}
      */
     public function deleteOneBySourceAndName(Source $source, string $name) : int {
+        $this->selectDatabase($source->name);
+        $this->selectCollection($name);
 
+        $affectedRows = (int) $this->dropCollection()->ok;
+
+        return $affectedRows;
     }
 }

@@ -32,12 +32,18 @@ class DBSource extends AbstractDBRepository implements SourceInterface {
      * {@inheritdoc}
      */
     public function findOne(int $id, int $userId) : Source {
-        return $this->findBy(
+        $result = $this->findBy(
             [
                 'id'      => $id,
                 'user_id' => $userId
             ]
         );
+
+        if($result->isEmpty()) {
+            throw new NotFound();
+        }
+
+        return $result->first();
     }
 
     /**

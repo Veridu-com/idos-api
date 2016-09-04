@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /profiles/{userName}/sources/{sourceId}/raw",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Raw response payload",
+            "type": "object",
+            "$ref": "rawEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

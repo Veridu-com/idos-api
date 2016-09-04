@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Jenssegers\Mongodb\Connection as MongoDbConnection;
 use Jenssegers\Mongodb\Query\Builder as QueryBuilder;
+use MongoDB\Model\CollectionInfoIterator;
 
 /**
  * Abstract NoSQL Database-based Repository.
@@ -42,7 +43,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     /**
      * NoSQL DB Connection.
      *
-     * @var mixed
+     * @var Jenssegers\Mongodb\Connection
      */
     protected $dbConnection;
     /**
@@ -70,6 +71,14 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         $this->dbConnection = ($this->dbSelector)($database);
     }
 
+    public function selectCollection(string $collection) {
+        $this->collectionName = $collection;
+    }
+
+    public function getCollectionName() {
+        return $this->collectionName;
+    }
+
     /**
      * Check if a database is selected.
      */
@@ -84,7 +93,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      *
      * @return \Jenssegers\Mongodb\Query\Builder
      */
-    protected function query($collection = null, $entityName = null, $database = null) : Builder {
+    protected function query($collection = null, $entityName = null, $database = null) : QueryBuilder {
         if ($database !== null) {
             $this->selectDatabase($database);
         }
@@ -94,6 +103,33 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         $collection = ($collection === null) ? $this->getCollectionName() : $collection;
 
         return $this->dbConnection->collection($collection);
+    }
+
+    
+    protected function listCollections($database = null) : CollectionInfoIterator{
+        if ($database !== null) {
+            $this->selectDatabase($database);
+        }
+
+        $this->checkDatabaseSelected();
+
+        return $this->dbConnection->getMongoDB()->listCollections();        
+    }
+
+    protected function dropDatabase($database = null) {
+        if ($database !== null) {
+            $this->selectDatabase($database);
+        }
+
+        $this->checkDatabaseSelected();
+
+        return $this->dbConnection->getMongoDB()->drop();
+    }
+
+    protected function dropCollection($collection = null) {
+        $collection = ($collection === null) ? $this->getCollectionName() : $collection;
+
+        return $this->dbConnection->getCollection($collection)->drop();
     }
 
     /**
@@ -120,8 +156,6 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function create(array $attributes) : EntityInterface {
-        $this->checkDatabaseSelected();
-
         return $this->entityFactory->create(
             $this->getEntityName(),
             $attributes
@@ -136,26 +170,31 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
 
         $serialized = $entity->serialize();
 
-        if (! $entity->id) {
-            $id = $this->query()
-                ->insertGetId($serialized);
+        $isUpdate = false;
+
+        //Find if we are going to perform an update or an insert
+        if ($entity->id) {
+            try {
+                $existingEntity = $this->find($entity->id);
+                $isUpdate = true;
+            } catch (NotFound $e) { }
+        }
+
+        if ($isUpdate) {
+            $query = $this->query();
+            $success = $query->where('_id', '=', $query->convertKey(md5((string) $entity->id)))->update($serialized) > 0;
         } else {
-            $id = $entity->id;
-            unset($serialized['id']);
-            $affectedRows = $this->query()
-                ->where('id', $entity->id)
-                ->update($serialized);
-            if (! $affectedRows) {
-                throw new \RuntimeException(
-                    sprintf(
-                        'No rows were updated when saving "%s".',
-                        get_class($entity)
-                    )
-                );
+            if ($entity->id) {
+                unset($serialized['id']);
+                $entity->id = md5((string) $entity->id);
+                $success = $this->query()->insert(array_merge(['_id' => $entity->id], $serialized));
+            } else {
+                $entity->id = $this->query()->insertGetId($serialized);
+                $success = $entity->id !== null;
             }
         }
 
-        return $this->create(array_merge(['id' => $id], $entity->serialize()));
+        return $this->create($entity->serialize());
     }
 
     /**
@@ -164,24 +203,25 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     public function find(int $id) : EntityInterface {
         $this->checkDatabaseSelected();
 
-        $result = $this->query()
-            ->find($id);
+        $result = $this->query();
+        $result = $result->where('_id', '=', $result->convertKey(md5((string) $id)))->get();
+
         if (empty($result)) {
             throw new NotFound();
         }
 
-        return $result;
+        return $this->create(array_pop($result));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function delete(int $id, string $key = 'id') : int {
+    public function delete(int $id, string $key = '_id') : int {
         $this->checkDatabaseSelected();
 
-        return $this->query()
-            ->where($key, $id)
-            ->delete($id);
+        $query = $this->query();
+
+        return $query->where($key, '=', $query->convertKey(md5((string) $id)))->delete();
     }
 
     /**

@@ -379,13 +379,13 @@ $container['sql'] = function (ContainerInterface $container) : Connection {
 
 // MongoDB Access
 $container['nosql'] = function (ContainerInterface $container) : callable {
-    return function (string $database) use ($container) : MongoDB\Manager {
+    return function (string $database) use ($container) : Mongodb\Connection {
         $config = $container['settings']['db']['nosql'];
         $config['database'] = $database;
 
         return new Mongodb\Connection($config);
-    }
-}
+    };
+};
 
 // Respect Validator
 $container['validator'] = function (ContainerInterface $container) : Validator {

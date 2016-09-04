@@ -12,7 +12,7 @@ class S21UsersSeed extends AbstractSeed {
             [
                 'credential_id' => 1,
                 'identity_id'   => 1,
-                'username'      => md5('JohnDoe1'), // f67b96dcf96b49d713a520ce9f54053c
+                'username'      => 'usr001',
                 'role'          => 'company.member'
             ],
             [

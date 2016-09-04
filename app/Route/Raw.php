@@ -41,6 +41,7 @@ class Raw implements RouteInterface {
         $app->getContainer()[\App\Controller\Raw::class] = function (ContainerInterface $container) {
             return new \App\Controller\Raw(
                 $container->get('repositoryFactory')->create('Raw'),
+                $container->get('repositoryFactory')->create('Source'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
                 $container->get('optimus')
@@ -85,7 +86,7 @@ class Raw implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
                 'App\Controller\Raw:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -118,7 +119,7 @@ class Raw implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
                 'App\Controller\Raw:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -153,7 +154,7 @@ class Raw implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw/{rawName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw/{rawName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Raw:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -188,7 +189,7 @@ class Raw implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw/{rawName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw/{rawName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Raw:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -222,7 +223,7 @@ class Raw implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
                 'App\Controller\Raw:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -257,7 +258,7 @@ class Raw implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw/{rawName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw/{rawName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Raw:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
