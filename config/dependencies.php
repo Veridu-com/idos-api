@@ -18,6 +18,7 @@ use App\Repository;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Connection;
 use Interop\Container\ContainerInterface;
+use Jenssegers\Mongodb;
 use Jenssegers\Optimus\Optimus;
 use Lcobucci\JWT;
 use League\Event\Emitter;
@@ -40,7 +41,6 @@ use Slim\HttpCache\CacheProvider;
 use Stash\Driver\FileSystem;
 use Stash\Driver\Redis;
 use Whoops\Handler\PrettyPageHandler;
-use Jenssegers\Mongodb;
 
 if (! isset($app)) {
     die('$app is not set!');
@@ -380,7 +380,7 @@ $container['sql'] = function (ContainerInterface $container) : Connection {
 // MongoDB Access
 $container['nosql'] = function (ContainerInterface $container) : callable {
     return function (string $database) use ($container) : Mongodb\Connection {
-        $config = $container['settings']['db']['nosql'];
+        $config             = $container['settings']['db']['nosql'];
         $config['database'] = $database;
 
         return new Mongodb\Connection($config);

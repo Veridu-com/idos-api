@@ -48,10 +48,10 @@ class Raw implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\RawInterface $repository
+     * @param App\Repository\RawInterface    $repository
      * @param App\Repository\SourceInterface $sourceRepository
-     * @param \League\Tactician\CommandBus     $commandBus
-     * @param App\Factory\Command              $commandFactory
+     * @param \League\Tactician\CommandBus   $commandBus
+     * @param App\Factory\Command            $commandFactory
      *
      * @return void
      */
@@ -61,10 +61,10 @@ class Raw implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository     = $repository;
-        $this->sourceRepository     = $sourceRepository;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
+        $this->repository       = $repository;
+        $this->sourceRepository = $sourceRepository;
+        $this->commandBus       = $commandBus;
+        $this->commandFactory   = $commandFactory;
     }
 
     /**
@@ -81,9 +81,9 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
-        $source   = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-        $names    = $request->getQueryParam('names', []);
+        $user   = $request->getAttribute('targetUser');
+        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
+        $names  = $request->getQueryParam('names', []);
 
         if ($names) {
             $names = explode(',', $names);
@@ -120,7 +120,7 @@ class Raw implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Raw\\CreateNew');
 
-        $user = $request->getAttribute('targetUser');
+        $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
         $command
@@ -159,8 +159,8 @@ class Raw implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Raw\\UpdateOne');
-        
-        $user = $request->getAttribute('targetUser');
+
+        $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
         $command
@@ -199,7 +199,7 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
         $raw = $this->repository->findOneBySourceAndName($source, $request->getAttribute('rawName'));
@@ -229,8 +229,8 @@ class Raw implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Raw\\DeleteAll');
-        
-        $user = $request->getAttribute('targetUser');
+
+        $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
         $command
@@ -265,8 +265,8 @@ class Raw implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Raw\\DeleteOne');
-        
-        $user = $request->getAttribute('targetUser');
+
+        $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
         $command

@@ -8,9 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
+use App\Entity\EntityInterface;
 use App\Entity\Raw;
 use App\Entity\Source;
-use App\Entity\EntityInterface;
 use Illuminate\Support\Collection;
 
 /**
@@ -21,7 +21,7 @@ interface RawInterface extends RepositoryInterface {
      * Gets all Raw entities based on Source, possibly filtering by name.
      *
      * @param App\Entity\Source $source
-     * @param array $names
+     * @param array             $names
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -50,8 +50,8 @@ interface RawInterface extends RepositoryInterface {
     /**
      * Find a Raw entity based on its source and name.
      *
-     * @param App\Entity\Source    $source
-     * @param string $name
+     * @param App\Entity\Source $source
+     * @param string            $name
      *
      * @throws App\Exception\NotFound
      *
@@ -62,21 +62,21 @@ interface RawInterface extends RepositoryInterface {
     /**
      * Update a Raw entity based on its source and name.
      *
-     * @param App\Entity\Source    $source
-     * @param string $name
-     * @param string $data
+     * @param App\Entity\Source $source
+     * @param string            $name
+     * @param string            $data
      *
      * @throws App\Exception\NotFound
      *
      * @return App\Entity\Raw
      */
     public function updateOneBySourceAndName(Source $source, string $name, string $data) : Raw;
-    
+
     /**
      * Deletes a Raw entity based on their source and name.
      *
-     * @param App\Entity\Source    $source
-     * @param string $name
+     * @param App\Entity\Source $source
+     * @param string            $name
      *
      * @return int
      */

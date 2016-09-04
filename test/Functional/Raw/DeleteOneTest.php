@@ -12,7 +12,7 @@ class DeleteOneTest extends AbstractRawFunctional {
     protected function setUp() {
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/profiles/usr001/sources/1321189817/raw/raw-2';
-        
+
         $this->populateDb();
     }
 

@@ -12,9 +12,8 @@ use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use Illuminate\Support\Collection;
-use Jenssegers\Optimus\Optimus;
-use Jenssegers\Mongodb\Connection as MongoDbConnection;
 use Jenssegers\Mongodb\Query\Builder as QueryBuilder;
+use Jenssegers\Optimus\Optimus;
 use MongoDB\Model\CollectionInfoIterator;
 
 /**
@@ -105,7 +104,6 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         return $this->dbConnection->collection($collection);
     }
 
-    
     protected function listCollections($database = null) : CollectionInfoIterator{
         if ($database !== null) {
             $this->selectDatabase($database);
@@ -113,7 +111,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
 
         $this->checkDatabaseSelected();
 
-        return $this->dbConnection->getMongoDB()->listCollections();        
+        return $this->dbConnection->getMongoDB()->listCollections();
     }
 
     protected function dropDatabase($database = null) {
@@ -148,7 +146,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     ) {
         parent::__construct($entityFactory, $optimus);
 
-        $this->dbSelector = $connections['nosql'];
+        $this->dbSelector   = $connections['nosql'];
         $this->dbConnection = null;
     }
 
@@ -176,21 +174,21 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         if ($entity->id) {
             try {
                 $existingEntity = $this->find($entity->id);
-                $isUpdate = true;
+                $isUpdate       = true;
             } catch (NotFound $e) { }
         }
 
         if ($isUpdate) {
-            $query = $this->query();
+            $query   = $this->query();
             $success = $query->where('_id', '=', $query->convertKey(md5((string) $entity->id)))->update($serialized) > 0;
         } else {
             if ($entity->id) {
                 unset($serialized['id']);
                 $entity->id = md5((string) $entity->id);
-                $success = $this->query()->insert(array_merge(['_id' => $entity->id], $serialized));
+                $success    = $this->query()->insert(array_merge(['_id' => $entity->id], $serialized));
             } else {
                 $entity->id = $this->query()->insertGetId($serialized);
-                $success = $entity->id !== null;
+                $success    = $entity->id !== null;
             }
         }
 

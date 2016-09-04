@@ -11,7 +11,6 @@ namespace App\Repository;
 use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
-use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
@@ -94,9 +93,9 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity                       $entityFactory
-     * @param \Jenssegers\Optimus\Optimus              $optimus
-     * @param array $connections
+     * @param App\Factory\Entity          $entityFactory
+     * @param \Jenssegers\Optimus\Optimus $optimus
+     * @param array                       $connections
      *
      * @return void
      */

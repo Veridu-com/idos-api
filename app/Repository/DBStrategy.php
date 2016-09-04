@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Factory\Entity;
-use Illuminate\Database\Connection;
 use Jenssegers\Optimus\Optimus;
 
 /**
@@ -39,9 +38,9 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity              $entityFactory
-     * @param \Jenssegers\Optimus\Optimus     $optimus
-     * @param array $connections
+     * @param App\Factory\Entity          $entityFactory
+     * @param \Jenssegers\Optimus\Optimus $optimus
+     * @param array                       $connections
      *
      * @return void
      */
@@ -52,7 +51,7 @@ class DBStrategy implements RepositoryStrategyInterface {
     ) {
         $this->entityFactory = $entityFactory;
         $this->optimus       = $optimus;
-        $this->connections    = $connections;
+        $this->connections   = $connections;
     }
 
     /**

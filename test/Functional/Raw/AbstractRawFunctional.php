@@ -19,7 +19,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
     protected function populateDb() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_METHOD' => 'POST',
+                'REQUEST_METHOD'     => 'POST',
                 'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
@@ -29,7 +29,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'raw-1',
+                    'name' => 'raw-1',
                     'data' => 'data-1'
                 ]
             )
@@ -39,7 +39,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'raw-2',
+                    'name' => 'raw-2',
                     'data' => 'data-2'
                 ]
             )
@@ -49,7 +49,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'raw-3',
+                    'name' => 'raw-3',
                     'data' => 'data-3'
                 ]
             )

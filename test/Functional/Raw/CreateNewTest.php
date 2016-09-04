@@ -29,7 +29,7 @@ class CreateNewTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'name-test',
+                    'name' => 'name-test',
                     'data' => 'value-test'
                 ]
             )
