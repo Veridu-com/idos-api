@@ -13,9 +13,14 @@ use App\Command\Raw\DeleteAll;
 use App\Command\Raw\DeleteOne;
 use App\Command\Raw\UpdateOne;
 use App\Entity\Raw as RawEntity;
+use App\Event\Raw\Created;
+use App\Event\Raw\Deleted;
+use App\Event\Raw\DeletedMulti;
+use App\Event\Raw\Updated;
 use App\Repository\RawInterface;
 use App\Validator\Raw as RawValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Raw commands.
@@ -33,6 +38,12 @@ class Raw implements HandlerInterface {
      * @var App\Validator\Raw
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var \League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -45,7 +56,9 @@ class Raw implements HandlerInterface {
                     ->create('Raw'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Raw')
+                    ->create('Raw'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -60,10 +73,12 @@ class Raw implements HandlerInterface {
      */
     public function __construct(
         RawInterface $repository,
-        RawValidator $validator
+        RawValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -75,17 +90,22 @@ class Raw implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : RawEntity {
         $this->validator->assertSource($command->source);
-        $this->validator->assertBelongsToUser($command->source, $command->user);
-        $this->validator->assertName($command->name);
+        $this->validator->assertName($command->collection);
 
         $raw = $this->repository->create([
             'source'     => $command->source,
-            'name'       => $command->name,
+            'collection'       => $command->collection,
             'data'       => $command->data,
             'created_at' => time()
         ]);
 
-        $raw = $this->repository->save($raw);
+        try {
+            $raw = $this->repository->save($raw);
+            $event = new Created($raw);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while creating an raw');
+        }
 
         return $raw;
     }
@@ -99,10 +119,17 @@ class Raw implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : RawEntity {
         $this->validator->assertSource($command->source);
-        $this->validator->assertBelongsToUser($command->source, $command->user);
-        $this->validator->assertName($command->name);
+        $this->validator->assertName($command->collection);
 
-        return $this->repository->updateOneBySourceAndName($command->source, $command->name, $command->data);
+        try {
+            $raw = $this->repository->updateOneBySourceAndCollection($command->source, $command->collection, $command->data);
+            $event = new Updated($raw);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while creating an raw');
+        }
+
+        return $raw;
     }
 
     /**
@@ -114,10 +141,19 @@ class Raw implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertSource($command->source);
-        $this->validator->assertBelongsToUser($command->source, $command->user);
-        $this->validator->assertName($command->name);
+        $this->validator->assertName($command->collection);
 
-        return $this->repository->deleteOneBySourceAndName($command->source, $command->name);
+        $raw = $this->repository->findOneBySourceAndCollection($command->source, $command->collection);
+
+        try {
+            $affectedRows = $this->repository->deleteOneBySourceAndCollection($command->source, $command->collection);
+            $event = new Deleted($raw);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while creating an raw');
+        }
+
+        return $affectedRows;
     }
 
     /**
@@ -129,8 +165,17 @@ class Raw implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertSource($command->source);
-        $this->validator->assertBelongsToUser($command->source, $command->user);
 
-        return $this->repository->deleteBySource($command->source);
+        $raw = $this->repository->getAllBySourceAndCollections($command->source);
+
+        try {
+            $affectedRows = $this->repository->deleteBySource($command->source);
+            $event = new DeletedMulti($raw);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while creating an raw');
+        }
+
+        return $affectedRows;
     }
 }

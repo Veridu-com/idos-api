@@ -14,6 +14,5 @@ namespace App\Validator;
 class Raw implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertSource,
-        Traits\AssertBelongsToUser,
         Traits\AssertName;
 }

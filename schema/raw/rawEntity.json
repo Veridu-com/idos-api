@@ -4,8 +4,8 @@
     "title": "Raw",
     "type": "object",
     "properties": {
-        "name": {
-            "description": "Name of raw data",
+        "collection": {
+            "description": "Collection name of raw data",
             "type": "string",
             "pattern": ""
         },
@@ -24,7 +24,7 @@
         }
     },
     "required": [
-        "name",
+        "collection",
         "data",
         "created_at"
     ]

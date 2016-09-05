@@ -32,6 +32,13 @@ class ListAllTest extends AbstractRawFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
+        $this->assertCount(3, $body['data']);
+
+        foreach ($body['data'] as $raw) {
+            $this->assertContains($raw['collection'], ['raw-1', 'raw-2', 'raw-3']);
+            $this->assertContains($raw['data'], ['data-1', 'data-2', 'data-3']);
+        }
+
         /*
          * Validates Json Schema against Json Response
          */
@@ -49,7 +56,7 @@ class ListAllTest extends AbstractRawFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=raw-1'
+                    'QUERY_STRING'       => 'collections=raw-1'
                 ]
             )
         );
@@ -64,7 +71,7 @@ class ListAllTest extends AbstractRawFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $raw) {
-            $this->assertContains($raw['name'], ['raw-1']);
+            $this->assertContains($raw['collection'], ['raw-1']);
             $this->assertContains($raw['data'], ['data-1']);
         }
 
@@ -85,7 +92,7 @@ class ListAllTest extends AbstractRawFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=raw-1,raw-3'
+                    'QUERY_STRING'       => 'collections=raw-1,raw-3'
                 ]
             )
         );
@@ -99,7 +106,7 @@ class ListAllTest extends AbstractRawFunctional {
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $raw) {
-            $this->assertContains($raw['name'], ['raw-1', 'raw-3']);
+            $this->assertContains($raw['collection'], ['raw-1', 'raw-3']);
             $this->assertContains($raw['data'], ['data-1', 'data-3']);
         }
 

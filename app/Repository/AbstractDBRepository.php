@@ -14,6 +14,7 @@ use App\Factory\Entity;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
+use Illuminate\Database\ConnectionInterface;
 
 /**
  * Abstract Database-based Repository.
@@ -93,19 +94,19 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity          $entityFactory
-     * @param \Jenssegers\Optimus\Optimus $optimus
-     * @param array                       $connections
+     * @param App\Factory\Entity                       $entityFactory
+     * @param \Jenssegers\Optimus\Optimus              $optimus
+     * @param \Illuminate\Database\ConnectionInterface $sqlConnection
      *
      * @return void
      */
     public function __construct(
         Entity $entityFactory,
         Optimus $optimus,
-        array $connections
+        ConnectionInterface $sqlConnection
     ) {
         parent::__construct($entityFactory, $optimus);
-        $this->dbConnection = $connections['sql'];
+        $this->dbConnection = $sqlConnection;
     }
 
     /**

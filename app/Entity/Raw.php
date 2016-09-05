@@ -16,7 +16,7 @@ use App\Extension\SecureFields;
  * @apiEntity schema/raw/rawEntity.json
  *
  * @property int    $id
- * @property string $name
+ * @property string $collection
  * @property string $data
  * @property int    $created_at
  */
@@ -30,7 +30,7 @@ class Raw extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'data', 'created_at'];
+    protected $visible = ['collection', 'data', 'created_at'];
     /**
      * {@inheritdoc}
      */
@@ -53,9 +53,9 @@ class Raw extends AbstractEntity {
                 $this->id
             ),
             sprintf(
-                '%s.name.%s',
+                '%s.collection.%s',
                 self::CACHE_PREFIX,
-                $this->name
+                $this->collection
             ),
             sprintf(
                 '%s.data.%s',

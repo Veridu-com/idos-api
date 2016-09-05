@@ -21,11 +21,11 @@ interface RawInterface extends RepositoryInterface {
      * Gets all Raw entities based on Source, possibly filtering by name.
      *
      * @param App\Entity\Source $source
-     * @param array             $names
+     * @param array             $collections
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllBySourceAndNames(Source $source, array $names) : Collection;
+    public function getAllBySourceAndCollections(Source $source, array $collectionNames = []) : Collection;
 
     /*
      * Deletes all Raw entities based on source.
@@ -57,7 +57,7 @@ interface RawInterface extends RepositoryInterface {
      *
      * @return App\Entity\Raw
      */
-    public function findOneBySourceAndName(Source $source, string $name) : Raw;
+    public function findOneBySourceAndCollection(Source $source, string $collection) : Raw;
 
     /**
      * Update a Raw entity based on its source and name.
@@ -70,7 +70,7 @@ interface RawInterface extends RepositoryInterface {
      *
      * @return App\Entity\Raw
      */
-    public function updateOneBySourceAndName(Source $source, string $name, string $data) : Raw;
+    public function updateOneBySourceAndCollection(Source $source, string $collection, string $data) : Raw;
 
     /**
      * Deletes a Raw entity based on their source and name.
@@ -80,5 +80,5 @@ interface RawInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteOneBySourceAndName(Source $source, string $name) : int;
+    public function deleteOneBySourceAndCollection(Source $source, string $collection) : int;
 }

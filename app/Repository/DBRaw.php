@@ -12,6 +12,7 @@ use App\Entity\EntityInterface;
 use App\Entity\Raw;
 use App\Entity\Source;
 use Illuminate\Support\Collection;
+use App\Exception\NotFound;
 
 /**
  * NoSQL Database-based Raw Data Repository Implementation.
@@ -33,23 +34,25 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllBySourceAndNames(Source $source, array $names) : Collection {
+    public function getAllBySourceAndCollections(Source $source, array $collectionNames = []) : Collection {
         $this->selectDatabase($source->name);
 
         $collections = $this->listCollections();
         $entities    = new Collection();
 
         foreach($collections as $collection) {
-            if (! empty($names) && ! in_array($collection->getName(), $names)) {
+            if (! empty($collectionNames) && !in_array($collection->getName(), $collectionNames)) {
                 continue;
             }
 
             $this->selectCollection($collection->getName());
 
-            $entity       = $this->find($source->id);
-            $entity->name = $collection->getName();
+            try {
+                $entity       = $this->find($source->id);
+                $entity->collection = $collection->getName();
 
-            $entities->push($entity);
+                $entities->push($entity);
+            } catch (NotFound $e) { }
         }
 
         return $entities;
@@ -65,11 +68,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $affectedRows = 0;
 
         foreach($collections as $collection) {
-            $affectedRows++;
-        }
-
-        if (! $this->dropDatabase()->ok) {
-            throw new AppException('Could not drop MongoDB database');
+            $affectedRows += $this->deleteOneBySourceAndCollection($source, $collection->getName());
         }
 
         return $affectedRows;
@@ -80,7 +79,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
      */
     public function save(EntityInterface $entity) : EntityInterface {
         $this->selectDatabase($entity->source->name);
-        $this->selectCollection($entity->name);
+        $this->selectCollection($entity->collection);
 
         if (! $entity->id) {
             $entity->id = $entity->source->id;
@@ -94,9 +93,9 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneBySourceAndName(Source $source, string $name) : Raw {
+    public function findOneBySourceAndCollection(Source $source, string $collection) : Raw {
         $this->selectDatabase($source->name);
-        $this->selectCollection($name);
+        $this->selectCollection($collection);
 
         return $this->find($source->id);
     }
@@ -104,8 +103,8 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     /**
      * {@inheritdoc}
      */
-    public function updateOneBySourceAndName(Source $source, string $name, string $data) : Raw {
-        $entity = $this->findOneBySourceAndName($source, $name);
+    public function updateOneBySourceAndCollection(Source $source, string $collection, string $data) : Raw {
+        $entity = $this->findOneBySourceAndCollection($source, $collection);
 
         $entity->source = $source;
         $entity->data   = $data;
@@ -116,11 +115,11 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteOneBySourceAndName(Source $source, string $name) : int {
+    public function deleteOneBySourceAndCollection(Source $source, string $collection) : int {
         $this->selectDatabase($source->name);
-        $this->selectCollection($name);
+        $this->selectCollection($collection);
 
-        $affectedRows = (int) $this->dropCollection()->ok;
+        $affectedRows = (int) $this->delete($source->id);
 
         return $affectedRows;
     }

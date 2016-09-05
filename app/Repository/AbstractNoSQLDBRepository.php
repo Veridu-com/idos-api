@@ -172,11 +172,11 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     public function __construct(
         Entity $entityFactory,
         Optimus $optimus,
-        array $connections
+        callable $noSqlConnector
     ) {
         parent::__construct($entityFactory, $optimus);
 
-        $this->dbSelector   = $connections['nosql'];
+        $this->dbSelector   = $noSqlConnector;
         $this->dbConnection = null;
     }
 

@@ -29,7 +29,7 @@ class CreateNewTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'name-test',
+                    'collection' => 'collection-test',
                     'data' => 'value-test'
                 ]
             )
@@ -41,7 +41,7 @@ class CreateNewTest extends AbstractRawFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('name-test', $body['data']['name']);
+        $this->assertSame('collection-test', $body['data']['collection']);
         $this->assertSame('value-test', $body['data']['data']);
         /*
          * Validates Json Schema against Json Response'

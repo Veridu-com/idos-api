@@ -27,11 +27,11 @@ class UpdateOne extends AbstractCommand {
      */
     public $source;
     /**
-     * New raw name.
+     * New raw collection name.
      *
      * @var string
      */
-    public $name;
+    public $collection;
     /**
      * New raw data.
      *
@@ -51,8 +51,8 @@ class UpdateOne extends AbstractCommand {
             $this->source = $parameters['source'];
         }
 
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
+        if (isset($parameters['collection'])) {
+            $this->collection = $parameters['collection'];
         }
 
         if (isset($parameters['data'])) {

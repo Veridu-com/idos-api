@@ -72,7 +72,7 @@ class Raw implements ControllerInterface {
      *
      * @apiEndpointURIFragment string userName usr001
      * @apiEndpointURIFragment int    sourceId 1
-     * @apiEndpointParam       query  string   names  numOfFriends
+     * @apiEndpointParam       query  string   names  collection1,collection2
      * @apiEndpointResponse 200 schema/raw/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -83,13 +83,17 @@ class Raw implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-        $names  = $request->getQueryParam('names', []);
+        $collections  = $request->getQueryParam('collections', []);
 
-        if ($names) {
-            $names = explode(',', $names);
+        if ($source->userId !== $user->id) {
+            throw new AppException('Requested source does not belong to specified user');
         }
 
-        $raws = $this->repository->getAllBySourceAndNames($source, $names);
+        if ($collections) {
+            $collections = explode(',', $collections);
+        }
+
+        $raws = $this->repository->getAllBySourceAndCollections($source, $collections);
 
         $body = [
             'data'    => $raws->toArray(),
@@ -123,6 +127,10 @@ class Raw implements ControllerInterface {
         $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
+        if ($source->userId !== $user->id) {
+            throw new AppException('Requested source does not belong to specified user');
+        }
+
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
@@ -148,7 +156,7 @@ class Raw implements ControllerInterface {
     /**
      * Updates a raw data from the given source.
      *
-     * @apiEndpointURIFragment   string rawName numOfFriends
+     * @apiEndpointURIFragment   string collection numOfFriends
      * @apiEndpointRequiredParam body   string       data        1
      * @apiEndpointResponse 200 schema/raw/updateOne.json
      *
@@ -163,11 +171,15 @@ class Raw implements ControllerInterface {
         $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
+        if ($source->userId !== $user->id) {
+            throw new AppException('Requested source does not belong to specified user');
+        }
+
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
             ->setParameter('source', $source)
-            ->setParameter('name', $request->getAttribute('rawName'));
+            ->setParameter('collection', $request->getAttribute('collection'));
 
         $raw = $this->commandBus->handle($command);
 
@@ -190,7 +202,7 @@ class Raw implements ControllerInterface {
      *
      * @apiEndpointURIFragment string userName     usr001
      * @apiEndpointURIFragment int    sourceId     1
-     * @apiEndpointURIFragment string rawName numOfFriends
+     * @apiEndpointURIFragment string collection numOfFriends
      * @apiEndpointResponse 200 schema/raw/rawEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -202,7 +214,11 @@ class Raw implements ControllerInterface {
         $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
-        $raw = $this->repository->findOneBySourceAndName($source, $request->getAttribute('rawName'));
+        if ($source->userId !== $user->id) {
+            throw new AppException('Requested source does not belong to specified user');
+        }
+
+        $raw = $this->repository->findOneBySourceAndCollection($source, $request->getAttribute('collection'));
 
         $body = [
             'data' => $raw->toArray()
@@ -233,6 +249,10 @@ class Raw implements ControllerInterface {
         $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
+        if ($source->userId !== $user->id) {
+            throw new AppException('Requested source does not belong to specified user');
+        }
+
         $command
             ->setParameter('user', $user)
             ->setParameter('source', $source);
@@ -255,7 +275,7 @@ class Raw implements ControllerInterface {
      *
      * @apiEndpointURIFragment string userName     usr001
      * @apiEndpointURIFragment int    sourceId     1
-     * @apiEndpointURIFragment string rawName numOfFriends
+     * @apiEndpointURIFragment string collection numOfFriends
      * @apiEndpointResponse    200    schema/raw/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -269,10 +289,14 @@ class Raw implements ControllerInterface {
         $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
+        if ($source->userId !== $user->id) {
+            throw new AppException('Requested source does not belong to specified user');
+        }
+
         $command
             ->setParameter('user', $user)
             ->setParameter('source', $source)
-            ->setParameter('name', $request->getAttribute('rawName'));
+            ->setParameter('collection', $request->getAttribute('collection'));
 
         $deleted = $this->commandBus->handle($command);
 

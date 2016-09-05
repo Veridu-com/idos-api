@@ -339,7 +339,8 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
             $strategy = new Repository\DBStrategy(
                 $container->get('entityFactory'),
                 $container->get('optimus'),
-                ['sql' => $container->get('sql'), 'nosql' => $container->get('nosql')]
+                $container->get('sql'),
+                $container->get('nosql')
             );
     }
 
