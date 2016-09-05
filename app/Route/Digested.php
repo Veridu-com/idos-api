@@ -64,10 +64,10 @@ class Digested implements RouteInterface {
      *
      * Retrieve a complete list of the data digested by a given source.
      *
-     * @apiEndpoint GET /profiles/{userName}/sources/{sourceId}/digested
+     * @apiEndpoint GET /profiles/{userName}/sources/{sourceId:[0-9]+}/digested
      * @apiGroup Sources Digested
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -85,7 +85,7 @@ class Digested implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/digested',
                 'App\Controller\Digested:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -97,10 +97,10 @@ class Digested implements RouteInterface {
      *
      * Creates a new digested data for the given source.
      *
-     * @apiEndpoint POST /profiles/{userName}/source/{sourceId}/digested
+     * @apiEndpoint POST /profiles/{userName}/source/{sourceId:[0-9]+}/digested
      * @apiGroup Sources Digested
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -118,7 +118,7 @@ class Digested implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/digested',
                 'App\Controller\Digested:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -131,10 +131,10 @@ class Digested implements RouteInterface {
      *
      * Updates a digested data in the given source.
      *
-     * @apiEndpoint PUT /profiles/{userName}/source/{sourceId}/digested/{digestedName}
+     * @apiEndpoint PUT /profiles/{userName}/source/{sourceId:[0-9]+}/digested/{digestedName}
      * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string digestedName data-name
@@ -153,7 +153,7 @@ class Digested implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested/{digestedName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/digested/{digestedName:[a-zA-Z0-9]+}',
                 'App\Controller\Digested:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -166,10 +166,10 @@ class Digested implements RouteInterface {
      *
      * Retrieves a digested data from a given source.
      *
-     * @apiEndpoint GET /profiles/{userName}/source/{sourceId}/digested/{digestedName}
+     * @apiEndpoint GET /profiles/{userName}/source/{sourceId:[0-9]+}/digested/{digestedName}
      * @apiGroup Sources Digested
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string digestedName data-name
@@ -188,7 +188,7 @@ class Digested implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested/{digestedName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/digested/{digestedName:[a-zA-Z0-9]+}',
                 'App\Controller\Digested:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -201,10 +201,10 @@ class Digested implements RouteInterface {
      *
      * Deletes all digested data from the given source.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId}/digested
+     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId:[0-9]+}/digested
      * @apiGroup Sources Digested
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -222,7 +222,7 @@ class Digested implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/digested',
                 'App\Controller\Digested:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -235,10 +235,10 @@ class Digested implements RouteInterface {
      *
      * Deletes a digested data from the given source.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId}/digested/{digestedName}
+     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId:[0-9]+}/digested/{digestedName}
      * @apiGroup Sources Digested
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string digestedName data-name
@@ -257,7 +257,7 @@ class Digested implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/digested/{digestedName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/digested/{digestedName:[a-zA-Z0-9]+}',
                 'App\Controller\Digested:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

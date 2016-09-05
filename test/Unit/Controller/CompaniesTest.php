@@ -90,7 +90,8 @@ class CompaniesTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $companyMock->listAll($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $companyMock->listAll($requestMock, $responseMock));
     }
 
     public function testGetOne() {
@@ -139,7 +140,8 @@ class CompaniesTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $companyMock->getOne($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $companyMock->getOne($requestMock, $responseMock));
     }
 
     public function testCreateNew() {
@@ -193,7 +195,8 @@ class CompaniesTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $companyMock->createNew($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $companyMock->createNew($requestMock, $responseMock));
     }
 
     public function testDeleteAll() {
@@ -241,7 +244,8 @@ class CompaniesTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $companyMock->deleteAll($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $companyMock->deleteAll($requestMock, $responseMock));
     }
 
     public function testDeleteOne() {
@@ -290,7 +294,8 @@ class CompaniesTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $companyMock->deleteOne($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $companyMock->deleteOne($requestMock, $responseMock));
     }
 
     public function testUpdateOne() {
@@ -344,6 +349,7 @@ class CompaniesTest extends AbstractUnit {
             ->setMethods(null)
             ->getMock();
 
-        $this->assertSame($responseMock, $companyMock->updateOne($requestMock, $responseMock));
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($responseMock, $companyMock->updateOne($requestMock, $responseMock));
     }
 }

@@ -63,8 +63,8 @@ class Permissions implements RouteInterface {
      * Retrieve a complete list of all permissions that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header token CompanyToken A valid Company Token
+     * @apiAuth query token companyToken A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -79,7 +79,7 @@ class Permissions implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
+                '/companies/{companySlug:[a-z0-9_-]+}/permissions',
                 'App\Controller\Permissions:listAll'
             )
             ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
@@ -93,8 +93,8 @@ class Permissions implements RouteInterface {
      * Create a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/permissions
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header token CompanyToken A valid Company Token
+     * @apiAuth query token companyToken A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -109,7 +109,7 @@ class Permissions implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
+                '/companies/{companySlug:[a-z0-9_-]+}/permissions',
                 'App\Controller\Permissions:createNew'
             )
             ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
@@ -123,8 +123,8 @@ class Permissions implements RouteInterface {
      * Deletes all permissions that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/permissions
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header token CompanyToken A valid Company Token
+     * @apiAuth query token companyToken A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -139,7 +139,7 @@ class Permissions implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions',
+                '/companies/{companySlug:[a-z0-9_-]+}/permissions',
                 'App\Controller\Permissions:deleteAll'
             )
             ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
@@ -168,7 +168,7 @@ class Permissions implements RouteInterface {
         $app
             ->get(
                 // TODO: Regex that matches route:Names
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
+                '/companies/{companySlug:[a-z0-9_-]+}/permissions/{routeName:[a-zA-Z]+\:[a-zA-Z]+}',
                 'App\Controller\Permissions:getOne'
             )
             ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
@@ -182,8 +182,8 @@ class Permissions implements RouteInterface {
      * Deletes a single Permission that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/permissions/{routeName}
-     * @apiAuth header key compPrivKey Company's Private Key
-     * @apiAuth query key compPrivKey Company's Private Key
+     * @apiAuth header token CompanyToken A valid Company Token
+     * @apiAuth query token companyToken A valid Company Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -198,7 +198,7 @@ class Permissions implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/permissions/{routeName}',
+                '/companies/{companySlug:[a-z0-9_-]+}/permissions/{routeName:[a-zA-Z]+\:[a-zA-Z]+}',
                 'App\Controller\Permissions:deleteOne'
             )
             ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))

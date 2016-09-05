@@ -415,12 +415,8 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken($credential->private, $claims);
 
-    //     try {
-    //         $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
-
-    //         return $this->fail('Expecting NotFound exception');
-    //     } catch (NotFound $e) {
-    //     }
+    //     $this->setExpectedException(NotFound::class);
+    //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     // }
 
     // public function testHandleUserTokenErrorTargetCompanyNotFound() {
@@ -479,12 +475,8 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken($credential->private, $claims);
 
-    //     try {
-    //         $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
-
-    //         return $this->fail('Expecting NotFound exception');
-    //     } catch (NotFound $e) {
-    //     }
+    //     $this->setExpectedException(NotFound::class);
+    //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     // }
 
     // public function testHandleUserPubKeySuccess() {

@@ -6,18 +6,17 @@
 
 namespace Test\Functional\Warning;
 
-use App\Helper\Token;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
-use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class ListAllTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings';
     }
 
     public function testSuccess() {
@@ -30,7 +29,7 @@ class ListAllTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $body     = json_decode((string) $response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
@@ -42,7 +41,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'warning/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

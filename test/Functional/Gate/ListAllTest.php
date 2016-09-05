@@ -9,12 +9,12 @@ declare(strict_types = 1);
 namespace Test\Functional\Gate;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class ListAllTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -32,7 +32,7 @@ class ListAllTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $body     = json_decode((string) $response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
@@ -44,7 +44,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'gate/listAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

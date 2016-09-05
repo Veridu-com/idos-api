@@ -45,6 +45,7 @@ class DBServiceHandlerTest extends AbstractUnit {
               'service.url'        => 'url',
               'service.access'     => 'access',
               'service.enabled'    => 'enabled',
+              'service.public'     => 'publicKey',
               'service.listens'    => ['listen1', 'listen2'],
               'service.triggers'   => ['trigger1', 'trigger2'],
               'service.created_at' => $this->created_at,
@@ -154,12 +155,10 @@ class DBServiceHandlerTest extends AbstractUnit {
         );
 
         $entity = $dbServiceHandler->findOne(1, 1);
-        $this->assertInstanceOf(ServiceHandlerEntity::class, $entity);
 
-        $this->assertEquals(
-            $this->getToArray(),
-            $entity->toArray()
-        );
+        $this->assertInstanceOf(ServiceHandlerEntity::class, $entity);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($this->getToArray(), $entity->toArray());
 
     }
 
@@ -193,7 +192,8 @@ class DBServiceHandlerTest extends AbstractUnit {
         );
 
         $this->assertInstanceOf(Collection::class, $dbServiceHandler->findAllFromService(1, 'service'));
-        $this->assertSame(
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals(
             $this->getToArray(),
             $dbServiceHandler->getAllByCompanyId(1)
                 ->first()

@@ -6,28 +6,26 @@
 
 namespace Test\Functional\Warning;
 
-use App\Helper\Token;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
-use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class GetOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
 
-        $this->userName = 'f67b96dcf96b49d713a520ce9f54053c';
         $this->populate(
-            sprintf('/1.0/profiles/%s/warnings', $this->userName),
+            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings',
             'GET',
             [
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/%s/warnings/%s', $this->userName, $this->entity['slug']);
+        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings/%s', $this->entity['slug']);
     }
 
     public function testSuccess() {
@@ -39,7 +37,7 @@ class GetOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $body     = json_decode((string) $response->getBody(), true);
 
         $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
@@ -60,7 +58,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/profiles/%s/warnings/dummy-ltd', $this->userName);
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings/dummy-ltd';
 
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -70,7 +68,7 @@ class GetOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $body     = json_decode($response->getBody(), true);
+        $body     = json_decode((string) $response->getBody(), true);
 
         // assertions
         $this->assertNotEmpty($body);
@@ -83,7 +81,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

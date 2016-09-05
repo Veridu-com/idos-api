@@ -45,7 +45,8 @@ class MemberTest extends AbstractUnit {
         ];
 
         $this->assertArrayHasKey('user', $member->relations);
-        $this->assertSame($array, $member->relations['user']);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $member->relations['user']);
     }
 
     public function testSerialize() {
@@ -104,7 +105,8 @@ class MemberTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 
     public function testGetCachedKeys() {
@@ -126,7 +128,8 @@ class MemberTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 
     public function testReferenceCacheKeysNoCompanyId() {
@@ -148,7 +151,8 @@ class MemberTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
 
     }
 
@@ -160,7 +164,8 @@ class MemberTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
 
     }
 
@@ -184,6 +189,7 @@ class MemberTest extends AbstractUnit {
             ->getMockForAbstractClass();
         $result = $abstractMock->getReferenceCacheKeys();
         $this->assertNotEmpty($result);
-        $this->assertSame($array, $result);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($array, $result);
     }
 }

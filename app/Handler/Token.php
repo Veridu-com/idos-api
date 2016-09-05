@@ -13,6 +13,7 @@ use App\Event\Token\Exchanged;
 use App\Event\Token\Requested;
 use App\Helper\Token as TokenHelper;
 use App\Repository\UserInterface;
+use App\Validator\Token as TokenValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 
@@ -26,6 +27,12 @@ class Token implements HandlerInterface {
      * @var App\Repository\UserInterface
      */
     protected $userRepository;
+    /**
+     * Token Validator instance.
+     *
+     * @var App\Validator\Token
+     */
+    protected $validator;
     /**
      * Event emitter instance.
      *
@@ -43,6 +50,9 @@ class Token implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('User'),
                 $container
+                    ->get('validatorFactory')
+                    ->create('Token'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -52,14 +62,18 @@ class Token implements HandlerInterface {
      * Class constructor.
      *
      * @param App\Repository\UserInterface $userRepository
+     * @param App\Validator\Token          $validator
+     * @param \League\Event\Emitter        $emitter
      *
      * @return void
      */
     public function __construct(
         UserInterface $userRepository,
+        TokenValidator $validator,
         Emitter $emitter
     ) {
         $this->userRepository = $userRepository;
+        $this->validator      = $validator;
         $this->emitter        = $emitter;
     }
 

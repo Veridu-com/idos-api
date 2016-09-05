@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
-
 /**
  * Score Entity.
  *
@@ -22,7 +20,6 @@ use App\Extension\SecureFields;
  * @property int    $updated_at
  */
 class Score extends AbstractEntity {
-    //use SecureFields;
     /**
      * {@inheritdoc}
      */
@@ -41,7 +38,15 @@ class Score extends AbstractEntity {
      *
      * @var array
      */
-    //protected $secure = ['value'];
+
+    /**
+     * Property Acessor for $value.
+     *
+     * @return float
+     */
+    public function getValueAttribute() : float {
+        return floatval($this->attributes['value']);
+    }
 
     /**
      * {@inheritdoc}

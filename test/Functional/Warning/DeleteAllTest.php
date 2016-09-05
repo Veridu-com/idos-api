@@ -6,30 +6,28 @@
 
 namespace Test\Functional\Warning;
 
-use App\Helper\Token;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthMiddleware;
-use Test\Functional\Traits\HasAuthCredentialToken;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class DeleteAllTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->userName = 'f67b96dcf96b49d713a520ce9f54053c';
 
         $this->populate(
-            sprintf('/1.0/profiles/%s/warnings', $this->userName),
+            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings',
             'GET',
             [
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/%s/warnings', $this->userName);
+        $this->uri    = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings';
     }
 
     /**
@@ -44,19 +42,15 @@ class DeleteAllTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-
-        $body = json_decode($response->getBody(), true);
-
-        // success assertions
-        $this->assertNotEmpty($body);
-
         $this->assertSame(200, $response->getStatusCode());
-        $this->assertTrue($body['status']);
 
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
         // refreshes the $entities prop
         $this->populate($this->uri);
         // checks if all entities were deleted
-        $this->assertSame(0, count($this->entities));
+        $this->assertCount(0, $this->entities);
 
         /*
          * Validates Json Schema with Json Response
@@ -64,7 +58,7 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'feature/deleteAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

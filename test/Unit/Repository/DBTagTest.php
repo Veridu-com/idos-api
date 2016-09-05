@@ -55,8 +55,6 @@ class DBTagTest extends AbstractUnit {
     }
 
     public function testGetAllByUserId() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['join', 'where', 'get', 'whereIn'])
@@ -89,6 +87,7 @@ class DBTagTest extends AbstractUnit {
                     ]
                 )
             );
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -99,14 +98,18 @@ class DBTagTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbTag  = new DBTag($factory, $this->optimus, $connectionMock);
+
+        $dbTag = new DBTag(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $result = $dbTag->getAllByUserId(1)->first();
-        $this->assertSame($this->getAttributes(), $result->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($this->getAttributes(), $result->toArray());
     }
 
     public function testGetAllByUserIdAndTagNames() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get'])
@@ -117,6 +120,7 @@ class DBTagTest extends AbstractUnit {
         $queryMock
             ->method('get')
             ->will($this->returnValue([$this->getEntity()]));
+
         $connectionMock = $this->getMockBuilder(Connection::class)
             ->disableOriginalConstructor()
             ->setMethods(['setFetchMode', 'table'])
@@ -127,14 +131,18 @@ class DBTagTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbTag  = new DBTag($factory, $this->optimus, $connectionMock);
+
+        $dbTag = new DBTag(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $result = $dbTag->getAllByUserIdAndTagSlugs(1, ['tag-test'])->first();
-        $this->assertSame($this->getAttributes(), $result->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($this->getAttributes(), $result->toArray());
     }
 
     public function testFindOneNotFound() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -159,14 +167,17 @@ class DBTagTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
+
+        $dbTag = new DBTag(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $this->setExpectedException(NotFound::class);
         $dbTag->findOneByUserIdAndSlug(1, 'test-tag');
     }
 
     public function testfFindOne() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'get', 'first'])
@@ -191,15 +202,18 @@ class DBTagTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
+
+        $dbTag = new DBTag(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
 
         $result = $dbTag->findOneByUserIdAndSlug(1, 'test-tag');
-        $this->assertSame($this->getAttributes(), $result->toArray());
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals($this->getAttributes(), $result->toArray());
     }
 
     public function testDeleteOne() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -221,13 +235,16 @@ class DBTagTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
+
+        $dbTag = new DBTag(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $this->assertSame(1, $dbTag->deleteOneByUserIdAndSlug(1, 'test-tag'));
     }
 
     public function testDeleteByUserId() {
-        $factory = new Entity($this->optimus);
-        $factory->create('Tag', []);
         $queryMock = $this->getMockBuilder(Builder::class)
             ->disableOriginalConstructor()
             ->setMethods(['where', 'delete'])
@@ -249,7 +266,12 @@ class DBTagTest extends AbstractUnit {
         $connectionMock
             ->method('table')
             ->will($this->returnValue($queryMock));
-        $dbTag = new DBTag($factory, $this->optimus, $connectionMock);
+
+        $dbTag = new DBTag(
+            new Entity($this->optimus),
+            $this->optimus, $connectionMock
+        );
+
         $this->assertSame(3, $dbTag->deleteByUserId(1));
     }
 }

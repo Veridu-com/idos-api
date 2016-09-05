@@ -13,6 +13,7 @@ class S25WarningsSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'name'       => 'warning one',
                 'slug'       => 'warning-one',
+                'reference'  => 'firstName',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -20,6 +21,7 @@ class S25WarningsSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'name'       => 'warning two',
                 'slug'       => 'warning-two',
+                'reference'  => 'lastName',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],

@@ -11,12 +11,12 @@ namespace Test\Functional\Gate;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class DeleteAllTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'DELETE';
@@ -43,7 +43,7 @@ class DeleteAllTest extends AbstractFunctional {
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
-        $body = json_decode($response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         // refreshes the $entities prop
@@ -57,7 +57,7 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'gate/deleteAll.json',
-                json_decode($response->getBody())
+                json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );

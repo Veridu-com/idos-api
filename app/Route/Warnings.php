@@ -64,8 +64,8 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/warnings
      * @apiGroup Profile Warnings
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -80,7 +80,7 @@ class Warnings implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/warnings',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings',
                 'App\Controller\Warnings:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -95,8 +95,8 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint POST profiles/{userName}/warnings
      * @apiGroup Profile Warnings
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -111,7 +111,7 @@ class Warnings implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/warnings',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings',
                 'App\Controller\Warnings:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -126,8 +126,8 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/warnings/{warningSlug}
      * @apiGroup Profile Warnings
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -142,7 +142,7 @@ class Warnings implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings/{warningSlug:[a-zA-Z0-9_-]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings/{warningSlug:[a-z0-9_-]+}',
                 'App\Controller\Warnings:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -157,8 +157,8 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/warnings
      * @apiGroup Profile Warnings
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -173,7 +173,7 @@ class Warnings implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/warnings',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings',
                 'App\Controller\Warnings:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -188,8 +188,8 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/warnings/{warningSlug}
      * @apiGroup Profile Warnings
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -204,7 +204,7 @@ class Warnings implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/warnings/{warningSlug:[a-zA-Z0-9_-]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings/{warningSlug:[a-z0-9_-]+}',
                 'App\Controller\Warnings:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
