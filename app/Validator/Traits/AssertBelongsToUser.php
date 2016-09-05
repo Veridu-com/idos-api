@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Validator\Traits;
 
 use App\Entity\User;
-use Respect\Validation\Validator;
 use Respect\Validation\Exceptions\AllOfException;
 
 /**
@@ -19,7 +18,7 @@ trait AssertBelongsToUser {
     /**
      * Asserts that an entity belongs to an User.
      *
-     * @param mixed $entity
+     * @param mixed           $entity
      * @param App\Entity\User $user
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface

@@ -68,7 +68,7 @@ class Raw implements ControllerInterface {
     }
 
     /**
-     * Retrieve a complete list of the data raw by a given source.
+     * Retrieve a complete list of the raw data by a given source.
      *
      * @apiEndpointURIFragment string userName usr001
      * @apiEndpointURIFragment int    sourceId 1
@@ -149,7 +149,7 @@ class Raw implements ControllerInterface {
      * Updates a raw data from the given source.
      *
      * @apiEndpointURIFragment   string rawName numOfFriends
-     * @apiEndpointRequiredParam body   string       value        1
+     * @apiEndpointRequiredParam body   string       data        1
      * @apiEndpointResponse 200 schema/raw/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request

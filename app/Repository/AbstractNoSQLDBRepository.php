@@ -70,16 +70,28 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         $this->dbConnection = ($this->dbSelector)($database);
     }
 
+    /**
+     * Select the collection.
+     *
+     * @param string $collection The collection name
+     */
     public function selectCollection(string $collection) {
         $this->collectionName = $collection;
     }
 
-    public function getCollectionName() {
+    /**
+     * Get selected collection name.
+     *
+     * @return string The collection name.
+     */
+    public function getCollectionName() : string {
         return $this->collectionName;
     }
 
     /**
      * Check if a database is selected.
+     *
+     * @throws AppException If no database was selected
      */
     public function checkDatabaseSelected() {
         if (! $this->dbConnection) {
@@ -88,11 +100,15 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     }
 
     /**
-     * Begin a fluent query against a database collection.
+     * Begins a fluent query agains a database connection.
      *
-     * @return \Jenssegers\Mongodb\Query\Builder
+     * @param string $collection The collection name
+     * @param string $entityName The entity name
+     * @param string $database   The database name
+     *
+     * @return Jenssegers\Mongodb\Query\Builder The query builder         
      */
-    protected function query($collection = null, $entityName = null, $database = null) : QueryBuilder {
+    protected function query(string $collection = null, string $entityName = null, string $database = null) : QueryBuilder {
         if ($database !== null) {
             $this->selectDatabase($database);
         }
@@ -104,7 +120,14 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         return $this->dbConnection->collection($collection);
     }
 
-    protected function listCollections($database = null) : CollectionInfoIterator{
+    /**
+     * List all collections in the selected database.
+     *
+     * @param string $database The database
+     *
+     * @return MongoDB\Model\CollectionInfoIterator A iterator for the collections
+     */
+    protected function listCollections(string $database = null) : CollectionInfoIterator {
         if ($database !== null) {
             $this->selectDatabase($database);
         }
@@ -114,7 +137,14 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         return $this->dbConnection->getMongoDB()->listCollections();
     }
 
-    protected function dropDatabase($database = null) {
+    /**
+     * Drop the selected (or specified database).
+     *
+     * @param string $database The database
+     *
+     * @return mixed
+     */
+    protected function dropDatabase(string $database = null) {
         if ($database !== null) {
             $this->selectDatabase($database);
         }

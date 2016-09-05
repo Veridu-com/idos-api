@@ -17,7 +17,7 @@ use App\Extension\SecureFields;
  *
  * @property int    $id
  * @property string $name
- * @property string $value
+ * @property string $data
  * @property int    $created_at
  */
 class Raw extends AbstractEntity {
