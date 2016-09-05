@@ -37,7 +37,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('user1Attribute1Score1', $body['data']['name']);
-        $this->assertSame(1.2, $body['data']['name']);
+        $this->assertSame(1.2, $body['data']['value']);
 
         /*
          * Validates Json Schema against Json Response'
