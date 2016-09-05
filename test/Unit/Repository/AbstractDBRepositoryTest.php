@@ -11,7 +11,7 @@ namespace Test\Unit\Repository;
 use App\Entity\Company as CompanyEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
-use App\Repository\AbstractDBRepository;
+use App\Repository\AbstractSQLDBRepository;
 use App\Repository\RepositoryInterface;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
@@ -19,7 +19,7 @@ use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
-class AbstractDBRepositoryTest extends AbstractUnit {
+class AbstractSQLDBRepositoryTest extends AbstractUnit {
     /*
      * Jenssengers\Optimus\Optimus $optimus
      */
@@ -45,7 +45,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
     }
 
     public function testGetTableNameRuntimeException() {
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -55,13 +55,13 @@ class AbstractDBRepositoryTest extends AbstractUnit {
     }
 
     public function testGetTableName() {
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->setProtectedProperty($abstractMock, 'tableName', 'AbstractDBRepository');
+        $this->setProtectedProperty($abstractMock, 'tableName', 'AbstractSQLDBRepository');
         $getTableName = $this->setProtectedMethod($abstractMock, 'getTableName');
-        $this->assertSame('AbstractDBRepository', $getTableName->invoke($abstractMock));
+        $this->assertSame('AbstractSQLDBRepository', $getTableName->invoke($abstractMock));
 
     }
 
@@ -72,7 +72,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->getMock();
 
         $abstractDBMock = $this
-            ->getMockBuilder(AbstractDBRepository::class)
+            ->getMockBuilder(AbstractSQLDBRepository::class)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMock();
 
@@ -98,7 +98,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue(true));
 
         $abstractDBMock = $this
-            ->getMockBuilder(AbstractDBRepository::class)
+            ->getMockBuilder(AbstractSQLDBRepository::class)
             ->setMethods(['query'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMockForAbstractClass();
@@ -127,7 +127,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
 
         $abstractDBMock = $this
-            ->getMockBuilder(AbstractDBRepository::class)
+            ->getMockBuilder(AbstractSQLDBRepository::class)
             ->setMethods(['query', 'create'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMockForAbstractClass();
@@ -146,7 +146,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
     }
 
     public function testGetEntityNameRuntimeException() {
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -156,7 +156,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
     }
 
     public function testGetEntityName() {
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -166,7 +166,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
     }
 
     public function testGetEntityClassNameRuntimeException() {
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -176,7 +176,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
     }
 
     public function testGetEntityClassName() {
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->disableOriginalConstructor()
             ->setMethods(['getEntityName'])
             ->getMock();
@@ -204,7 +204,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('find')
             ->will($this->returnValue(''));
 
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->setConstructorArgs([$entityMock, $this->optimus, $connectionMock])
             ->setMethods(['query'])
             ->getMockForAbstractClass();
@@ -240,7 +240,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('find')
             ->will($this->returnValue(new CompanyEntity($array, $this->optimus)));
 
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->setConstructorArgs([$entityMock, $this->optimus, $connectionMock])
             ->setMethods(['query'])
             ->getMockForAbstractClass();
@@ -259,7 +259,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->getMock();
 
         $abstractDBMock = $this
-            ->getMockBuilder(AbstractDBRepository::class)
+            ->getMockBuilder(AbstractSQLDBRepository::class)
             ->setMethods(null)
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMockForAbstractClass();
@@ -284,7 +284,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->will($this->returnValue(1));
 
         $abstractDBMock = $this
-            ->getMockBuilder(AbstractDBRepository::class)
+            ->getMockBuilder(AbstractSQLDBRepository::class)
             ->setMethods(['query'])
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMockForAbstractClass();
@@ -313,7 +313,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('get')
             ->will($this->returnValue(new Collection([])));
 
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->setConstructorArgs([$entityMock, $this->optimus, $connectionMock])
             ->setMethods(['query'])
             ->getMockForAbstractClass();
@@ -350,7 +350,7 @@ class AbstractDBRepositoryTest extends AbstractUnit {
             ->method('get')
             ->will($this->returnValue(new Collection(new CompanyEntity($array, $this->optimus))));
 
-        $abstractMock = $this->getMockBuilder(AbstractDBRepository::class)
+        $abstractMock = $this->getMockBuilder(AbstractSQLDBRepository::class)
             ->setConstructorArgs([$entityMock, $this->optimus, $connectionMock])
             ->setMethods(['query'])
             ->getMockForAbstractClass();

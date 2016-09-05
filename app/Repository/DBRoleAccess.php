@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based User Repository Implementation.
  */
-class DBRoleAccess extends AbstractDBRepository implements RoleAccessInterface {
+class DBRoleAccess extends AbstractSQLDBRepository implements RoleAccessInterface {
     /**
      * The table associated with the repository.
      *

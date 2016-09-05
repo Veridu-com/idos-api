@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Permission Repository Implementation.
  */
-class DBPermission extends AbstractDBRepository implements PermissionInterface {
+class DBPermission extends AbstractSQLDBRepository implements PermissionInterface {
     /**
      * The table associated with the repository.
      *

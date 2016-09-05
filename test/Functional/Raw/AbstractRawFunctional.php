@@ -42,7 +42,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
             json_encode(
                 [
                     'collection' => 'raw-1',
-                    'data' => 'data-1'
+                    'data'       => 'data-1'
                 ]
             )
         ));
@@ -52,7 +52,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
             json_encode(
                 [
                     'collection' => 'raw-2',
-                    'data' => 'data-2'
+                    'data'       => 'data-2'
                 ]
             )
         ));
@@ -62,7 +62,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
             json_encode(
                 [
                     'collection' => 'raw-3',
-                    'data' => 'data-3'
+                    'data'       => 'data-3'
                 ]
             )
         ));

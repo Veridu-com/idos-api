@@ -81,9 +81,9 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user   = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-        $collections  = $request->getQueryParam('collections', []);
+        $user        = $request->getAttribute('targetUser');
+        $source      = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
+        $collections = $request->getQueryParam('collections', []);
 
         if ($source->userId !== $user->id) {
             throw new AppException('Requested source does not belong to specified user');

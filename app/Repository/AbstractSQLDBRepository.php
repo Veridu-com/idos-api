@@ -11,15 +11,15 @@ namespace App\Repository;
 use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
-use Illuminate\Database\ConnectionInterface;
 
 /**
  * Abstract Database-based Repository.
  */
-abstract class AbstractDBRepository extends AbstractRepository {
+abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Entity Factory.
      *

@@ -30,7 +30,7 @@ class CreateNewTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'collection' => 'collection-test',
-                    'data' => 'value-test'
+                    'data'       => 'value-test'
                 ]
             )
         );

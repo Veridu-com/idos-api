@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Warning Repository Implementation.
  */
-class DBWarning extends AbstractDBRepository implements WarningInterface {
+class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
     /**
      * The table associated with the repository.
      *

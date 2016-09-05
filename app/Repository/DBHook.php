@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Hook Repository Implementation.
  */
-class DBHook extends AbstractDBRepository implements HookInterface {
+class DBHook extends AbstractSQLDBRepository implements HookInterface {
     /**
      * The table associated with the repository.
      *

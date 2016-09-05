@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Source Repository Implementation.
  */
-class DBSource extends AbstractDBRepository implements SourceInterface {
+class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     /**
      * The table associated with the repository.
      *

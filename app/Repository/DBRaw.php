@@ -11,8 +11,8 @@ namespace App\Repository;
 use App\Entity\EntityInterface;
 use App\Entity\Raw;
 use App\Entity\Source;
-use Illuminate\Support\Collection;
 use App\Exception\NotFound;
+use Illuminate\Support\Collection;
 
 /**
  * NoSQL Database-based Raw Data Repository Implementation.
@@ -41,14 +41,14 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $entities    = new Collection();
 
         foreach($collections as $collection) {
-            if (! empty($collectionNames) && !in_array($collection->getName(), $collectionNames)) {
+            if (! empty($collectionNames) && ! in_array($collection->getName(), $collectionNames)) {
                 continue;
             }
 
             $this->selectCollection($collection->getName());
 
             try {
-                $entity       = $this->find($source->id);
+                $entity             = $this->find($source->id);
                 $entity->collection = $collection->getName();
 
                 $entities->push($entity);

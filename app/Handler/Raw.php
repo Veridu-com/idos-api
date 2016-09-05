@@ -94,13 +94,13 @@ class Raw implements HandlerInterface {
 
         $raw = $this->repository->create([
             'source'     => $command->source,
-            'collection'       => $command->collection,
+            'collection' => $command->collection,
             'data'       => $command->data,
             'created_at' => time()
         ]);
 
         try {
-            $raw = $this->repository->save($raw);
+            $raw   = $this->repository->save($raw);
             $event = new Created($raw);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -122,7 +122,7 @@ class Raw implements HandlerInterface {
         $this->validator->assertName($command->collection);
 
         try {
-            $raw = $this->repository->updateOneBySourceAndCollection($command->source, $command->collection, $command->data);
+            $raw   = $this->repository->updateOneBySourceAndCollection($command->source, $command->collection, $command->data);
             $event = new Updated($raw);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -147,7 +147,7 @@ class Raw implements HandlerInterface {
 
         try {
             $affectedRows = $this->repository->deleteOneBySourceAndCollection($command->source, $command->collection);
-            $event = new Deleted($raw);
+            $event        = new Deleted($raw);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while creating an raw');
@@ -170,7 +170,7 @@ class Raw implements HandlerInterface {
 
         try {
             $affectedRows = $this->repository->deleteBySource($command->source);
-            $event = new DeletedMulti($raw);
+            $event        = new DeletedMulti($raw);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while creating an raw');

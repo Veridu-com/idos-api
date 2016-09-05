@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based ServiceHandler Repository Implementation.
  */
-class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInterface {
+class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandlerInterface {
     /**
      * The table associated with the repository.
      *
