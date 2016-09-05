@@ -33,4 +33,13 @@ interface SourceInterface extends RepositoryInterface {
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllByUserId(int $userId) : Collection;
+    
+    /**
+     * Deletes Sources based on the User Id.
+     *
+     * @param int $userId
+     *
+     * @return int
+     */
+    public function deleteByUserId(int $userId) : int;
 }

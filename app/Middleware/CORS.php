@@ -64,32 +64,14 @@ class CORS implements MiddlewareInterface {
         ResponseInterface $response,
         callable $next
     ) : ResponseInterface {
-        if (! empty($request->getHeaderLine('Origin')))
-            $response = $response
-                ->withHeader(
-                    'Access-Control-Allow-Origin',
-                    $request->getHeaderLine('Origin')
-                )
-                ->withHeader(
-                    'Access-Control-Max-Age',
-                    '3628800'
-                )
-                ->withHeader(
-                    'Access-Control-Allow-Credentials',
-                    'true'
-                )
-                ->withHeader(
-                    'Access-Control-Allow-Methods',
-                    implode(',', $this->methods)
-                )
-                ->withHeader(
-                    'Access-Control-Allow-Headers',
-                    'Authorization, Content-Type, If-Modified-Since, If-None-Match, X-Requested-With'
-                )
-                ->withHeader(
-                    'Access-Control-Expose-Headers',
-                    'ETag, X-Rate-Limit-Limit, X-Rate-Limit-Remaining, X-Rate-Limit-Reset'
-                );
+        $origin = empty($request->getHeaderLine('Origin')) ? $request->getHeaderLine('Origin') : '*';
+        
+        $response = $response->withHeader('Access-Control-Allow-Origin', $origin)
+            ->withHeader('Access-Control-Max-Age','3628800')
+            ->withHeader('Access-Control-Allow-Credentials','true')
+            ->withHeader('Access-Control-Allow-Methods', implode(',', $this->methods))
+            ->withHeader('Access-Control-Allow-Headers','Authorization, Content-Type, If-Modified-Since, If-None-Match, X-Requested-With')
+            ->withHeader('Access-Control-Expose-Headers','ETag, X-Rate-Limit-Limit, X-Rate-Limit-Remaining, X-Rate-Limit-Reset');
 
         return $next($request, $response);
     }

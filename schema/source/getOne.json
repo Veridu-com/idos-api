@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /sources/{userName}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Source response payload",
+            "type": "object",
+            "$ref": "sourceEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

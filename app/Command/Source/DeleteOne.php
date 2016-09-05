@@ -16,11 +16,17 @@ use App\Entity\User;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Source Id to be deleted.
+     * IP Address.
+     *
+     * @var string
+     */
+    public $ipaddr;
+    /**
+     * Source to be deleted.
      *
      * @var int
      */
-    public $sourceId;
+    public $source;
     /**
      * Source owner User.
      *

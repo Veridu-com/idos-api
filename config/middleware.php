@@ -10,6 +10,7 @@ use App\Middleware\Debugger;
 use App\Middleware\GateKeeper;
 use App\Middleware\OptimusDecode;
 use App\Middleware\Watcher;
+use App\Middleware\CORS;
 use RKA\Middleware\IpAddress;
 use Slim\HttpCache\Cache;
 
@@ -23,6 +24,7 @@ $app
     ->add(new IpAddress(true, $settings['trustedProxies']))
     ->add(new OptimusDecode($app->getContainer()->get('optimus')))
     ->add(new GateKeeper($app->getContainer()))
+    ->add(new CORS(['GET', 'PUT', 'PATCH', 'DELETE', 'POST', 'OPTIONS']))
     ->add(new Watcher($app->getContainer()))
     ->add(new Cache('private, no-cache, no-store', 0, true))
     ->add(new Debugger());
