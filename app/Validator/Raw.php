@@ -13,7 +13,7 @@ namespace App\Validator;
  */
 class Raw implements ValidatorInterface {
     use Traits\AssertId,
-        Traits\AssertName,
-        Traits\AssertUser,
-        Traits\AssertValue;
+        Traits\AssertSource,
+        Traits\AssertBelongsToUser,
+        Traits\AssertName;
 }

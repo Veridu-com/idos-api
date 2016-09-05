@@ -74,8 +74,9 @@ class Raw implements HandlerInterface {
      * @return App\Entity\Raw
      */
     public function handleCreateNew(CreateNew $command) : RawEntity {
-        //$this->validator->assertLongName($command->name);
-        //$this->validator->assertValue($command->value);
+        $this->validator->assertSource($command->source);
+        $this->validator->assertBelongsToUser($command->source, $command->user);
+        $this->validator->assertName($command->name);
 
         $raw = $this->repository->create([
             'source'     => $command->source,
@@ -97,10 +98,9 @@ class Raw implements HandlerInterface {
      * @return App\Entity\Raw
      */
     public function handleUpdateOne(UpdateOne $command) : RawEntity {
-        //$this->validator->assertUser($command->user);
-        //$this->validator->assertId($command->user->id);
-        //$this->validator->assertValue($command->value);
-        //$this->validator->assertId($command->sourceId);
+        $this->validator->assertSource($command->source);
+        $this->validator->assertBelongsToUser($command->source, $command->user);
+        $this->validator->assertName($command->name);
 
         return $this->repository->updateOneBySourceAndName($command->source, $command->name, $command->data);
     }
@@ -113,7 +113,9 @@ class Raw implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        //$this->validator->assertLongName($command->name);
+        $this->validator->assertSource($command->source);
+        $this->validator->assertBelongsToUser($command->source, $command->user);
+        $this->validator->assertName($command->name);
 
         return $this->repository->deleteOneBySourceAndName($command->source, $command->name);
     }
@@ -126,7 +128,8 @@ class Raw implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
+        $this->validator->assertSource($command->source);
+        $this->validator->assertBelongsToUser($command->source, $command->user);
 
         return $this->repository->deleteBySource($command->source);
     }
