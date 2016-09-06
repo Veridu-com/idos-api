@@ -33,7 +33,7 @@ class Warning extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'reference', 'user_id', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'name', 'slug', 'reference', 'user_id', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
