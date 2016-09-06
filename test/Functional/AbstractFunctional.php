@@ -140,7 +140,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         $response = $this->process($request);
         $body     = json_decode((string) $response->getBody(), true);
 
-        if ($response->getStatusCode() === 403) {
+        if ($response->getStatusCode() >= 400) {
             $this->entities = [];
         } else {
             $this->entities = $body['data'];
