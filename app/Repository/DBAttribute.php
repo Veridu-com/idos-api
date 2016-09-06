@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Attribute Repository Implementation.
  */
-class DBAttribute extends AbstractDBRepository implements AttributeInterface {
+class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface {
     /**
      * The table associated with the repository.
      *

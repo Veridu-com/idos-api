@@ -19,7 +19,7 @@ use Jenssegers\Optimus\Optimus;
 /**
  * Abstract Database-based Repository.
  */
-abstract class AbstractDBRepository extends AbstractRepository {
+abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Entity Factory.
      *
@@ -96,17 +96,17 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @param App\Factory\Entity                       $entityFactory
      * @param \Jenssegers\Optimus\Optimus              $optimus
-     * @param \Illuminate\Database\ConnectionInterface $dbConnection
+     * @param \Illuminate\Database\ConnectionInterface $sqlConnection
      *
      * @return void
      */
     public function __construct(
         Entity $entityFactory,
         Optimus $optimus,
-        ConnectionInterface $dbConnection
+        ConnectionInterface $sqlConnection
     ) {
         parent::__construct($entityFactory, $optimus);
-        $this->dbConnection = $dbConnection;
+        $this->dbConnection = $sqlConnection;
     }
 
     /**
