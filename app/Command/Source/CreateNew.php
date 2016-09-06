@@ -15,14 +15,13 @@ use App\Entity\User;
  * Source "Create New" Command.
  */
 class CreateNew extends AbstractCommand {
-
     /**
      * Source Name.
      *
      * @var string
      */
     public $name;
-    
+
     /**
      * Source Tags.
      *
@@ -43,7 +42,6 @@ class CreateNew extends AbstractCommand {
      * @var App\Entity\User
      */
     public $user;
-
 
     /**
      * {@inheritdoc}

@@ -35,9 +35,9 @@ class DBRoleAccess extends AbstractSQLDBRepository implements RoleAccessInterfac
     public function findByIdentityRoleResource(int $identityId, string $role, string $resource) : RoleAccess {
         return $this->findOneBy(
             [
-            'identity_id' => $identityId,
-            'role'        => $role,
-            'resource'    => $resource
+                'identity_id' => $identityId,
+                'role'        => $role,
+                'resource'    => $resource
             ]
         );
     }
@@ -48,8 +48,8 @@ class DBRoleAccess extends AbstractSQLDBRepository implements RoleAccessInterfac
     public function findByIdentityAndRole(int $identityId, string $role) : Collection {
         return $this->findBy(
             [
-            'identity_id' => $identityId,
-            'role'        => $role
+                'identity_id' => $identityId,
+                'role'        => $role
             ]
         );
     }
@@ -60,8 +60,8 @@ class DBRoleAccess extends AbstractSQLDBRepository implements RoleAccessInterfac
     public function findOne(int $identityId, int $roleAccessId) : RoleAccess {
         return $this->findOneBy(
             [
-            'id'          => $roleAccessId,
-            'identity_id' => $identityId
+                'id'          => $roleAccessId,
+                'identity_id' => $identityId
             ]
         );
     }
@@ -72,8 +72,8 @@ class DBRoleAccess extends AbstractSQLDBRepository implements RoleAccessInterfac
     public function deleteOne(int $identityId, int $roleAccessId) : int {
         return $this->deleteBy(
             [
-            'id'          => $roleAccessId,
-            'identity_id' => $identityId
+                'id'          => $roleAccessId,
+                'identity_id' => $identityId
             ]
         );
     }
@@ -84,7 +84,7 @@ class DBRoleAccess extends AbstractSQLDBRepository implements RoleAccessInterfac
     public function deleteAllFromIdentity(int $identityId) : int {
         return $this->deleteBy(
             [
-            'identity_id' => $identityId
+                'identity_id' => $identityId
             ]
         );
     }

@@ -12,7 +12,7 @@ namespace App\Validator;
  * Raw Validation Rules.
  */
 class Raw implements ValidatorInterface {
-    use Traits\AssertId,
-        Traits\AssertSource,
+    use Traits\AssertEntity,
+        Traits\AssertId,
         Traits\AssertName;
 }

@@ -10,8 +10,14 @@ namespace Test\Functional\Raw;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Test\Functional\Traits;
 
 class CreateNewTest extends AbstractRawFunctional {
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
+
     protected function setUp() {
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw';
@@ -43,6 +49,7 @@ class CreateNewTest extends AbstractRawFunctional {
         $this->assertTrue($body['status']);
         $this->assertSame('collection-test', $body['data']['collection']);
         $this->assertSame('value-test', $body['data']['data']);
+
         /*
          * Validates Json Schema against Json Response'
          */

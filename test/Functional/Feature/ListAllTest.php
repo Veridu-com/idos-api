@@ -9,12 +9,13 @@ declare(strict_types = 1);
 namespace Test\Functional\Feature;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits;
 
 class ListAllTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCredentialToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';

@@ -59,16 +59,22 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @return \Illuminate\Database\Query\Builder
      */
     protected function query($table = null, $entityName = null) : Builder {
+        if ($entityName === null) {
+            $entityName = $this->getEntityClassName();
+        }
+
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
-            ($entityName) ? $entityName : $this->getEntityClassName(),
+            $entityName,
             [
                 [],
                 $this->optimus
             ]
         );
 
-        $table = ($table === null) ? $this->getTableName() : $table;
+        if ($table === null) {
+            $table = $this->getTableName();
+        }
 
         return $this->dbConnection->table($table);
     }
@@ -163,7 +169,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function delete(int $id, string $key = 'id') : int{
+    public function delete(int $id, string $key = 'id') : int {
         return $this->query()
             ->where($key, $id)
             ->delete($id);
@@ -243,7 +249,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
         $query = $this->filter($query, $queryParams);
 
-        return new Collection($query->get());
+        return $query->get();
     }
 
     /**
@@ -252,7 +258,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     public function getAll(array $queryParams = []) : Collection {
         $query = $this->filter($this->query(), $queryParams);
 
-        return new Collection($query->get());
+        return $query->get();
     }
 
     /**

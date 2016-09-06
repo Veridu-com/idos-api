@@ -106,7 +106,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      * @param string $entityName The entity name
      * @param string $database   The database name
      *
-     * @return Jenssegers\Mongodb\Query\Builder The query builder         
+     * @return Jenssegers\Mongodb\Query\Builder The query builder
      */
     protected function query(string $collection = null, string $entityName = null, string $database = null) : QueryBuilder {
         if ($database !== null) {
@@ -205,7 +205,8 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
             try {
                 $existingEntity = $this->find($entity->id);
                 $isUpdate       = true;
-            } catch (NotFound $e) { }
+            } catch (NotFound $e) {
+            }
         }
 
         if ($isUpdate) {

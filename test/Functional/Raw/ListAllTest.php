@@ -8,7 +8,14 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Raw;
 
+use Test\Functional\Traits;
+
 class ListAllTest extends AbstractRawFunctional {
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
+
     protected function setUp() {
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw';
@@ -61,7 +68,7 @@ class ListAllTest extends AbstractRawFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode(), (string) $response->getBody());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

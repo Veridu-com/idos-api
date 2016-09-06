@@ -13,11 +13,11 @@ use App\Command\Review\UpdateOne;
 use App\Entity\Review as ReviewEntity;
 use App\Event\Review\Created;
 use App\Event\Review\Updated;
+use App\Exception\AppException;
 use App\Repository\ReviewInterface;
 use App\Validator\Review as ReviewValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
-use App\Exception\AppException;
 
 /**
  * Handles Review commands.

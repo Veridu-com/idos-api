@@ -44,13 +44,11 @@ class DBReference extends AbstractSQLDBRepository implements ReferenceInterface 
             ->selectRaw('"references".*')
             ->where('user_id', '=', $userId);
 
-        if(! empty($names)) {
+        if (! empty($names)) {
             $result = $result->whereIn('references.name', $names);
         }
 
-        $result = $result->get();
-
-        return new Collection($result);
+        return $result->get();
     }
 
     /**
@@ -66,7 +64,7 @@ class DBReference extends AbstractSQLDBRepository implements ReferenceInterface 
     public function findOneByUserIdAndName(int $userId, string $name) : Reference {
         $result = $this->findBy(['user_id' => $userId, 'name' => $name]);
 
-        if($result->isEmpty()) {
+        if ($result->isEmpty()) {
             throw new NotFound();
         }
 

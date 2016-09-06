@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace Test\Functional\Traits;
 
 trait RequiresCredentialToken {
-    public function testInvalidCredentialToken() {
+    public function testInvalidCredentialTokenHeader() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'        => $this->uri,
@@ -37,45 +37,17 @@ trait RequiresCredentialToken {
         );
     }
 
-    public function testUserToken() {
+    public function testInvalidCredentialTokenQueryString() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => $this->uri,
-                'REQUEST_METHOD'     => $this->httpMethod,
-                'HTTP_AUTHORIZATION' => 'UserToken dummy'
+                'REQUEST_URI'    => $this->uri,
+                'REQUEST_METHOD' => $this->httpMethod,
+                'QUERY_STRING'   => 'credentialToken=dummy'
             ]
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(403, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
-
-        /*
-         * Validates Json Schema against Json Response
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'error.json',
-                json_decode((string) $response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testCompanyToken() {
-        $environment = $this->createEnvironment(
-            [
-                'REQUEST_URI'        => $this->uri,
-                'REQUEST_METHOD'     => $this->httpMethod,
-                'HTTP_AUTHORIZATION' => 'CompanyToken dummy'
-            ]
-        );
-        $request  = $this->createRequest($environment);
-        $response = $this->process($request);
-        $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

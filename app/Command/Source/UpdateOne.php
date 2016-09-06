@@ -9,8 +9,8 @@ declare(strict_types = 1);
 namespace App\Command\Source;
 
 use App\Command\AbstractCommand;
-use App\Entity\User;
 use App\Entity\Source;
+use App\Entity\User;
 
 /**
  * Source "Update One" Command.
