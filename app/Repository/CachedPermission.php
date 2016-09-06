@@ -30,7 +30,7 @@ class CachedPermission extends AbstractCachedRepository implements PermissionInt
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId) : Collection{
+    public function getAllByCompanyId(int $companyId) : Collection {
         return $this->findOneBy(['company_id' => $companyId]);
     }
 

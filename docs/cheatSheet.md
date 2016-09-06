@@ -194,9 +194,9 @@
 
 [GET /1.0/sso](sso/listAll.md)
 
-[GET /1.0/sso/:providerName](sso/getProvider.md)
+[GET /1.0/sso/:providerName](sso/getOne.md)
 
-[POST /1.0/sso/:providerName](sso/createSSO.md)
+[POST /1.0/sso](sso/createNew.md)
 
 ## Access API
 

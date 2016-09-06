@@ -20,7 +20,7 @@ class UpdateOneTest extends AbstractFunctional {
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
-        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/%s', 1321189817);
+        $this->uri        = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/%s', 1321189817);
     }
 
     public function testSuccess() {
@@ -33,12 +33,11 @@ class UpdateOneTest extends AbstractFunctional {
 
         $request  = $this->createRequest($environment, json_encode(['name' => 'linkedin']));
         $response = $this->process($request);
-        $status = $response->getStatusCode();
+        $status   = $response->getStatusCode();
         $this->assertSame(200, $status);
 
         $body = json_decode((string) $response->getBody(), true);
 
-        
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('source-1', $body['data']['name']);
@@ -59,7 +58,7 @@ class UpdateOneTest extends AbstractFunctional {
         $status1 = ($this->proccessDefaultRequest())->getStatusCode();
         $status2 = ($this->proccessDefaultRequest())->getStatusCode();
         $status3 = ($this->proccessDefaultRequest())->getStatusCode();
-            
+
         $this->assertSame(200, $status1);
         $this->assertSame(200, $status2);
         $this->assertSame(403, $status3);
@@ -73,7 +72,7 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request  = $this->createRequest($environment, json_encode(['name' => 'linkedin']));
+        $request = $this->createRequest($environment, json_encode(['name' => 'linkedin']));
 
         return $this->process($request);
     }

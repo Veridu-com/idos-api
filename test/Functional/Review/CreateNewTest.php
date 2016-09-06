@@ -9,8 +9,8 @@ namespace Test\Functional\Review;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresCompanyToken;
 use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class CreateNewTest extends AbstractFunctional {
     use RequiresAuth;
@@ -34,7 +34,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment, json_encode(
                 [
                     'warning_id' => 1321189817,
-                    'positive'  => $positive
+                    'positive'   => $positive
                 ]
             )
         );

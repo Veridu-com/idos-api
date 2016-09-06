@@ -52,7 +52,8 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
                 $entity->collection = $collection->getName();
 
                 $entities->push($entity);
-            } catch (NotFound $e) { }
+            } catch (NotFound $e) {
+            }
         }
 
         return $entities;

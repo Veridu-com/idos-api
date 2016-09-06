@@ -15,35 +15,30 @@ use App\Entity\User;
  * Source "Create New" Command.
  */
 class CreateNew extends AbstractCommand {
-
     /**
      * Source Name.
      *
      * @var string
      */
     public $name;
-    
+    /**
+     * Source ip address.
+     *
+     * @var string
+     */
+    public $ipaddr;
     /**
      * Source Tags.
      *
      * @var array
      */
     public $tags;
-
-    /**
-     * IP Address.
-     *
-     * @var string
-     */
-    public $ipaddr;
-
     /**
      * Source's User.
      *
      * @var App\Entity\User
      */
     public $user;
-
 
     /**
      * {@inheritdoc}
@@ -61,6 +56,10 @@ class CreateNew extends AbstractCommand {
 
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['ipaddr'])) {
+            $this->ipaddr = $parameters['ipaddr'];
         }
 
         return $this;

@@ -34,6 +34,10 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Monolog\Processor\WebProcessor;
+use OAuth\Common\Consumer\Credentials;
+use OAuth\Common\Http\Uri\UriFactory;
+use OAuth\Common\Storage\Memory;
+use OAuth\ServiceFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
@@ -210,9 +214,6 @@ $container['cache'] = function (ContainerInterface $container) : Cache\PsrCache\
             $pool = Cache\Factory::getTaggablePool($redis, $options);
             break;
     }
-
-    // var_dump(get_class_methods($pool));
-    // $pool->clear();
 
     return $pool;
 };
@@ -448,4 +449,33 @@ $container['secure'] = function (ContainerInterface $container) : Secure {
     }
 
     return new Secure($encoded, $settings['secure']);
+};
+
+// SSO Auth
+$container['ssoAuth'] = function (ContainerInterface $container) : callable {
+    return function ($provider, $key, $secret) use ($container) {
+        $uriFactory = new UriFactory();
+        $currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
+        $currentUri->setQuery('');
+
+        $storage = new Memory();
+
+        // Setup the credentials for the requests
+        $credentials = new Credentials(
+            $key,
+            $secret,
+            $currentUri->getAbsoluteUri()
+        );
+
+        $settings = $container->get('settings');
+
+        $serviceFactory = new ServiceFactory();
+
+        $client = new \OAuth\Common\Http\Client\CurlClient();
+        $client->setCurlParameters([\CURLOPT_ENCODING => '']);
+        $serviceFactory->setHttpClient($client);
+
+        // Instantiate the service using the credentials, http client and storage mechanism for the token
+        return $serviceFactory->createService($provider, $credentials, $storage, $settings['sso_providers_scopes'][$provider]);
+    };
 };

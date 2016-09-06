@@ -32,14 +32,14 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            "name" => "email", 
-            "tags" => [
-                "otp_check" => "email"
+            'name' => 'email',
+            'tags' => [
+                'otp_check' => 'email'
             ]
         ];
 
         $request = $this->createRequest(
-            $environment, 
+            $environment,
             json_encode($data)
         );
 

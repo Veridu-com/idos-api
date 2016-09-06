@@ -6,11 +6,11 @@
 
 declare(strict_types = 1);
 
+use App\Middleware\CORS;
 use App\Middleware\Debugger;
 use App\Middleware\GateKeeper;
 use App\Middleware\OptimusDecode;
 use App\Middleware\Watcher;
-use App\Middleware\CORS;
 use RKA\Middleware\IpAddress;
 use Slim\HttpCache\Cache;
 

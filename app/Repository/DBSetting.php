@@ -67,8 +67,8 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection {
         return $this->findBy(
             [
-            'company_id' => $companyId,
-            'section'    => $section
+                'company_id' => $companyId,
+                'section'    => $section
             ]
         );
     }
@@ -78,5 +78,16 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
      */
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByCompanyIdSectionAndProperties(int $companyId, string $section, array $properties) : Collection {
+        return $this->query()
+            ->where('company_id', $companyId)
+            ->where('section', $section)
+            ->whereIn('property', $properties)
+            ->get();
     }
 }

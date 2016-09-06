@@ -163,7 +163,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function delete(int $id, string $key = 'id') : int{
+    public function delete(int $id, string $key = 'id') : int {
         return $this->query()
             ->where($key, $id)
             ->delete($id);

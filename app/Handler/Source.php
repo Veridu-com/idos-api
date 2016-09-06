@@ -95,7 +95,6 @@ class Source implements HandlerInterface {
         $this->validator->assertShortName($command->name);
         $this->validator->assertUser($command->user);
         $this->validator->assertId($command->user->id);
-        $this->validator->assertArray($command->tags);
         $this->validator->assertIpAddr($command->ipaddr);
 
         // OTP check
@@ -160,23 +159,22 @@ class Source implements HandlerInterface {
         $this->validator->assertId($command->source->id);
         $this->validator->assertIpAddr($command->ipaddr);
 
-        
-        $source = $command->source;
+        $source     = $command->source;
         $serialized = $source->serialize();
 
         $tags = json_decode($serialized['tags']);
 
         if ((isset($tags->otp_voided))) {
-            throw new AppException("Too many tries.", 403);
+            throw new AppException('Too many tries.', 403);
         }
 
         if (isset($command->otpCode)) {
             $this->validator->assertOTPCode($command->otpCode);
         }
 
-        // OTP check must only work on valid sources (i.e. not voided and unverified)        
-        if ($tags &&
-            property_exists($tags, 'otp_check')
+        // OTP check must only work on valid sources (i.e. not voided and unverified)
+        if ($tags
+            && property_exists($tags, 'otp_check')
             && (empty($tags->otp_verified))
         ) {
             // code verification
@@ -195,17 +193,17 @@ class Source implements HandlerInterface {
 
             // after 3 failed attempts, the otp is voided (avoids brute-force validation)
             if (($tags->otp_attempts > 2)
-                && ((! property_exists($tags, 'otp_verified')) ||  (property_exists($tags,'otp_verified')  && ! $tags->otp_verified))
+                && ((! property_exists($tags, 'otp_verified')) || (property_exists($tags, 'otp_verified') && ! $tags->otp_verified))
             ) {
                 $tags->otp_voided = true;
-                $source->tags = $tags;
-                $source = $this->repository->save($source);
+                $source->tags     = $tags;
+                $source           = $this->repository->save($source);
 
-                throw new AppException("Too many tries.", 403);
+                throw new AppException('Too many tries.', 403);
             }
         }
 
-        $source->tags = $tags;
+        $source->tags      = $tags;
         $source->updatedAt = time();
 
         $source = $this->repository->save($source);
@@ -249,7 +247,7 @@ class Source implements HandlerInterface {
 
         $sources = $this->repository->getAllByUserId($command->user->id);
         $deleted = $this->repository->deleteByUserId($command->user->id);
-        
+
         if ($deleted) {
             $this->emitter->emit(new DeletedMulti($sources, $command->ipaddr));
         }

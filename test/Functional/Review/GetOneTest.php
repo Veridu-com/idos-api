@@ -7,8 +7,8 @@
 namespace Test\Functional\Review;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresCompanyToken;
 use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCompanyToken;
 
 class GetOneTest extends AbstractFunctional {
     use RequiresAuth;
