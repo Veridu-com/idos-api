@@ -12,12 +12,11 @@ namespace App\Validator;
  * Source Validation Rules.
  */
 class Source implements ValidatorInterface {
-    use Traits\AssertId,
+    use Traits\AssertArray,
+        Traits\AssertEntity,
+        Traits\AssertId,
         Traits\AssertIpAddr,
-        Traits\AssertArray,
-        Traits\ValidateFlag,
+        Traits\AssertName,
         Traits\AssertOTPCode,
-        Traits\AssertSource,
-        Traits\AssertUser,
-        Traits\AssertName;
+        Traits\ValidateFlag;
 }

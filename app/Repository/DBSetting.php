@@ -67,8 +67,8 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection {
         return $this->findBy(
             [
-            'company_id' => $companyId,
-            'section'    => $section
+                'company_id' => $companyId,
+                'section'    => $section
             ]
         );
     }

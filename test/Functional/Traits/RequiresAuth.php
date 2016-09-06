@@ -18,7 +18,7 @@ trait RequiresAuth {
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame(401, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

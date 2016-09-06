@@ -47,9 +47,7 @@ class DBTag extends AbstractSQLDBRepository implements TagInterface {
             $result = $result->whereIn('slug', $tags);
         }
 
-        $result = $result->get();
-
-        return new Collection($result);
+        return $result->get();
     }
 
     /**

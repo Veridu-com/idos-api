@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Traits;
 
-trait RequiresCompanyToken {
-    public function testInvalidCompanyTokenHeader() {
+trait RejectsCompanyToken {
+    public function testCompanyTokenHeaderRejection() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'        => $this->uri,
@@ -19,7 +19,7 @@ trait RequiresCompanyToken {
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame(401, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -37,7 +37,7 @@ trait RequiresCompanyToken {
         );
     }
 
-    public function testInvalidCompanyTokenQueryString() {
+    public function testCompanyTokenQueryStringRejection() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'    => $this->uri,
@@ -47,7 +47,7 @@ trait RequiresCompanyToken {
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame(401, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

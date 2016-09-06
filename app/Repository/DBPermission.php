@@ -44,7 +44,7 @@ class DBPermission extends AbstractSQLDBRepository implements PermissionInterfac
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId) : Collection{
+    public function getAllByCompanyId(int $companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
     }
 

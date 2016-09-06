@@ -10,12 +10,13 @@ namespace Test\Functional\Permission;
 
 use Slim\Http\Response;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCompanyToken;
+use Test\Functional\Traits;
 
 class CreateNewTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCompanyToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCompanyToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'POST';

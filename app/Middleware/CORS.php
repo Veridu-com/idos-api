@@ -65,7 +65,7 @@ class CORS implements MiddlewareInterface {
         callable $next
     ) : ResponseInterface {
         $origin = empty($request->getHeaderLine('Origin')) ? $request->getHeaderLine('Origin') : '*';
-        
+
         $response = $response
             ->withHeader(
                 'Access-Control-Allow-Origin',

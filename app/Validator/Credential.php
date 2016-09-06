@@ -12,7 +12,7 @@ namespace App\Validator;
  * Credential Validation Rules.
  */
 class Credential implements ValidatorInterface {
-    use Traits\AssertCredential,
+    use Traits\AssertEntity,
         Traits\AssertId,
         Traits\AssertName,
         Traits\AssertSlug,

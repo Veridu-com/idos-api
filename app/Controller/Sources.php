@@ -79,7 +79,7 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');        
+        $user    = $request->getAttribute('targetUser');
         $sources = $this->repository->getAllByUserId($user->id);
 
         // @FIXME ACCESS MANAGEMENT REQUIRED!!
@@ -268,7 +268,6 @@ class Sources implements ControllerInterface {
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
         $source = $this->commandBus->handle($command);
-
 
         $body = [
             'data'    => $source->toArray(),
