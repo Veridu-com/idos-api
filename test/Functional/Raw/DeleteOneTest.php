@@ -11,7 +11,7 @@ namespace Test\Functional\Raw;
 class DeleteOneTest extends AbstractRawFunctional {
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/profiles/usr001/sources/1321189817/raw/raw-2';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw/raw-2';
 
         $this->populateDb();
     }
@@ -44,7 +44,7 @@ class DeleteOneTest extends AbstractRawFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/usr001/sources/1321189817/raw/00000';
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw/00000';
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [

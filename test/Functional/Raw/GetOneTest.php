@@ -11,7 +11,7 @@ namespace Test\Functional\Raw;
 class GetOneTest extends AbstractRawFunctional {
     protected function setUp() {
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/usr001/sources/1321189817/raw/raw-1';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw/raw-1';
 
         $this->populateDb();
     }
@@ -45,7 +45,7 @@ class GetOneTest extends AbstractRawFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/usr001/sources/1321189817/raw/0000000';
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw/0000000';
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [

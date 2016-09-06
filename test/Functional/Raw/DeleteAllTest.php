@@ -11,7 +11,7 @@ namespace Test\Functional\Raw;
 class DeleteAllTest extends AbstractRawFunctional {
     protected function setUp() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/profiles/usr001/sources/1321189817/raw';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw';
 
         $this->populateDb();
     }

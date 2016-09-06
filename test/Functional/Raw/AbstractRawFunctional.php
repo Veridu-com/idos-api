@@ -19,7 +19,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
     protected function populateDb() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => '/1.0/profiles/usr001/sources/1321189817/raw',
+                'REQUEST_URI'        => '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw',
                 'REQUEST_METHOD'     => 'DELETE',
                 'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
@@ -30,7 +30,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
 
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => '/1.0/profiles/usr001/sources/1321189817/raw',
+                'REQUEST_URI'        => '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw',
                 'REQUEST_METHOD'     => 'POST',
                 'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
