@@ -88,7 +88,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::USER))
+            ->add($auth(Auth::USER | Auth::CREDENTIAL))
             ->setName('sources:listAll');
     }
 
@@ -120,7 +120,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER))
+            ->add($auth(Auth::USER | Auth::CREDENTIAL))
             ->setName('sources:createNew');
     }
 
@@ -152,7 +152,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER))
+            ->add($auth(Auth::USER | Auth::CREDENTIAL))
             ->setName('sources:deleteAll');
     }
 
@@ -184,7 +184,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER))
+            ->add($auth(Auth::USER | Auth::CREDENTIAL))
             ->setName('sources:getOne');
     }
 
@@ -216,7 +216,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER))
+            ->add($auth(Auth::USER | Auth::CREDENTIAL))
             ->setName('sources:updateOne');
     }
 
@@ -248,7 +248,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER))
+            ->add($auth(Auth::USER | Auth::CREDENTIAL))
             ->setName('sources:deleteOne');
     }
 }

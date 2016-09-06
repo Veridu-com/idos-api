@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Warning Repository Implementation.
  */
-class DBWarning extends AbstractDBRepository implements WarningInterface {
+class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
     /**
      * The table associated with the repository.
      *
@@ -63,6 +63,18 @@ class DBWarning extends AbstractDBRepository implements WarningInterface {
         return $this->findBy(
             [
                 'user_id' => $userId,
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByUserIdAndId(int $userId, int $id) : Warning {
+        return $this->findOneBy(
+            [
+                'user_id' => $userId,
+                'id'      => $id
             ]
         );
     }

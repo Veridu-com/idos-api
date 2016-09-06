@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Member Repository Implementation.
  */
-class DBMember extends AbstractDBRepository implements MemberInterface {
+class DBMember extends AbstractSQLDBRepository implements MemberInterface {
     /**
      * The table associated with the repository.
      *

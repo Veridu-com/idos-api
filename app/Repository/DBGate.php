@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Gate Repository Implementation.
  */
-class DBGate extends AbstractDBRepository implements GateInterface {
+class DBGate extends AbstractSQLDBRepository implements GateInterface {
     /**
      * The table associated with the repository.
      *

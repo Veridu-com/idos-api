@@ -16,11 +16,17 @@ use App\Entity\User;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Source Id to be deleted.
+     * IP Address.
      *
-     * @var int
+     * @var string
      */
-    public $sourceId;
+    public $ipaddr;
+    /**
+     * Source to be deleted.
+     *
+     * @var App\Entity\Source
+     */
+    public $source;
     /**
      * Source owner User.
      *
@@ -34,13 +40,6 @@ class DeleteOne extends AbstractCommand {
      * @return App\Command\Source\DeleteOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['sourceId'])) {
-            $this->sourceId = $parameters['sourceId'];
-        }
-
-        if (isset($parameters['user'])) {
-            $this->user = $parameters['user'];
-        }
 
         return $this;
     }
