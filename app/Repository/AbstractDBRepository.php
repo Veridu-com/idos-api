@@ -96,17 +96,17 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @param App\Factory\Entity                       $entityFactory
      * @param \Jenssegers\Optimus\Optimus              $optimus
-     * @param \Illuminate\Database\ConnectionInterface $dbConnection
+     * @param array $connections
      *
      * @return void
      */
     public function __construct(
         Entity $entityFactory,
         Optimus $optimus,
-        ConnectionInterface $dbConnection
+        array $connections
     ) {
         parent::__construct($entityFactory, $optimus);
-        $this->dbConnection = $dbConnection;
+        $this->dbConnection = $connections['sql'];
     }
 
     /**

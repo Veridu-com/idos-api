@@ -40,6 +40,7 @@ use Slim\HttpCache\CacheProvider;
 use Stash\Driver\FileSystem;
 use Stash\Driver\Redis;
 use Whoops\Handler\PrettyPageHandler;
+use Jenssegers\Mongodb;
 
 if (! isset($app)) {
     die('$app is not set!');
@@ -338,7 +339,7 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
             $strategy = new Repository\DBStrategy(
                 $container->get('entityFactory'),
                 $container->get('optimus'),
-                $container->get('db')
+                ['sql' => $container->get('sql'), 'nosql' => $container->get('nosql')]
             );
     }
 
@@ -369,11 +370,21 @@ $container['jwt'] = function (ContainerInterface $container) : callable {
 };
 
 // DB Access
-$container['db'] = function (ContainerInterface $container) : Connection {
+$container['sql'] = function (ContainerInterface $container) : Connection {
     $capsule = new Manager();
-    $capsule->addConnection($container['settings']['db']);
+    $capsule->addConnection($container['settings']['db']['sql']);
 
     return $capsule->getConnection();
+};
+
+// MongoDB Access
+$container['nosql'] = function (ContainerInterface $container) : callable {
+    return function (string $database) use ($container) : MongoDB\Manager {
+        $config = $container['settings']['db']['nosql'];
+        $config['database'] = $database;
+
+        return new Mongodb\Connection($config);
+    };
 };
 
 // Respect Validator
