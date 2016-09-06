@@ -384,8 +384,8 @@ $container['nosql'] = function (ContainerInterface $container) : callable {
         $config['database'] = $database;
 
         return new Mongodb\Connection($config);
-    }
-}
+    };
+};
 
 // Respect Validator
 $container['validator'] = function (ContainerInterface $container) : Validator {

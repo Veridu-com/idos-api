@@ -146,7 +146,7 @@ class Reviews implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews/{reviewId}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews/{reviewId:[0-9]+}',
                 'App\Controller\Reviews:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -180,7 +180,7 @@ class Reviews implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews/{reviewId}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews/{reviewId:[0-9]+}',
                 'App\Controller\Reviews:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
