@@ -41,6 +41,7 @@ class Raw implements RouteInterface {
         $app->getContainer()[\App\Controller\Raw::class] = function (ContainerInterface $container) {
             return new \App\Controller\Raw(
                 $container->get('repositoryFactory')->create('Raw'),
+                $container->get('repositoryFactory')->create('Source'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
                 $container->get('optimus')
@@ -85,7 +86,7 @@ class Raw implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
                 'App\Controller\Raw:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -118,7 +119,7 @@ class Raw implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
                 'App\Controller\Raw:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -131,13 +132,13 @@ class Raw implements RouteInterface {
      *
      * Updates a raw data in the given source.
      *
-     * @apiEndpoint PUT /profiles/{userName}/source/{sourceId}/raw/{rawName}
+     * @apiEndpoint PUT /profiles/{userName}/source/{sourceId}/raw/{collection}
      * @apiGroup Company Members
      * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
-     * @apiEndpointURIFragment string rawName data-name
+     * @apiEndpointURIFragment string collection data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -153,7 +154,7 @@ class Raw implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw/{rawName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw/{collection:[a-zA-Z0-9_-]+}',
                 'App\Controller\Raw:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -166,13 +167,13 @@ class Raw implements RouteInterface {
      *
      * Retrieves a raw data from a given source.
      *
-     * @apiEndpoint GET /profiles/{userName}/source/{sourceId}/raw/{rawName}
+     * @apiEndpoint GET /profiles/{userName}/source/{sourceId}/raw/{collection}
      * @apiGroup Sources Raw
      * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
      * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
-     * @apiEndpointURIFragment string rawName data-name
+     * @apiEndpointURIFragment string collection data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -188,7 +189,7 @@ class Raw implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw/{rawName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw/{collection:[a-zA-Z0-9_-]+}',
                 'App\Controller\Raw:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -222,7 +223,7 @@ class Raw implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
                 'App\Controller\Raw:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -235,13 +236,13 @@ class Raw implements RouteInterface {
      *
      * Deletes a raw data from the given source.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId}/raw/{rawName}
+     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId}/raw/{collection}
      * @apiGroup Sources Raw
      * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
      * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
-     * @apiEndpointURIFragment string rawName data-name
+     * @apiEndpointURIFragment string collection data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -257,7 +258,7 @@ class Raw implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9]+}/sources/{sourceId:[0-9+]}/raw/{rawName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw/{collection:[a-zA-Z0-9_-]+}',
                 'App\Controller\Raw:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

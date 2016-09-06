@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Feature Repository Implementation.
  */
-class DBFeature extends AbstractDBRepository implements FeatureInterface {
+class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * The table associated with the repository.
      *

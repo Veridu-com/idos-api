@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Reference Repository Implementation.
  */
-class DBReference extends AbstractDBRepository implements ReferenceInterface {
+class DBReference extends AbstractSQLDBRepository implements ReferenceInterface {
     /**
      * The table associated with the repository.
      *

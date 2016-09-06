@@ -8,25 +8,39 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use App\Extension\SecureFields;
+
 /**
- * Sources Entity.
+ * Raw Entity.
  *
- * @apiEntity schema/source/credentialEntity.json
+ * @apiEntity schema/raw/rawEntity.json
+ *
+ * @property int    $id
+ * @property string $collection
+ * @property string $data
+ * @property int    $created_at
  */
-class Source extends AbstractEntity {
+class Raw extends AbstractEntity {
+    use SecureFields;
     /**
      * {@inheritdoc}
      */
-    const CACHE_PREFIX = 'Source';
+    const CACHE_PREFIX = 'Raw';
 
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'tags'];
+    protected $visible = ['collection', 'data', 'created_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+    /**
+     * The attributes that should be secured.
+     *
+     * @var array
+     */
+    protected $secure = ['data'];
 
     /**
      * {@inheritdoc}
@@ -39,14 +53,14 @@ class Source extends AbstractEntity {
                 $this->id
             ),
             sprintf(
-                '%s.slug.%s',
+                '%s.collection.%s',
                 self::CACHE_PREFIX,
-                $this->slug
+                $this->collection
             ),
             sprintf(
-                '%s.private_key.%s',
+                '%s.data.%s',
                 self::CACHE_PREFIX,
-                $this->private_key
+                $this->data
             ),
         ];
     }
@@ -58,9 +72,9 @@ class Source extends AbstractEntity {
         return array_merge(
             [
             sprintf(
-                '%s.by.parent_id.%s',
+                '%s.by.source_id.%s',
                 self::CACHE_PREFIX,
-                $this->parentId
+                $this->sourceId
             )
             ],
             $this->getCacheKeys()

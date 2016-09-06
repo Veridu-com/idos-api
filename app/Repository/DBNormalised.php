@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Normalised Repository Implementation.
  */
-class DBNormalised extends AbstractDBRepository implements NormalisedInterface {
+class DBNormalised extends AbstractSQLDBRepository implements NormalisedInterface {
     /**
      * The table associated with the repository.
      *

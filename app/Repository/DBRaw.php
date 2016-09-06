@@ -8,7 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
+use App\Entity\EntityInterface;
 use App\Entity\Raw;
+use App\Entity\Source;
 use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
@@ -32,67 +34,93 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllBySource(Source $source) : Collection {
+    public function getAllBySourceAndCollections(Source $source, array $collectionNames = []) : Collection {
+        $this->selectDatabase($source->name);
 
+        $collections = $this->listCollections();
+        $entities    = new Collection();
+
+        foreach($collections as $collection) {
+            if (! empty($collectionNames) && ! in_array($collection->getName(), $collectionNames)) {
+                continue;
+            }
+
+            $this->selectCollection($collection->getName());
+
+            try {
+                $entity             = $this->find($source->id);
+                $entity->collection = $collection->getName();
+
+                $entities->push($entity);
+            } catch (NotFound $e) { }
+        }
+
+        return $entities;
     }
 
     /**
      * {@inheritdoc}
      */
     public function deleteBySource(Source $source) : int {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function create(Source $source, Raw $raw) : Raw {
         $this->selectDatabase($source->name);
 
-        $_id = md5($source->id);
-        $success = $this->query($raw->name)->insert([
-            '_id' => $_id,
-            'data' => $raw->data]);
+        $collections  = $this->listCollections();
+        $affectedRows = 0;
 
-        if(! $success) {
-            throw new AppException('Error while creating Raw entity');
+        foreach($collections as $collection) {
+            $affectedRows += $this->deleteOneBySourceAndCollection($source, $collection->getName());
         }
 
-        return $this->findOneBySourceAndName($source, $raw->name);
+        return $affectedRows;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findOneBySourceAndName(Source $source, string $name) : Raw {
+    public function save(EntityInterface $entity) : EntityInterface {
+        $this->selectDatabase($entity->source->name);
+        $this->selectCollection($entity->collection);
+
+        if (! $entity->id) {
+            $entity->id = $entity->source->id;
+        }
+
+        unset($entity->source);
+
+        return parent::save($entity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneBySourceAndCollection(Source $source, string $collection) : Raw {
         $this->selectDatabase($source->name);
+        $this->selectCollection($collection);
 
-        $data = $this->query($name)->find(md5($source->id));
-
-        if(! $data) {
-            throw new NotFound('A Raw with the given source and name could not be found.');
-        }
-
-        $raw = new Raw([
-            'id' => $data['_id'],
-            'name' => $name,
-            'data' => $data['data']
-        ]);
-
-        return $raw;
+        return $this->find($source->id);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function updateOneBySourceAndName(Source $source, string $name, string $data) : Raw {
+    public function updateOneBySourceAndCollection(Source $source, string $collection, string $data) : Raw {
+        $entity = $this->findOneBySourceAndCollection($source, $collection);
 
+        $entity->source = $source;
+        $entity->data   = $data;
+
+        return $this->save($entity);
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function deleteOneBySourceAndName(Source $source, string $name) : int {
+    public function deleteOneBySourceAndCollection(Source $source, string $collection) : int {
+        $this->selectDatabase($source->name);
+        $this->selectCollection($collection);
 
+        $affectedRows = (int) $this->delete($source->id);
+
+        return $affectedRows;
     }
 }

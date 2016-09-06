@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Setting Repository Implementation.
  */
-class DBSetting extends AbstractDBRepository implements SettingInterface {
+class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     /**
      * The table associated with the repository.
      *

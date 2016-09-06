@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Service Repository Implementation.
  */
-class DBService extends AbstractDBRepository implements ServiceInterface {
+class DBService extends AbstractSQLDBRepository implements ServiceInterface {
     /**
      * The table associated with the repository.
      *
