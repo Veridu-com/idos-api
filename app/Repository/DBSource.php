@@ -32,7 +32,7 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
      * {@inheritdoc}
      */
     public function findOne(int $id, int $userId) : Source {
-        $result = $this->findBy(
+        return $this->findOneBy(
             [
                 'id'      => $id,
                 'user_id' => $userId
@@ -51,5 +51,12 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
      */
     public function getAllByUserId(int $userId) : Collection {
         return $this->findBy(['user_id' => $userId]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByUserId(int $userId) : int {
+        return $this->deleteBy(['user_id' => $userId]);
     }
 }

@@ -10,6 +10,7 @@ namespace App\Command\Source;
 
 use App\Command\AbstractCommand;
 use App\Entity\User;
+use App\Entity\Source;
 
 /**
  * Source "Update One" Command.
@@ -22,11 +23,23 @@ class UpdateOne extends AbstractCommand {
      */
     public $tags;
     /**
-     * Source Id.
+     * Source Entity.
      *
-     * @var int
+     * @var App\Entity\Source
      */
-    public $sourceId;
+    public $source;
+    /**
+     * IP Address.
+     *
+     * @var string
+     */
+    public $ipaddr;
+    /**
+     * OTP code.
+     *
+     * @var mixed
+     */
+    public $otpCode;
     /**
      * Source owner User.
      *
@@ -44,12 +57,8 @@ class UpdateOne extends AbstractCommand {
             $this->tags = $parameters['tags'];
         }
 
-        if (isset($parameters['sourceId'])) {
-            $this->sourceId = $parameters['sourceId'];
-        }
-
-        if (isset($parameters['user'])) {
-            $this->user = $parameters['user'];
+        if (isset($parameters['otpCode'])) {
+            $this->otpCode = $parameters['otpCode'];
         }
 
         return $this;
