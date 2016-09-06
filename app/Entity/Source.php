@@ -22,7 +22,7 @@ class Source extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'tags'];
+    protected $visible = ['id', 'name', 'tags'];
     /**
      * {@inheritdoc}
      */

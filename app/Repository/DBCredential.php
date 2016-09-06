@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Credential Repository Implementation.
  */
-class DBCredential extends AbstractDBRepository implements CredentialInterface {
+class DBCredential extends AbstractSQLDBRepository implements CredentialInterface {
     /**
      * The table associated with the repository.
      *

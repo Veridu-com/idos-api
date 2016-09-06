@@ -18,6 +18,7 @@ use App\Repository;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Connection;
 use Interop\Container\ContainerInterface;
+use Jenssegers\Mongodb;
 use Jenssegers\Optimus\Optimus;
 use Lcobucci\JWT;
 use League\Event\Emitter;
@@ -338,7 +339,8 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
             $strategy = new Repository\DBStrategy(
                 $container->get('entityFactory'),
                 $container->get('optimus'),
-                $container->get('db')
+                $container->get('sql'),
+                $container->get('nosql')
             );
     }
 
@@ -369,11 +371,21 @@ $container['jwt'] = function (ContainerInterface $container) : callable {
 };
 
 // DB Access
-$container['db'] = function (ContainerInterface $container) : Connection {
+$container['sql'] = function (ContainerInterface $container) : Connection {
     $capsule = new Manager();
-    $capsule->addConnection($container['settings']['db']);
+    $capsule->addConnection($container['settings']['db']['sql']);
 
     return $capsule->getConnection();
+};
+
+// MongoDB Access
+$container['nosql'] = function (ContainerInterface $container) : callable {
+    return function (string $database) use ($container) : Mongodb\Connection {
+        $config             = $container['settings']['db']['nosql'];
+        $config['database'] = $database;
+
+        return new Mongodb\Connection($config);
+    };
 };
 
 // Respect Validator

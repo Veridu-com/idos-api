@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Score Repository Implementation.
  */
-class DBScore extends AbstractDBRepository implements ScoreInterface {
+class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
     /**
      * The table associated with the repository.
      *

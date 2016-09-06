@@ -267,7 +267,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * @return string
      */
     protected function userToken(
-        $userName = 'usr001',
+        $userName = 'f67b96dcf96b49d713a520ce9f54053c',
         $credentialPubKey = null,
         $credentialPrivKey = null
     ) {
@@ -308,7 +308,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * @return string
      */
     protected function companyToken(
-        $subject = '4c9184f37cff01bcdc32dc486ec36961:usr001',
+        $subject = '4c9184f37cff01bcdc32dc486ec36961:f67b96dcf96b49d713a520ce9f54053c',
         $companyPubKey = null,
         $companyPrivKey = null
     ) {
