@@ -13,7 +13,7 @@ class S24SourcesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'name'       => 'source-1',
                 'ipaddr'     => '192.168.0.1',
-                'tags'       => '{ "otp_check": "email" }',
+                'tags'       => json_encode([ "otp_check" => "email"]),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],

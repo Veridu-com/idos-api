@@ -51,7 +51,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame($data['name'], $body['data']['name']);
-        $this->assertSame([], $body['data']['tags']);
+        $this->assertEmpty($body['data']['tags']);
 
         /*
          * Validates Json Schema against Json Response'
