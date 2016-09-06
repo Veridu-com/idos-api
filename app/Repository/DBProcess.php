@@ -11,7 +11,7 @@ namespace App\Repository;
 /**
  * Database-based Process Repository Implementation.
  */
-class DBProcess extends AbstractDBRepository implements ProcessInterface {
+class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
     /**
      * The table associated with the repository.
      *

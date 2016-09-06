@@ -9,12 +9,14 @@ declare(strict_types = 1);
 namespace Test\Functional\Task;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RejectsCompanyToken;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class GetOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
+    use RejectsCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -58,6 +60,7 @@ class GetOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertEquals($this->task, $body['data']); // asserts it fetches the right entity
 
         /*
          * Validates Json Schema against Json Response'

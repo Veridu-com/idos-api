@@ -9,12 +9,14 @@ declare(strict_types = 1);
 namespace Test\Functional\Process;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\HasAuthCredentialToken;
-use Test\Functional\Traits\HasAuthMiddleware;
+use Test\Functional\Traits\RejectsCompanyToken;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
 class GetOneTest extends AbstractFunctional {
-    use HasAuthMiddleware;
-    use HasAuthCredentialToken;
+    use RequiresAuth;
+    use RequiresCredentialToken;
+    use RejectsCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';

@@ -13,7 +13,7 @@ use App\Entity\Task;
 /**
  * Database-based Task Repository Implementation.
  */
-class DBTask extends AbstractDBRepository implements TaskInterface {
+class DBTask extends AbstractSQLDBRepository implements TaskInterface {
     /**
      * The table associated with the repository.
      *

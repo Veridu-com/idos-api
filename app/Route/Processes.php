@@ -73,7 +73,7 @@ class Processes implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/processes',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/processes',
                 'App\Controller\Processes:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -104,7 +104,7 @@ class Processes implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/processes/{processId:[0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}',
                 'App\Controller\Processes:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))

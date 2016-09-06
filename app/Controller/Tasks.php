@@ -83,7 +83,7 @@ class Tasks implements ControllerInterface {
 
         $body = [
             'data'    => $task->toArray(),
-            'updated' => $task->updated_at
+            'updated' => $task->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -162,7 +162,7 @@ class Tasks implements ControllerInterface {
 
         $body = [
             'data'    => $task->toArray(),
-            'updated' => $task->updated_at
+            'updated' => $task->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -86,7 +86,7 @@ class Process implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : ProcessEntity {
         $this->validator->assertName($command->name);
-        $this->validator->assertEvent($command->event);
+        $this->validator->assertName($command->event);
         $this->validator->assertId($command->userId);
 
         $process = $this->repository->create(
@@ -118,7 +118,7 @@ class Process implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : ProcessEntity {
         $this->validator->assertName($command->name);
-        $this->validator->assertEvent($command->event);
+        $this->validator->assertName($command->event);
         $this->validator->assertId($command->id);
 
         $process = $this->repository->find($command->id);

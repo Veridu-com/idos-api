@@ -107,7 +107,7 @@ class Processes implements ControllerInterface {
 
         $body = [
             'data'    => $process->toArray(),
-            'updated' => $process->updated_at
+            'updated' => $process->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

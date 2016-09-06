@@ -78,7 +78,7 @@ class Tasks implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9]+}/processes/{processId:[0-9]+}/tasks',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}/tasks',
                 'App\Controller\Tasks:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -109,7 +109,7 @@ class Tasks implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/processes/{processId:[0-9]+}/tasks/{taskId:[0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}/tasks/{taskId:[0-9]+}',
                 'App\Controller\Tasks:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -140,7 +140,7 @@ class Tasks implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9]+}/processes/{processId:[0-9]+}/tasks/{taskId:[0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}/tasks/{taskId:[0-9]+}',
                 'App\Controller\Tasks:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -171,7 +171,7 @@ class Tasks implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9]+}/processes/{processId:[0-9]+}/tasks',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}/tasks',
                 'App\Controller\Tasks:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
