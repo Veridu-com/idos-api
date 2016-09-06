@@ -8,18 +8,18 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Traits;
 
-trait RequiresCompanyToken {
-    public function testInvalidCompanyTokenHeader() {
+trait RejectsCredentialToken {
+    public function testCredentialTokenHeaderRejection() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'        => $this->uri,
                 'REQUEST_METHOD'     => $this->httpMethod,
-                'HTTP_AUTHORIZATION' => 'CompanyToken dummy'
+                'HTTP_AUTHORIZATION' => 'CredentialToken dummy'
             ]
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame(401, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -37,17 +37,17 @@ trait RequiresCompanyToken {
         );
     }
 
-    public function testInvalidCompanyTokenQueryString() {
+    public function testCredentialTokenQueryStringRejection() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'    => $this->uri,
                 'REQUEST_METHOD' => $this->httpMethod,
-                'QUERY_STRING'   => 'companyToken=dummy'
+                'QUERY_STRING'   => 'credentialToken=dummy'
             ]
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame(401, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

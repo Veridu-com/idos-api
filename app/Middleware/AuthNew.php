@@ -95,23 +95,30 @@ class Auth implements MiddlewareInterface {
     /**
      * Scope: Integration.
      *
+     * @const IDENTITY Identity Token
+     */
+    const IDENTITY = 0x01;
+
+    /**
+     * Scope: Integration.
+     *
      * @const USER User Token
      */
-    const USER = 0x01;
+    const USER = 0x02;
 
     /**
      * Scope: System.
      *
      * @const COMPANY Company Token
      */
-    const COMPANY = 0x02;
+    const COMPANY = 0x04;
 
     /**
      * Scope: Integration.
      *
      * @const CREDENTIAL Credential Token
      */
-    const CREDENTIAL = 0x04;
+    const CREDENTIAL = 0x08;
 
     /**
      * Returns an authorization setup array based on available
@@ -121,6 +128,11 @@ class Auth implements MiddlewareInterface {
      */
     private function authorizationSetup() : array {
         return [
+            self::IDENTITY => [
+                'name'    => 'IdentityToken',
+                'label'   => 'Identity Token',
+                'handler' => 'handleIdentityToken'
+            ],
             self::USER => [
                 'name'    => 'UserToken',
                 'label'   => 'User Token',
@@ -159,6 +171,51 @@ class Auth implements MiddlewareInterface {
         if (isset($queryParams[$name])) {
             return $queryParams[$name];
         }
+    }
+
+    /**
+     * Handles request Authorization based on Identity Token.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param string                                   $reqToken
+     *
+     * @return \Psr\Http\Mesage\ServerRequestInterface
+     */
+    private function handleIdentityToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
+        try {
+            $token = $this->jwtParser->parse($reqToken);
+        } catch (\Throwable $e) {
+            throw new AppException('Invalid Token', 400);
+        }
+
+        // Ensures JWT Audience is the current API
+        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        if (! $token->validate($this->jwtValidation)) {
+            throw new AppException('Token Validation Failed', 400);
+        }
+
+        // Retrieves JWT Issuer
+        $identityPubKey = $token->getClaim('iss');
+
+        try {
+            $identity = $this->identityRepository->findByPubKey($identityPubKey);
+        } catch (NotFound $e) {
+            throw new AppException('Invalid Identity', 400);
+        }
+
+        // JWT Signature Verification
+        if (! $token->verify($this->jwtSigner, $identity->private)) {
+            throw new AppException('Token Verification Failed', 400);
+        }
+
+        // Checks for JWT Subject
+        if ($token->hasClaim('sub')) {
+            throw new AppException('Invalid Token Format: Identity Token must not have a subject claim.', 400);
+        }
+
+        return $request
+            // Stores Identity for future use
+            ->withAttribute('identity', $identity);
     }
 
     /**
@@ -260,50 +317,14 @@ class Auth implements MiddlewareInterface {
             throw new AppException('Token Verification Failed', 400);
         }
 
-        $user       = null;
-        $credential = null;
-
-        // Retrieves JWT Subject
+        // Checks for JWT Subject
         if ($token->hasClaim('sub')) {
-            $subject = explode(':', $token->getClaim('sub'));
-
-            if (count($subject) != 2) {
-                throw new AppException('Invalid Subject', 400);
-            }
-
-            $credentialPubKey = $subject[0];
-            $userName         = $subject[1];
-
-            try {
-                $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
-            } catch (NotFound $e) {
-                throw new AppException('Invalid Credential Public Key', 400);
-            }
-
-            // Ensures that the credential belongs to the company
-            if ($credential->companyId !== $company->id) {
-                throw new AppException('Invalid Credential', 400);
-            }
-
-            //@FIXME delegate this verification to a validator
-            if (preg_match('/[^a-zA-Z0-9_-]+/', $userName) === 1) {
-                throw new AppException('Invalid Subject Username', 400);
-            }
-
-            // If it's a new user, creates it
-            $user = $this->userRepository->findOrCreate($userName, $credential->id);
+            throw new AppException('Invalid Token Format: Identity Token must not have a subject claim.', 400);
         }
 
         return $request
-
             // Stores Company for future use
-            ->withAttribute('company', $company)
-
-            // Stores User for future use
-            ->withAttribute('user', ($user ?: null))
-
-            // Stores Credential for future use
-            ->withAttribute('credential', ($credential ?: null));
+            ->withAttribute('company', $company);
     }
 
     /**
@@ -496,21 +517,23 @@ class Auth implements MiddlewareInterface {
         // Authorization Handling Loop
         if (! $hasAuthorization) {
             foreach ($this->authorizationSetup() as $level => $authorizationInfo) {
+                if ($hasAuthorization) {
+                    break;
+                }
+
                 if (($this->authorizationRequirement & $level) == $level) {
                     // Tries to extract Authorization from Request
                     $authorization = $this->extractAuthorization($request, $authorizationInfo['name']);
 
                     if (empty($authorization)) {
-                        $validAuthorization[$authorizationInfo['name']] = $authorizationInfo['label'];
-                        continue;
+                        $validAuthorization[] = $authorizationInfo['label'];
+                    } else {
+                        // Handles Authorization validation and Request Argument creation
+                        $request = $this->{$authorizationInfo['handler']}($request, $authorization);
+
+                        // Authorization has been found and validated
+                        $hasAuthorization = true;
                     }
-
-                    // Handles Authorization validation and Request Argument creation
-                    $request = $this->{$authorizationInfo['handler']}($request, $authorization);
-
-                    // Authorization has been found and validated
-                    $hasAuthorization = true;
-                    break;
                 }
             }
         }
@@ -534,23 +557,6 @@ class Auth implements MiddlewareInterface {
             return $next($request, $response);
         }
 
-        $authenticateHeader = [];
-        foreach ($validAuthorization as $name => $label) {
-            $authenticateHeader[] = sprintf(
-                '%s realm="%s"',
-                $name,
-                $label
-            );
-        }
-
-        $response = $response->withHeader('WWW-Authenticate', implode(', ', $authenticateHeader));
-
-        throw new AppException(
-            sprintf(
-                'AuthorizationMissing - Authorization details missing. Valid Authorization: %s',
-                implode(', ', $validAuthorization)
-            ),
-            401
-        );
+        throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
     }
 }

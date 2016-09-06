@@ -34,14 +34,13 @@ class Source extends AbstractEntity {
      */
     protected $json = ['tags'];
 
-
     /**
      * Gets the tags attribute.
-     * Filters all "otp-*" tags
-     * 
-     * @param      null|stdClass        $tags   The tags
+     * Filters all "otp-*" tags.
      *
-     * @return     null|stdClass  The modified tags attribute.
+     * @param null|stdClass $tags The tags
+     *
+     * @return null|stdClass The modified tags attribute.
      */
     public function getTagsAttribute($tags) {
         if (is_object($tags)) {

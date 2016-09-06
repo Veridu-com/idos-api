@@ -11,12 +11,13 @@ namespace Test\Functional\Source;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresUserToken;
+use Test\Functional\Traits;
 
 class CreateNewTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresUserToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresUserToken,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
@@ -32,14 +33,14 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            "name" => "email", 
-            "tags" => [
-                "otp_check" => "email"
+            'name' => 'email',
+            'tags' => [
+                'otp_check' => 'email'
             ]
         ];
 
         $request = $this->createRequest(
-            $environment, 
+            $environment,
             json_encode($data)
         );
 

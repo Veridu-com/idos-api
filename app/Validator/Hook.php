@@ -12,7 +12,7 @@ namespace App\Validator;
  * Hook Validation Rules.
  */
 class Hook implements ValidatorInterface {
-    use Traits\AssertHook,
+    use Traits\AssertEntity,
         Traits\AssertId,
         Traits\AssertTriggerName,
         Traits\AssertUrl;

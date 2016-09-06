@@ -12,7 +12,5 @@ namespace App\Validator;
  * Token Validation Rules.
  */
 class Token implements ValidatorInterface {
-    use Traits\AssertCompany,
-        Traits\AssertCredential,
-        Traits\AssertUser;
+    use Traits\AssertEntity;
 }

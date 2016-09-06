@@ -35,7 +35,7 @@ abstract class AbstractUnit extends \PHPUnit_Framework_TestCase {
      *
      * @return \ReflectionMethod
      */
-    protected function setProtectedMethod($object, string $method) : \ReflectionMethod{
+    protected function setProtectedMethod($object, string $method) : \ReflectionMethod {
         $reflection       = new \ReflectionClass($object);
         $reflectionMethod = $reflection->getMethod($method);
         $reflectionMethod->setAccessible(true);

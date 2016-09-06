@@ -92,12 +92,14 @@ class Raw implements HandlerInterface {
         $this->validator->assertSource($command->source);
         $this->validator->assertName($command->collection);
 
-        $raw = $this->repository->create([
+        $raw = $this->repository->create(
+            [
             'source'     => $command->source,
             'collection' => $command->collection,
             'data'       => $command->data,
             'created_at' => time()
-        ]);
+            ]
+        );
 
         try {
             $raw   = $this->repository->save($raw);
