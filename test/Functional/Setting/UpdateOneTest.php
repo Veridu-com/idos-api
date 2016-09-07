@@ -11,12 +11,13 @@ namespace Test\Functional\Setting;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCompanyToken;
+use Test\Functional\Traits;
 
 class UpdateOneTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCompanyToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCompanyToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';

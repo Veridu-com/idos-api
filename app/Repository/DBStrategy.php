@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Factory\Entity;
-use Illuminate\Database\Connection;
+use Illuminate\Database\Connection as SQLConnection;
 use Jenssegers\Optimus\Optimus;
 
 /**
@@ -23,11 +23,17 @@ class DBStrategy implements RepositoryStrategyInterface {
      */
     public $entityFactory;
     /**
-     * DB Connections.
+     * SQL Database Connection.
      *
-     * @var array
+     * @var Illuminate\Database\Connection
      */
-    protected $connections;
+    protected $sqlConnection;
+    /**
+     * NoSQL Database Connector function.
+     *
+     * @var callable
+     */
+    protected $noSqlConnector;
 
     /**
      * Optimus instance.
@@ -39,20 +45,23 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity              $entityFactory
-     * @param \Jenssegers\Optimus\Optimus     $optimus
-     * @param array $connections
+     * @param App\Factory\Entity             $entityFactory
+     * @param \Jenssegers\Optimus\Optimus    $optimus
+     * @param Illuminate\Database\Connection $sqlConnection
+     * @param callable                       $noSqlConnector
      *
      * @return void
      */
     public function __construct(
         Entity $entityFactory,
         Optimus $optimus,
-        array $connections
+        SQLConnection $sqlConnection,
+        callable $noSqlConnector
     ) {
-        $this->entityFactory = $entityFactory;
-        $this->optimus       = $optimus;
-        $this->connections    = $connections;
+        $this->entityFactory  = $entityFactory;
+        $this->optimus        = $optimus;
+        $this->sqlConnection  = $sqlConnection;
+        $this->noSqlConnector = $noSqlConnector;
     }
 
     /**
@@ -66,6 +75,18 @@ class DBStrategy implements RepositoryStrategyInterface {
      * {@inheritdoc}
      */
     public function build(string $className) : RepositoryInterface {
-        return new $className($this->entityFactory, $this->optimus, $this->connections);
+        $reflectionClass = new \ReflectionClass($className);
+        $parentClass     = $reflectionClass->getParentClass()->getName();
+
+        switch ($parentClass) {
+            case 'App\Repository\AbstractSQLDBRepository':
+                return new $className($this->entityFactory, $this->optimus, $this->sqlConnection);
+
+            case 'App\Repository\AbstractNoSQLDBRepository':
+                return new $className($this->entityFactory, $this->optimus, $this->noSqlConnector);
+
+            default:
+                throw new AppException('Invalid repository parent class');
+        }
     }
 }

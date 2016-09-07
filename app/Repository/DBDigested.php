@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Digested Repository Implementation.
  */
-class DBDigested extends AbstractDBRepository implements DigestedInterface {
+class DBDigested extends AbstractSQLDBRepository implements DigestedInterface {
     /**
      * The table associated with the repository.
      *

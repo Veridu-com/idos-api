@@ -11,20 +11,22 @@ namespace App\Validator\Traits;
 use Respect\Validation\Validator;
 
 /**
- * Trait to add user assertion.
+ * Trait to add event assertion.
  */
-trait AssertUser {
+trait AssertBooleanOrNull {
     /**
-     * Asserts a valid user entity.
+     * Asserts a valid boolean.
      *
-     * @param mixed $user
+     * @param mixed $bolean
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertUser($user) {
-        Validator::instance('App\\Entity\\User')
-            ->assert($user);
+    public function assertBooleanOrNull($boolean) {
+        Validator::oneOf(
+            Validator::boolType(),
+            Validator::nullType()
+        )->assert($boolean);
     }
 }

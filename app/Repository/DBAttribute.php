@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Attribute Repository Implementation.
  */
-class DBAttribute extends AbstractDBRepository implements AttributeInterface {
+class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface {
     /**
      * The table associated with the repository.
      *
@@ -44,13 +44,11 @@ class DBAttribute extends AbstractDBRepository implements AttributeInterface {
             ->selectRaw('attributes.*')
             ->where('user_id', '=', $userId);
 
-        if(! empty($names)) {
+        if (! empty($names)) {
             $result = $result->whereIn('attributes.name', $names);
         }
 
-        $result = $result->get();
-
-        return new Collection($result);
+        return $result->get();
     }
 
     /**
@@ -66,7 +64,7 @@ class DBAttribute extends AbstractDBRepository implements AttributeInterface {
     public function findOneByUserIdAndName(int $userId, string $name) : Attribute {
         $result = $this->findBy(['user_id' => $userId, 'name' => $name]);
 
-        if($result->isEmpty()) {
+        if ($result->isEmpty()) {
             throw new NotFound();
         }
 

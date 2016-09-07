@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Setting Repository Implementation.
  */
-class DBSetting extends AbstractDBRepository implements SettingInterface {
+class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     /**
      * The table associated with the repository.
      *
@@ -67,8 +67,8 @@ class DBSetting extends AbstractDBRepository implements SettingInterface {
     public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection {
         return $this->findBy(
             [
-            'company_id' => $companyId,
-            'section'    => $section
+                'company_id' => $companyId,
+                'section'    => $section
             ]
         );
     }

@@ -21,12 +21,21 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $name;
+
     /**
      * Source Tags.
      *
      * @var array
      */
     public $tags;
+
+    /**
+     * IP Address.
+     *
+     * @var string
+     */
+    public $ipaddr;
+
     /**
      * Source's User.
      *

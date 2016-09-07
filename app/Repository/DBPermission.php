@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Permission Repository Implementation.
  */
-class DBPermission extends AbstractDBRepository implements PermissionInterface {
+class DBPermission extends AbstractSQLDBRepository implements PermissionInterface {
     /**
      * The table associated with the repository.
      *
@@ -44,7 +44,7 @@ class DBPermission extends AbstractDBRepository implements PermissionInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId) : Collection{
+    public function getAllByCompanyId(int $companyId) : Collection {
         return $this->findBy(['company_id' => $companyId]);
     }
 

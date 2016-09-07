@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based ServiceHandler Repository Implementation.
  */
-class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInterface {
+class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandlerInterface {
     /**
      * The table associated with the repository.
      *
@@ -35,7 +35,7 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
      *
      * @var array
      */
-    protected $queryAttributes = [
+    private $queryAttributes = [
         'service_handlers.*',
         'services.id as service.id',
         'services.name as service.name',
@@ -71,8 +71,8 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
     public function findAllFromService(int $companyId, string $serviceSlug) : Collection {
         return $this->findBy(
             [
-            'company_id'   => $companyId,
-            'service_slug' => $serviceSlug,
+                'company_id'   => $companyId,
+                'service_slug' => $serviceSlug,
             ]
         );
     }
@@ -96,9 +96,10 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
 
         $array = $query
             ->join('services', 'services.id', '=', 'service_handlers.service_id')
+            ->where('services.company_id', '=', $companyId)
             ->get($this->queryAttributes);
 
-        return $this->castHydrate(new Collection($array));
+        return $this->castHydrate($array);
     }
 
     /**
@@ -107,8 +108,8 @@ class DBServiceHandler extends AbstractDBRepository implements ServiceHandlerInt
     public function deleteOne(int $companyId, int $serviceHandlerId) : int {
         return $this->deleteBy(
             [
-            'company_id' => $companyId,
-            'id'         => $serviceHandlerId
+                'company_id' => $companyId,
+                'id'         => $serviceHandlerId
             ]
         );
     }

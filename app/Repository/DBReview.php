@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\EntityInterface;
 use App\Entity\Review;
 use App\Exception\NotFound;
 use Illuminate\Support\Collection;
@@ -16,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Review Repository Implementation.
  */
-class DBReview extends AbstractDBRepository implements ReviewInterface {
+class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
     /**
      * The table associated with the repository.
      *
@@ -45,7 +44,7 @@ class DBReview extends AbstractDBRepository implements ReviewInterface {
             ->selectRaw('reviews.*')
             ->where('user_id', '=', $userId);
 
-        if(! empty($warningIds)) {
+        if (! empty($warningIds)) {
             $warningIds = array_map([$this->optimus, 'decode'], $warningIds);
             $result     = $result->whereIn('reviews.warning_id', $warningIds);
         }
@@ -61,7 +60,7 @@ class DBReview extends AbstractDBRepository implements ReviewInterface {
     public function findOneByUserIdAndId(int $userId, int $id) : Review {
         $result = $this->findBy(['user_id' => $userId, 'id' => $id]);
 
-        if($result->isEmpty()) {
+        if ($result->isEmpty()) {
             throw new NotFound();
         }
 

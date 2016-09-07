@@ -13,9 +13,15 @@ use App\Command\Normalised\DeleteAll;
 use App\Command\Normalised\DeleteOne;
 use App\Command\Normalised\UpdateOne;
 use App\Entity\Normalised as NormalisedEntity;
+use App\Event\Normalised\Created;
+use App\Event\Normalised\Deleted;
+use App\Event\Normalised\DeletedMulti;
+use App\Event\Normalised\ProfileSet;
+use App\Event\Normalised\Updated;
 use App\Repository\NormalisedInterface;
 use App\Validator\Normalised as NormalisedValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Normalised commands.
@@ -33,6 +39,12 @@ class Normalised implements HandlerInterface {
      * @var App\Validator\Normalised
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var \League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -45,7 +57,9 @@ class Normalised implements HandlerInterface {
                     ->create('Normalised'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Normalised')
+                    ->create('Normalised'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -55,15 +69,18 @@ class Normalised implements HandlerInterface {
      *
      * @param App\Repository\NormalisedInterface $repository
      * @param App\Validator\Normalised           $validator
+     * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */
     public function __construct(
         NormalisedInterface $repository,
-        NormalisedValidator $validator
+        NormalisedValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -74,6 +91,7 @@ class Normalised implements HandlerInterface {
      * @return App\Entity\Normalised
      */
     public function handleCreateNew(CreateNew $command) : NormalisedEntity {
+        $this->validator->assertId($command->sourceId);
         $this->validator->assertName($command->name);
         $this->validator->assertValue($command->value);
 
@@ -88,7 +106,17 @@ class Normalised implements HandlerInterface {
             ]
         );
 
-        $normalised = $this->repository->save($normalised);
+        try {
+            $normalised = $this->repository->save($normalised);
+            $event      = new Created($normalised);
+            $this->emitter->emit($event);
+            if ($command->name === 'id') {
+                $event = new ProfileSet($normalised);
+                $this->emitter->emit($event);
+            }
+        } catch (\Exception $exception) {
+            throw new AppException('Error while storing normalised data');
+        }
 
         return $normalised;
     }
@@ -101,13 +129,21 @@ class Normalised implements HandlerInterface {
      * @return App\Entity\Normalised
      */
     public function handleUpdateOne(UpdateOne $command) : NormalisedEntity {
+        $this->validator->assertId($command->sourceId);
         $this->validator->assertValue($command->value);
 
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
 
         $normalised        = $this->repository->findOneByUserIdSourceIdAndName($command->user->id, $command->sourceId, $command->name);
         $normalised->value = $command->value;
-        $normalised        = $this->repository->save($normalised);
+
+        try {
+            $normalised = $this->repository->save($normalised);
+            $event      = new Updated($normalised);
+            $this->emitter->emit($event);
+        } catch (\Exception $exception) {
+            throw new AppException('Error while updating a normalised entry');
+        }
 
         return $normalised;
     }
@@ -120,11 +156,25 @@ class Normalised implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertId($command->user->id);
+        $this->validator->assertId($command->sourceId);
         $this->validator->assertName($command->name);
 
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
 
-        return $this->repository->deleteOneBySourceIdAndName($command->sourceId, $command->name);
+        $normalised = $this->repository->findOneByUserIdSourceIdAndName($command->user->id, $command->sourceId, $command->name);
+
+        $rowsAffected = $this->repository->deleteOneBySourceIdAndName($command->sourceId, $command->name);
+
+        if ($rowsAffected) {
+            $event = new Deleted($normalised);
+            $this->emitter->emit($event);
+        } else {
+            throw new NotFound();
+        }
+
+        return $rowsAffected;
     }
 
     /**
@@ -135,8 +185,19 @@ class Normalised implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertId($command->user->id);
+        $this->validator->assertId($command->sourceId);
+
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
 
-        return $this->repository->deleteBySourceId($command->sourceId);
+        $deletedItems = $this->repository->getAllByUserIdAndSourceId($command->user->id, $command->sourceId);
+
+        $rowsAffected = $this->repository->deleteBySourceId($command->sourceId);
+
+        $event = new DeletedMulti($deletedItems);
+        $this->emitter->emit($event);
+
+        return $rowsAffected;
     }
 }

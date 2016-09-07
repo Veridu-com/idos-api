@@ -1,0 +1,49 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/user/taskEntity.json",
+    "title": "Task",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "Task Id",
+            "type": "integer"
+        },
+        "name": {
+            "description": "Task Name",
+            "type": "string",
+            "pattern": ""
+        },
+        "event": {
+            "description": "Event that triggered the task",
+            "type": "string",
+            "pattern": ""
+        },
+        "running": {
+            "description": "Task running flag",
+            "type": "boolean"
+        },
+        "success": {
+            "description": "Task success flag",
+            "type": ["boolean", "null"]
+        },
+        "created_at": {
+            "description": "Task's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Task's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "dependencies": {
+    },
+    "required": [
+        "id",
+        "name",
+        "event",
+        "running",
+        "success",
+        "created_at",
+        "updated_at"
+    ]
+}

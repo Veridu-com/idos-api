@@ -11,12 +11,13 @@ namespace Test\Functional\Normalised;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits;
 
 class CreateNewTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCredentialToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'POST';
@@ -49,6 +50,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertSame('name-test', $body['data']['name']);
         $this->assertSame('value-test', $body['data']['value']);
+
         /*
          * Validates Json Schema against Json Response'
          */

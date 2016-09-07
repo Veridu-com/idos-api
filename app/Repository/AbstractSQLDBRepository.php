@@ -19,7 +19,7 @@ use Jenssegers\Optimus\Optimus;
 /**
  * Abstract Database-based Repository.
  */
-abstract class AbstractDBRepository extends AbstractRepository {
+abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Entity Factory.
      *
@@ -59,16 +59,22 @@ abstract class AbstractDBRepository extends AbstractRepository {
      * @return \Illuminate\Database\Query\Builder
      */
     protected function query($table = null, $entityName = null) : Builder {
+        if ($entityName === null) {
+            $entityName = $this->getEntityClassName();
+        }
+
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
-            ($entityName) ? $entityName : $this->getEntityClassName(),
+            $entityName,
             [
                 [],
                 $this->optimus
             ]
         );
 
-        $table = ($table === null) ? $this->getTableName() : $table;
+        if ($table === null) {
+            $table = $this->getTableName();
+        }
 
         return $this->dbConnection->table($table);
     }
@@ -96,17 +102,17 @@ abstract class AbstractDBRepository extends AbstractRepository {
      *
      * @param App\Factory\Entity                       $entityFactory
      * @param \Jenssegers\Optimus\Optimus              $optimus
-     * @param array $connections
+     * @param \Illuminate\Database\ConnectionInterface $sqlConnection
      *
      * @return void
      */
     public function __construct(
         Entity $entityFactory,
         Optimus $optimus,
-        array $connections
+        ConnectionInterface $sqlConnection
     ) {
         parent::__construct($entityFactory, $optimus);
-        $this->dbConnection = $connections['sql'];
+        $this->dbConnection = $sqlConnection;
     }
 
     /**
@@ -163,7 +169,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function delete(int $id, string $key = 'id') : int{
+    public function delete(int $id, string $key = 'id') : int {
         return $this->query()
             ->where($key, $id)
             ->delete($id);
@@ -243,7 +249,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
 
         $query = $this->filter($query, $queryParams);
 
-        return new Collection($query->get());
+        return $query->get();
     }
 
     /**
@@ -252,7 +258,7 @@ abstract class AbstractDBRepository extends AbstractRepository {
     public function getAll(array $queryParams = []) : Collection {
         $query = $this->filter($this->query(), $queryParams);
 
-        return new Collection($query->get());
+        return $query->get();
     }
 
     /**

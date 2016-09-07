@@ -21,6 +21,12 @@ class DeleteAll extends AbstractCommand {
      * @var App\Entity\User
      */
     public $user;
+    /**
+     * IP Address.
+     *
+     * @var string
+     */
+    public $ipaddr;
 
     /**
      * {@inheritdoc}
@@ -28,9 +34,6 @@ class DeleteAll extends AbstractCommand {
      * @return App\Command\Source\DeleteAll
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['user'])) {
-            $this->user = $parameters['user'];
-        }
 
         return $this;
     }

@@ -384,6 +384,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     public function __isset(string $key) : bool {
         return $this->getAttribute($key) !== null;
     }
+
     /**
      * Unset an attribute on the entity.
      *

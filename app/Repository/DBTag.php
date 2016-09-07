@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Tag Repository Implementation.
  */
-class DBTag extends AbstractDBRepository implements TagInterface {
+class DBTag extends AbstractSQLDBRepository implements TagInterface {
     /**
      * The table associated with the repository.
      *
@@ -47,9 +47,7 @@ class DBTag extends AbstractDBRepository implements TagInterface {
             $result = $result->whereIn('slug', $tags);
         }
 
-        $result = $result->get();
-
-        return new Collection($result);
+        return $result->get();
     }
 
     /**

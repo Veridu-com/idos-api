@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/member/memberEntity.json",
+    "title": "Raw",
+    "type": "object",
+    "properties": {
+        "collection": {
+            "description": "Collection name of raw data",
+            "type": "string",
+            "pattern": ""
+        },
+        "data": {
+            "description": "Raw data",
+            "type": "string",
+            "pattern": ""
+        },
+        "created_at": {
+            "description": "Raw's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Raw's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "collection",
+        "data",
+        "created_at"
+    ]
+}

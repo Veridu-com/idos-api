@@ -11,20 +11,20 @@ namespace App\Validator\Traits;
 use Respect\Validation\Validator;
 
 /**
- * Trait to add hook assertion.
+ * Trait to add event assertion.
  */
-trait AssertHook {
+trait AssertBoolean {
     /**
-     * Asserts a valid hook entity.
+     * Asserts a valid boolean.
      *
-     * @param mixed $hook
+     * @param mixed $bolean
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertHook($hook) {
-        Validator::instance('App\\Entity\\Hook')
-            ->assert($hook);
+    public function assertBoolean($boolean) {
+        Validator::boolType()
+            ->assert($boolean);
     }
 }

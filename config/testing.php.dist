@@ -12,19 +12,36 @@ $appSettings = [
     'determineRouteBeforeAppMiddleware' => true,
     'trustedProxies'                    => [
     ],
-    'db'                                => [
-        'driver'    => 'pgsql',
-        'host'      => 'localhost',
-        'port'      => 5432,
-        'database'  => 'veridu-api',
-        'username'  => 'veridu-api',
-        'password'  => 'veridu-api',
-        'charset'   => 'utf8',
-        'collation' => 'utf8_unicode_ci',
-        'prefix'    => '',
-        'options'   => [
-            \PDO::ATTR_TIMEOUT    => 5,
-            \PDO::ATTR_PERSISTENT => true
+    'db' => [
+        'sql' => [
+            'driver'    => 'pgsql',
+            // 'read' => [
+            //     'host' => 'localhost'
+            // ],
+            // 'write' => [
+            //     'host' => 'localhost'
+            // ],
+            'host'      => 'localhost',
+            'port'      => 5432,
+            'database'  => 'veridu-idos-api',
+            'username'  => 'veridu',
+            'password'  => 'veridu',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'options'   => [
+                \PDO::ATTR_TIMEOUT    => 5,
+                \PDO::ATTR_PERSISTENT => true
+            ]
+        ],
+
+        'nosql' => [
+            'driver'    => 'mongodb',
+            'host'      => 'localhost',
+            'port'      => 27017
+            //'database'  => 'veridu-idos-api',
+            //'username'  => 'veridu',
+            //'password'  => 'veridu',
         ]
     ],
     'log'                               => [
