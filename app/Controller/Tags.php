@@ -81,13 +81,8 @@ class Tags implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
-        $tags = $request->getQueryParam('tags', []);
 
-        if ($tags) {
-            $tags = array_map([Utils::class, 'slugify'], explode(',', $tags));
-        }
-
-        $tags = $this->repository->getAllByUserIdAndTagSlugs($user->id, $tags);
+        $tags = $this->repository->getAllByUserIdAndTagSlugs($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $tags->toArray(),
