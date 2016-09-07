@@ -83,6 +83,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
             $body = [
                 'status' => false,
                 'error'  => [
+                    'id'      => $container->get('logUidProcessor')->getUid(),
                     'code'    => $exception->getCode(),
                     'type'    => 'EXCEPTION_TYPE', // $exception->getType(),
                     'link'    => 'https://docs.idos.io/errors/EXCEPTION_TYPE', // $exception->getLink(),
@@ -133,6 +134,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
         $body = [
             'status' => false,
             'error'  => [
+                'id'      => $container->get('logUidProcessor')->getUid(),
                 'code'    => 500,
                 'type'    => 'APPLICATION_ERROR',
                 'link'    => 'https://docs.idos.io/errors/APPLICATION_ERROR',
@@ -176,14 +178,24 @@ $container['notAllowedHandler'] = function (ContainerInterface $container) : cal
     };
 };
 
+// Monolog Request UID Processor
+$container['logUidProcessor'] = function (ContainerInterface $container) : callable {
+    return new UidProcessor();
+};
+
+// Monolog Request Processor
+$container['logWebProcessor'] = function (ContainerInterface $container) : callable {
+    return new WebProcessor();
+};
+
 // Monolog Logger
 $container['log'] = function (ContainerInterface $container) : callable {
     return function ($channel = 'API') use ($container) {
         $settings = $container->get('settings');
         $logger   = new Logger($channel);
         $logger
-            ->pushProcessor(new UidProcessor())
-            ->pushProcessor(new WebProcessor())
+            ->pushProcessor($container->get('logUidProcessor'))
+            ->pushProcessor($container->get('logWebProcessor'))
             ->pushHandler(new StreamHandler($settings['log']['path'], $settings['log']['level']));
 
         return $logger;
@@ -211,9 +223,6 @@ $container['cache'] = function (ContainerInterface $container) : Cache\PsrCache\
             break;
     }
 
-    // var_dump(get_class_methods($pool));
-    // $pool->clear();
-
     return $pool;
 };
 
@@ -227,8 +236,8 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
     $settings = $container->get('settings');
     $logger   = new Logger('CommandBus');
     $logger
-        ->pushProcessor(new UidProcessor())
-        ->pushProcessor(new WebProcessor())
+        ->pushProcessor($container->get('logUidProcessor'))
+        ->pushProcessor($container->get('logWebProcessor'))
         ->pushHandler(new StreamHandler($settings['log']['path'], $settings['log']['level']));
 
     $commandPaths = glob(__DIR__ . '/../app/Command/*/*.php');
