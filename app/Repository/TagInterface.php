@@ -27,11 +27,11 @@ interface TagInterface extends RepositoryInterface {
      * Gets all Tags based on their User Id.
      *
      * @param int   $userId
-     * @param array $names
+     * @param array $queryParams
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdAndTagSlugs(int $userId, array $names) : Collection;
+    public function getAllByUserIdAndTagSlugs(int $userId, array $queryParams = []) : Collection;
     /*
      * Deletes all Tags based on their User Id.
      *

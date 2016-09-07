@@ -29,11 +29,11 @@ interface ScoreInterface extends RepositoryInterface {
      *
      * @param int    $userId
      * @param string $attributeName
-     * @param array  $names
+     * @param array  $queryParams
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdAttributeNameAndNames(int $userId, string $attributeName, array $names) : Collection;
+    public function getAllByUserIdAttributeNameAndNames(int $userId, string $attributeName, array $queryParams = []) : Collection;
     /*
      * Deletes all Score entities based on attribute id.
      *

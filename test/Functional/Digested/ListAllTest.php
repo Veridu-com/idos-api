@@ -55,7 +55,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=source3Digested1'
+                    'QUERY_STRING'       => 'name=%1'
                 ]
             )
         );
@@ -91,7 +91,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=source3Digested1,source3Digested2'
+                    'QUERY_STRING'       => 'name=source%'
                 ]
             )
         );

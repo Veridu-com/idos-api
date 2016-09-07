@@ -56,7 +56,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=user2Attribute2Score1'
+                    'QUERY_STRING'       => 'name=%1'
                 ]
             )
         );
@@ -85,7 +85,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=user2Attribute2Score1,user2Attribute2Score3'
+                    'QUERY_STRING'       => 'name=user2%'
                 ]
             )
         );
@@ -96,11 +96,11 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $score) {
-            $this->assertContains($score['name'], ['user2Attribute2Score1', 'user2Attribute2Score3']);
-            $this->assertContains($score['value'], [1.4, 1.6]);
+            $this->assertContains($score['name'], ['user2Attribute2Score1', 'user2Attribute2Score2', 'user2Attribute2Score3']);
+            $this->assertContains($score['value'], [1.4, 1.0, 1.6]);
         }
 
         $this->assertTrue(
