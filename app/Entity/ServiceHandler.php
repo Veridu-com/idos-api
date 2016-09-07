@@ -46,7 +46,7 @@ class ServiceHandler extends AbstractEntity {
      * {@inheritdoc}
      */
     public $relationships = [
-        'service' => 'Service'
+        'service' => ['entity' => 'Service']
     ];
 
     /**

@@ -4,31 +4,43 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Warning;
+declare(strict_types = 1);
 
-use Slim\Http\Response;
-use Slim\Http\Uri;
+namespace Test\Functional\Task;
+
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits;
+use Test\Functional\Traits\RejectsCompanyToken;
+use Test\Functional\Traits\RequiresAuth;
+use Test\Functional\Traits\RequiresCredentialToken;
 
-class DeleteAllTest extends AbstractFunctional {
-    use Traits\RequiresAuth,
-        Traits\RequiresCredentialToken,
-        Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+class ListAllTest extends AbstractFunctional {
+    use RequiresAuth;
+    use RequiresCredentialToken;
+    use RejectsCompanyToken;
 
     protected function setUp() {
-        $this->httpMethod = 'DELETE';
-
+        $this->httpMethod = 'GET';
         $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings',
+            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes',
             'GET',
             [
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings';
+        $this->process = $this->getRandomEntity();
+
+        $this->populate(
+            sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes/%s/tasks', $this->process['id']),
+            'GET',
+            [
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $this->uri = sprintf(
+            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes/%s/tasks',
+            $this->process['id']
+        );
     }
 
     public function testSuccess() {
@@ -39,23 +51,22 @@ class DeleteAllTest extends AbstractFunctional {
                 ]
             )
         );
+
         $response = $this->process($request);
+
         $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        // refreshes the $entities prop
-        $this->populate($this->uri);
-        // checks if all entities were deleted
-        $this->assertCount(0, $this->entities);
+        $this->assertCount(2, $body['data']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Json Schema against Json Response
          */
         $this->assertTrue(
             $this->validateSchema(
-                'feature/deleteAll.json',
+                'task/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
