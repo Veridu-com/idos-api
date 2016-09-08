@@ -163,7 +163,7 @@ $container['notFoundHandler'] = function (ContainerInterface $container) : calla
         ServerRequestInterface $request,
         ResponseInterface $response
     ) use ($container) {
-        throw new \Exception('Whoopsies! Route not found!', 404);
+        throw new AppException('Whoopsies! Route not found!', 404);
     };
 };
 
@@ -178,7 +178,7 @@ $container['notAllowedHandler'] = function (ContainerInterface $container) : cal
             return $response->withStatus(204);
         }
 
-        throw new \Exception('Whoopsies! Method not allowed for this route!', 400);
+        throw new AppException('Whoopsies! Method not allowed for this route!', 400);
     };
 };
 
@@ -238,11 +238,7 @@ $container['httpCache'] = function (ContainerInterface $container) : CacheProvid
 // Tactician Command Bus
 $container['commandBus'] = function (ContainerInterface $container) : CommandBus {
     $settings = $container->get('settings');
-    $logger   = new Logger('CommandBus');
-    $logger
-        ->pushProcessor($container->get('logUidProcessor'))
-        ->pushProcessor($container->get('logWebProcessor'))
-        ->pushHandler(new StreamHandler($settings['log']['path'], $settings['log']['level']));
+    $log      = $container->get('log');
 
     $commandPaths = glob(__DIR__ . '/../app/Command/*/*.php');
     $commands     = [];
@@ -275,7 +271,7 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
         [
             new LoggerMiddleware(
                 $formatter,
-                $logger
+                $log('CommandBus')
             ),
             $handlerMiddleware
         ]
