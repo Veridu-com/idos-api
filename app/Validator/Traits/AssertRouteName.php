@@ -24,7 +24,7 @@ trait AssertRouteName {
      * @return void
      */
     public function assertRouteName($value) {
-        Validator::graph()
+        Validator::regex('/[a-zA-Z]+\:[a-zA-Z]+/')
             ->length(1, 25)
             ->assert($value);
     }
