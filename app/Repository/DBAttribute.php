@@ -32,7 +32,7 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'name'    => 'string'
+        'name' => 'string'
     ];
 
     /**

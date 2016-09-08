@@ -26,10 +26,6 @@ use App\Helper\Utils;
  */
 class Feature extends AbstractEntity {
     use SecureFields;
-    /**
-     * {@inheritdoc}
-     */
-    const CACHE_PREFIX = 'Feature';
 
     /**
      * {@inheritdoc}
@@ -58,39 +54,5 @@ class Feature extends AbstractEntity {
         $this->attributes['slug'] = Utils::slugify($value);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-            sprintf(
-                '%s.id.%s',
-                self::CACHE_PREFIX,
-                $this->id
-            ),
-            sprintf(
-                '%s.slug.%s',
-                self::CACHE_PREFIX,
-                $this->slug
-            ),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-                sprintf(
-                    '%s.by.user_id.%s',
-                    self::CACHE_PREFIX,
-                    $this->userId
-                )
-            ],
-            $this->getCacheKeys()
-        );
     }
 }

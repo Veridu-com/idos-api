@@ -57,7 +57,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertEmpty($body['data']['tags']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema('source/createNew.json', json_decode((string) $response->getBody())),

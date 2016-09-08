@@ -44,7 +44,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertSame('New Company', $body['data']['name']);
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -75,7 +75,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame('special-chars', $body['data']['slug']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

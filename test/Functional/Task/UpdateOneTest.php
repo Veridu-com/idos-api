@@ -70,7 +70,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertSame($newName, $body['data']['name']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -108,7 +108,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

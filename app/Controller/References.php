@@ -70,7 +70,7 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user  = $request->getAttribute('targetUser');
+        $user = $request->getAttribute('targetUser');
 
         $references = $this->repository->getAllByUserIdAndNames($user->id, $request->getQueryParams());
 

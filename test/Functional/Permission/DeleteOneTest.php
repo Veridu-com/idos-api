@@ -51,7 +51,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -119,7 +119,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
+        $this->uri = '/1.0/companies/veridu-ltd/permissions/not:route';
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [
@@ -135,7 +135,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

@@ -49,7 +49,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

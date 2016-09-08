@@ -23,10 +23,6 @@ use App\Extension\SecureFields;
  */
 class Reference extends AbstractEntity {
     use SecureFields;
-    /**
-     * {@inheritdoc}
-     */
-    const CACHE_PREFIX = 'Reference';
 
     /**
      * {@inheritdoc}
@@ -42,48 +38,4 @@ class Reference extends AbstractEntity {
      * @var array
      */
     protected $secure = ['value'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-            sprintf(
-                '%s.id.%s',
-                self::CACHE_PREFIX,
-                $this->id
-            ),
-            sprintf(
-                '%s.user_id.%s',
-                self::CACHE_PREFIX,
-                $this->user_id
-            ),
-            sprintf(
-                '%s.name.%s',
-                self::CACHE_PREFIX,
-                $this->name
-            ),
-            sprintf(
-                '%s.value.%s',
-                self::CACHE_PREFIX,
-                $this->value
-            ),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-            sprintf(
-                '%s.by.user_id.%s',
-                self::CACHE_PREFIX,
-                $this->sourceId
-            )
-            ],
-            $this->getCacheKeys()
-        );
-    }
 }

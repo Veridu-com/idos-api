@@ -45,7 +45,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+        $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -53,7 +53,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame('New Credential', $body['data']['name']);
         $this->assertSame('new-credential', $body['data']['slug']);
 
-        // Validates Json Schema against Json Response
+        // Validates Response using the Json Schema.
         $this->assertTrue(
             $this->validateSchema(
                 'credential/createNew.json',
@@ -96,7 +96,7 @@ class CreateNewTest extends AbstractFunctional {
         // $this->assertFalse($body['status']);
 
         // /*
-        //  * Validates Json Schema with Json Response
+        //  * Validates Response using the Json Schema.
         //  */
         // $this->assertTrue(
         //     $this->validateSchema(

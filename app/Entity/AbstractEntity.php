@@ -24,76 +24,60 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var array
      */
     protected $attributes = [];
-
     /**
      * The attributes that should be visible in public arrays.
      *
      * @var array
      */
     protected $visible = [];
-
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = [];
-
     /**
      * The attributes that should be mutated to json.
      *
      * @var array
      */
     protected $json = [];
-
     /**
      * The relations of the entity.
      *
      * @var array
      */
     public $relations = [];
-
     /**
      * Attributes to obfuscate using Jenssegers\Optimus\Optimus.
      *
      * @var array
      */
     protected $obfuscated = ['id'];
-
     /**
      * The storage format of the model's date columns.
      *
      * @var string
      */
     protected $dateFormat = 'Y-m-d H:i:s';
-
     /**
      * Indicates if the entity exists on the repository.
      *
      * @var bool
      */
     protected $exists = false;
-
     /**
      * Indicates if any entity attribute has been changed.
      *
      * @var bool
      */
     protected $dirty = false;
-
-    /**
-     * Cache prefix.
-     *
-     * @var bool
-     */
-    protected $cachePrefix = null;
-
     /**
      * Optimus.
      *
-     * @var use Jenssegers\Optimus\Optimus
+     * @var \Jenssegers\Optimus\Optimus
      */
-    public $optimus = null;
+    protected $optimus = null;
 
     /**
      * Formats a snake_case string to CamelCase.
@@ -220,6 +204,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         if ((in_array($key, $this->json)) && ($value !== null)) {
             $value = json_decode($value);
+            if ($value === null) {
+                $value = [];
+            }
         }
 
         if ($this->hasGetMutator($key)) {
@@ -240,8 +227,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __construct(array $attributes = [], Optimus $optimus) {
-        $this->cachePrefix = str_replace('App\\Entity\\', '', get_class($this));
-
         if (! empty($attributes)) {
             $this
                 ->hydrate($attributes)
@@ -345,13 +330,25 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return void
      */
-    public function __call($methodName, $args) {
+    public function __call(string $methodName, array $args) {
         if (! isset($this->relationships[$methodName])) {
-            throw new \RuntimeException(sprintf('Relation "%s" is not mapped within the "relationships" property of the class "%s".', $methodName, get_class($this)));
+            throw new \RuntimeException(
+                sprintf(
+                    'Relation "%s" is not mapped within the "relationships" property of the class "%s".',
+                    $methodName,
+                    get_class($this)
+                )
+            );
         }
 
         if (! isset($this->relations[$methodName])) {
-            throw new \RuntimeException(sprintf('Relation "%s" on "%s" was not populated by the database query.', $methodName, get_class($this)));
+            throw new \RuntimeException(
+                sprintf(
+                    'Relation "%s" on "%s" was not populated by the database query.',
+                    $methodName,
+                    get_class($this)
+                )
+            );
         }
 
         return $this->relations[$methodName];

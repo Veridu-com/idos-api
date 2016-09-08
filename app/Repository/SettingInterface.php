@@ -51,4 +51,15 @@ interface SettingInterface extends RepositoryInterface {
      * @return \Illuminate\Support\Collection
      */
     public function findByCompanyId(int $companyId) : Collection;
+
+    /**
+     * Retrieves a setting by its section and property.
+     *
+     * @param int    $companyId  The company identification
+     * @param string $section    The section
+     * @param array  $properties The properties
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function findByCompanyIdSectionAndProperties(int $companyId, string $section, array $properties) : Collection;
 }

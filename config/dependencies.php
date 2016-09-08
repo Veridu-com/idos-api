@@ -34,6 +34,10 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Monolog\Processor\WebProcessor;
+use OAuth\Common\Consumer\Credentials;
+use OAuth\Common\Http\Uri\UriFactory;
+use OAuth\Common\Storage\Memory;
+use OAuth\ServiceFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
@@ -159,7 +163,7 @@ $container['notFoundHandler'] = function (ContainerInterface $container) : calla
         ServerRequestInterface $request,
         ResponseInterface $response
     ) use ($container) {
-        throw new \Exception('Whoopsies! Route not found!', 404);
+        throw new AppException('Whoopsies! Route not found!', 404);
     };
 };
 
@@ -174,7 +178,7 @@ $container['notAllowedHandler'] = function (ContainerInterface $container) : cal
             return $response->withStatus(204);
         }
 
-        throw new \Exception('Whoopsies! Method not allowed for this route!', 400);
+        throw new AppException('Whoopsies! Method not allowed for this route!', 400);
     };
 };
 
@@ -234,11 +238,7 @@ $container['httpCache'] = function (ContainerInterface $container) : CacheProvid
 // Tactician Command Bus
 $container['commandBus'] = function (ContainerInterface $container) : CommandBus {
     $settings = $container->get('settings');
-    $logger   = new Logger('CommandBus');
-    $logger
-        ->pushProcessor($container->get('logUidProcessor'))
-        ->pushProcessor($container->get('logWebProcessor'))
-        ->pushHandler(new StreamHandler($settings['log']['path'], $settings['log']['level']));
+    $log      = $container->get('log');
 
     $commandPaths = glob(__DIR__ . '/../app/Command/*/*.php');
     $commands     = [];
@@ -271,7 +271,7 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
         [
             new LoggerMiddleware(
                 $formatter,
-                $logger
+                $log('CommandBus')
             ),
             $handlerMiddleware
         ]
@@ -457,4 +457,33 @@ $container['secure'] = function (ContainerInterface $container) : Secure {
     }
 
     return new Secure($encoded, $settings['secure']);
+};
+
+// SSO Auth
+$container['ssoAuth'] = function (ContainerInterface $container) : callable {
+    return function ($provider, $key, $secret) use ($container) {
+        $uriFactory = new UriFactory();
+        $currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
+        $currentUri->setQuery('');
+
+        $storage = new Memory();
+
+        // Setup the credentials for the requests
+        $credentials = new Credentials(
+            $key,
+            $secret,
+            $currentUri->getAbsoluteUri()
+        );
+
+        $settings = $container->get('settings');
+
+        $serviceFactory = new ServiceFactory();
+
+        $client = new \OAuth\Common\Http\Client\CurlClient();
+        $client->setCurlParameters([\CURLOPT_ENCODING => '']);
+        $serviceFactory->setHttpClient($client);
+
+        // Instantiate the service using the credentials, http client and storage mechanism for the token
+        return $serviceFactory->createService($provider, $credentials, $storage, $settings['sso_providers_scopes'][$provider]);
+    };
 };

@@ -73,7 +73,7 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertSame(1, $body['deleted']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

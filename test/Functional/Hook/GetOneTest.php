@@ -41,7 +41,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -71,7 +71,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -100,7 +100,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -129,7 +129,7 @@ class GetOneTest extends AbstractFunctional {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

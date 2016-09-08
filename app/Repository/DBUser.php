@@ -153,4 +153,22 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
 
         return $result;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserNameByProfileIdAndProviderNameAndCredentialId(
+        string $profileId,
+        string $providerName,
+        int $credentialId
+    ) : string {
+        $result = $this->query()
+            ->join('sources', 'sources.user_id', '=', 'users.id')
+            ->where('sources.tags->profile_id', '=', md5($profileId))
+            ->where('sources.name', '=', $providerName)
+            ->where('users.credential_id', '=', $credentialId)
+            ->get(['users.username']);
+
+        return $result->first() ? $result->first()->username : '';
+    }
 }

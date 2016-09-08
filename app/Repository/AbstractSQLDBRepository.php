@@ -314,8 +314,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         }
 
         foreach ($filters as $key => $filter) {
-            $value = $filter['value'];
-            $type  = $filter['type'];
+            $value  = $filter['value'];
+            $type   = $filter['type'];
             $column = $this->getTableName() . '.' . $key;
 
             switch ($type) {

@@ -25,4 +25,15 @@ interface UserInterface extends RepositoryInterface {
      * @return App\Entity\User
      */
     public function findByUserName(string $userName, int $credentialId) : User;
+
+    /**
+     * Gets a username by profile id, provider name and credential id.
+     *
+     * @param string $profileId    The profile id
+     * @param string $providerName The provider name
+     * @param int    $credentialId The credential id
+     *
+     * @return string A username by profile identifier, provider name and credential id.
+     */
+    public function getUserNameByProfileIdAndProviderNameAndCredentialId(string $profileId, string $providerName, int $credentialId) : string;
 }

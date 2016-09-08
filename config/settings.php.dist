@@ -79,4 +79,20 @@ $appSettings = [
         'cached'   => false
     ],
     'secure' => ''
+    'sso_providers' => [
+        'amazon',
+        'facebook',
+        'google',
+        'linkedin',
+        'paypal',
+        'twitter',
+    ],
+    'sso_providers_scopes' => [
+        'amazon' => ['profile'],
+        'facebook' => [],
+        'google' => ['userinfo_email', 'userinfo_profile'],
+        'linkedin' => ['r_basicprofile'],
+        'paypal' => ['profile', 'openid'],
+        'twitter' => []
+    ]
 ];
