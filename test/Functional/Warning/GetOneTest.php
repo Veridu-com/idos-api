@@ -16,6 +16,8 @@ class GetOneTest extends AbstractFunctional {
         Traits\RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'GET';
 
         $this->populate(

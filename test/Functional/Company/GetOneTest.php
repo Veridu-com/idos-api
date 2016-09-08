@@ -14,6 +14,8 @@ class GetOneTest extends AbstractFunctional {
     // REQUIRES NO AUTH :-)
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/companies/veridu-ltd';
     }

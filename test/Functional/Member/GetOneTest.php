@@ -18,6 +18,8 @@ class GetOneTest extends AbstractFunctional {
         Traits\RejectsCredentialToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/management/members/1321189817';
     }

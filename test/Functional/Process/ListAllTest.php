@@ -19,6 +19,8 @@ class ListAllTest extends AbstractFunctional {
     use RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes';
     }

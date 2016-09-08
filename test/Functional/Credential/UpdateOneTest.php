@@ -20,6 +20,8 @@ class UpdateOneTest extends AbstractFunctional {
         Traits\RejectsCredentialToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'PUT';
         $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961';
     }

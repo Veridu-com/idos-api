@@ -18,6 +18,8 @@ class GetOneTest extends AbstractFunctional {
         Traits\RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+            
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes/user2Attribute1';
     }

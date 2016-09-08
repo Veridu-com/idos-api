@@ -20,6 +20,8 @@ class UpdateOneTest extends AbstractFunctional {
         Traits\RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'PUT';
         $this->uri        = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/%s', 1321189817);
     }
