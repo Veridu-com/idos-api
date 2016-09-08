@@ -18,6 +18,8 @@ class ListAllTest extends AbstractFunctional {
         Traits\RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+            
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes';
     }
@@ -54,7 +56,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=user2Attribute1'
+                    'QUERY_STRING'       => 'name=%1'
                 ]
             )
         );
@@ -89,7 +91,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=%Attribute1'
+                    'QUERY_STRING'       => 'name=user2%'
                 ]
             )
         );
@@ -100,9 +102,12 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(1, $body['data']);
-        $this->assertSame('user2Attribute1', $body['data'][0]['name']);
-        $this->assertSame('value-3', $body['data'][0]['value']);
+        $this->assertCount(3, $body['data']);
+
+        foreach ($body['data'] as $attribute) {
+            $this->assertContains($attribute['name'], ['user2Attribute1', 'user2Attribute2', 'user2Attribute3']);
+            $this->assertContains($attribute['value'], ['value-3', 'value-4', 'value-5']);
+        }
 
         /*
          * Validates Response using the Json Schema.

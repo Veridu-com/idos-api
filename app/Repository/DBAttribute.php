@@ -45,12 +45,12 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndNames(int $userId, array $queryParams = []) : Collection {
+    public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection {
         $result = $this->query()
             ->selectRaw('attributes.*')
             ->where('user_id', '=', $userId);
 
-        $result = $this->filter($result, $queryParams);
+        $result = $this->filter($result, $filters);
 
         return $result->get();
     }
@@ -58,8 +58,16 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
     /**
      * {@inheritdoc}
      */
-    public function deleteByUserId(int $userId) : int {
-        return $this->deleteBy(['user_id' => $userId]);
+    public function deleteByUserId(int $userId, array $filters = []) : int {
+        $result = $this->query()
+            ->selectRaw('attributes.*')
+            ->where('user_id', '=', $userId);
+
+        if ($filters) {
+            $result = $this->filter($result, $filters);
+        }
+
+        return $result->delete();
     }
 
     /**

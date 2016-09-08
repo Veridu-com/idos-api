@@ -16,6 +16,8 @@ class DeleteOneTest extends AbstractFunctional {
         Traits\RequiresCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'DELETE';
 
         $this->populate(

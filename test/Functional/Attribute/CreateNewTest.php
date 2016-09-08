@@ -20,6 +20,8 @@ class CreateNewTest extends AbstractFunctional {
         Traits\RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+            
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes';
     }

@@ -202,7 +202,8 @@ class Attributes implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Attribute\\DeleteAll');
         $command
-            ->setParameter('user', $request->getAttribute('targetUser'));
+            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('filters', $request->getParsedBody());
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

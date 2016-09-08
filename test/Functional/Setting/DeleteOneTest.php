@@ -20,6 +20,8 @@ class DeleteOneTest extends AbstractFunctional {
         Traits\RejectsCredentialToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'DELETE';
         $this->populate(
             '/1.0/management/settings',

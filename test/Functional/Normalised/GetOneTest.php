@@ -12,6 +12,8 @@ use Test\Functional\AbstractFunctional;
 
 class GetOneTest extends AbstractFunctional {
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/sources/1860914067/normalised/source3Normalised1';
     }

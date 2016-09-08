@@ -20,6 +20,8 @@ class DeleteAllTest extends AbstractFunctional {
         Traits\RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'DELETE';
 
         $this->populate(

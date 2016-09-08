@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Handler;
 
+use App\Exception\AppException;
 use App\Command\Attribute\CreateNew;
 use App\Command\Attribute\DeleteAll;
 use App\Command\Attribute\DeleteOne;
@@ -167,10 +168,10 @@ class Attribute implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $attributes = $this->repository->getAllByUserId($command->user->id);
+        $attributes = $this->repository->getAllByUserIdAndNames($command->user->id, $command->filters ?: []);
 
         try {
-            $affectedRows = $this->repository->deleteByUserId($command->user->id);
+            $affectedRows = $this->repository->deleteByUserId($command->user->id, $command->filters ?: []);
             $event        = new DeletedMulti($attributes);
             $this->emitter->emit($event);
         } catch (\Exception $e) {

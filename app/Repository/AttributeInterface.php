@@ -27,11 +27,11 @@ interface AttributeInterface extends RepositoryInterface {
      * Gets all Attribute entities based on their user_id, filtering them by name.
      *
      * @param int   $userId
-     * @param array $queryParams
+     * @param array $filters
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdAndNames(int $userId, array $queryParams = []) : Collection;
+    public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection;
     /*
      * Deletes all Attribute entities based on user_id.
      *
@@ -39,7 +39,7 @@ interface AttributeInterface extends RepositoryInterface {
      *
      * @return int
      */
-    public function deleteByUserId(int $userId) : int;
+    public function deleteByUserId(int $userId, array $filters = []) : int;
     /**
      * Find a Attribute entity based on its user_id and name.
      *

@@ -23,6 +23,8 @@ class DeleteOneTest extends AbstractFunctional {
     private $deletedEndpoint;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->deletedEndpoint = [
             'uri'        => '/1.0/companies',
             'httpMethod' => 'GET',
