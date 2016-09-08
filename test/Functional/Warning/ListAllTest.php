@@ -13,7 +13,7 @@ class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RequiresCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
