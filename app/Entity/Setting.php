@@ -25,10 +25,6 @@ use App\Extension\SecureFields;
  */
 class Setting extends AbstractEntity {
     use SecureFields;
-    /**
-     * Cache prefix.
-     */
-    const CACHE_PREFIX = 'Setting';
 
     /**
      * {@inheritdoc}
@@ -44,41 +40,4 @@ class Setting extends AbstractEntity {
      * @var array
      */
     protected $secure = ['value'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-            sprintf(
-                '%s.company_id.%s.section.%s.property.%s',
-                self::CACHE_PREFIX,
-                $this->companyId,
-                $this->section,
-                $this->property
-            )
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-            sprintf(
-                '%s.by.company_id.%s',
-                self::CACHE_PREFIX,
-                $this->companyId
-            ),
-            sprintf(
-                '%s.by.company_id.%s.section.%s',
-                self::CACHE_PREFIX,
-                $this->companyId,
-                $this->section
-            )
-            ],
-            $this->getCacheKeys()
-        );
-    }
 }

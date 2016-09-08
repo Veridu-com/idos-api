@@ -28,43 +28,9 @@ class Process extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    const CACHE_PREFIX = 'Process';
-
-    /**
-     * {@inheritdoc}
-     */
     protected $visible = ['id', 'name', 'event', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-            sprintf(
-                '%s.id.%s',
-                self::CACHE_PREFIX,
-                $this->id
-            )
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-                sprintf(
-                    '%s.by.user_id.%s',
-                    self::CACHE_PREFIX,
-                    $this->userId
-                )
-            ],
-            $this->getCacheKeys()
-        );
-    }
 }

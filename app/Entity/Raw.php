@@ -22,10 +22,6 @@ use App\Extension\SecureFields;
  */
 class Raw extends AbstractEntity {
     use SecureFields;
-    /**
-     * {@inheritdoc}
-     */
-    const CACHE_PREFIX = 'Raw';
 
     /**
      * {@inheritdoc}
@@ -41,43 +37,4 @@ class Raw extends AbstractEntity {
      * @var array
      */
     protected $secure = ['data'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-            sprintf(
-                '%s.id.%s',
-                self::CACHE_PREFIX,
-                $this->id
-            ),
-            sprintf(
-                '%s.collection.%s',
-                self::CACHE_PREFIX,
-                $this->collection
-            ),
-            sprintf(
-                '%s.data.%s',
-                self::CACHE_PREFIX,
-                $this->data
-            ),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-            sprintf(
-                '%s.by.source_id.%s',
-                self::CACHE_PREFIX,
-                $this->sourceId
-            )
-            ],
-            $this->getCacheKeys()
-        );
-    }
 }

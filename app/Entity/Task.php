@@ -27,10 +27,6 @@ use App\Extension\SecureFields;
  */
 class Task extends AbstractEntity {
     use SecureFields;
-    /**
-     * {@inheritdoc}
-     */
-    const CACHE_PREFIX = 'Task';
 
     /**
      * {@inheritdoc}
@@ -46,33 +42,4 @@ class Task extends AbstractEntity {
      * @var array
      */
     protected $secure = ['message'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-            sprintf(
-                '%s.id.%s',
-                self::CACHE_PREFIX,
-                $this->id
-            )
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-                sprintf(
-                    '%s.by.process_id.%s',
-                    self::CACHE_PREFIX,
-                    $this->userId
-                )
-            ],
-            $this->getCacheKeys()
-        );
-    }
 }

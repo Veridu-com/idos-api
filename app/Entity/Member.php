@@ -20,10 +20,6 @@ class Member extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    const CACHE_PREFIX = 'Member';
-    /**
-     * {@inheritdoc}
-     */
     protected $visible = ['id', 'user', 'role', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
@@ -33,24 +29,7 @@ class Member extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    public $relationships = ['user' => 'User'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-            sprintf('%s.id.%s', self::CACHE_PREFIX, $this->id),
-            sprintf('%s.user_id.%s', self::CACHE_PREFIX, $this->userId)
-        ];
-    }
-
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-            sprintf('%s.by.company_id.%s', self::CACHE_PREFIX, $this->companyId)
-            ],
-            $this->getCacheKeys()
-        );
-    }
+    public $relationships = [
+        'user' => 'User'
+    ];
 }
