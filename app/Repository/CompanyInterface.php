@@ -54,4 +54,14 @@ interface CompanyInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByParentId(int $parentId) : int;
+
+    /**
+     * Determines if a company is related to another.
+     *
+     * @param \App\Entity\Company $parent The parent
+     * @param \App\Entity\Company $child  The child
+     *
+     * @return bool
+     */
+    public function isParent(Company $parent, Company $child) : bool;
 }

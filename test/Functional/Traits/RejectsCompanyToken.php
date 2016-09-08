@@ -26,7 +26,7 @@ trait RejectsCompanyToken {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -54,7 +54,7 @@ trait RejectsCompanyToken {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

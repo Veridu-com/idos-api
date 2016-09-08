@@ -47,7 +47,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertSame($positive, $body['data']['positive']);
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema('review/createNew.json', json_decode($response->getBody())),

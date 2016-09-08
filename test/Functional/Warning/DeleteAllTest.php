@@ -51,7 +51,7 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertCount(0, $this->entities);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
