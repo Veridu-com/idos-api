@@ -48,7 +48,7 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
 
         return $query->get();
 
-        return new Collection($query->get());
+        return $query->get();
     }
 
     /**
@@ -114,7 +114,7 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
     public function deleteByCompanyId(int $companyId) : int {
         $affectedRows = $this->deleteBy(
             [
-            'company_id' => $companyId
+                'company_id' => $companyId
             ]
         );
 
@@ -132,9 +132,9 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
     private function scopeQuery(Builder $query, Company $company) : Builder {
         return $query->where(
             function ($q) use ($company) {
-            // or Visible because it's yours
+                // or Visible because it's yours
                 $q->orWhere('company_id', $company->id);
-            // or Visible because access = 'public'
+                // or Visible because access = 'public'
                 $q->orWhere('access', Service::ACCESS_PUBLIC);
 
                 if ($company->parentId) {

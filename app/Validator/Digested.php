@@ -12,8 +12,8 @@ namespace App\Validator;
  * Digested Validation Rules.
  */
 class Digested implements ValidatorInterface {
-    use Traits\AssertId,
+    use Traits\AssertEntity,
+        Traits\AssertId,
         Traits\AssertName,
-        Traits\AssertUser,
         Traits\AssertValue;
 }

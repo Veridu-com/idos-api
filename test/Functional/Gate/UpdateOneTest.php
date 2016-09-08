@@ -11,12 +11,13 @@ namespace Test\Functional\Gate;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits;
 
 class UpdateOneTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCredentialToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';
@@ -31,9 +32,6 @@ class UpdateOneTest extends AbstractFunctional {
         $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/%s', $this->entity['slug']);
     }
 
-    /**
-     * @group joe
-     */
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [

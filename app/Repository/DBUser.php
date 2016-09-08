@@ -39,6 +39,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
         $result = $this->query()
             ->join('credentials', 'credential_id', '=', 'credentials.id')
             ->where('credentials.company_id', '=', $companyId)
+            ->where('users.username', '=', $userName)
             ->first(['users.*']);
 
         if (empty($result)) {
@@ -54,8 +55,8 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
     public function findByUserName(string $username, int $credentialId) : User {
         return $this->findOneBy(
             [
-            'username'      => $username,
-            'credential_id' => $credentialId
+                'username'      => $username,
+                'credential_id' => $credentialId
             ]
         );
     }
@@ -89,8 +90,8 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             $user = $this
                 ->create(
                     [
-                    'username'      => $userName,
-                    'credential_id' => $credentialId
+                        'username'      => $userName,
+                        'credential_id' => $credentialId
                     ]
                 );
 
@@ -150,7 +151,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             throw new NotFound('No users related to given company found');
         }
 
-        return new Collection($result);
+        return $result;
     }
 
     /**

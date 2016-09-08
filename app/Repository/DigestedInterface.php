@@ -29,11 +29,11 @@ interface DigestedInterface extends RepositoryInterface {
      *
      * @param int   $userId
      * @param int   $sourceId
-     * @param array $names
+     * @param array $queryParams
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdSourceIdAndNames(int $userId, int $sourceId, array $names) : Collection;
+    public function getAllByUserIdSourceIdAndNames(int $userId, int $sourceId, array $queryParams) : Collection;
     /*
      * Deletes all Digested entities based on source_id.
      *

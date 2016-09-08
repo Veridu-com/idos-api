@@ -70,14 +70,9 @@ class Attributes implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user  = $request->getAttribute('targetUser');
-        $names = $request->getQueryParam('names', []);
+        $user = $request->getAttribute('targetUser');
 
-        if ($names) {
-            $names = explode(',', $names);
-        }
-
-        $attributes = $this->repository->getAllByUserIdAndNames($user->id, $names);
+        $attributes = $this->repository->getAllByUserIdAndNames($user->id, $this->getQueryParams());
 
         $body = [
             'data'    => $attributes->toArray(),

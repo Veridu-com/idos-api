@@ -9,12 +9,13 @@ declare(strict_types = 1);
 namespace Test\Functional\Tag;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCompanyToken;
+use Test\Functional\Traits;
 
 class ListAllTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCompanyToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCompanyToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -54,7 +55,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->companyTokenHeader(),
-                    'QUERY_STRING'       => 'tags=user%202%20tag%201'
+                    'QUERY_STRING'       => 'slug=%1'
                 ]
             )
         );
@@ -90,7 +91,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->companyTokenHeader(),
-                    'QUERY_STRING'       => 'tags=User 2 tag-1,user-2-tag-2'
+                    'QUERY_STRING'       => 'slug=user-2%'
                 ]
             )
         );

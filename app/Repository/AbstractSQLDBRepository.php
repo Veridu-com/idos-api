@@ -59,16 +59,22 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @return \Illuminate\Database\Query\Builder
      */
     protected function query($table = null, $entityName = null) : Builder {
+        if ($entityName === null) {
+            $entityName = $this->getEntityClassName();
+        }
+
         $this->dbConnection->setFetchMode(
             \PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE,
-            ($entityName) ? $entityName : $this->getEntityClassName(),
+            $entityName,
             [
                 [],
                 $this->optimus
             ]
         );
 
-        $table = ($table === null) ? $this->getTableName() : $table;
+        if ($table === null) {
+            $table = $this->getTableName();
+        }
 
         return $this->dbConnection->table($table);
     }
@@ -243,7 +249,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
         $query = $this->filter($query, $queryParams);
 
-        return new Collection($query->get());
+        return $query->get();
     }
 
     /**
@@ -252,7 +258,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     public function getAll(array $queryParams = []) : Collection {
         $query = $this->filter($this->query(), $queryParams);
 
-        return new Collection($query->get());
+        return $query->get();
     }
 
     /**
@@ -308,8 +314,9 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         }
 
         foreach ($filters as $key => $filter) {
-            $value = $filter['value'];
-            $type  = $filter['type'];
+            $value  = $filter['value'];
+            $type   = $filter['type'];
+            $column = $this->getTableName() . '.' . $key;
 
             switch ($type) {
                 case 'date':
@@ -319,20 +326,20 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                     if (count($values) == 2) {
                         $from  = $values[0];
                         $to    = $values[1];
-                        $query = $query->whereDate($key, '>=', $from);
-                        $query = $query->whereDate($key, '<=', $to);
+                        $query = $query->whereDate($column, '>=', $from);
+                        $query = $query->whereDate($column, '<=', $to);
                     } else {
                         // no comma
-                        $query = $query->whereDate($key, '=', $value);
+                        $query = $query->whereDate($column, '=', $value);
                     }
                     break;
 
                 case 'string':
                     // starts or ends with "%"
                     if (preg_match('/.*%$|^%.*/', $value)) {
-                        $query = $query->where($key, 'ilike', $value);
+                        $query = $query->where($column, 'ilike', $value);
                     } else {
-                        $query = $query->where($key, $value);
+                        $query = $query->where($column, $value);
                     }
                     break;
 
@@ -340,14 +347,14 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                     // avoids buggy user inputs going through the database
                     $truthyValues = [true, 1, 't', 'true', '1'];
                     if (in_array($value, $truthyValues, true)) {
-                        $query = $query->where($key, '=', true);
+                        $query = $query->where($column, '=', true);
                     } else {
-                        $query = $query->where($key, '=', false);
+                        $query = $query->where($column, '=', false);
                     }
                     break;
 
                 default:
-                    $query = $query->where($key, '=', $value);
+                    $query = $query->where($column, '=', $value);
                     break;
             }
         }

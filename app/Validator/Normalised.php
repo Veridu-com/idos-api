@@ -12,8 +12,8 @@ namespace App\Validator;
  * Normalised Validation Rules.
  */
 class Normalised implements ValidatorInterface {
-    use Traits\AssertId,
+    use Traits\AssertEntity,
+        Traits\AssertId,
         Traits\AssertName,
-        Traits\AssertUser,
         Traits\AssertValue;
 }

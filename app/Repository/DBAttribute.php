@@ -28,6 +28,12 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
      * @var string
      */
     protected $entityName = 'Attribute';
+    /**
+     * {@inheritdoc}
+     */
+    protected $filterableKeys = [
+        'name' => 'string'
+    ];
 
     /**
      * {@inheritdoc}
@@ -39,18 +45,14 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndNames(int $userId, array $names) : Collection {
+    public function getAllByUserIdAndNames(int $userId, array $queryParams = []) : Collection {
         $result = $this->query()
             ->selectRaw('attributes.*')
             ->where('user_id', '=', $userId);
 
-        if(! empty($names)) {
-            $result = $result->whereIn('attributes.name', $names);
-        }
+        $result = $this->filter($result, $queryParams);
 
-        $result = $result->get();
-
-        return new Collection($result);
+        return $result->get();
     }
 
     /**
@@ -66,7 +68,7 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
     public function findOneByUserIdAndName(int $userId, string $name) : Attribute {
         $result = $this->findBy(['user_id' => $userId, 'name' => $name]);
 
-        if($result->isEmpty()) {
+        if ($result->isEmpty()) {
             throw new NotFound();
         }
 

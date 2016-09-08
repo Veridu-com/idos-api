@@ -8,7 +8,14 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Raw;
 
+use Test\Functional\Traits;
+
 class DeleteAllTest extends AbstractRawFunctional {
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
+
     protected function setUp() {
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw';

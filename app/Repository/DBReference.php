@@ -28,6 +28,12 @@ class DBReference extends AbstractSQLDBRepository implements ReferenceInterface 
      * @var string
      */
     protected $entityName = 'Reference';
+    /**
+     * {@inheritdoc}
+     */
+    protected $filterableKeys = [
+        'name' => 'string'
+    ];
 
     /**
      * {@inheritdoc}
@@ -39,18 +45,14 @@ class DBReference extends AbstractSQLDBRepository implements ReferenceInterface 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndNames(int $userId, array $names) : Collection {
+    public function getAllByUserIdAndNames(int $userId, array $queryParams = []) : Collection {
         $result = $this->query()
             ->selectRaw('"references".*')
             ->where('user_id', '=', $userId);
 
-        if(! empty($names)) {
-            $result = $result->whereIn('references.name', $names);
-        }
+        $result = $this->filter($result, $queryParams);
 
-        $result = $result->get();
-
-        return new Collection($result);
+        return $result->get();
     }
 
     /**
@@ -66,7 +68,7 @@ class DBReference extends AbstractSQLDBRepository implements ReferenceInterface 
     public function findOneByUserIdAndName(int $userId, string $name) : Reference {
         $result = $this->findBy(['user_id' => $userId, 'name' => $name]);
 
-        if($result->isEmpty()) {
+        if ($result->isEmpty()) {
             throw new NotFound();
         }
 

@@ -93,8 +93,19 @@ class Company implements HandlerInterface {
      * @return App\Entity\Company
      */
     public function handleCreateNew(CreateNew $command) : CompanyEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertParentId($command->parentId);
+        try {
+            $this->validator->assertMediumLatinName($command->name);
+            $this->validator->assertParentId($command->parentId);
+        } catch (\Exception $exception) {
+            // Respect\Validation\Exceptions\ExceptionInterface
+            throw new AppException(
+                sprintf(
+                    'Invalid input: %s',
+                    implode('; ', $exception->getMessages())
+                ),
+                400
+            );
+        }
 
         $company = $this->repository->create(
             [
@@ -127,7 +138,7 @@ class Company implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
         $this->validator->assertId($command->companyId);
-        $this->validator->assertName($command->name);
+        $this->validator->assertMediumLatinName($command->name);
 
         $company            = $this->repository->find($command->companyId);
         $company->name      = $command->name;

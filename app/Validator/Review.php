@@ -12,8 +12,8 @@ namespace App\Validator;
  * Review Validation Rules.
  */
 class Review implements ValidatorInterface {
-    use Traits\AssertId,
-        Traits\AssertUser,
+    use Traits\AssertEntity,
+        Traits\AssertId,
         Traits\AssertFlag,
         Traits\AssertName,
         Traits\ValidateFlag;

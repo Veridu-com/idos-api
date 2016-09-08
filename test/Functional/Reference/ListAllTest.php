@@ -9,12 +9,13 @@ declare(strict_types = 1);
 namespace Test\Functional\Reference;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits;
 
 class ListAllTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCredentialToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
 
     protected function setUp() {
         $this->httpMethod = 'GET';
@@ -53,7 +54,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=user2Reference1'
+                    'QUERY_STRING'       => 'name=user2Reference1'
                 ]
             )
         );
@@ -88,7 +89,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'names=user2Reference1,user2Reference2'
+                    'QUERY_STRING'       => 'name=user2%'
                 ]
             )
         );
@@ -99,11 +100,11 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $reference) {
-            $this->assertContains($reference['name'], ['user2Reference1', 'user2Reference2']);
-            $this->assertContains($reference['value'], ['value-3', 'value-4']);
+            $this->assertContains($reference['name'], ['user2Reference1', 'user2Reference2', 'user2Reference3']);
+            $this->assertContains($reference['value'], ['value-3', 'value-4', 'value-5']);
         }
 
         /*
