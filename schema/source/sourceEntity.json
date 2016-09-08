@@ -12,8 +12,6 @@
         "tags": {
             "description": "Source information tags",
             "type": ["object", "null"],
-            "items": {
-            },
             "minItems": 0,
             "uniqueItems": true
         },
