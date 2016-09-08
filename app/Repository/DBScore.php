@@ -32,7 +32,7 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'name'    => 'string'
+        'name' => 'string'
     ];
 
     /**

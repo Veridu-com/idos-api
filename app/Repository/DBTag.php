@@ -31,7 +31,7 @@ class DBTag extends AbstractSQLDBRepository implements TagInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'slug'    => 'string'
+        'slug' => 'string'
     ];
 
     /**

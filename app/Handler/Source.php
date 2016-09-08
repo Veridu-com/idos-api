@@ -95,7 +95,6 @@ class Source implements HandlerInterface {
         $this->validator->assertShortName($command->name);
         $this->validator->assertUser($command->user);
         $this->validator->assertId($command->user->id);
-        $this->validator->assertArray($command->tags);
         $this->validator->assertIpAddr($command->ipaddr);
 
         // OTP check

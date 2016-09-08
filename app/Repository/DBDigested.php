@@ -32,7 +32,7 @@ class DBDigested extends AbstractSQLDBRepository implements DigestedInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'name'    => 'string'
+        'name' => 'string'
     ];
 
     /**

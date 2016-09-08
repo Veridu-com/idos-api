@@ -10,7 +10,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Factory\Command;
-use App\Helper\Utils;
 use App\Repository\TagInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;

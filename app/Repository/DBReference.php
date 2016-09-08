@@ -32,7 +32,7 @@ class DBReference extends AbstractSQLDBRepository implements ReferenceInterface 
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'name'    => 'string'
+        'name' => 'string'
     ];
 
     /**

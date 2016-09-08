@@ -32,7 +32,7 @@ class DBNormalised extends AbstractSQLDBRepository implements NormalisedInterfac
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'name'    => 'string'
+        'name' => 'string'
     ];
 
     /**
