@@ -562,7 +562,7 @@ class Auth implements MiddlewareInterface {
                 'AuthorizationMissing - Authorization details missing. Valid Authorization: %s',
                 implode(', ', $validAuthorization)
             ),
-            401
+            400
         );
     }
 }

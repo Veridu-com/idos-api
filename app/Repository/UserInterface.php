@@ -9,11 +9,23 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\User;
+use Illuminate\Support\Collection;
 
 /**
  * User Repository Interface.
  */
 interface UserInterface extends RepositoryInterface {
+    /**
+     * Find all users that belongs to specified company.
+     *
+     * @param int    $companyId
+     *
+     * @throws App\Exception\NotFound
+     *
+     * @return Illuminate\Support\Collection
+     */
+    public function findByCompanyId(int $companyId) : Collection;
+
     /**
      * Find a user by username.
      *
