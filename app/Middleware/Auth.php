@@ -176,6 +176,10 @@ class Auth implements MiddlewareInterface {
             throw new AppException('Invalid Token', 400);
         }
 
+        if ($token->isExpired()) {
+            throw new AppException('Token Expired', 400);
+        }
+
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
         if (! $token->validate($this->jwtValidation)) {
@@ -238,6 +242,10 @@ class Auth implements MiddlewareInterface {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
             throw new AppException('Invalid Token', 400);
+        }
+
+        if ($token->isExpired()) {
+            throw new AppException('Token Expired', 400);
         }
 
         // Ensures JWT Audience is the current API
@@ -319,6 +327,10 @@ class Auth implements MiddlewareInterface {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
             throw new AppException('Invalid Token', 400);
+        }
+
+        if ($token->isExpired()) {
+            throw new AppException('Token Expired', 400);
         }
 
         // Ensures JWT Audience is the current API
