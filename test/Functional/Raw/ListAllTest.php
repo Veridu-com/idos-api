@@ -46,7 +46,7 @@ class ListAllTest extends AbstractRawFunctional {
         }
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -82,7 +82,7 @@ class ListAllTest extends AbstractRawFunctional {
         }
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -117,7 +117,7 @@ class ListAllTest extends AbstractRawFunctional {
         }
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

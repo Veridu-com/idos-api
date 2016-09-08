@@ -52,7 +52,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame('value-test', $body['data']['value']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

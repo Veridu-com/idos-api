@@ -40,7 +40,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(3, $body['data']);
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

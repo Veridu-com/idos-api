@@ -38,15 +38,23 @@ class ListAllTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
+
         $this->assertSame(1321189817, $body['data'][0]['id']);
         $this->assertSame('source-1', $body['data'][0]['name']);
-        $this->assertEmpty($body['data'][0]['tags']);
+        $this->assertArrayHasKey('otp_check', $body['data'][0]['tags']);
+        $this->assertSame('email', $body['data'][0]['tags']['otp_check']);
+
         $this->assertSame(517015180, $body['data'][1]['id']);
         $this->assertSame('source-2', $body['data'][1]['name']);
-        $this->assertEmpty($body['data'][1]['tags']);
-
+        $this->assertEquals(
+            [
+                'profile_id'   => 1234567890,
+                'access_token' => '9dd4e461268c8034f5c8564e155c67a6'
+            ],
+            $body['data'][1]['tags']
+        );
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -73,15 +81,24 @@ class ListAllTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
+
         $this->assertSame(1321189817, $body['data'][0]['id']);
         $this->assertSame('source-1', $body['data'][0]['name']);
-        $this->assertEmpty($body['data'][0]['tags']);
+        $this->assertArrayHasKey('otp_check', $body['data'][0]['tags']);
+        $this->assertSame('email', $body['data'][0]['tags']['otp_check']);
+
         $this->assertSame(517015180, $body['data'][1]['id']);
         $this->assertSame('source-2', $body['data'][1]['name']);
-        $this->assertEmpty($body['data'][1]['tags']);
+        $this->assertEquals(
+            [
+                'profile_id'   => 1234567890,
+                'access_token' => '9dd4e461268c8034f5c8564e155c67a6'
+            ],
+            $body['data'][1]['tags']
+        );
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

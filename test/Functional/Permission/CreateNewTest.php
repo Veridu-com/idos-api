@@ -41,7 +41,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame('hello:biscuit', $body['data']['route_name']);
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -53,25 +53,24 @@ class CreateNewTest extends AbstractFunctional {
 
     }
 
-    public function testNotFound() {
-        $this->uri = sprintf('/1.0/companies/veridu-ltd/permissions/%s', 'not-a-route-name');
-
-        $request = $this->createRequest(
-            $this->createEnvironment(
-                [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
-                ]
-            )
+    public function testInvalidName() {
+        $env = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
         );
+
+        $request  = $this->createRequest($env, json_encode(['routeName' => 'invalid-name']));
         $response = $this->process($request);
-        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -80,5 +79,6 @@ class CreateNewTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
+
     }
 }
