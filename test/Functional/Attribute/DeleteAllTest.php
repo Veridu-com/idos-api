@@ -37,6 +37,38 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertSame(3, $body['deleted']);
+
+        /*
+         * Validates Json Schema with Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'attribute/deleteAll.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testDeleteFilter() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request  = $this->createRequest($environment, json_encode([
+            'name' => '%1'
+        ]));
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame(1, $body['deleted']);
 
         /*
          * Validates Json Schema with Json Response
