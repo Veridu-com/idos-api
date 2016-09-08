@@ -28,22 +28,40 @@ use App\Extension\SecureFields;
 class Service extends AbstractEntity {
     use SecureFields;
 
-    // Only the owning company have access
-    const ACCESS_PRIVATE = 0x00;
-    // Children companies have "read" access
-    const ACCESS_PROTECTED = 0x01;
-    // Any company have "read" access
-    const ACCESS_PUBLIC = 0x02;
-
     /**
-     * Cache prefix.
+     * Only the owning company have access.
+     *
+     * @const ACCESS_PRIVATE
      */
-    const CACHE_PREFIX = 'Service';
+    const ACCESS_PRIVATE = 0x00;
+    /**
+     * Children companies have "read" access.
+     *
+     * @const ACCESS_PROTECTED
+     */
+    const ACCESS_PROTECTED = 0x01;
+    /**
+     * Any company have "read" access.
+     *
+     * @const ACCESS_PUBLIC
+     */
+    const ACCESS_PUBLIC = 0x02;
 
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'url', 'public', 'access', 'enabled', 'listens', 'triggers', 'created_at', 'updated_at'];
+    protected $visible = [
+        'id',
+        'name',
+        'url',
+        'public',
+        'access',
+        'enabled',
+        'listens',
+        'triggers',
+        'created_at',
+        'updated_at'
+    ];
 
     /**
      * {@inheritdoc}
@@ -61,23 +79,4 @@ class Service extends AbstractEntity {
      * @var array
      */
     protected $secure = ['auth_username', 'auth_password', 'private'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-            ],
-            $this->getCacheKeys()
-        );
-    }
 }

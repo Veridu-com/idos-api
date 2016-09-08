@@ -20,11 +20,6 @@ namespace App\Entity;
  */
 class Role extends AbstractEntity {
     /**
-     * Cache prefix.
-     */
-    const CACHE_PREFIX = 'Role';
-
-    /**
      * Company role.
      *
      * @var string
@@ -75,24 +70,4 @@ class Role extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-            ],
-            $this->getCacheKeys()
-        );
-    }
 }

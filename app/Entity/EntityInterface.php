@@ -22,25 +22,6 @@ interface EntityInterface {
     public function hydrate(array $attributes = []) : self;
 
     /**
-     * Gets the entity cache keys.
-     *
-     * @return array
-     */
-    public function getCacheKeys() : array;
-
-    /**
-     * Gets the entity cache tags
-     * Think on it like a pub-sub channels.
-     *
-     * It is a merge between
-     * #1 The entity cache keys - will delete where it was listed already
-     * #2 The cache keys that should deleted so those places will miss the cache and get fresh data on the next
-     *
-     * @return array
-     */
-    public function getReferenceCacheKeys() : array;
-
-    /**
      * Convert the entity instance to an array that can be safely exposed.
      *
      * @return array
