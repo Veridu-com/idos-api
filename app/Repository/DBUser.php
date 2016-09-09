@@ -76,23 +76,6 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey(string $publicKey) {
-        $result = $this->query()
-            ->selectRaw('users.*')
-            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
-            ->where('credentials.public', '=', $publicKey)
-            ->first();
-
-        if (empty($result)) {
-            throw new NotFound();
-        }
-
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOrCreate(string $userName, int $credentialId) : User {
         $result = $this->query()
             ->where('username', $userName)
@@ -108,22 +91,6 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
                 );
 
             $result = $this->save($user);
-        }
-
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByUsernameAndCredential(string $userName, Credential $credential) : User {
-        $result = $this->query()
-            ->where('username', $userName)
-            ->where('credential_id', $credential->id)
-            ->first();
-
-        if (empty($result)) {
-            throw new NotFound('User not found.');
         }
 
         return $result;
@@ -151,7 +118,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
         }
 
         $result = $this->query()
-            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
+            ->join('credentials', 'credentials.id', '=', 'users.credential_id')
             ->join('roles', 'users.role', '=', 'roles.name')
             ->where('users.identity_id', '=', $user->identityId)
             ->where('users.role', 'LIKE', 'company%')
@@ -159,7 +126,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->orderBy('roles.rank', 'asc')
             ->get(['users.*', 'credentials.public']);
 
-        if (empty($result)) {
+        if ($result->isEmpty()) {
             throw new NotFound('No users related to given company found');
         }
 
@@ -182,5 +149,39 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->get(['users.username']);
 
         return $result->first() ? $result->first()->username : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllByIdentityId(int $identityId) : Collection {
+        $result = $this->query()
+            ->join('links', 'links.user_id', '=', 'users.id')
+            ->where('links.identity_id', '=', $identityId)
+            ->get(['users.*']);
+
+        if ($result->isEmpty()) {
+            throw new NotFound('No users related to given identity');
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentityIdAndCompanyId(int $identityId, int $companyId) : User {
+        $result = $this->query()
+            ->join('credentials', 'credentials.id', '=', 'users.credential_id')
+            ->join('companies', 'companies.id', '=', 'credentials.company_id')
+            ->where('users.identity_id', '=', $identityId)
+            ->where('companies.id', '=', $companyId)
+            ->get(['users.*']);
+
+        if ($result->isEmpty()) {
+            throw new NotFound('User not found', 404);
+        }
+
+        return $result->first();
     }
 }

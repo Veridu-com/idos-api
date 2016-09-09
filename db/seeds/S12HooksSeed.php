@@ -8,7 +8,7 @@ use Phinx\Seed\AbstractSeed;
 
 class S12HooksSeed extends AbstractSeed {
     public function run() {
-        $hooksData = [
+        $data = [
             [
                 'credential_id' => 1,
                 'trigger'       => 'company.create',
@@ -37,7 +37,7 @@ class S12HooksSeed extends AbstractSeed {
 
         $table = $this->table('hooks');
         $table
-            ->insert($hooksData)
+            ->insert($data)
             ->save();
     }
 }

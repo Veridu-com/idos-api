@@ -163,7 +163,11 @@ class Normalised implements HandlerInterface {
 
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
 
-        $normalised = $this->repository->findOneByUserIdSourceIdAndName($command->user->id, $command->sourceId, $command->name);
+        $normalised = $this->repository->findOneByUserIdSourceIdAndName(
+            $command->user->id,
+            $command->sourceId,
+            $command->name
+        );
 
         $rowsAffected = $this->repository->deleteOneBySourceIdAndName($command->sourceId, $command->name);
 
