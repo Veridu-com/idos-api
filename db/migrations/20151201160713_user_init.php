@@ -73,19 +73,6 @@ class UserInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        // Profile Features
-        $features = $this->table('features');
-        $features
-            ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('slug', 'text', ['null' => false])
-            ->addColumn('value', 'binary')
-            ->addTimestamps()
-            ->addIndex('user_id')
-            ->addIndex(['user_id', 'slug'], ['unique' => true])
-            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         // Company members (FIXME Review this table)
         $members = $this->table('members');
         $members

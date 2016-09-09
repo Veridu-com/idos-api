@@ -17,8 +17,10 @@ use App\Helper\Utils;
  * @apiEntity schema/user/featureEntity.json
  *
  * @property int    $id
+ * @property int    $user_id
  * @property string $name
- * @property string $slug
+ * @property string $creator
+ * @property string $type
  * @property string $value
  * @property int    $user_id
  * @property int    $created_at
@@ -30,7 +32,7 @@ class Feature extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'value', 'user_id', 'created_at', 'updated_at'];
+    protected $visible = ['user_id', 'source', 'name', 'creator', 'type', 'value', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
@@ -43,16 +45,25 @@ class Feature extends AbstractEntity {
     protected $secure = ['value'];
 
     /**
-     * Property Mutator for $name.
-     *
-     * @param string $value
-     *
-     * @return App\Entity\Feature
+     * {@inheritdoc}
      */
-    public function setNameAttribute(string $value) : self {
-        $this->attributes['name'] = $value;
-        $this->attributes['slug'] = Utils::slugify($value);
+    public $relationships = [
+        'source' => 'Source'
+    ];
 
-        return $this;
+    public function getValueAttribute() {
+        if ($this->attributes['type'] === 'integer') {
+            return (int) $this->attributes['value'];
+        }
+
+        if ($this->attributes['type'] === 'boolean') {
+            return (bool) $this->attributes['value'];
+        }
+
+        if ($this->attributes['type'] === 'float') {
+            return (float) $this->attributes['value'];
+        }
+
+        return (int) $this->attributes['value'];
     }
 }

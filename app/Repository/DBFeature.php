@@ -33,20 +33,37 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'slug'       => 'string',
+        'source:id' => 'decoded',
+        'source:name' => 'string',
+        'creator' => 'string',
+        'name' => 'string',
+        'type' => 'string',
         'created_at' => 'date'
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : array {
-        $dbQuery = $this->query()->where('user_id', $userId);
+    protected $keyAlias = [
+        'source:id' => 'source_id',
+        'source:name' => 'sources.name'
+    ];
 
-        return $this->paginate(
-            $this->filter($dbQuery, $queryParams),
-            $queryParams
-        );
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllByUserId(int $userId, array $queryParams = []) : Collection {
+        $dbQuery = $this->query();
+
+        if (! isset($queryParams['source:id']) || (int) $queryParams['source:id'] !== 0) {
+            $dbQuery = $dbQuery->leftjoin('sources', 'sources.id', 'features.source_id')->where('features.user_id', $userId);
+            $result = $this->filter($dbQuery, $queryParams)->get(['features.*', 'sources.id as source.id', 'sources.name as source.name', 'sources.tags as source.tags', 'sources.created_at as source.created_at', 'sources.updated_at as source.created_at']);            
+        } else {
+            $dbQuery = $dbQuery->where('features.user_id', $userId);
+            return $this->filter($dbQuery, $queryParams)->get(['features.*']);
+        } 
+
+        return $this->castHydrate($result);
     }
 
     /**

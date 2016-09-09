@@ -316,9 +316,14 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         }
 
         foreach ($filters as $key => $filter) {
+            $keyParts = explode(':', $key);
             $value  = $filter['value'];
             $type   = $filter['type'];
-            $column = $this->getTableName() . '.' . $key;
+            $column = isset($this->keyAlias[$key]) ? $this->keyAlias[$key] : ($this->getTableName() . '.' . $key);
+
+            if (count($keyParts) == 2 && $keyParts[1] === 'id' && (int) $value === 0) {
+                return $query->whereNull($column);
+            }
 
             switch ($type) {
                 case 'date':
@@ -353,6 +358,10 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                     } else {
                         $query = $query->where($column, '=', false);
                     }
+                    break;
+
+                case 'decoded':
+                    $query = $query->where($column, '=', $this->optimus->decode($value));
                     break;
 
                 default:

@@ -20,9 +20,9 @@ interface FeatureInterface extends RepositoryInterface {
      *
      * @param int $userId
      *
-     * @return array
+     * @return Collection
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : array;
+    public function getAllByUserId(int $userId, array $queryParams = []) : Collection;
 
     /**
      * Deletes all features based on their user id.

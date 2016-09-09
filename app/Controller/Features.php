@@ -14,6 +14,7 @@ use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Illuminate\Support\Collection;
 
 /**
  * Handles requests to /profiles/:userName/features.
@@ -28,7 +29,7 @@ class Features implements ControllerInterface {
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var App\Repository\UserInterfacecastHydrate
      */
     private $userRepository;
     /**
@@ -79,13 +80,10 @@ class Features implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user   = $request->getAttribute('targetUser');
-        $result = $this->repository->getAllByUserId($user->id, $request->getQueryParams());
-
-        $entities = $result['collection'];
+        $entities = $this->repository->getAllByUserId($user->id, $request->getQueryParams());
 
         $body = [
             'data'       => $entities->toArray(),
-            'pagination' => $result['pagination'],
             'updated'    => (
                 $entities->isEmpty() ? null : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
