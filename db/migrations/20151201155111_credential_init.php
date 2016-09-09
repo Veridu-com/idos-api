@@ -16,15 +16,12 @@ class CredentialInit extends AbstractMigration {
         $users
             ->addColumn('credential_id', 'integer', ['null' => false])
             ->addColumn('role', 'text', ['null' => true])
-            ->addColumn('identity_id', 'integer', ['null' => true, 'default' => null])
             ->addColumn('username', 'text', ['null' => false])
             ->addTimestamps()
             ->addIndex(['credential_id', 'username'], ['unique' => true])
             ->addIndex('credential_id')
-            ->addIndex('identity_id')
             ->addIndex('username')
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
             ->create();
 

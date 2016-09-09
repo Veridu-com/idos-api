@@ -142,6 +142,7 @@ class ServiceHandler implements RouteInterface {
      * @see App\Controller\ServiceHandlers::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
+        // FIXME This should be removed!
         $app
             ->delete(
                 '/service-handlers',

@@ -8,7 +8,7 @@ use Phinx\Seed\AbstractSeed;
 
 class S23TagsSeed extends AbstractSeed {
     public function run() {
-        $tagsData = [
+        $data = [
             [
                 'user_id' => 1,
                 'name'    => 'User 1 Tag 1',
@@ -34,7 +34,7 @@ class S23TagsSeed extends AbstractSeed {
 
         $table = $this->table('tags');
         $table
-            ->insert($tagsData)
+            ->insert($data)
             ->save();
     }
 }
