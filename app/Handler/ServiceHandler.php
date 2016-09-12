@@ -106,6 +106,7 @@ class ServiceHandler implements HandlerInterface {
             ]
         );
 
+
         try {
             $entity = $this->repository->save($entity);
             $event  = new Created($entity);

@@ -126,6 +126,39 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         );
     }
 
+    public function hydrateRelations($entities) {
+        if (is_array($entities)) {
+            foreach ($entities as $key => $entity) {
+                $entities[$key] = $this->hydrateRelations($entity);
+            }
+
+            return $entities;
+        }
+
+        foreach ($this->relationships as $relation => $properties) {
+            if (! $properties['hydrate']) {
+                continue;
+            }
+
+            switch ($properties['type']) {
+                case 'ONE_TO_ONE':
+                
+                    break;
+                case 'ONE_TO_MANY':
+                    
+                    break;
+                case 'MANY_TO_ONE':
+                    $relationEntity = $this->    
+                    break;
+                case 'MANY_TO_MANY':
+                    
+                    break;
+            }
+        }
+
+        return $entities;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -133,17 +166,20 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $serialized = $entity->serialize();
 
         if (! $entity->id) {
-            $id = $this->query()
-                ->insertGetId($serialized);
+            $id = $this->query()->insertGetId($serialized);
+            $entity = $this->hydrateRelations($entity);
+
             return $this->create(array_merge(['id' => $id], $entity->serialize()));
         }
 
         $id = $entity->id;
         unset($serialized['id']);
         $serialized['updated_at'] = date('Y-m-d H:i:s');
+        
         $affectedRows = $this->query()
             ->where('id', $entity->id)
             ->update($serialized);
+        
         if (! $affectedRows) {
             throw new \RuntimeException(
                 sprintf(
@@ -239,21 +275,6 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
         return $query->update($fields);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    /*public function findBy(array $constraints, array $queryParams = []) : Collection {
-        $query = $this->query();
-
-        foreach ($constraints as $key => $value) {
-            $query = $query->where($key, $value);
-        }
-
-        $query = $this->filter($query, $queryParams);
-
-        return $query->get();
-    }*/
 
     protected function resolveConstraintValue($value) {
         if (is_array($value)) {
@@ -404,7 +425,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         return $query;
     }
 
-    public function findBy(array $constraints, array $queryParams = []) : Collection {
+    public function findBy(array $constraints, array $queryParams = [], array $columns = []) : Collection {
         $query = $this->query();
 
         $constraints = array_merge($constraints, $this->getFilterConstraints($queryParams));
@@ -413,51 +434,41 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             $query = $this->where($query, $column, $value);
         }
 
-        $columns = [$this->getTableName() . '.*'];
+        $getColumns = [$this->getTableName() . '.*'];
 
         foreach ($this->relationships as $relation => $properties) {
             if ($properties['hydrate']) {
                 $query = $this->joinWithRelation($query, $relation);
-                $columns = array_merge($columns, $this->getRelationColumnsAliases($relation));
+                $getColumns = array_merge($getColumns, $this->getRelationColumnsAliases($relation, $columns));
             }
         }
 
-        //if ($this->getTableName() === 'features') {
-        //    var_dump($query->toSql());
-        //}
-
-        return $this->castHydrate($query->get($columns));
+        return $this->castHydrate($query->get($getColumns));
     }
 
-    public function getRelationColumnsAliases($relation) {
-        $columns = [];
+    public function getRelationColumnsAliases($relation, array $columns = []) {
+        $getColumns = [];
         $relationProperties = $this->relationships[$relation];
         $hydrateColumns = $relationProperties['hydrate'];
         $relationTable = $relationProperties['table'];
 
-        if (! $hydrateColumns) {
-            return $columns;
+        if (! empty($columns) && (! isset($columns[$relation]) || empty($columns[$relation]))) {
+            return [];
         }
 
-        foreach ($hydrateColumns as $column) {
-            $columns[] = $relationTable . '.' . $column . ' as ' . $relation . '.' . $column;
-        }
+        if (empty($columns) || (isset($columns[$relation]) && empty($columns[$relation]))) {
+            $columns[$relation] = $hydrateColumns;
 
-        return $columns;
-    }
-
-    public function hydrateRelations(Collection $entities) {
-        foreach ($this->relationships as $relation => $properties) {
-            if (! $properties['hydrate']) {
-                continue;
-            }
-
-            foreach ($entities as $key => $entity) {
-                var_dump($entity);exit;
+            if (! $hydrateColumns) {
+                return [];
             }
         }
 
-        return $entities;
+        foreach ($columns[$relation] as $column) {
+            $getColumns[] = $relationTable . '.' . $column . ' as ' . $relation . '.' . $column;
+        }
+
+        return $getColumns;
     }
 
     public function getFilterConstraints(array $queryParams) {

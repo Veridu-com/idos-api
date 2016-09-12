@@ -270,7 +270,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $constraints, array $queryParams = []) : Collection {
+    public function findBy(array $constraints, array $queryParams = [], array $columns = []) : Collection {
         $this->checkDatabaseSelected();
 
         $query = $this->query();

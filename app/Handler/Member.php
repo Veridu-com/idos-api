@@ -117,7 +117,6 @@ class Member implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : MemberEntity {
         $this->validator->assertUserName($command->userName);
-
         $credential = $this->credentialRepository->findByPubKey($command->credential);
 
         $user = $this->userRepository->findOneBy(['username' => $command->userName, 'credential_id' => $credential->id]);

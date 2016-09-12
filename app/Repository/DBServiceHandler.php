@@ -51,18 +51,56 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
     /**
      * {@inheritdoc}
      */
+    protected $filterableKeys = [
+        /*'source.id' => 'decoded',
+        'source.name' => 'string',
+        'creator' => 'string',
+        'name' => 'string',
+        'type' => 'string',
+        'created_at' => 'date'*/
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $relationships = [
+        'company' => [
+            'type' => 'MANY_TO_ONE',
+            'table' => 'companies',
+            'foreignKey' => 'company_id',
+            'key' => 'id',
+            'entity' => 'Company',
+            'hydrate' => false
+        ],
+
+        'service' => [
+            'type' => 'MANY_TO_ONE',
+            'table' => 'services',
+            'foreignKey' => 'service_id',
+            'key' => 'id',
+            'entity' => 'Service',
+            'hydrate' => [
+                'id',
+                'name',
+                'url',
+                'listens',
+                'triggers',
+                'enabled',
+                'access',
+                'created_at',
+                'updated_at'
+            ]
+        ],
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOne(int $companyId, int $serviceHandlerId) : ServiceHandler {
-        $entity = $this->query()
-            ->join('services', 'services.id', '=', 'service_handlers.service_id')
-            ->where('service_handlers.id', $serviceHandlerId)
-            ->where('service_handlers.company_id', $companyId)
-            ->first($this->queryAttributes);
-
-        if (! $entity) {
-            throw new NotFound();
-        }
-
-        return $this->castHydrateEntity($entity);
+        return $this->findOneBy([
+            'company_id' => $companyId,
+            'service_id' => $serviceId
+        ]);
     }
 
     /**
@@ -72,7 +110,7 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
         return $this->findBy(
             [
                 'company_id'   => $companyId,
-                'service_slug' => $serviceSlug,
+                'service.slug' => $serviceSlug,
             ]
         );
     }
@@ -92,14 +130,16 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
      * {@inheritdoc}
      */
     public function getAllByCompanyId(int $companyId) : Collection {
-        $query = $this->query();
+        return $this->findBy([
+            'service.company_id' => $companyId
+        ]);
 
-        $array = $query
+        /*$array = $query
             ->join('services', 'services.id', '=', 'service_handlers.service_id')
             ->where('services.company_id', '=', $companyId)
             ->get($this->queryAttributes);
 
-        return $this->castHydrate($array);
+        return $this->castHydrate($array);*/
     }
 
     /**

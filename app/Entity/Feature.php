@@ -60,8 +60,8 @@ class Feature extends AbstractEntity {
             return (bool) $this->attributes['value'];
         }
 
-        if ($this->attributes['type'] === 'float') {
-            return (float) $this->attributes['value'];
+        if ($this->attributes['type'] === 'double') {
+            return (double) $this->attributes['value'];
         }
 
         return (int) $this->attributes['value'];
