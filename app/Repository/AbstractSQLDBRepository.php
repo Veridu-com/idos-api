@@ -302,6 +302,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     protected function filter(Builder $query, array $queryParams = []) : Builder {
         $filters = [];
 
+
         foreach ($this->filterableKeys as $key => $type) {
             if (isset($queryParams[$key])) {
                 $filters[$key] = [
@@ -338,7 +339,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
                 case 'string':
                     // starts or ends with "%"
-                    if (preg_match('/.*%$|^%.*/', $value)) {
+                    if (preg_match('/.*\*$|^\*.*/', $value)) {
+                        $value = str_replace('*', '%', $value);
                         $query = $query->where($column, 'ilike', $value);
                     } else {
                         $query = $query->where($column, $value);
