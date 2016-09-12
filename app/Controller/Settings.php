@@ -106,7 +106,7 @@ class Settings implements ControllerInterface {
 
         $body = [
             'data'    => $setting->toArray(),
-            'updated' => $setting->updated_at
+            'updated' => max($setting->updatedAt, $setting->createdAt)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

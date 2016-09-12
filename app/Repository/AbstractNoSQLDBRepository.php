@@ -11,6 +11,7 @@ namespace App\Repository;
 use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
+use App\Factory\Repository;
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Query\Builder as QueryBuilder;
 use Jenssegers\Optimus\Optimus;
@@ -20,13 +21,6 @@ use MongoDB\Model\CollectionInfoIterator;
  * Abstract NoSQL Database-based Repository.
  */
 abstract class AbstractNoSQLDBRepository extends AbstractRepository {
-    /**
-     * Entity Factory.
-     *
-     * @var App\Factory\Entity
-     */
-    protected $entityFactory;
-
     /**
      * DB Collection Name.
      *
@@ -164,6 +158,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      * Class constructor.
      *
      * @param App\Factory\Entity                       $entityFactory
+     * @param App\Factory\Repository                   $repositoryFactory
      * @param \Jenssegers\Optimus\Optimus              $optimus
      * @param \Illuminate\Database\ConnectionInterface $dbConnection
      *
@@ -171,10 +166,11 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      */
     public function __construct(
         Entity $entityFactory,
+        Repository $repositoryFactory,
         Optimus $optimus,
         callable $noSqlConnector
     ) {
-        parent::__construct($entityFactory, $optimus);
+        parent::__construct($entityFactory, $repositoryFactory, $optimus);
 
         $this->dbSelector   = $noSqlConnector;
         $this->dbConnection = null;

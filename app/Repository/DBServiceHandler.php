@@ -98,8 +98,8 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
      */
     public function findOne(int $companyId, int $serviceHandlerId) : ServiceHandler {
         return $this->findOneBy([
-            'company_id' => $companyId,
-            'service_id' => $serviceId
+            'id' => $serviceHandlerId,
+            'company_id' => $companyId
         ]);
     }
 

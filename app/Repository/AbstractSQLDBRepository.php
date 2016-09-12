@@ -12,6 +12,7 @@ use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Exception\AppException;
 use App\Factory\Entity;
+use App\Factory\Repository;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
@@ -21,13 +22,6 @@ use Jenssegers\Optimus\Optimus;
  * Abstract Database-based Repository.
  */
 abstract class AbstractSQLDBRepository extends AbstractRepository {
-    /**
-     * Entity Factory.
-     *
-     * @var App\Factory\Entity
-     */
-    protected $entityFactory;
-
     /**
      * DB Table Name.
      *
@@ -102,6 +96,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * Class constructor.
      *
      * @param App\Factory\Entity                       $entityFactory
+     * @param App\Factory\Repository                   $repositoryFactory
      * @param \Jenssegers\Optimus\Optimus              $optimus
      * @param \Illuminate\Database\ConnectionInterface $sqlConnection
      *
@@ -109,10 +104,11 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      */
     public function __construct(
         Entity $entityFactory,
+        Repository $repositoryFactory,
         Optimus $optimus,
         ConnectionInterface $sqlConnection
     ) {
-        parent::__construct($entityFactory, $optimus);
+        parent::__construct($entityFactory, $repositoryFactory, $optimus);
         $this->dbConnection = $sqlConnection;
     }
 
@@ -148,7 +144,14 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                     
                     break;
                 case 'MANY_TO_ONE':
-                    $relationEntity = $this->    
+                    $relationEntityName = $properties['entity'];
+                    $tableForeignKey = $properties['foreignKey'];
+                    $relationTableKey = $properties['key'];
+
+                    $relationRepository = $this->repositoryFactory->create($relationEntityName);
+                    $relationEntity = $relationRepository->findOneBy([$relationTableKey => $entities->$tableForeignKey]);
+                    
+                    $entities->relations[$relation] = $relationEntity;
                     break;
                 case 'MANY_TO_MANY':
                     
@@ -167,8 +170,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
         if (! $entity->id) {
             $id = $this->query()->insertGetId($serialized);
-            $entity = $this->hydrateRelations($entity);
-
+            
             return $this->create(array_merge(['id' => $id], $entity->serialize()));
         }
 

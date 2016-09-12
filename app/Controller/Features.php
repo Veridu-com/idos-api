@@ -29,7 +29,7 @@ class Features implements ControllerInterface {
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterfacecastHydrate
+     * @var App\Repository\UserInterface
      */
     private $userRepository;
     /**

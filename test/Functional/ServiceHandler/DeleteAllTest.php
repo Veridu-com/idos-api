@@ -22,7 +22,6 @@ class DeleteAllTest extends AbstractFunctional {
     
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/service-handlers';
-        $this->populate($this->uri);
     }
 
     public function testSuccess() {
@@ -40,12 +39,7 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        // checks if listAll retrived the number of deleted objects
-        $this->assertSame(count($this->entities), $body['deleted']);
-        // refreshes the $entities prop
-        $this->populate($this->uri);
-        // checks if all entities were deleted
-        $this->assertCount(0, $this->entities);
+        $this->assertSame(2, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.

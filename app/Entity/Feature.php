@@ -64,6 +64,6 @@ class Feature extends AbstractEntity {
             return (double) $this->attributes['value'];
         }
 
-        return (int) $this->attributes['value'];
+        return $this->attributes['value'];
     }
 }

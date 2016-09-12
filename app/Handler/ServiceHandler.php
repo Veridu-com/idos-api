@@ -109,6 +109,7 @@ class ServiceHandler implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
+            $entity = $this->repository->hydrateRelations($entity);
             $event  = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -129,7 +130,6 @@ class ServiceHandler implements HandlerInterface {
         $this->validator->assertId($command->companyId);
         $this->validator->assertId($command->serviceHandlerId);
         $this->validator->assertArray($command->listens);
-
         $entity = $this->repository->findOne($command->companyId, $command->serviceHandlerId);
 
         $allowedListeners = $entity->service()->listens;
@@ -149,6 +149,7 @@ class ServiceHandler implements HandlerInterface {
         // save entity
         try {
             $entity = $this->repository->save($entity);
+            $entity = $this->repository->hydrateRelations($entity);
             $event  = new Updated($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
