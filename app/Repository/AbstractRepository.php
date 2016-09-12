@@ -33,6 +33,20 @@ abstract class AbstractRepository implements RepositoryInterface {
     protected $optimus;
 
     /**
+     * Entity relationships.
+     *
+     * @var array
+     */
+    protected $relationships = [];
+
+    /**
+     * Entity filterable columns.
+     *
+     * @var array
+     */
+    protected $filterableKeys = [];
+
+    /**
      * Class constructor.
      *
      * @param App\Factory\Entity          $entityFactory
@@ -119,6 +133,15 @@ abstract class AbstractRepository implements RepositoryInterface {
         }
 
         foreach ($relationships as $databasePrefix => $entityName) {
+            $relationProperties = $this->relationships[$databasePrefix];
+            //@FIXME: make this method work for all relationship types
+            $foreignKey = $relationProperties['foreignKey'];
+
+            if (! $relationProperties['hydrate']) {
+                $entity->$databasePrefix = $entity->$foreignKey;
+                continue;
+            }
+
             $entity->relations[$databasePrefix] = $this->entityFactory->create(
                 $entityName,
                 (array) $entity->$databasePrefix()

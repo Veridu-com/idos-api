@@ -260,11 +260,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             $value = null;
-            if ($this->relationships && isset($this->relationships[$attribute])) {
+            if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
                 // populating relations
-                if (isset($this->relations[$attribute])) {
-                    $value = $this->$attribute()->toArray();
-                }
+                $value = $this->$attribute()->toArray();
             } else {
                 // populating own attributes
                 $value = $this->getAttribute($attribute);

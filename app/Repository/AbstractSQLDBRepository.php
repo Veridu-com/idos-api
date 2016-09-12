@@ -10,6 +10,7 @@ namespace App\Repository;
 
 use App\Entity\EntityInterface;
 use App\Exception\NotFound;
+use App\Exception\AppException;
 use App\Factory\Entity;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
@@ -242,7 +243,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $constraints, array $queryParams = []) : Collection {
+    /*public function findBy(array $constraints, array $queryParams = []) : Collection {
         $query = $this->query();
 
         foreach ($constraints as $key => $value) {
@@ -252,6 +253,247 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $query = $this->filter($query, $queryParams);
 
         return $query->get();
+    }*/
+
+    protected function resolveConstraintValue($value) {
+        if (is_array($value)) {
+            return $value[0] . ' ' . $value[1];
+        }
+
+        return $value;
+    }
+
+    protected function hasJoinWithRelation($query, $relationName) {
+        $relationProperties = $this->relationships[$relationName];
+        $relationTable = $relationProperties['table'];
+
+        if ($query->joins) {
+            foreach ($query->joins as $key => $joinClause) {
+                if ($joinClause->table === $relationTable) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    protected function joinWithRelation($query, $relationName) {
+        if ($this->hasJoinWithRelation($query, $relationName)) {
+            return $query;
+        }
+
+        $relationProperties = $this->relationships[$relationName];
+        $relationType = $relationProperties['type'];
+        $relationTable = $relationProperties['table'];
+        $table = $this->getTableName();
+
+        switch ($relationType) {
+            case 'ONE_TO_ONE':
+                $query = $query->join();
+                break;
+            case 'ONE_TO_MANY':
+                $relationTableForeignKey = $relationProperties['foreignKey'];
+                $tableKey = $relationProperties['key'];
+
+                $query = $query->join($relationTable, $relationTable . '.' . $relationTableForeignKey, '=', $table . '.' . $tableKey);
+                break;
+            case 'MANY_TO_ONE':
+                $relationTableKey = $relationProperties['key'];
+                $tableForeignKey = $relationProperties['foreignKey'];
+
+                $query = $query->join($relationTable, $table . '.' . $tableForeignKey, '=', $relationTable . '.' . $relationTableKey);
+                break;
+            case 'MANY_TO_MANY':
+                $query = $query->join();
+                break;
+        }
+
+        return $query;
+    }
+
+    protected function treatOneToManyRelation($query, $relationColumn, $value, $relationProperties) {
+        $relationTable = $relationProperties['table'];
+        $relationTableForeignKey = $relationProperties['foreignKey'];
+        $relationKey = $relationProperties['key'];
+
+        $query = $query->join($relationTable, $relationTable . '.' . $relationTableForeignKey, '=', $this->getTableName() . '.' . $relationKey);
+
+        return $query;
+    }
+
+    protected function treatManyToOneRelation($query, $relationColumn, $value, $relationProperties) {
+        $relationTable = $relationProperties['table'];
+        $relationTableKey = $relationProperties['key'];
+        $table = $this->getTableName();
+        $tableForeignKey = $relationProperties['foreignKey'];
+
+        $hasAlreadyJoined = false;
+        $joinClauseKey = null;
+        if ($query->joins) {
+            foreach ($query->joins as $key => $joinClause) {
+                if ($joinClause->table === $relationTable) {
+                    $hasAlreadyJoined = true;
+                    $joinClauseKey = $key;
+                    break;
+                }
+            }
+        }
+
+        $requiresLeftJoin = false;
+        if ($relationColumn === $relationTableKey && ($value === 0 || $this->optimus->encode($value) === 0)) {
+            $requiresLeftJoin = true;
+            $value = null;
+        }
+
+        if ($hasAlreadyJoined && $requiresLeftJoin && $query->joins[$joinClauseKey]->type !== 'left') {
+            $query->joins[$joinClauseKey]->type = 'left';
+        }
+
+        if (! $hasAlreadyJoined) {
+            $joinMethod = $requiresLeftJoin ? 'leftJoin' : 'join';
+            $query = $query->$joinMethod($relationTable, $table . '.' . $tableForeignKey, '=', $relationTable . '.' . $relationTableKey);
+        }
+
+        if ($value === null) {
+            if ($relationColumn === $relationTableKey) {
+                $query->whereNull($table . '.' . $tableForeignKey);
+            } else {
+                $query->whereNull($relationTable . '.' . $relationColumn);
+            }
+        } else {
+            $query->where($relationTable . '.' . $relationColumn, '=', $value);
+        }
+
+        return $query;
+    }
+
+    protected function where($query, $column, $value) {
+        $isRelationConstraint = (strpos($column, '.') !== false);
+
+        if (! $isRelationConstraint) {
+            return $query->where($this->getTableName() . '.' . $column, $value);
+        }
+
+        $column = explode('.', $column);
+        $relationName = $column[0];
+        $relationColumn = $column[1];
+
+        if (! isset($this->relationships[$relationName])) {
+            throw new AppException('No relation named "' . $relationName . '" found for entity ' . $this->entityName);
+        }
+
+        $relationProperties = $this->relationships[$relationName];
+        $relationType = $relationProperties['type'];
+
+        switch ($relationType) {
+            case 'ONE_TO_ONE':
+                $query = $this->treatOneToOneRelation($query, $relationColumn, $value, $relationProperties);
+                break;
+            case 'ONE_TO_MANY':
+                $query = $this->treatOneToManyRelation($query, $relationColumn, $value, $relationProperties);
+                break;
+            case 'MANY_TO_ONE':
+                $query = $this->treatManyToOneRelation($query, $relationColumn, $value, $relationProperties);
+                break;
+            case 'MANY_TO_MANY':
+                $query = $this->treatManyToManyRelation($query, $relationColumn, $value, $relationProperties);
+                break;
+        }
+
+        return $query;
+    }
+
+    public function findBy(array $constraints, array $queryParams = []) : Collection {
+        $query = $this->query();
+
+        $constraints = array_merge($constraints, $this->getFilterConstraints($queryParams));
+
+        foreach ($constraints as $column => $value) {
+            $query = $this->where($query, $column, $value);
+        }
+
+        $columns = [$this->getTableName() . '.*'];
+
+        foreach ($this->relationships as $relation => $properties) {
+            if ($properties['hydrate']) {
+                $query = $this->joinWithRelation($query, $relation);
+                $columns = array_merge($columns, $this->getRelationColumnsAliases($relation));
+            }
+        }
+
+        //if ($this->getTableName() === 'features') {
+        //    var_dump($query->toSql());
+        //}
+
+        return $this->castHydrate($query->get($columns));
+    }
+
+    public function getRelationColumnsAliases($relation) {
+        $columns = [];
+        $relationProperties = $this->relationships[$relation];
+        $hydrateColumns = $relationProperties['hydrate'];
+        $relationTable = $relationProperties['table'];
+
+        if (! $hydrateColumns) {
+            return $columns;
+        }
+
+        foreach ($hydrateColumns as $column) {
+            $columns[] = $relationTable . '.' . $column . ' as ' . $relation . '.' . $column;
+        }
+
+        return $columns;
+    }
+
+    public function hydrateRelations(Collection $entities) {
+        foreach ($this->relationships as $relation => $properties) {
+            if (! $properties['hydrate']) {
+                continue;
+            }
+
+            foreach ($entities as $key => $entity) {
+                var_dump($entity);exit;
+            }
+        }
+
+        return $entities;
+    }
+
+    public function getFilterConstraints(array $queryParams) {
+        $constraints = [];
+
+        foreach ($queryParams as $queryParam => $value) {
+            $queryParam = str_replace(':', '.', $queryParam);
+
+            if (isset($this->filterableKeys[$queryParam])) {
+                $type = $this->filterableKeys[$queryParam];
+
+                switch ($type) {
+                    case 'date':
+
+                        break;
+
+                    case 'boolean':
+                        $value = (bool) $value;
+                        break;
+
+                    case 'integer':
+                        $value = (int) $value;
+                        break;
+
+                    case 'decoded':
+                        $value = $this->optimus->decode((int) $value);
+                        break;
+
+                    default:
+                }
+
+                $constraints[$queryParam] = $value;
+            }
+        }
+
+        return $constraints;
     }
 
     /**
