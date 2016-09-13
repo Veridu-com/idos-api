@@ -132,7 +132,7 @@ class Digested implements RouteInterface {
      * Updates a digested data in the given source.
      *
      * @apiEndpoint PUT /profiles/{userName}/source/{sourceId:[0-9]+}/digested/{digestedName}
-     * @apiGroup Company Members
+     * @apiGroup Sources Digested
      * @apiAuth header token CredentialToken XXX Company's credential token
      * @apiAuth query token credentialToken XXX Company's credential token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2

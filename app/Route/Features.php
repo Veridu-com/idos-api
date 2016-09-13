@@ -68,6 +68,7 @@ class Features implements RouteInterface {
      * @apiGroup Profile Features
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -99,6 +100,7 @@ class Features implements RouteInterface {
      * @apiGroup Profile Features
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -130,6 +132,7 @@ class Features implements RouteInterface {
      * @apiGroup Profile Features
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -161,6 +164,7 @@ class Features implements RouteInterface {
      * @apiGroup Profile Features
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -192,6 +196,7 @@ class Features implements RouteInterface {
      * @apiGroup Profile Features
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -223,6 +228,7 @@ class Features implements RouteInterface {
      * @apiGroup Profile Features
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth

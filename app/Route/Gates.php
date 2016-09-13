@@ -68,9 +68,11 @@ class Gates implements RouteInterface {
      * @apiGroup Profile Gates
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -99,9 +101,11 @@ class Gates implements RouteInterface {
      * @apiGroup Profile Gates
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -130,9 +134,12 @@ class Gates implements RouteInterface {
      * @apiGroup Profile Gates
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string gateSlug data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -161,9 +168,11 @@ class Gates implements RouteInterface {
      * @apiGroup Profile Gates
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -192,9 +201,12 @@ class Gates implements RouteInterface {
      * @apiGroup Profile Gates
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string gateSlug data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -223,9 +235,12 @@ class Gates implements RouteInterface {
      * @apiGroup Profile Gates
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string gateSlug data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
