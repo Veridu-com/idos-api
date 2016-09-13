@@ -21,7 +21,7 @@ class UpdateOneTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'PUT';
         $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817';
     }
@@ -167,6 +167,162 @@ class UpdateOneTest extends AbstractFunctional {
 
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testEmptyTrigger() {
+        $environment = $this->createEnvironment(
+            [
+                'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'trigger'    => '',
+                    'url'        => 'http://changed.com/test.php',
+                    'subscribed' => false
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testInvalidTrigger() {
+        $environment = $this->createEnvironment(
+            [
+                'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'trigger'    => 'trigger.changed.long.long.long.long.long.long.long.long',
+                    'url'        => 'http://changed.com/test.php',
+                    'subscribed' => false
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testEmptyUrl() {
+        $environment = $this->createEnvironment(
+            [
+                'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'trigger'    => 'trigger.test',
+                    'url'        => '',
+                    'subscribed' => false
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testInvalidUrl() {
+        $environment = $this->createEnvironment(
+            [
+                'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'trigger'    => 'trigger.test',
+                    'url'        => 'thisisnotanurl',
+                    'subscribed' => false
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

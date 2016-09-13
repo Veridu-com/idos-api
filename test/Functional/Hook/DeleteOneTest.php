@@ -19,10 +19,9 @@ class DeleteOneTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817';
-        // $this->populate($this->uri);
     }
 
     public function testSuccess() {

@@ -13,5 +13,6 @@ namespace App\Validator;
  */
 class Member implements ValidatorInterface {
     use Traits\AssertId,
+        Traits\AssertName,
         Traits\AssertUserName;
 }
