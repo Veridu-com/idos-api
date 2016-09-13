@@ -103,16 +103,9 @@ class Auth implements MiddlewareInterface {
     /**
      * Scope: System.
      *
-     * @const IDENTITY Company Token
+     * @const IDENTIY Identity Token
      */
     const IDENTITY = 0x02;
-
-    /**
-     * Scope: System.
-     *
-     * @const IDENTITY Company Token
-     */
-    const COMPANY = 0x029;
 
     /**
      * Scope: Integration.
@@ -133,11 +126,6 @@ class Auth implements MiddlewareInterface {
                 'name'    => 'UserToken',
                 'label'   => 'User Token',
                 'handler' => 'handleUserToken',
-            ],
-            self::IDENTITY => [
-                'name'    => 'CompanyToken',
-                'label'   => 'Company Token',
-                'handler' => 'handleCompanyToken',
             ],
             self::CREDENTIAL => [
                 'name'    => 'CredentialToken',
