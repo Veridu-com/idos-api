@@ -40,7 +40,6 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @var \Illuminate\Database\ConnectionInterface
      */
     protected $dbConnection;
-
     /**
      * Filterable keys of the repository.
      *
@@ -335,7 +334,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         return $query;
     }
 
-    protected function treatOneToManyRelation($query, $relationColumn, $value, $relationProperties) {
+    protected function treatOneToManyRelation($query, $relationColumn, $value, $relationProperties, $operator = '=') {
         $relationTable = $relationProperties['table'];
         $relationTableForeignKey = $relationProperties['foreignKey'];
         $relationKey = $relationProperties['key'];
@@ -345,7 +344,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         return $query;
     }
 
-    protected function treatManyToOneRelation($query, $relationColumn, $value, $relationProperties) {
+    protected function treatManyToOneRelation($query, $relationColumn, $value, $relationProperties, $operator = '=') {
         $relationTable = $relationProperties['table'];
         $relationTableKey = $relationProperties['key'];
         $table = $this->getTableName();
@@ -385,17 +384,17 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                 $query->whereNull($relationTable . '.' . $relationColumn);
             }
         } else {
-            $query->where($relationTable . '.' . $relationColumn, '=', $value);
+            $query->where($relationTable . '.' . $relationColumn, $operator, $value);
         }
 
         return $query;
     }
 
-    protected function where($query, $column, $value) {
+    protected function where($query, $column, $value, $operator = '=') {
         $isRelationConstraint = (strpos($column, '.') !== false);
 
         if (! $isRelationConstraint) {
-            return $query->where($this->getTableName() . '.' . $column, $value);
+            return $query->where($this->getTableName() . '.' . $column, $operator, $value);
         }
 
         $column = explode('.', $column);
@@ -411,16 +410,16 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
         switch ($relationType) {
             case 'ONE_TO_ONE':
-                $query = $this->treatOneToOneRelation($query, $relationColumn, $value, $relationProperties);
+                $query = $this->treatOneToOneRelation($query, $relationColumn, $value, $relationProperties, $operator);
                 break;
             case 'ONE_TO_MANY':
-                $query = $this->treatOneToManyRelation($query, $relationColumn, $value, $relationProperties);
+                $query = $this->treatOneToManyRelation($query, $relationColumn, $value, $relationProperties, $operator);
                 break;
             case 'MANY_TO_ONE':
-                $query = $this->treatManyToOneRelation($query, $relationColumn, $value, $relationProperties);
+                $query = $this->treatManyToOneRelation($query, $relationColumn, $value, $relationProperties, $operator);
                 break;
             case 'MANY_TO_MANY':
-                $query = $this->treatManyToManyRelation($query, $relationColumn, $value, $relationProperties);
+                $query = $this->treatManyToManyRelation($query, $relationColumn, $value, $relationProperties, $operator);
                 break;
         }
 
@@ -433,7 +432,14 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $constraints = array_merge($constraints, $this->getFilterConstraints($queryParams));
 
         foreach ($constraints as $column => $value) {
-            $query = $this->where($query, $column, $value);
+            if (is_array($value)) {
+                $operator = $value[1];
+                $value = $value[0];
+
+                $query = $this->where($query, $column, $value, $operator);
+            } else {
+                $query = $this->where($query, $column, $value);
+            }
         }
 
         $getColumns = [$this->getTableName() . '.*'];
@@ -481,6 +487,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
             if (isset($this->filterableKeys[$queryParam])) {
                 $type = $this->filterableKeys[$queryParam];
+                $operator = '=';
 
                 switch ($type) {
                     case 'date':
@@ -499,10 +506,14 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                         $value = $this->optimus->decode((int) $value);
                         break;
 
+                    case 'string':
+                        $value = str_replace('*', '%', $value);
+                        $operator = 'ilike';
+
                     default:
                 }
 
-                $constraints[$queryParam] = $value;
+                $constraints[$queryParam] = [$value, $operator];
             }
         }
 

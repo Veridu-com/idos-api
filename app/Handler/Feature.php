@@ -91,24 +91,53 @@ class Feature implements HandlerInterface {
      * @return App\Entity\Feature
      */
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertSource($command->source);
+        $this->validator->assertService($command->service);
+        $this->validator->assertFlag($command->upsert);
         $this->validator->assertLongName($command->name);
-        $this->validator->assertId($command->userId);
+        $this->validator->assertName($command->type);
+        $this->validator->assertValue($command->value);
 
-        $feature = $this->repository->create(
-            [
-                'name'       => $command->name,
-                'value'      => $command->value,
-                'user_id'    => $command->userId,
-                'created_at' => time()
-            ]
-        );
+        $feature = null;
+        try {
+            $feature = $this->repository->findOneByName($command->user->id, $command->source->id, $command->service->id, $command->name);
+
+            if (! $command->upsert) {
+                throw new AppException('A feature with provided sourceId and name already exists for this user.');
+            }
+
+            $feature->type = $command->type;
+            $feature->value = $command->value;
+        } catch(NotFound $e) { }
+
+        if (! $feature) {
+            $feature = $this->repository->create(
+                [
+                    'user_id'    => $command->user->id,
+                    'source_id'    => $command->source->id,
+                    'name'       => $command->name,
+                    'creator'       => $command->service->id,
+                    'type'       => $command->type,
+                    'value'      => $command->value,
+                    'created_at' => time()
+                ]
+            );
+        }
 
         try {
             $feature = $this->repository->save($feature);
-            $event   = new Created($feature);
+            $feature = $this->repository->hydrateRelations($feature);
+            
+            if ($command->upsert) {
+                $event   = new Updated($feature);
+            } else {
+                $event   = new Created($feature);
+            }
+
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            throw new AppException('Error while creating a feature');
+            throw new AppException('Error while ' . ($command->upsert ? 'updating' : 'creating') . ' feature');
         }
 
         return $feature;
@@ -122,26 +151,30 @@ class Feature implements HandlerInterface {
      * @return App\Entity\Feature
      */
     public function handleUpdateOne(UpdateOne $command) : FeatureEntity {
-        $this->validator->assertSlug($command->featureSlug);
-        $this->validator->assertId($command->userId);
+        $this->validator->assertUser($command->user);
+        $this->validator->assertSource($command->source);
+        $this->validator->assertService($command->service);
+        $this->validator->assertId($command->featureId);
+        $this->validator->assertLongName($command->name);
+        $this->validator->assertName($command->type);
+        $this->validator->assertValue($command->value);
 
-        $feature = $this->repository->findByUserIdAndSlug($command->userId, $command->featureSlug);
+        $feature = $this->repository->findOneById($command->user->id, $command->source->id, $command->service->id, $command->featureId);
 
-        if ($command->value) {
-            $feature->value     = $command->value;
-            $feature->updatedAt = time();
-        }
+        $feature->name      = $command->name;
+        $feature->type      = $command->type;
+        $feature->value     = $command->value;
+        $feature->updatedAt = time();
 
         try {
             $feature = $this->repository->save($feature);
+            $feature = $this->repository->hydrateRelations($feature);
+
             $event   = new Updated($feature);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new AppException(
-                'Error while updating a feature user id: ' .
-                $command->userId .
-                ' slug: ' .
-                $command->featureSlug
+                'Error while updating feature'
             );
         }
 
@@ -176,20 +209,19 @@ class Feature implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertSlug($command->featureSlug);
-        $this->validator->assertId($command->userId);
+        $this->validator->assertUser($command->user);
+        $this->validator->assertSource($command->source);
+        $this->validator->assertService($command->service);
+        $this->validator->assertId($command->featureId);
 
-        $feature = $this->repository->findByUserIdAndSlug($command->userId, $command->featureSlug);
+        $feature = $this->repository->findOneById($command->user->id, $command->source->id, $command->service->id, $command->featureId);
+        $affectedRows = $this->repository->delete($feature->id);
 
-        $rowsAffected = $this->repository->delete($feature->id);
-
-        if ($rowsAffected) {
+        if ($affectedRows) {
             $event = new Deleted($feature);
             $this->emitter->emit($event);
-        } else {
-            throw new NotFound();
         }
 
-        return $rowsAffected;
+        return $affectedRows;
     }
 }

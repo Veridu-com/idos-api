@@ -45,6 +45,14 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
      * {@inheritdoc}
      */
     protected $relationships = [
+        'user' => [
+            'type' => 'MANY_TO_ONE',
+            'table' => 'users',
+            'foreignKey' => 'user_id',
+            'key' => 'id',
+            'entity' => 'User',
+            'hydrate' => false
+        ],
         'source' => [
             'type' => 'MANY_TO_ONE',
             'table' => 'sources',
@@ -59,12 +67,20 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
                 'updated_at'
             ]
         ],
+        'creator' => [
+            'type' => 'MANY_TO_ONE',
+            'table' => 'services',
+            'foreignKey' => 'creator',
+            'key' => 'id',
+            'entity' => 'Service',
+            'hydrate' => false
+        ],
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : Collection {
+    public function findByUserId(int $userId, array $queryParams = []) : Collection {
         $result = $this->findBy([
             'user_id' => $userId
         ], $queryParams);
@@ -75,30 +91,31 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteByUserId(int $userId) : int {
+    public function deleteByUserId(int $userId, array $queryParams = []) : int {
         return $this->deleteByKey('user_id', $userId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByUserId(int $userId) : Collection {
-        return $this->findBy(
-            [
-                'user_id' => $userId,
-            ]
-        );
+    public function findOneById(int $userId, int $sourceId, int $serviceId, int $id) : Feature {
+        return $this->findOneBy([
+            'user_id' => $userId,
+            'source_id' => $sourceId,
+            'creator' => $serviceId,
+            'id' => $id
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByUserIdAndSlug(int $userId, string $featureSlug) : Feature {
-        return $this->findOneBy(
-            [
-                'user_id' => $userId,
-                'slug'    => $featureSlug
-            ]
-        );
+    public function findOneByName(int $userId, int $sourceId, int $serviceId, string $name) : Feature {
+        return $this->findOneBy([
+            'user_id' => $userId,
+            'source_id' => $sourceId,
+            'creator' => $serviceId,
+            'name' => $name
+        ]);
     }
 }

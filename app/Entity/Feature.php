@@ -32,7 +32,7 @@ class Feature extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['user_id', 'source', 'name', 'creator', 'type', 'value', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'user_id', 'source', 'name', 'creator', 'type', 'value', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */

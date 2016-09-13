@@ -14,5 +14,7 @@ namespace App\Validator;
 class Feature implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertName,
-        Traits\AssertSlug;
+        Traits\AssertEntity,
+        Traits\AssertFlag,
+        Traits\AssertValue;
 }

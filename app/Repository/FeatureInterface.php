@@ -16,37 +16,42 @@ use Illuminate\Support\Collection;
  */
 interface FeatureInterface extends RepositoryInterface {
     /**
-     * Gets all Features based on their user id.
+     * Returns all features based on their user id.
      *
      * @param int $userId
+     * @param array $queryParams
      *
      * @return Collection
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : Collection;
+    public function findByUserId(int $userId, array $queryParams = []) : Collection;
 
     /**
      * Deletes all features based on their user id.
      *
      * @param int $userId
+     * @param array $queryParams
      *
      * @return int
      */
-    public function deleteByUserId(int $userId) : int;
+    public function deleteByUserId(int $userId, array $queryParams = []) : int;
 
     /**
-     * Returns a collection of features based on their user id.
+     * Returns a feature based on its user id, source id, service id (creator) and id.
      *
-     * @param int $userId
-     *
-     * @return Illuminate\Support\Collection
+     * @param int    $userId    The user id
+     * @param int    $sourceId  The source id
+     * @param int    $serviceId The service id
+     * @param int    $id        The feature id
      */
-    public function findByUserId(int $userId) : Collection;
+    public function findOneById(int $userId, int $sourceId, int $serviceId, int $id) : Feature;
 
     /**
-     * Returns a Feature based on the user id and the slug.
+     * Returns a feature based on its user id, source id, service id (creator) and name.
      *
-     * @param int    $userId      The user identifier
-     * @param string $featureSlug The feature slug
+     * @param int    $userId    The user id
+     * @param int    $sourceId  The source id
+     * @param int    $serviceId The service id
+     * @param string $name      The feature name
      */
-    public function findByUserIdAndSlug(int $userId, string $featureSlug) : Feature;
+    public function findOneByName(int $userId, int $sourceId, int $serviceId, string $name) : Feature;
 }

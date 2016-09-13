@@ -42,6 +42,7 @@ class Features implements RouteInterface {
             return new \App\Controller\Features(
                 $container->get('repositoryFactory')->create('Feature'),
                 $container->get('repositoryFactory')->create('User'),
+                $container->get('repositoryFactory')->create('Source'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );
