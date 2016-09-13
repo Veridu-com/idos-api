@@ -13,6 +13,7 @@ use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
+use App\Entity\Role;
 use App\Event\Company\Created;
 use App\Event\Company\Deleted;
 use App\Event\Company\DeletedMulti;
@@ -118,9 +119,11 @@ class Company implements HandlerInterface {
         $company->public_key  = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
         $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
 
+        
+
         try {
-            $company = $this->repository->save($company);
-            $event   = new Created($company);
+            $company = $this->repository->saveNewCompany($company, $command->identity);
+            $event   = new Created($company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new AppException('Error while creating a company');
@@ -137,16 +140,17 @@ class Company implements HandlerInterface {
      * @return App\Entity\Company
      */
     public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
-        $this->validator->assertId($command->companyId);
+        $this->validator->assertCompany($command->company);
+        $this->validator->assertIdentity($command->identity);
         $this->validator->assertMediumLatinName($command->name);
 
-        $company            = $this->repository->find($command->companyId);
+        $company = $command->company;
         $company->name      = $command->name;
         $company->updatedAt = time();
 
         try {
             $company = $this->repository->save($company);
-            $event   = new Updated($company);
+            $event   = new Updated($company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new AppException('Error while updating a company id ' . $command->companyId);
@@ -164,12 +168,13 @@ class Company implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertCompany($command->company);
+        $this->validator->assertIdentity($command->identity);
         $this->validator->assertId($command->company->id);
 
         $rowsAffected = $this->repository->delete($command->company->id);
 
         if ($rowsAffected) {
-            $event = new Deleted($command->company);
+            $event = new Deleted($command->company, $command->identity);
             $this->emitter->emit($event);
         } else {
             throw new NotFound();
