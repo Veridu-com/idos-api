@@ -34,5 +34,5 @@ interface IdentityInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function findBySourceNameAndProfileId(string $sourceName, string $profileId) : Collection;
+    public function findBySourceNameAndProfileId(string $sourceName, string $profileId, string $applicationId) : Collection;
 }
