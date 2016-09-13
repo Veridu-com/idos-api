@@ -25,15 +25,11 @@ use App\Helper\Utils;
  */
 class Warning extends AbstractEntity {
     use SecureFields;
-    /**
-     * {@inheritdoc}
-     */
-    const CACHE_PREFIX = 'Warning';
 
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'reference', 'user_id', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'name', 'slug', 'reference', 'user_id', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
@@ -51,44 +47,5 @@ class Warning extends AbstractEntity {
         $this->attributes['slug'] = Utils::slugify($value);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-            sprintf(
-                '%s.id.%s',
-                self::CACHE_PREFIX,
-                $this->id
-            ),
-            sprintf(
-                '%s.slug.%s',
-                self::CACHE_PREFIX,
-                $this->slug
-            ),
-            sprintf(
-                '%s.reference.%s',
-                self::CACHE_PREFIX,
-                $this->reference
-            ),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-                sprintf(
-                    '%s.by.user_id.%s',
-                    self::CACHE_PREFIX,
-                    $this->userId
-                )
-            ],
-            $this->getCacheKeys()
-        );
     }
 }

@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Source Repository Implementation.
  */
-class DBSource extends AbstractDBRepository implements SourceInterface {
+class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     /**
      * The table associated with the repository.
      *
@@ -32,12 +32,18 @@ class DBSource extends AbstractDBRepository implements SourceInterface {
      * {@inheritdoc}
      */
     public function findOne(int $id, int $userId) : Source {
-        return $this->findBy(
+        return $this->findOneBy(
             [
                 'id'      => $id,
                 'user_id' => $userId
             ]
         );
+
+        if($result->isEmpty()) {
+            throw new NotFound();
+        }
+
+        return $result->first();
     }
 
     /**
@@ -45,5 +51,12 @@ class DBSource extends AbstractDBRepository implements SourceInterface {
      */
     public function getAllByUserId(int $userId) : Collection {
         return $this->findBy(['user_id' => $userId]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByUserId(int $userId) : int {
+        return $this->deleteBy(['user_id' => $userId]);
     }
 }

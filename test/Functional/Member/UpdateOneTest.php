@@ -11,14 +11,17 @@ namespace Test\Functional\Member;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCompanyToken;
+use Test\Functional\Traits;
 
 class UpdateOneTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCompanyToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCompanyToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'PUT';
         $this->uri        = '/1.0/management/members/1321189817';
     }
@@ -41,7 +44,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -73,7 +76,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

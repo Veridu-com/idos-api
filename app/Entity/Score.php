@@ -23,11 +23,6 @@ class Score extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    const CACHE_PREFIX = 'Score';
-
-    /**
-     * {@inheritdoc}
-     */
     protected $visible = ['name', 'value', 'created_at'];
     /**
      * {@inheritdoc}
@@ -46,49 +41,5 @@ class Score extends AbstractEntity {
      */
     public function getValueAttribute() : float {
         return floatval($this->attributes['value']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-            sprintf(
-                '%s.id.%s',
-                self::CACHE_PREFIX,
-                $this->id
-            ),
-            sprintf(
-                '%s.attribute_id.%s',
-                self::CACHE_PREFIX,
-                $this->attribute_id
-            ),
-            sprintf(
-                '%s.name.%s',
-                self::CACHE_PREFIX,
-                $this->name
-            ),
-            sprintf(
-                '%s.value.%s',
-                self::CACHE_PREFIX,
-                $this->value
-            ),
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-            sprintf(
-                '%s.by.attribute_id.%s',
-                self::CACHE_PREFIX,
-                $this->sourceId
-            )
-            ],
-            $this->getCacheKeys()
-        );
     }
 }

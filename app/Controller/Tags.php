@@ -10,7 +10,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Factory\Command;
-use App\Helper\Utils;
 use App\Repository\TagInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
@@ -81,13 +80,8 @@ class Tags implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
-        $tags = $request->getQueryParam('tags', []);
 
-        if ($tags) {
-            $tags = array_map([Utils::class, 'slugify'], explode(',', $tags));
-        }
-
-        $tags = $this->repository->getAllByUserIdAndTagSlugs($user->id, $tags);
+        $tags = $this->repository->getAllByUserIdAndTagSlugs($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $tags->toArray(),

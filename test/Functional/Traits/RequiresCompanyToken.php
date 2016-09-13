@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace Test\Functional\Traits;
 
 trait RequiresCompanyToken {
-    public function testInvalidCompanyToken() {
+    public function testInvalidCompanyTokenHeader() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'        => $this->uri,
@@ -26,7 +26,7 @@ trait RequiresCompanyToken {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -37,52 +37,24 @@ trait RequiresCompanyToken {
         );
     }
 
-    public function testUserToken() {
+    public function testInvalidCompanyTokenQueryString() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => $this->uri,
-                'REQUEST_METHOD'     => $this->httpMethod,
-                'HTTP_AUTHORIZATION' => 'UserToken dummy'
+                'REQUEST_URI'    => $this->uri,
+                'REQUEST_METHOD' => $this->httpMethod,
+                'QUERY_STRING'   => 'companyToken=dummy'
             ]
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema against Json Response
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'error.json',
-                json_decode((string) $response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testCredentialToken() {
-        $environment = $this->createEnvironment(
-            [
-                'REQUEST_URI'        => $this->uri,
-                'REQUEST_METHOD'     => $this->httpMethod,
-                'HTTP_AUTHORIZATION' => 'CredentialToken dummy'
-            ]
-        );
-        $request  = $this->createRequest($environment);
-        $response = $this->process($request);
-        $this->assertSame(403, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
-
-        /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

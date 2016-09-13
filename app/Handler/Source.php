@@ -15,8 +15,10 @@ use App\Command\Source\UpdateOne;
 use App\Entity\Source as SourceEntity;
 use App\Event\Source\Created;
 use App\Event\Source\Deleted;
+use App\Event\Source\DeletedMulti;
 use App\Event\Source\OTP;
 use App\Event\Source\Updated;
+use App\Exception\AppException;
 use App\Repository\SourceInterface;
 use App\Validator\Source as SourceValidator;
 use Interop\Container\ContainerINterface;
@@ -92,14 +94,13 @@ class Source implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : SourceEntity {
         $this->validator->assertShortName($command->name);
         $this->validator->assertUser($command->user);
-        $this->validator->assertId($command->user->Id);
-        $this->validator->assertArray($command->tags);
-        $this->validator->assertIpAddr($command->ipAddr);
+        $this->validator->assertId($command->user->id);
+        $this->validator->assertIpAddr($command->ipaddr);
 
         // OTP check
         $sendOTP = false;
         if ((isset($command->tags['otp_check']))
-            && ($this->validator->flagValue($command->tags['otp_check']))
+            && ($this->validator->validateFlag($command->tags['otp_check']))
         ) {
             $command->tags['otp_code']     = mt_rand(100000, 999999);
             $command->tags['otp_verified'] = false;
@@ -125,22 +126,22 @@ class Source implements HandlerInterface {
         $source = $this->repository->create(
             [
                 'name'       => $command->name,
-                'user_id'    => $command->user->Id,
+                'user_id'    => $command->user->id,
                 'tags'       => $command->tags,
                 'created_at' => time(),
-                'ipaddr'     => $command->ipAddr
+                'ipaddr'     => $command->ipaddr
             ]
         );
 
         $source = $this->repository->save($source);
-        $this->emitter->emit(new Created($source, $command->ipAddr));
+        $this->emitter->emit(new Created($source, $command->ipaddr));
 
         if ($sendOTP) {
-            $this->emitter->emit(new OTP($source, $command->ipAddr));
+            $this->emitter->emit(new OTP($source, $command->ipaddr));
         }
 
         if ($sendCRA) {
-            $this->emitter->emit(new CRA($source, $command->ipAddr));
+            $this->emitter->emit(new CRA($source, $command->ipaddr));
         }
 
         return $source;
@@ -156,40 +157,57 @@ class Source implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : SourceEntity {
         $this->validator->assertSource($command->source);
         $this->validator->assertId($command->source->id);
-        $this->validator->assertOTPCode($command->otpCode);
-        $this->validator->assertIpAddr($command->ipAddr);
+        $this->validator->assertIpAddr($command->ipaddr);
 
-        $source = $command->source;
+        $source     = $command->source;
+        $serialized = $source->serialize();
+
+        $tags = json_decode($serialized['tags']);
+
+        if ((isset($tags->otp_voided))) {
+            throw new AppException('Too many tries.', 403);
+        }
+
+        if (isset($command->otpCode)) {
+            $this->validator->assertOTPCode($command->otpCode);
+        }
 
         // OTP check must only work on valid sources (i.e. not voided and unverified)
-        if ((empty($source->tags['otp_voided']))
-            && (empty($source->tags['otp_verified']))
+        if ($tags
+            && property_exists($tags, 'otp_check')
+            && (empty($tags->otp_verified))
         ) {
             // code verification
-            if ((isset($source->tags['otp_code']))
-                && ($source->tags['otp_code'] === $command->otpCode)
+            if ((isset($tags->otp_code))
+                && ($tags->otp_code === $command->otpCode)
             ) {
-                $source->tags['otp_verified'] = true;
+                $tags->otp_verified = true;
             }
 
             // attempt verification
-            if (! isset($source->tags['otp_attempts'])) {
-                $source->tags['otp_attempts'] = 0;
+            if (! property_exists($tags, 'otp_attempts')) {
+                $tags->otp_attempts = 0;
             }
 
-            $source->tags['otp_attempts']++;
-            // after 3 failed attempts, the otp is voided (avoids brute-force validation)
-            if (($source->tags['otp_attempts'] > 2)
-                && ($source->tags['otp_verified'] === false)
-            ) {
-                $source->tags['otp_voided'] = true;
+            $tags->otp_attempts++;
 
-                return $source;
+            // after 3 failed attempts, the otp is voided (avoids brute-force validation)
+            if (($tags->otp_attempts > 2)
+                && ((! property_exists($tags, 'otp_verified')) || (property_exists($tags, 'otp_verified') && ! $tags->otp_verified))
+            ) {
+                $tags->otp_voided = true;
+                $source->tags     = $tags;
+                $source           = $this->repository->save($source);
+
+                throw new AppException('Too many tries.', 403);
             }
         }
 
+        $source->tags      = $tags;
+        $source->updatedAt = time();
+
         $source = $this->repository->save($source);
-        $this->emitter->emit(new Updated($source, $command->ipAddr));
+        $this->emitter->emit(new Updated($source, $command->ipaddr));
 
         return $source;
     }
@@ -204,10 +222,10 @@ class Source implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : bool {
         $this->validator->assertSource($command->source);
         $this->validator->assertId($command->source->id);
-        $this->validator->assertIpAddr($command->ipAddr);
+        $this->validator->assertIpAddr($command->ipaddr);
 
         if ($this->repository->delete($command->source->id)) {
-            $this->emitter->emit(new Deleted($command->source, $command->ipAddr));
+            $this->emitter->emit(new Deleted($command->source, $command->ipaddr));
 
             return true;
         }
@@ -224,13 +242,14 @@ class Source implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertUser($command->user);
-        $this->validator->assertUserId($command->user->id);
-        $this->validator->assertIpAddr($command->ipAddr);
+        $this->validator->assertId($command->user->id);
+        $this->validator->assertIpAddr($command->ipaddr);
 
-        $sources = $this->respository->getAllByUserId($command->user->id);
+        $sources = $this->repository->getAllByUserId($command->user->id);
         $deleted = $this->repository->deleteByUserId($command->user->id);
+
         if ($deleted) {
-            $this->emitter->emit(new DeletedMulti($sources, $command->ipAddr));
+            $this->emitter->emit(new DeletedMulti($sources, $command->ipaddr));
         }
 
         return $deleted;

@@ -82,13 +82,8 @@ class Scores implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user          = $request->getAttribute('targetUser');
         $attributeName = $request->getAttribute('attributeName');
-        $names         = $request->getQueryParam('names', []);
 
-        if ($names) {
-            $names = explode(',', $names);
-        }
-
-        $scores = $this->repository->getAllByUserIdAttributeNameAndNames($user->id, $attributeName, $names);
+        $scores = $this->repository->getAllByUserIdAttributeNameAndNames($user->id, $attributeName, $request->getQueryParams());
 
         $body = [
             'data'    => $scores->toArray(),

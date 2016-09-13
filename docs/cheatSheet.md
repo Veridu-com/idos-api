@@ -164,11 +164,17 @@
 
 ### Profile Tasks
 
-[GET /1.0/profiles/:userName/tasks](profiles/tasks/listAll.md)
+[GET /1.0/profiles/:userName/processes](profiles/processes/listAll.md)
 
-[GET /1.0/profiles/:userName/tasks/:taskId](profiles/tasks/getTask.md)
+[GET /1.0/profiles/:userName/processes/:processId](profiles/processes/getOne.md)
 
-[POST /1.0/profiles/:userName/tasks/:taskId](profiles/tasks/updateTask.md)
+[GET /1.0/profiles/:userName/processes/:processId/tasks](profiles/tasks/listAll.md)
+
+[POST /1.0/profiles/:userName/processes/:processId/tasks](profiles/tasks/createNew.md)
+
+[GET /1.0/profiles/:userName/processes/:processId/tasks/:taskId](profiles/tasks/getOne.md)
+
+[PUT /1.0/profiles/:userName/processes/:processId/tasks/:taskId](profiles/tasks/updateOne.md)
 
 ## Tokens API
 
@@ -194,9 +200,9 @@
 
 [GET /1.0/sso](sso/listAll.md)
 
-[GET /1.0/sso/:providerName](sso/getProvider.md)
+[GET /1.0/sso/:providerName](sso/getOne.md)
 
-[POST /1.0/sso/:providerName](sso/createSSO.md)
+[POST /1.0/sso](sso/createNew.md)
 
 ## Access API
 

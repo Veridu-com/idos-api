@@ -9,14 +9,17 @@ declare(strict_types = 1);
 namespace Test\Functional\Tag;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCompanyToken;
+use Test\Functional\Traits;
 
 class DeleteOneTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCompanyToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCompanyToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags/user-2-tag-1';
         // $this->populate($this->uri);
@@ -38,7 +41,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -66,7 +69,7 @@ class DeleteOneTest extends AbstractFunctional {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

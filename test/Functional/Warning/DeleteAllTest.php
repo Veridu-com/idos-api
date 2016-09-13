@@ -9,14 +9,17 @@ namespace Test\Functional\Warning;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits;
 
 class DeleteAllTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCredentialToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RequiresCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'DELETE';
 
         $this->populate(
@@ -30,9 +33,6 @@ class DeleteAllTest extends AbstractFunctional {
         $this->uri    = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings';
     }
 
-    /**
-     * @group lol
-     */
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -53,7 +53,7 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertCount(0, $this->entities);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

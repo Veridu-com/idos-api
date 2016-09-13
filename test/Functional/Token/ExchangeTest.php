@@ -12,14 +12,17 @@ use App\Helper\Token as TokenHelper;
 use App\Middleware\Auth;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresUserToken;
+use Test\Functional\Traits;
 
 class ExchangeTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresUserToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresUserToken,
+        Traits\RejectsCompanyToken,
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/token';
     }

@@ -176,6 +176,10 @@ class Auth implements MiddlewareInterface {
             throw new AppException('Invalid Token', 400);
         }
 
+        if ($token->isExpired()) {
+            throw new AppException('Token Expired', 400);
+        }
+
         // Ensures JWT Audience is the current API
         $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
         if (! $token->validate($this->jwtValidation)) {
@@ -238,6 +242,10 @@ class Auth implements MiddlewareInterface {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
             throw new AppException('Invalid Token', 400);
+        }
+
+        if ($token->isExpired()) {
+            throw new AppException('Token Expired', 400);
         }
 
         // Ensures JWT Audience is the current API
@@ -319,6 +327,10 @@ class Auth implements MiddlewareInterface {
             $token = $this->jwtParser->parse($reqToken);
         } catch (\Throwable $e) {
             throw new AppException('Invalid Token', 400);
+        }
+
+        if ($token->isExpired()) {
+            throw new AppException('Token Expired', 400);
         }
 
         // Ensures JWT Audience is the current API
@@ -496,23 +508,21 @@ class Auth implements MiddlewareInterface {
         // Authorization Handling Loop
         if (! $hasAuthorization) {
             foreach ($this->authorizationSetup() as $level => $authorizationInfo) {
-                if ($hasAuthorization) {
-                    break;
-                }
-
                 if (($this->authorizationRequirement & $level) == $level) {
                     // Tries to extract Authorization from Request
                     $authorization = $this->extractAuthorization($request, $authorizationInfo['name']);
 
                     if (empty($authorization)) {
-                        $validAuthorization[] = $authorizationInfo['label'];
-                    } else {
-                        // Handles Authorization validation and Request Argument creation
-                        $request = $this->{$authorizationInfo['handler']}($request, $authorization);
-
-                        // Authorization has been found and validated
-                        $hasAuthorization = true;
+                        $validAuthorization[$authorizationInfo['name']] = $authorizationInfo['label'];
+                        continue;
                     }
+
+                    // Handles Authorization validation and Request Argument creation
+                    $request = $this->{$authorizationInfo['handler']}($request, $authorization);
+
+                    // Authorization has been found and validated
+                    $hasAuthorization = true;
+                    break;
                 }
             }
         }
@@ -536,6 +546,23 @@ class Auth implements MiddlewareInterface {
             return $next($request, $response);
         }
 
-        throw new AppException('AuthorizationMissing - Authorization details missing. Valid Authorization: ' . implode(', ', $validAuthorization), 403);
+        $authenticateHeader = [];
+        foreach ($validAuthorization as $name => $label) {
+            $authenticateHeader[] = sprintf(
+                '%s realm="%s"',
+                $name,
+                $label
+            );
+        }
+
+        $response = $response->withHeader('WWW-Authenticate', implode(', ', $authenticateHeader));
+
+        throw new AppException(
+            sprintf(
+                'AuthorizationMissing - Authorization details missing. Valid Authorization: %s',
+                implode(', ', $validAuthorization)
+            ),
+            400
+        );
     }
 }

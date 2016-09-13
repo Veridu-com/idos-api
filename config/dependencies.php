@@ -18,6 +18,7 @@ use App\Repository;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Connection;
 use Interop\Container\ContainerInterface;
+use Jenssegers\Mongodb;
 use Jenssegers\Optimus\Optimus;
 use Lcobucci\JWT;
 use League\Event\Emitter;
@@ -33,6 +34,10 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Monolog\Processor\WebProcessor;
+use OAuth\Common\Consumer\Credentials;
+use OAuth\Common\Http\Uri\UriFactory;
+use OAuth\Common\Storage\Memory;
+use OAuth\ServiceFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Respect\Validation\Validator;
@@ -82,6 +87,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
             $body = [
                 'status' => false,
                 'error'  => [
+                    'id'      => $container->get('logUidProcessor')->getUid(),
                     'code'    => $exception->getCode(),
                     'type'    => 'EXCEPTION_TYPE', // $exception->getType(),
                     'link'    => 'https://docs.idos.io/errors/EXCEPTION_TYPE', // $exception->getLink(),
@@ -132,6 +138,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
         $body = [
             'status' => false,
             'error'  => [
+                'id'      => $container->get('logUidProcessor')->getUid(),
                 'code'    => 500,
                 'type'    => 'APPLICATION_ERROR',
                 'link'    => 'https://docs.idos.io/errors/APPLICATION_ERROR',
@@ -156,7 +163,7 @@ $container['notFoundHandler'] = function (ContainerInterface $container) : calla
         ServerRequestInterface $request,
         ResponseInterface $response
     ) use ($container) {
-        throw new \Exception('Whoopsies! Route not found!', 404);
+        throw new AppException('Whoopsies! Route not found!', 404);
     };
 };
 
@@ -171,8 +178,18 @@ $container['notAllowedHandler'] = function (ContainerInterface $container) : cal
             return $response->withStatus(204);
         }
 
-        throw new \Exception('Whoopsies! Method not allowed for this route!', 400);
+        throw new AppException('Whoopsies! Method not allowed for this route!', 400);
     };
+};
+
+// Monolog Request UID Processor
+$container['logUidProcessor'] = function (ContainerInterface $container) : callable {
+    return new UidProcessor();
+};
+
+// Monolog Request Processor
+$container['logWebProcessor'] = function (ContainerInterface $container) : callable {
+    return new WebProcessor();
 };
 
 // Monolog Logger
@@ -181,8 +198,8 @@ $container['log'] = function (ContainerInterface $container) : callable {
         $settings = $container->get('settings');
         $logger   = new Logger($channel);
         $logger
-            ->pushProcessor(new UidProcessor())
-            ->pushProcessor(new WebProcessor())
+            ->pushProcessor($container->get('logUidProcessor'))
+            ->pushProcessor($container->get('logWebProcessor'))
             ->pushHandler(new StreamHandler($settings['log']['path'], $settings['log']['level']));
 
         return $logger;
@@ -210,9 +227,6 @@ $container['cache'] = function (ContainerInterface $container) : Cache\PsrCache\
             break;
     }
 
-    // var_dump(get_class_methods($pool));
-    // $pool->clear();
-
     return $pool;
 };
 
@@ -224,11 +238,7 @@ $container['httpCache'] = function (ContainerInterface $container) : CacheProvid
 // Tactician Command Bus
 $container['commandBus'] = function (ContainerInterface $container) : CommandBus {
     $settings = $container->get('settings');
-    $logger   = new Logger('CommandBus');
-    $logger
-        ->pushProcessor(new UidProcessor())
-        ->pushProcessor(new WebProcessor())
-        ->pushHandler(new StreamHandler($settings['log']['path'], $settings['log']['level']));
+    $log      = $container->get('log');
 
     $commandPaths = glob(__DIR__ . '/../app/Command/*/*.php');
     $commands     = [];
@@ -261,7 +271,7 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
         [
             new LoggerMiddleware(
                 $formatter,
-                $logger
+                $log('CommandBus')
             ),
             $handlerMiddleware
         ]
@@ -338,7 +348,8 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
             $strategy = new Repository\DBStrategy(
                 $container->get('entityFactory'),
                 $container->get('optimus'),
-                $container->get('db')
+                $container->get('sql'),
+                $container->get('nosql')
             );
     }
 
@@ -369,11 +380,21 @@ $container['jwt'] = function (ContainerInterface $container) : callable {
 };
 
 // DB Access
-$container['db'] = function (ContainerInterface $container) : Connection {
+$container['sql'] = function (ContainerInterface $container) : Connection {
     $capsule = new Manager();
-    $capsule->addConnection($container['settings']['db']);
+    $capsule->addConnection($container['settings']['db']['sql']);
 
     return $capsule->getConnection();
+};
+
+// MongoDB Access
+$container['nosql'] = function (ContainerInterface $container) : callable {
+    return function (string $database) use ($container) : Mongodb\Connection {
+        $config             = $container['settings']['db']['nosql'];
+        $config['database'] = $database;
+
+        return new Mongodb\Connection($config);
+    };
 };
 
 // Respect Validator
@@ -436,4 +457,33 @@ $container['secure'] = function (ContainerInterface $container) : Secure {
     }
 
     return new Secure($encoded, $settings['secure']);
+};
+
+// SSO Auth
+$container['ssoAuth'] = function (ContainerInterface $container) : callable {
+    return function ($provider, $key, $secret) use ($container) {
+        $uriFactory = new UriFactory();
+        $currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
+        $currentUri->setQuery('');
+
+        $storage = new Memory();
+
+        // Setup the credentials for the requests
+        $credentials = new Credentials(
+            $key,
+            $secret,
+            $currentUri->getAbsoluteUri()
+        );
+
+        $settings = $container->get('settings');
+
+        $serviceFactory = new ServiceFactory();
+
+        $client = new \OAuth\Common\Http\Client\CurlClient();
+        $client->setCurlParameters([\CURLOPT_ENCODING => '']);
+        $serviceFactory->setHttpClient($client);
+
+        // Instantiate the service using the credentials, http client and storage mechanism for the token
+        return $serviceFactory->createService($provider, $credentials, $storage, $settings['sso_providers_scopes'][$provider]);
+    };
 };

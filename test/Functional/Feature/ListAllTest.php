@@ -9,14 +9,17 @@ declare(strict_types = 1);
 namespace Test\Functional\Feature;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits;
 
 class ListAllTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCredentialToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features';
     }
@@ -38,7 +41,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

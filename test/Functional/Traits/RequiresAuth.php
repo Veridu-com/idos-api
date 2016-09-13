@@ -18,14 +18,14 @@ trait RequiresAuth {
         );
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

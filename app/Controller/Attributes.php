@@ -70,14 +70,9 @@ class Attributes implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user  = $request->getAttribute('targetUser');
-        $names = $request->getQueryParam('names', []);
+        $user = $request->getAttribute('targetUser');
 
-        if ($names) {
-            $names = explode(',', $names);
-        }
-
-        $attributes = $this->repository->getAllByUserIdAndNames($user->id, $names);
+        $attributes = $this->repository->getAllByUserIdAndNames($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $attributes->toArray(),
@@ -207,7 +202,8 @@ class Attributes implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Attribute\\DeleteAll');
         $command
-            ->setParameter('user', $request->getAttribute('targetUser'));
+            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('filters', $request->getParsedBody());
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

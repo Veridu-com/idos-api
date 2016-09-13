@@ -11,14 +11,17 @@ namespace Test\Functional\Tag;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCompanyToken;
+use Test\Functional\Traits;
 
 class CreateNewTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCompanyToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCompanyToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags';
     }
@@ -50,7 +53,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame('Tag Test', $body['data']['name']);
         $this->assertSame('tag-test', $body['data']['slug']);
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

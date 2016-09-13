@@ -35,7 +35,28 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      *
      * @var \Slim\App
      */
-    private $app;
+    static private $app;
+
+    /**
+     * Phinx Application Instance.
+     *
+     * @var Phinx\Console\PhinxApplication
+     */
+    static private $phinxApp;
+
+    /**
+     * Phinx TextWrapper Instance.
+     *
+     * @var Phinx\Wrapper\TextWrapper
+     */
+    static private $phinxTextWrapper;
+
+    /**
+     * SQL Database Connection.
+     *
+     * @var Illuminate\Database\Connection
+     */
+    static private $sqlConnection;
 
     /**
      * Message of the errors of a failed schema assertion.
@@ -71,13 +92,54 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * Runs one time before any method of the Child classes.
      */
     public static function setUpBeforeClass() {
-        $phinxTextWrapper = new TextWrapper(new PhinxApplication());
-        $phinxTextWrapper->setOption('configuration', 'phinx.yml');
-        $phinxTextWrapper->setOption('parser', 'YAML');
-        $phinxTextWrapper->setOption('environment', 'testing');
-        $phinxTextWrapper->getRollback('testing', 0);
-        $phinxTextWrapper->getMigrate();
-        $phinxTextWrapper->getSeed();
+        if (! self::$app) {
+            $app = new App(
+                ['settings' => $GLOBALS['appSettings']]
+            );
+
+            require_once __ROOT__ . '/../config/dependencies.php';
+            require_once __ROOT__ . '/../config/middleware.php';
+            require_once __ROOT__ . '/../config/handlers.php';
+            require_once __ROOT__ . '/../config/routes.php';
+
+            self::$app = $app;
+        }
+
+        if (! self::$phinxApp) {
+            $phinxApp = new PhinxApplication();
+
+            self::$phinxApp = $phinxApp;
+        }
+
+        if (! self::$phinxTextWrapper) {
+            $phinxTextWrapper = new TextWrapper(self::$phinxApp);
+            $phinxTextWrapper->setOption('configuration', 'phinx.yml');
+            $phinxTextWrapper->setOption('parser', 'YAML');
+            $phinxTextWrapper->setOption('environment', 'testing');
+            $phinxTextWrapper->getRollback('testing', 0);
+            $phinxTextWrapper->getMigrate();
+            $phinxTextWrapper->getSeed();
+
+            self::$phinxTextWrapper = $phinxTextWrapper;
+        }
+
+        if (! self::$sqlConnection) {
+            self::$sqlConnection = self::$app->getContainer()->get('sql');
+        }
+    }
+
+    /**
+     * Starts a SQL database transaction before each test
+     */
+    protected function setUp() {    
+        self::$sqlConnection->beginTransaction();
+    }
+
+    /**
+     * Rollback the SQL database transaction
+     */
+    protected function tearDown() {
+        self::$sqlConnection->rollback();
     }
 
     /**
@@ -86,22 +148,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * @return Slim\App $app
      */
     protected function getApp() : App {
-        if ($this->app) {
-            return $this->app;
-        }
-
-        $app = new App(
-            ['settings' => $GLOBALS['appSettings']]
-        );
-
-        require_once __ROOT__ . '/../config/dependencies.php';
-        require_once __ROOT__ . '/../config/middleware.php';
-        require_once __ROOT__ . '/../config/handlers.php';
-        require_once __ROOT__ . '/../config/routes.php';
-
-        $this->app = $app;
-
-        return $app;
+        return self::$app;
     }
 
     /**
@@ -140,7 +187,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         $response = $this->process($request);
         $body     = json_decode((string) $response->getBody(), true);
 
-        if ($response->getStatusCode() === 403) {
+        if ($response->getStatusCode() >= 400) {
             $this->entities = [];
         } else {
             $this->entities = $body['data'];
@@ -267,7 +314,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * @return string
      */
     protected function userToken(
-        $userName = 'usr001',
+        $userName = 'f67b96dcf96b49d713a520ce9f54053c',
         $credentialPubKey = null,
         $credentialPrivKey = null
     ) {
@@ -308,7 +355,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * @return string
      */
     protected function companyToken(
-        $subject = '4c9184f37cff01bcdc32dc486ec36961:usr001',
+        $subject = '4c9184f37cff01bcdc32dc486ec36961:f67b96dcf96b49d713a520ce9f54053c',
         $companyPubKey = null,
         $companyPrivKey = null
     ) {

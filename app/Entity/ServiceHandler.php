@@ -28,11 +28,6 @@ class ServiceHandler extends AbstractEntity {
     use SecureFields;
 
     /**
-     * Cache prefix.
-     */
-    const CACHE_PREFIX = 'ServiceHandler';
-
-    /**
      * {@inheritdoc}
      */
     protected $visible = ['id', 'listens', 'service', 'created_at', 'updated_at'];
@@ -60,23 +55,4 @@ class ServiceHandler extends AbstractEntity {
      * @var array
      */
     protected $secure = ['username', 'password'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-            ],
-            $this->getCacheKeys()
-        );
-    }
 }

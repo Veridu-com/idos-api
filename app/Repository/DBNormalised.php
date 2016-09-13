@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Normalised Repository Implementation.
  */
-class DBNormalised extends AbstractDBRepository implements NormalisedInterface {
+class DBNormalised extends AbstractSQLDBRepository implements NormalisedInterface {
     /**
      * The table associated with the repository.
      *
@@ -28,6 +28,12 @@ class DBNormalised extends AbstractDBRepository implements NormalisedInterface {
      * @var string
      */
     protected $entityName = 'Normalised';
+    /**
+     * {@inheritdoc}
+     */
+    protected $filterableKeys = [
+        'name' => 'string'
+    ];
 
     /**
      * {@inheritdoc}
@@ -43,15 +49,13 @@ class DBNormalised extends AbstractDBRepository implements NormalisedInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdSourceIdAndNames(int $userId, int $sourceId, array $names) : Collection {
+    public function getAllByUserIdSourceIdAndNames(int $userId, int $sourceId, array $queryParams = []) : Collection {
         $result = $this->query()
             ->join('sources', 'sources.id', '=', 'normalised.source_id')
             ->where('sources.user_id', '=', $userId)
             ->where('sources.id', '=', $sourceId);
 
-        if (! empty($names)) {
-            $result = $result->whereIn('normalised.name', $names);
-        }
+        $result = $this->filter($result, $queryParams);
 
         return $result->get(['normalised.*']);
     }

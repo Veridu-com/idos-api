@@ -13,9 +13,14 @@ use App\Command\Digested\DeleteAll;
 use App\Command\Digested\DeleteOne;
 use App\Command\Digested\UpdateOne;
 use App\Entity\Digested as DigestedEntity;
+use App\Event\Digested\Created;
+use App\Event\Digested\Deleted;
+use App\Event\Digested\DeletedMulti;
+use App\Event\Digested\Updated;
 use App\Repository\DigestedInterface;
 use App\Validator\Digested as DigestedValidator;
 use Interop\Container\ContainerInterface;
+use League\Event\Emitter;
 
 /**
  * Handles Digested commands.
@@ -33,6 +38,12 @@ class Digested implements HandlerInterface {
      * @var App\Validator\Digested
      */
     protected $validator;
+    /**
+     * Event emitter instance.
+     *
+     * @var \League\Event\Emitter
+     */
+    protected $emitter;
 
     /**
      * {@inheritdoc}
@@ -45,7 +56,9 @@ class Digested implements HandlerInterface {
                     ->create('Digested'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Digested')
+                    ->create('Digested'),
+                $container
+                    ->get('eventEmitter')
             );
         };
     }
@@ -55,15 +68,18 @@ class Digested implements HandlerInterface {
      *
      * @param App\Repository\DigestedInterface $repository
      * @param App\Validator\Digested           $validator
+     * @param \League\Event\Emitter            $emitter
      *
      * @return void
      */
     public function __construct(
         DigestedInterface $repository,
-        DigestedValidator $validator
+        DigestedValidator $validator,
+        Emitter $emitter
     ) {
         $this->repository = $repository;
         $this->validator  = $validator;
+        $this->emitter    = $emitter;
     }
 
     /**
@@ -74,6 +90,7 @@ class Digested implements HandlerInterface {
      * @return App\Entity\Digested
      */
     public function handleCreateNew(CreateNew $command) : DigestedEntity {
+        $this->validator->assertId($command->sourceId);
         $this->validator->assertLongName($command->name);
         $this->validator->assertValue($command->value);
 
@@ -88,7 +105,13 @@ class Digested implements HandlerInterface {
             ]
         );
 
-        $digested = $this->repository->save($digested);
+        try {
+            $digested = $this->repository->save($digested);
+            $event    = new Created($digested);
+            $this->emitter->emit($event);
+        } catch (\Exception $exception) {
+            throw new AppException('Error while storing digested data');
+        }
 
         return $digested;
     }
@@ -114,7 +137,14 @@ class Digested implements HandlerInterface {
             $command->name
         );
         $digested->value = $command->value;
-        $digested        = $this->repository->save($digested);
+
+        try {
+            $digested = $this->repository->save($digested);
+            $event    = new Updated($digested);
+            $this->emitter->emit($event);
+        } catch (\Exception $exception) {
+            throw new AppException('Error while updating a digested entry');
+        }
 
         return $digested;
     }
@@ -127,11 +157,28 @@ class Digested implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertId($command->user->id);
+        $this->validator->assertId($command->sourceId);
         $this->validator->assertLongName($command->name);
 
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
+        $digested = $this->repository->findOneByUserIdSourceIdAndName(
+            $command->user->id,
+            $command->sourceId,
+            $command->name
+        );
 
-        return $this->repository->deleteOneBySourceIdAndName($command->sourceId, $command->name);
+        $rowsAffected = $this->repository->deleteOneBySourceIdAndName($command->sourceId, $command->name);
+
+        if ($rowsAffected) {
+            $event = new Deleted($digested);
+            $this->emitter->emit($event);
+        } else {
+            throw new NotFound();
+        }
+
+        return $rowsAffected;
     }
 
     /**
@@ -142,8 +189,18 @@ class Digested implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertId($command->user->id);
+        $this->validator->assertId($command->sourceId);
         //@FIXME: check here if given source ($command->sourceId) has user_id == $command->user->id
 
-        return $this->repository->deleteBySourceId($command->sourceId);
+        $deletedItems = $this->repository->getAllByUserIdAndSourceId($command->user->id, $command->sourceId);
+
+        $rowsAffected = $this->repository->deleteBySourceId($command->sourceId);
+
+        $event = new DeletedMulti($deletedItems);
+        $this->emitter->emit($event);
+
+        return $rowsAffected;
     }
 }

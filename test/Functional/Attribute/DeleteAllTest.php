@@ -9,14 +9,17 @@ declare(strict_types = 1);
 namespace Test\Functional\Attribute;
 
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits;
 
 class DeleteAllTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCredentialToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes';
     }
@@ -36,9 +39,41 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertSame(3, $body['deleted']);
 
         /*
          * Validates Json Schema with Json Response
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'attribute/deleteAll.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testDeleteFilter() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request  = $this->createRequest($environment, json_encode([
+            'name' => '%1'
+        ]));
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame(1, $body['deleted']);
+
+        /*
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

@@ -142,6 +142,7 @@ class Service implements RouteInterface {
      * @see App\Controller\Services::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
+        // FIXME This should be removed!
         $app
             ->delete(
                 '/services',

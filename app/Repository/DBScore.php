@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Score Repository Implementation.
  */
-class DBScore extends AbstractDBRepository implements ScoreInterface {
+class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
     /**
      * The table associated with the repository.
      *
@@ -28,6 +28,12 @@ class DBScore extends AbstractDBRepository implements ScoreInterface {
      * @var string
      */
     protected $entityName = 'Score';
+    /**
+     * {@inheritdoc}
+     */
+    protected $filterableKeys = [
+        'name' => 'string'
+    ];
 
     /**
      * {@inheritdoc}
@@ -45,15 +51,13 @@ class DBScore extends AbstractDBRepository implements ScoreInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAttributeNameAndNames(int $userId, string $attributeName, array $names) : Collection {
+    public function getAllByUserIdAttributeNameAndNames(int $userId, string $attributeName, array $queryParams = []) : Collection {
         $result = $this->query()
             ->join('attributes', 'attributes.id', '=', 'scores.attribute_id')
             ->where('attributes.user_id', '=', $userId)
             ->where('attributes.name', '=', $attributeName);
 
-        if (! empty($names)) {
-            $result = $result->whereIn('scores.name', $names);
-        }
+        $result = $this->filter($result, $queryParams);
 
         return $result->get(['scores.*']);
     }

@@ -18,7 +18,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based User Repository Implementation.
  */
-class DBUser extends AbstractDBRepository implements UserInterface {
+class DBUser extends AbstractSQLDBRepository implements UserInterface {
     /**
      * The table associated with the repository.
      *
@@ -35,10 +35,23 @@ class DBUser extends AbstractDBRepository implements UserInterface {
     /**
      * {@inheritdoc}
      */
+    public function findByCompanyId(int $companyId) : Collection {
+        $result = $this->query()
+            ->selectRaw('users.*')
+            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
+            ->where('credentials.company_id', '=', $companyId);
+
+        return $result->get();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findByUserNameAndCompany(string $userName, int $companyId) : User {
         $result = $this->query()
             ->join('credentials', 'credential_id', '=', 'credentials.id')
             ->where('credentials.company_id', '=', $companyId)
+            ->where('users.username', '=', $userName)
             ->first(['users.*']);
 
         if (empty($result)) {
@@ -54,27 +67,10 @@ class DBUser extends AbstractDBRepository implements UserInterface {
     public function findByUserName(string $username, int $credentialId) : User {
         return $this->findOneBy(
             [
-            'username'      => $username,
-            'credential_id' => $credentialId
+                'username'      => $username,
+                'credential_id' => $credentialId
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByPubKey(string $publicKey) {
-        $result = $this->query()
-            ->selectRaw('users.*')
-            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
-            ->where('credentials.public', '=', $publicKey)
-            ->first();
-
-        if (empty($result)) {
-            throw new NotFound();
-        }
-
-        return $result;
     }
 
     /**
@@ -89,28 +85,12 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             $user = $this
                 ->create(
                     [
-                    'username'      => $userName,
-                    'credential_id' => $credentialId
+                        'username'      => $userName,
+                        'credential_id' => $credentialId
                     ]
                 );
 
             $result = $this->save($user);
-        }
-
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByUsernameAndCredential(string $userName, Credential $credential) : User {
-        $result = $this->query()
-            ->where('username', $userName)
-            ->where('credential_id', $credential->id)
-            ->first();
-
-        if (empty($result)) {
-            throw new NotFound('User not found.');
         }
 
         return $result;
@@ -138,7 +118,7 @@ class DBUser extends AbstractDBRepository implements UserInterface {
         }
 
         $result = $this->query()
-            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
+            ->join('credentials', 'credentials.id', '=', 'users.credential_id')
             ->join('roles', 'users.role', '=', 'roles.name')
             ->where('users.identity_id', '=', $user->identityId)
             ->where('users.role', 'LIKE', 'company%')
@@ -146,10 +126,62 @@ class DBUser extends AbstractDBRepository implements UserInterface {
             ->orderBy('roles.rank', 'asc')
             ->get(['users.*', 'credentials.public']);
 
-        if (empty($result)) {
+        if ($result->isEmpty()) {
             throw new NotFound('No users related to given company found');
         }
 
-        return new Collection($result);
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserNameByProfileIdAndProviderNameAndCredentialId(
+        string $profileId,
+        string $providerName,
+        int $credentialId
+    ) : string {
+        $result = $this->query()
+            ->join('sources', 'sources.user_id', '=', 'users.id')
+            ->where('sources.tags->profile_id', '=', md5($profileId))
+            ->where('sources.name', '=', $providerName)
+            ->where('users.credential_id', '=', $credentialId)
+            ->get(['users.username']);
+
+        return $result->first() ? $result->first()->username : '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllByIdentityId(int $identityId) : Collection {
+        $result = $this->query()
+            ->join('links', 'links.user_id', '=', 'users.id')
+            ->where('links.identity_id', '=', $identityId)
+            ->get(['users.*']);
+
+        if ($result->isEmpty()) {
+            throw new NotFound('No users related to given identity');
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentityIdAndCompanyId(int $identityId, int $companyId) : User {
+        $result = $this->query()
+            ->join('credentials', 'credentials.id', '=', 'users.credential_id')
+            ->join('companies', 'companies.id', '=', 'credentials.company_id')
+            ->where('users.identity_id', '=', $identityId)
+            ->where('companies.id', '=', $companyId)
+            ->get(['users.*']);
+
+        if ($result->isEmpty()) {
+            throw new NotFound('User not found', 404);
+        }
+
+        return $result->first();
     }
 }

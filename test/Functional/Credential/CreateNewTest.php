@@ -11,14 +11,17 @@ namespace Test\Functional\Credential;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCompanyToken;
+use Test\Functional\Traits;
 
 class CreateNewTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCompanyToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCompanyToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/management/credentials';
     }
@@ -42,7 +45,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+        $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -50,7 +53,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame('New Credential', $body['data']['name']);
         $this->assertSame('new-credential', $body['data']['slug']);
 
-        // Validates Json Schema against Json Response
+        // Validates Response using the Json Schema.
         $this->assertTrue(
             $this->validateSchema(
                 'credential/createNew.json',
@@ -93,7 +96,7 @@ class CreateNewTest extends AbstractFunctional {
         // $this->assertFalse($body['status']);
 
         // /*
-        //  * Validates Json Schema with Json Response
+        //  * Validates Response using the Json Schema.
         //  */
         // $this->assertTrue(
         //     $this->validateSchema(

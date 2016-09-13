@@ -20,6 +20,12 @@ class DeleteAll extends AbstractCommand {
      * @var App\Entity\User
      */
     public $user;
+    /**
+     * Attribute's filters.
+     *
+     * @var array
+     */
+    public $filters;
 
     /**
      * {@inheritdoc}
@@ -27,6 +33,10 @@ class DeleteAll extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['filters'])) {
+            $this->filters = $parameters['filters'];
         }
 
         return $this;

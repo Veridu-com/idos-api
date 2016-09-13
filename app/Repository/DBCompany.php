@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Company Repository Implementation.
  */
-class DBCompany extends AbstractDBRepository implements CompanyInterface {
+class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
     /**
      * The table associated with the repository.
      *
@@ -64,14 +64,9 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
     }
 
     /**
-     * Determines if parent.
-     *
-     * @param \App\Entity\Company $parent The parent
-     * @param \App\Entity\Company $child  The child
-     *
-     * @return bool True if parent, False otherwise.
+     * {@inheritdoc}
      */
-    public function isParent(Company $parent, Company $child) {
+    public function isParent(Company $parent, Company $child) : bool {
         if ($child->parentId === null) {
             return false;
         }
@@ -80,8 +75,9 @@ class DBCompany extends AbstractDBRepository implements CompanyInterface {
             return true;
         }
 
-        $parent = $this->find($child->parentId);
-
-        return $this->isParent($parent, $child);
+        return $this->isParent(
+            $this->find($child->parentId),
+            $child
+        );
     }
 }

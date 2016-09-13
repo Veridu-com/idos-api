@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Digested Repository Implementation.
  */
-class DBDigested extends AbstractDBRepository implements DigestedInterface {
+class DBDigested extends AbstractSQLDBRepository implements DigestedInterface {
     /**
      * The table associated with the repository.
      *
@@ -28,6 +28,12 @@ class DBDigested extends AbstractDBRepository implements DigestedInterface {
      * @var string
      */
     protected $entityName = 'Digested';
+    /**
+     * {@inheritdoc}
+     */
+    protected $filterableKeys = [
+        'name' => 'string'
+    ];
 
     /**
      * {@inheritdoc}
@@ -43,15 +49,13 @@ class DBDigested extends AbstractDBRepository implements DigestedInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdSourceIdAndNames(int $userId, int $sourceId, array $names) : Collection {
+    public function getAllByUserIdSourceIdAndNames(int $userId, int $sourceId, array $queryParams = []) : Collection {
         $result = $this->query()
             ->join('sources', 'sources.id', '=', 'digested.source_id')
             ->where('sources.user_id', '=', $userId)
             ->where('sources.id', '=', $sourceId);
 
-        if (! empty($names)) {
-            $result = $result->whereIn('digested.name', $names);
-        }
+        $result = $this->filter($result, $queryParams);
 
         return $result->get(['digested.*']);
     }

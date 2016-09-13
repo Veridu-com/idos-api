@@ -14,13 +14,111 @@ class S11SettingsSeed extends AbstractSeed {
         $now  = date('Y-m-d H:i:s');
 
         for ($i = 0; $i < 35; $i++) {
-            $data[] = [
-                'company_id' => mt_rand(1, 2),
-                'section'    => $faker->countryCode,
-                'property'   => $faker->word . '' . $i,
-                'value'      => $faker->colorName,
-                'created_at' => $now,
-                'updated_at' => $now
+            $data = [
+                [
+                    'company_id' => mt_rand(1, 2),
+                    'section'    => $faker->countryCode,
+                    'property'   => $faker->word . '' . $i,
+                    'value'      => $faker->colorName,
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.amazon.key',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.amazon.secret',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.facebook.key',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.facebook.secret',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.google.key',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.google.secret',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.linkedin.key',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.linkedin.secret',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.paypal.key',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.paypal.secret',
+                    'value'      => '',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.twitter.key',
+                    'value'      => '***REMOVED***',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ],
+                [
+                    'company_id' => 1,
+                    'section'    => 'AppTokens',
+                    'property'   => '4c9184f37cff01bcdc32dc486ec36961.twitter.secret',
+                    'value'      => '***REMOVED***',
+                    'created_at' => $now,
+                    'updated_at' => null
+                ]
             ];
         }
 

@@ -11,6 +11,19 @@ use Phinx\Migration\AbstractMigration;
  */
 class UserInit extends AbstractMigration {
     public function change() {
+        // Links a user to an identity
+        $links = $this->table('links');
+        $links
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addTimestamps()
+            ->addIndex('identity_id')
+            ->addIndex('user_id')
+            ->addIndex(['identity_id', 'user_id'], ['unique' => true])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         // Profile attributes values
         $attributes = $this->table('attributes');
         $attributes
@@ -123,6 +136,29 @@ class UserInit extends AbstractMigration {
             ->addIndex(['user_id', 'name'], ['unique' => true])
             ->addIndex(['user_id', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $processes = $this->table('processes');
+        $processes
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('event', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $tasks = $this->table('tasks');
+        $tasks
+            ->addColumn('process_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('event', 'text', ['null' => false])
+            ->addColumn('running', 'boolean', ['null' => false, 'default' => 'FALSE'])
+            ->addColumn('success', 'boolean', ['null' => true])
+            ->addColumn('message', 'binary', ['null' => true])
+            ->addTimestamps()
+            ->addIndex('process_id')
+            ->addForeignKey('process_id', 'processes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
     }
 }

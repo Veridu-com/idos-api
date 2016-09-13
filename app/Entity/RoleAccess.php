@@ -21,11 +21,6 @@ namespace App\Entity;
  */
 class RoleAccess extends AbstractEntity {
     /**
-     * Cache prefix.
-     */
-    const CACHE_PREFIX = 'RoleAccess';
-
-    /**
      * Access levels following UNIX file permission standard.
      */
     const ACCESS_NONE    = 0x00;
@@ -36,29 +31,17 @@ class RoleAccess extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'role', 'access', 'resource', 'created_at', 'updated_at'];
+    protected $visible = [
+        'id',
+        'role',
+        'access',
+        'resource',
+        'created_at',
+        'updated_at'
+    ];
 
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCacheKeys() : array {
-        return [
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceCacheKeys() : array {
-        return array_merge(
-            [
-            ],
-            $this->getCacheKeys()
-        );
-    }
 }

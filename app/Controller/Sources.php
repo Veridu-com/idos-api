@@ -79,8 +79,11 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('user');
+        $user    = $request->getAttribute('targetUser');
         $sources = $this->repository->getAllByUserId($user->id);
+
+        // @FIXME ACCESS MANAGEMENT REQUIRED!!
+        //  How can an user access another's sources?
 
         $body = [
             'data'    => $sources->toArray(),
@@ -109,10 +112,10 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('user');
+        $user     = $request->getAttribute('targetUser');
         $sourceId = (int) $request->getAttribute('decodedSourceId');
 
-        $source = $this->repository->findOne($sourceId, $user);
+        $source = $this->repository->findOne($sourceId, $user->id);
 
         $body = [
             'data' => $source->toArray()
@@ -148,7 +151,7 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('user');
+        $user = $request->getAttribute('targetUser');
 
         $command = $this->commandFactory->create('Source\\CreateNew');
         $command
@@ -163,6 +166,7 @@ class Sources implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
+            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -181,7 +185,7 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('user');
+        $user = $request->getAttribute('targetUser');
 
         $command = $this->commandFactory->create('Source\\DeleteAll');
         $command
@@ -212,13 +216,15 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('user');
+        $user     = $request->getAttribute('targetUser');
         $sourceId = (int) $request->getAttribute('decodedSourceId');
+
+        $source = $this->repository->findOne($sourceId, $user->id);
 
         $command = $this->commandFactory->create('Source\\DeleteOne');
         $command
             ->setParameter('user', $user)
-            ->setParameter('sourceId', $sourceId)
+            ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
         $body = [
@@ -249,14 +255,16 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('user');
+        $user     = $request->getAttribute('targetUser');
         $sourceId = (int) $request->getAttribute('decodedSourceId');
+
+        $source = $this->repository->findOne($sourceId, $user->id);
 
         $command = $this->commandFactory->create('Source\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
-            ->setParameter('sourceId', $sourceId)
+            ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
         $source = $this->commandBus->handle($command);

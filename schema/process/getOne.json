@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /profiles/{userName}/processes/{processId}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "pagination": {
+            "description": "Pagination data",
+            "type" : "object",
+            "data": {
+                "description": "Process response payload",
+                "type": "object",
+                "$ref": "processEntity.json"
+            },
+            "properties":
+            {
+                "current_page": {
+                    "description": "Current page",
+                    "type" : "integer"
+                },
+                "from": {
+                    "description": "Start item",
+                    "type" : "integer"
+                },
+                "last_page": {
+                    "description": "Last page",
+                    "type" : "integer"
+                },
+                "per_page": {
+                    "description": "Items per page",
+                    "type" : "integer"
+                },
+                "to": {
+                    "description": "Last item",
+                    "type" : "integer"
+                },
+                "total": {
+                    "description": "Total of items",
+                    "type" : "integer"
+                }
+            }
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

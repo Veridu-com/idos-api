@@ -73,13 +73,8 @@ class Digested implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
         $sourceId = (int) $request->getAttribute('decodedSourceId');
-        $names    = $request->getQueryParam('names', []);
 
-        if ($names) {
-            $names = explode(',', $names);
-        }
-
-        $digesteds = $this->repository->getAllByUserIdSourceIdAndNames($user->id, $sourceId, $names);
+        $digesteds = $this->repository->getAllByUserIdSourceIdAndNames($user->id, $sourceId, $request->getQueryParams());
 
         $body = [
             'data'    => $digesteds->toArray(),

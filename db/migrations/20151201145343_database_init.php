@@ -14,9 +14,10 @@ class DatabaseInit extends AbstractMigration {
         // Root for a person's ID
         $identities = $this->table('identities');
         $identities
+            ->addColumn('reference', 'text', ['null' => false])
             ->addColumn('public_key', 'text', ['null' => false])
             // private_key should be binary
-            ->addColumn('private_key', 'text', ['null' => false])
+            ->addColumn('private_key', 'binary', ['null' => false])
             ->addTimestamps()
             ->addIndex('public_key')
             ->create();

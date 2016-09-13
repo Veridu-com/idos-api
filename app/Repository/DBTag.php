@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Tag Repository Implementation.
  */
-class DBTag extends AbstractDBRepository implements TagInterface {
+class DBTag extends AbstractSQLDBRepository implements TagInterface {
     /**
      * The table associated with the repository.
      *
@@ -27,6 +27,12 @@ class DBTag extends AbstractDBRepository implements TagInterface {
      * @var string
      */
     protected $entityName = 'Tag';
+    /**
+     * {@inheritdoc}
+     */
+    protected $filterableKeys = [
+        'slug' => 'string'
+    ];
 
     /**
      * {@inheritdoc}
@@ -38,18 +44,14 @@ class DBTag extends AbstractDBRepository implements TagInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndTagSlugs(int $userId, array $tags) : Collection {
+    public function getAllByUserIdAndTagSlugs(int $userId, array $queryParams = []) : Collection {
         $result = $this->query()
             ->selectRaw('tags.*')
             ->where('user_id', '=', $userId);
 
-        if (! empty($tags)) {
-            $result = $result->whereIn('slug', $tags);
-        }
+        $result = $this->filter($result, $queryParams);
 
-        $result = $result->get();
-
-        return new Collection($result);
+        return $result->get();
     }
 
     /**

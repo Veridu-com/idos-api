@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Attribute Repository Implementation.
  */
-class DBAttribute extends AbstractDBRepository implements AttributeInterface {
+class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface {
     /**
      * The table associated with the repository.
      *
@@ -28,6 +28,12 @@ class DBAttribute extends AbstractDBRepository implements AttributeInterface {
      * @var string
      */
     protected $entityName = 'Attribute';
+    /**
+     * {@inheritdoc}
+     */
+    protected $filterableKeys = [
+        'name' => 'string'
+    ];
 
     /**
      * {@inheritdoc}
@@ -39,25 +45,29 @@ class DBAttribute extends AbstractDBRepository implements AttributeInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndNames(int $userId, array $names) : Collection {
+    public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection {
         $result = $this->query()
             ->selectRaw('attributes.*')
             ->where('user_id', '=', $userId);
 
-        if(! empty($names)) {
-            $result = $result->whereIn('attributes.name', $names);
-        }
+        $result = $this->filter($result, $filters);
 
-        $result = $result->get();
-
-        return new Collection($result);
+        return $result->get();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByUserId(int $userId) : int {
-        return $this->deleteBy(['user_id' => $userId]);
+    public function deleteByUserId(int $userId, array $filters = []) : int {
+        $result = $this->query()
+            ->selectRaw('attributes.*')
+            ->where('user_id', '=', $userId);
+
+        if ($filters) {
+            $result = $this->filter($result, $filters);
+        }
+
+        return $result->delete();
     }
 
     /**
@@ -66,7 +76,7 @@ class DBAttribute extends AbstractDBRepository implements AttributeInterface {
     public function findOneByUserIdAndName(int $userId, string $name) : Attribute {
         $result = $this->findBy(['user_id' => $userId, 'name' => $name]);
 
-        if($result->isEmpty()) {
+        if ($result->isEmpty()) {
             throw new NotFound();
         }
 

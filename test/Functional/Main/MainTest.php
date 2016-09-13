@@ -12,6 +12,8 @@ use Test\Functional\AbstractFunctional;
 
 class MainTest extends AbstractFunctional {
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/';
     }
@@ -27,7 +29,7 @@ class MainTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
 
         /*
-         * Validates Json Schema against Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(

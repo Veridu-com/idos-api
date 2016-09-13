@@ -70,14 +70,9 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user  = $request->getAttribute('targetUser');
-        $names = $request->getQueryParam('names', []);
+        $user = $request->getAttribute('targetUser');
 
-        if ($names) {
-            $names = explode(',', $names);
-        }
-
-        $references = $this->repository->getAllByUserIdAndNames($user->id, $names);
+        $references = $this->repository->getAllByUserIdAndNames($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $references->toArray(),

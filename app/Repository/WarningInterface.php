@@ -49,4 +49,12 @@ interface WarningInterface extends RepositoryInterface {
      * @param string $warningSlug The warning slug
      */
     public function findByUserIdAndSlug(int $userId, string $warningSlug) : Warning;
+
+    /**
+     * Returns a Warning based on the user id and the id.
+     *
+     * @param int    $userId The user identifier
+     * @param string $id     The warning id
+     */
+    public function findByUserIdAndId(int $userId, int $id) : Warning;
 }

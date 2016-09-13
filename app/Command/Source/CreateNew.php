@@ -22,6 +22,12 @@ class CreateNew extends AbstractCommand {
      */
     public $name;
     /**
+     * Source ip address.
+     *
+     * @var string
+     */
+    public $ipaddr;
+    /**
      * Source Tags.
      *
      * @var array
@@ -50,6 +56,10 @@ class CreateNew extends AbstractCommand {
 
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['ipaddr'])) {
+            $this->ipaddr = $parameters['ipaddr'];
         }
 
         return $this;

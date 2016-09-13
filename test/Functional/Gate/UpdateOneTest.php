@@ -11,14 +11,17 @@ namespace Test\Functional\Gate;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RequiresAuth;
-use Test\Functional\Traits\RequiresCredentialToken;
+use Test\Functional\Traits;
 
 class UpdateOneTest extends AbstractFunctional {
-    use RequiresAuth;
-    use RequiresCredentialToken;
+    use Traits\RequiresAuth,
+        Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCompanyToken;
 
     protected function setUp() {
+        parent::setUp();
+    
         $this->httpMethod = 'PUT';
         $this->populate(
             '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates',
@@ -31,9 +34,6 @@ class UpdateOneTest extends AbstractFunctional {
         $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/%s', $this->entity['slug']);
     }
 
-    /**
-     * @group joe
-     */
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
@@ -53,7 +53,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertTrue($body['data']['pass']);
 
         /*
-         * Validates Json Schema against Json Response'
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
@@ -83,7 +83,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertFalse($body['status']);
 
         /*
-         * Validates Json Schema with Json Response
+         * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
