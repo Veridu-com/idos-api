@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Exception\NotFound;
 use App\Factory\Command;
 use App\Repository\FeatureInterface;
 use App\Repository\UserInterface;
@@ -89,7 +90,11 @@ class Features implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user   = $request->getAttribute('targetUser');
-        $entities = $this->repository->findByUserId($user->id, $request->getQueryParams());
+        $service = $request->getAttribute('service');
+        $entities = $this->repository->findBy([
+            'user_id' => $user->id,
+            'creator' => $service->id
+        ], $request->getQueryParams());
 
         $body = [
             'data'       => $entities->toArray(),
@@ -119,9 +124,18 @@ class Features implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $featureSlug = $request->getAttribute('featureSlug');
+        $service = $request->getAttribute('service');
+        $featureId = $request->getAttribute('decodedFeatureId');
 
-        $feature = $this->repository->findByUserIdAndSlug($user->id, $featureSlug);
+        $feature = $this->repository->findOneBy([
+            'user_id' => $user->id,
+            'creator' => $service->id,
+            'id' => $featureId
+        ]);
+
+        if ($feature->sourceId !== null && $feature->sourceId !== $user->id) {
+            throw new NotFound();
+        }
 
         $body = [
             'data'    => $feature->toArray(),
@@ -151,7 +165,7 @@ class Features implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id);
+        $source = $request->getParsedBodyParam('sourceId') !== 0 ? $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id) : null;
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Feature\\CreateNew');
@@ -190,13 +204,12 @@ class Features implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id);
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Feature\\DeleteAll');
         $command->setParameter('user', $user)
-            ->setParameter('source', $source)
-            ->setParameter('service', $service);
+            ->setParameter('service', $service)
+            ->setParameter('queryParams', $request->getQueryParams());
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -223,13 +236,11 @@ class Features implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id);
         $service = $request->getAttribute('service');
-        $featureId = $request->getAttribute('featureId');
+        $featureId = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Feature\\DeleteOne');
         $command->setParameter('user', $user)
-            ->setParameter('source', $source)
             ->setParameter('service', $service)
             ->setParameter('featureId', $featureId);
 
@@ -262,7 +273,7 @@ class Features implements ControllerInterface {
         $user        = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id);
         $service = $request->getAttribute('service');
-        $featureId = $request->getAttribute('featureId');
+        $featureId = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Feature\\UpdateOne');
         $command

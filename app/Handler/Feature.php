@@ -20,6 +20,7 @@ use App\Event\Feature\Updated;
 use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\FeatureInterface;
+use App\Repository\SourceInterface;
 use App\Validator\Feature as FeatureValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -34,12 +35,21 @@ class Feature implements HandlerInterface {
      * @var App\Repository\FeatureInterface
      */
     protected $repository;
+
+    /**
+     * Source Repository instance.
+     *
+     * @var App\Repository\FeatureInterface
+     */
+    protected $sourceRepository;
+
     /**
      * Feature Validator instance.
      *
      * @var App\Validator\Feature
      */
     protected $validator;
+
     /**
      * Event emitter instance.
      *
@@ -56,6 +66,9 @@ class Feature implements HandlerInterface {
                 $container
                     ->get('repositoryFactory')
                     ->create('Feature'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Source'),
                 $container
                     ->get('validatorFactory')
                     ->create('Feature'),
@@ -75,10 +88,12 @@ class Feature implements HandlerInterface {
      */
     public function __construct(
         FeatureInterface $repository,
+        SourceInterface $sourceRepository,
         FeatureValidator $validator,
         Emitter $emitter
     ) {
         $this->repository = $repository;
+        $this->sourceRepository = $sourceRepository;
         $this->validator  = $validator;
         $this->emitter    = $emitter;
     }
@@ -92,16 +107,20 @@ class Feature implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
         $this->validator->assertUser($command->user);
-        $this->validator->assertSource($command->source);
         $this->validator->assertService($command->service);
         $this->validator->assertFlag($command->upsert);
         $this->validator->assertLongName($command->name);
         $this->validator->assertName($command->type);
         $this->validator->assertValue($command->value);
+        
+        if ($command->source !== null) {
+            $this->validator->assertSource($command->source);
+        }
 
         $feature = null;
+        $upserting = false;
         try {
-            $feature = $this->repository->findOneByName($command->user->id, $command->source->id, $command->service->id, $command->name);
+            $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->id : 0, $command->service->id, $command->name);
 
             if (! $command->upsert) {
                 throw new AppException('A feature with provided sourceId and name already exists for this user.');
@@ -109,13 +128,15 @@ class Feature implements HandlerInterface {
 
             $feature->type = $command->type;
             $feature->value = $command->value;
+
+            $upserting = true;
         } catch(NotFound $e) { }
 
         if (! $feature) {
             $feature = $this->repository->create(
                 [
                     'user_id'    => $command->user->id,
-                    'source_id'    => $command->source->id,
+                    'source_id'    => $command->source !== null ? $command->source->id : null,
                     'name'       => $command->name,
                     'creator'       => $command->service->id,
                     'type'       => $command->type,
@@ -129,7 +150,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
             
-            if ($command->upsert) {
+            if ($upserting) {
                 $event   = new Updated($feature);
             } else {
                 $event   = new Created($feature);
@@ -137,7 +158,7 @@ class Feature implements HandlerInterface {
 
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            throw new AppException('Error while ' . ($command->upsert ? 'updating' : 'creating') . ' feature');
+            throw new AppException('Error while ' . ($upserting ? 'updating' : 'creating') . ' feature');
         }
 
         return $feature;
@@ -155,13 +176,11 @@ class Feature implements HandlerInterface {
         $this->validator->assertSource($command->source);
         $this->validator->assertService($command->service);
         $this->validator->assertId($command->featureId);
-        $this->validator->assertLongName($command->name);
         $this->validator->assertName($command->type);
         $this->validator->assertValue($command->value);
 
         $feature = $this->repository->findOneById($command->user->id, $command->source->id, $command->service->id, $command->featureId);
 
-        $feature->name      = $command->name;
         $feature->type      = $command->type;
         $feature->value     = $command->value;
         $feature->updatedAt = time();
@@ -189,16 +208,25 @@ class Feature implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertId($command->userId);
+        $this->validator->assertUser($command->user);
+        $this->validator->assertService($command->service);
+        $this->validator->assertArray($command->queryParams);
 
-        $deletedFeatures = $this->repository->findByUserId($command->userId);
+        $deletedFeatures = $this->repository->findBy([
+            'user_id' => $command->user->id,
+            'creator' => $command->service->id
+        ], $command->queryParams);
 
-        $rowsAffected = $this->repository->deleteByUserId($command->userId);
+        $affectedRows = 0;
+
+        foreach ($deletedFeatures as $deletedFeature) {
+            $affectedRows += $this->repository->delete($deletedFeature->id);
+        }
 
         $event = new DeletedMulti($deletedFeatures);
         $this->emitter->emit($event);
 
-        return $rowsAffected;
+        return $affectedRows;
     }
 
     /**
@@ -210,11 +238,19 @@ class Feature implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertUser($command->user);
-        $this->validator->assertSource($command->source);
         $this->validator->assertService($command->service);
         $this->validator->assertId($command->featureId);
 
-        $feature = $this->repository->findOneById($command->user->id, $command->source->id, $command->service->id, $command->featureId);
+        $feature = $this->repository->findOneBy([
+            'user_id' => $command->user->id,
+            'creator' => $command->service->id,
+            'id' => $command->featureId
+        ]);
+
+        if ($feature->sourceId !== null && $feature->sourceId !== $command->user->id) {
+            throw new NotFound();
+        }
+
         $affectedRows = $this->repository->delete($feature->id);
 
         if ($affectedRows) {

@@ -51,7 +51,7 @@ class S25FeaturesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 1,
-                'source_id'  => 3,
+                'source_id'  => 2,
                 'name'       => 'isVerified',
                 'creator'    => 1,
                 'type'       => 'boolean',

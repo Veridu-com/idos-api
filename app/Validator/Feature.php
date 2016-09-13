@@ -16,5 +16,6 @@ class Feature implements ValidatorInterface {
         Traits\AssertName,
         Traits\AssertEntity,
         Traits\AssertFlag,
-        Traits\AssertValue;
+        Traits\AssertValue,
+        Traits\AssertArray;
 }

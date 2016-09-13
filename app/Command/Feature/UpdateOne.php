@@ -36,11 +36,11 @@ class UpdateOne extends AbstractCommand {
     public $service;
 
     /**
-     * Feature's name (user input).
+     * Feature's id (user input).
      *
      * @var string
      */
-    public $name;
+    public $featureId;
 
     /**
      * Feature's type (user input).
@@ -74,8 +74,8 @@ class UpdateOne extends AbstractCommand {
             $this->service = $parameters['service'];
         }
 
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
+        if (isset($parameters['featureId'])) {
+            $this->featureId = $parameters['featureId'];
         }
 
         if (isset($parameters['type'])) {

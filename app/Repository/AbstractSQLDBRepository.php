@@ -147,8 +147,11 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                     $tableForeignKey = $properties['foreignKey'];
                     $relationTableKey = $properties['key'];
 
-                    $relationRepository = $this->repositoryFactory->create($relationEntityName);
-                    $relationEntity = $relationRepository->findOneBy([$relationTableKey => $entities->$tableForeignKey]);
+                    $relationEntity = null;
+                    if ($entities->$tableForeignKey !== null) {
+                        $relationRepository = $this->repositoryFactory->create($relationEntityName);
+                        $relationEntity = $relationRepository->findOneBy([$relationTableKey => $entities->$tableForeignKey]);
+                    }
                     
                     $entities->relations[$relation] = $relationEntity;
                     break;
@@ -323,8 +326,11 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             case 'MANY_TO_ONE':
                 $relationTableKey = $relationProperties['key'];
                 $tableForeignKey = $relationProperties['foreignKey'];
+                $nullable = $relationProperties['nullable'];
 
-                $query = $query->join($relationTable, $table . '.' . $tableForeignKey, '=', $relationTable . '.' . $relationTableKey);
+                $joinMethod = $nullable ? 'leftJoin' : 'join';
+
+                $query = $query->$joinMethod($relationTable, $table . '.' . $tableForeignKey, '=', $relationTable . '.' . $relationTableKey);
                 break;
             case 'MANY_TO_MANY':
                 $query = $query->join();
@@ -349,7 +355,9 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $relationTableKey = $relationProperties['key'];
         $table = $this->getTableName();
         $tableForeignKey = $relationProperties['foreignKey'];
+        $shouldHydrate = $relationProperties['hydrate'];
 
+        $requiresJoin = false;
         $hasAlreadyJoined = false;
         $joinClauseKey = null;
         if ($query->joins) {
@@ -362,18 +370,21 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             }
         }
 
-        $requiresLeftJoin = false;
-        if ($relationColumn === $relationTableKey && ($value === 0 || $this->optimus->encode($value) === 0)) {
-            $requiresLeftJoin = true;
+        if ($relationColumn !== $relationTableKey || $shouldHydrate) {
+            $requiresJoin = 'inner';
+        }
+
+        if ($requiresJoin && $relationColumn === $relationTableKey && ($value === 0 || $this->optimus->encode($value) === 0)) {
+            $requiresJoin = 'left';
             $value = null;
         }
 
-        if ($hasAlreadyJoined && $requiresLeftJoin && $query->joins[$joinClauseKey]->type !== 'left') {
+        if ($hasAlreadyJoined && $query->joins[$joinClauseKey]->type !== $requiresJoin) {
             $query->joins[$joinClauseKey]->type = 'left';
         }
 
-        if (! $hasAlreadyJoined) {
-            $joinMethod = $requiresLeftJoin ? 'leftJoin' : 'join';
+        if (! $hasAlreadyJoined && $requiresJoin) {
+            $joinMethod = ($requiresJoin === 'left') ? 'leftJoin' : 'join';
             $query = $query->$joinMethod($relationTable, $table . '.' . $tableForeignKey, '=', $relationTable . '.' . $relationTableKey);
         }
 
@@ -384,22 +395,61 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                 $query->whereNull($relationTable . '.' . $relationColumn);
             }
         } else {
-            $query->where($relationTable . '.' . $relationColumn, $operator, $value);
+            if ($relationColumn === $relationTableKey) {
+                $query->where($table . '.' . $tableForeignKey, $operator, $value);
+            } else {
+                $query->where($relationTable . '.' . $relationColumn, $operator, $value);
+            }
         }
 
         return $query;
     }
 
+    protected function getRelationByForeignKey($foreignKeyColumn) {
+        foreach ($this->relationships as $relationName => $relationProperties) {
+            $relationForeignKeyColumn = null;
+            switch($relationProperties['type']) {
+                case 'ONE_TO_ONE':
+                    
+                    break;
+                case 'ONE_TO_MANY':
+                    
+                    break;
+                case 'MANY_TO_ONE':
+                    $relationForeignKeyColumn = $relationProperties['foreignKey'];
+                    break;
+                case 'MANY_TO_MANY':
+
+                    break;
+            }
+
+            if ($relationForeignKeyColumn === $foreignKeyColumn) {
+                return $relationName;
+            }
+        }
+
+        return null;
+    }
+
     protected function where($query, $column, $value, $operator = '=') {
-        $isRelationConstraint = (strpos($column, '.') !== false);
+        $isRelationConstraint = false;
+        $relationName = null;
+        $relationColumn = null;
+
+        if (strpos($column, '.') !== false) {
+            $column = explode('.', $column);
+            $relationName = $column[0];
+            $relationColumn = $column[1];
+            $isRelationConstraint = true;
+        } else if (($relationName = $this->getRelationByForeignKey($column)) !== null) {
+            $relationColumn = $this->relationships[$relationName]['key'];
+            $isRelationConstraint = true;
+        }
 
         if (! $isRelationConstraint) {
             return $query->where($this->getTableName() . '.' . $column, $operator, $value);
         }
 
-        $column = explode('.', $column);
-        $relationName = $column[0];
-        $relationColumn = $column[1];
 
         if (! isset($this->relationships[$relationName])) {
             throw new AppException('No relation named "' . $relationName . '" found for entity ' . $this->entityName);

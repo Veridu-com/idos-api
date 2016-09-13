@@ -146,9 +146,13 @@ abstract class AbstractRepository implements RepositoryInterface {
             $relationProperties = $this->relationships[$databasePrefix];
             //@FIXME: make this method work for all relationship types
             $foreignKey = $relationProperties['foreignKey'];
-
             if (! $relationProperties['hydrate']) {
                 $entity->$databasePrefix = $entity->$foreignKey;
+                continue;
+            }
+
+            if ($relationProperties['nullable'] && $entity->$foreignKey === null) {
+                $entity->relations[$databasePrefix] = null;
                 continue;
             }
 

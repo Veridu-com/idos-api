@@ -51,6 +51,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
             'foreignKey' => 'user_id',
             'key' => 'id',
             'entity' => 'User',
+            'nullable' => false,
             'hydrate' => false
         ],
         'source' => [
@@ -59,8 +60,10 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
             'foreignKey' => 'source_id',
             'key' => 'id',
             'entity' => 'Source',
+            'nullable' => true,
             'hydrate' => [
                 'id',
+                'user_id',
                 'name',
                 'tags',
                 'created_at',
@@ -73,6 +76,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
             'foreignKey' => 'creator',
             'key' => 'id',
             'entity' => 'Service',
+            'nullable' => false,
             'hydrate' => false
         ],
     ];
