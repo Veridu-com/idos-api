@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "PUT /services/{serviceId}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Service response payload",
+            "type": "object",
+            "$ref": "serviceEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

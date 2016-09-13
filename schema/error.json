@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Error",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "",
+            "type": "boolean"
+        },
+        "error": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "description": "Same as the HTTP Status Code.",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "The type of error returned.",
+                    "type": "string",
+                    "pattern": ""
+                },
+                "link": {
+                    "description": "Link to additional information about the error and how to fix/avoid it.",
+                    "type": "string",
+                    "pattern": ""
+                },
+                "message": {
+                    "description": "A descriptive error message.",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "required": [
+        "status",
+        "error"
+    ]
+}

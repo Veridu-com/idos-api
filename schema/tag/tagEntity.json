@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/tag/tagEntity.json",
+    "title": "Tag",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Tag name",
+            "type": "string",
+            "pattern": ""
+        },
+        "slug": {
+            "description": "Tag slug",
+            "type": "string",
+            "pattern": ""
+        },
+        "created_at": {
+            "description": "Tag's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Tag's updated unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Tag's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "name",
+        "slug",
+        "created_at",
+        "updated_at"
+    ]
+}

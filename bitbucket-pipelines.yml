@@ -1,9 +1,12 @@
-image: phpunit/phpunit:5.0.3
+image: veridu/php-ci:latest
 
 pipelines:
   default:
     - step:
         script:
-          - composer --version
-          - phpunit --version
+          - cat phinx.yml.dist | sed s/veridu-api/test/ > phinx.yml
+          - cat config/testing.php.dist | sed s/veridu-api/test/ > config/testing.php
+          - composer self-update
           - composer install
+          - service postgresql start
+          - ./vendor/bin/phpunit --coverage-text --configuration phpunit.xml.dist

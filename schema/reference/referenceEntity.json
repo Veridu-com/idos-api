@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/reference/referenceEntity.json",
+    "title": "Reference",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Reference name",
+            "type": "string",
+            "pattern": ""
+        },
+        "value": {
+            "description": "Reference value",
+            "type": "string",
+            "pattern": ""
+        },
+        "created_at": {
+            "description": "Reference's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Reference's updated unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Reference's last updated unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "name",
+        "value",
+        "created_at"
+    ]
+}
