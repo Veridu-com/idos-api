@@ -12,8 +12,8 @@ use Phinx\Migration\AbstractMigration;
 class UserInit extends AbstractMigration {
     public function change() {
         // Links a user to an identity
-        $links = $this->table('links');
-        $links
+        $user_identities = $this->table('user_identities');
+        $user_identities
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addTimestamps()
@@ -83,19 +83,6 @@ class UserInit extends AbstractMigration {
             ->addTimestamps()
             ->addIndex('user_id')
             ->addIndex(['user_id', 'slug'], ['unique' => true])
-            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        // Company members (FIXME Review this table)
-        $members = $this->table('members');
-        $members
-            ->addColumn('company_id', 'integer', ['null' => false])
-            ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('role', 'text', ['null' => false, 'default' => 'member'])
-            ->addTimestamps()
-            ->addIndex('company_id')
-            ->addIndex('user_id')
-            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
