@@ -15,7 +15,7 @@ use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
-use App\Entity\User;
+use App\Entity\User as UserEntity;
 
 /**
  * Handles User commands.
@@ -94,7 +94,7 @@ class User implements HandlerInterface {
      *
      * @return App\Entity\User
      */
-    public function handleCreateNew(CreateNew $command) : User{
+    public function handleCreateNew(CreateNew $command) : UserEntity {
         $user = $this->repository->create(
             [
                 'credential_id' => $command->credentialId,
