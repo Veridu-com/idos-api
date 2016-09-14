@@ -155,8 +155,8 @@ class Token {
      *  - Subject: Credential's Public Key
      *  - Signature secret: Handler's Private Key
      *
-     * @param string $identityPubKey    The token issuer (identity's public key)
-     * @param string $identityPrivKey   The token issuer (identity's private key)
+     * @param string $identityPubKey  The token issuer (identity's public key)
+     * @param string $identityPrivKey The token issuer (identity's private key)
      *
      * @return string
      */

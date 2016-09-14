@@ -195,9 +195,9 @@ class Gate implements HandlerInterface {
      *
      * @param App\Command\Gate\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertSlug($command->gateSlug);
             $this->validator->assertId($command->userId);
@@ -219,7 +219,5 @@ class Gate implements HandlerInterface {
 
         $event = new Deleted($gate);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

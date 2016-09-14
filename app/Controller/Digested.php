@@ -245,17 +245,13 @@ class Digested implements ControllerInterface {
             ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'))
             ->setParameter('name', $request->getAttribute('digestedName'));
 
-        $deleted = $this->commandBus->handle($command);
-
+        $this->commandBus->handle($command);
         $body = [
-            'status' => $deleted === 1
+            'status' => true
         ];
-
-        $statusCode = $body['status'] ? 200 : 404;
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', $statusCode)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

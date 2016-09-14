@@ -227,8 +227,9 @@ class Sources implements ControllerInterface {
             ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $this->commandBus->handle($command)
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

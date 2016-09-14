@@ -49,11 +49,11 @@ class EndpointPermission implements MiddlewareInterface {
     public function __construct(
         PermissionInterface $permissionRepository,
         CompanyInterface $companyRepository,
-        int $permissionType = self::SELF_ACTION, 
+        int $permissionType = self::SELF_ACTION,
         int $allowedRolesBits = 0x00
     ) {
         $this->permissionRepository = $permissionRepository;
-        $this->allowedRolesBits    = $allowedRolesBits;
+        $this->allowedRolesBits     = $allowedRolesBits;
         $this->companyRepository    = $companyRepository;
         $this->permissionType       = $permissionType;
     }
@@ -80,15 +80,16 @@ class EndpointPermission implements MiddlewareInterface {
         if ($this->permissionType === self::PUBLIC_ACTION) {
             return $next($request, $response);
         }
+
         // get identity set on Auth middleware
         $identity = $request->getAttribute('identity');
         if ($identity) {
             $identityMembers = $identity->member();
         }
-        
-        $targetCompany = $request->getAttribute('targetCompany');
+
+        $targetCompany   = $request->getAttribute('targetCompany');
         $hasParentAccess = false;
-        $allowed = false;
+        $allowed         = false;
 
         if (! $targetCompany) {
             return $next($request, $response);
@@ -98,9 +99,9 @@ class EndpointPermission implements MiddlewareInterface {
         $routeName = $request->getAttribute('route')->getName();
 
         // How can an identity access this resource?
-        // 
+        //
         // 1. If PRIVATE ACTION (does this make sense still?) @FIXME
-        //      - 1.1 Can one of the identity's companies access this resource? 
+        //      - 1.1 Can one of the identity's companies access this resource?
         //          - Is the identity rank < $this->allowedRolesBits in any company?
         //          - if yep, check if has a register on DBPermission for this company and this routeName
         //          - if yep, check if that company is a parent or is the target company.
@@ -110,15 +111,15 @@ class EndpointPermission implements MiddlewareInterface {
         }
 
         // 2. If PARENT ACTION
-        //      - 2.1 Can one of the identity's companies access this resource? 
+        //      - 2.1 Can one of the identity's companies access this resource?
         //          - Is the identity rank < 3 in any company?
         //          - if yep, check if that company is a parent of the target company.
-        //          
+        //
         // 2. If SELF ACTION
-        //      - 2.1 Can one of the identity's companies access this resource? 
+        //      - 2.1 Can one of the identity's companies access this resource?
         //          - Is the identity rank < 3 in any company?
         //          - if yep, check if that company is the target company.
-        //          
+        //
         // @FIXME delete this?
         // if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
         //     // checks if the $company has access to $routeName
@@ -131,7 +132,7 @@ class EndpointPermission implements MiddlewareInterface {
         if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
             // searches for a membership within the company
             foreach ($identityMembers as $member) {
-                if ($this->roleHasAccess($member->role()->bit) && $member->company()->id == $targetCompany->id)  {
+                if ($this->roleHasAccess($member->role()->bit) && $member->company()->id == $targetCompany->id) {
                     $allowed = true;
                 }
             }
@@ -142,14 +143,11 @@ class EndpointPermission implements MiddlewareInterface {
         if (($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
             // searches for a membership within the company
             foreach ($identityMembers as $member) {
-                if (
-                    $this->roleHasAccess($member->role()->bit) && 
-                    (
-                        $this->companyRepository->isParent($member->company(), $targetCompany) || 
-                        $this->isVeriduMember($member)
-                    )
-                )  {
-                    $allowed = true;
+                if ($this->roleHasAccess($member->role()->bit)
+                    && ($this->companyRepository->isParent($member->company(), $targetCompany)
+                    || $this->isVeriduMember($member))
+                ) {
+                    $allowed         = true;
                     $hasParentAccess = true;
                 }
             }
@@ -167,19 +165,19 @@ class EndpointPermission implements MiddlewareInterface {
     /**
      * Returns if role is contained on instance bitmask.
      *
-     * @param      integer  $role   The role
+     * @param int $role The role
      */
     private function roleHasAccess(int $role) : bool {
-        return (($this->allowedRolesBits & $role) === $role);
+        return ($this->allowedRolesBits & $role) === $role;
     }
 
     /**
      * Determines if Member is a Veridu Member.
      * This is needed for having Veridu protected settings visible.
      *
-     * @param      \App\Entity\Member  $member  The member
+     * @param \App\Entity\Member $member The member
      */
     private function isVeriduMember(Member $member) : bool {
-        return ($member->company()->id === 1);
+        return $member->company()->id === 1;
     }
 }

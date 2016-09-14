@@ -81,10 +81,12 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions',
                 'App\Controller\Permissions:listAll'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('permissions:listAll');
     }
@@ -114,10 +116,12 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions',
                 'App\Controller\Permissions:createNew'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('permissions:createNew');
     }
@@ -146,10 +150,12 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions/{routeName:[a-zA-Z]+\:[a-zA-Z]+}',
                 'App\Controller\Permissions:getOne'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('permissions:getOne');
     }
@@ -179,10 +185,12 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions/{routeName:[a-zA-Z]+\:[a-zA-Z]+}',
                 'App\Controller\Permissions:deleteOne'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('permissions:deleteOne');
     }

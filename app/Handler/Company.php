@@ -12,7 +12,6 @@ use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
-use App\Entity\Role;
 use App\Event\Company\Created;
 use App\Event\Company\Deleted;
 use App\Event\Company\Updated;
@@ -117,8 +116,6 @@ class Company implements HandlerInterface {
         $company->public_key  = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
         $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
 
-
-
         try {
             $company = $this->repository->saveNewCompany($company, $command->identity);
             $event   = new Created($company, $command->identity);
@@ -149,7 +146,7 @@ class Company implements HandlerInterface {
             );
         }
 
-        $company = $command->company;
+        $company            = $command->company;
         $company->name      = $command->name;
         $company->updatedAt = time();
 
@@ -169,9 +166,9 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertCompany($command->company);
             $this->validator->assertId($command->company->id);
@@ -191,7 +188,5 @@ class Company implements HandlerInterface {
 
         $event = new Deleted($command->company);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

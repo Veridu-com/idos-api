@@ -20,7 +20,7 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $name;
-    
+
     /**
      * Company's Parent Id.
      *

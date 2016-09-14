@@ -142,9 +142,9 @@ class Tag implements HandlerInterface {
      *
      * @param App\Command\Tag\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertSlug($command->slug);
         } catch (ValidationException $e) {
@@ -165,8 +165,6 @@ class Tag implements HandlerInterface {
 
         $event = new Deleted($tag);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 
     /**

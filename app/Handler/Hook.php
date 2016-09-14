@@ -9,14 +9,12 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Hook\CreateNew;
-use App\Command\Hook\DeleteAll;
 use App\Command\Hook\DeleteOne;
 use App\Command\Hook\GetOne;
 use App\Command\Hook\UpdateOne;
 use App\Entity\Hook as HookEntity;
 use App\Event\Hook\Created;
 use App\Event\Hook\Deleted;
-use App\Event\Hook\DeletedMulti;
 use App\Event\Hook\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -172,7 +170,7 @@ class Hook implements HandlerInterface {
             throw new NotFound\HookException('Company not found', 404);
         }
 
-        $hook = $this->repository->find($command->hookId);
+        $hook       = $this->repository->find($command->hookId);
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
         if ($hook->credential_id != $credential->id) {
@@ -200,9 +198,9 @@ class Hook implements HandlerInterface {
      *
      * @param App\Command\Hook\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->hookId);
         } catch (ValidationException $e) {
@@ -219,7 +217,7 @@ class Hook implements HandlerInterface {
             throw new NotFound\HookException('Company not found', 404);
         }
 
-        $hook = $this->repository->find($command->hookId);
+        $hook       = $this->repository->find($command->hookId);
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
         if ($hook->credential_id != $credential->id) {
@@ -234,8 +232,6 @@ class Hook implements HandlerInterface {
 
         $event = new Deleted($hook);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 
     /**
@@ -249,7 +245,7 @@ class Hook implements HandlerInterface {
         $this->validator->assertId($command->hookId);
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
-        $hook = $this->repository->find($command->hookId);
+        $hook       = $this->repository->find($command->hookId);
 
         if ($credential->companyId != $command->company->id) {
             throw new NotFound\HookException('Company not found', 404);

@@ -139,7 +139,7 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
+        $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\CreateNew');
@@ -178,15 +178,15 @@ class Companies implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $identity = $request->getAttribute('identity');
+        $identity      = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\DeleteOne');
         $command->setParameter('company', $targetCompany);
         $command->setParameter('identity', $identity);
-        $deleted = $this->commandBus->handle($command);
 
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $deleted
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -215,7 +215,7 @@ class Companies implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $identity = $request->getAttribute('identity');
+        $identity      = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\UpdateOne');
         $command

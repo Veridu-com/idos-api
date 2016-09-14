@@ -173,9 +173,9 @@ class Normalised implements HandlerInterface {
      *
      * @param App\Command\Normalised\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertId($command->user->id);
@@ -205,8 +205,6 @@ class Normalised implements HandlerInterface {
 
         $event = new Deleted($normalised);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 
     /**

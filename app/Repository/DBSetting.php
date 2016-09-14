@@ -98,5 +98,4 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
-
 }

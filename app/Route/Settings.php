@@ -85,10 +85,12 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings',
                 'App\Controller\Settings:listAll'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:listAll');
     }
@@ -119,10 +121,12 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings',
                 'App\Controller\Settings:createNew'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:createNew');
     }
@@ -155,10 +159,12 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:getOne'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:getOne');
     }
@@ -191,10 +197,12 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:updateOne'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:updateOne');
     }
@@ -227,10 +235,12 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:deleteOne'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:deleteOne');
     }

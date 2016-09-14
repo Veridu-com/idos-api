@@ -202,9 +202,9 @@ class RoleAccess implements HandlerInterface {
      *
      * @param App\Command\RoleAccess\DeleteOne $command
      *
-     * @return int number of affected rows
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->identityId);
             $this->validator->assertId($command->roleAccessId);
@@ -225,7 +225,5 @@ class RoleAccess implements HandlerInterface {
 
         $event = new Deleted($roleAccess);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }
