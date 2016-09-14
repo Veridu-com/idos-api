@@ -17,6 +17,8 @@ use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Handles requests to /companies and /companies/{companySlug}.
+ * A Company is a profile within the API available for a customer who requires
+ * a sophisticated level of control over employees with different levels of Permission.
  */
 class Companies implements ControllerInterface {
     /**
@@ -66,7 +68,7 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * List all child Companies that belongs to the Acting Company.
+     * Retrieves a complete list of all child companies that belong to the requesting company.
      *
      * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Company creation date (lower bound)
      * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Company creation date (upper bound)
@@ -99,7 +101,7 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Retrieves the Target Company, a child of the Acting Company.
+     * Retrieves all public information from a single Company.
      *
      * @apiEndpointResponse 200 schema/company/getOne.json
      *
@@ -128,7 +130,7 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Creates a new child Company for the Acting Company.
+     * Creates a new child company for the requesting company.
      *
      * @apiEndpointRequiredParam body string name NewCo. Company name
      * @apiEndpointResponse 201 schema/company/createNew.json
@@ -163,7 +165,7 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Deletes all child Companies that belongs to the Acting Company.
+     * Deletes all child companies that belong to the requesting company.
      *
      * @apiEndpointResponse 200 schema/company/deleteAll.json
      *
@@ -193,7 +195,7 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Deletes the Target Company, a child of the Acting Company.
+     * Deletes the requesting company or a child company that belongs to it.
      *
      * @apiEndpointResponse 200 schema/company/deleteOne.json
      *
@@ -225,7 +227,7 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Updates the Target Company, a child of the Acting Company.
+     * Updates the information for a single Company.
      *
      * @apiEndpointRequiredParam body string name NewName New Company name
      * @apiEndpointResponse 200 schema/company/updateOne.json

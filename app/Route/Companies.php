@@ -63,7 +63,7 @@ class Companies implements RouteInterface {
     /**
      * List all Companies.
      *
-     * Retrieve a complete list of all child companies that belong to the requesting company.
+     * Retrieves a complete list of all child companies that belong to the requesting company.
      *
      * @apiEndpoint GET /companies
      * @apiGroup Company
@@ -95,7 +95,7 @@ class Companies implements RouteInterface {
     /**
      * Create new Company.
      *
-     * Create a new child company for the requesting company.
+     * Creates a new child company for the requesting company.
      *
      * @apiEndpoint POST /companies
      * @apiGroup Company
@@ -126,7 +126,7 @@ class Companies implements RouteInterface {
     /**
      * Delete all Companies.
      *
-     * Delete all child companies that belong to the requesting company.
+     * Deletes all child companies that belong to the requesting company.
      *
      * @apiEndpoint DELETE /companies
      * @apiGroup Company
@@ -157,7 +157,7 @@ class Companies implements RouteInterface {
     /**
      * Retrieve a single Company.
      *
-     * Retrieves all public information from a Company.
+     * Retrieves all public information from a single Company.
      *
      * @apiEndpoint GET /companies/{companySlug}
      * @apiGroup Company
@@ -169,6 +169,8 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/getOne.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Companies::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
@@ -185,7 +187,7 @@ class Companies implements RouteInterface {
     /**
      * Update a single Company.
      *
-     * Updates Company's specific information.
+     * Updates the information for a single Company.
      *
      * @apiEndpoint PUT /companies/{companySlug}
      * @apiGroup Company
