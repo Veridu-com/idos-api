@@ -68,7 +68,7 @@ class Credentials implements RouteInterface {
      * @apiAuth header token IdentityToken XXX A valid Identity Token
      * @apiAuth query token IdentityToken XXX A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * 
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      *
@@ -86,7 +86,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:listAll'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -121,7 +121,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:createNew'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -157,7 +157,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:getOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -193,7 +193,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:updateOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -211,7 +211,7 @@ class Credentials implements RouteInterface {
      * @apiAuth query token IdentityToken XXX A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey FEDCBA
-     * 
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      *
@@ -229,7 +229,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:deleteOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))

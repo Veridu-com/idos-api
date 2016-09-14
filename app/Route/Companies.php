@@ -87,7 +87,7 @@ class Companies implements RouteInterface {
                 'App\Controller\Companies:listAll'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -102,7 +102,7 @@ class Companies implements RouteInterface {
      * @apiEndpoint POST /companies/{companySlug}
      * @apiGroup Company
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * 
+     *
      * @apiAuth header token IdentityToken XXX A valid Identity Token
      * @apiAuth query token IdentityToken XXX A valid Identity Token
      *
@@ -123,7 +123,7 @@ class Companies implements RouteInterface {
                 'App\Controller\Companies:createNew'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -186,7 +186,7 @@ class Companies implements RouteInterface {
                 'App\Controller\Companies:updateOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -221,7 +221,7 @@ class Companies implements RouteInterface {
                 'App\Controller\Companies:deleteOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))

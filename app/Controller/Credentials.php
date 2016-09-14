@@ -130,36 +130,6 @@ class Credentials implements ControllerInterface {
     }
 
     /**
-     * Deletes all Credentials that belongs to the Target Company.
-     *
-     * @apiEndpointResponse 200 schema/credential/deleteAll.json
-     *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
-
-        $command = $this->commandFactory->create('Credential\\DeleteAll');
-        $command->setParameter('companyId', $company->id);
-        $deleted = $this->commandBus->handle($command);
-
-        $body = [
-            'deleted' => $deleted
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Retrieves one Credential of the Target Company based on the Credential's Public Key.
      *
      * @apiEndpointResponse 200 schema/credential/getOne.json

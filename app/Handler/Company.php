@@ -9,14 +9,12 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Company\CreateNew;
-use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
 use App\Entity\Role;
 use App\Event\Company\Created;
 use App\Event\Company\Deleted;
-use App\Event\Company\DeletedMulti;
 use App\Event\Company\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -192,34 +190,6 @@ class Company implements HandlerInterface {
         }
 
         $event = new Deleted($command->company);
-        $this->emitter->emit($event);
-
-        return $rowsAffected;
-    }
-
-    /**
-     * Deletes all child Company ($command->parentId).
-     *
-     * @param App\Command\Company\DeleteAll $command
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertId($command->parentId);
-        } catch (ValidationException $e) {
-            throw new Validate\CompanyException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $deletedCompanies = $this->repository->getAllByParentId($command->parentId);
-
-        $rowsAffected = $this->repository->deleteByParentId($command->parentId);
-
-        $event = new DeletedMulti($deletedCompanies);
         $this->emitter->emit($event);
 
         return $rowsAffected;
