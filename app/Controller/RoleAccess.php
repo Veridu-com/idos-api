@@ -62,12 +62,12 @@ class RoleAccess implements ControllerInterface {
     /**
      * List all child RoleAccess that belongs to the acting User.
      *
-     * @apiEndpointParam query              int page 10|1           Current page.
-     *
      * @apiEndpointResponse 200 schema/access/roles/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @throws
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -94,8 +94,7 @@ class RoleAccess implements ControllerInterface {
     /**
      * Retrieves role access defined to certain role and resource for the acting User.
      *
-     * @apiEndpointURIFragment     string roleName         The role name.
-     * @apiEndpointURIFragment     string resource         The resource.
+     * @apiEndpointURIFragment     int roleAccessId 5319
      *
      * @apiEndpointResponse 200 schema/access/roles/getOne.json
      *
@@ -137,6 +136,8 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @throws
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -172,6 +173,8 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @throws
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -197,9 +200,6 @@ class RoleAccess implements ControllerInterface {
 
     /**
      * Deletes a RoleAccess of the acting User.
-     *
-     * @apiEndpointURIFragment     string roleName         The role name.
-     * @apiEndpointURIFragment     string resource         The resource.
      *
      * @apiEndpointResponse 200 schema/access/roles/deleteOne.json
      *
@@ -236,9 +236,7 @@ class RoleAccess implements ControllerInterface {
     /**
      * Updates the Target RoleAccess, a child of the Acting RoleAccess.
      *
-     * @apiEndpointURIFragment     string roleName         The role name.
-     * @apiEndpointURIFragment     string resource         The resource.
-     * @apiEndpointRequiredParam body       int access              The access value.
+     * @apiEndpointRequiredParam body       int roleAccess              The access value.
      *
      * @apiEndpointResponse 200 schema/access/roles/updateOne.json
      *

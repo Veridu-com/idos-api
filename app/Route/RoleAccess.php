@@ -15,8 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * RoleAccess routing definitions.
+ * Role Access
  *
+ * RoleAccess is the level of permission about a User that is accessible from specific sources. It is used to limit what sensitive information (eg. last name, phone number etc) is available to specific Members or Users.
  * @link docs/access/roles/overview.md
  * @see App\Controller\RoleAccess
  */
@@ -66,12 +67,13 @@ class RoleAccess implements RouteInterface {
      * Retrieve a complete list of all Role Access that belong to the acting User.
      *
      * @apiEndpoint GET /access/roles
-     *
-     * @apiAuth query   token UserToken     XXX A valid User Token
-     * @apiAuth header  token userToken     XXX A valid User Token
+     * @apiGroup Access Roles
+     * @apiAuth query   token UserToken  eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiAuth header  token userToken  eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $userPermission
      *
      * @return void
      *
@@ -94,15 +96,16 @@ class RoleAccess implements RouteInterface {
     /**
      * Create new RoleAccess.
      *
-     * Create a new Role Access for the acting User.
+     * Creates a new Role Access for the acting User.
      *
      * @apiEndpoint POST /access/roles
-     *
-     * @apiAuth query   token UserToken     XXX A valid User Token
-     * @apiAuth header  token userToken     XXX A valid User Token
+     * @apiGroup Access Roles
+     * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $userPermission
      *
      * @return void
      *
@@ -125,15 +128,16 @@ class RoleAccess implements RouteInterface {
     /**
      * Deletes all roleAccess.
      *
-     * Deletes all roleAccess that belongs to the acting User.
+     * Deletes all RoleAccesses that belong to the acting User.
      *
      * @apiEndpoint DELETE /access/roles
-     *
-     * @apiAuth query   token UserToken     XXX A valid User Token
-     * @apiAuth header  token userToken     XXX A valid User Token
+     * @apiGroup Access Roles
+     * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $userPermission
      *
      * @return void
      *
@@ -158,13 +162,15 @@ class RoleAccess implements RouteInterface {
      *
      * Retrieves all public information from a RoleAccess.
      *
-     * @apiEndpoint GET /access/roles/{roleName}/{resource}
-     *
-     * @apiAuth query   token UserToken     XXX A valid User Token
-     * @apiAuth header  token userToken     XXX A valid User Token
+     * @apiEndpoint GET /access/roles/{roleAccessId}
+     * @apiGroup Access Roles
+     * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $userPermission
      *
      * @return void
      *
@@ -189,10 +195,15 @@ class RoleAccess implements RouteInterface {
      *
      * Retrieves all public information from a RoleAccess.
      *
-     * @apiEndpoint GET /access/roles/{companySlug}/{userName}/{routeName}
+     * @apiEndpoint GET /access/roles/{roleAccessId}
+     * @apiGroup Access Roles
+     * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $userPermission
      *
      * @return void
      *
@@ -217,12 +228,14 @@ class RoleAccess implements RouteInterface {
      *
      * Deletes a single RoleAccess that belongs to the requesting user.
      *
-     * @apiEndpoint DELETE /access/roles/{companySlug}/{userName}/{routeName}
-     * @apiAuth header token CompanyToken User's Private Key
-     * @apiAuth query token companyToken User's Private Key
+     * @apiEndpoint DELETE /access/roles/{roleAccessId}
+     * @apiGroup Access Roles
+     * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $userPermission
      *
      * @return void
      *

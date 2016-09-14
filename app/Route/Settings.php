@@ -14,7 +14,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Settings routing definitions.
+ * Company Settings.
+ *
+ * Company Settings is used for a wide range of minor and major changes for a specific Company. Settings are used to change multiple aspects of the layout of the API dashboard, the way certain information is displayed in order to tailor to a certain company’s thematic requests, or to create different environments suited to different purposes.
  *
  * @link docs/management/settings/overview.md
  * @see App\Controller\Settings
@@ -62,7 +64,7 @@ class Settings implements RouteInterface {
     /**
      * List all Settings.
      *
-     * Retrieve a complete list of all settings that belong to the requesting company.
+     * Retrieves a complete list of all settings that belong to the requesting company.
      *
      * @apiEndpoint GET /management/settings
      * @apiGroup Company Settings
@@ -71,6 +73,7 @@ class Settings implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -93,7 +96,7 @@ class Settings implements RouteInterface {
     /**
      * Create new Setting.
      *
-     * Create a new credential for the requesting company.
+     * Creates a new credential for the requesting company.
      *
      * @apiEndpoint POST /management/settings
      * @apiGroup Company Settings
@@ -102,6 +105,7 @@ class Settings implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callabe $permission
      *
      * @return void
      *
@@ -122,7 +126,7 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * Deletes all settings.
+     * Delete all settings.
      *
      * Deletes all settings that belongs to the requesting company.
      *
@@ -133,6 +137,7 @@ class Settings implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -157,12 +162,11 @@ class Settings implements RouteInterface {
      *
      * Retrieves all public information from a Setting.
      *
-     * @apiEndpoint GET /management/settings/{section}/{property}
+     * @apiEndpoint GET /management/settings/{encodedSettingId}
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string section lookup
-     * @apiEndpointURIFragment string property username
+     * @apiEndpointURIFragment int encodedSettingId 5139
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -188,14 +192,13 @@ class Settings implements RouteInterface {
     /**
      * Update a single Setting.
      *
-     * Updates Setting's specific information.
+     * Updates the specific information for a single Setting.
      *
-     * @apiEndpoint PUT /management/settings/{section}/{property}
+     * @apiEndpoint PUT /management/settings/{encodedSettingId}
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string section lookup
-     * @apiEndpointURIFragment string property username
+     * @apiEndpointURIFragment int encodedSettingId 5139
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -223,12 +226,11 @@ class Settings implements RouteInterface {
      *
      * Deletes a single Setting that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /management/settings/{section}/{property}
+     * @apiEndpoint DELETE /management/settings/{encodedSettingId}
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string section lookup
-     * @apiEndpointURIFragment string property username
+     * @apiEndpointURIFragment int encodedSettingId 5139
      *
      * @param \Slim\App $app
      * @param \callable $auth

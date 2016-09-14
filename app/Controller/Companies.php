@@ -70,13 +70,12 @@ class Companies implements ControllerInterface {
     /**
      * Retrieves a complete list of all child companies that belong to the requesting company.
      *
-     * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Company creation date (lower bound)
-     * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Company creation date (upper bound)
-     * @apiEndpointParam query int page 10|1 Current page
      * @apiEndpointResponse 200 schema/company/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @throws
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -108,6 +107,8 @@ class Companies implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @throws
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -142,6 +143,8 @@ class Companies implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @throws
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
