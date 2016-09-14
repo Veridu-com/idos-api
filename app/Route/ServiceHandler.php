@@ -66,8 +66,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint GET /service-handlers
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -97,8 +97,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint POST /service-handlers
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -128,8 +128,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint DELETE /service-handlers
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -160,8 +160,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint GET /service-handlers/{serviceHandlerId:[0-9]+}
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string serviceHandlerId 1
      *
      * @param \Slim\App $app
@@ -192,8 +192,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint GET /service-handlers/{serviceHandlerId:[0-9]+}
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  string  serviceHandlerId 1
      *
      * @param \Slim\App $app
@@ -224,8 +224,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint DELETE /service-handlers/{serviceHandlerId:[0-9]+}
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  string  serviceHandlerId 1
      *
      * @param \Slim\App $app

@@ -14,8 +14,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Credentials routing definitions.
+ * Company Credentials
  *
+ * Company Credential is a way of identifying a specific Company accessing the API from a specific origin (eg. using a plugin from website X, or from website Y).
  * @link docs/companies/credentials/overview.md
  * @see App\Controller\Companies
  */
@@ -62,12 +63,12 @@ class Credentials implements RouteInterface {
     /**
      * List all Credentials.
      *
-     * Retrieve a complete list of all credentials that belong to the requesting company.
+     * Retrieves a complete list of all credentials that belong to the requesting company.
      *
      * @apiEndpoint GET /management/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -93,12 +94,12 @@ class Credentials implements RouteInterface {
     /**
      * Create new Credential.
      *
-     * Create a new credential for the requesting company.
+     * Creates a new credential for the requesting company.
      *
      * @apiEndpoint POST /management/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -124,12 +125,12 @@ class Credentials implements RouteInterface {
     /**
      * Delete All Credentials.
      *
-     * Delete all credentials that belong to the requesting company.
+     * Deletes all credentials that belong to the requesting company.
      *
      * @apiEndpoint DELETE /management/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -159,8 +160,8 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint GET /management/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -191,8 +192,8 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint PUT /management/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -223,8 +224,8 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint DELETE /management/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app

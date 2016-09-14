@@ -66,8 +66,8 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint GET /management/settings
      * @apiGroup Company Settings
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -97,8 +97,8 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint POST /management/settings
      * @apiGroup Company Settings
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -128,8 +128,8 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint DELETE /management/settings
      * @apiGroup Company Settings
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -159,8 +159,8 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint GET /management/settings/{section}/{property}
      * @apiGroup Company Settings
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string section lookup
      * @apiEndpointURIFragment string property username
      *
@@ -192,8 +192,8 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint PUT /management/settings/{section}/{property}
      * @apiGroup Company Settings
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string section lookup
      * @apiEndpointURIFragment string property username
      *
@@ -225,8 +225,8 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint DELETE /management/settings/{section}/{property}
      * @apiGroup Company Settings
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string section lookup
      * @apiEndpointURIFragment string property username
      *

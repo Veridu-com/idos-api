@@ -14,10 +14,12 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Members routing definitions.
+ * Company Members
+ *
+ * A Company Member is a user profile for an employee of a Company with an adjustable level of permissions and access to specific information. (eg. for distinguishing a low level employee with read-only permissions from an administrator)
  *
  * @link docs/management/members/overview.md
- * @see App\Controller\Companies
+ * @see App\Controller\Members
  */
 class Members implements RouteInterface {
     /**
@@ -63,12 +65,12 @@ class Members implements RouteInterface {
     /**
      * List all Members.
      *
-     * Retrieve a complete list of all members that belong to the requesting company.
+     * Retrieves a complete list of all members that belong to the requesting company.
      *
      * @apiEndpoint GET /management/members
      * @apiGroup Company Members
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -91,15 +93,16 @@ class Members implements RouteInterface {
             ->add($auth(Auth::COMPANY))
             ->setName('members:listAll');
     }
+
     /**
-     * Creates new Member.
+     * Create new Member.
      *
      * Creates a new member for the requesting company.
      *
      * @apiEndpoint POST /management/members
      * @apiGroup Company Members
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -124,47 +127,14 @@ class Members implements RouteInterface {
     }
 
     /**
-     * Update a single Member.
-     *
-     * Updates Member's role
-     *
-     * @apiEndpoint PUT /management/members/{userName}
-     * @apiGroup Company Members
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
-     * @apiEndpointURIFragment string userName johndoe
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/management/members/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Members::updateOne
-     */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->put(
-                '/management/members/{memberId:[0-9]+}',
-                'App\Controller\Members:updateOne'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
-            ->setName('members:updateOne');
-    }
-
-    /**
      * Delete All Members.
      *
-     * Delete all members that belong to the requesting company.
+     * Deletes all members that belong to the requesting company.
      *
      * @apiEndpoint DELETE /management/members
      * @apiGroup Company Members
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -193,11 +163,11 @@ class Members implements RouteInterface {
      *
      * Retrieves all public information from a Member
      *
-     * @apiEndpoint GET /management/members/{userName}
+     * @apiEndpoint GET /management/members/{memberId}
      * @apiGroup Company Members
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
-     * @apiEndpointURIFragment string userName
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment int encodedMemberId 1321189817
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -221,16 +191,50 @@ class Members implements RouteInterface {
             ->setName('members:getOne');
     }
 
+
+    /**
+     * Update a single Member.
+     *
+     * Updates the role for a single Member.
+     *
+     * @apiEndpoint PUT /management/members/{memberId}
+     * @apiGroup Company Members
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment int encodedMemberId 1321189817
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/management/members/updateOne.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Members::updateOne
+     */
+    private static function updateOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->put(
+                '/management/members/{memberId:[0-9]+}',
+                'App\Controller\Members:updateOne'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::COMPANY))
+            ->setName('members:updateOne');
+    }
+
     /*
      * Deletes a single Member.
      *
      * Deletes a single Member that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /management/members/{userName}
+     * @apiEndpoint DELETE /management/members/{memberId}
      * @apiGroup Company Members
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
-     * @apiEndpointURIFragment string userName
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment int encodedMemberId 1321189817
      *
      * @param \Slim\App $app
      * @param \callable $auth

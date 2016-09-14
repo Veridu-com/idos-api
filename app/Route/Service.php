@@ -66,8 +66,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint GET /services
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -97,8 +97,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint POST /services
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -128,8 +128,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint DELETE /services
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -160,8 +160,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint GET /services/{serviceId:[0-9]+}
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  int  serviceId 12345
      *
      * @param \Slim\App $app
@@ -192,8 +192,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint PUT /services/{serviceId:[0-9]+}
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment int serviceId 1
      *
      * @param \Slim\App $app
@@ -224,8 +224,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint DELETE /services/{serviceId:[0-9]+}
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment int serviceId 1
      *
      * @param \Slim\App $app

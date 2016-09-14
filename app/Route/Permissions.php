@@ -63,8 +63,8 @@ class Permissions implements RouteInterface {
      * Retrieve a complete list of all permissions that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions
-     * @apiAuth header token CompanyToken A valid Company Token
-     * @apiAuth query token companyToken A valid Company Token
+     * @apiAuth header token CompanyToken A valid Identity Token
+     * @apiAuth query token companyToken A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -93,8 +93,8 @@ class Permissions implements RouteInterface {
      * Create a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/permissions
-     * @apiAuth header token CompanyToken A valid Company Token
-     * @apiAuth query token companyToken A valid Company Token
+     * @apiAuth header token CompanyToken A valid Identity Token
+     * @apiAuth query token companyToken A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -123,8 +123,8 @@ class Permissions implements RouteInterface {
      * Deletes all permissions that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/permissions
-     * @apiAuth header token CompanyToken A valid Company Token
-     * @apiAuth query token companyToken A valid Company Token
+     * @apiAuth header token CompanyToken A valid Identity Token
+     * @apiAuth query token companyToken A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -182,8 +182,8 @@ class Permissions implements RouteInterface {
      * Deletes a single Permission that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/permissions/{routeName}
-     * @apiAuth header token CompanyToken A valid Company Token
-     * @apiAuth query token companyToken A valid Company Token
+     * @apiAuth header token CompanyToken A valid Identity Token
+     * @apiAuth query token companyToken A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth

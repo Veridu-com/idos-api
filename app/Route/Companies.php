@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Companies routing definitions.
+ * Company
+ *
+ * A Company is a profile within the API available for a customer who requires a sophisticated level of control over employees with different levels of Permission.
  *
  * @link docs/companies/overview.md
  * @see App\Controller\Companies
@@ -67,8 +69,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint GET /companies
      * @apiGroup Company
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -99,8 +101,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint POST /companies
      * @apiGroup Company
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -130,8 +132,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies
      * @apiGroup Company
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -191,8 +193,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint PUT /companies/{companySlug}
      * @apiGroup Company
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
@@ -223,8 +225,8 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}
      * @apiGroup Company
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
