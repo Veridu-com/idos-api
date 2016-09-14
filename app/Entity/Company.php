@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Helper\Utils;
+use App\Extension\SlugMutator;
 
 /**
  * Companies Entity.
@@ -24,6 +24,8 @@ use App\Helper\Utils;
  * @property int    $updated_at
  */
 class Company extends AbstractEntity {
+    use SlugMutator;
+
     /**
      * {@inheritdoc}
      */
@@ -36,18 +38,4 @@ class Company extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $secure = ['private_key'];
-
-    /**
-     * Property Mutator for $name.
-     *
-     * @param string $value
-     *
-     * @return App\Entity\Company
-     */
-    public function setNameAttribute(string $value) : self {
-        $this->attributes['name'] = $value;
-        $this->attributes['slug'] = Utils::slugify($value);
-
-        return $this;
-    }
 }

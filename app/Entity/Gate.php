@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Helper\Utils;
+use App\Extension\SlugMutator;
 
 /**
  * Gates Entity.
@@ -24,6 +24,8 @@ use App\Helper\Utils;
  * @property int    $updated_at
  */
 class Gate extends AbstractEntity {
+    use SlugMutator;
+
     /**
      * {@inheritdoc}
      */
@@ -38,18 +40,4 @@ class Gate extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * Property Mutator for $name.
-     *
-     * @param string $name
-     *
-     * @return App\Entity\Gate
-     */
-    public function setNameAttribute(string $name) : self {
-        $this->attributes['name'] = $name;
-        $this->attributes['slug'] = Utils::slugify($name);
-
-        return $this;
-    }
 }
