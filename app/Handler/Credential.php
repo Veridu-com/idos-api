@@ -9,13 +9,11 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Credential\CreateNew;
-use App\Command\Credential\DeleteAll;
 use App\Command\Credential\DeleteOne;
 use App\Command\Credential\UpdateOne;
 use App\Entity\Credential as CredentialEntity;
 use App\Event\Credential\Created;
 use App\Event\Credential\Deleted;
-use App\Event\Credential\DeletedMulti;
 use App\Event\Credential\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -169,9 +167,9 @@ class Credential implements HandlerInterface {
      *
      * @param App\Command\Credential\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->credentialId);
         } catch (ValidationException $e) {
@@ -192,35 +190,5 @@ class Credential implements HandlerInterface {
 
         $event = new Deleted($credential);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
-    }
-
-    /**
-     * Deletes all credentials ($command->companyId).
-     *
-     * @param App\Command\Credential\DeleteAll $command
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertId($command->companyId);
-        } catch (ValidationException $e) {
-            throw new Validate\CredentialException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $credentials = $this->repository->findByCompanyId($command->companyId);
-
-        $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
-
-        $event = new DeletedMulti($credentials);
-        $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

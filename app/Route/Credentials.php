@@ -18,6 +18,7 @@ use Slim\App;
  * Company Credentials
  *
  * Company Credential is a way of identifying a specific Company accessing the API from a specific origin (eg. using a plugin from website X, or from website Y).
+ *
  * @link docs/companies/credentials/overview.md
  * @see App\Controller\Companies
  */
@@ -62,26 +63,17 @@ class Credentials implements RouteInterface {
     /**
      * List all Credentials.
      *
-<<<<<<< HEAD
      * Retrieves a complete list of all credentials that belong to the requesting company.
-=======
-     * Retrieve a complete list of all credentials that belong to the target company.
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials
      * @apiGroup Company Credentials
-<<<<<<< HEAD
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     *
-=======
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * 
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
+     *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -97,7 +89,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:listAll'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -107,25 +99,17 @@ class Credentials implements RouteInterface {
     /**
      * Create new Credential.
      *
-<<<<<<< HEAD
      * Creates a new credential for the requesting company.
-=======
-     * Create a new credential for the target company.
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials
      * @apiGroup Company Credentials
-<<<<<<< HEAD
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-=======
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -141,7 +125,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:createNew'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -149,7 +133,6 @@ class Credentials implements RouteInterface {
     }
 
     /**
-<<<<<<< HEAD
      * Delete All Credentials.
      *
      * Deletes all credentials that belong to the requesting company.
@@ -181,22 +164,15 @@ class Credentials implements RouteInterface {
     }
 
     /**
-=======
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      * Retrieve a single Credential.
      *
      * Retrieves all public information from a Credential
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company Credentials
-<<<<<<< HEAD
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-=======
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -216,7 +192,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:getOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -230,14 +206,9 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company Credentials
-<<<<<<< HEAD
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-=======
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -257,7 +228,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:updateOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -271,16 +242,11 @@ class Credentials implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company Credentials
-<<<<<<< HEAD
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-=======
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      * @apiEndpointURIFragment string pubKey FEDCBA
-     * 
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      *
@@ -298,7 +264,7 @@ class Credentials implements RouteInterface {
                 'App\Controller\Credentials:deleteOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))

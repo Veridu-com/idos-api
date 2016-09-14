@@ -14,7 +14,7 @@ use App\Helper\Utils;
  * Trait to a name mutator.
  * The mutator adds a "slug" property based on the received name.
  */
-trait NameToSlugMutator {
+trait SlugMutator {
     /**
      * Property Mutator (setter) for $name.
      *

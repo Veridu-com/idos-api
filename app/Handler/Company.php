@@ -9,14 +9,11 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Company\CreateNew;
-use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
-use App\Entity\Role;
 use App\Event\Company\Created;
 use App\Event\Company\Deleted;
-use App\Event\Company\DeletedMulti;
 use App\Event\Company\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -119,8 +116,6 @@ class Company implements HandlerInterface {
         $company->public_key  = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
         $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
 
-
-
         try {
             $company = $this->repository->saveNewCompany($company, $command->identity);
             $event   = new Created($company, $command->identity);
@@ -151,7 +146,7 @@ class Company implements HandlerInterface {
             );
         }
 
-        $company = $command->company;
+        $company            = $command->company;
         $company->name      = $command->name;
         $company->updatedAt = time();
 
@@ -171,9 +166,9 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertCompany($command->company);
             $this->validator->assertId($command->company->id);
@@ -193,35 +188,5 @@ class Company implements HandlerInterface {
 
         $event = new Deleted($command->company);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
-    }
-
-    /**
-     * Deletes all child Company ($command->parentId).
-     *
-     * @param App\Command\Company\DeleteAll $command
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertId($command->parentId);
-        } catch (ValidationException $e) {
-            throw new Validate\CompanyException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $deletedCompanies = $this->repository->getAllByParentId($command->parentId);
-
-        $rowsAffected = $this->repository->deleteByParentId($command->parentId);
-
-        $event = new DeletedMulti($deletedCompanies);
-        $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

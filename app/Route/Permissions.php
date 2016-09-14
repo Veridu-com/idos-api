@@ -62,13 +62,8 @@ class Permissions implements RouteInterface {
      * Retrieve a complete list of all permissions that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions
-<<<<<<< HEAD
      * @apiAuth header token CompanyToken A valid Identity Token
      * @apiAuth query token companyToken A valid Identity Token
-=======
-     * @apiAuth header token IdentityToken A valid Identity Token
-     * @apiAuth query token IdentityToken A valid Identity Token
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -87,7 +82,7 @@ class Permissions implements RouteInterface {
                 'App\Controller\Permissions:listAll'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -100,13 +95,8 @@ class Permissions implements RouteInterface {
      * Create a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/permissions
-<<<<<<< HEAD
      * @apiAuth header token CompanyToken A valid Identity Token
      * @apiAuth query token companyToken A valid Identity Token
-=======
-     * @apiAuth header token IdentityToken A valid Identity Token
-     * @apiAuth query token IdentityToken A valid Identity Token
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -125,7 +115,7 @@ class Permissions implements RouteInterface {
                 'App\Controller\Permissions:createNew'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -133,7 +123,6 @@ class Permissions implements RouteInterface {
     }
 
     /**
-<<<<<<< HEAD
      * Deletes all permissions.
      *
      * Deletes all permissions that belongs to the requesting company.
@@ -164,8 +153,6 @@ class Permissions implements RouteInterface {
     }
 
     /**
-=======
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      * Retrieve a single Permission.
      *
      * Retrieves all public information from a Permission.
@@ -190,7 +177,7 @@ class Permissions implements RouteInterface {
                 'App\Controller\Permissions:getOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))
@@ -203,13 +190,9 @@ class Permissions implements RouteInterface {
      * Deletes a single Permission that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/permissions/{routeName}
-<<<<<<< HEAD
-     * @apiAuth header token CompanyToken A valid Identity Token
-     * @apiAuth query token companyToken A valid Identity Token
-=======
+     *
      * @apiAuth header token IdentityToken A valid Identity Token
      * @apiAuth query token IdentityToken A valid Identity Token
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -228,7 +211,7 @@ class Permissions implements RouteInterface {
                 'App\Controller\Permissions:deleteOne'
             )
             ->add($permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
             ))
             ->add($auth(Auth::IDENTITY))

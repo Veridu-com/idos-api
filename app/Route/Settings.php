@@ -70,6 +70,7 @@ class Settings implements RouteInterface {
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -168,11 +169,11 @@ class Settings implements RouteInterface {
      *
      * Retrieves all public information from a Setting.
      *
-     * @apiEndpoint GET /management/settings/{encodedSettingId}
+     * @apiEndpoint GET /management/settings/{settingId}
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment int encodedSettingId 5139
+     * @apiEndpointURIFragment int settingId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -203,20 +204,11 @@ class Settings implements RouteInterface {
      *
      * Updates the specific information for a single Setting.
      *
-<<<<<<< HEAD
-     * @apiEndpoint PUT /management/settings/{encodedSettingId}
+     * @apiEndpoint PUT /management/settings/{settingId}
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment int encodedSettingId 5139
-=======
-     * @apiEndpoint PUT /companies/{companySlug}/settings/{settingId}
-     * @apiGroup Company Settings
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -247,20 +239,11 @@ class Settings implements RouteInterface {
      *
      * Deletes a single Setting that belongs to the requesting company.
      *
-<<<<<<< HEAD
-     * @apiEndpoint DELETE /management/settings/{encodedSettingId}
+     * @apiEndpoint DELETE /management/settings/{settingId}
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment int encodedSettingId 5139
-=======
-     * @apiEndpoint DELETE /companies/{companySlug}/settings/{settingId}
-     * @apiGroup Company Settings
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
->>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @param \Slim\App $app
      * @param \callable $auth
