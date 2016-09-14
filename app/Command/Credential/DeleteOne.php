@@ -17,7 +17,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * Credential to be deleted.
      *
-     * @var int
+     * @var \App\Entity\Credential
      */
     public $credential;
 
