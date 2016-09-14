@@ -122,6 +122,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     }
 
     public function hydrateRelations($entities) {
+        //@FIXME: this method is hydrating the relations attributes even if its not in the 'hydrate' property of the relation in the repository config, it must behave like castHydrate
         if (is_array($entities)) {
             foreach ($entities as $key => $entity) {
                 $entities[$key] = $this->hydrateRelations($entity);

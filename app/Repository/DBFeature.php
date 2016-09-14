@@ -54,6 +54,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
             'nullable' => false,
             'hydrate' => false
         ],
+
         'source' => [
             'type' => 'MANY_TO_ONE',
             'table' => 'sources',
@@ -70,6 +71,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
                 'updated_at'
             ]
         ],
+        
         'creator' => [
             'type' => 'MANY_TO_ONE',
             'table' => 'services',

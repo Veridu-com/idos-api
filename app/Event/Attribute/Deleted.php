@@ -10,26 +10,27 @@ namespace App\Event\Attribute;
 
 use App\Entity\Attribute;
 use App\Event\AbstractEvent;
+use Illuminate\Support\Collection;
 
 /**
  * Deleted event.
  */
 class Deleted extends AbstractEvent {
     /**
-     * Event related Attribute.
+     * Event related Companies.
      *
-     * @var App\Entity\Attribute
+     * @var \Illuminate\Support\Collection
      */
-    public $attribute;
+    public $attributes;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Attribute $attribute
+     * @param \Illuminate\Support\Collection $attributes
      *
      * @return void
      */
-    public function __construct(Attribute $attribute) {
-        $this->attribute = $attribute;
+    public function __construct(Collection $attributes) {
+        $this->attributes = $attributes;
     }
 }
