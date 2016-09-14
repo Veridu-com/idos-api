@@ -113,7 +113,7 @@ class Feature implements HandlerInterface {
         $this->validator->assertFlag($command->upsert);
         $this->validator->assertLongName($command->name);
         $this->validator->assertName($command->type);
-        $this->validator->assertValue($command->value);
+        //$this->validator->assertValue($command->value);
         
         if ($command->source !== null) {
             $this->validator->assertSource($command->source);
@@ -157,7 +157,7 @@ class Feature implements HandlerInterface {
         $this->validator->assertService($command->service);
         $this->validator->assertId($command->featureId);
         $this->validator->assertName($command->type);
-        $this->validator->assertValue($command->value);
+        //$this->validator->assertValue($command->value);
 
         $feature = $this->repository->findOneById($command->user->id, $command->source->id, $command->service->id, $command->featureId);
 
@@ -253,7 +253,7 @@ class Feature implements HandlerInterface {
         $this->validator->assertService($command->service);
         $this->validator->assertLongName($command->name);
         $this->validator->assertName($command->type);
-        $this->validator->assertValue($command->value);
+        //$this->validator->assertValue($command->value);
         
         if ($command->source !== null) {
             $this->validator->assertSource($command->source);
