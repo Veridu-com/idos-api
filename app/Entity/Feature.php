@@ -47,19 +47,20 @@ class Feature extends AbstractEntity {
         'source' => 'Source'
     ];
 
-    public function getValueAttribute() {
+    public function getValueAttribute($value) {
         if ($this->attributes['type'] === 'integer') {
-            return (int) $this->attributes['value'];
+            return (int) $value;
         }
 
+
         if ($this->attributes['type'] === 'boolean') {
-            return (bool) $this->attributes['value'];
+            return (bool) $value;
         }
 
         if ($this->attributes['type'] === 'double') {
-            return (double) $this->attributes['value'];
+            return (double) $value;
         }
 
-        return $this->attributes['value'];
+        return $value;
     }
 }
