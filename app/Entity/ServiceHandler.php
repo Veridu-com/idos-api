@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Entity;
 
 use App\Extension\NameToSlugMutator;
-use App\Extension\SecureFields;
 
 /**
  * ServiceHandler's Entity.
@@ -25,34 +24,27 @@ use App\Extension\SecureFields;
  */
 class ServiceHandler extends AbstractEntity {
     use NameToSlugMutator;
-    use SecureFields;
 
     /**
      * {@inheritdoc}
      */
     protected $visible = ['id', 'listens', 'service', 'created_at', 'updated_at'];
-
     /**
      * {@inheritdoc}
      */
     protected $json = ['listens'];
-
     /**
      * {@inheritdoc}
      */
     public $relationships = [
         'service' => 'Service'
     ];
-
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
     /**
-     * The attributes that should be secured.
-     *
-     * @var array
+     * {@inheritdoc}
      */
     protected $secure = ['username', 'password'];
 }

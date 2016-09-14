@@ -19,10 +19,6 @@
             "type": "string",
             "pattern": ""
         },
-        "user_id": {
-            "description": "User owner of the warning",
-            "type": "integer"
-        },
         "created_at": {
             "description": "Warning's creation unixtime",
             "type": "integer"
@@ -39,7 +35,6 @@
         "name",
         "slug",
         "reference",
-        "user_id",
         "created_at"
     ]
 }

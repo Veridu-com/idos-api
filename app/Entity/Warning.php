@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
 use App\Helper\Utils;
 
 /**
@@ -24,12 +23,17 @@ use App\Helper\Utils;
  * @property int    $updated_at
  */
 class Warning extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'slug', 'reference', 'user_id', 'created_at', 'updated_at'];
+    protected $visible = [
+        'id',
+        'name',
+        'slug',
+        'reference',
+        'created_at',
+        'updated_at'
+    ];
     /**
      * {@inheritdoc}
      */
