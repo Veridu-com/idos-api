@@ -86,10 +86,12 @@ class Companies implements RouteInterface {
                 '/companies',
                 'App\Controller\Companies:listAll'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('companies:listAll');
     }
@@ -122,10 +124,12 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:createNew'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('companies:createNew');
     }
@@ -185,10 +189,12 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:updateOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('companies:updateOne');
     }
@@ -220,10 +226,12 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:deleteOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('companies:deleteOne');
     }

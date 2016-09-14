@@ -167,9 +167,9 @@ class Credential implements HandlerInterface {
      *
      * @param App\Command\Credential\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->credentialId);
         } catch (ValidationException $e) {
@@ -190,7 +190,5 @@ class Credential implements HandlerInterface {
 
         $event = new Deleted($credential);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

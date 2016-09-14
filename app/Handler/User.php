@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\User\CreateNew;
+use App\Entity\User as UserEntity;
 use App\Exception\Create;
 use App\Factory\Command;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
-use App\Entity\User as UserEntity;
 
 /**
  * Handles User commands.

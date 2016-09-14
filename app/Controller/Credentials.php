@@ -104,7 +104,7 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
+        $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Credential\\CreateNew');
@@ -171,7 +171,7 @@ class Credentials implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity    = $request->getAttribute('identity');
-        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
+        $credential  = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
         $command = $this->commandFactory->create('Credential\\UpdateOne');
         $command
@@ -206,7 +206,7 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $identity = $request->getAttribute('identity');
+        $identity   = $request->getAttribute('identity');
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
         $command = $this->commandFactory->create('Credential\\DeleteOne');
@@ -214,8 +214,9 @@ class Credentials implements ControllerInterface {
             ->setParameter('credential', $credential)
             ->setParameter('identity', $identity);
 
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $this->commandBus->handle($command)
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -254,9 +254,9 @@ class Source implements HandlerInterface {
      *
      * @param App\Command\Source\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertSource($command->source);
             $this->validator->assertId($command->source->id);
@@ -276,8 +276,6 @@ class Source implements HandlerInterface {
         }
 
         $this->emitter->emit(new Deleted($command->source, $command->ipaddr));
-
-        return $rowsAffected;
     }
 
     /**

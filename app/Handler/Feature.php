@@ -195,9 +195,9 @@ class Feature implements HandlerInterface {
      *
      * @param App\Command\Feature\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertSlug($command->featureSlug);
             $this->validator->assertId($command->userId);
@@ -219,7 +219,5 @@ class Feature implements HandlerInterface {
 
         $event = new Deleted($feature);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

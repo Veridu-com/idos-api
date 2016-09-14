@@ -29,13 +29,13 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
     protected $entityName = 'Identity';
 
     private $queryColumns = [
-        'identities.*', 
-        'companies.id as company.id', 
-        'companies.name as company.name', 
-        'companies.slug as company.slug', 
-        'companies.public_key as company.public_key', 
-        'companies.created_at as company.created_at', 
-        'companies.updated_at as company.updated_at', 
+        'identities.*',
+        'companies.id as company.id',
+        'companies.name as company.name',
+        'companies.slug as company.slug',
+        'companies.public_key as company.public_key',
+        'companies.created_at as company.created_at',
+        'companies.updated_at as company.updated_at',
         'members.id as member.id',
         'members.role as member.role',
         'members.company_id as member.company',
@@ -59,57 +59,56 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
             ->where('identities.public_key', $pubKey)
             ->get($this->queryColumns);
 
-        $companies = $members =  $roles = [
-            'ids' => [],
+        $companies = $members = $roles = [
+            'ids'      => [],
             'entities' => []
         ];
 
         foreach ($identities as $identity) {
             $company = $identity->company();
-            $member = $identity->member();
-            $role = $identity->role();
-
+            $member  = $identity->member();
+            $role    = $identity->role();
 
             if (! array_has($companies['ids'], $company['id'])) {
-                $company =  $this->entityFactory->create(
+                $company = $this->entityFactory->create(
                     'Company',
                     $company
                 );
 
                 $companies['ids'][$company->id] = $company;
                 array_push($companies['entities'], $company);
-             }
+            }
 
             if (! array_has($members['ids'], $member['id'])) {
-                $member =  $this->entityFactory->create(
+                $member = $this->entityFactory->create(
                     'Member',
                     $member
                 );
                 $members['ids'][$member->id] = $member;
                 array_push($members['entities'], $member);
-             }
+            }
 
             if (! array_has($roles['ids'], $role['name'])) {
-                $role =  $this->entityFactory->create(
+                $role = $this->entityFactory->create(
                     'Role',
                     $role
                 );
                 $roles['ids'][$role->name] = $role;
                 array_push($roles['entities'], $role);
-             }
+            }
         }
 
         // populating members entities
         foreach ($members['entities'] as $member) {
             $member->relations['company'] = $companies['ids'][$member->company];
-            $member->relations['role'] = $roles['ids'][$member->role];
+            $member->relations['role']    = $roles['ids'][$member->role];
         }
 
         $identity = $identities->first();
 
         // populating identities available companies
         $identity->relations['company'] = new Collection($companies['entities']);
-        $identity->relations['member'] = new Collection($members['entities']);
+        $identity->relations['member']  = new Collection($members['entities']);
 
         return $identity;
     }
@@ -121,7 +120,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
         $reference = sprintf(
             '%s:%s',
             $sourceName,
-            $profileId, 
+            $profileId,
             $applicationId
         );
 

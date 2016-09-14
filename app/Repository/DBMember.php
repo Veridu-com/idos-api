@@ -29,10 +29,9 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
      */
     protected $entityName = 'Member';
 
-
     private $queryColumns = [
-        'members.*', 
-        'companies.updated_at as company.updated_at', 
+        'members.*',
+        'companies.updated_at as company.updated_at',
         'identities.id as identity.id',
         'identities.reference as identity.reference',
         'identities.public_key as identity.public_key',
@@ -50,11 +49,11 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
      */
     public function getAllByCompanyId(int $companyId, array $queryParams = []) : Collection {
         $members = $this->query()
-                ->join('identities', 'identities.id', '=', 'members.identity_id')
-                ->join('roles', 'roles.name', '=', 'members.role')
-                ->join('companies', 'companies.id', '=', 'members.company_id')
-                ->where('members.company_id', '=', $companyId)
-                ->get($this->queryColumns);
+            ->join('identities', 'identities.id', '=', 'members.identity_id')
+            ->join('roles', 'roles.name', '=', 'members.role')
+            ->join('companies', 'companies.id', '=', 'members.company_id')
+            ->where('members.company_id', '=', $companyId)
+            ->get($this->queryColumns);
 
         return $this->castHydrate($members);
     }
