@@ -44,7 +44,8 @@ class Feature extends AbstractEntity {
      * {@inheritdoc}
      */
     public $relationships = [
-        'source' => 'Source'
+        'source' => 'Source',
+        'creator' => 'Service'
     ];
 
     public function getValueAttribute($value) {

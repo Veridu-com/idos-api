@@ -14,12 +14,15 @@ class AttributeInit extends AbstractMigration {
         // Attribute scores
         $scores = $this->table('scores');
         $scores
-            ->addColumn('attribute_id', 'integer', ['null' => false])
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'float', ['null' => false, 'default' => 0.0])
             ->addTimestamps()
-            ->addIndex('attribute_id')
-            ->addForeignKey('attribute_id', 'attributes', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addIndex('user_id')
+            ->addIndex('creator')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
     }
 }

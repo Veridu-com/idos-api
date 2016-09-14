@@ -35,7 +35,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     protected $filterableKeys = [
         'source.id' => 'decoded',
         'source.name' => 'string',
-        'creator' => 'string',
+        'creator.name' => 'string',
         'name' => 'string',
         'type' => 'string',
         'created_at' => 'date'
@@ -77,7 +77,9 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
             'key' => 'id',
             'entity' => 'Service',
             'nullable' => false,
-            'hydrate' => false
+            'hydrate' => [
+                'name'
+            ]
         ],
     ];
 
