@@ -86,11 +86,17 @@ psysh:
 phinx-migrate:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phinx migrate
 
+phinx-migrate-testing:
+	docker exec --interactive --tty ${PHPSRV} vendor/bin/phinx migrate -e testing
+
 phinx-rollback:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phinx rollback
 
 phinx-seed:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phinx seed:run
+
+phinx-seed-testing:
+	docker exec --interactive --tty ${PHPSRV} vendor/bin/phinx seed:run -e testing
 
 psql:
 	docker exec --interactive --tty ${DBSRV} psql -h localhost idos-api idos-api
