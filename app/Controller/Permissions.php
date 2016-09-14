@@ -189,35 +189,6 @@ class Permissions implements ControllerInterface {
     }
 
     /**
-     * Deletes all Permissions that belongs to the Target Company.
-     *
-     * @apiEndpointResponse 200 -
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-
-        $command = $this->commandFactory->create('Permission\\DeleteAll');
-        $command->setParameter('companyId', $targetCompany->id);
-
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Deletes one Permission of the Target Company based on path paramater routeName.
      *
      * @apiEndpointURIFragment string companySlug veridu-ltd

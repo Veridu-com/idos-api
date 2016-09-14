@@ -84,7 +84,7 @@ class Reviews implements RouteInterface {
                 'App\Controller\Reviews:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('review:listAll');
     }
     /**
@@ -116,7 +116,7 @@ class Reviews implements RouteInterface {
                 'App\Controller\Reviews:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('review:createNew');
     }
 
@@ -150,7 +150,7 @@ class Reviews implements RouteInterface {
                 'App\Controller\Reviews:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('review:updateOne');
     }
 
@@ -184,7 +184,7 @@ class Reviews implements RouteInterface {
                 'App\Controller\Reviews:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('review:getOne');
     }
 }

@@ -70,7 +70,7 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company = $request->getAttribute('targetCompany');
 
         $credentials = $this->repository->getAllByCompanyId($company->id);
 
@@ -104,12 +104,14 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Credential\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $company->id);
+            ->setParameter('identity', $identity)
+            ->setParameter('company', $company);
 
         $credential = $this->commandBus->handle($command);
 
@@ -168,9 +170,9 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company = $request->getAttribute('targetCompany');
 
-        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $company->id);
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
         $body = [
             'data'    => $credential->toArray(),
@@ -198,12 +200,13 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company    = $request->getAttribute('company');
+        $identity    = $request->getAttribute('identity');
         $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
         $command = $this->commandFactory->create('Credential\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
+            ->setParameter('identity', $identity)
             ->setParameter('credentialId', $credential->id);
 
         $credential = $this->commandBus->handle($command);
@@ -233,16 +236,16 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
-
-        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'), $company->id);
+        $identity = $request->getAttribute('identity');
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
         $command = $this->commandFactory->create('Credential\\DeleteOne');
         $command
-            ->setParameter('credentialId', $credential->id);
+            ->setParameter('credential', $credential)
+            ->setParameter('identity', $identity);
 
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'status' => (bool) $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -86,7 +86,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:listAll');
     }
 
@@ -117,7 +117,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:createNew');
     }
 
@@ -149,7 +149,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:deleteAll');
     }
 
@@ -181,7 +181,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:getOne');
     }
 
@@ -213,7 +213,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:updateOne');
     }
 
@@ -245,7 +245,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:deleteOne');
     }
 }

@@ -6,20 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Company;
+namespace App\Command\Setting;
 
 use App\Command\AbstractCommand;
 
 /**
- * Company "Update One" Command.
+ * Setting "List All" Command.
  */
-class UpdateOne extends AbstractCommand {
-    /**
-     * Company's new name.
-     *
-     * @var string
-     */
-    public $name;
+class ListAll extends AbstractCommand {
     /**
      * Target Company.
      *
@@ -35,14 +29,25 @@ class UpdateOne extends AbstractCommand {
     public $identity;
 
     /**
+     * Query parameters.
+     *
+     * @var array
+     */
+    public $queryParams;
+
+    /**
+     * Parent access.
+     *
+     * @var bool
+     */
+    public $hasParentAccess;
+
+    /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\UpdateOne
+     * @return App\Command\Setting\ListAll
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
-        }
 
         return $this;
     }

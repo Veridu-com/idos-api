@@ -45,11 +45,11 @@ class UpdateOne extends AbstractCommand {
      */
     public $credentialPubKey;
     /**
-     * Company.
+     * Target Company's id.
      *
-     * @var App\Entity\Company
+     * @var int
      */
-    public $company;
+    public $companyId;
 
     /**
      * {@inheritdoc}

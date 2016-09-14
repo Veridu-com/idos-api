@@ -87,7 +87,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('tags:listAll');
     }
     /**
@@ -119,7 +119,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('tags:createNew');
     }
 
@@ -152,7 +152,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('tags:deleteAll');
     }
 
@@ -186,7 +186,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('tags:getOne');
     }
 
@@ -220,7 +220,7 @@ class Tags implements RouteInterface {
                 'App\Controller\Tags:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('tags:deleteOne');
     }
 }

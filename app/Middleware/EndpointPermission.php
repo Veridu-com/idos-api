@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Middleware;
 
+use App\Entity\Member;
 use App\Exception\NotAllowed;
 use App\Repository\CompanyInterface;
 use App\Repository\PermissionInterface;
@@ -48,9 +49,11 @@ class EndpointPermission implements MiddlewareInterface {
     public function __construct(
         PermissionInterface $permissionRepository,
         CompanyInterface $companyRepository,
-        int $permissionType = self::PRIVATE_ACTION
+        int $permissionType = self::SELF_ACTION, 
+        int $allowedRolesBits = 0x00
     ) {
         $this->permissionRepository = $permissionRepository;
+        $this->allowedRolesBits    = $allowedRolesBits;
         $this->companyRepository    = $companyRepository;
         $this->permissionType       = $permissionType;
     }
@@ -77,45 +80,106 @@ class EndpointPermission implements MiddlewareInterface {
         if ($this->permissionType === self::PUBLIC_ACTION) {
             return $next($request, $response);
         }
+        // get identity set on Auth middleware
+        $identity = $request->getAttribute('identity');
+        if ($identity) {
+            $identityMembers = $identity->member();
+        }
+        
+        $targetCompany = $request->getAttribute('targetCompany');
+        $hasParentAccess = false;
+        $allowed = false;
 
-        // get company set on Auth middleware
-        $company = $request->getAttribute('company');
+        if (! $targetCompany) {
+            return $next($request, $response);
+        }
+
         // get current route name
         $routeName = $request->getAttribute('route')->getName();
 
-        $allowed = false;
-
-        if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
-            // checks if the $company has access to $routeName
-            $allowed = $this->permissionRepository->isAllowed(
-                $company->id,
-                $routeName
-            );
+        // How can an identity access this resource?
+        // 
+        // 1. If PRIVATE ACTION (does this make sense still?) @FIXME
+        //      - 1.1 Can one of the identity's companies access this resource? 
+        //          - Is the identity rank < $this->allowedRolesBits in any company?
+        //          - if yep, check if has a register on DBPermission for this company and this routeName
+        //          - if yep, check if that company is a parent or is the target company.
+        // Remove this in case of keeping PRIVATE_ACTION
+        if ($this->permissionType === self::PRIVATE_ACTION) {
+            return $next($request, $response);
         }
 
-        if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
-            $targetCompany = $request->getAttribute('targetCompany');
+        // 2. If PARENT ACTION
+        //      - 2.1 Can one of the identity's companies access this resource? 
+        //          - Is the identity rank < 3 in any company?
+        //          - if yep, check if that company is a parent of the target company.
+        //          
+        // 2. If SELF ACTION
+        //      - 2.1 Can one of the identity's companies access this resource? 
+        //          - Is the identity rank < 3 in any company?
+        //          - if yep, check if that company is the target company.
+        //          
+        // @FIXME delete this?
+        // if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
+        //     // checks if the $company has access to $routeName
+        //     $allowed = $this->permissionRepository->isAllowed(
+        //         $company->id,
+        //         $routeName
+        //     );
+        // }
 
-            if ($targetCompany === null) {
-                $allowed = true;
-            } elseif ($targetCompany->id === $company->id) {
-                $allowed = true;
+        if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
+            // searches for a membership within the company
+            foreach ($identityMembers as $member) {
+                if ($this->roleHasAccess($member->role()->bit) && $member->company()->id == $targetCompany->id)  {
+                    $allowed = true;
+                }
             }
         }
 
-        if ((! $allowed) && ($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
-            $targetCompany = $request->getAttribute('targetCompany');
-            // checks if the $company is a parent of $targetCompany
-            $allowed = $this->companyRepository->isParent(
-                $company,
-                $targetCompany
-            );
+        // this has to be called always it is set to the endpoint
+        // since we need $hasParentAccess variable to be set on the $request variable
+        if (($this->permissionType & self::PARENT_ACTION) === self::PARENT_ACTION) {
+            // searches for a membership within the company
+            foreach ($identityMembers as $member) {
+                if (
+                    $this->roleHasAccess($member->role()->bit) && 
+                    (
+                        $this->companyRepository->isParent($member->company(), $targetCompany) || 
+                        $this->isVeriduMember($member)
+                    )
+                )  {
+                    $allowed = true;
+                    $hasParentAccess = true;
+                }
+            }
         }
+
+        $request = $request->withAttribute('hasParentAccess', $hasParentAccess);
 
         if (! $allowed) {
             throw new NotAllowed();
         }
 
         return $next($request, $response);
+    }
+
+    /**
+     * Returns if role is contained on instance bitmask.
+     *
+     * @param      integer  $role   The role
+     */
+    private function roleHasAccess(int $role) : bool {
+        return (($this->allowedRolesBits & $role) === $role);
+    }
+
+    /**
+     * Determines if Member is a Veridu Member.
+     * This is needed for having Veridu protected settings visible.
+     *
+     * @param      \App\Entity\Member  $member  The member
+     */
+    private function isVeriduMember(Member $member) : bool {
+        return ($member->company()->id === 1);
     }
 }

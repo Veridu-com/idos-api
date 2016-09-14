@@ -20,12 +20,20 @@ class UpdateOne extends AbstractCommand {
      * @var string
      */
     public $name;
+
     /**
      * Credential Id.
      *
      * @var int
      */
     public $credentialId;
+
+    /**
+     * Acting Identity.
+     *
+     * @var int
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}

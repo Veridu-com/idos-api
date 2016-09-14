@@ -6,7 +6,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class S26LinksSeed extends AbstractSeed {
+class S26UserIdentitiesSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
@@ -23,7 +23,7 @@ class S26LinksSeed extends AbstractSeed {
             ]
         ];
 
-        $table = $this->table('links');
+        $table = $this->table('user_identities');
         $table
             ->insert($data)
             ->save();
