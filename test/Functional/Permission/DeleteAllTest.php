@@ -19,7 +19,7 @@ class DeleteAllTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/companies/veridu-ltd/permissions';
         $this->populate($this->uri);
@@ -38,10 +38,12 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
+
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         // checks if listAll retrived the number of deleted objects
         $this->assertSame(count($this->entities), $body['deleted']);
+        $this->assertCount($body['deleted'], $this->entities);
         // refreshes the $entities prop
         $this->populate($this->uri);
         // checks if all entities were deleted

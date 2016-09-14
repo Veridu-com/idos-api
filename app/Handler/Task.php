@@ -13,10 +13,14 @@ use App\Command\Task\UpdateOne;
 use App\Entity\Task as TaskEntity;
 use App\Event\Task\Created;
 use App\Event\Task\Updated;
+use App\Exception\Create;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\TaskInterface;
 use App\Validator\Task as TaskValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Task commands.
@@ -85,11 +89,19 @@ class Task implements HandlerInterface {
      * @return App\Entity\Task
      */
     public function handleCreateNew(CreateNew $command) : TaskEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertName($command->event);
-        $this->validator->assertBooleanOrNull($command->running);
-        $this->validator->assertBooleanOrNull($command->success);
-        $this->validator->assertId($command->processId);
+        try {
+            $this->validator->assertName($command->name);
+            $this->validator->assertName($command->event);
+            $this->validator->assertBooleanOrNull($command->running);
+            $this->validator->assertBooleanOrNull($command->success);
+            $this->validator->assertId($command->processId);
+        } catch (ValidationException $e) {
+            throw new Validate\TaskException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $task = $this->repository->create(
             [
@@ -107,8 +119,8 @@ class Task implements HandlerInterface {
             $task  = $this->repository->save($task);
             $event = new Created($task);
             $this->emitter->emit($event);
-        } catch (Exception $e) {
-            throw new AppException('Error while creating a task');
+        } catch (\Exception $e) {
+            throw new Create\TaskException('Error while trying to create a task', 500, $e);
         }
 
         return $task;
@@ -122,29 +134,37 @@ class Task implements HandlerInterface {
      * @return App\Entity\Task
      */
     public function handleUpdateOne(UpdateOne $command) : TaskEntity {
-        $this->validator->assertBooleanOrNull($command->success);
-        $this->validator->assertId($command->id);
-
-        $task = $this->repository->find($command->id);
-
-        if ($command->name) {
-            $this->validator->assertName($command->name);
-            $task->name = $command->name;
-        }
-
-        if ($command->event) {
-            $this->validator->assertName($command->event);
-            $task->event = $command->event;
-        }
-
-        if ($command->running) {
-            $this->validator->assertBooleanOrNull($command->running);
-            $task->running = $command->running;
-        }
-
-        if ($command->success) {
+        try {
             $this->validator->assertBooleanOrNull($command->success);
-            $task->success = $command->success;
+            $this->validator->assertId($command->id);
+
+            $task = $this->repository->find($command->id);
+
+            if ($command->name) {
+                $this->validator->assertName($command->name);
+                $task->name = $command->name;
+            }
+
+            if ($command->event) {
+                $this->validator->assertName($command->event);
+                $task->event = $command->event;
+            }
+
+            if ($command->running) {
+                $this->validator->assertBooleanOrNull($command->running);
+                $task->running = $command->running;
+            }
+
+            if ($command->success) {
+                $this->validator->assertBooleanOrNull($command->success);
+                $task->success = $command->success;
+            }
+        } catch (ValidationException $e) {
+            throw new Validate\TaskException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
         }
 
         if ($command->message) {
@@ -157,8 +177,8 @@ class Task implements HandlerInterface {
             $task  = $this->repository->save($task);
             $event = new Updated($task);
             $this->emitter->emit($event);
-        } catch (Exception $e) {
-            throw new AppException('Error while updating a task' . $command->id);
+        } catch (\Exception $e) {
+            throw new Update\TaskException('Error while trying to update a task', 500, $e);
         }
 
         return $task;

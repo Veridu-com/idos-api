@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class HandleCredentialTokenTest extends AbstractAuthFunctional {
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'GET';
         $this->uri        = '/';
 

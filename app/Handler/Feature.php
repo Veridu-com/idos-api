@@ -17,12 +17,15 @@ use App\Event\Feature\Created;
 use App\Event\Feature\Deleted;
 use App\Event\Feature\DeletedMulti;
 use App\Event\Feature\Updated;
-use App\Exception\AppException;
+use App\Exception\Create;
 use App\Exception\NotFound;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\FeatureInterface;
 use App\Validator\Feature as FeatureValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Feature commands.
@@ -91,8 +94,16 @@ class Feature implements HandlerInterface {
      * @return App\Entity\Feature
      */
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
-        $this->validator->assertLongName($command->name);
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertLongName($command->name);
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $feature = $this->repository->create(
             [
@@ -107,8 +118,8 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $event   = new Created($feature);
             $this->emitter->emit($event);
-        } catch (\Exception $exception) {
-            throw new AppException('Error while creating a feature');
+        } catch (\Exception $e) {
+            throw new Create\FeatureException('Error while trying to create a feature', 500, $e);
         }
 
         return $feature;
@@ -122,8 +133,16 @@ class Feature implements HandlerInterface {
      * @return App\Entity\Feature
      */
     public function handleUpdateOne(UpdateOne $command) : FeatureEntity {
-        $this->validator->assertSlug($command->featureSlug);
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertSlug($command->featureSlug);
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $feature = $this->repository->findByUserIdAndSlug($command->userId, $command->featureSlug);
 
@@ -136,13 +155,8 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $event   = new Updated($feature);
             $this->emitter->emit($event);
-        } catch (\Exception $exception) {
-            throw new AppException(
-                'Error while updating a feature user id: ' .
-                $command->userId .
-                ' slug: ' .
-                $command->featureSlug
-            );
+        } catch (\Exception $e) {
+            throw new Update\FeatureException('Error while trying to update a feature', 500, $e);
         }
 
         return $feature;
@@ -156,7 +170,15 @@ class Feature implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $deletedFeatures = $this->repository->findByUserId($command->userId);
 
@@ -176,19 +198,27 @@ class Feature implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertSlug($command->featureSlug);
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertSlug($command->featureSlug);
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $feature = $this->repository->findByUserIdAndSlug($command->userId, $command->featureSlug);
 
         $rowsAffected = $this->repository->delete($feature->id);
 
-        if ($rowsAffected) {
-            $event = new Deleted($feature);
-            $this->emitter->emit($event);
-        } else {
-            throw new NotFound();
+        if (! $rowsAffected) {
+            throw new NotFound\FeatureException('No features found for deletion', 404);
         }
+
+        $event = new Deleted($feature);
+        $this->emitter->emit($event);
 
         return $rowsAffected;
     }

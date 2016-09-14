@@ -14,7 +14,7 @@ use App\Command\Sso\CreateNewGoogle;
 use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
 use App\Command\Sso\CreateNewTwitter;
-use App\Exception\AppException;
+use App\Exception\Create;
 use App\Factory\Command;
 use App\Helper\Token;
 use App\Repository\CredentialInterface;
@@ -197,13 +197,13 @@ class Sso implements HandlerInterface {
         try {
             $response = $service->request($serviceRequestUrl);
         } catch (\Exception $e) {
-            throw new AppException('Error while contacting provider');
+            throw new Create\SsoException('Error while trying to contact provider', 500, $e);
         }
 
         $decodedResponse = json_decode($response, true);
 
         if ($decodedResponse === null || isset($decodedResponse['error']) || isset($decodedResponse['errors'])) {
-            throw new AppException('Error while trying authenticate');
+            throw new Create\SsoException('Error while trying to authenticate', 500);
         }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);

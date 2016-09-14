@@ -21,7 +21,7 @@ class UpdateOneTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'PUT';
         $this->uri        = '/1.0/service-handlers/1321189817';
     }
@@ -64,7 +64,6 @@ class UpdateOneTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
-
     }
 
     public function testNotFound() {
@@ -90,6 +89,42 @@ class UpdateOneTest extends AbstractFunctional {
 
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testInvalidListens() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'listens' => 'not an array'
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
