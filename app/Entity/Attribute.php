@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
-
 /**
  * Attribute Entity.
  *
@@ -22,8 +20,6 @@ use App\Extension\SecureFields;
  * @property int    $updated_at
  */
 class Attribute extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */
@@ -33,9 +29,7 @@ class Attribute extends AbstractEntity {
      */
     protected $dates = ['created_at'];
     /**
-     * The attributes that should be secured.
-     *
-     * @var array
+     * {@inheritdoc}
      */
     protected $secure = ['value'];
 }

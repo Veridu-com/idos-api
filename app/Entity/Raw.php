@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
-
 /**
  * Raw Entity.
  *
@@ -21,8 +19,6 @@ use App\Extension\SecureFields;
  * @property int    $created_at
  */
 class Raw extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */
@@ -32,9 +28,11 @@ class Raw extends AbstractEntity {
      */
     protected $dates = ['created_at', 'updated_at'];
     /**
-     * The attributes that should be secured.
-     *
-     * @var array
+     * {@inheritdoc}
+     */
+    protected $json = ['data'];
+    /**
+     * {@inheritdoc}
      */
     protected $secure = ['data'];
 }

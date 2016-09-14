@@ -19,11 +19,7 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Attribute's updated unixtime",
-            "type": "integer"
-        },
-        "updated_at": {
-            "description": "Attribute's last updated unixtime",
+            "description": "Attribute's last update unixtime",
             "type": ["integer", "null"]
         }
     },

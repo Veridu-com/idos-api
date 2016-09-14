@@ -22,6 +22,8 @@ use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
+use App\Entity\User;
+use App\Entity\Source;
 
 /**
  * Handles Sso commands.
@@ -116,7 +118,16 @@ class Sso implements HandlerInterface {
         $this->commandFactory       = $commandFactory;
     }
 
-    private function createNewUser($credentialId, $role, $username) {
+    /**
+     * Creates a new user
+     *
+     * @param      integer                      $credentialId  The credential identifier
+     * @param      string                       $role          The role
+     * @param      string                       $username      The username
+     *
+     * @return     App\Entity\User              The created user
+     */
+    private function createNewUser(int $credentialId, string $role, string $username) : User {
         $command = $this->commandFactory->create('User\\CreateNew');
         $command->setParameters(
             [
@@ -129,7 +140,17 @@ class Sso implements HandlerInterface {
         return $this->commandBus->handle($command);
     }
 
-    private function createNewSource($provider, $user, $tags, $ipAddr) {
+    /**
+     * Creates a new source
+     *
+     * @param      string                       $provider  The provider
+     * @param      \App\Entity\User             $user      The user
+     * @param      array                        $tags      The tags
+     * @param      string                       $ipAddr    The ip address
+     *
+     * @return     App\Entity\Source            The created source
+     */
+    private function createNewSource(string $provider, User $user, array $tags, string $ipAddr) : Source {
         $command = $this->commandFactory->create('Source\\CreateNew');
 
         $command->setParameters(
@@ -144,14 +165,28 @@ class Sso implements HandlerInterface {
         return $this->commandBus->handle($command);
     }
 
+    /**
+     * Creates a new sso source and a new user token.
+     *
+     * @param      string                       $provider              The provider
+     * @param      AbstractCommand              $command               The CreateNew command for the provider
+     * @param      Function|string              $tokenClass            The oauth token class
+     * @param      string                       $serviceRequestUrl     The provider url that will be used to get the user id
+     * @param      string                       $decodedResponseParam  The response parameter that holds the user's id
+     * @param      Function|string              $eventClass            The createNew event class name to be emitted
+     *
+     * @throws     \App\Exception\AppException  Exception thrown in case of error contacting the provider
+     *
+     * @return     string                       The generated token
+     */
     private function createNew(
-        $provider,
-        $command,
-        $tokenClass,
-        $serviceRequestUrl,
-        $decodedResponseParam,
-        $eventClass
-    ) {
+        string $provider,
+        AbstractCommand $command,
+        string $tokenClass,
+        string $serviceRequestUrl,
+        string $decodedResponseParam,
+        string $eventClass
+    ) : string {
         $service = call_user_func_array($this->service, [$provider, $command->key, $command->secret]);
 
         $token = new $tokenClass();
@@ -189,14 +224,12 @@ class Sso implements HandlerInterface {
         $this->createNewSource(
             $provider,
             $user,
-            sprintf(
-                '{
-                    "profile_id" : "%s",
-                    "access_token" : "%s",
-                    "sso" : true
-                }',
-                $decodedResponse[$decodedResponseParam],
-                $command->accessToken
+            json_encode(
+                [
+                    'profile_id' => $decodedResponse[$decodedResponseParam],
+                    'access_token' => $command->accessToken,
+                    'sso' => true
+                ]
             ),
             $command->ipAddress
         );
