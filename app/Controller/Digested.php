@@ -151,7 +151,7 @@ class Digested implements ControllerInterface {
 
         $body = [
             'data'    => $digested->toArray(),
-            'updated' => $digested->updated_at
+            'updated' => $digested->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

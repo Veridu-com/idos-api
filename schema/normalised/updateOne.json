@@ -10,11 +10,11 @@
         "data": {
             "description": "Normalised response payload",
             "type": "object",
-            "$ref": "NormalisedEntity.json"
+            "$ref": "normalisedEntity.json"
         },
         "updated": {
             "description": "Unixtime of the last update",
-            "type": "integer"
+            "type": ["integer", null]
         }
     },
     "required": [

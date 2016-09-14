@@ -146,7 +146,7 @@ class Attributes implements ControllerInterface {
 
         $body = [
             'data'    => $attribute->toArray(),
-            'updated' => $attribute->updated_at
+            'updated' => $attribute->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\User\CreateNew;
-use App\Exception\AppException;
+use App\Exception\Create;
 use App\Factory\Command;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
@@ -106,7 +106,7 @@ class User implements HandlerInterface {
         try {
             $user = $this->repository->save($user);
         } catch (\Exception $e) {
-            throw new AppException('Error while creating a user');
+            throw new Create\UserException('Error while trying to create an user', 500, $e);
         }
 
         return $user;

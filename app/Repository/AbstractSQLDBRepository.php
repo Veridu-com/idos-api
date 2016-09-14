@@ -134,13 +134,14 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         if (! $entity->id) {
             $id = $this->query()
                 ->insertGetId($serialized);
+
             return $this->create(array_merge(['id' => $id], $entity->serialize()));
         }
 
         $id = $entity->id;
         unset($serialized['id']);
         $serialized['updated_at'] = date('Y-m-d H:i:s');
-        $affectedRows = $this->query()
+        $affectedRows             = $this->query()
             ->where('id', $entity->id)
             ->update($serialized);
         if (! $affectedRows) {
@@ -301,7 +302,6 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      */
     protected function filter(Builder $query, array $queryParams = []) : Builder {
         $filters = [];
-
 
         foreach ($this->filterableKeys as $key => $type) {
             if (isset($queryParams[$key])) {

@@ -18,7 +18,7 @@ class GetOneTest extends AbstractRawFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw/raw-1';
 

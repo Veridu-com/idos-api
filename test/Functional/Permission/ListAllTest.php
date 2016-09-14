@@ -19,7 +19,7 @@ class ListAllTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/companies/veridu-ltd/permissions';
     }

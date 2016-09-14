@@ -19,7 +19,7 @@ class CreateNewTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings';
     }
@@ -55,6 +55,74 @@ class CreateNewTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema('warning/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
+    public function testEmptyName() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name      = '';
+        $reference = 'firstName';
+        $request   = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'name'      => $name,
+                    'reference' => $reference
+                ]
+            )
+        );
+        $response = $this->process($request);
+        $body     = json_decode((string) $response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('error.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
+    public function testEmptyReference() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name      = 'First name';
+        $reference = '';
+        $request   = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'name'      => $name,
+                    'reference' => $reference
+                ]
+            )
+        );
+        $response = $this->process($request);
+        $body     = json_decode((string) $response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+        $this->assertSame(400, $response->getStatusCode());
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('error.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
     }

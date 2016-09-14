@@ -140,7 +140,8 @@ class Credentials implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('company');
 
-        $command = $this->commandFactory->create('Credential\\DeleteAll', [$company->id]);
+        $command = $this->commandFactory->create('Credential\\DeleteAll');
+        $command->setParameter('companyId', $company->id);
         $deleted = $this->commandBus->handle($command);
 
         $body = [
