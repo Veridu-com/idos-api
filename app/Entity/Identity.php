@@ -8,16 +8,12 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
-
 /**
  * Identities Entity.
  *
  * @apiEntity schema/identity/identityEntity.json
  */
 class Identity extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */
@@ -33,11 +29,8 @@ class Identity extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
     /**
-     * The attributes that should be secured.
-     *
-     * @var array
+     * {@inheritdoc}
      */
     protected $secure = ['private_key'];
 }

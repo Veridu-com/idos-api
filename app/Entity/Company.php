@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
 use App\Helper\Utils;
 
 /**
@@ -25,8 +24,6 @@ use App\Helper\Utils;
  * @property int    $updated_at
  */
 class Company extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */
@@ -35,10 +32,8 @@ class Company extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-    /**
-     * The attributes that should be secured.
-     *
-     * @var array
+     /**
+     * {@inheritdoc}
      */
     protected $secure = ['private_key'];
 
