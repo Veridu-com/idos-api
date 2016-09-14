@@ -82,7 +82,10 @@ class EndpointPermission implements MiddlewareInterface {
         }
         // get identity set on Auth middleware
         $identity = $request->getAttribute('identity');
-        $identityMembers = $identity->member();
+        if ($identity) {
+            $identityMembers = $identity->member();
+        }
+        
         $targetCompany = $request->getAttribute('targetCompany');
         $hasParentAccess = false;
         $allowed = false;

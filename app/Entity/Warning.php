@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
 use App\Helper\Utils;
 
 /**
@@ -23,9 +22,7 @@ use App\Helper\Utils;
  * @property int    $created_at
  * @property int    $updated_at
  */
-class Warning extends AbstractEntity {
-    use SecureFields;
-
+class Warning extends AbstractEntity {    
     /**
      * {@inheritdoc}
      */

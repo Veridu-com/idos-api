@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
 
 /**
  * Reference Entity.
@@ -22,8 +21,6 @@ use App\Extension\SecureFields;
  * @property int    $updated_at
  */
 class Reference extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */

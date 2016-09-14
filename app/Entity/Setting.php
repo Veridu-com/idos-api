@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
 
 /**
  * Settings Entity.
@@ -20,12 +19,11 @@ use App\Extension\SecureFields;
  * @property string $section
  * @property string $property
  * @property string $value
+ * @property bool   $protected
  * @property int    $created_at
  * @property int    $updated_at
  */
 class Setting extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */

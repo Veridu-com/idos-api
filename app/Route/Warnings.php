@@ -84,7 +84,7 @@ class Warnings implements RouteInterface {
                 'App\Controller\Warnings:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL | Auth::COMPANY))
+            ->add($auth(Auth::CREDENTIAL | Auth::IDENTITY))
             ->setName('warnings:listAll');
     }
 
@@ -115,7 +115,7 @@ class Warnings implements RouteInterface {
                 'App\Controller\Warnings:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL | Auth::COMPANY))
+            ->add($auth(Auth::CREDENTIAL | Auth::IDENTITY))
             ->setName('warnings:createNew');
     }
 
@@ -146,7 +146,7 @@ class Warnings implements RouteInterface {
                 'App\Controller\Warnings:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL | Auth::COMPANY))
+            ->add($auth(Auth::CREDENTIAL | Auth::IDENTITY))
             ->setName('warnings:deleteOne');
     }
 
@@ -177,7 +177,7 @@ class Warnings implements RouteInterface {
                 'App\Controller\Warnings:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL | Auth::COMPANY))
+            ->add($auth(Auth::CREDENTIAL | Auth::IDENTITY))
             ->setName('warnings:deleteAll');
     }
 
@@ -208,7 +208,7 @@ class Warnings implements RouteInterface {
                 'App\Controller\Warnings:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL | Auth::COMPANY))
+            ->add($auth(Auth::CREDENTIAL | Auth::IDENTITY))
             ->setName('warnings:getOne');
     }
 }

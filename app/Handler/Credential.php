@@ -93,13 +93,14 @@ class Credential implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : CredentialEntity {
         $this->validator->assertName($command->name);
         $this->validator->assertFlag($command->production);
-        $this->validator->assertId($command->companyId);
+        $this->validator->assertCompany($command->company);
+        $this->validator->assertIdentity($command->identity);
 
         $credential = $this->repository->create(
             [
                 'name'       => $command->name,
                 'production' => $this->validator->validateFlag($command->production),
-                'company_id' => $command->companyId,
+                'company_id' => $command->company->id,
                 'created_at' => time()
             ]
         );
@@ -109,7 +110,7 @@ class Credential implements HandlerInterface {
 
         try {
             $credential = $this->repository->save($credential);
-            $event      = new Created($credential);
+            $event      = new Created($credential, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new AppException('Error while creating a credential');
@@ -127,6 +128,7 @@ class Credential implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : CredentialEntity {
         $this->validator->assertId($command->credentialId);
+        $this->validator->assertIdentity($command->identity);
         $this->validator->assertName($command->name);
 
         $credential            = $this->repository->find($command->credentialId);
@@ -135,7 +137,7 @@ class Credential implements HandlerInterface {
 
         try {
             $credential = $this->repository->save($credential);
-            $event      = new Updated($credential);
+            $event      = new Updated($credential, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new AppException('Error while updating a credential id' . $command->credentialId);
@@ -152,14 +154,13 @@ class Credential implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertId($command->credentialId);
+        $this->validator->assertCredential($command->credential);
+        $this->validator->assertIdentity($command->identity);
 
-        $credential = $this->repository->find($command->credentialId);
-
-        $rowsAffected = $this->repository->delete($command->credentialId);
+        $rowsAffected = $this->repository->delete($command->credential->id);
 
         if ($rowsAffected) {
-            $event = new Deleted($credential);
+            $event = new Deleted($command->credential, $command->identity);
             $this->emitter->emit($event);
         } else {
             throw new \NotFound();

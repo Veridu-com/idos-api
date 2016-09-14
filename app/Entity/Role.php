@@ -107,7 +107,7 @@ class Role extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'rank', 'created_at'];
+    protected $visible = ['name', 'created_at'];
 
     /**
      * {@inheritdoc}

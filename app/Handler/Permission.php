@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Permission\CreateNew;
-use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
 use App\Entity\Permission as PermissionEntity;
 use App\Event\Permission\Created;
@@ -110,26 +109,6 @@ class Permission implements HandlerInterface {
         }
 
         return $permission;
-    }
-
-    /**
-     * Deletes all permissions ($command->companyId).
-     *
-     * @param App\Command\Permission\DeleteAll $command
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertId($command->companyId);
-
-        $permissions = $this->repository->getAllByCompanyId($command->companyId);
-
-        $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
-
-        $event = new DeletedMulti($permissions);
-        $this->emitter->emit($event);
-
-        return $affectedRows;
     }
 
     /**

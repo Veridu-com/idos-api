@@ -34,14 +34,12 @@ interface SettingInterface extends RepositoryInterface {
     public function deleteByCompanyId(int $companyId) : int;
 
     /**
-     * Retrieves all settings from company that has the given section.
+     * Gets all public by company identifier, filters by $queryParams.
      *
-     * @param int    companyId setting's company_id
-     * @param string section   setting's section
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @param      integer  $companyId    The company identifier
+     * @param      array    $queryParams  The query parameters to filter the collection
      */
-    public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection;
+    public function getAllPublicByCompanyId(int $companyId, array $queryParams = []) : array;
 
     /**
      * Returns a collection of settings based on their compani_id.
@@ -53,13 +51,12 @@ interface SettingInterface extends RepositoryInterface {
     public function findByCompanyId(int $companyId) : Collection;
 
     /**
-     * Retrieves a setting by its section and property.
+     * Finds one setting by Company and Setting Id.
+     * This method is useful for scoping company access within the settings.
      *
-     * @param int    $companyId  The company identification
-     * @param string $section    The section
-     * @param array  $properties The properties
-     *
-     * @return \Illuminate\Support\Collection
+     * @param      integer  $companyId  The company identifier
+     * @param      integer  $settingId  The setting identifier
      */
-    public function findByCompanyIdSectionAndProperties(int $companyId, string $section, array $properties) : Collection;
+    public function findOneByCompanyAndId(int $companyId, int $settingId) : Setting;
+
 }

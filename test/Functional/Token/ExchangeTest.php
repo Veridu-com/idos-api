@@ -61,7 +61,7 @@ class ExchangeTest extends AbstractFunctional {
         /**
          * Second part, decode the token and test for its integrity.
          */
-        $authMiddleware = $this->getApp()->getContainer()->get('authMiddleware')(Auth::COMPANY);
+        $authMiddleware = $this->getApp()->getContainer()->get('authMiddleware')(Auth::IDENTITY);
         $reflection     = new \ReflectionClass($authMiddleware);
         $method         = $reflection->getMethod('handleCompanyToken');
         $method->setAccessible(true);

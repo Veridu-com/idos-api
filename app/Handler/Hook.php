@@ -11,6 +11,7 @@ namespace App\Handler;
 use App\Command\Hook\CreateNew;
 use App\Command\Hook\DeleteAll;
 use App\Command\Hook\DeleteOne;
+use App\Command\Hook\GetOne;
 use App\Command\Hook\UpdateOne;
 use App\Entity\Hook as HookEntity;
 use App\Event\Hook\Created;
@@ -109,8 +110,8 @@ class Hook implements HandlerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($credential->companyId != $command->company->id) {
-            throw new NotFound();
+        if ($credential->companyId != $command->companyId) {
+            throw new NotFound;
         }
 
         $hook = $this->repository->create(
@@ -146,16 +147,11 @@ class Hook implements HandlerInterface {
         $this->validator->assertTriggerName($command->trigger);
         $this->validator->assertUrl($command->url);
 
+        $hook = $this->repository->find($command->hookId);
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($credential->companyId != $command->company->id) {
-            throw new NotFound();
-        }
-
-        $hook = $this->repository->find($command->hookId);
-
-        if ($hook->credential_id != $credential->id) {
-            throw new NotFound();
+        if ($hook->credentialId !== $credential->id || $credential->companyId !== $command->companyId) {
+            throw new NotFound;
         }
 
         $hook->trigger    = $command->trigger;
@@ -184,16 +180,11 @@ class Hook implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         $this->validator->assertId($command->hookId);
 
+        $hook = $this->repository->find($command->hookId);
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($credential->companyId != $command->company->id) {
-            throw new NotFound();
-        }
-
-        $hook = $this->repository->find($command->hookId);
-
-        if ($hook->credential_id != $credential->id) {
-            throw new NotFound();
+        if ($hook->credentialId !== $credential->id || $credential->companyId !== $command->companyId) {
+            throw new NotFound;
         }
 
         $rowsAffected = $this->repository->delete($command->hookId);
@@ -202,33 +193,29 @@ class Hook implements HandlerInterface {
             $event = new Deleted($hook);
             $this->emitter->emit($event);
         } else {
-                throw new NotFound();
+                throw new NotFound;
         }
 
         return $rowsAffected;
     }
 
     /**
-     * Deletes all hooks from the credential.
+     * Gets one Hook.
      *
-     * @param App\Command\Hook\DeleteAll $command
+     * @param App\Command\Hook\GetOne $command
      *
      * @return int
      */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
+    public function handleGetOne(GetOne $command) : HookEntity {
+        $this->validator->assertId($command->hookId);
 
-        if ($credential->companyId != $command->company->id) {
-            throw new NotFound();
+        $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
+        $hook = $this->repository->find($command->hookId);
+
+        if ($hook->credentialId !== $credential->id || $credential->companyId !== $command->companyId) {
+            throw new NotFound;
         }
 
-        $hooks = $this->repository->getAllByCredentialId($credential->id);
-
-        $rowsAffected = $this->repository->deleteByCredentialId($credential->id);
-
-        $event = new DeletedMulti($hooks);
-        $this->emitter->emit($event);
-
-        return $rowsAffected;
+        return $hook;
     }
 }

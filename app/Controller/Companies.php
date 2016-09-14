@@ -79,7 +79,7 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $identity   = $request->getAttribute('identity');
+        $identity  = $request->getAttribute('identity');
         $companies = $identity->company();
 
         $body = [

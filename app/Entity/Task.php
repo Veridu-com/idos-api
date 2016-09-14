@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
 
 /**
  * Task Entity.
@@ -26,8 +25,6 @@ use App\Extension\SecureFields;
  * @property int     $updated_at
  */
 class Task extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */

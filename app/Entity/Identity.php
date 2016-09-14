@@ -21,7 +21,6 @@ class Identity extends AbstractEntity {
         'id',
         'reference',
         'public_key',
-        'private_key',
         'created_at',
         'updated_at',
         'member',

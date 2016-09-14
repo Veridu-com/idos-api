@@ -6,35 +6,49 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Credential;
+namespace App\Command\Setting;
 
 use App\Command\AbstractCommand;
 
 /**
- * Credential "Delete One" Command.
+ * Setting "Get One" Command.
  */
-class DeleteOne extends AbstractCommand {
+class GetOne extends AbstractCommand {
     /**
-     * Credential to be deleted.
+     * Setting Id.
      *
      * @var int
      */
-    public $credential;
+    public $settingId;
 
     /**
-     * Acting identity.
+     * Acting Identity.
      *
      * @var \App\Entity\Identity
      */
     public $identity;
 
     /**
+     * Target Company.
+     *
+     * @var \App\Entity\Company
+     */
+    public $company;
+
+    /**
+     * Parent access.
+     *
+     * @var bool
+     */
+    public $hasParentAccess;
+
+    /**
      * {@inheritdoc}
      *
-     * @return App\Command\Credential\DeleteOne
+     * @return App\Command\Setting\GetOne
      */
     public function setParameters(array $parameters) : self {
-        
+
         return $this;
     }
 }

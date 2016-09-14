@@ -48,7 +48,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     return $response->withJson($data, 200);
                 }
             )
-            ->add($authMiddleware(Auth::COMPANY));
+            ->add($authMiddleware(Auth::IDENTITY));
 
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -121,7 +121,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     return $response->withJson($data, 200);
                 }
             )
-            ->add($authMiddleware(Auth::COMPANY));
+            ->add($authMiddleware(Auth::IDENTITY));
 
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -194,7 +194,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     return $response->withJson($data, 200);
                 }
             )
-            ->add($authMiddleware(Auth::COMPANY));
+            ->add($authMiddleware(Auth::IDENTITY));
 
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -238,7 +238,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     return $response;
                 }
             )
-            ->add($authMiddleware(Auth::COMPANY));
+            ->add($authMiddleware(Auth::IDENTITY));
 
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -276,7 +276,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     return $response;
                 }
             )
-            ->add($authMiddleware(Auth::COMPANY));
+            ->add($authMiddleware(Auth::IDENTITY));
 
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -314,7 +314,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     return $response;
                 }
             )
-            ->add($authMiddleware(Auth::COMPANY));
+            ->add($authMiddleware(Auth::IDENTITY));
 
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -352,7 +352,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     return $response;
                 }
             )
-            ->add($authMiddleware(Auth::COMPANY));
+            ->add($authMiddleware(Auth::IDENTITY));
 
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -390,7 +390,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     return $response;
                 }
             )
-            ->add($authMiddleware(Auth::COMPANY));
+            ->add($authMiddleware(Auth::IDENTITY));
 
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -428,7 +428,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     return $response;
                 }
             )
-            ->add($authMiddleware(Auth::COMPANY));
+            ->add($authMiddleware(Auth::IDENTITY));
 
         $request = $this->createRequest(
             $this->createEnvironment(

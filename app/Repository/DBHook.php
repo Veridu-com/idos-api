@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Hook;
+use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -33,6 +34,16 @@ class DBHook extends AbstractSQLDBRepository implements HookInterface {
      */
     public function getAllByCredentialId(int $credentialId) : Collection {
         return $this->findBy(['credential_id' => $credentialId]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllByCredentialPubKey(string $credentialPubKey) : Collection {
+        return $this->query()
+            ->join('credentials', 'credentials.id', 'hooks.credential_id')
+            ->where('credentials.public', $credentialPubKey)
+            ->get(['hooks.*']);
     }
 
     /**

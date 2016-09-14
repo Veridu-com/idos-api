@@ -20,7 +20,7 @@ class Member extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'user', 'role', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'company_id', 'identity', 'role', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
@@ -29,7 +29,14 @@ class Member extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
+    protected $obfuscated = ['id', 'company_id'];
+
+    /**
+     * {@inheritdoc}
+     */
     public $relationships = [
-        'user' => 'User'
+        'identity' => 'Identity',
+        'company'  => 'Company',
+        'role'     => 'Role'
     ];
 }
