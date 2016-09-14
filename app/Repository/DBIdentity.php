@@ -44,6 +44,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
             $sourceName,
             $profileId
         );
+
         return $this->findBy(['reference' => md5($reference)]);
     }
 }

@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "PUT /profiles/{userName}/references/{referenceName}",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Reference response payload",
+            "type": "object",
+            "$ref": "referenceEntity.json"
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": ["integer", null]
+        }
+    },
+    "required": [
+        "status",
+        "data",
+        "updated"
+    ]
+}

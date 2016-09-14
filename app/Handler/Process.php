@@ -13,10 +13,14 @@ use App\Command\Process\UpdateOne;
 use App\Entity\Process as ProcessEntity;
 use App\Event\Process\Created;
 use App\Event\Process\Updated;
+use App\Exception\Create;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\ProcessInterface;
 use App\Validator\Process as ProcessValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Process commands.
@@ -85,9 +89,17 @@ class Process implements HandlerInterface {
      * @return App\Entity\Process
      */
     public function handleCreateNew(CreateNew $command) : ProcessEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertName($command->event);
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertName($command->name);
+            $this->validator->assertName($command->event);
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\ProcessException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $process = $this->repository->create(
             [
@@ -102,8 +114,8 @@ class Process implements HandlerInterface {
             $this->repository->save($process);
             $event = new Created($process);
             $this->emitter->emit($event);
-        } catch (Exception $e) {
-            throw new AppException('Error while creating a process');
+        } catch (\Exception $e) {
+            throw new Create\ProcessException('Error while trying to create a process', 500, $e);
         }
 
         return $process;
@@ -117,9 +129,17 @@ class Process implements HandlerInterface {
      * @return App\Entity\Process
      */
     public function handleUpdateOne(UpdateOne $command) : ProcessEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertName($command->event);
-        $this->validator->assertId($command->id);
+        try {
+            $this->validator->assertName($command->name);
+            $this->validator->assertName($command->event);
+            $this->validator->assertId($command->id);
+        } catch (ValidationException $e) {
+            throw new Validate\ProcessException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $process = $this->repository->find($command->id);
 
@@ -131,8 +151,8 @@ class Process implements HandlerInterface {
             $process = $this->repository->save($process);
             $event   = new Updated($process);
             $this->emitter->emit($event);
-        } catch (Exception $e) {
-            throw new AppException('Error while updating a process' . $command->id);
+        } catch (\Exception $e) {
+            throw new Update\ProcessException('Error while trying to update a feature', 500, $e);
         }
 
         return $process;

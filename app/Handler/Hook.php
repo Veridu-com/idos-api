@@ -17,13 +17,16 @@ use App\Event\Hook\Created;
 use App\Event\Hook\Deleted;
 use App\Event\Hook\DeletedMulti;
 use App\Event\Hook\Updated;
-use App\Exception\AppException;
+use App\Exception\Create;
 use App\Exception\NotFound;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\CredentialInterface;
 use App\Repository\HookInterface;
 use App\Validator\Hook as HookValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Hook commands.
@@ -104,13 +107,21 @@ class Hook implements HandlerInterface {
      * @return App\Entity\Hook
      */
     public function handleCreateNew(CreateNew $command) : HookEntity {
-        $this->validator->assertTriggerName($command->trigger);
-        $this->validator->assertUrl($command->url);
+        try {
+            $this->validator->assertTriggerName($command->trigger);
+            $this->validator->assertUrl($command->url);
+        } catch (ValidationException $e) {
+            throw new Validate\HookException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
         if ($credential->companyId != $command->company->id) {
-            throw new NotFound();
+            throw new NotFound\HookException('Company not found', 404);
         }
 
         $hook = $this->repository->create(
@@ -128,7 +139,7 @@ class Hook implements HandlerInterface {
             $event = new Created($hook);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while trying to create a hook');
+            throw new Create\HookException('Error while trying to create a hook', 500, $e);
         }
 
         return $hook;
@@ -142,20 +153,28 @@ class Hook implements HandlerInterface {
      * @return App\Entity\Hook
      */
     public function handleUpdateOne(UpdateOne $command) : HookEntity {
-        $this->validator->assertId($command->hookId);
-        $this->validator->assertTriggerName($command->trigger);
-        $this->validator->assertUrl($command->url);
+        try {
+            $this->validator->assertId($command->hookId);
+            $this->validator->assertTriggerName($command->trigger);
+            $this->validator->assertUrl($command->url);
+        } catch (ValidationException $e) {
+            throw new Validate\HookException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
         if ($credential->companyId != $command->company->id) {
-            throw new NotFound();
+            throw new NotFound\HookException('Company not found', 404);
         }
 
         $hook = $this->repository->find($command->hookId);
 
         if ($hook->credential_id != $credential->id) {
-            throw new NotFound();
+            throw new NotFound\HookException('Credential not found', 404);
         }
 
         $hook->trigger    = $command->trigger;
@@ -168,7 +187,7 @@ class Hook implements HandlerInterface {
             $event = new Updated($hook);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while trying to update a hook id ' . $command->hookId);
+            throw new Update\HookException('Error while trying to update a hook', 500, $e);
         }
 
         return $hook;
@@ -182,28 +201,36 @@ class Hook implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertId($command->hookId);
+        try {
+            $this->validator->assertId($command->hookId);
+        } catch (ValidationException $e) {
+            throw new Validate\HookException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
         if ($credential->companyId != $command->company->id) {
-            throw new NotFound();
+            throw new NotFound\HookException('Company not found', 404);
         }
 
         $hook = $this->repository->find($command->hookId);
 
         if ($hook->credential_id != $credential->id) {
-            throw new NotFound();
+            throw new NotFound\HookException('Credential not found', 404);
         }
 
         $rowsAffected = $this->repository->delete($command->hookId);
 
-        if ($rowsAffected) {
-            $event = new Deleted($hook);
-            $this->emitter->emit($event);
-        } else {
-                throw new NotFound();
+        if (! $rowsAffected) {
+            throw new NotFound\HookException('No hooks found for deletion', 404);
         }
+
+        $event = new Deleted($hook);
+        $this->emitter->emit($event);
 
         return $rowsAffected;
     }
@@ -219,7 +246,7 @@ class Hook implements HandlerInterface {
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
         if ($credential->companyId != $command->company->id) {
-            throw new NotFound();
+            throw new NotFound\HookException('Company not found', 404);
         }
 
         $hooks = $this->repository->getAllByCredentialId($credential->id);

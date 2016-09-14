@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
-
 /**
  * Settings Entity.
  *
@@ -24,20 +22,23 @@ use App\Extension\SecureFields;
  * @property int    $updated_at
  */
 class Setting extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'section', 'property', 'value', 'created_at', 'updated_at'];
+    protected $visible = [
+        'id',
+        'section',
+        'property',
+        'value',
+        'created_at',
+        'updated_at'
+    ];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
     /**
-     * The attributes that should be secured.
-     *
-     * @var array
+     * {@inheritdoc}
      */
     protected $secure = ['value'];
 }

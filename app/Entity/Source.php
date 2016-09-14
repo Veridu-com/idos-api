@@ -18,12 +18,10 @@ class Source extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $visible = ['id', 'name', 'tags', 'created_at', 'updated_at'];
-
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
     /**
      * {@inheritdoc}
      */

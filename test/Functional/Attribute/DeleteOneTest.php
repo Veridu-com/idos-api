@@ -19,9 +19,9 @@ class DeleteOneTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-            
+
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes/user2Attribute1';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/user1Attribute1';
     }
 
     public function testSuccess() {
@@ -52,7 +52,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes/0000000');
+        $this->uri = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/0000000');
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [

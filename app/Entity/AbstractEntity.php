@@ -55,6 +55,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $obfuscated = ['id'];
     /**
+     * The attributes that should be secured.
+     *
+     * @var array
+     */
+    protected $secure = [];
+    /**
      * The storage format of the model's date columns.
      *
      * @var string
@@ -170,6 +176,20 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = date($this->dateFormat, $value);
         }
 
+        if ((isset($this->secure)) && (in_array($key, $this->secure))) {
+            if (is_resource($value)) {
+                $value = stream_get_contents($value, -1, 0);
+            }
+
+            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) != 0)) {
+                $value = sprintf(
+                    'secure:%s',
+                    // $this->secure->lock($value)
+                    $value
+                );
+            }
+        }
+
         // tries to populate relations array mapped by the "." character
         $split = explode('.', $key);
         if (count($split) > 1) {
@@ -198,12 +218,23 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = $this->attributes[$key];
         }
 
+        if ((isset($this->secure)) && (in_array($key, $this->secure))) {
+            if (is_resource($value)) {
+                $value = stream_get_contents($value, -1, 0);
+            }
+
+            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) === 0)) {
+                $value = substr($value, 7);
+                // $value = $this->secure->unlock($value);
+            }
+        }
+
         if ((in_array($key, $this->dates)) && ($value !== null)) {
             $value = strtotime($value);
         }
 
-        if ((in_array($key, $this->json)) && ($value !== null)) {
-            $value = json_decode($value);
+        if ((in_array($key, $this->json)) && (is_string($value))) {
+            $value = json_decode($value, true);
             if ($value === null) {
                 $value = [];
             }

@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
-
 /**
  * Process Entity.
  *
@@ -23,8 +21,6 @@ use App\Extension\SecureFields;
  * @property int    $updated_at
  */
 class Process extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */

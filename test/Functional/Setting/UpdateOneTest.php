@@ -21,7 +21,7 @@ class UpdateOneTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'PUT';
         $this->populate(
             '/1.0/management/settings',
