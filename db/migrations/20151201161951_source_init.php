@@ -24,7 +24,7 @@ class SourceInit extends AbstractMigration {
             ->addIndex('user_id')
             ->addIndex('source_id')
             ->addIndex('creator')
-            ->addIndex(['user_id', 'source_id', 'creator', 'id'], ['unique' => true])
+            ->addIndex(['user_id', 'source_id', 'creator', 'id'])
             ->addIndex(['user_id', 'source_id', 'creator', 'name'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])

@@ -11,9 +11,9 @@ namespace App\Command\Feature;
 use App\Command\AbstractCommand;
 
 /**
- * Feature "Create New" Command.
+ * Feature "Upsert" Command.
  */
-class CreateNew extends AbstractCommand {
+class Upsert extends AbstractCommand {
     /**
      * Feature's User.
      *
@@ -59,7 +59,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Feature\CreateNew
+     * @return App\Command\Feature\Upsert
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {

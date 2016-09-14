@@ -184,7 +184,7 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', isset($feature->updatedAt) ? 200 : 201)
+            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -292,6 +292,47 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Creates or updates a feature for the given user.
+     *
+     * @apiEndpointRequiredParam body string name XYZ Feature name
+     * @apiEndpointRequiredParam body string value ZYX Feature value
+     * @apiEndpointResponse 201 schema/feature/createNew.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user = $request->getAttribute('targetUser');
+        $source = $request->getParsedBodyParam('sourceId') !== 0 ? $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id) : null;
+        $service = $request->getAttribute('service');
+
+        $command = $this->commandFactory->create('Feature\\Upsert');
+        $command
+            ->setParameters($request->getParsedBody())
+            ->setParameter('user', $user)
+            ->setParameter('source', $source)
+            ->setParameter('service', $service);
+
+        $feature = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => true,
+            'data'   => $feature->toArray()
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('statusCode', isset($feature->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

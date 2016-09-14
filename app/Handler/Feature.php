@@ -12,6 +12,7 @@ use App\Command\Feature\CreateNew;
 use App\Command\Feature\DeleteAll;
 use App\Command\Feature\DeleteOne;
 use App\Command\Feature\UpdateOne;
+use App\Command\Feature\Upsert;
 use App\Entity\Feature as FeatureEntity;
 use App\Event\Feature\Created;
 use App\Event\Feature\Deleted;
@@ -19,6 +20,7 @@ use App\Event\Feature\DeletedMulti;
 use App\Event\Feature\Updated;
 use App\Exception\AppException;
 use App\Exception\NotFound;
+use Illuminate\Database\QueryException;
 use App\Repository\FeatureInterface;
 use App\Repository\SourceInterface;
 use App\Validator\Feature as FeatureValidator;
@@ -117,48 +119,26 @@ class Feature implements HandlerInterface {
             $this->validator->assertSource($command->source);
         }
 
-        $feature = null;
-        $upserting = false;
-        try {
-            $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->id : 0, $command->service->id, $command->name);
-
-            if (! $command->upsert) {
-                throw new AppException('A feature with provided sourceId and name already exists for this user.');
-            }
-
-            $feature->type = $command->type;
-            $feature->value = $command->value;
-
-            $upserting = true;
-        } catch(NotFound $e) { }
-
-        if (! $feature) {
-            $feature = $this->repository->create(
-                [
-                    'user_id'    => $command->user->id,
-                    'source_id'    => $command->source !== null ? $command->source->id : null,
-                    'name'       => $command->name,
-                    'creator'       => $command->service->id,
-                    'type'       => $command->type,
-                    'value'      => $command->value,
-                    'created_at' => time()
-                ]
-            );
-        }
+        $feature = $this->repository->create(
+            [
+                'user_id'    => $command->user->id,
+                'source_id'    => $command->source !== null ? $command->source->id : null,
+                'name'       => $command->name,
+                'creator'       => $command->service->id,
+                'type'       => $command->type,
+                'value'      => $command->value,
+                'created_at' => time()
+            ]
+        );
 
         try {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
-            
-            if ($upserting) {
-                $event   = new Updated($feature);
-            } else {
-                $event   = new Created($feature);
-            }
 
+            $event   = new Created($feature);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            throw new AppException('Error while ' . ($upserting ? 'updating' : 'creating') . ' feature');
+            throw new AppException('Error while creating feature');
         }
 
         return $feature;
@@ -259,5 +239,63 @@ class Feature implements HandlerInterface {
         }
 
         return $affectedRows;
+    }
+
+    /**
+     * Creates or update a feature.
+     *
+     * @param App\Command\Feature\Upsert $command
+     *
+     * @return App\Entity\Feature
+     */
+    public function handleUpsert(Upsert $command) : FeatureEntity {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertService($command->service);
+        $this->validator->assertLongName($command->name);
+        $this->validator->assertName($command->type);
+        $this->validator->assertValue($command->value);
+        
+        if ($command->source !== null) {
+            $this->validator->assertSource($command->source);
+        }
+
+        $inserting = false;
+        try {
+            $feature = $this->repository->create(
+                [
+                    'user_id'    => $command->user->id,
+                    'source_id'    => $command->source !== null ? $command->source->id : null,
+                    'name'       => $command->name,
+                    'creator'       => $command->service->id,
+                    'type'       => $command->type,
+                    'value'      => $command->value,
+                    'created_at' => time()
+                ]
+            );
+
+            $feature = $this->repository->save($feature);
+            $feature = $this->repository->hydrateRelations($feature);
+
+            $inserting = true;
+        } catch (QueryException $e) {
+            $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->id : 0, $command->service->id, $command->name);
+            $feature->type = $command->type;
+            $feature->value = $command->value;
+
+            $feature = $this->repository->save($feature);
+            $feature = $this->repository->hydrateRelations($feature);
+        } catch (\Exception $e) {
+            throw new AppException('Error while upserting feature.');
+        }
+
+        if ($inserting) {
+            $event   = new Created($feature);
+        } else {
+            $event   = new Updated($feature);
+        }
+
+        $this->emitter->emit($event);
+
+        return $feature;
     }
 }
