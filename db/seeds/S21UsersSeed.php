@@ -11,7 +11,7 @@ class S21UsersSeed extends AbstractSeed {
         $data = [
             [
                 'credential_id' => 1,
-                'username'      => md5('JohnDoe1'),
+                'username'      => md5('JohnDoe1'), // f67b96dcf96b49d713a520ce9f54053c
                 'role'          => 'company.member'
             ],
             [
@@ -20,17 +20,17 @@ class S21UsersSeed extends AbstractSeed {
             ],
             [
                 'credential_id' => 1,
-                'username'      => md5('JohnDoeAdmin'), // f67b96dcf96b49d713a520ce9f54053c
+                'username'      => md5('JohnDoeAdmin'), // 9faf3b682ab323456268b464c9569c0b
                 'role'          => 'company.admin'
             ],
             [
                 'credential_id' => 1,
-                'username'      => md5('JohnDoeMember'), // f67b96dcf96b49d713a520ce9f54053c
+                'username'      => md5('JohnDoeMember'), // 9b1f26a30ca446987eebf3a0509a5dee
                 'role'          => 'company.owner'
             ],
             [
                 'credential_id' => 1,
-                'username'      => md5('JohnDoeGuest'), // f67b96dcf96b49d713a520ce9f54053c
+                'username'      => md5('JohnDoeGuest'), // edca494049b9a7c6a650b13118d5563d
                 'role'          => 'guest'
             ]
         ];

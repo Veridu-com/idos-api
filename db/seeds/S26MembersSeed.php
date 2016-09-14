@@ -6,13 +6,20 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class S22MembersSeed extends AbstractSeed {
+class S26MembersSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
                 'company_id' => 1,
-                'user_id'    => 2,
-                'role'       => 'owner',
+                'identity_id'    => 1,
+                'role'       => 'company.owner',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'company_id' => 2,
+                'identity_id'    => 1,
+                'role'       => 'company.owner',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]

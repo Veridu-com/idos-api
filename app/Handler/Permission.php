@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Permission\CreateNew;
-use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
 use App\Entity\Permission as PermissionEntity;
 use App\Event\Permission\Created;

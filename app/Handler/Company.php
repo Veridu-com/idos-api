@@ -13,6 +13,7 @@ use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
+use App\Entity\Role;
 use App\Event\Company\Created;
 use App\Event\Company\Deleted;
 use App\Event\Company\DeletedMulti;
@@ -118,9 +119,11 @@ class Company implements HandlerInterface {
         $company->public_key  = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
         $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
 
+
+
         try {
-            $company = $this->repository->save($company);
-            $event   = new Created($company);
+            $company = $this->repository->saveNewCompany($company, $command->identity);
+            $event   = new Created($company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\CompanyException('Error while trying to create a company', 500, $e);
@@ -148,13 +151,13 @@ class Company implements HandlerInterface {
             );
         }
 
-        $company            = $this->repository->find($command->companyId);
+        $company = $command->company;
         $company->name      = $command->name;
         $company->updatedAt = time();
 
         try {
             $company = $this->repository->save($company);
-            $event   = new Updated($company);
+            $event   = new Updated($company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\CompanyException('Error while trying to update a company', 500, $e);

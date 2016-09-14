@@ -11,6 +11,7 @@ namespace App\Handler;
 use App\Command\Hook\CreateNew;
 use App\Command\Hook\DeleteAll;
 use App\Command\Hook\DeleteOne;
+use App\Command\Hook\GetOne;
 use App\Command\Hook\UpdateOne;
 use App\Entity\Hook as HookEntity;
 use App\Event\Hook\Created;
@@ -172,6 +173,7 @@ class Hook implements HandlerInterface {
         }
 
         $hook = $this->repository->find($command->hookId);
+        $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
         if ($hook->credential_id != $credential->id) {
             throw new NotFound\HookException('Credential not found', 404);
@@ -218,6 +220,7 @@ class Hook implements HandlerInterface {
         }
 
         $hook = $this->repository->find($command->hookId);
+        $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
         if ($hook->credential_id != $credential->id) {
             throw new NotFound\HookException('Credential not found', 404);
@@ -236,26 +239,22 @@ class Hook implements HandlerInterface {
     }
 
     /**
-     * Deletes all hooks from the credential.
+     * Gets one Hook.
      *
-     * @param App\Command\Hook\DeleteAll $command
+     * @param App\Command\Hook\GetOne $command
      *
      * @return int
      */
-    public function handleDeleteAll(DeleteAll $command) : int {
+    public function handleGetOne(GetOne $command) : HookEntity {
+        $this->validator->assertId($command->hookId);
+
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
+        $hook = $this->repository->find($command->hookId);
 
         if ($credential->companyId != $command->company->id) {
             throw new NotFound\HookException('Company not found', 404);
         }
 
-        $hooks = $this->repository->getAllByCredentialId($credential->id);
-
-        $rowsAffected = $this->repository->deleteByCredentialId($credential->id);
-
-        $event = new DeletedMulti($hooks);
-        $this->emitter->emit($event);
-
-        return $rowsAffected;
+        return $hook;
     }
 }

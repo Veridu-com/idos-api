@@ -18,6 +18,7 @@ namespace App\Entity;
  * @property string $section
  * @property string $property
  * @property string $value
+ * @property bool   $protected
  * @property int    $created_at
  * @property int    $updated_at
  */

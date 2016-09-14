@@ -68,9 +68,17 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
-        $result  = $this->repository->getAllByCompanyId($company->id, $request->getQueryParams());
+        $targetCompany = $request->getAttribute('targetCompany');
+        $identity      = $request->getAttribute('identity');
 
+        $command = $this->commandFactory->create('Setting\\ListAll');
+        $command
+            ->setParameter('hasParentAccess', $request->getAttribute('hasParentAccess'))
+            ->setParameter('queryParams', $request->getQueryParams())
+            ->setParameter('identity', $identity)
+            ->setParameter('company', $targetCompany);
+
+        $result = $this->commandBus->handle($command);
         $entities = $result['collection'];
 
         $body = [
@@ -102,7 +110,17 @@ class Settings implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $settingId = (int) $request->getAttribute('decodedSettingId');
-        $setting   = $this->repository->find($settingId);
+        $identity      = $request->getAttribute('identity');
+        $company      = $request->getAttribute('targetCompany');
+
+        $command = $this->commandFactory->create('Setting\\GetOne');
+        $command
+            ->setParameter('company', $company)
+            ->setParameter('settingId', $settingId)
+            ->setParameter('hasParentAccess', $request->getAttribute('hasParentAccess'))
+            ->setParameter('identity', $identity);
+
+        $setting = $this->commandBus->handle($command);
 
         $body = [
             'data'    => $setting->toArray(),
@@ -132,12 +150,12 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Setting\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $company->id);
+            ->setParameter('company', $company);
 
         $setting = $this->commandBus->handle($command);
 

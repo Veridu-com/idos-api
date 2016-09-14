@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Event\Setting;
 
+use App\Entity\Company;
 use App\Entity\Setting;
 use App\Event\AbstractEvent;
 
@@ -29,7 +30,8 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Setting $setting) {
+    public function __construct(Setting $setting, Company $company) {
         $this->setting = $setting;
+        $this->company = $company;
     }
 }

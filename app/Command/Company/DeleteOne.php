@@ -15,11 +15,18 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Company Id to be deleted.
+     * Company to be deleted.
      *
      * @var App\Entity\Company
      */
     public $company;
+
+    /**
+     * Acting Identity.
+     *
+     * @var App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}
@@ -27,9 +34,6 @@ class DeleteOne extends AbstractCommand {
      * @return App\Command\Company\DeleteOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['company'])) {
-            $this->company = $parameters['company'];
-        }
 
         return $this;
     }
