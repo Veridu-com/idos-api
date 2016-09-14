@@ -80,7 +80,7 @@ class Settings implements ControllerInterface {
             ->setParameter('identity', $identity)
             ->setParameter('company', $targetCompany);
 
-        $result = $this->commandBus->handle($command);
+        $result   = $this->commandBus->handle($command);
         $entities = $result['collection'];
 
         $body = [
@@ -113,9 +113,9 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId = (int) $request->getAttribute('decodedSettingId');
+        $settingId     = (int) $request->getAttribute('decodedSettingId');
         $identity      = $request->getAttribute('identity');
-        $company      = $request->getAttribute('targetCompany');
+        $company       = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Setting\\GetOne');
         $command
@@ -229,8 +229,9 @@ class Settings implements ControllerInterface {
         $command = $this->commandFactory->create('Setting\\DeleteOne');
         $command->setParameter('settingId', $settingId);
 
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $this->commandBus->handle($command)
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

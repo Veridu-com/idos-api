@@ -218,10 +218,9 @@ class RoleAccess implements ControllerInterface {
         $command->setParameter('identityId', $user->identityId);
         $command->setParameter('roleAccessId', $decodedRoleAccessId);
 
-        $deleted = $this->commandBus->handle($command);
-
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $deleted
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

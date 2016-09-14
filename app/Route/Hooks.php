@@ -89,10 +89,12 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:listAll'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('hooks:listAll');
     }
@@ -124,10 +126,12 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:createNew'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('hooks:createNew');
     }
@@ -162,10 +166,12 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
                 'App\Controller\Hooks:updateOne'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('hooks:updateOne');
     }
@@ -198,10 +204,12 @@ class Hooks implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:deleteAll'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('hooks:deleteAll');
     }
@@ -236,10 +244,12 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
                 'App\Controller\Hooks:getOne'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('hooks:getOne');
     }
@@ -274,10 +284,12 @@ class Hooks implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
                 'App\Controller\Hooks:deleteOne'
             )
-            ->add($permission(
-                EndpointPermission::SELF_ACTION, 
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('hooks:deleteOne');
     }

@@ -61,12 +61,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $obfuscated = ['id'];
     /**
-     * The attributes that should be secured.
-     *
-     * @var array
-     */
-    protected $secure = [];
-    /**
      * The storage format of the model's date columns.
      *
      * @var string

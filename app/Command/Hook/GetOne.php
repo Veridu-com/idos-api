@@ -20,7 +20,7 @@ class GetOne extends AbstractCommand {
      * @var int
      */
     public $companyId;
-    
+
     /**
      * Target Credential's public key.
      *

@@ -84,7 +84,8 @@ class Permissions implements RouteInterface {
             ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('permissions:listAll');
     }
@@ -117,7 +118,8 @@ class Permissions implements RouteInterface {
             ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('permissions:createNew');
     }
@@ -179,7 +181,8 @@ class Permissions implements RouteInterface {
             ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('permissions:getOne');
     }
@@ -213,7 +216,8 @@ class Permissions implements RouteInterface {
             ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('permissions:deleteOne');
     }

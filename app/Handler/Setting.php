@@ -239,9 +239,9 @@ class Setting implements HandlerInterface {
      *
      * @param App\Command\Setting\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->settingId);
         } catch (ValidationException $e) {
@@ -262,7 +262,5 @@ class Setting implements HandlerInterface {
 
         $event = new Deleted($setting);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

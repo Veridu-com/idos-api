@@ -160,9 +160,9 @@ class Score implements HandlerInterface {
      *
      * @param App\Command\Score\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertName($command->name);
         } catch (ValidationException $e) {
@@ -182,8 +182,6 @@ class Score implements HandlerInterface {
         }
 
         $this->emitter->emit(new Deleted($score));
-
-        return $affectedRows;
     }
 
     /**

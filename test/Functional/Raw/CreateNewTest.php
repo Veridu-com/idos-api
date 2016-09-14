@@ -47,7 +47,7 @@ class CreateNewTest extends AbstractRawFunctional {
 
         $this->assertSame(201, $response->getStatusCode());
 
-        $body     = json_decode((string) $response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('collection-test', $body['data']['collection']);

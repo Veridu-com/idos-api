@@ -10,18 +10,18 @@ class S26MembersSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
-                'company_id' => 1,
+                'company_id'     => 1,
                 'identity_id'    => 1,
-                'role'       => 'company.owner',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'role'           => 'company.owner',
+                'created_at'     => date('Y-m-d H:i:s'),
+                'updated_at'     => date('Y-m-d H:i:s')
             ],
             [
-                'company_id' => 2,
+                'company_id'     => 2,
                 'identity_id'    => 1,
-                'role'       => 'company.owner',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'role'           => 'company.owner',
+                'created_at'     => date('Y-m-d H:i:s'),
+                'updated_at'     => date('Y-m-d H:i:s')
             ]
         ];
 

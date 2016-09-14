@@ -72,7 +72,7 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
      */
     public function saveNewCompany(Company $company, Identity $owner) : Company {
         $company = parent::save($company);
-        $member = $this->newMember($company, $owner, Role::COMPANY_OWNER);
+        $member  = $this->newMember($company, $owner, Role::COMPANY_OWNER);
 
         return $company;
     }
@@ -82,19 +82,23 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
      */
     public function newMember(Company $company, Identity $identity, string $role) : Member {
         $query = $this->query('members', Member::class);
-        $id = $query->insertGetId([
-            'company_id' => $company->id,
+        $id    = $query->insertGetId(
+            [
+            'company_id'  => $company->id,
             'identity_id' => $identity->id,
-            'role' => $role
-        ]);
+            'role'        => $role
+            ]
+        );
         if ($id) {
-            $member = $this->entityFactory->create('Member', [
-                'role' => $role,
-                'company' => $company->id,
+            $member = $this->entityFactory->create(
+                'Member', [
+                'role'     => $role,
+                'company'  => $company->id,
                 'identity' => $identity->id,
 
-            ]);
-            $member->relations['company'] = $company;
+                ]
+            );
+            $member->relations['company']  = $company;
             $member->relations['identity'] = $identity;
 
             return $member;

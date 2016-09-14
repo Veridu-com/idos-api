@@ -214,8 +214,9 @@ class Features implements ControllerInterface {
         $command->setParameter('userId', $user->id)
             ->setParameter('featureSlug', $featureSlug);
 
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $this->commandBus->handle($command)
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

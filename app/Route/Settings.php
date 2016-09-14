@@ -92,7 +92,8 @@ class Settings implements RouteInterface {
             ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:listAll');
     }
@@ -127,7 +128,8 @@ class Settings implements RouteInterface {
             ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:createNew');
     }
@@ -194,7 +196,8 @@ class Settings implements RouteInterface {
             ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:getOne');
     }
@@ -226,10 +229,12 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:updateOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:updateOne');
     }
@@ -264,7 +269,8 @@ class Settings implements RouteInterface {
             ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('settings:deleteOne');
     }

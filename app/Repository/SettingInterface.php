@@ -36,8 +36,8 @@ interface SettingInterface extends RepositoryInterface {
     /**
      * Gets all public by company identifier, filters by $queryParams.
      *
-     * @param      integer  $companyId    The company identifier
-     * @param      array    $queryParams  The query parameters to filter the collection
+     * @param int   $companyId   The company identifier
+     * @param array $queryParams The query parameters to filter the collection
      */
     public function getAllPublicByCompanyId(int $companyId, array $queryParams = []) : array;
 
@@ -54,9 +54,8 @@ interface SettingInterface extends RepositoryInterface {
      * Finds one setting by Company and Setting Id.
      * This method is useful for scoping company access within the settings.
      *
-     * @param      integer  $companyId  The company identifier
-     * @param      integer  $settingId  The setting identifier
+     * @param int $companyId The company identifier
+     * @param int $settingId The setting identifier
      */
     public function findOneByCompanyAndId(int $companyId, int $settingId) : Setting;
-
 }

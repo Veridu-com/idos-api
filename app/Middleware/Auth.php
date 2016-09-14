@@ -12,9 +12,9 @@ use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\CompanyInterface;
 use App\Repository\CredentialInterface;
+use App\Repository\IdentityInterface;
 use App\Repository\ServiceInterface;
 use App\Repository\UserInterface;
-use App\Repository\IdentityInterface;
 use Lcobucci\JWT\Parser as JWTParser;
 use Lcobucci\JWT\Signer\Hmac\Sha256 as JWTSigner;
 use Lcobucci\JWT\ValidationData as JWTValidation;
@@ -162,7 +162,6 @@ class Auth implements MiddlewareInterface {
         }
     }
 
-
     /**
      * Handles request Authorization based on Identity Token.
      *
@@ -197,7 +196,6 @@ class Auth implements MiddlewareInterface {
         if (! $token->verify($this->jwtSigner, $identity->privateKey)) {
             throw new AppException('Token Verification Failed', 400);
         }
-
 
         // Checks for JWT Subject
         if ($token->hasClaim('sub')) {
@@ -496,7 +494,7 @@ class Auth implements MiddlewareInterface {
      * @param App\Repository\CredentialInterface $credentialRepository
      * @param App\Repository\UserInterface       $userRepository
      * @param App\Repository\CompanyInterface    $companyRepository
-     * @param App\Repository\IdentityInterface    $identityRepository
+     * @param App\Repository\IdentityInterface   $identityRepository
      * @param \Lcobucci\JWT\Parser               $jwtParser
      * @param \Lcobucci\JWT\ValidationData       $jwtValidation
      * @param \Lcobucci\JWT\Signer\Hmac\Sha256   $jwtSigner
@@ -514,7 +512,7 @@ class Auth implements MiddlewareInterface {
         int $authorizationRequirement = self::NONE
     ) {
         $this->credentialRepository = $credentialRepository;
-        $this->identityRepository = $identityRepository;
+        $this->identityRepository   = $identityRepository;
         $this->userRepository       = $userRepository;
         $this->companyRepository    = $companyRepository;
         $this->serviceRepository    = $serviceRepository;

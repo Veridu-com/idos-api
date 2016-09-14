@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Hook;
-use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**

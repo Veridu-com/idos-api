@@ -277,16 +277,13 @@ class Scores implements ControllerInterface {
             ->setParameter('attribute', $this->attributeRepository->findOneByUserIdAndName($user->id, $attributeName))
             ->setParameter('name', $request->getAttribute('scoreName'));
 
-        $deleted = $this->commandBus->handle($command);
-        $body    = [
-            'status' => $deleted === 1
+        $this->commandBus->handle($command);
+        $body = [
+            'status' => true
         ];
-
-        $statusCode = $body['status'] ? 200 : 404;
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', $statusCode)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

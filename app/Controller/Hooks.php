@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Exception\NotFound;
 use App\Factory\Command;
 use App\Repository\CredentialInterface;
 use App\Repository\HookInterface;
@@ -81,8 +80,8 @@ class Hooks implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $credentialPubKey = $request->getAttribute('pubKey');
 
-        $hooks      = $this->repository->getAllByCredentialPubKey($credentialPubKey);
-        
+        $hooks = $this->repository->getAllByCredentialPubKey($credentialPubKey);
+
         $body = [
             'data'    => $hooks->toArray(),
             'updated' => (
@@ -234,16 +233,13 @@ class Hooks implements ControllerInterface {
             ->setParameter('credentialPubKey', $credentialPubKey)
             ->setParameter('companyId', $company->id);
 
-        $deleted = $this->commandBus->handle($command);
-        $body    = [
-            'status' => $deleted === 1
+        $this->commandBus->handle($command);
+        $body = [
+            'status' => true
         ];
-
-        $statusCode = $body['status'] ? 200 : 404;
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', $statusCode)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

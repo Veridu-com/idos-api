@@ -35,9 +35,9 @@ interface HookInterface extends RepositoryInterface {
     /**
      * Gets all Hooks by credential pub key.
      *
-     * @param      string  $credentialPubKey  The credential pub key
+     * @param string $credentialPubKey The credential pub key
      *
-     * @return     \Illuminate\Support\Collection  A collection of \App\Entity\Hook.
+     * @return \Illuminate\Support\Collection A collection of \App\Entity\Hook.
      */
     public function getAllByCredentialPubKey(string $credentialPubKey) : Collection;
 }

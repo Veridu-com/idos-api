@@ -37,7 +37,6 @@ class IdentityInit extends AbstractMigration {
             ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
             ->create();
 
-
         // Company members (FIXME Review this table)
         $members = $this->table('members');
         $members

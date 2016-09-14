@@ -88,10 +88,12 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials',
                 'App\Controller\Credentials:listAll'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('credentials:listAll');
     }
@@ -124,10 +126,12 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials',
                 'App\Controller\Credentials:createNew'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('credentials:createNew');
     }
@@ -191,10 +195,12 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:getOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('credentials:getOne');
     }
@@ -227,10 +233,12 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:updateOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('credentials:updateOne');
     }
@@ -263,10 +271,12 @@ class Credentials implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:deleteOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('credentials:deleteOne');
     }

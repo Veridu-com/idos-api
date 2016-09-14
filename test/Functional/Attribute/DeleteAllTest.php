@@ -61,9 +61,13 @@ class DeleteAllTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode([
-            'name' => '%1'
-        ]));
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                'name' => '%1'
+                ]
+            )
+        );
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
