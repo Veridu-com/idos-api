@@ -80,8 +80,8 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company   = $request->getAttribute('company');
-        $companies = $this->repository->getAllByParentId($company->id);
+        $identity  = $request->getAttribute('identity');
+        $companies = $identity->company();
 
         $body = [
             'data'    => $companies->toArray(),
@@ -113,11 +113,13 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
+            ->setParameter('identity', $identity)
             ->setParameter('parentId', $company->id);
         $company = $this->commandBus->handle($command);
 
@@ -137,6 +139,7 @@ class Companies implements ControllerInterface {
     }
 
     /**
+<<<<<<< HEAD
      * Deletes all child companies that belong to the requesting company.
      *
      * @apiEndpointResponse 200 schema/company/deleteAll.json
@@ -170,6 +173,9 @@ class Companies implements ControllerInterface {
 
     /**
      * Retrieves all public information from a single Company.
+=======
+     * Deletes the Target Company, a child of the Acting Company.
+>>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @apiEndpointResponse 200 schema/company/getOne.json
      *
@@ -182,10 +188,21 @@ class Companies implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
+<<<<<<< HEAD
         $body = [
             'data'    => $targetCompany->toArray(),
             'updated' => $targetCompany->updatedAt
+=======
+        $command = $this->commandFactory->create('Company\\DeleteOne');
+        $command->setParameter('company', $targetCompany);
+        $command->setParameter('identity', $identity);
+        $deleted = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => (bool) $deleted
+>>>>>>> 38414c0f682f504064149c6715641486b5378a8f
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -214,11 +231,13 @@ class Companies implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetCompany->id);
+            ->setParameter('identity', $identity)
+            ->setParameter('company', $targetCompany);
         $targetCompany = $this->commandBus->handle($command);
 
         $body = [

@@ -20,18 +20,27 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $name;
+
     /**
      * Production flag.
      *
      * @var bool
      */
     public $production = false;
+
     /**
-     * Company Id that this credential belongs to.
+     * Company that this credential belongs to.
      *
-     * @var int
+     * @var \App\Entity\Company
      */
-    public $companyId;
+    public $company;
+
+    /**
+     * Acting Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}

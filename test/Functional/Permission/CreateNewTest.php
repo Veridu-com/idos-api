@@ -20,7 +20,7 @@ class CreateNewTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/companies/veridu-ltd/permissions';
     }
@@ -52,7 +52,6 @@ class CreateNewTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
-
     }
 
     public function testInvalidName() {
@@ -81,6 +80,5 @@ class CreateNewTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
-
     }
 }

@@ -11,11 +11,14 @@ namespace App\Handler;
 use App\Command\Token\Exchange;
 use App\Event\Token\Exchanged;
 use App\Event\Token\Requested;
+use App\Exception\Create;
+use App\Exception\Validate;
 use App\Helper\Token as TokenHelper;
 use App\Repository\UserInterface;
 use App\Validator\Token as TokenValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Token commands.
@@ -85,10 +88,18 @@ class Token implements HandlerInterface {
      * @return string
      */
     public function handleExchange(Exchange $command) : string {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertCompany($command->actingCompany);
-        $this->validator->assertCompany($command->targetCompany);
-        $this->validator->assertCredential($command->credential);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertCompany($command->actingCompany);
+            $this->validator->assertCompany($command->targetCompany);
+            $this->validator->assertCredential($command->credential);
+        } catch (ValidationException $e) {
+            throw new Validate\TokenException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $user          = $command->user;
         $actingCompany = $command->actingCompany;
@@ -111,7 +122,7 @@ class Token implements HandlerInterface {
             $event = new Exchanged($user, $highestRoleUser, $actingCompany, $targetCompany, $credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Unable to exchange the user token by a company token');
+            throw new Create\TokenException('Unable to exchange the user token by a company token', 500, $e);
         }
 
         return $companyToken;

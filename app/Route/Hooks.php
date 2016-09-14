@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
@@ -85,11 +86,14 @@ class Hooks implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:listAll'
             )
-            ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION, 
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('hooks:listAll');
     }
     /**
@@ -117,11 +121,14 @@ class Hooks implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:createNew'
             )
-            ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('hooks:createNew');
     }
 
@@ -136,6 +143,7 @@ class Hooks implements RouteInterface {
      * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      * @apiEndpointURIFragment int hookId 1
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -151,11 +159,14 @@ class Hooks implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
                 'App\Controller\Hooks:updateOne'
             )
-            ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION, 
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('hooks:updateOne');
     }
 
@@ -187,8 +198,11 @@ class Hooks implements RouteInterface {
                 '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:deleteAll'
             )
-            ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION, 
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('hooks:deleteAll');
     }
 
@@ -203,6 +217,7 @@ class Hooks implements RouteInterface {
      * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      * @apiEndpointURIFragment int hookId 1
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -218,11 +233,14 @@ class Hooks implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
                 'App\Controller\Hooks:getOne'
             )
-            ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION, 
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('hooks:getOne');
     }
 
@@ -237,6 +255,7 @@ class Hooks implements RouteInterface {
      * @apiAuth query token credentialToken XXX A valid Credential Token
      * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      * @apiEndpointURIFragment int hookId 1
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -252,11 +271,14 @@ class Hooks implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
                 'App\Controller\Hooks:deleteOne'
             )
-            ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION, 
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('hooks:deleteOne');
     }
 }

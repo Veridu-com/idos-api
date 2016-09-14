@@ -11,8 +11,6 @@ namespace App\Repository;
 use App\Entity\Company;
 use App\Entity\Credential;
 use App\Entity\User;
-use App\Exception\AppException;
-use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -22,7 +20,7 @@ interface UserInterface extends RepositoryInterface {
     /**
      * Find all users that belongs to specified company.
      *
-     * @param int    $companyId
+     * @param int $companyId
      *
      * @throws App\Exception\NotFound
      *
@@ -33,16 +31,16 @@ interface UserInterface extends RepositoryInterface {
     // FIXME Whoever coded me didn't put love in my documentation </3
     public function findByUserNameAndCompany(string $userName, int $companyId) : User;
 
-    /**
-     * Finds a user by its $userName and $credentialId.
-     *
-     * @param string $userName
-     * @param int    $credentialId
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\User
-     */
+/**
+ * Finds a user by its $userName and $credentialId.
+ *
+ * @param string $userName
+ * @param int    $credentialId
+ *
+ * @throws App\Exception\NotFound
+ *
+ * @return App\Entity\User
+ */
     // FIXME Whoever coded me didn't put love in my documentation </3
     public function findByUserName(string $userName, int $credentialId) : User;
 
@@ -73,7 +71,7 @@ interface UserInterface extends RepositoryInterface {
     /**
      * Finds all users that belongs to an $identityId.
      *
-     * @param  int $identityId
+     * @param int $identityId
      *
      * @throws App\Exception\NotFound
      *
@@ -84,8 +82,8 @@ interface UserInterface extends RepositoryInterface {
     /**
      * Finds a user by its $identityId and $companyId.
      *
-     * @param  int $identityId
-     * @param  int $companyId
+     * @param int $identityId
+     * @param int $companyId
      *
      * @throws App\Exception\NotFound
      *

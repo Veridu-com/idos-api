@@ -17,10 +17,14 @@ use App\Event\Reference\Created;
 use App\Event\Reference\Deleted;
 use App\Event\Reference\DeletedMulti;
 use App\Event\Reference\Updated;
+use App\Exception\Create;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\ReferenceInterface;
 use App\Validator\Reference as ReferenceValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Reference commands.
@@ -89,8 +93,16 @@ class Reference implements HandlerInterface {
      * @return App\Entity\Reference
      */
     public function handleCreateNew(CreateNew $command) : ReferenceEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertValue($command->value);
+        try {
+            $this->validator->assertName($command->name);
+            $this->validator->assertValue($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\ReferenceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $reference = $this->repository->create(
             [
@@ -106,7 +118,7 @@ class Reference implements HandlerInterface {
             $event     = new Created($reference);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while creating an reference');
+            throw new Create\ReferenceException('Error while trying to create a reference', 500, $e);
         }
 
         return $reference;
@@ -120,7 +132,15 @@ class Reference implements HandlerInterface {
      * @return App\Entity\Reference
      */
     public function handleUpdateOne(UpdateOne $command) : ReferenceEntity {
-        $this->validator->assertValue($command->value);
+        try {
+            $this->validator->assertValue($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\ReferenceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $reference        = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
         $reference->value = $command->value;
@@ -130,7 +150,7 @@ class Reference implements HandlerInterface {
             $event     = new Updated($reference);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while updating reference');
+            throw new Update\ReferenceException('Error while trying to update a feature', 500, $e);
         }
 
         return $reference;
@@ -144,17 +164,26 @@ class Reference implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertName($command->name);
+        try {
+            $this->validator->assertName($command->name);
+        } catch (ValidationException $e) {
+            throw new Validate\ReferenceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $reference = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
 
-        try {
-            $affectedRows = $this->repository->deleteOneByUserIdAndName($command->user->id, $command->name);
-            $event        = new Deleted($reference);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException('Error while deleting reference');
+        $affectedRows = $this->repository->deleteOneByUserIdAndName($command->user->id, $command->name);
+
+        if (! $affectedRows) {
+            throw new NotFound\ReferenceException('No references found for deletion', 404);
         }
+
+        $event = new Deleted($reference);
+        $this->emitter->emit($event);
 
         return $affectedRows;
     }
@@ -169,13 +198,9 @@ class Reference implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         $references = $this->repository->getAllByUserId($command->user->id);
 
-        try {
-            $affectedRows = $this->repository->deleteByUserId($command->user->id);
-            $event        = new DeletedMulti($references);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException('Error while deleting references');
-        }
+        $affectedRows = $this->repository->deleteByUserId($command->user->id);
+        $event        = new DeletedMulti($references);
+        $this->emitter->emit($event);
 
         return $affectedRows;
     }

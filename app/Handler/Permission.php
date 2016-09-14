@@ -9,18 +9,19 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Permission\CreateNew;
-use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
 use App\Entity\Permission as PermissionEntity;
 use App\Event\Permission\Created;
 use App\Event\Permission\Deleted;
 use App\Event\Permission\DeletedMulti;
-use App\Exception\AppException;
+use App\Exception\Create;
 use App\Exception\NotFound;
+use App\Exception\Validate;
 use App\Repository\PermissionInterface;
 use App\Validator\Permission as PermissionValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Permission commands.
@@ -90,8 +91,16 @@ class Permission implements HandlerInterface {
      * @return App\Entity\Permission
      */
     public function handleCreateNew(CreateNew $command) : PermissionEntity {
-        $this->validator->assertRouteName($command->routeName);
-        $this->validator->assertId($command->companyId);
+        try {
+            $this->validator->assertRouteName($command->routeName);
+            $this->validator->assertId($command->companyId);
+        } catch (ValidationException $e) {
+            throw new Validate\PermissionException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $permission = $this->repository->create(
             [
@@ -106,7 +115,7 @@ class Permission implements HandlerInterface {
             $event      = new Created($permission);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while trying to create a permission');
+            throw new Create\PermissionException('Error while trying to create a permission', 500, $e);
         }
 
         return $permission;
@@ -120,7 +129,15 @@ class Permission implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertId($command->companyId);
+        try {
+            $this->validator->assertId($command->companyId);
+        } catch (ValidationException $e) {
+            throw new Validate\PermissionException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $permissions = $this->repository->getAllByCompanyId($command->companyId);
 
@@ -140,19 +157,27 @@ class Permission implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertId($command->companyId);
-        $this->validator->assertRouteName($command->routeName);
+        try {
+            $this->validator->assertId($command->companyId);
+            $this->validator->assertRouteName($command->routeName);
+        } catch (ValidationException $e) {
+            throw new Validate\PermissionException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $permission = $this->repository->findOne($command->companyId, $command->routeName);
 
         $affectedRows = $this->repository->deleteOne($command->companyId, $command->routeName);
 
-        if ($affectedRows) {
-            $event = new Deleted($permission);
-            $this->emitter->emit($event);
-        } else {
-            throw new NotFound();
+        if (! $affectedRows) {
+            throw new NotFound\PermissionException('No permissions found for deletion', 404);
         }
+
+        $event = new Deleted($permission);
+        $this->emitter->emit($event);
 
         return $affectedRows;
     }

@@ -21,7 +21,7 @@ class GetOneTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'GET';
         $this->populate(
             '/1.0/management/settings',

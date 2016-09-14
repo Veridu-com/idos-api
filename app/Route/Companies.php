@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Route;
 
 use App\Controller\ControllerInterface;
+use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
@@ -33,7 +34,6 @@ class Companies implements RouteInterface {
             'companies:getOne',
             'companies:updateOne',
             'companies:deleteOne',
-            'companies:deleteAll',
         ];
     }
 
@@ -56,7 +56,6 @@ class Companies implements RouteInterface {
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
@@ -65,12 +64,21 @@ class Companies implements RouteInterface {
     /**
      * List all Companies.
      *
+<<<<<<< HEAD
      * Retrieves a complete list of all child companies that belong to the requesting company.
      *
      * @apiEndpoint GET /companies
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+=======
+     * Retrieve a complete list of companies that the Identity is a Member.
+     *
+     * @apiEndpoint GET /companies
+     * @apiGroup Company
+     * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiAuth query token IdentityToken XXX A valid Identity Token
+>>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -89,20 +97,34 @@ class Companies implements RouteInterface {
                 '/companies',
                 'App\Controller\Companies:listAll'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('companies:listAll');
     }
 
     /**
      * Create new Company.
      *
+<<<<<<< HEAD
      * Creates a new child company for the requesting company.
+=======
+     * Create a new child company for the company.
+>>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
-     * @apiEndpoint POST /companies
+     * @apiEndpoint POST /companies/{companySlug}
      * @apiGroup Company
+<<<<<<< HEAD
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+=======
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * 
+     * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiAuth query token IdentityToken XXX A valid Identity Token
+>>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -118,15 +140,19 @@ class Companies implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies',
+                '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:createNew'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('companies:createNew');
     }
 
     /**
+<<<<<<< HEAD
      * Delete all Companies.
      *
      * Deletes all child companies that belong to the requesting company.
@@ -159,6 +185,8 @@ class Companies implements RouteInterface {
     }
 
     /**
+=======
+>>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      * Retrieve a single Company.
      *
      * Retrieves all public information from a single Company.
@@ -196,8 +224,13 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint PUT /companies/{companySlug}
      * @apiGroup Company
+<<<<<<< HEAD
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+=======
+     * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiAuth query token IdentityToken XXX A valid Identity Token
+>>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
@@ -217,8 +250,11 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:updateOne'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('companies:updateOne');
     }
 
@@ -229,8 +265,13 @@ class Companies implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}
      * @apiGroup Company
+<<<<<<< HEAD
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+=======
+     * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiAuth query token IdentityToken XXX A valid Identity Token
+>>>>>>> 38414c0f682f504064149c6715641486b5378a8f
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
@@ -250,8 +291,11 @@ class Companies implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:deleteOne'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION, 
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
             ->setName('companies:deleteOne');
     }
 }

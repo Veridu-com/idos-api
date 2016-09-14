@@ -256,15 +256,15 @@
 
 [GET /1.0/companies](companies/listAll.md)
 
-[POST /1.0/companies](companies/createNew.md)
+[POST /1.0/companies/:companySlug](companies/createNew.md)
 
-[DELETE /1.0/companies](companies/deleteAll.md)
+[DELETE /1.0/companie:companySlugs](companies/deleteAll.md)
 
-[GET /1.0/companies/:companyId](companies/getCompany.md)
+[GET /1.0/companies/:companySlug](companies/getCompany.md)
 
-[PUT /1.0/companies/:companyId](companies/updateCompany.md)
+[PUT /1.0/companies/:companySlug](companies/updateCompany.md)
 
-[DELETE /1.0/companies/:companyId](companies/deleteCompany.md)
+[DELETE /1.0/companies/:companySlug](companies/deleteCompany.md)
 
 ### Company Permissions
 

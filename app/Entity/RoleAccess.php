@@ -39,7 +39,6 @@ class RoleAccess extends AbstractEntity {
         'created_at',
         'updated_at'
     ];
-
     /**
      * {@inheritdoc}
      */

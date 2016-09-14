@@ -80,18 +80,8 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
-        $roles   = $request->getQueryParam('role', null);
-
-        if ($roles === null) {
-            $members = $this->repository->getAllByCompanyId($company->id);
-        }
-        else {
-            $members = $this->repository->getAllByCompanyIdAndRole(
-                $company->id,
-                explode(',', $roles)
-            );
-        }
+        $company = $request->getAttribute('targetCompany');
+        $members = $this->repository->getAllByCompanyId($company->id, $request->getQueryParams());
 
         $body = [
             'data'    => $members->toArray(),

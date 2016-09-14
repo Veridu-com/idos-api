@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Setting;
+use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -53,6 +54,36 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
+    public function getAllPublicByCompanyId(int $companyId, array $queryParams = []) : array {
+        $dbQuery = $this->query()
+            ->where('company_id', $companyId)
+            ->where('protected', false);
+
+        return $this->paginate(
+            $this->filter($dbQuery, $queryParams),
+            $queryParams
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByCompanyAndId(int $companyId, int $settingId) : Setting {
+        $setting = $this->query()
+            ->where('company_id', $companyId)
+            ->where('id', $settingId)
+            ->first();
+
+        if (empty($setting)) {
+            throw new NotFound('Setting not found');
+        }
+
+        return $setting;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findByCompanyId(int $companyId) : Collection {
         return $this->findBy(
             [
@@ -64,30 +95,8 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection {
-        return $this->findBy(
-            [
-                'company_id' => $companyId,
-                'section'    => $section
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findByCompanyIdSectionAndProperties(int $companyId, string $section, array $properties) : Collection {
-        return $this->query()
-            ->where('company_id', $companyId)
-            ->where('section', $section)
-            ->whereIn('property', $properties)
-            ->get();
-    }
 }

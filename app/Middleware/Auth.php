@@ -14,6 +14,7 @@ use App\Repository\CompanyInterface;
 use App\Repository\CredentialInterface;
 use App\Repository\ServiceInterface;
 use App\Repository\UserInterface;
+use App\Repository\IdentityInterface;
 use Lcobucci\JWT\Parser as JWTParser;
 use Lcobucci\JWT\Signer\Hmac\Sha256 as JWTSigner;
 use Lcobucci\JWT\ValidationData as JWTValidation;
@@ -102,9 +103,9 @@ class Auth implements MiddlewareInterface {
     /**
      * Scope: System.
      *
-     * @const COMPANY Company Token
+     * @const IDENTIY Identity Token
      */
-    const COMPANY = 0x02;
+    const IDENTITY = 0x02;
 
     /**
      * Scope: Integration.
@@ -126,15 +127,15 @@ class Auth implements MiddlewareInterface {
                 'label'   => 'User Token',
                 'handler' => 'handleUserToken',
             ],
-            self::COMPANY => [
-                'name'    => 'CompanyToken',
-                'label'   => 'Company Token',
-                'handler' => 'handleCompanyToken',
-            ],
             self::CREDENTIAL => [
                 'name'    => 'CredentialToken',
                 'label'   => 'Credential Token',
                 'handler' => 'handleCredentialToken',
+            ],
+            self::IDENTITY => [
+                'name'    => 'IdentityToken',
+                'label'   => 'Identity Token',
+                'handler' => 'handleIdentityToken',
             ],
         ];
     }
@@ -159,6 +160,53 @@ class Auth implements MiddlewareInterface {
         if (isset($queryParams[$name])) {
             return $queryParams[$name];
         }
+    }
+
+
+    /**
+     * Handles request Authorization based on Identity Token.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param string                                   $reqToken
+     *
+     * @return \Psr\Http\Mesage\ServerRequestInterface
+     */
+    private function handleIdentityToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
+        try {
+            $token = $this->jwtParser->parse($reqToken);
+        } catch (\Throwable $e) {
+            throw new AppException('Invalid Token', 400);
+        }
+
+        // Ensures JWT Audience is the current API
+        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        if (! $token->validate($this->jwtValidation)) {
+            throw new AppException('Token Validation Failed', 400);
+        }
+
+        // Retrieves JWT Issuer
+        $identityPubKey = $token->getClaim('iss');
+
+        try {
+            $identity = $this->identityRepository->findByPubKey($identityPubKey);
+        } catch (NotFound $e) {
+            throw new AppException('Invalid Identity', 400);
+        }
+
+        // JWT Signature Verification
+        if (! $token->verify($this->jwtSigner, $identity->privateKey)) {
+            throw new AppException('Token Verification Failed', 400);
+        }
+
+
+        // Checks for JWT Subject
+        if ($token->hasClaim('sub')) {
+            throw new AppException('Invalid Token Format: Identity Token must not have a subject claim.', 400);
+        }
+
+        return $request
+            // Stores Identity for future use
+            ->withAttribute('identity', $identity);
     }
 
     /**
@@ -438,10 +486,6 @@ class Auth implements MiddlewareInterface {
             }
         }
 
-        // TODO: When there is a acting user there's no need for this test
-        // if (($company->id != $targetCompany->id) && ($company->id != $targetCompany->parent_id))
-        //     throw new AppException('AccessDenied');
-
         // Stores Target Company for future use
         return $request->withAttribute('targetCompany', $targetCompany);
     }
@@ -452,6 +496,7 @@ class Auth implements MiddlewareInterface {
      * @param App\Repository\CredentialInterface $credentialRepository
      * @param App\Repository\UserInterface       $userRepository
      * @param App\Repository\CompanyInterface    $companyRepository
+     * @param App\Repository\IdentityInterface    $identityRepository
      * @param \Lcobucci\JWT\Parser               $jwtParser
      * @param \Lcobucci\JWT\ValidationData       $jwtValidation
      * @param \Lcobucci\JWT\Signer\Hmac\Sha256   $jwtSigner
@@ -459,6 +504,7 @@ class Auth implements MiddlewareInterface {
      */
     public function __construct(
         CredentialInterface $credentialRepository,
+        IdentityInterface $identityRepository,
         UserInterface $userRepository,
         CompanyInterface $companyRepository,
         ServiceInterface $serviceRepository,
@@ -468,6 +514,7 @@ class Auth implements MiddlewareInterface {
         int $authorizationRequirement = self::NONE
     ) {
         $this->credentialRepository = $credentialRepository;
+        $this->identityRepository = $identityRepository;
         $this->userRepository       = $userRepository;
         $this->companyRepository    = $companyRepository;
         $this->serviceRepository    = $serviceRepository;
@@ -532,6 +579,7 @@ class Auth implements MiddlewareInterface {
             $routeInfo = $request->getAttribute('routeInfo');
 
             $companySlug = empty($routeInfo[2]['companySlug']) ? null : $routeInfo[2]['companySlug'];
+
             // Resolves {companySlug} route argument
             if ($companySlug) {
                 $request = $this->populateRequestCompanies($companySlug, $request);

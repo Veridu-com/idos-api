@@ -14,5 +14,6 @@ namespace App\Validator;
 class Gate implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertName,
+        Traits\AssertBoolean,
         Traits\AssertSlug;
 }

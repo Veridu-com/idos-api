@@ -13,11 +13,14 @@ use App\Command\Review\UpdateOne;
 use App\Entity\Review as ReviewEntity;
 use App\Event\Review\Created;
 use App\Event\Review\Updated;
-use App\Exception\AppException;
+use App\Exception\Create;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\ReviewInterface;
 use App\Validator\Review as ReviewValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Review commands.
@@ -86,16 +89,24 @@ class Review implements HandlerInterface {
      * @return App\Entity\Review
      */
     public function handleCreateNew(CreateNew $command) : ReviewEntity {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertId($command->warningId);
-        $this->validator->assertFlag($command->positive);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertId($command->warningId);
+            $this->validator->assertFlag($command->positive);
+        } catch (ValidationException $e) {
+            throw new Validate\ReviewException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $review = $this->repository->create(
             [
-            'user_id'    => $command->user->id,
-            'warning_id' => $command->warningId,
-            'positive'   => $this->validator->validateFlag($command->positive),
-            'created_at' => time()
+                'user_id'    => $command->user->id,
+                'warning_id' => $command->warningId,
+                'positive'   => $this->validator->validateFlag($command->positive),
+                'created_at' => time()
             ]
         );
 
@@ -104,7 +115,7 @@ class Review implements HandlerInterface {
             $event  = new Created($review);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while creating an review');
+            throw new Create\ReviewException('Error while trying to create a review', 500, $e);
         }
 
         return $review;
@@ -118,9 +129,17 @@ class Review implements HandlerInterface {
      * @return App\Entity\Review
      */
     public function handleUpdateOne(UpdateOne $command) : ReviewEntity {
-        $this->validator->assertId($command->id);
-        $this->validator->assertUser($command->user);
-        $this->validator->assertFlag($command->positive);
+        try {
+            $this->validator->assertId($command->id);
+            $this->validator->assertUser($command->user);
+            $this->validator->assertFlag($command->positive);
+        } catch (ValidationException $e) {
+            throw new Validate\ReviewException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $review           = $this->repository->findOneByUserIdAndId($command->user->id, $command->id);
         $review->positive = $command->positive;
@@ -130,7 +149,7 @@ class Review implements HandlerInterface {
             $event  = new Updated($review);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while updating review');
+            throw new Update\ReviewException('Error while trying to update a review', 500, $e);
         }
 
         return $review;

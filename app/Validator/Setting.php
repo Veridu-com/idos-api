@@ -13,5 +13,8 @@ namespace App\Validator;
  */
 class Setting implements ValidatorInterface {
     use Traits\AssertId,
+    	Traits\AssertFlag,
+    	Traits\AssertArray,
+    	Traits\AssertEntity,
         Traits\AssertName;
 }
