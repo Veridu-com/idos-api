@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
-
 /**
  * Service's Entity.
  *
@@ -26,8 +24,6 @@ use App\Extension\SecureFields;
  * @property int        $updated_at
  */
 class Service extends AbstractEntity {
-    use SecureFields;
-
     /**
      * Only the owning company have access.
      *
@@ -62,21 +58,16 @@ class Service extends AbstractEntity {
         'created_at',
         'updated_at'
     ];
-
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
     /**
      * {@inheritdoc}
      */
     protected $json = ['listens', 'triggers'];
-
     /**
-     * The attributes that should be secured.
-     *
-     * @var array
+     * {@inheritdoc}
      */
     protected $secure = ['auth_username', 'auth_password', 'private'];
 }

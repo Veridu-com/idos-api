@@ -38,7 +38,7 @@ class Attributes implements RouteInterface {
      * {@inheritdoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Attributes::class] = function (ContainerInterface $container) {
+        $app->getContainer()[\App\Controller\Attributes::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Attributes(
                 $container->get('repositoryFactory')->create('Attribute'),
                 $container->get('commandBus'),

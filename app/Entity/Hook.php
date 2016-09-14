@@ -8,16 +8,12 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SecureFields;
-
 /**
  * Hooks Entity.
  *
  * @apiEntity schema/hook/hookEntity.json
  */
 class Hook extends AbstractEntity {
-    use SecureFields;
-
     /**
      * {@inheritdoc}
      */

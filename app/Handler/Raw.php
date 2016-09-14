@@ -94,10 +94,10 @@ class Raw implements HandlerInterface {
 
         $raw = $this->repository->create(
             [
-            'source'     => $command->source,
-            'collection' => $command->collection,
-            'data'       => $command->data,
-            'created_at' => time()
+                'source'     => $command->source,
+                'collection' => $command->collection,
+                'data'       => $command->data,
+                'created_at' => time()
             ]
         );
 

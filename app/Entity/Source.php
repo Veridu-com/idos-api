@@ -23,7 +23,6 @@ class Source extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
     /**
      * {@inheritdoc}
      */
