@@ -258,8 +258,16 @@ class Feature implements HandlerInterface {
             $this->validator->assertSource($command->source);
         }
 
+        $feature = null;
         $inserting = false;
         try {
+            $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->id : 0, $command->service->id, $command->name);
+            
+            $feature->type = $command->type;
+            $feature->value = $command->value;
+        } catch (NotFound $e) {
+            $inserting = true;
+            
             $feature = $this->repository->create(
                 [
                     'user_id'    => $command->user->id,
@@ -271,29 +279,23 @@ class Feature implements HandlerInterface {
                     'created_at' => time()
                 ]
             );
+        }
 
+
+        try {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
-            $inserting = true;
-        } catch (QueryException $e) {
-            $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->id : 0, $command->service->id, $command->name);
-            $feature->type = $command->type;
-            $feature->value = $command->value;
+            if ($inserting) {
+                $event   = new Created($feature);
+            } else {
+                $event   = new Updated($feature);
+            }
 
-            $feature = $this->repository->save($feature);
-            $feature = $this->repository->hydrateRelations($feature);
+            $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while upserting feature.');
         }
-
-        if ($inserting) {
-            $event   = new Created($feature);
-        } else {
-            $event   = new Updated($feature);
-        }
-
-        $this->emitter->emit($event);
 
         return $feature;
     }
