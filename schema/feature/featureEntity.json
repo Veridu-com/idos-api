@@ -19,10 +19,6 @@
             "type": "string",
             "pattern": ""
         },
-        "user_id": {
-            "description": "User owner of the feature",
-            "type": "integer"
-        },
         "created_at": {
             "description": "Feature's creation unixtime",
             "type": "integer"
@@ -38,7 +34,6 @@
     "required": [
         "name",
         "slug",
-        "user_id",
         "created_at",
         "updated_at"
     ]

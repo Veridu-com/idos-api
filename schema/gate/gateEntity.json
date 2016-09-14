@@ -18,10 +18,6 @@
             "description": "Gate value",
             "type": "boolean"
         },
-        "user_id": {
-            "description": "User owner of the gate",
-            "type": "integer"
-        },
         "created_at": {
             "description": "Gate's creation unixtime",
             "type": "integer"
@@ -38,7 +34,6 @@
         "name",
         "pass",
         "slug",
-        "user_id",
         "created_at",
         "updated_at"
     ]
