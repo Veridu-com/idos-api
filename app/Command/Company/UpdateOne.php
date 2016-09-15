@@ -21,11 +21,18 @@ class UpdateOne extends AbstractCommand {
      */
     public $name;
     /**
-     * Company Id.
+     * Target Company.
      *
-     * @var int
+     * @var \App\Entity\Company
      */
-    public $companyId;
+    public $company;
+
+    /**
+     * Acting Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}
@@ -35,10 +42,6 @@ class UpdateOne extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
-        }
-
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
         }
 
         return $this;

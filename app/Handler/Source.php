@@ -19,10 +19,14 @@ use App\Event\Source\DeletedMulti;
 use App\Event\Source\OTP;
 use App\Event\Source\Updated;
 use App\Exception\AppException;
+use App\Exception\Create;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\SourceInterface;
 use App\Validator\Source as SourceValidator;
 use Interop\Container\ContainerINterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Source commands.
@@ -92,10 +96,18 @@ class Source implements HandlerInterface {
      * @return App\Entity\Source
      */
     public function handleCreateNew(CreateNew $command) : SourceEntity {
-        $this->validator->assertShortName($command->name);
-        $this->validator->assertUser($command->user);
-        $this->validator->assertId($command->user->id);
-        $this->validator->assertIpAddr($command->ipaddr);
+        try {
+            $this->validator->assertShortName($command->name);
+            $this->validator->assertUser($command->user);
+            $this->validator->assertId($command->user->id);
+            $this->validator->assertIpAddr($command->ipaddr);
+        } catch (ValidationException $e) {
+            throw new Validate\SourceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         // OTP check
         $sendOTP = false;
@@ -133,7 +145,12 @@ class Source implements HandlerInterface {
             ]
         );
 
-        $source = $this->repository->save($source);
+        try {
+            $source = $this->repository->save($source);
+        } catch (\Exception $e) {
+            throw new Create\SourceException('Error while trying to create a setting', 500, $e);
+        }
+
         $this->emitter->emit(new Created($source, $command->ipaddr));
 
         if ($sendOTP) {
@@ -155,9 +172,17 @@ class Source implements HandlerInterface {
      * @return App\Entity\Source
      */
     public function handleUpdateOne(UpdateOne $command) : SourceEntity {
-        $this->validator->assertSource($command->source);
-        $this->validator->assertId($command->source->id);
-        $this->validator->assertIpAddr($command->ipaddr);
+        try {
+            $this->validator->assertSource($command->source);
+            $this->validator->assertId($command->source->id);
+            $this->validator->assertIpAddr($command->ipaddr);
+        } catch (ValidationException $e) {
+            throw new Validate\SourceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $source     = $command->source;
         $serialized = $source->serialize();
@@ -165,11 +190,19 @@ class Source implements HandlerInterface {
         $tags = json_decode($serialized['tags']);
 
         if ((isset($tags->otp_voided))) {
-            throw new AppException('Too many tries.', 403);
+            throw new NotAllowed\SourceException('Too many tries', 500, $e);
         }
 
         if (isset($command->otpCode)) {
-            $this->validator->assertOTPCode($command->otpCode);
+            try {
+                $this->validator->assertOTPCode($command->otpCode);
+            } catch (ValidationException $e) {
+                throw new Validate\SourceException(
+                    $e->getFullMessage(),
+                    400,
+                    $e
+                );
+            }
         }
 
         // OTP check must only work on valid sources (i.e. not voided and unverified)
@@ -206,8 +239,12 @@ class Source implements HandlerInterface {
         $source->tags      = $tags;
         $source->updatedAt = time();
 
-        $source = $this->repository->save($source);
-        $this->emitter->emit(new Updated($source, $command->ipaddr));
+        try {
+            $source = $this->repository->save($source);
+            $this->emitter->emit(new Updated($source, $command->ipaddr));
+        } catch (\Exception $e) {
+            throw new Update\SourceException('Error while trying to update a source', 500, $e);
+        }
 
         return $source;
     }
@@ -217,20 +254,28 @@ class Source implements HandlerInterface {
      *
      * @param App\Command\Source\DeleteOne $command
      *
-     * @return bool
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : bool {
-        $this->validator->assertSource($command->source);
-        $this->validator->assertId($command->source->id);
-        $this->validator->assertIpAddr($command->ipaddr);
-
-        if ($this->repository->delete($command->source->id)) {
-            $this->emitter->emit(new Deleted($command->source, $command->ipaddr));
-
-            return true;
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertSource($command->source);
+            $this->validator->assertId($command->source->id);
+            $this->validator->assertIpAddr($command->ipaddr);
+        } catch (ValidationException $e) {
+            throw new Validate\SourceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
         }
 
-        return false;
+        $rowsAffected = $this->repository->delete($command->source->id);
+
+        if (! $rowsAffected) {
+            throw new NotFound\SourceException('No sources found for deletion', 404);
+        }
+
+        $this->emitter->emit(new Deleted($command->source, $command->ipaddr));
     }
 
     /**
@@ -241,16 +286,22 @@ class Source implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertId($command->user->id);
-        $this->validator->assertIpAddr($command->ipaddr);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertId($command->user->id);
+            $this->validator->assertIpAddr($command->ipaddr);
+        } catch (ValidationException $e) {
+            throw new Validate\SourceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $sources = $this->repository->getAllByUserId($command->user->id);
         $deleted = $this->repository->deleteByUserId($command->user->id);
 
-        if ($deleted) {
-            $this->emitter->emit(new DeletedMulti($sources, $command->ipaddr));
-        }
+        $this->emitter->emit(new DeletedMulti($sources, $command->ipaddr));
 
         return $deleted;
     }

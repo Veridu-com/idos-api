@@ -8,13 +8,16 @@ declare(strict_types = 1);
 
 namespace App\Handler;
 
+use App\Command\AbstractCommand;
 use App\Command\Sso\CreateNewAmazon;
 use App\Command\Sso\CreateNewFacebook;
 use App\Command\Sso\CreateNewGoogle;
 use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
 use App\Command\Sso\CreateNewTwitter;
-use App\Exception\AppException;
+use App\Entity\Source;
+use App\Entity\User;
+use App\Exception\Create;
 use App\Factory\Command;
 use App\Helper\Token;
 use App\Repository\CredentialInterface;
@@ -22,8 +25,6 @@ use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
-use App\Entity\User;
-use App\Entity\Source;
 
 /**
  * Handles Sso commands.
@@ -119,13 +120,13 @@ class Sso implements HandlerInterface {
     }
 
     /**
-     * Creates a new user
+     * Creates a new user.
      *
-     * @param      integer                      $credentialId  The credential identifier
-     * @param      string                       $role          The role
-     * @param      string                       $username      The username
+     * @param int    $credentialId The credential identifier
+     * @param string $role         The role
+     * @param string $username     The username
      *
-     * @return     App\Entity\User              The created user
+     * @return App\Entity\User The created user
      */
     private function createNewUser(int $credentialId, string $role, string $username) : User {
         $command = $this->commandFactory->create('User\\CreateNew');
@@ -141,14 +142,14 @@ class Sso implements HandlerInterface {
     }
 
     /**
-     * Creates a new source
+     * Creates a new source.
      *
-     * @param      string                       $provider  The provider
-     * @param      \App\Entity\User             $user      The user
-     * @param      array                        $tags      The tags
-     * @param      string                       $ipAddr    The ip address
+     * @param string           $provider The provider
+     * @param \App\Entity\User $user     The user
+     * @param array            $tags     The tags
+     * @param string           $ipAddr   The ip address
      *
-     * @return     App\Entity\Source            The created source
+     * @return App\Entity\Source The created source
      */
     private function createNewSource(string $provider, User $user, array $tags, string $ipAddr) : Source {
         $command = $this->commandFactory->create('Source\\CreateNew');
@@ -168,16 +169,16 @@ class Sso implements HandlerInterface {
     /**
      * Creates a new sso source and a new user token.
      *
-     * @param      string                       $provider              The provider
-     * @param      AbstractCommand              $command               The CreateNew command for the provider
-     * @param      Function|string              $tokenClass            The oauth token class
-     * @param      string                       $serviceRequestUrl     The provider url that will be used to get the user id
-     * @param      string                       $decodedResponseParam  The response parameter that holds the user's id
-     * @param      Function|string              $eventClass            The createNew event class name to be emitted
+     * @param string          $provider             The provider
+     * @param AbstractCommand $command              The CreateNew command for the provider
+     * @param Function|string $tokenClass           The oauth token class
+     * @param string          $serviceRequestUrl    The provider url that will be used to get the user id
+     * @param string          $decodedResponseParam The response parameter that holds the user's id
+     * @param Function|string $eventClass           The createNew event class name to be emitted
      *
-     * @throws     \App\Exception\AppException  Exception thrown in case of error contacting the provider
+     * @throws \App\Exception\AppException Exception thrown in case of error contacting the provider
      *
-     * @return     string                       The generated token
+     * @return string The generated token
      */
     private function createNew(
         string $provider,
@@ -197,13 +198,13 @@ class Sso implements HandlerInterface {
         try {
             $response = $service->request($serviceRequestUrl);
         } catch (\Exception $e) {
-            throw new AppException('Error while contacting provider');
+            throw new Create\SsoException('Error while trying to contact provider', 500, $e);
         }
 
         $decodedResponse = json_decode($response, true);
 
         if ($decodedResponse === null || isset($decodedResponse['error']) || isset($decodedResponse['errors'])) {
-            throw new AppException('Error while trying authenticate');
+            throw new Create\SsoException('Error while trying to authenticate', 500);
         }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
@@ -226,9 +227,9 @@ class Sso implements HandlerInterface {
             $user,
             json_encode(
                 [
-                    'profile_id' => $decodedResponse[$decodedResponseParam],
+                    'profile_id'   => $decodedResponse[$decodedResponseParam],
                     'access_token' => $command->accessToken,
-                    'sso' => true
+                    'sso'          => true
                 ]
             ),
             $command->ipAddress

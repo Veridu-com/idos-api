@@ -20,12 +20,20 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $name;
+
     /**
      * Company's Parent Id.
      *
      * @var int
      */
     public $parentId;
+
+    /**
+     * Identity creating the company.
+     *
+     * @var App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}
@@ -35,10 +43,6 @@ class CreateNew extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
-        }
-
-        if (isset($parameters['parentId'])) {
-            $this->parentId = $parameters['parentId'];
         }
 
         return $this;

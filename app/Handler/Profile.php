@@ -9,15 +9,11 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Profile\ListAll;
-use App\Entity\Profile as ProfileEntity;
-use App\Exception\AppException;
-use App\Exception\NotAllowed;
-use App\Exception\NotFound;
 use App\Repository\UserInterface;
 use App\Validator\Profile as ProfileValidator;
+use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
-use Illuminate\Support\Collection;
 
 /**
  * Handles Profile commands.
@@ -64,7 +60,7 @@ class Profile implements HandlerInterface {
      * Class constructor.
      *
      * @param App\Repository\UserInterface $repository
-     * @param App\Validator\Profile           $validator
+     * @param App\Validator\Profile        $validator
      *
      * @return void
      */

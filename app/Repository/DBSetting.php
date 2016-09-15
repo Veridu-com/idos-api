@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Setting;
+use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -53,22 +54,40 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByCompanyId(int $companyId) : Collection {
-        return $this->findBy(
-            [
-                'company_id' => $companyId
-            ]
+    public function getAllPublicByCompanyId(int $companyId, array $queryParams = []) : array {
+        $dbQuery = $this->query()
+            ->where('company_id', $companyId)
+            ->where('protected', false);
+
+        return $this->paginate(
+            $this->filter($dbQuery, $queryParams),
+            $queryParams
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyIdAndSection(int $companyId, string $section) : Collection {
+    public function findOneByCompanyAndId(int $companyId, int $settingId) : Setting {
+        $setting = $this->query()
+            ->where('company_id', $companyId)
+            ->where('id', $settingId)
+            ->first();
+
+        if (empty($setting)) {
+            throw new NotFound('Setting not found');
+        }
+
+        return $setting;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByCompanyId(int $companyId) : Collection {
         return $this->findBy(
             [
-                'company_id' => $companyId,
-                'section'    => $section
+                'company_id' => $companyId
             ]
         );
     }

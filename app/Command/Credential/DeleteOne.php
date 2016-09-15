@@ -15,11 +15,18 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Credential Id.
+     * Credential to be deleted.
      *
-     * @var int
+     * @var \App\Entity\Credential
      */
-    public $credentialId;
+    public $credential;
+
+    /**
+     * Acting identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}
@@ -27,9 +34,6 @@ class DeleteOne extends AbstractCommand {
      * @return App\Command\Credential\DeleteOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['credentialId'])) {
-            $this->credentialId = $parameters['credentialId'];
-        }
 
         return $this;
     }

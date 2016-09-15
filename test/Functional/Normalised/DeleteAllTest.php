@@ -19,7 +19,7 @@ class DeleteAllTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/sources/1860914067/normalised';
     }

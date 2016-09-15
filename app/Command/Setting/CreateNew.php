@@ -20,24 +20,34 @@ class CreateNew extends AbstractCommand {
      * @var object
      */
     public $section;
+
     /**
      * Setting's property name (user input).
      *
      * @var object
      */
     public $property;
+
+    /**
+     * Setting's protected value.
+     *
+     * @var bool
+     */
+    public $protected;
+
     /**
      * Setting's property value (user input).
      *
      * @var object
      */
     public $value;
+
     /**
-     * Setting Id.
+     * Company.
      *
-     * @var int
+     * @var \App\Entity\Company
      */
-    public $companyId;
+    public $company;
 
     /**
      * {@inheritdoc}
@@ -57,8 +67,8 @@ class CreateNew extends AbstractCommand {
             $this->value = $parameters['value'];
         }
 
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
+        if (isset($parameters['protected'])) {
+            $this->protected = $parameters['protected'];
         }
 
         return $this;

@@ -15,11 +15,13 @@ use App\Entity\Warning as WarningEntity;
 use App\Event\Warning\Created;
 use App\Event\Warning\Deleted;
 use App\Event\Warning\DeletedMulti;
-use App\Exception\AppException as AppException;
+use App\Exception\Create;
+use App\Exception\Validate;
 use App\Repository\WarningInterface;
 use App\Validator\Warning as WarningValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Warning commands.
@@ -88,9 +90,17 @@ class Warning implements HandlerInterface {
      * @return App\Entity\Warning
      */
     public function handleCreateNew(CreateNew $command) : WarningEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertName($command->reference);
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertName($command->name);
+            $this->validator->assertName($command->reference);
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\WarningException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $warning = $this->repository->create(
             [
@@ -106,7 +116,7 @@ class Warning implements HandlerInterface {
             $event   = new Created($warning);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            throw new AppException('Error while creating a warning');
+            throw new Create\WarningException('Error while trying to create a warning', 500, $e);
         }
 
         return $warning;
@@ -120,16 +130,21 @@ class Warning implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\WarningException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
         $deletedWarnings = $this->repository->findByUserId($command->userId);
 
-        try {
-            $rowsAffected = $this->repository->deleteByUserId($command->userId);
-            $event        = new DeletedMulti($deletedWarnings);
-            $this->emitter->emit($event);
-        } catch (Exception $exception) {
-            throw new AppException('Error while deleting all warnings under user ' . $command->userId);
-        }
+        $rowsAffected = $this->repository->deleteByUserId($command->userId);
+        $event        = new DeletedMulti($deletedWarnings);
+        $this->emitter->emit($event);
 
         return $rowsAffected;
     }
@@ -139,21 +154,28 @@ class Warning implements HandlerInterface {
      *
      * @param App\Command\Warning\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertSlug($command->warningSlug);
-        $this->validator->assertId($command->userId);
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertSlug($command->warningSlug);
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\WarningException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
         $warning = $this->repository->findByUserIdAndSlug($command->userId, $command->warningSlug);
 
         $rowsAffected = $this->repository->delete($warning->id);
-        if ($rowsAffected) {
-            $event = new Deleted($warning);
-            $this->emitter->emit($event);
+        if (! $rowsAffected) {
+            throw new NotFound\WarningException('No warnings found for deletion', 404);
         }
-        else
-            throw new AppException('Error while deleting a warning id ' . $warning->id);
 
-        return $rowsAffected;
+        $event = new Deleted($warning);
+        $this->emitter->emit($event);
     }
 }

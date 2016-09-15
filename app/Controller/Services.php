@@ -211,8 +211,9 @@ class Services implements ControllerInterface {
             ->setParameter('company', $company)
             ->setParameter('serviceId', $serviceId);
 
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $this->commandBus->handle($command)
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -13,7 +13,7 @@ use Test\Functional\AbstractFunctional;
 class MainTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/';
     }

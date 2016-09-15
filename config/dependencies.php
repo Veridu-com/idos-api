@@ -301,6 +301,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
 
         return new Auth(
             $repositoryFactory->create('Credential'),
+            $repositoryFactory->create('Identity'),
             $repositoryFactory->create('User'),
             $repositoryFactory->create('Company'),
             $repositoryFactory->create('Service'),
@@ -314,11 +315,12 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
 
 // Permission Middleware
 $container['endpointPermissionMiddleware'] = function (ContainerInterface $container) : callable {
-    return function ($permissionType) use ($container) {
+    return function ($permissionType, $allowedRolesBits = 0x00) use ($container) {
         return new Middleware\EndpointPermission(
             $container->get('repositoryFactory')->create('Permission'),
             $container->get('repositoryFactory')->create('Company'),
-            $permissionType
+            $permissionType,
+            $allowedRolesBits
         );
     };
 };

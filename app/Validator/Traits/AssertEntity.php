@@ -27,6 +27,19 @@ trait AssertEntity {
         Validator::instance('App\\Entity\\Company')
             ->assert($company);
     }
+    /**
+     * Asserts a valid identity entity.
+     *
+     * @param mixed $identity
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertIdentity($identity) {
+        Validator::instance('App\\Entity\\Identity')
+            ->assert($identity);
+    }
 
     /**
      * Asserts a valid credential entity.

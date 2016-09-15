@@ -17,12 +17,15 @@ use App\Event\Gate\Created;
 use App\Event\Gate\Deleted;
 use App\Event\Gate\DeletedMulti;
 use App\Event\Gate\Updated;
-use App\Exception\AppException;
+use App\Exception\Create;
 use App\Exception\NotFound;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\GateInterface;
 use App\Validator\Gate as GateValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Gate commands.
@@ -91,8 +94,17 @@ class Gate implements HandlerInterface {
      * @return App\Entity\Gate
      */
     public function handleCreateNew(CreateNew $command) : GateEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertName($command->name);
+            $this->validator->assertId($command->userId);
+            $this->validator->assertBoolean($command->pass);
+        } catch (ValidationException $e) {
+            throw new Validate\GateException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $gate = $this->repository->create(
             [
@@ -108,7 +120,7 @@ class Gate implements HandlerInterface {
             $event = new Created($gate);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            throw new AppException('Error while creating a gate');
+            throw new Create\GateException('Error while trying to create a gate', 500, $e);
         }
 
         return $gate;
@@ -122,8 +134,17 @@ class Gate implements HandlerInterface {
      * @return App\Entity\Gate
      */
     public function handleUpdateOne(UpdateOne $command) : GateEntity {
-        $this->validator->assertSlug($command->gateSlug);
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertSlug($command->gateSlug);
+            $this->validator->assertBoolean($command->pass);
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\GateException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $gate = $this->repository->findByUserIdAndSlug($command->userId, $command->gateSlug);
 
@@ -135,12 +156,7 @@ class Gate implements HandlerInterface {
             $event = new Updated($gate);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            throw new AppException(
-                'Error while updating a gate user id: ' .
-                $command->userId .
-                ' slug: ' .
-                $command->gateSlug
-            );
+            throw new Update\GateException('Error while trying to update a gate', 500, $e);
         }
 
         return $gate;
@@ -154,7 +170,15 @@ class Gate implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertId($command->userId);
+        try {
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\GateException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $deletedGates = $this->repository->findByUserId($command->userId);
 
@@ -171,23 +195,29 @@ class Gate implements HandlerInterface {
      *
      * @param App\Command\Gate\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertSlug($command->gateSlug);
-        $this->validator->assertId($command->userId);
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertSlug($command->gateSlug);
+            $this->validator->assertId($command->userId);
+        } catch (ValidationException $e) {
+            throw new Validate\GateException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $gate = $this->repository->findByUserIdAndSlug($command->userId, $command->gateSlug);
 
         $rowsAffected = $this->repository->delete($gate->id);
 
-        if ($rowsAffected) {
-            $event = new Deleted($gate);
-            $this->emitter->emit($event);
-        } else {
-            throw new NotFound();
+        if (! $rowsAffected) {
+            throw new NotFound\GateException('No gates found for deletion', 404);
         }
 
-        return $rowsAffected;
+        $event = new Deleted($gate);
+        $this->emitter->emit($event);
     }
 }

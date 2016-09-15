@@ -17,12 +17,15 @@ use App\Event\RoleAccess\Created;
 use App\Event\RoleAccess\Deleted;
 use App\Event\RoleAccess\DeletedMulti;
 use App\Event\RoleAccess\Updated;
-use App\Exception\AppException;
+use App\Exception\Create;
 use App\Exception\NotFound;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\RoleAccessInterface;
 use App\Validator\RoleAccess as RoleAccessValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles RoleAccess commands.
@@ -92,10 +95,18 @@ class RoleAccess implements HandlerInterface {
      * @return App\Entity\RoleAccess
      */
     public function handleCreateNew(CreateNew $command) : RoleAccessEntity {
-        $this->validator->assertRoleName($command->role);
-        $this->validator->assertResource($command->resource);
-        $this->validator->assertAccess($command->access);
-        $this->validator->assertId($command->identityId);
+        try {
+            $this->validator->assertRoleName($command->role);
+            $this->validator->assertResource($command->resource);
+            $this->validator->assertAccess($command->access);
+            $this->validator->assertId($command->identityId);
+        } catch (ValidationException $e) {
+            throw new Validate\RoleAccessException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $now = time();
 
@@ -115,7 +126,7 @@ class RoleAccess implements HandlerInterface {
             $event  = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while trying to create a role access');
+            throw new Create\RoleAccessException('Error while trying to create a role access', 500, $e);
         }
 
         return $entity;
@@ -129,7 +140,15 @@ class RoleAccess implements HandlerInterface {
      * @return int number of affected rows
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertId($command->identityId);
+        try {
+            $this->validator->assertId($command->identityId);
+        } catch (ValidationException $e) {
+            throw new Validate\RoleAccessException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $roleAccesses = $this->repository->findByIdentity($command->identityId);
 
@@ -149,9 +168,17 @@ class RoleAccess implements HandlerInterface {
      * @return App\Entity\RoleAccess
      */
     public function handleUpdateOne(UpdateOne $command) : RoleAccessEntity {
-        $this->validator->assertId($command->identityId);
-        $this->validator->assertId($command->roleAccessId);
-        $this->validator->assertAccess($command->access);
+        try {
+            $this->validator->assertId($command->identityId);
+            $this->validator->assertId($command->roleAccessId);
+            $this->validator->assertAccess($command->access);
+        } catch (ValidationException $e) {
+            throw new Validate\RoleAccessException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         // finds entity
         $entity            = $this->repository->findOne($command->identityId, $command->roleAccessId);
@@ -164,12 +191,7 @@ class RoleAccess implements HandlerInterface {
             $event  = new Updated($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException(
-                'Error while trying to update a role access identity_id ' .
-                $command->identityId .
-                ' role_access_id ' .
-                $command->roleAccessId
-            );
+            throw new Update\RoleAccessException('Error while trying to update a role access', 500, $e);
         }
 
         return $entity;
@@ -180,22 +202,28 @@ class RoleAccess implements HandlerInterface {
      *
      * @param App\Command\RoleAccess\DeleteOne $command
      *
-     * @return int number of affected rows
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertId($command->identityId);
-        $this->validator->assertId($command->roleAccessId);
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertId($command->identityId);
+            $this->validator->assertId($command->roleAccessId);
+        } catch (ValidationException $e) {
+            throw new Validate\RoleAccessException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $roleAccess   = $this->repository->findOne($command->identityId, $command->roleAccessId);
         $rowsAffected = $this->repository->deleteOne($command->identityId, $command->roleAccessId);
 
-        if ($rowsAffected) {
-            $event = new Deleted($roleAccess);
-            $this->emitter->emit($event);
-        } else {
-                throw new NotFound();
+        if (! $rowsAffected) {
+            throw new NotFound\RoleAccessException('No role accesses found for deletion', 404);
         }
 
-        return $rowsAffected;
+        $event = new Deleted($roleAccess);
+        $this->emitter->emit($event);
     }
 }

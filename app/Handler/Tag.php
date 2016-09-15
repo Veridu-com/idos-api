@@ -15,12 +15,14 @@ use App\Entity\Tag as TagEntity;
 use App\Event\Tag\Created;
 use App\Event\Tag\Deleted;
 use App\Event\Tag\DeletedMulti;
-use App\Exception\AppException as AppException;
+use App\Exception\Create;
+use App\Exception\Validate;
 use App\Repository\TagInterface;
 use App\Repository\UserInterface;
 use App\Validator\Tag as TagValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Tag commands.
@@ -102,8 +104,16 @@ class Tag implements HandlerInterface {
      * @return App\Entity\Tag
      */
     public function handleCreateNew(CreateNew $command) : TagEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertSlug($command->slug);
+        try {
+            $this->validator->assertName($command->name);
+            $this->validator->assertSlug($command->slug);
+        } catch (ValidationException $e) {
+            throw new Validate\TagException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $user = $command->user;
 
@@ -121,7 +131,7 @@ class Tag implements HandlerInterface {
             $event = new Created($tag);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while trying to create a tag');
+            throw new Create\TagException('Error while trying to create a tag', 500, $e);
         }
 
         return $tag;
@@ -132,23 +142,29 @@ class Tag implements HandlerInterface {
      *
      * @param App\Command\Tag\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertSlug($command->slug);
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertSlug($command->slug);
+        } catch (ValidationException $e) {
+            throw new Validate\TagException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $tag = $this->repository->findOneByUserIdAndSlug($command->user->id, $command->slug);
 
         $rowsAffected = $this->repository->deleteOneByUserIdAndSlug($command->user->id, $command->slug);
 
-        if ($rowsAffected) {
-            $event = new Deleted($tag);
-            $this->emitter->emit($event);
-        } else {
-            throw new NotFound();
+        if (! $rowsAffected) {
+            throw new NotFound\TagException('No tags found for deletion', 404);
         }
 
-        return $rowsAffected;
+        $event = new Deleted($tag);
+        $this->emitter->emit($event);
     }
 
     /**

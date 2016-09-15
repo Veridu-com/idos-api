@@ -9,21 +9,22 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Company\CreateNew;
-use App\Command\Company\DeleteAll;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
 use App\Event\Company\Created;
 use App\Event\Company\Deleted;
-use App\Event\Company\DeletedMulti;
 use App\Event\Company\Updated;
-use App\Exception\AppException;
+use App\Exception\Create;
 use App\Exception\NotFound;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Company commands.
@@ -96,14 +97,11 @@ class Company implements HandlerInterface {
         try {
             $this->validator->assertMediumLatinName($command->name);
             $this->validator->assertParentId($command->parentId);
-        } catch (\Exception $exception) {
-            // Respect\Validation\Exceptions\ExceptionInterface
-            throw new AppException(
-                sprintf(
-                    'Invalid input: %s',
-                    implode('; ', $exception->getMessages())
-                ),
-                400
+        } catch (ValidationException $e) {
+            throw new Validate\CompanyException(
+                $e->getFullMessage(),
+                400,
+                $e
             );
         }
 
@@ -119,11 +117,11 @@ class Company implements HandlerInterface {
         $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
 
         try {
-            $company = $this->repository->save($company);
-            $event   = new Created($company);
+            $company = $this->repository->saveNewCompany($company, $command->identity);
+            $event   = new Created($company, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $exception) {
-            throw new AppException('Error while creating a company');
+        } catch (\Exception $e) {
+            throw new Create\CompanyException('Error while trying to create a company', 500, $e);
         }
 
         return $company;
@@ -137,19 +135,27 @@ class Company implements HandlerInterface {
      * @return App\Entity\Company
      */
     public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
-        $this->validator->assertId($command->companyId);
-        $this->validator->assertMediumLatinName($command->name);
+        try {
+            $this->validator->assertId($command->company->id);
+            $this->validator->assertMediumLatinName($command->name);
+        } catch (ValidationException $e) {
+            throw new Validate\CompanyException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
-        $company            = $this->repository->find($command->companyId);
+        $company            = $command->company;
         $company->name      = $command->name;
         $company->updatedAt = time();
 
         try {
             $company = $this->repository->save($company);
-            $event   = new Updated($company);
+            $event   = new Updated($company, $command->identity);
             $this->emitter->emit($event);
-        } catch (\Exception $exception) {
-            throw new AppException('Error while updating a company id ' . $command->companyId);
+        } catch (\Exception $e) {
+            throw new Update\CompanyException('Error while trying to update a company', 500, $e);
         }
 
         return $company;
@@ -160,41 +166,27 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertCompany($command->company);
-        $this->validator->assertId($command->company->id);
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertCompany($command->company);
+            $this->validator->assertId($command->company->id);
+        } catch (ValidationException $e) {
+            throw new Validate\CompanyException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $rowsAffected = $this->repository->delete($command->company->id);
 
-        if ($rowsAffected) {
-            $event = new Deleted($command->company);
-            $this->emitter->emit($event);
-        } else {
-            throw new NotFound();
+        if (! $rowsAffected) {
+            throw new NotFound\CompanyException('No companies found for deletion', 404);
         }
 
-        return $rowsAffected;
-    }
-
-    /**
-     * Deletes all child Company ($command->parentId).
-     *
-     * @param App\Command\Company\DeleteAll $command
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertId($command->parentId);
-
-        $deletedCompanies = $this->repository->getAllByParentId($command->parentId);
-
-        $rowsAffected = $this->repository->deleteByParentId($command->parentId);
-
-        $event = new DeletedMulti($deletedCompanies);
+        $event = new Deleted($command->company, $command->identity);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

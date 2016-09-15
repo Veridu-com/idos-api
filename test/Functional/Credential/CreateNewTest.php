@@ -21,7 +21,7 @@ class CreateNewTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/management/credentials';
     }
@@ -63,47 +63,73 @@ class CreateNewTest extends AbstractFunctional {
         );
     }
 
-    /**
-     * @FIXME The code below used to rely on a company slug to define the target company
-     *        Now we use credential tokens, but we do not generate them yet, so the code has been commented out
-     *        After the implementation of credential token generation, please refactor this test to find the
-     *        target company using the credential token
-     */
-    public function testNotFound() {
-        // $this->uri   = '/1.0/management/credentials';
-        // $environment = $this->createEnvironment(
-        //     [
-        //         'HTTP_CONTENT_TYPE' => 'application/json',
-        //         'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
-        //     ]
-        // );
+    public function testInvalidName() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
 
-        // $request = $this->createRequest(
-        //     $environment,
-        //     json_encode(
-        //         [
-        //             'name'       => 'Very Secure',
-        //             'production' => false
-        //         ]
-        //     )
-        // );
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'name'       => '',
+                    'production' => false
+                ]
+            )
+        );
 
-        // $response = $this->process($request);
-        // $this->assertSame(404, $response->getStatusCode());
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
 
-        // $body = json_decode((string) $response->getBody(), true);
-        // $this->assertNotEmpty($body);
-        // $this->assertFalse($body['status']);
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
 
-        // /*
-        //  * Validates Response using the Json Schema.
-        //  */
-        // $this->assertTrue(
-        //     $this->validateSchema(
-        //         'error.json',
-        //         json_decode((string) $response->getBody())
-        //     ),
-        //     $this->schemaErrors
-        // );
+        // Validates Response using the Json Schema.
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testInvalidFlag() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'name'       => 'New credential name',
+                    'production' => 'unboolean'
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        // Validates Response using the Json Schema.
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
     }
 }

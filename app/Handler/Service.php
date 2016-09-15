@@ -17,13 +17,14 @@ use App\Event\Service\Created;
 use App\Event\Service\Deleted;
 use App\Event\Service\DeletedMulti;
 use App\Event\Service\Updated;
-use App\Exception\AppException;
-use App\Exception\NotAllowed;
-use App\Exception\NotFound;
+use App\Exception\Create;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\ServiceInterface;
 use App\Validator\Service as ServiceValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Service commands.
@@ -92,39 +93,47 @@ class Service implements HandlerInterface {
      * @return App\Entity\Service
      */
     public function handleCreateNew(CreateNew $command) : ServiceEntity {
-        $this->validator->assertCompany($command->company);
-        $this->validator->assertName($command->name);
-        $this->validator->assertUrl($command->url);
-        $this->validator->assertName($command->authUsername);
-        $this->validator->assertPassword($command->authPassword);
-        $this->validator->assertArray($command->listens);
-        $this->validator->assertArray($command->triggers);
-        $this->validator->assertAccessMode($command->access);
-        $this->validator->assertFlag($command->enabled);
+        try {
+            $this->validator->assertCompany($command->company);
+            $this->validator->assertName($command->name);
+            $this->validator->assertUrl($command->url);
+            $this->validator->assertName($command->authUsername);
+            $this->validator->assertPassword($command->authPassword);
+            $this->validator->assertArray($command->listens);
+            $this->validator->assertArray($command->triggers);
+            $this->validator->assertAccessMode($command->access);
+            $this->validator->assertFlag($command->enabled);
+        } catch (ValidationException $e) {
+            throw new Validate\ServiceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $entity = $this->repository->create(
+            [
+                'company_id'    => $command->company->id,
+                'name'          => $command->name,
+                'url'           => $command->url,
+                'auth_username' => $command->authUsername,
+                'auth_password' => $command->authPassword,
+                'public'        => sha1('pub' . $command->company->id . microtime()),
+                'private'       => sha1('priv' . $command->company->id . microtime()),
+                'listens'       => $command->listens,
+                'triggers'      => $command->triggers,
+                'access'        => $command->access,
+                'enabled'       => $command->enabled,
+                'created_at'    => time()
+            ]
+        );
 
         try {
-            $entity = $this->repository->create(
-                [
-                    'company_id'    => $command->company->id,
-                    'name'          => $command->name,
-                    'url'           => $command->url,
-                    'auth_username' => $command->authUsername,
-                    'auth_password' => $command->authPassword,
-                    'public'        => sha1('pub' . $command->company->id . microtime()),
-                    'private'       => sha1('priv' . $command->company->id . microtime()),
-                    'listens'       => $command->listens,
-                    'triggers'      => $command->triggers,
-                    'access'        => $command->access,
-                    'enabled'       => $command->enabled,
-                    'created_at'    => time()
-                ]
-            );
             $entity = $this->repository->save($entity);
             $event  = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-                throw $e;
-            throw new AppException('Error while trying to create a service');
+            throw new Create\ServiceException('Error while trying to create a feature', 500, $e);
         }
 
         return $entity;
@@ -138,55 +147,63 @@ class Service implements HandlerInterface {
      * @return App\Entity\Service
      */
     public function handleUpdateOne(UpdateOne $command) : ServiceEntity {
-        $this->validator->assertCompany($command->company);
-        $this->validator->assertId($command->serviceId);
+        try {
+            $this->validator->assertCompany($command->company);
+            $this->validator->assertId($command->serviceId);
 
-        $input = [];
-        if ($command->name) {
-            $this->validator->assertName($command->name);
-            $input['name'] = $command->name;
-        }
+            $input = [];
+            if ($command->name) {
+                $this->validator->assertName($command->name);
+                $input['name'] = $command->name;
+            }
 
-        if ($command->listens) {
-            $this->validator->assertArray($command->listens);
-            $input['listens'] = $command->listens;
-        }
+            if ($command->listens) {
+                $this->validator->assertArray($command->listens);
+                $input['listens'] = $command->listens;
+            }
 
-        if ($command->triggers) {
-            $this->validator->assertTriggers($command->triggers);
-            $input['triggers'] = $command->triggers;
-        }
+            if ($command->triggers) {
+                $this->validator->AssertArray($command->triggers);
+                $input['triggers'] = $command->triggers;
+            }
 
-        if ($command->url) {
-            $this->validator->assertUrl($command->url);
-            $input['url'] = $command->url;
-        }
+            if ($command->url) {
+                $this->validator->assertUrl($command->url);
+                $input['url'] = $command->url;
+            }
 
-        if ($command->access !== null) {
-            $this->validator->assertAccess($command->access);
-            $input['access'] = $command->access;
-        }
+            if ($command->access !== null) {
+                $this->validator->assertAccessMode($command->access);
+                $input['access'] = $command->access;
+            }
 
-        if ($command->enabled !== null) {
-            $this->validator->assertFlag($command->enabled);
-            $input['enabled'] = $command->enabled;
-        }
+            if ($command->enabled !== null) {
+                $this->validator->assertFlag($command->enabled);
+                $input['enabled'] = $command->enabled;
+            }
 
-        if ($command->authUsername) {
-            $this->validator->assertAuthUsername($command->authUsername);
-            $input['auth_username'] = $command->authUsername;
-        }
+            if ($command->authUsername) {
+                $this->validator->assertAuthUsername($command->authUsername);
+                $input['auth_username'] = $command->authUsername;
+            }
 
-        if ($command->authPassword) {
-            $this->validator->assertAuthPassword($command->authPassword);
-            $input['auth_password'] = $command->authPassword;
+            if ($command->authPassword) {
+                $this->validator->assertPassword($command->authPassword);
+                $input['auth_password'] = $command->authPassword;
+            }
+        } catch (ValidationException $e) {
+            throw new Validate\ServiceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
         }
 
         $entity = $this->repository->findOne($command->serviceId, $command->company);
 
         // Any thoughts on a better place of verifying this
         if ($command->company->id != $entity->companyId) {
-            throw new NotAllowed();
+            throw new NotAllowed\ServiceException('Service doesnt belong to the given company', 403);
         }
 
         $backup = $entity->toArray();
@@ -202,7 +219,7 @@ class Service implements HandlerInterface {
                 $event             = new Updated($entity);
                 $this->emitter->emit($event);
             } catch (\Exception $e) {
-                throw new AppException('Error while trying to update a service id ' . $command->serviceId);
+                throw new Update\ServiceException('Error while trying to update a service', 500, $e);
             }
         }
 
@@ -217,7 +234,15 @@ class Service implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertCompany($command->company);
+        try {
+            $this->validator->assertCompany($command->company);
+        } catch (ValidationException $e) {
+            throw new Validate\ServiceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $services = $this->repository->getAllByCompanyId($command->company->id);
 
@@ -236,23 +261,29 @@ class Service implements HandlerInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertCompany($command->company);
-        $this->validator->assertId($command->serviceId);
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertCompany($command->company);
+            $this->validator->assertId($command->serviceId);
+        } catch (ValidationException $e) {
+            throw new Validate\ServiceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $service = $this->repository->find($command->serviceId);
 
         $rowsAffected = $this->repository->deleteOne($command->serviceId, $command->company);
 
-        if ($rowsAffected) {
-            $event = new Deleted($service);
-            $this->emitter->emit($event);
-        } else {
-            throw new NotFound();
+        if (! $rowsAffected) {
+            throw new NotFound\ServiceException('No services found for deletion', 404);
         }
 
-        return $rowsAffected;
+        $event = new Deleted($service);
+        $this->emitter->emit($event);
     }
 }

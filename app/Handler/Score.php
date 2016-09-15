@@ -17,11 +17,14 @@ use App\Event\Score\Created;
 use App\Event\Score\Deleted;
 use App\Event\Score\DeletedMulti;
 use App\Event\Score\Updated;
-use App\Exception\AppException;
+use App\Exception\Create;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\ScoreInterface;
 use App\Validator\Score as ScoreValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Score commands.
@@ -91,15 +94,23 @@ class Score implements HandlerInterface {
      * @return App\Entity\Score
      */
     public function handleCreateNew(CreateNew $command) : ScoreEntity {
-        $this->validator->assertName($command->name);
-        $this->validator->assertScore($command->value);
+        try {
+            $this->validator->assertName($command->name);
+            $this->validator->assertScore($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\ScoreException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $score = $this->repository->create(
             [
-            'attribute_id' => $command->attribute->id,
-            'name'         => $command->name,
-            'value'        => $command->value,
-            'created_at'   => time()
+                'attribute_id' => $command->attribute->id,
+                'name'         => $command->name,
+                'value'        => $command->value,
+                'created_at'   => time()
             ]
         );
 
@@ -107,7 +118,7 @@ class Score implements HandlerInterface {
             $score = $this->repository->save($score);
             $this->emitter->emit(new Created($score));
         } catch (\Exception $e) {
-            throw new AppException('Error while creating new score');
+            throw new Create\ScoreException('Error while trying to create a score', 500, $e);
         }
 
         return $score;
@@ -121,7 +132,15 @@ class Score implements HandlerInterface {
      * @return App\Entity\Score
      */
     public function handleUpdateOne(UpdateOne $command) : ScoreEntity {
-        $this->validator->assertScore($command->value);
+        try {
+            $this->validator->assertScore($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\ScoreException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $score        = $this->repository->findOneByUserIdAttributeNameAndName($command->user->id, $command->attribute->name, $command->name);
         $score->value = $command->value;
@@ -130,7 +149,7 @@ class Score implements HandlerInterface {
             $score = $this->repository->save($score);
             $this->emitter->emit(new Updated($score));
         } catch (\Exception $e) {
-            throw new AppException('Error while updating a score');
+            throw new Update\ScoreException('Error while trying to update a score', 500, $e);
         }
 
         return $score;
@@ -141,21 +160,28 @@ class Score implements HandlerInterface {
      *
      * @param App\Command\Score\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertName($command->name);
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertName($command->name);
+        } catch (ValidationException $e) {
+            throw new Validate\ScoreException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $score = $this->repository->findOneByUserIdAttributeNameAndName($command->user->id, $command->attribute->name, $command->name);
 
-        try {
-            $affectedRows = $this->repository->deleteOneByAttributeIdAndName($command->attribute->id, $command->name);
-            $this->emitter->emit(new Deleted($score));
-        } catch (\Exception $e) {
-            throw new AppException('Error while deleting a score');
+        $affectedRows = $this->repository->deleteOneByAttributeIdAndName($command->attribute->id, $command->name);
+
+        if (! $affectedRows) {
+            throw new NotFound\ScoreException('No features found for deletion', 404);
         }
 
-        return $affectedRows;
+        $this->emitter->emit(new Deleted($score));
     }
 
     /**
@@ -168,12 +194,8 @@ class Score implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         $scores = $this->repository->getAllByUserIdAndAttributeName($command->user->id, $command->attribute->name);
 
-        try {
-            $affectedRows = $this->repository->deleteByAttributeId($command->attribute->id);
-            $this->emitter->emit(new DeletedMulti($scores));
-        } catch (\Exception $e) {
-            throw new AppException('Error while deleting scores');
-        }
+        $affectedRows = $this->repository->deleteByAttributeId($command->attribute->id);
+        $this->emitter->emit(new DeletedMulti($scores));
 
         return $affectedRows;
     }

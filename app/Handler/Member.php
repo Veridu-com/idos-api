@@ -17,14 +17,17 @@ use App\Event\Member\Created;
 use App\Event\Member\Deleted;
 use App\Event\Member\DeletedMulti;
 use App\Event\Member\Updated;
-use App\Exception\AppException;
+use App\Exception\Create;
 use App\Exception\NotFound;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Repository\CredentialInterface;
 use App\Repository\MemberInterface;
 use App\Repository\UserInterface;
 use App\Validator\Member as MemberValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Member commands.
@@ -116,11 +119,25 @@ class Member implements HandlerInterface {
      * @return App\Entity\Member
      */
     public function handleCreateNew(CreateNew $command) : MemberEntity {
-        $this->validator->assertUserName($command->userName);
+        try {
+            $this->validator->assertUserName($command->userName);
+            $this->validator->assertName($command->role);
+        } catch (ValidationException $e) {
+            throw new Validate\MemberException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $credential = $this->credentialRepository->findByPubKey($command->credential);
 
-        $user = $this->userRepository->findOneBy(['username' => $command->userName, 'credential_id' => $credential->id]);
+        $user = $this->userRepository->findOneBy(
+            [
+                'username'      => $command->userName,
+                'credential_id' => $credential->id
+            ]
+        );
 
         $member = $this->repository->create(
             [
@@ -136,7 +153,7 @@ class Member implements HandlerInterface {
             $event  = new Created($member);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while trying to create a member');
+            throw new Create\MemberException('Error while trying to create a member', 500, $e);
         }
 
         $member->relations['user'] = $user;
@@ -152,7 +169,17 @@ class Member implements HandlerInterface {
      * @return App\Entity\Member
      */
     public function handleUpdateOne(UpdateOne $command) : MemberEntity {
-        $this->validator->assertId($command->memberId);
+        try {
+            $this->validator->assertId($command->memberId);
+            $this->validator->assertName($command->role);
+        } catch (ValidationException $e) {
+            throw new Validate\MemberException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
         $member            = $this->repository->findOne($command->memberId);
         $member->role      = $command->role;
         $member->updatedAt = time();
@@ -162,7 +189,7 @@ class Member implements HandlerInterface {
             $event  = new Updated($member);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while trying to update a member id ' . $command->memberId);
+            throw new Update\MemberException('Error while trying to update a member', 500, $e);
         }
 
         return $member;
@@ -173,22 +200,28 @@ class Member implements HandlerInterface {
      *
      * @param App\Command\Member\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        $this->validator->assertId($command->memberId);
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertId($command->memberId);
+        } catch (ValidationException $e) {
+            throw new Validate\MemberException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $member       = $this->repository->findOne($command->memberId);
         $rowsAffected = $this->repository->delete($command->memberId);
 
-        if ($rowsAffected) {
-            $event = new Deleted($member);
-            $this->emitter->emit($event);
-        } else {
-            throw new NotFound();
+        if (! $rowsAffected) {
+            throw new NotFound\MemberException('No members found for deletion', 404);
         }
 
-        return $rowsAffected;
+        $event = new Deleted($member);
+        $this->emitter->emit($event);
     }
 
     /**

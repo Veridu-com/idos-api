@@ -79,8 +79,8 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company   = $request->getAttribute('company');
-        $companies = $this->repository->getAllByParentId($company->id);
+        $identity  = $request->getAttribute('identity');
+        $companies = $identity->company();
 
         $body = [
             'data'    => $companies->toArray(),
@@ -139,11 +139,13 @@ class Companies implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company  = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
+            ->setParameter('identity', $identity)
             ->setParameter('parentId', $company->id);
         $company = $this->commandBus->handle($command);
 
@@ -163,36 +165,6 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Deletes all child Companies that belongs to the Acting Company.
-     *
-     * @apiEndpointResponse 200 schema/company/deleteAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
-
-        $command = $this->commandFactory->create('Company\\DeleteAll');
-        $command->setParameter('parentId', $company->id);
-        $deleted = $this->commandBus->handle($command);
-
-        $body = [
-            'deleted' => $deleted
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Deletes the Target Company, a child of the Acting Company.
      *
      * @apiEndpointResponse 200 schema/company/deleteOne.json
@@ -206,13 +178,15 @@ class Companies implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
+        $identity      = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\DeleteOne');
         $command->setParameter('company', $targetCompany);
-        $deleted = $this->commandBus->handle($command);
+        $command->setParameter('identity', $identity);
 
+        $this->commandBus->handle($command);
         $body = [
-            'deleted' => $deleted
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -241,11 +215,13 @@ class Companies implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
+        $identity      = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('companyId', $targetCompany->id);
+            ->setParameter('identity', $identity)
+            ->setParameter('company', $targetCompany);
         $targetCompany = $this->commandBus->handle($command);
 
         $body = [

@@ -21,7 +21,7 @@ class CreateNewTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-    
+
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/management/members';
     }
@@ -60,6 +60,158 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertTrue(
             $this->validateSchema(
                 'member/createNew.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testEmptyName() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'credential' => '4c9184f37cff01bcdc32dc486ec36961',
+                    'userName'   => '',
+                    'role'       => 'admin',
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testEmptyRole() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'credential' => '4c9184f37cff01bcdc32dc486ec36961',
+                    'userName'   => 'f67b96dcf96b49d713a520ce9f54053c',
+                    'role'       => '',
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testInvalidName() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'credential' => '4c9184f37cff01bcdc32dc486ec36961',
+                    'userName'   => 'invalid name',
+                    'role'       => 'admin',
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testInvalidRole() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'credential' => '4c9184f37cff01bcdc32dc486ec36961',
+                    'userName'   => 'f67b96dcf96b49d713a520ce9f54053c',
+                    'role'       => true,
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
