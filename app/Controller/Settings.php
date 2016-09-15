@@ -65,8 +65,6 @@ class Settings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
-     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -107,8 +105,6 @@ class Settings implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @throws
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -151,7 +147,7 @@ class Settings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
+     * @see App\Handler\Settings::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -188,7 +184,7 @@ class Settings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
+     * @see App\Handler\Settings::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -219,7 +215,7 @@ class Settings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
+     * @see App\Handler\Setting::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -251,6 +247,8 @@ class Settings implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Setting::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

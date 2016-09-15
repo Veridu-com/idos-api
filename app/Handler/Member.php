@@ -116,6 +116,9 @@ class Member implements HandlerInterface {
      *
      * @param App\Command\Member\CreateNew $command
      *
+     * @throws App\Exception\Validate\MemberException
+     * @throws App\Exception\Create\MemberException
+     *
      * @return App\Entity\Member
      */
     public function handleCreateNew(CreateNew $command) : MemberEntity {
@@ -166,6 +169,9 @@ class Member implements HandlerInterface {
      *
      * @param App\Command\Member\UpdateOne $command
      *
+     * @throws App\Exception\Validate\MemberException
+     * @throws App\Exception\Update\MemberException
+     *
      * @return App\Entity\Member
      */
     public function handleUpdateOne(UpdateOne $command) : MemberEntity {
@@ -200,6 +206,9 @@ class Member implements HandlerInterface {
      *
      * @param App\Command\Member\DeleteOne $command
      *
+     * @throws App\Exception\Validate\MemberException
+     * @throws App\Exception\NotFound\MemberException
+     *
      * @return void
      */
     public function handleDeleteOne(DeleteOne $command) {
@@ -228,6 +237,8 @@ class Member implements HandlerInterface {
      * Deletes all members ($command->companyId).
      *
      * @param App\Command\Member\DeleteAll $command
+     *
+     * @see App\Repository\DBMember::deleteByCompanyId
      *
      * @return int
      */

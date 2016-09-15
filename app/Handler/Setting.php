@@ -92,6 +92,9 @@ class Setting implements HandlerInterface {
      *
      * @param App\Command\Setting\ListAll $command
      *
+     * @see App\Repository\DBSetting::getAllByCompanyId
+     * @see App\Repository\DBSetting::getAllPublicByCompanyId
+     *
      * @return \Illuminate\Support\Collection
      */
     public function handleListAll(ListAll $command) : array {
@@ -111,6 +114,9 @@ class Setting implements HandlerInterface {
      * Gets one Setting.
      *
      * @param App\Command\Setting\GetOne $command
+     *
+     * @see App\Repository\DBSetting::findOneByCompanyAndId
+     * @throws App\Exception\NotAllowed
      *
      * @return \Illuminate\Support\Collection
      */
@@ -132,6 +138,9 @@ class Setting implements HandlerInterface {
      * Creates a new child Setting.
      *
      * @param App\Command\Setting\CreateNew $command
+     *
+     * @throws App\Exception\Validate\SettingException
+     * @throws App\Exception\Create\SettingException
      *
      * @return App\Entity\Setting
      */
@@ -175,6 +184,11 @@ class Setting implements HandlerInterface {
      *
      * @param App\Command\Setting\UpdateOne $command
      *
+     * @throws App\Exception\Validate\SettingException
+     * @see App\Repository\DBSetting::find
+     * @see App\Repository\DBSetting::save
+     * @throws App\Exception\Update\SettingException
+     *
      * @return App\Entity\Setting
      */
     public function handleUpdateOne(UpdateOne $command) : SettingEntity {
@@ -211,6 +225,8 @@ class Setting implements HandlerInterface {
      *
      * @param App\Command\Setting\DeleteAll $command
      *
+     * @throws App\Exception\Validate\SettingException
+     *
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
@@ -238,6 +254,9 @@ class Setting implements HandlerInterface {
      * Deletes a Setting.
      *
      * @param App\Command\Setting\DeleteOne $command
+     *
+     * @throws App\Exception\Validate\SettingException
+     * @throws App\Exception\NotFound\SettingException
      *
      * @return void
      */

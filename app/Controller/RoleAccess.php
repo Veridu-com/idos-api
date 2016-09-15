@@ -101,7 +101,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
+     * @see App\Repository\DBRoleAccess::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -136,7 +136,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
+     * @see App\Handler\RoleAccess::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -173,7 +173,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
+     * @see App\Handler\RoleAccess::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -206,7 +206,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
+     * @throws App\Handler\RoleAccess::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -242,11 +242,9 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
+     * @see App\Handler\RoleAccess::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
-     *
-     * @see App\Command\RoleAccess\UpdateOne
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user                = $request->getAttribute('user');

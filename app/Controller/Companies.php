@@ -106,8 +106,6 @@ class Companies implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound\CompanyException
-     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -136,9 +134,9 @@ class Companies implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @see App\Handler\Company::handleCreateNew
      *
-     * @see App\Handler\Company:handleCreateNew
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
@@ -174,9 +172,9 @@ class Companies implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @see App\Handler\Company::handleDeleteOne
      *
-     * @see App\Handler\Company:handleDeleteOne
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
@@ -209,9 +207,9 @@ class Companies implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @see App\Handler\Company::handleUpdateOne
      *
-     * @see App\Handler\Company:handleUpdateOne
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');

@@ -75,8 +75,6 @@ class Members implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @throws
-     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -108,7 +106,7 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
+     * @see App\Handler\Member::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -146,7 +144,7 @@ class Members implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @throws
+     * @see App\Handler\Handler::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -180,7 +178,7 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
+     * @see App\Repository\DBMember::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -208,7 +206,7 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
+     * @see App\Handler\Member:handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -238,6 +236,8 @@ class Members implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Member:handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
