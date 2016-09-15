@@ -48,6 +48,17 @@ class DBHook extends AbstractSQLDBRepository implements HookInterface {
     /**
      * {@inheritdoc}
      */
+    public function getAllByCredentialPubKeyAndCompanyId(string $credentialPubKey, int $companyId) : Collection {
+        return $this->query()
+            ->join('credentials', 'credentials.id', 'hooks.credential_id')
+            ->where('credentials.public', $credentialPubKey)
+            ->where('credentials.company_id', $companyId)
+            ->get(['hooks.*']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function deleteByCredentialId(int $credentialId) : int {
         return $this->deleteByKey('credential_id', $credentialId);
     }
