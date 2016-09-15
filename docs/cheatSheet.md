@@ -206,19 +206,11 @@
 
 [DELETE /1.0/companie:companySlugs](companies/deleteAll.md)
 
-<<<<<<< HEAD
-[GET /1.0/companies/:companySlug](companies/getCompany.md)
-
-[PUT /1.0/companies/:companySlug](companies/updateCompany.md)
-
-[DELETE /1.0/companies/:companySlug](companies/deleteCompany.md)
-=======
 [GET /1.0/companies/{companySlug}](companies/getOne.md)
 
 [PUT /1.0/companies/{companySlug}](companies/updateOne.md)
 
 [DELETE /1.0/companies/{companySlug}](companies/deleteOne.md)
->>>>>>> fac858b7856e96826b78c9d98d9f0c32f7a750d0
 
 ### Company Permissions
 

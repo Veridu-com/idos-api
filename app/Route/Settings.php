@@ -69,7 +69,6 @@ class Settings implements RouteInterface {
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
@@ -135,46 +134,15 @@ class Settings implements RouteInterface {
     }
 
     /**
-     * Delete all settings.
-     *
-     * Deletes all settings that belongs to the requesting company.
-     *
-     * @apiEndpoint DELETE /management/settings
-     * @apiGroup Company Settings
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/management/settings/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Settings::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/management/settings',
-                'App\Controller\Settings:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
-            ->setName('settings:deleteAll');
-    }
-
-    /**
      * Retrieve a single Setting.
      *
      * Retrieves all public information from a Setting.
      *
-     * @apiEndpoint GET /management/settings/{settingId}
+     * @apiEndpoint GET /companies/{companySlug}/settings/{settingId}
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
      *
      * @param \Slim\App $app
@@ -207,10 +175,11 @@ class Settings implements RouteInterface {
      *
      * Updates the specific information for a single Setting.
      *
-     * @apiEndpoint PUT /management/settings/{settingId}
+     * @apiEndpoint PUT /companies/{companySlug}/settings/{settingId}
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
      *
      * @param \Slim\App $app
@@ -244,10 +213,11 @@ class Settings implements RouteInterface {
      *
      * Deletes a single Setting that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /management/settings/{settingId}
+     * @apiEndpoint DELETE /companies/{companySlug}/settings/{settingId}
      * @apiGroup Company Settings
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
      *
      * @param \Slim\App $app
