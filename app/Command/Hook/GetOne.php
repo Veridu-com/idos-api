@@ -6,30 +6,39 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Setting;
+namespace App\Command\Hook;
 
 use App\Command\AbstractCommand;
 
 /**
- * Setting "Delete All" Command.
+ * Hook "Get One" Command.
  */
-class DeleteAll extends AbstractCommand {
+class GetOne extends AbstractCommand {
     /**
-     * Company Id that all settings will be deleted.
+     * Target Company's id.
      *
      * @var int
      */
     public $companyId;
 
     /**
-     * {@inheritdoc}
+     * Target Credential's public key.
      *
-     * @return App\Command\Setting\DeleteAll
+     * @var string
+     */
+    public $credentialPubKey;
+
+    /**
+     * Hook id.
+     *
+     * @var int
+     */
+    public $hookId;
+
+    /**
+     * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
-        }
 
         return $this;
     }

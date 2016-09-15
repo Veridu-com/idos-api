@@ -25,6 +25,16 @@ echo App\Helper\Token::generateUserToken(
 
 `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6InVzcjAwMSJ9.Bliu0m7HqKXUD7wLrvCmvTpTJmzq2ALDwUmErj6430M`
 
+## Identity Token
+
+```php
+echo App\Helper\Token::generateIdentityToken(
+    '5d41402abc4b2a76b9719d911017c592',
+    '7d793037a0760186574b0282f2f435e7'
+);
+```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1ZDQxNDAyYWJjNGIyYTc2Yjk3MTlkOTExMDE3YzU5MiJ9.iL4KCEGvoYgTW8NGmP32o9k8UB45ydkhCS7nkEJ2iyg
+
 ## Company Token
 
 ### With User

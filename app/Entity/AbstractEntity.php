@@ -43,6 +43,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $json = [];
     /**
+     * The attributes that should be secure.
+     *
+     * @var array
+     */
+    protected $secure = [];
+    /**
      * The relations of the entity.
      *
      * @var array
@@ -54,12 +60,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var array
      */
     protected $obfuscated = ['id'];
-    /**
-     * The attributes that should be secured.
-     *
-     * @var array
-     */
-    protected $secure = [];
     /**
      * The storage format of the model's date columns.
      *
@@ -166,6 +166,21 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             return $this->{$method}($value);
         }
 
+        // Tests if it is a secure field
+        if ((in_array($key, $this->secure))) {
+            if (is_resource($value)) {
+                $value = stream_get_contents($value, -1, 0);
+            }
+
+            if (strpos((string) $value, 'secure:') === false) {
+                $this->attributes[$key] = sprintf(
+                    'secure:%s',
+                    // $this->secure->lock($value)
+                    $value
+                );
+            }
+        }
+
         // Tests if it is not a encoded json
         // how: a decoded json is never a string.
         if ((in_array($key, $this->json)) && (! is_string($value))) {
@@ -233,8 +248,19 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = strtotime($value);
         }
 
-        if ((in_array($key, $this->json)) && (is_string($value))) {
-            $value = json_decode($value, true);
+        if ((in_array($key, $this->secure))) {
+            if (is_resource($value)) {
+                $value = stream_get_contents($value, -1, 0);
+            }
+
+            if (strpos((string) $value, 'secure:') === 0) {
+                $value = substr($value, 7);
+                // $value = $this->secure->unlock($value);
+            }
+        }
+
+        if ((in_array($key, $this->json)) && ($value !== null)) {
+            $value = json_decode($value);
             if ($value === null) {
                 $value = [];
             }

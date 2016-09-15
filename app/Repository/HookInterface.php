@@ -31,4 +31,13 @@ interface HookInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByCredentialId(int $credentialId) : int;
+
+    /**
+     * Gets all Hooks by credential pub key.
+     *
+     * @param string $credentialPubKey The credential pub key
+     *
+     * @return \Illuminate\Support\Collection A collection of \App\Entity\Hook.
+     */
+    public function getAllByCredentialPubKey(string $credentialPubKey) : Collection;
 }

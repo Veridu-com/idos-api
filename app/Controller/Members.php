@@ -79,18 +79,8 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
-        $roles   = $request->getQueryParam('role', null);
-
-        if ($roles === null) {
-            $members = $this->repository->getAllByCompanyId($company->id);
-        }
-        else {
-            $members = $this->repository->getAllByCompanyIdAndRole(
-                $company->id,
-                explode(',', $roles)
-            );
-        }
+        $company = $request->getAttribute('targetCompany');
+        $members = $this->repository->getAllByCompanyId($company->id, $request->getQueryParams());
 
         $body = [
             'data'    => $members->toArray(),
@@ -249,16 +239,13 @@ class Members implements ControllerInterface {
         $command = $this->commandFactory->create('Member\\DeleteOne');
         $command->setParameter('memberId', $request->getAttribute('decodedMemberId'));
 
-        $deleted = $this->commandBus->handle($command);
-        $body    = [
-            'status' => $deleted === 1
+        $this->commandBus->handle($command);
+        $body = [
+            'status' => true
         ];
-
-        $statusCode = $body['status'] ? 200 : 404;
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', $statusCode)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

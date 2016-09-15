@@ -6,26 +6,20 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Company;
+namespace App\Command\Setting;
 
 use App\Command\AbstractCommand;
 
 /**
- * Company "Update One" Command.
+ * Setting "Get One" Command.
  */
-class UpdateOne extends AbstractCommand {
+class GetOne extends AbstractCommand {
     /**
-     * Company's new name.
+     * Setting Id.
      *
-     * @var string
+     * @var int
      */
-    public $name;
-    /**
-     * Target Company.
-     *
-     * @var \App\Entity\Company
-     */
-    public $company;
+    public $settingId;
 
     /**
      * Acting Identity.
@@ -35,14 +29,25 @@ class UpdateOne extends AbstractCommand {
     public $identity;
 
     /**
+     * Target Company.
+     *
+     * @var \App\Entity\Company
+     */
+    public $company;
+
+    /**
+     * Parent access.
+     *
+     * @var bool
+     */
+    public $hasParentAccess;
+
+    /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\UpdateOne
+     * @return App\Command\Setting\GetOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
-        }
 
         return $this;
     }

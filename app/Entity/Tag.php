@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Helper\Utils;
+use App\Extension\SlugMutator;
 
 /**
  * Tags Entity.
@@ -19,6 +19,8 @@ use App\Helper\Utils;
  * @property int $user_id
  */
 class Tag extends AbstractEntity {
+    use SlugMutator;
+
     /**
      * {@inheritdoc}
      */
@@ -27,18 +29,4 @@ class Tag extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * Property Mutator for $name.
-     *
-     * @param string $value
-     *
-     * @return App\Entity\Tag
-     */
-    public function setNameAttribute(string $value) : self {
-        $this->attributes['name'] = $value;
-        $this->attributes['slug'] = Utils::slugify($value);
-
-        return $this;
-    }
 }

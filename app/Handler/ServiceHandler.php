@@ -211,9 +211,9 @@ class ServiceHandler implements HandlerInterface {
      *
      * @throws App\Exception\NotFound
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->companyId);
             $this->validator->assertId($command->serviceHandlerId);
@@ -235,7 +235,5 @@ class ServiceHandler implements HandlerInterface {
 
         $event = new Deleted($serviceHandler);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

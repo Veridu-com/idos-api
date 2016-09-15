@@ -22,7 +22,7 @@ interface MemberInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByCompanyId(int $companyId) : Collection;
+    public function getAllByCompanyId(int $companyId, array $queryParams = []) : Collection;
 
     /**
      * Gets all Members basedon their Company Id and role.

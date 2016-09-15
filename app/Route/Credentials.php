@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
@@ -27,7 +28,6 @@ class Credentials implements RouteInterface {
         return [
             'credentials:listAll',
             'credentials:createNew',
-            'credentials:deleteAll',
             'credentials:getOne',
             'credentials:updateOne',
             'credentials:deleteOne'
@@ -52,9 +52,8 @@ class Credentials implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
@@ -62,12 +61,13 @@ class Credentials implements RouteInterface {
     /**
      * List all Credentials.
      *
-     * Retrieve a complete list of all credentials that belong to the requesting company.
+     * Retrieve a complete list of all credentials that belong to the target company.
      *
-     * @apiEndpoint GET /management/credentials
+     * @apiEndpoint GET /companies/{companySlug}/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -82,23 +82,29 @@ class Credentials implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/management/credentials',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials',
                 'App\Controller\Credentials:listAll'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                )
+            )
+            ->add($auth(Auth::IDENTITY))
             ->setName('credentials:listAll');
     }
 
     /**
      * Create new Credential.
      *
-     * Create a new credential for the requesting company.
+     * Create a new credential for the target company.
      *
-     * @apiEndpoint POST /management/credentials
+     * @apiEndpoint POST /companies/{companySlug}/credentials
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -113,43 +119,17 @@ class Credentials implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/management/credentials',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials',
                 'App\Controller\Credentials:createNew'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
-            ->setName('credentials:createNew');
-    }
-
-    /**
-     * Delete All Credentials.
-     *
-     * Delete all credentials that belong to the requesting company.
-     *
-     * @apiEndpoint DELETE /management/credentials
-     * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     *
-     * @return void
-     *
-     * @link docs/companies/credentials/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Credentials::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/management/credentials',
-                'App\Controller\Credentials:deleteAll'
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                )
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
-            ->setName('credentials:deleteAll');
+            ->add($auth(Auth::IDENTITY))
+            ->setName('credentials:createNew');
     }
 
     /**
@@ -157,10 +137,11 @@ class Credentials implements RouteInterface {
      *
      * Retrieves all public information from a Credential
      *
-     * @apiEndpoint GET /management/credentials/{pubKey}
+     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -176,11 +157,16 @@ class Credentials implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/management/credentials/{pubKey:[a-zA-Z0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:getOne'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                )
+            )
+            ->add($auth(Auth::IDENTITY))
             ->setName('credentials:getOne');
     }
 
@@ -189,10 +175,11 @@ class Credentials implements RouteInterface {
      *
      * Updates Credential's specific information
      *
-     * @apiEndpoint PUT /management/credentials/{pubKey}
+     * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -208,23 +195,29 @@ class Credentials implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/management/credentials/{pubKey:[a-zA-Z0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:updateOne'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                )
+            )
+            ->add($auth(Auth::IDENTITY))
             ->setName('credentials:updateOne');
     }
 
     /**
      * Deletes a single Credential.
      *
-     * Deletes a single Credential that belongs to the requesting company.
+     * Deletes a single Credential that belongs to the target company.
      *
-     * @apiEndpoint DELETE /management/credentials/{pubKey}
+     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company Credentials
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken XXX A valid Identity Token
+     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
@@ -240,11 +233,16 @@ class Credentials implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/management/credentials/{pubKey:[a-zA-Z0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Credentials:deleteOne'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add(
+                $permission(
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                )
+            )
+            ->add($auth(Auth::IDENTITY))
             ->setName('credentials:deleteOne');
     }
 }

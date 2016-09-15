@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Company;
 
 use App\Entity\Company;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,15 +22,23 @@ class Created extends AbstractEvent {
      * @var App\Entity\Company
      */
     public $company;
+    /**
+     * Event related Identity.
+     *
+     * @var App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Company $company
+     * @param App\Entity\Company  $company
+     * @param App\Entity\Identity $identity
      *
      * @return void
      */
-    public function __construct(Company $company) {
-        $this->company = $company;
+    public function __construct(Company $company, Identity $identity) {
+        $this->company  = $company;
+        $this->identity = $identity;
     }
 }

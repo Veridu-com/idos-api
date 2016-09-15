@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Helper\Utils;
-
 /**
  * Warnings Entity.
  *
@@ -38,18 +36,4 @@ class Warning extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-
-    /**
-     * Property Mutator for $name.
-     *
-     * @param string $value
-     *
-     * @return App\Entity\Warning
-     */
-    public function setNameAttribute(string $value) : self {
-        $this->attributes['name'] = $value;
-        $this->attributes['slug'] = Utils::slugify($value);
-
-        return $this;
-    }
 }

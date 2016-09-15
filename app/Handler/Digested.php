@@ -175,9 +175,9 @@ class Digested implements HandlerInterface {
      *
      * @param App\Command\Digested\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertId($command->user->id);
@@ -206,8 +206,6 @@ class Digested implements HandlerInterface {
 
         $event = new Deleted($digested);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 
     /**

@@ -154,9 +154,9 @@ class Warning implements HandlerInterface {
      *
      * @param App\Command\Warning\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertSlug($command->warningSlug);
             $this->validator->assertId($command->userId);
@@ -177,7 +177,5 @@ class Warning implements HandlerInterface {
 
         $event = new Deleted($warning);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

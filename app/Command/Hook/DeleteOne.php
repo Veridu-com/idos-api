@@ -27,27 +27,16 @@ class DeleteOne extends AbstractCommand {
      */
     public $credentialPubKey;
     /**
-     * Company.
+     * Target Company's id.
      *
-     * @var App\Entity\Company
+     * @var int
      */
-    public $company;
+    public $companyId;
 
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['hookId'])) {
-            $this->hookId = $parameters['hookId'];
-        }
-
-        if (isset($parameters['credentialPubKey'])) {
-            $this->credentialPubKey = $parameters['credentialPubKey'];
-        }
-
-        if (isset($parameters['company'])) {
-            $this->company = $parameters['company'];
-        }
 
         return $this;
     }

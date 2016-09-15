@@ -159,9 +159,9 @@ class Raw implements HandlerInterface {
      *
      * @param App\Command\Raw\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertSource($command->source);
             $this->validator->assertName($command->collection);
@@ -183,8 +183,6 @@ class Raw implements HandlerInterface {
 
         $event = new Deleted($raw);
         $this->emitter->emit($event);
-
-        return $affectedRows;
     }
 
     /**

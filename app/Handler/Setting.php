@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Setting\CreateNew;
-use App\Command\Setting\DeleteAll;
 use App\Command\Setting\DeleteOne;
+use App\Command\Setting\GetOne;
+use App\Command\Setting\ListAll;
 use App\Command\Setting\UpdateOne;
 use App\Entity\Setting as SettingEntity;
 use App\Event\Setting\Created;
 use App\Event\Setting\Deleted;
-use App\Event\Setting\DeletedMulti;
 use App\Event\Setting\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -88,6 +88,47 @@ class Setting implements HandlerInterface {
     }
 
     /**
+     * List all Settings.
+     *
+     * @param App\Command\Setting\ListAll $command
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function handleListAll(ListAll $command) : array {
+        $this->validator->assertCompany($command->company);
+        $this->validator->assertIdentity($command->identity);
+        $this->validator->assertArray($command->queryParams);
+
+        if ($command->hasParentAccess) {
+            return $this->repository->getAllByCompanyId($command->company->id, $command->queryParams);
+        }
+
+        // returns filtering by "protected" = false
+        return $this->repository->getAllPublicByCompanyId($command->company->id, $command->queryParams);
+    }
+
+    /**
+     * Gets one Setting.
+     *
+     * @param App\Command\Setting\GetOne $command
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function handleGetOne(GetOne $command) : SettingEntity {
+        $this->validator->assertIdentity($command->identity);
+        $this->validator->assertCompany($command->company);
+        $this->validator->assertId($command->settingId);
+
+        $setting = $this->repository->findOneByCompanyAndId($command->company->id, $command->settingId);
+
+        if ($setting->protected && ! $command->hasParentAccess) {
+            throw new NotAllowed('Not allowed to access this Setting.');
+        }
+
+        return $setting;
+    }
+
+    /**
      * Creates a new child Setting.
      *
      * @param App\Command\Setting\CreateNew $command
@@ -98,7 +139,7 @@ class Setting implements HandlerInterface {
         try {
             $this->validator->assertMediumName($command->section);
             $this->validator->assertMediumName($command->property);
-            $this->validator->assertId($command->companyId);
+            $this->validator->assertId($command->company->id);
         } catch (ValidationException $e) {
             throw new Validate\SettingException(
                 $e->getFullMessage(),
@@ -112,14 +153,15 @@ class Setting implements HandlerInterface {
                 'section'    => $command->section,
                 'property'   => $command->property,
                 'value'      => $command->value,
-                'company_id' => $command->companyId,
+                'protected'  => (bool) $command->protected,
+                'company_id' => $command->company->id,
                 'created_at' => time()
             ]
         );
 
         try {
             $setting = $this->repository->save($setting);
-            $event   = new Created($setting);
+            $event   = new Created($setting, $command->company);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\SettingException('Error while trying to create a setting', 500, $e);
@@ -197,9 +239,9 @@ class Setting implements HandlerInterface {
      *
      * @param App\Command\Setting\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->settingId);
         } catch (ValidationException $e) {
@@ -220,7 +262,5 @@ class Setting implements HandlerInterface {
 
         $event = new Deleted($setting);
         $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

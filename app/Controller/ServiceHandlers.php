@@ -205,8 +205,9 @@ class ServiceHandlers implements ControllerInterface {
             ->setParameter('companyId', $company->id)
             ->setParameter('serviceHandlerId', $serviceHandlerId);
 
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $this->commandBus->handle($command)
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Permission\CreateNew;
-use App\Command\Permission\DeleteAll;
 use App\Command\Permission\DeleteOne;
 use App\Entity\Permission as PermissionEntity;
 use App\Event\Permission\Created;
@@ -155,9 +154,9 @@ class Permission implements HandlerInterface {
      *
      * @param App\Command\Permission\DeleteOne $command
      *
-     * @return int
+     * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
+    public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->companyId);
             $this->validator->assertRouteName($command->routeName);
@@ -179,7 +178,5 @@ class Permission implements HandlerInterface {
 
         $event = new Deleted($permission);
         $this->emitter->emit($event);
-
-        return $affectedRows;
     }
 }
