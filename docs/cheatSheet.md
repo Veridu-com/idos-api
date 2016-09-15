@@ -226,6 +226,14 @@
 
 [DELETE /1.0/companies/{companySlug}/permissions/{routeName}](companies/permissions/deleteOne.md)
 
+### Company Profiles
+
+[GET /1.0/commpanies/:companySlug/profiles](companies/profiles/listAll.md)
+
+[GET /1.0/companies/:companySlug/profiles/:userId](companies/profiles/getOne.md)
+
+[DELETE /1.0/companies/:companySlug/profiles/:userId](companies/profiles/deleteOne.md)
+
 ### Company Credentials
 
 [GET /1.0/management/credentials](companies/credentials/listAll.md)

@@ -151,7 +151,7 @@ class Sso implements HandlerInterface {
      *
      * @return App\Entity\Source The created source
      */
-    private function createNewSource(string $provider, User $user, array $tags, string $ipAddr) : Source {
+    private function createNewSource(string $provider, User $user, array $tags, string $ipAddr) : SourceEntity {
         $command = $this->commandFactory->create('Source\\CreateNew');
 
         $command->setParameters(
