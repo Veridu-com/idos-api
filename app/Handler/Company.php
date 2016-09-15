@@ -91,6 +91,9 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\CreateNew $command
      *
+     * @throws App\Exception\Validate\CompanyException
+     * @throws App\Exception\Create\CompanyException
+     *
      * @return App\Entity\Company
      */
     public function handleCreateNew(CreateNew $command) : CompanyEntity {
@@ -132,6 +135,9 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\UpdateOne $command
      *
+     * @throws App\Exception\Validate\CompanyException
+     * @throws App\Exception\Update\CompanyException
+     *
      * @return App\Entity\Company
      */
     public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
@@ -165,6 +171,9 @@ class Company implements HandlerInterface {
      * Deletes a Company.
      *
      * @param App\Command\Company\DeleteOne $command
+     *
+     * @throws App\Exception\Validate\CompanyException;
+     * @throws App\Exception\NotFound\CompanyException;
      *
      * @return void
      */

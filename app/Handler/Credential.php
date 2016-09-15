@@ -90,6 +90,9 @@ class Credential implements HandlerInterface {
      *
      * @param App\Command\Credential\CreateNew $command
      *
+     * @throws App\Exception\Validate\CredentialException
+     * @throws App\Exception\Create\CredentialException
+     *
      * @return App\Entity\Credential
      */
     public function handleCreateNew(CreateNew $command) : CredentialEntity {
@@ -133,6 +136,9 @@ class Credential implements HandlerInterface {
      *
      * @param App\Command\Credential\UpdateOne $command
      *
+     * @throws App\Exeption\Validate\CredentialException
+     * @throws App\Exception\Update\CredentialException
+     *
      * @return App\Entity\Credential
      */
     public function handleUpdateOne(UpdateOne $command) : CredentialEntity {
@@ -166,6 +172,9 @@ class Credential implements HandlerInterface {
      * Deletes a Credential.
      *
      * @param App\Command\Credential\DeleteOne $command
+     *
+     * @throws App\Exception\Validate\CredentialException
+     * @throws App\Exception\NotFound\CredentialException
      *
      * @return void
      */

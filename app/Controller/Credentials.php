@@ -64,8 +64,6 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @throws
-     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -100,9 +98,9 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @throws
-     *
      * @return \Psr\Http\Message\ResponseInterface
+     *
+     * @see App\Handler\Credential:handleCreateNew
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
@@ -138,9 +136,9 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @throws
-     *
      * @return \Psr\Http\Message\ResponseInterface
+     *
+     * @see App\Handler\Credential:handleDeleteAll
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('company');
@@ -171,6 +169,8 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
+     *
+     * @see App\Repository\DBCredential:findByPubKey
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('targetCompany');
@@ -201,6 +201,9 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
+     *
+     * @see App\Repository\DBCredential:findByPubKey
+     * @see App\Handler\Credential:handleUpdateOne
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity    = $request->getAttribute('identity');
@@ -237,6 +240,9 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
+     *
+     * @see App\Repository\DBCredential:findByPubKey
+     * @see App\Handler\Credential:handleDeleteOne
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity   = $request->getAttribute('identity');
