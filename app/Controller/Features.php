@@ -172,11 +172,11 @@ class Features implements ControllerInterface {
             ->setParameter('source', $source)
             ->setParameter('service', $service);
 
-        $feature = $this->commandBus->handle($command);
+        $entity = $this->commandBus->handle($command);
 
         $body = [
             'status' => true,
-            'data'   => $feature->toArray()
+            'data'   => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

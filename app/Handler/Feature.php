@@ -265,6 +265,7 @@ class Feature implements HandlerInterface {
             
             $feature->type = $command->type;
             $feature->value = $command->value;
+            $feature->updatedAt = time();
         } catch (NotFound $e) {
             $inserting = true;
             

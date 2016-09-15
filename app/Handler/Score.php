@@ -12,12 +12,14 @@ use App\Command\Score\CreateNew;
 use App\Command\Score\DeleteAll;
 use App\Command\Score\DeleteOne;
 use App\Command\Score\UpdateOne;
+use App\Command\Score\Upsert;
 use App\Entity\Score as ScoreEntity;
 use App\Event\Score\Created;
 use App\Event\Score\Deleted;
 use App\Event\Score\DeletedMulti;
 use App\Event\Score\Updated;
 use App\Exception\AppException;
+use App\Exception\NotFound;
 use App\Repository\ScoreInterface;
 use App\Validator\Score as ScoreValidator;
 use Interop\Container\ContainerInterface;
@@ -33,12 +35,14 @@ class Score implements HandlerInterface {
      * @var App\Repository\ScoreInterface
      */
     protected $repository;
+
     /**
      * Score Validator instance.
      *
      * @var App\Validator\Score
      */
     protected $validator;
+
     /**
      * Event emitter instance.
      *
@@ -91,26 +95,32 @@ class Score implements HandlerInterface {
      * @return App\Entity\Score
      */
     public function handleCreateNew(CreateNew $command) : ScoreEntity {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertService($command->service);
+        $this->validator->assertName($command->attribute);
         $this->validator->assertName($command->name);
         $this->validator->assertScore($command->value);
 
-        $score = $this->repository->create(
-            [
-            'attribute_id' => $command->attribute->id,
-            'name'         => $command->name,
-            'value'        => $command->value,
-            'created_at'   => time()
-            ]
-        );
+        $entity = $this->repository->create([
+            'user_id'    => $command->user->id,
+            'creator'    => $command->service->id,
+            'attribute'  => $command->attribute,
+            'name'       => $command->name,
+            'value'      => $command->value,
+            'created_at' => time()
+        ]);
 
         try {
-            $score = $this->repository->save($score);
-            $this->emitter->emit(new Created($score));
+            $entity = $this->repository->save($entity);
+            $entity = $this->repository->hydrateRelations($entity);
+
+            $event = new Created($entity);
+            $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while creating new score');
+            throw new AppException('Error while creating score');
         }
 
-        return $score;
+        return $entity;
     }
 
     /**
@@ -121,19 +131,85 @@ class Score implements HandlerInterface {
      * @return App\Entity\Score
      */
     public function handleUpdateOne(UpdateOne $command) : ScoreEntity {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertService($command->service);
+        $this->validator->assertName($command->attribute);
+        $this->validator->assertName($command->name);
         $this->validator->assertScore($command->value);
 
-        $score        = $this->repository->findOneByUserIdAttributeNameAndName($command->user->id, $command->attribute->name, $command->name);
-        $score->value = $command->value;
+        $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
+
+        $entity->attribute  = $command->attribute;
+        $entity->value      = $command->value;
+        $feature->updatedAt = time();
 
         try {
-            $score = $this->repository->save($score);
-            $this->emitter->emit(new Updated($score));
+            $entity = $this->repository->save($entity);
+            $entity = $this->repository->hydrateRelations($entity);
+
+            $event = new Updated($entity);
+            $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while updating a score');
+            throw new AppException('Error while updating score');
         }
 
-        return $score;
+        return $entity;
+    }
+
+    /**
+     * Updates a score for a given attribute.
+     *
+     * @param App\Command\Score\Upsert $command
+     *
+     * @return App\Entity\Score
+     */
+    public function handleUpsert(Upsert $command) : ScoreEntity {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertService($command->service);
+        $this->validator->assertName($command->attribute);
+        $this->validator->assertName($command->name);
+        $this->validator->assertScore($command->value);
+
+        $entity = null;
+        $inserting = false;
+        try {
+            $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
+            
+            $entity->attribute = $command->attribute;
+            $entity->value     = $command->value;
+            $entity->updatedAt = time();
+        } catch (NotFound $e) {
+            $inserting = true;
+            
+            $entity = $this->repository->create(
+                [
+                    'user_id'    => $command->user->id,
+                    'creator'    => $command->service->id,
+                    'attribute'  => $command->attribute,
+                    'name'       => $command->name,
+                    'value'      => $command->value,
+                    'created_at' => time()
+                ]
+            );
+        }
+
+
+        try {
+            $entity = $this->repository->save($entity);
+            $entity = $this->repository->hydrateRelations($entity);
+
+            if ($inserting) {
+                $event   = new Created($entity);
+            } else {
+                $event   = new Updated($entity);
+            }
+
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while upserting score');
+        }
+
+        return $entity;
     }
 
     /**
@@ -144,15 +220,19 @@ class Score implements HandlerInterface {
      * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertService($command->service);
         $this->validator->assertName($command->name);
 
-        $score = $this->repository->findOneByUserIdAttributeNameAndName($command->user->id, $command->attribute->name, $command->name);
+        $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
 
         try {
-            $affectedRows = $this->repository->deleteOneByAttributeIdAndName($command->attribute->id, $command->name);
-            $this->emitter->emit(new Deleted($score));
+            $affectedRows = $this->repository->delete($entity->id);
+            
+            $event = new Deleted($entity);
+            $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while deleting a score');
+            throw new AppException('Error while deleting score');
         }
 
         return $affectedRows;
@@ -166,11 +246,23 @@ class Score implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $scores = $this->repository->getAllByUserIdAndAttributeName($command->user->id, $command->attribute->name);
+        $this->validator->assertUser($command->user);
+        $this->validator->assertService($command->service);
+
+        $entities = $this->repository->findBy([
+            'user_id' => $command->user->id,
+            'creator' => $command->service->id
+        ], $command->queryParams);
+
+        $affectedRows = 0;
 
         try {
-            $affectedRows = $this->repository->deleteByAttributeId($command->attribute->id);
-            $this->emitter->emit(new DeletedMulti($scores));
+            foreach ($entities as $entity) {
+                $affectedRows += $this->repository->delete($entity->id);
+            }
+
+            $event        = new DeletedMulti($entities);
+            $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting scores');
         }

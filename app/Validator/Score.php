@@ -13,6 +13,7 @@ namespace App\Validator;
  */
 class Score implements ValidatorInterface {
     use Traits\AssertId,
+    	Traits\AssertEntity,
         Traits\AssertName,
         Traits\AssertScore;
 }

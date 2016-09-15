@@ -107,8 +107,8 @@ class Attributes implements ControllerInterface {
         $command = $this->commandFactory->create('Attribute\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('service', $request->getAttribute('service'));
+            ->setParameter('user', $user)
+            ->setParameter('service', $service);
 
         $entity = $this->commandBus->handle($command);
 
@@ -120,40 +120,6 @@ class Attributes implements ControllerInterface {
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('statusCode', 201)
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Updates a attribute data from the given source.
-     *
-     * @apiEndpointRequiredParam body string value
-     * @apiEndpointResponse 200 schema/attribute/updateOne.json
-     *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Attribute\\UpdateOne');
-        $command
-            ->setParameters($request->getParsedBody())
-            ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('name', $request->getAttribute('attributeName'));
-
-        $attribute = $this->commandBus->handle($command);
-
-        $body = [
-            'data'    => $attribute->toArray(),
-            'updated' => $attribute->updated_at
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

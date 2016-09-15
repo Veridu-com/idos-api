@@ -174,7 +174,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
         if (! $entity->id) {
             $id = $this->query()->insertGetId($serialized);
-            
+
             return $this->create(array_merge(['id' => $id], $entity->serialize()));
         }
 

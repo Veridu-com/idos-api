@@ -6,28 +6,43 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Attribute;
+namespace App\Command\Score;
 
 use App\Command\AbstractCommand;
 
 /**
- * Attribute "Update One" Command.
+ * Score "Upsert" Command.
  */
-class UpdateOne extends AbstractCommand {
+class Upsert extends AbstractCommand {
     /**
      * Attribute's user.
      *
      * @var App\Entity\User
      */
     public $user;
+
     /**
-     * New attribute name.
+     * Attribute's creator.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Score's Attribute.
+     *
+     * @var App\Entity\Attribute
+     */
+    public $attribute;
+
+    /**
+     * New score name.
      *
      * @var string
      */
     public $name;
     /**
-     * New attribute value.
+     * New score value.
      *
      * @var string
      */
@@ -39,6 +54,14 @@ class UpdateOne extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
+        if (isset($parameters['attribute'])) {
+            $this->attribute = $parameters['attribute'];
         }
 
         if (isset($parameters['name'])) {

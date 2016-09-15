@@ -96,52 +96,26 @@ class Attribute implements HandlerInterface {
         $this->validator->assertValue($command->value);
         $this->validator->assertFloat($command->support);
 
-        $entity = $this->repository->create(
-            [
+        $entity = $this->repository->create([
             'user_id'    => $command->user->id,
             'creator'    => $command->service->id,
             'name'       => $command->name,
             'value'      => $command->value,
             'support'    => $command->support,
             'created_at' => time()
-            ]
-        );
+        ]);
 
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event     = new Created($entity);
+            $event = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while creating attribute');
         }
 
         return $entity;
-    }
-
-    /**
-     * Updates a attribute data from a given user.
-     *
-     * @param App\Command\Attribute\UpdateOne $command
-     *
-     * @return App\Entity\Attribute
-     */
-    public function handleUpdateOne(UpdateOne $command) : AttributeEntity {
-        $this->validator->assertValue($command->value);
-
-        $attribute        = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
-        $attribute->value = $command->value;
-
-        try {
-            $attribute = $this->repository->save($attribute);
-            $event     = new Updated($attribute);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new AppException('Error while updating attribute');
-        }
-
-        return $attribute;
     }
 
     /**
@@ -202,7 +176,7 @@ class Attribute implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event        = new Deleted($entities);
+            $event        = new DeletedMulti($entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting attributes');
