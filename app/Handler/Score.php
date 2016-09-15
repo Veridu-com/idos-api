@@ -141,7 +141,7 @@ class Score implements HandlerInterface {
 
         $entity->attribute  = $command->attribute;
         $entity->value      = $command->value;
-        $feature->updatedAt = time();
+        $entity->updatedAt = time();
 
         try {
             $entity = $this->repository->save($entity);

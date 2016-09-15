@@ -13,7 +13,7 @@ use App\Command\AbstractCommand;
 /**
  * Gate "Create New" Command.
  */
-class CreateNew extends AbstractCommand {
+class Upsert extends AbstractCommand {
     /**
      * Attribute's user.
      *
@@ -45,7 +45,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Gate\CreateNew
+     * @return App\Command\Gate\Upsert
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
@@ -55,7 +55,7 @@ class CreateNew extends AbstractCommand {
         if (isset($parameters['service'])) {
             $this->service = $parameters['service'];
         }
-
+        
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }

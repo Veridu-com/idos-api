@@ -28,6 +28,7 @@ class Gate extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $visible = [
+        'creator',
         'name',
         'slug',
         'pass',
@@ -38,6 +39,13 @@ class Gate extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'creator' => 'Service'
+    ];
 
     /**
      * Property Mutator for $name.
