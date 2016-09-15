@@ -6,47 +6,62 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Attribute;
+namespace App\Command\Gate;
 
 use App\Command\AbstractCommand;
 
 /**
- * Attribute "Update One" Command.
+ * Gate "Create New" Command.
  */
-class UpdateOne extends AbstractCommand {
+class Upsert extends AbstractCommand {
     /**
      * Attribute's user.
      *
      * @var App\Entity\User
      */
     public $user;
+
     /**
-     * New attribute name.
+     * Attribute's creator.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Gate's name (user input).
      *
      * @var string
      */
     public $name;
+
     /**
-     * New attribute value.
+     * Gate's value (user input).
      *
-     * @var string
+     * @var bool
      */
-    public $value;
+    public $pass;
 
     /**
      * {@inheritdoc}
+     *
+     * @return App\Command\Gate\Upsert
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
         }
 
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+        
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
 
-        if (isset($parameters['value'])) {
-            $this->value = $parameters['value'];
+        if (isset($parameters['pass'])) {
+            $this->pass = $parameters['pass'];
         }
 
         return $this;

@@ -23,13 +23,22 @@ class Attribute extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'value', 'created_at', 'updated_at'];
+    protected $visible = ['creator', 'name', 'value', 'support', 'created_at'];
+
     /**
      * {@inheritdoc}
      */
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['created_at'];
+
     /**
      * {@inheritdoc}
      */
     protected $secure = ['value'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'creator' => 'Service'
+    ];
 }

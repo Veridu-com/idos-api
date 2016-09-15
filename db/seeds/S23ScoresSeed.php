@@ -10,36 +10,46 @@ class S23ScoresSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
-                'attribute_id' => 1,
-                'name'         => 'user1Attribute1Score1',
+                'user_id'      => 1,
+                'creator'      => 1,
+                'attribute'    => 'firstName',
+                'name'         => 'user-1-score-1',
                 'value'        => 1.2,
                 'created_at'   => date('Y-m-d H:i:s'),
                 'updated_at'   => date('Y-m-d H:i:s')
             ],
             [
-                'attribute_id' => 1,
-                'name'         => 'user1Attribute1Score2',
+                'user_id'      => 1,
+                'creator'      => 1,
+                'name'         => 'user-1-score-2',
+                'attribute'    => 'firstName',
                 'value'        => 1.3,
                 'created_at'   => date('Y-m-d H:i:s'),
                 'updated_at'   => date('Y-m-d H:i:s')
             ],
             [
-                'attribute_id' => 4,
-                'name'         => 'user2Attribute2Score1',
+                'user_id'      => 2,
+                'creator'      => 1,
+                'name'         => 'user-2-score-1',
+                'attribute'    => 'lastName',
                 'value'        => 1.4,
                 'created_at'   => date('Y-m-d H:i:s'),
                 'updated_at'   => date('Y-m-d H:i:s')
             ],
             [
-                'attribute_id' => 4,
-                'name'         => 'user2Attribute2Score2',
+                'user_id'      => 2,
+                'creator'      => 1,
+                'name'         => 'user-2-score-2',
+                'attribute'    => 'lastName',
                 'value'        => 1.0,
                 'created_at'   => date('Y-m-d H:i:s'),
                 'updated_at'   => date('Y-m-d H:i:s')
             ],
             [
-                'attribute_id' => 4,
-                'name'         => 'user2Attribute2Score3',
+                'user_id'      => 2,
+                'creator'      => 2,
+                'name'         => 'user-2-score-3',
+                'attribute'    => 'middleName',
                 'value'        => 1.6,
                 'created_at'   => date('Y-m-d H:i:s'),
                 'updated_at'   => date('Y-m-d H:i:s')

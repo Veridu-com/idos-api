@@ -15,20 +15,42 @@ use App\Command\AbstractCommand;
  */
 class DeleteAll extends AbstractCommand {
     /**
-     * User id that whose features will be deleted.
+     * Feature's User.
      *
-     * @var int
+     * @var App\Entity\User
      */
-    public $userId;
+    public $user;
+
+    /**
+     * Feature's Service (creator).
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Query parameters (user input).
+     *
+     * @var array
+     */
+    public $queryParams;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Feature\DeleteAll
+     * @return App\Command\Feature\CreateNew
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['userId'])) {
-            $this->userId = $parameters['userId'];
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
+        if (isset($parameters['queryParams'])) {
+            $this->queryParams = $parameters['queryParams'];
         }
 
         return $this;

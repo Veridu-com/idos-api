@@ -265,7 +265,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 $value = [];
             }
         }
-
         if ($this->hasGetMutator($key)) {
             $method = sprintf('get%sAttribute', $this->toCamelCase($key));
 
@@ -317,11 +316,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             $value = null;
-            if ($this->relationships && isset($this->relationships[$attribute])) {
+            if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
                 // populating relations
-                if (isset($this->relations[$attribute])) {
-                    $value = $this->$attribute()->toArray();
-                }
+                $value = $this->$attribute()->toArray();
             } else {
                 // populating own attributes
                 $value = $this->getAttribute($attribute);
@@ -332,7 +329,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 }
             }
 
-            $return[$attribute] = $value;
+            if ($value !== null) {
+                $return[$attribute] = $value;
+            }
         }
 
         return $return;

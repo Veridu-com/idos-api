@@ -78,16 +78,15 @@ class Warnings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user   = $request->getAttribute('targetUser');
-        $result = $this->repository->getAllByUserId($user->id, $request->getQueryParams());
+        $user = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
 
-        $entities = $result['collection'];
+        $entities = $this->repository->findBy(['user_id' => $user->id], $request->getQueryParams());
 
         $body = [
-            'data'       => $entities->toArray(),
-            'pagination' => $result['pagination'],
-            'updated'    => (
-                $entities->isEmpty() ? null : max($entities->max('updatedAt'), $entities->max('createdAt'))
+            'data'    => $entities->toArray(),
+            'updated' => (
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 
@@ -111,14 +110,15 @@ class Warnings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user        = $request->getAttribute('targetUser');
-        $warningSlug = $request->getAttribute('warningSlug');
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+        $slug = $request->getAttribute('warningSlug');
 
-        $warning = $this->repository->findByUserIdAndSlug($user->id, $warningSlug);
+        $entity = $this->repository->findOneBySlug($user->id, $service->id, $slug);
 
         $body = [
-            'data'    => $warning->toArray(),
-            'updated' => $warning->updated_at
+            'data'    => $entity->toArray(),
+            'updated' => $entity->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -144,11 +144,13 @@ class Warnings implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Warning\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameters(['userId' => $user->id]);
+            ->setParameter('user', $user)
+            ->setParameter('service', $service);
 
         $warning = $this->commandBus->handle($command);
 
@@ -179,9 +181,13 @@ class Warnings implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Warning\\DeleteAll');
-        $command->setParameter('userId', $user->id);
+        $command
+            ->setParameter('user', $user)
+            ->setParameter('service', $service)
+            ->setParameter('queryParams', $request->getQueryParams());
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -207,20 +213,26 @@ class Warnings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user        = $request->getAttribute('targetUser');
-        $warningSlug = $request->getAttribute('warningSlug');
+        $user = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+        $slug = $request->getAttribute('warningSlug');
 
         $command = $this->commandFactory->create('Warning\\DeleteOne');
-        $command->setParameter('userId', $user->id)
-            ->setParameter('warningSlug', $warningSlug);
+        $command
+            ->setParameter('user', $user)
+            ->setParameter('service', $service)
+            ->setParameter('slug', $slug);
 
-        $this->commandBus->handle($command);
+        $deleted = $this->commandBus->handle($command);
         $body = [
-            'status' => true
+            'status' => $deleted === 1
         ];
+
+        $statusCode = $body['status'] ? 200 : 404;
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
+            ->setParameter('statusCode', $statusCode)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

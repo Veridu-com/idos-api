@@ -6,50 +6,68 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Gate;
+namespace App\Command\Feature;
 
 use App\Command\AbstractCommand;
 
 /**
- * Gate "Create New" Command.
+ * Feature "Upsert" Command.
  */
-class CreateNew extends AbstractCommand {
+class Upsert extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Feature's User.
      *
      * @var App\Entity\User
      */
     public $user;
 
     /**
-     * Attribute's creator.
+     * Feature's Source (user input).
+     *
+     * @var App\Entity\Source
+     */
+    public $source;
+
+    /**
+     * Feature's Service (creator).
      *
      * @var App\Entity\Service
      */
     public $service;
 
     /**
-     * Gate's name (user input).
+     * Feature's name (user input).
      *
      * @var string
      */
     public $name;
 
     /**
-     * Gate's value (user input).
+     * Feature's type (user input).
      *
-     * @var bool
+     * @var string
      */
-    public $pass;
+    public $type;
+
+    /**
+     * Feature's value (user input).
+     *
+     * @var object
+     */
+    public $value;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Gate\CreateNew
+     * @return App\Command\Feature\Upsert
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['source'])) {
+            $this->source = $parameters['source'];
         }
 
         if (isset($parameters['service'])) {
@@ -60,8 +78,12 @@ class CreateNew extends AbstractCommand {
             $this->name = $parameters['name'];
         }
 
-        if (isset($parameters['pass'])) {
-            $this->pass = $parameters['pass'];
+        if (isset($parameters['type'])) {
+            $this->type = $parameters['type'];
+        }
+
+        if (isset($parameters['value'])) {
+            $this->value = $parameters['value'];
         }
 
         return $this;

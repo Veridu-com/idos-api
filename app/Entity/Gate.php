@@ -30,6 +30,7 @@ class Gate extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $visible = [
+        'creator',
         'name',
         'slug',
         'pass',
@@ -40,4 +41,25 @@ class Gate extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'creator' => 'Service'
+    ];
+
+    /**
+     * Property Mutator for $name.
+     *
+     * @param string $name
+     *
+     * @return App\Entity\Gate
+     */
+    public function setNameAttribute(string $name) : self {
+        $this->attributes['name'] = $name;
+        $this->attributes['slug'] = Utils::slugify($name);
+
+        return $this;
+    }
 }

@@ -20,8 +20,16 @@ class DeleteOne extends AbstractCommand {
      * @var App\Entity\User
      */
     public $user;
+
     /**
-     * New attribute name.
+     * Attribute's creator.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Attribute name.
      *
      * @var string
      */
@@ -33,6 +41,10 @@ class DeleteOne extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
         }
 
         if (isset($parameters['name'])) {

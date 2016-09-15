@@ -15,6 +15,20 @@ use App\Command\AbstractCommand;
  */
 class CreateNew extends AbstractCommand {
     /**
+     * Attribute's user.
+     *
+     * @var App\Entity\User
+     */
+    public $user;
+
+    /**
+     * Attribute's creator.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
      * Warning's name (user input).
      *
      * @var string
@@ -26,12 +40,6 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $reference;
-    /**
-     * Warning's user Id.
-     *
-     * @var int
-     */
-    public $userId;
 
     /**
      * {@inheritdoc}
@@ -39,16 +47,20 @@ class CreateNew extends AbstractCommand {
      * @return App\Command\Warning\CreateNew
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
 
         if (isset($parameters['reference'])) {
             $this->reference = $parameters['reference'];
-        }
-
-        if (isset($parameters['userId'])) {
-            $this->userId = $parameters['userId'];
         }
 
         return $this;

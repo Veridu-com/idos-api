@@ -15,17 +15,25 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
+     * Attribute's user.
+     *
+     * @var App\Entity\User
+     */
+    public $user;
+
+    /**
+     * Attribute's creator.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
      * Gate slug.
      *
      * @var string
      */
-    public $gateSlug;
-    /**
-     * User Id.
-     *
-     * @var int
-     */
-    public $userId;
+    public $slug;
 
     /**
      * {@inheritdoc}
@@ -33,12 +41,16 @@ class DeleteOne extends AbstractCommand {
      * @return App\Command\Gate\DeleteOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['userId'])) {
-            $this->userId = $parameters['userId'];
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['gateSlug'])) {
-            $this->gateSlug = $parameters['gateSlug'];
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
+        if (isset($parameters['slug'])) {
+            $this->slug = $parameters['slug'];
         }
 
         return $this;

@@ -26,6 +26,7 @@ class Warning extends AbstractEntity {
      */
     protected $visible = [
         'id',
+        'creator',
         'name',
         'slug',
         'reference',
@@ -36,4 +37,25 @@ class Warning extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'creator' => 'Service'
+    ];
+
+    /**
+     * Property Mutator for $name.
+     *
+     * @param string $value
+     *
+     * @return App\Entity\Warning
+     */
+    public function setNameAttribute(string $value) : self {
+        $this->attributes['name'] = $value;
+        $this->attributes['slug'] = Utils::slugify($value);
+
+        return $this;
+    }
 }

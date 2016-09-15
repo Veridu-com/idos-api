@@ -38,7 +38,7 @@ class Attributes implements RouteInterface {
      * {@inheritdoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Attributes::class] = function (ContainerInterface $container) : ControllerInterface {
+        $app->getContainer()[\App\Controller\Attributes::class] = function (ContainerInterface $container) {
             return new \App\Controller\Attributes(
                 $container->get('repositoryFactory')->create('Attribute'),
                 $container->get('commandBus'),
@@ -55,7 +55,6 @@ class Attributes implements RouteInterface {
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
-        self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -124,40 +123,6 @@ class Attributes implements RouteInterface {
             ->setName('attribute:createNew');
     }
 
-    /**
-     * Update an attribute.
-     *
-     * Updates an attribute for the given user.
-     *
-     * @apiEndpoint PUT /profiles/{userName}/attributes/{attributeName}
-     * @apiGroup Profile Attributes
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName data-name
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/management/members/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Members::updateOne
-     */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->put(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
-                'App\Controller\Attributes:updateOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('attribute:updateOne');
-    }
-
     /*
      * Retrieves an attribute.
      *
@@ -184,7 +149,7 @@ class Attributes implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9-_]+}',
                 'App\Controller\Attributes:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -251,7 +216,7 @@ class Attributes implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9-_]+}',
                 'App\Controller\Attributes:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

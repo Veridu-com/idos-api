@@ -57,6 +57,49 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
 
         return $this->castHydrate($members);
     }
+    /*public function getAllByCompanyId(int $companyId) : Collection {
+        $items = new Collection();
+        $items = $items->merge(
+            $this->query()
+                ->join('users', 'users.id', '=', 'members.user_id')
+                ->where('members.company_id', '=', $companyId)
+                ->get(
+                    [
+                        'users.username as user.username',
+                        'users.created_at as user.created_at',
+                        'members.*'
+                    ]
+                )
+        );
+
+        return $this->castHydrate($members);
+    }*/
+
+    protected $filterableKeys = [
+        /*'source.id' => 'decoded',
+        'source.name' => 'string',
+        'creator' => 'string',
+        'name' => 'string',
+        'type' => 'string',
+        'created_at' => 'date'*/
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $relationships = [
+        'user' => [
+            'type' => 'MANY_TO_ONE',
+            'table' => 'users',
+            'foreignKey' => 'user_id',
+            'key' => 'id',
+            'entity' => 'User',
+            'hydrate' => [
+                'username',
+                'created_at'
+            ]
+        ],
+    ];
 
     /**
      * {@inheritdoc}
@@ -82,23 +125,9 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
      * {@inheritdoc}
      */
     public function findOne(int $memberId) : Member {
-        $items = new Collection();
-        $items = $items->merge(
-            $this->query()
-                ->join('users', 'users.id', '=', 'members.user_id')
-                ->where('members.id', '=', $memberId)
-                ->get(
-                    ['users.username as user.username',
-                    'users.created_at as user.created_at',
-                    'members.*']
-                )
-        );
-
-        $member = $this->castHydrate($items)->first();
-        if (! $member)
-            throw new NotFound();
-
-        return $member;
+        return $this->findOneBy([
+            'id' => $memberId
+        ]);
     }
 
     /**

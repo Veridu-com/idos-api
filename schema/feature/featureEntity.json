@@ -9,14 +9,26 @@
             "type": "string",
             "pattern": ""
         },
-        "slug": {
-            "description": "Slug based on Feature's name",
+        "creator": {
+            "description": "Feature Creator",
+            "type": "integer"
+        },
+        "type": {
+            "description": "Feature Type",
             "type": "string",
-            "pattern": "[a-zA-Z0-9_-]+"
+            "pattern": ""
         },
         "value": {
-            "description": "Feature value",
-            "type": "string",
+            "description": "Feature value"
+        },
+        "user_id": {
+            "description": "User owner of the feature",
+            "type": "integer"
+        },
+        "source": {
+            "description": "Source entity",
+            "type": "object",
+            "$ref": "../source/sourceEntity.json",
             "pattern": ""
         },
         "created_at": {
@@ -28,12 +40,12 @@
             "type": ["integer", "null"]
         }
     },
-    "dependencies": {
-        "slug": ["name"]
-    },
     "required": [
         "name",
-        "slug",
+        "creator",
+        "type",
+        "value",
+        "user_id",
         "created_at",
         "updated_at"
     ]

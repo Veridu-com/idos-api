@@ -31,6 +31,10 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
      */
     protected $entityName = 'Raw';
 
+    public function findBy(array $constraints, array $filters) {
+        //$this->selectDatabase();
+    }
+
     /**
      * {@inheritdoc}
      */
