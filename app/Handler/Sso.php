@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Handler;
 
+use App\Command\AbstractCommand;
 use App\Command\Sso\CreateNewAmazon;
 use App\Command\Sso\CreateNewFacebook;
 use App\Command\Sso\CreateNewGoogle;
