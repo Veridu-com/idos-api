@@ -28,6 +28,7 @@ class Warning extends AbstractEntity {
      */
     protected $visible = [
         'id',
+        'creator',
         'name',
         'slug',
         'reference',
@@ -38,6 +39,13 @@ class Warning extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'creator' => 'Service'
+    ];
 
     /**
      * Property Mutator for $name.
