@@ -16,6 +16,7 @@ use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Query\Builder as QueryBuilder;
 use Jenssegers\Optimus\Optimus;
 use MongoDB\Model\CollectionInfoIterator;
+use MongoDB\Model\DatabaseInfoIterator;
 
 /**
  * Abstract NoSQL Database-based Repository.
@@ -112,6 +113,15 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         $collection = ($collection === null) ? $this->getCollectionName() : $collection;
 
         return $this->dbConnection->collection($collection);
+    }
+
+    /**
+     * List all databases.
+     *
+     * @return MongoDB\Model\DatabaseInfoIterator A iterator for the databases
+     */
+    protected function listDatabases() : DatabaseInfoIterator {
+        return $this->dbConnection->getMongoClient()->listDatabases();
     }
 
     /**
