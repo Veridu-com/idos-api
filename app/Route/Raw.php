@@ -67,8 +67,8 @@ class Raw implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/sources/{sourceId}/raw
      * @apiGroup Sources Raw
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -100,8 +100,8 @@ class Raw implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/source/{sourceId}/raw
      * @apiGroup Sources Raw
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -128,17 +128,16 @@ class Raw implements RouteInterface {
     }
 
     /**
-     * Update a raw data.
+     * Deletes all raw data.
      *
-     * Updates a raw data in the given source.
+     * Deletes all raw data from the given source.
      *
-     * @apiEndpoint PUT /profiles/{userName}/source/{sourceId}/raw/{collection}
-     * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId}/raw
+     * @apiGroup Sources Raw
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
-     * @apiEndpointURIFragment string collection data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -146,31 +145,31 @@ class Raw implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/management/members/updateOne.md
+     * @link docs/sources/raw/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Members::updateOne
+     * @see App\Controller\Raw::deleteAll
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw/{collection:[a-zA-Z0-9_-]+}',
-                'App\Controller\Raw:updateOne'
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
+                'App\Controller\Raw:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('raw:updateOne');
+            ->setName('raw:deleteAll');
     }
 
-    /*
+    /**
      * Retrieves a raw data.
      *
      * Retrieves a raw data from a given source.
      *
      * @apiEndpoint GET /profiles/{userName}/source/{sourceId}/raw/{collection}
      * @apiGroup Sources Raw
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string collection data-name
@@ -197,17 +196,19 @@ class Raw implements RouteInterface {
             ->setName('raw:getOne');
     }
 
+
     /**
-     * Deletes all raw data.
+     * Update a raw data.
      *
-     * Deletes all raw data from the given source.
+     * Updates a raw data in the given source.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId}/raw
+     * @apiEndpoint PUT /profiles/{userName}/source/{sourceId}/raw/{collection}
      * @apiGroup Sources Raw
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
+     * @apiEndpointURIFragment string collection data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -215,31 +216,31 @@ class Raw implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/sources/raw/deleteAll.md
+     * @link docs/management/members/updateOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Raw::deleteAll
+     * @see App\Controller\Members::updateOne
      */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
-                'App\Controller\Raw:deleteAll'
+            ->put(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw/{collection:[a-zA-Z0-9_-]+}',
+                'App\Controller\Raw:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('raw:deleteAll');
+            ->setName('raw:updateOne');
     }
 
-    /*
+    /**
      * Deletes a raw data.
      *
      * Deletes a raw data from the given source.
      *
      * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId}/raw/{collection}
      * @apiGroup Sources Raw
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string collection data-name

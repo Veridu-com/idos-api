@@ -66,8 +66,8 @@ class Normalised implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/sources/{sourceId:[0-9]+}/normalised
      * @apiGroup Sources Normalised
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -100,8 +100,8 @@ class Normalised implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/source/{sourceId:[0-9]+}/normalised
      * @apiGroup Sources Normalised
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -133,9 +133,9 @@ class Normalised implements RouteInterface {
      * Updates a normalised data in the given source.
      *
      * @apiEndpoint PUT /profiles/{userName}/source/{sourceId:[0-9]+}/normalised/{normalisedName}
-     * @apiGroup Company Members
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiGroup Sources Normalised
+     * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string normalisedName data-name
@@ -162,15 +162,15 @@ class Normalised implements RouteInterface {
             ->setName('normalised:updateOne');
     }
 
-    /*
+    /**
      * Retrieves a normalised data.
      *
      * Retrieves a normalised data from a given source.
      *
      * @apiEndpoint GET /profiles/{userName}/source/{sourceId:[0-9]+}/normalised/{normalisedName}
      * @apiGroup Sources Normalised
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string normalisedName data-name
@@ -204,8 +204,8 @@ class Normalised implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId:[0-9]+}/normalised
      * @apiGroup Sources Normalised
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -231,15 +231,15 @@ class Normalised implements RouteInterface {
             ->setName('normalised:deleteAll');
     }
 
-    /*
+    /**
      * Deletes a normalised data.
      *
      * Deletes a normalised data from the given source.
      *
      * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId:[0-9]+}/normalised/{normalisedName}
      * @apiGroup Sources Normalised
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string normalisedName data-name

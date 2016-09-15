@@ -66,8 +66,8 @@ class Gates implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/gates
      * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -99,8 +99,8 @@ class Gates implements RouteInterface {
      *
      * @apiEndpoint POST profiles/{userName}/gates
      * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -132,8 +132,8 @@ class Gates implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/gates/{gateSlug}
      * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string gateSlug data-name
      *
@@ -166,8 +166,8 @@ class Gates implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/gates
      * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -199,8 +199,8 @@ class Gates implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/gates/{gateSlug}
      * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string gateSlug data-name
      *
@@ -233,8 +233,8 @@ class Gates implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/gates/{gateSlug}
      * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string gateSlug data-name
      *

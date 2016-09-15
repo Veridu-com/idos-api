@@ -57,11 +57,12 @@ class Processes implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/processes
      * @apiGroup Profile Processes
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -88,11 +89,12 @@ class Processes implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/processes/{processId}
      * @apiGroup Profile Processes
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

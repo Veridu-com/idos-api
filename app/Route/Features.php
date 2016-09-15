@@ -66,12 +66,13 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/features
      * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -98,12 +99,13 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint POST profiles/{userName}/features
      * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -130,12 +132,13 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/features/{featureSlug}
      * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -162,12 +165,13 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/features
      * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -194,12 +198,13 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/features/{featureSlug}
      * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -226,12 +231,13 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/features/{featureSlug}
      * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

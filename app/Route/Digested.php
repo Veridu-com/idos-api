@@ -66,8 +66,8 @@ class Digested implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/sources/{sourceId:[0-9]+}/digested
      * @apiGroup Sources Digested
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -99,8 +99,8 @@ class Digested implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/source/{sourceId:[0-9]+}/digested
      * @apiGroup Sources Digested
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -133,8 +133,8 @@ class Digested implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/source/{sourceId:[0-9]+}/digested/{digestedName}
      * @apiGroup Sources Digested
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string digestedName data-name
@@ -161,15 +161,15 @@ class Digested implements RouteInterface {
             ->setName('digested:updateOne');
     }
 
-    /*
+    /**
      * Retrieves a digested data.
      *
      * Retrieves a digested data from a given source.
      *
      * @apiEndpoint GET /profiles/{userName}/source/{sourceId:[0-9]+}/digested/{digestedName}
      * @apiGroup Sources Digested
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string digestedName data-name
@@ -203,8 +203,8 @@ class Digested implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId:[0-9]+}/digested
      * @apiGroup Sources Digested
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
@@ -230,15 +230,15 @@ class Digested implements RouteInterface {
             ->setName('digested:deleteAll');
     }
 
-    /*
+    /**
      * Deletes a digested data.
      *
      * Deletes a digested data from the given source.
      *
      * @apiEndpoint DELETE /profiles/{userName}/source/{sourceId:[0-9]+}/digested/{digestedName}
      * @apiGroup Sources Digested
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      * @apiEndpointURIFragment string digestedName data-name

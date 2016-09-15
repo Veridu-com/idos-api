@@ -58,11 +58,10 @@ class Profiles implements RouteInterface {
      * @apiGroup Company Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

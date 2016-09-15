@@ -66,8 +66,8 @@ class References implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/references
      * @apiGroup Sources Reference
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -98,8 +98,8 @@ class References implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/references
      * @apiGroup Sources Reference
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -125,16 +125,15 @@ class References implements RouteInterface {
     }
 
     /**
-     * Update an reference.
+     * Deletes all references.
      *
-     * Updates an reference for the given user.
+     * Deletes all references from the given user.
      *
-     * @apiEndpoint PUT /profiles/{userName}/references/{referenceName}
-     * @apiGroup Profile References
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiEndpoint DELETE /profiles/{userName}/references
+     * @apiGroup Sources Reference
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string referenceName data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -142,31 +141,31 @@ class References implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/management/members/updateOne.md
+     * @link docs/sources/reference/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Members::updateOne
+     * @see App\Controller\Reference::deleteAll
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
-                'App\Controller\References:updateOne'
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/references',
+                'App\Controller\References:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('reference:updateOne');
+            ->setName('reference:deleteAll');
     }
 
-    /*
+    /**
      * Retrieves an reference.
      *
      * Retrieves an reference from the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/references/{referenceName}
      * @apiGroup Sources Reference
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string referenceName data-name
      *
@@ -193,15 +192,16 @@ class References implements RouteInterface {
     }
 
     /**
-     * Deletes all references.
+     * Update an reference.
      *
-     * Deletes all references from the given user.
+     * Updates an reference for the given user.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/references
-     * @apiGroup Sources Reference
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiEndpoint PUT /profiles/{userName}/references/{referenceName}
+     * @apiGroup Profile References
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string referenceName data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -209,20 +209,20 @@ class References implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/sources/reference/deleteAll.md
+     * @link docs/management/members/updateOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Reference::deleteAll
+     * @see App\Controller\Members::updateOne
      */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/references',
-                'App\Controller\References:deleteAll'
+            ->put(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
+                'App\Controller\References:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('reference:deleteAll');
+            ->setName('reference:updateOne');
     }
 
     /*
@@ -232,8 +232,8 @@ class References implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/references/{referenceName}
      * @apiGroup Sources Reference
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string referenceName data-name
      *
