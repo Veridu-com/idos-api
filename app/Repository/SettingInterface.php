@@ -58,4 +58,16 @@ interface SettingInterface extends RepositoryInterface {
      * @param int $settingId The setting identifier
      */
     public function findOneByCompanyAndId(int $companyId, int $settingId) : Setting;
+
+    /**
+     * Retrieves a setting by its section and property.
+     *
+     * @param int    $companyId  The company identification
+     * @param string $section    The section
+     * @param array  $properties The properties
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function findByCompanyIdSectionAndProperties(int $companyId, string $section, array $properties) : Collection;
+
 }

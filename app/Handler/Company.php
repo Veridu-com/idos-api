@@ -142,7 +142,7 @@ class Company implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
         try {
-            $this->validator->assertId($command->companyId);
+            $this->validator->assertId($command->company->id);
             $this->validator->assertMediumLatinName($command->name);
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
@@ -195,7 +195,7 @@ class Company implements HandlerInterface {
             throw new NotFound\CompanyException('No companies found for deletion', 404);
         }
 
-        $event = new Deleted($command->company);
+        $event = new Deleted($command->company, $command->identity);
         $this->emitter->emit($event);
     }
 }

@@ -139,7 +139,7 @@ class Setting implements HandlerInterface {
         try {
             $this->validator->assertMediumName($command->section);
             $this->validator->assertMediumName($command->property);
-            $this->validator->assertId($command->companyId);
+            $this->validator->assertId($command->company->id);
         } catch (ValidationException $e) {
             throw new Validate\SettingException(
                 $e->getFullMessage(),

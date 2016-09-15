@@ -99,7 +99,7 @@ class Credential implements HandlerInterface {
         try {
             $this->validator->assertName($command->name);
             $this->validator->assertFlag($command->production);
-            $this->validator->assertId($command->companyId);
+            $this->validator->assertId($command->company->id);
         } catch (ValidationException $e) {
             throw new Validate\CredentialException(
                 $e->getFullMessage(),
@@ -180,7 +180,7 @@ class Credential implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertId($command->credentialId);
+            $this->validator->assertId($command->credential->id);
         } catch (ValidationException $e) {
             throw new Validate\CredentialException(
                 $e->getFullMessage(),
@@ -189,15 +189,14 @@ class Credential implements HandlerInterface {
             );
         }
 
-        $credential = $this->repository->find($command->credentialId);
-
+        $credential = $this->repository->find($command->credential->id);
         $rowsAffected = $this->repository->delete($command->credential->id);
 
         if (! $rowsAffected) {
             throw new NotFound\CredentialException('No credentials found for deletion', 404);
         }
 
-        $event = new Deleted($credential);
+        $event = new Deleted($credential, $command->identity);
         $this->emitter->emit($event);
     }
 }
