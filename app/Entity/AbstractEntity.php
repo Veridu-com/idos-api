@@ -303,7 +303,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 }
             }
 
-            $return[$attribute] = $value;
+            if ($value !== null) {
+                $return[$attribute] = $value;
+            }
         }
 
         return $return;

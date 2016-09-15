@@ -147,11 +147,12 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                     $relationEntityName = $properties['entity'];
                     $tableForeignKey = $properties['foreignKey'];
                     $relationTableKey = $properties['key'];
+                    $hydrateColumns = $properties['hydrate'];
 
                     $relationEntity = null;
-                    if ($entities->$tableForeignKey !== null) {
+                    if ($entities->$tableForeignKey !== null && $hydrateColumns) {
                         $relationRepository = $this->repositoryFactory->create($relationEntityName);
-                        $relationEntity = $relationRepository->findOneBy([$relationTableKey => $entities->$tableForeignKey]);
+                        $relationEntity = $relationRepository->findOneBy([$relationTableKey => $entities->$tableForeignKey], [], $hydrateColumns);
                     }
                     
                     $entities->relations[$relation] = $relationEntity;
@@ -477,7 +478,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         return $query;
     }
 
-    public function findBy(array $constraints, array $queryParams = [], array $columns = []) : Collection {
+    public function findBy(array $constraints, array $queryParams = [], array $columns = ['*']) : Collection {
         $query = $this->query();
 
         $constraints = array_merge($constraints, $this->getFilterConstraints($queryParams));
@@ -493,7 +494,15 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             }
         }
 
-        $getColumns = [$this->getTableName() . '.*'];
+        $getColumns = [];
+
+        foreach ($columns as $column) {
+            if (strpos('.', $column) !== false) {
+                continue;
+            }
+
+            $getColumns[] = $this->getTableName() . '.' . $column;
+        }
 
         foreach ($this->relationships as $relation => $properties) {
             if ($properties['hydrate']) {
@@ -502,20 +511,21 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             }
         }
 
+
         return $this->castHydrate($query->get($getColumns));
     }
 
-    public function getRelationColumnsAliases($relation, array $columns = []) {
+    public function getRelationColumnsAliases($relation, array $columns = ['*']) {
         $getColumns = [];
         $relationProperties = $this->relationships[$relation];
         $hydrateColumns = $relationProperties['hydrate'];
         $relationTable = $relationProperties['table'];
 
-        if (! empty($columns) && (! isset($columns[$relation]) || empty($columns[$relation]))) {
+        if ($columns !== ['*'] && (! isset($columns[$relation]) || empty($columns[$relation]))) {
             return [];
         }
 
-        if (empty($columns) || (isset($columns[$relation]) && empty($columns[$relation]))) {
+        if ($columns === ['*'] || (isset($columns[$relation]) && empty($columns[$relation]))) {
             $columns[$relation] = $hydrateColumns;
 
             if (! $hydrateColumns) {

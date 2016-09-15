@@ -103,8 +103,8 @@ abstract class AbstractRepository implements RepositoryInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $constraints) : EntityInterface {
-        $entity = $this->findBy($constraints)->first();
+    public function findOneBy(array $constraints, array $queryParams = [], array $columns = ['*']) : EntityInterface {
+        $entity = $this->findBy($constraints, $queryParams, $columns)->first();
 
         if (! $entity) {
             throw new NotFound();
@@ -145,7 +145,6 @@ abstract class AbstractRepository implements RepositoryInterface {
         foreach ($relationships as $databasePrefix => $entityName) {
             $relationProperties = $this->relationships[$databasePrefix];
             //@FIXME: make this method work for all relationship types
-            //@FIXME: dont show non hydrated columns as null
             $foreignKey = $relationProperties['foreignKey'];
             if (! $relationProperties['hydrate']) {
                 $entity->$databasePrefix = $entity->$foreignKey;
