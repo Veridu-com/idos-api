@@ -57,6 +57,7 @@ class Scores implements RouteInterface {
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
+        self::upsert($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -86,7 +87,7 @@ class Scores implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
                 'App\Controller\Scores:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -119,7 +120,7 @@ class Scores implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
                 'App\Controller\Scores:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -153,8 +154,8 @@ class Scores implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores/{scoreName:[a-zA-Z0-9]+}',
+            ->patch(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z]+}',
                 'App\Controller\Scores:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -163,6 +164,44 @@ class Scores implements RouteInterface {
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * Update a score.
+     *
+     * Updates a score for the given attribute.
+     *
+     * @apiEndpoint PUT /profiles/{userName}/attributes/{attributeName}/scores/{scoreName}
+     * @apiGroup Company Members
+     * @apiAuth header token CredentialToken XXX Company's credential token
+     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string attributeName firstName
+     * @apiEndpointURIFragment string scoreName overall
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/attributes/score/updateOne.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Scores::updateOne
+     */
+    private static function upsert(App $app, callable $auth, callable $permission) {
+        $app
+            ->put(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
+                'App\Controller\Scores:upsert'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('score:updateOne');
+    }
+
+    /*
+>>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
      * Retrieves a score.
      *
      * Retrieves a score from a given attribute.
@@ -189,7 +228,7 @@ class Scores implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores/{scoreName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z]+}',
                 'App\Controller\Scores:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -223,7 +262,7 @@ class Scores implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
                 'App\Controller\Scores:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -258,7 +297,7 @@ class Scores implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}/scores/{scoreName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z]+}',
                 'App\Controller\Scores:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

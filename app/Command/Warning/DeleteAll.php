@@ -15,20 +15,40 @@ use App\Command\AbstractCommand;
  */
 class DeleteAll extends AbstractCommand {
     /**
-     * User id that whose warnings will be deleted.
+     * Score's user.
      *
-     * @var int
+     * @var App\Entity\User
      */
-    public $userId;
+    public $user;
+
+    /**
+     * Score's Creator.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Query Params.
+     *
+     * @var array
+     */
+    public $queryParams;
 
     /**
      * {@inheritdoc}
-     *
-     * @return App\Command\Warning\DeleteAll
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['userId'])) {
-            $this->userId = $parameters['userId'];
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
+        if (isset($parameters['queryParams'])) {
+            $this->queryParams = $parameters['queryParams'];
         }
 
         return $this;

@@ -84,23 +84,15 @@ class Raw implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $source      = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-        $collections = $request->getQueryParam('collections', []);
+        $service     = $request->getAttribute('service');
+        $queryParams = $request->getQueryParams();
 
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
-
-        if ($collections) {
-            $collections = explode(',', $collections);
-        }
-
-        $raws = $this->repository->getAllBySourceAndCollections($source, $collections);
+        $entities = $this->repository->findByUserId($user->id, $queryParams);
 
         $body = [
-            'data'    => $raws->toArray(),
+            'data'    => $entities->toArray(),
             'updated' => (
-                $raws->isEmpty() ? time() : max($raws->max('updatedAt'), $raws->max('createdAt'))
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 
@@ -132,16 +124,16 @@ class Raw implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Raw\\CreateNew');
 
-        $user   = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
+        $user     = $request->getAttribute('targetUser');
+        $service  = $request->getAttribute('service');
+        $sourceId = (int) $request->getParsedBodyParam('decoded_source_id');
 
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
+        $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
+            ->setParameter('service', $service)
             ->setParameter('source', $source);
 
         $raw = $this->commandBus->handle($command);
@@ -177,20 +169,18 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user     = $request->getAttribute('targetUser');
+        $service  = $request->getAttribute('service');
+        $sourceId = (int) $request->getAttribute('decodedSourceId');
+
+        $source = $this->sourceRepository->findOne($sourceId, $user->id);
+
         $command = $this->commandFactory->create('Raw\\UpdateOne');
-
-        $user   = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
-
         $command
+            ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
-            ->setParameter('source', $source)
-            ->setParameter('collection', $request->getAttribute('collection'))
-            ->setParameter('data', $request->getParam('data'));
+            ->setParameter('service', $service)
+            ->setParameter('source', $source);
 
         $raw = $this->commandBus->handle($command);
 
@@ -207,6 +197,7 @@ class Raw implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
+<<<<<<< HEAD
 
     /**
      * Retrieves a raw data from the given source.
@@ -328,4 +319,6 @@ class Raw implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
+=======
+>>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
 }

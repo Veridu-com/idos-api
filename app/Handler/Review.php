@@ -86,6 +86,12 @@ class Review implements HandlerInterface {
      *
      * @param App\Command\Review\CreateNew $command
      *
+     * @see App\Repository\DBReview::create
+     * @see App\Repository\DBReview::save
+     *
+     * @throws App\Exception\Validate\ReviewException
+     * @throws App\Exception\Create\ReviewException
+     *
      * @return App\Entity\Review
      */
     public function handleCreateNew(CreateNew $command) : ReviewEntity {
@@ -125,6 +131,12 @@ class Review implements HandlerInterface {
      * Updates a review data from a given user.
      *
      * @param App\Command\Review\UpdateOne $command
+     *
+     * @see App\Repository\DBReview::findOneByUserIdAndId
+     * @see App\Repository\DBReview::save
+     *
+     * @throws App\Exception\Validate\ReviewException
+     * @throws App\Exception\Update\ReviewException
      *
      * @return App\Entity\Review
      */

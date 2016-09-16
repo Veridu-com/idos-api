@@ -58,7 +58,7 @@ class Attributes implements ControllerInterface {
     }
 
     /**
-     * Retrieve a complete list of the data attribute by a given source.
+     * Retrieve a complete list of attributes of the given user.
      *
      * @apiEndpointParam query string names firstName,middleName,lastName
      * @apiEndpointResponse 200 schema/attribute/listAll.json
@@ -71,14 +71,15 @@ class Attributes implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
 
-        $attributes = $this->repository->getAllByUserIdAndNames($user->id, $request->getQueryParams());
+        $entities = $this->repository->findBy(['user_id' => $user->id], $request->getQueryParams());
 
         $body = [
-            'data'    => $attributes->toArray(),
+            'data'    => $entities->toArray(),
             'updated' => (
-                $attributes->isEmpty() ? time() : max($attributes->max('updatedAt'), $attributes->max('createdAt'))
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 
@@ -106,17 +107,20 @@ class Attributes implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Attribute\\CreateNew');
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
 
+        $command = $this->commandFactory->create('Attribute\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('user', $request->getAttribute('targetUser'));
+            ->setParameter('user', $user)
+            ->setParameter('service', $service);
 
-        $attribute = $this->commandBus->handle($command);
+        $entity = $this->commandBus->handle($command);
 
         $body = [
             'status' => true,
-            'data'   => $attribute->toArray()
+            'data'   => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -179,13 +183,19 @@ class Attributes implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
-        $name = $request->getAttribute('attributeName');
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+        $name    = $request->getAttribute('attributeName');
 
-        $attribute = $this->repository->findOneByUserIdAndName($user->id, $name);
+        $entities = $this->repository->findBy(
+            [
+            'user_id' => $user->id,
+            'name'    => $name
+            ]
+        );
 
         $body = [
-            'data' => $attribute->toArray()
+            'data' => $entities->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -210,10 +220,14 @@ class Attributes implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+
         $command = $this->commandFactory->create('Attribute\\DeleteAll');
         $command
-            ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('filters', $request->getParsedBody());
+            ->setParameter('user', $user)
+            ->setParameter('service', $service)
+            ->setParameter('queryParams', $request->getQueryParams());
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -242,17 +256,22 @@ class Attributes implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+        $name    = $request->getAttribute('attributeName');
+
         $command = $this->commandFactory->create('Attribute\\DeleteOne');
         $command
-            ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('name', $request->getAttribute('attributeName'));
+            ->setParameter('user', $user)
+            ->setParameter('service', $service)
+            ->setParameter('name', $name);
 
-        $this->commandBus->handle($command);
         $body = [
-            'status' => true
+            'deleted' => $this->commandBus->handle($command)
         ];
 
-        $command = $this->commandFactory->create('ResponseDispatch');
+        $statusCode = ($body['deleted'] > 0) ? 200 : 404;
+        $command    = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('request', $request)
             ->setParameter('response', $response)

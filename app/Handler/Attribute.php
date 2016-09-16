@@ -11,15 +11,12 @@ namespace App\Handler;
 use App\Command\Attribute\CreateNew;
 use App\Command\Attribute\DeleteAll;
 use App\Command\Attribute\DeleteOne;
-use App\Command\Attribute\UpdateOne;
 use App\Entity\Attribute as AttributeEntity;
 use App\Event\Attribute\Created;
 use App\Event\Attribute\Deleted;
 use App\Event\Attribute\DeletedMulti;
-use App\Event\Attribute\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
-use App\Exception\Update;
 use App\Exception\Validate;
 use App\Repository\AttributeInterface;
 use App\Validator\Attribute as AttributeValidator;
@@ -100,8 +97,11 @@ class Attribute implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : AttributeEntity {
         try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
             $this->validator->assertName($command->name);
             $this->validator->assertValue($command->value);
+            $this->validator->assertFloat($command->support);
         } catch (ValidationException $e) {
             throw new Validate\AttributeException(
                 $e->getFullMessage(),
@@ -110,16 +110,19 @@ class Attribute implements HandlerInterface {
             );
         }
 
-        $attribute = $this->repository->create(
+        $entity = $this->repository->create(
             [
-                'user_id'    => $command->user->id,
-                'name'       => $command->name,
-                'value'      => $command->value,
-                'created_at' => time()
+            'user_id'    => $command->user->id,
+            'creator'    => $command->service->id,
+            'name'       => $command->name,
+            'value'      => $command->value,
+            'support'    => $command->support,
+            'created_at' => time()
             ]
         );
 
         try {
+<<<<<<< HEAD
             $attribute = $this->repository->save($attribute);
             $event     = new Created($attribute);
             $this->emitter->emit($event);
@@ -153,19 +156,18 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
+=======
+            $entity = $this->repository->save($entity);
+            $entity = $this->repository->hydrateRelations($entity);
+>>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
 
-        $attribute        = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
-        $attribute->value = $command->value;
-
-        try {
-            $attribute = $this->repository->save($attribute);
-            $event     = new Updated($attribute);
+            $event = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new Update\AttributeException('Error while trying to update an attribute', 500, $e);
+            throw new Create\AttributeException('Error while trying to create an attribute', 500, $e);
         }
 
-        return $attribute;
+        return $entity;
     }
 
     /**
@@ -181,8 +183,10 @@ class Attribute implements HandlerInterface {
      *
      * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
             $this->validator->assertName($command->name);
         } catch (ValidationException $e) {
             throw new Validate\AttributeException(
@@ -192,11 +196,24 @@ class Attribute implements HandlerInterface {
             );
         }
 
-        $attribute = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
+        $entities = $this->repository->findBy(
+            [
+            'user_id' => $command->user->id,
+            'creator' => $command->service->id,
+            'name'    => $command->name
+            ]
+        );
 
-        $affectedRows = $this->repository->deleteOneByUserIdAndName($command->user->id, $command->name);
+        $affectedRows = 0;
 
-        if (! $affectedRows) {
+        try {
+            foreach ($entities as $entity) {
+                $affectedRows += $this->repository->delete($entity->id);
+            }
+
+            $event = new Deleted($entities);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
             throw new NotFound\AttributeException('No attributes found for deletion', 404);
         }
 
@@ -215,11 +232,29 @@ class Attribute implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $attributes = $this->repository->getAllByUserIdAndNames($command->user->id, $command->filters ?: []);
+        $this->validator->assertUser($command->user);
+        $this->validator->assertService($command->service);
+        $this->validator->assertArray($command->queryParams);
 
-        $affectedRows = $this->repository->deleteByUserId($command->user->id);
-        $event        = new DeletedMulti($attributes);
-        $this->emitter->emit($event);
+        $entities = $this->repository->findBy(
+            [
+            'user_id' => $command->user->id,
+            'creator' => $command->service->id
+            ], $command->queryParams
+        );
+
+        $affectedRows = 0;
+
+        try {
+            foreach ($entities as $entity) {
+                $affectedRows += $this->repository->delete($entity->id);
+            }
+
+            $event = new DeletedMulti($entities);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new NotFound\AttributeException('Error while deleting all attributes', 404);
+        }
 
         return $affectedRows;
     }

@@ -96,4 +96,18 @@ trait AssertEntity {
         Validator::instance('App\\Entity\\User')
             ->assert($user);
     }
+
+    /**
+     * Asserts a valid service entity.
+     *
+     * @param mixed $service
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertService($service) {
+        Validator::instance('App\\Entity\\Service')
+            ->assert($service);
+    }
 }

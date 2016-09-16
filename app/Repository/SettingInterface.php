@@ -69,5 +69,4 @@ interface SettingInterface extends RepositoryInterface {
      * @return \Illuminate\Support\Collection
      */
     public function findByCompanyIdSectionAndProperties(int $companyId, string $section, array $properties) : Collection;
-
 }

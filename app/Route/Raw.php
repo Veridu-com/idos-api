@@ -54,10 +54,7 @@ class Raw implements RouteInterface {
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
-        self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
-        self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -86,7 +83,7 @@ class Raw implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/raw',
                 'App\Controller\Raw:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -119,7 +116,7 @@ class Raw implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/raw',
                 'App\Controller\Raw:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -152,14 +149,21 @@ class Raw implements RouteInterface {
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
+<<<<<<< HEAD
             ->delete(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw',
                 'App\Controller\Raw:deleteAll'
+=======
+            ->patch(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/raw/{sourceId:[0-9]+}',
+                'App\Controller\Raw:updateOne'
+>>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('raw:deleteAll');
     }
+<<<<<<< HEAD
 
     /**
      * Retrieves a raw data.
@@ -266,4 +270,6 @@ class Raw implements RouteInterface {
             ->add($auth(Auth::CREDENTIAL))
             ->setName('raw:deleteOne');
     }
+=======
+>>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
 }

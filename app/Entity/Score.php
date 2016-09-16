@@ -23,23 +23,26 @@ class Score extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'value', 'created_at'];
+    protected $visible = ['creator', 'attribute', 'name', 'value', 'created_at'];
+
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at'];
+
     /**
-     * The attributes that should be secured.
-     *
-     * @var array
+     * {@inheritdoc}
      */
+    public $relationships = [
+        'creator' => 'Service'
+    ];
 
     /**
      * Property Acessor for $value.
      *
      * @return float
      */
-    public function getValueAttribute() : float {
-        return floatval($this->attributes['value']);
+    public function getValueAttribute($value) : float {
+        return floatval($value);
     }
 }

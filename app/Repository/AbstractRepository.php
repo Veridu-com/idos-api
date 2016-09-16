@@ -11,6 +11,7 @@ namespace App\Repository;
 use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
+use App\Factory\Repository;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 
@@ -26,6 +27,13 @@ abstract class AbstractRepository implements RepositoryInterface {
     protected $entityFactory;
 
     /**
+     * Repository Factory.
+     *
+     * @var App\Factory\Repository
+     */
+    protected $repositoryFactory;
+
+    /**
      * Optimus instance.
      *
      * @var \Jenssegers\Optimus\Optimus
@@ -33,16 +41,32 @@ abstract class AbstractRepository implements RepositoryInterface {
     protected $optimus;
 
     /**
+     * Entity relationships.
+     *
+     * @var array
+     */
+    protected $relationships = [];
+
+    /**
+     * Entity filterable columns.
+     *
+     * @var array
+     */
+    protected $filterableKeys = [];
+
+    /**
      * Class constructor.
      *
      * @param App\Factory\Entity          $entityFactory
+     * @param App\Factory\Repository      $repositoryFactory
      * @param \Jenssegers\Optimus\Optimus $optimus
      *
      * @return void
      */
-    public function __construct(Entity $entityFactory, Optimus $optimus) {
-        $this->entityFactory = $entityFactory;
-        $this->optimus       = $optimus;
+    public function __construct(Entity $entityFactory, Repository $repositoryFactory, Optimus $optimus) {
+        $this->entityFactory     = $entityFactory;
+        $this->repositoryFactory = $repositoryFactory;
+        $this->optimus           = $optimus;
     }
 
     /**
@@ -79,8 +103,8 @@ abstract class AbstractRepository implements RepositoryInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $constraints) : EntityInterface {
-        $entity = $this->findBy($constraints)->first();
+    public function findOneBy(array $constraints, array $queryParams = [], array $columns = ['*']) : EntityInterface {
+        $entity = $this->findBy($constraints, $queryParams, $columns)->first();
 
         if (! $entity) {
             throw new NotFound();
@@ -119,6 +143,19 @@ abstract class AbstractRepository implements RepositoryInterface {
         }
 
         foreach ($relationships as $databasePrefix => $entityName) {
+            $relationProperties = $this->relationships[$databasePrefix];
+            //@FIXME: make this method work for all relationship types
+            $foreignKey = $relationProperties['foreignKey'];
+            if (! $relationProperties['hydrate']) {
+                $entity->$databasePrefix = $entity->$foreignKey;
+                continue;
+            }
+
+            if ($relationProperties['nullable'] && $entity->$foreignKey === null) {
+                $entity->relations[$databasePrefix] = null;
+                continue;
+            }
+
             $entity->relations[$databasePrefix] = $this->entityFactory->create(
                 $entityName,
                 (array) $entity->$databasePrefix()

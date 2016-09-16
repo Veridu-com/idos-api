@@ -26,6 +26,7 @@ class ServiceInit extends AbstractMigration {
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
             ->addColumn('access', 'integer', ['null' => false, 'default' => 0x01]) // 0x00 => 'private', 0x01 => 'company' (visible by children), 0x02 => 'public'
             ->addTimestamps()
+            ->addIndex('name', ['unique' => true])
             ->addIndex('public', ['unique' => true])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();

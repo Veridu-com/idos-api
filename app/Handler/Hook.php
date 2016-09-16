@@ -275,8 +275,8 @@ class Hook implements HandlerInterface {
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
         $hook       = $this->repository->find($command->hookId);
 
-        if ($credential->companyId != $command->companyId) {
-            throw new NotFound\HookException('Company not found', 404);
+        if ($credential->id != $hook->credentialId || $credential->companyId != $command->companyId) {
+            throw new NotFound\HookException('Hook not found');
         }
 
         return $hook;

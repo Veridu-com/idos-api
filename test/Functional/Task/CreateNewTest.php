@@ -11,14 +11,14 @@ namespace Test\Functional\Task;
 use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
-use Test\Functional\Traits\RejectsCompanyToken;
+use Test\Functional\Traits\RejectsIdentityToken;
 use Test\Functional\Traits\RequiresAuth;
 use Test\Functional\Traits\RequiresCredentialToken;
 
 class CreateNewTest extends AbstractFunctional {
     use RequiresAuth;
     use RequiresCredentialToken;
-    use RejectsCompanyToken;
+    use RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();

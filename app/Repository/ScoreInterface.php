@@ -16,14 +16,17 @@ use Illuminate\Support\Collection;
  */
 interface ScoreInterface extends RepositoryInterface {
     /**
-     * Gets all Score entities based on their user_id and attribute name.
+     * Returns all features based on their user id.
      *
-     * @param int    $userId
-     * @param string $attributeName
+     * @param int   $userId
+     * @param array $queryParams
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function getAllByUserIdAndAttributeName(int $userId, string $attributeName) : Collection;
+    public function findByUserId(int $userId, array $queryParams = []) : Collection;
+
+    public function findOneByName(int $userId, int $serviceId, string $name) : Score;
+
     /**
      * Gets all Score entities based on their user_id, attribute name and filtering them by name.
      *

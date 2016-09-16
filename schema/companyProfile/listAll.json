@@ -1,0 +1,67 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /companies/{companySlug}/profiles",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "CompanyProfiles response payload",
+            "type": "array",
+            "items": {
+                "username": {
+                    "description": "user's username",
+                    "type": "string",
+                    "pattern": ""
+                },
+                "firstnames": {
+                    "description": "User's first names",
+                    "type": "array"
+                },
+                "middlenames": {
+                    "description": "User's middle names",
+                    "type": "array"
+                },
+                "lastnames": {
+                    "description": "User's last names",
+                    "type": "array"
+                },
+                "warnings" : {
+                    "description" : "User's warnings",
+                    "type" : "array",
+                    "items": {
+                    "   $ref": "../warning/warningEntity.json"
+                    }
+                },
+                "gates" : {
+                    "description" : "User's gates",
+                    "type" : "array",
+                    "items": {
+                        "$ref": "../gate/gateEntity.json"
+                    }
+                },
+                "created_at": {
+                    "description": "User's creation unixtime",
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "description": "User's last update unixtime",
+                    "type": ["integer", null]
+                }
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": ["integer", null]
+        }
+    },
+    "required": [
+        "status",
+        "data",
+        "updated"
+    ]
+}

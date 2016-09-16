@@ -474,7 +474,6 @@ class Auth implements MiddlewareInterface {
             // Load Company
             $targetCompany = $this->companyRepository->findBySlug($companySlug);
 
-
             if (empty($targetCompany)) {
                 throw new AppException('InvalidCompanyNameReference', 400);
             }

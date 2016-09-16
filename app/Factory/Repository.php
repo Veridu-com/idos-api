@@ -53,7 +53,7 @@ class Repository extends AbstractFactory {
         $class = $this->getClassName($name);
 
         if (class_exists($class))
-            return $this->strategy->build($class);
+            return $this->strategy->build($this, $class);
 
         throw new \RuntimeException(sprintf('"%s" (%s) not found.', $name, $class));
     }

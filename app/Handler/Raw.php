@@ -9,15 +9,12 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Raw\CreateNew;
-use App\Command\Raw\DeleteAll;
-use App\Command\Raw\DeleteOne;
 use App\Command\Raw\UpdateOne;
 use App\Entity\Raw as RawEntity;
 use App\Event\Raw\Created;
-use App\Event\Raw\Deleted;
-use App\Event\Raw\DeletedMulti;
 use App\Event\Raw\Updated;
 use App\Exception\Create;
+use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Repository\RawInterface;
@@ -110,6 +107,13 @@ class Raw implements HandlerInterface {
             );
         }
 
+        try {
+            $entity = $this->repository->findOne($command->source, $command->collection);
+
+            throw new Create\RawException('Error while trying to create raw', 500, $e);
+        } catch (NotFound $e) {
+        }
+
         $raw = $this->repository->create(
             [
                 'source'     => $command->source,
@@ -122,9 +126,10 @@ class Raw implements HandlerInterface {
         try {
             $raw   = $this->repository->save($raw);
             $event = new Created($raw);
+
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new Create\RawException('Error while trying to create a raw', 500, $e);
+            throw new Create\RawException('Error while trying to create raw', 500, $e);
         }
 
         return $raw;
@@ -154,17 +159,11 @@ class Raw implements HandlerInterface {
             );
         }
 
-        try {
-            $raw   = $this->repository->updateOneBySourceAndCollection($command->source, $command->collection, $command->data);
-            $event = new Updated($raw);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\RawException('Error while trying to update a raw', 500, $e);
-        }
+        $entity         = $this->repository->findOne($command->source, $command->collection);
+        $entity->source = $command->source;
+        $entity->data   = $command->data;
 
-        return $raw;
-    }
-
+<<<<<<< HEAD
     /**
      * Deletes a raw data from a given source.
      *
@@ -179,25 +178,12 @@ class Raw implements HandlerInterface {
      * @return void
      */
     public function handleDeleteOne(DeleteOne $command) {
+=======
+>>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
         try {
-            $this->validator->assertSource($command->source);
-            $this->validator->assertName($command->collection);
-        } catch (ValidationException $e) {
-            throw new Validate\RawException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
+            $entity = $this->repository->save($entity);
 
-        $raw = $this->repository->findOneBySourceAndCollection($command->source, $command->collection);
-
-        $affectedRows = $this->repository->deleteOneBySourceAndCollection($command->source, $command->collection);
-
-        if (! $affectedRows) {
-            throw new NotFound\RawException('No raws found for deletion', 404);
-        }
-
+<<<<<<< HEAD
         $event = new Deleted($raw);
         $this->emitter->emit($event);
     }
@@ -223,14 +209,14 @@ class Raw implements HandlerInterface {
                 400,
                 $e
             );
+=======
+            $event = new Updated($entity);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new Update\RawException('Error while trying to update raw', 500, $e);
+>>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
         }
 
-        $raw = $this->repository->getAllBySourceAndCollections($command->source);
-
-        $affectedRows = $this->repository->deleteBySource($command->source);
-        $event        = new DeletedMulti($raw);
-        $this->emitter->emit($event);
-
-        return $affectedRows;
+        return $entity;
     }
 }

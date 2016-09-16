@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class DeleteOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -21,15 +21,15 @@ class DeleteOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817';
+        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817';
     }
 
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817',
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()]
+                    'REQUEST_URI'        => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817',
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()]
             )
         );
         $response = $this->process($request);
@@ -54,8 +54,8 @@ class DeleteOneTest extends AbstractFunctional {
     public function testErrorNotFound() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'REQUEST_URI'        => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/0',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -83,8 +83,8 @@ class DeleteOneTest extends AbstractFunctional {
     public function testErrorCredentialDoesntBelongToCompany() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'REQUEST_URI'        => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks/1321189817',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -112,8 +112,8 @@ class DeleteOneTest extends AbstractFunctional {
     public function testErrorHookDoesntBelongToCredential() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1860914067',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'REQUEST_URI'        => '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1860914067',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 

@@ -28,24 +28,69 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
      * @var string
      */
     protected $entityName = 'Score';
+
     /**
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'name' => 'string'
+        'creator.name' => 'string',
+        'attribute'    => 'string',
+        'name'         => 'string'
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndAttributeName(int $userId, string $attributeName) : Collection {
-        $result = $this->query()
-            ->join('attributes', 'attributes.id', '=', 'scores.attribute_id')
-            ->where('attributes.user_id', '=', $userId)
-            ->where('attributes.name', '=', $attributeName)
-            ->get(['scores.*']);
+    protected $relationships = [
+        'user' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'users',
+            'foreignKey' => 'user_id',
+            'key'        => 'id',
+            'entity'     => 'User',
+            'nullable'   => false,
+            'hydrate'    => false
+        ],
 
-        return $result;
+        'creator' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'services',
+            'foreignKey' => 'creator',
+            'key'        => 'id',
+            'entity'     => 'Service',
+            'nullable'   => false,
+            'hydrate'    => [
+                'name'
+            ]
+        ],
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByUserId(int $userId, array $queryParams = []) : Collection {
+        $entities = $this->findBy(
+            [
+            'user_id' => $userId
+            ], $queryParams
+        );
+
+        return $entities;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByName(int $userId, int $serviceId, string $name) : Score {
+        $entity = $this->findOneBy(
+            [
+            'user_id' => $userId,
+            'creator' => $serviceId,
+            'name'    => $name
+            ]
+        );
+
+        return $entity;
     }
 
     /**

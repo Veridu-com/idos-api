@@ -20,18 +20,34 @@ class CreateNew extends AbstractCommand {
      * @var App\Entity\User
      */
     public $user;
+
     /**
-     * New attribute name.
+     * Attribute's creator.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Attribute name.
      *
      * @var string
      */
     public $name;
+
     /**
-     * New attribute value.
+     * Attribute value.
      *
      * @var string
      */
     public $value;
+
+    /**
+     * Attribute support.
+     *
+     * @var string
+     */
+    public $support;
 
     /**
      * {@inheritdoc}
@@ -41,12 +57,20 @@ class CreateNew extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
 
         if (isset($parameters['value'])) {
             $this->value = $parameters['value'];
+        }
+
+        if (isset($parameters['support'])) {
+            $this->support = $parameters['support'];
         }
 
         return $this;

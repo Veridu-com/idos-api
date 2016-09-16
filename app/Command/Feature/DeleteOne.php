@@ -15,30 +15,42 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Feature SLUG.
+     * Feature's User.
      *
-     * @var string
+     * @var App\Entity\User
      */
-    public $featureSlug;
+    public $user;
+
     /**
-     * User Id.
+     * Feature's Service (creator).
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Feature's id (user input).
      *
      * @var int
      */
-    public $userId;
+    public $featureId;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Feature\DeleteOne
+     * @return App\Command\Feature\CreateNew
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['userId'])) {
-            $this->userId = $parameters['userId'];
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['featureSlug'])) {
-            $this->featureSlug = $parameters['featureSlug'];
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
+        if (isset($parameters['featureId'])) {
+            $this->featureId = $parameters['featureId'];
         }
 
         return $this;

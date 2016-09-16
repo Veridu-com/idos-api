@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
@@ -55,7 +56,6 @@ class Attributes implements RouteInterface {
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
-        self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -124,6 +124,7 @@ class Attributes implements RouteInterface {
             ->setName('attribute:createNew');
     }
 
+<<<<<<< HEAD
     /**
      * Update an attribute.
      *
@@ -159,6 +160,9 @@ class Attributes implements RouteInterface {
     }
 
     /**
+=======
+    /*
+>>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
      * Retrieves an attribute.
      *
      * Retrieves an attribute from the given user.
