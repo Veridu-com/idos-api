@@ -31,32 +31,26 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
      */
     protected $entityName = 'Raw';
 
-    public function findBy(array $constraints, array $filters) {
-        //$this->selectDatabase();
-    }
+    public function findByUserId(int $userId, array $queryParams = []) : Collection {
+        $sourceRepository = $this->repositoryFactory->create('Source');
+        $sources = $sourceRepository->findBy(['user_id' => $userId], $queryParams);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllBySourceAndCollections(Source $source, array $collectionNames = []) : Collection {
-        $this->selectDatabase($source->name);
+        $entities = new Collection();
+        foreach ($sources as $source) {
+            $this->selectDatabase($source->name);
 
-        $collections = $this->listCollections();
-        $entities    = new Collection();
+            $collections = $this->listCollections();
+            foreach ($collections as $collection) {
+                $this->selectCollection($collection->getName());
 
-        foreach($collections as $collection) {
-            if (! empty($collectionNames) && ! in_array($collection->getName(), $collectionNames)) {
-                continue;
-            }
+                try {
+                    $entity = $this->find($source->id);
+                    $entity->collection = $collection->getName();
 
-            $this->selectCollection($collection->getName());
+                    $entities->push($entity);
+                } catch (NotFound $e) {
 
-            try {
-                $entity             = $this->find($source->id);
-                $entity->collection = $collection->getName();
-
-                $entities->push($entity);
-            } catch (NotFound $e) {
+                }
             }
         }
 
@@ -93,6 +87,18 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         unset($entity->source);
 
         return parent::save($entity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOne(Source $source, string $collection) : Raw {
+        $this->selectDatabase($source->name);
+        $this->selectCollection($collection);
+
+        $entity = $this->find($source->id);
+
+        return $entity;
     }
 
     /**

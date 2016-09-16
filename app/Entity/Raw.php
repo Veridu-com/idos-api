@@ -23,14 +23,12 @@ class Raw extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $visible = ['collection', 'data', 'created_at'];
+
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-    /**
-     * {@inheritdoc}
-     */
-    protected $json = ['data'];
+
     /**
      * {@inheritdoc}
      */

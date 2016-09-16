@@ -82,23 +82,15 @@ class Raw implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $source      = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-        $collections = $request->getQueryParam('collections', []);
+        $service     = $request->getAttribute('service');
+        $queryParams = $request->getQueryParams();
 
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
-
-        if ($collections) {
-            $collections = explode(',', $collections);
-        }
-
-        $raws = $this->repository->getAllBySourceAndCollections($source, $collections);
+        $entities = $this->repository->findByUserId($user->id);
 
         $body = [
-            'data'    => $raws->toArray(),
+            'data'    => $entities->toArray(),
             'updated' => (
-                $raws->isEmpty() ? time() : max($raws->max('updatedAt'), $raws->max('createdAt'))
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 
@@ -124,16 +116,16 @@ class Raw implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Raw\\CreateNew');
 
-        $user   = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
+        $user     = $request->getAttribute('targetUser');
+        $service  = $request->getAttribute('service');
+        $sourceId = (int) $request->getParsedBodyParam('decoded_source_id');
 
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
+        $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
+            ->setParameter('service', $service)
             ->setParameter('source', $source);
 
         $raw = $this->commandBus->handle($command);
@@ -166,141 +158,24 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user     = $request->getAttribute('targetUser');
+        $service  = $request->getAttribute('service');
+        $sourceId = (int) $request->getAttribute('decodedSourceId');
+
+        $source = $this->sourceRepository->findOne($sourceId, $user->id);
+
         $command = $this->commandFactory->create('Raw\\UpdateOne');
-
-        $user   = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
-
         $command
+            ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
-            ->setParameter('source', $source)
-            ->setParameter('collection', $request->getAttribute('collection'))
-            ->setParameter('data', $request->getParam('data'));
+            ->setParameter('service', $service)
+            ->setParameter('source', $source);
 
         $raw = $this->commandBus->handle($command);
 
         $body = [
             'data'    => $raw->toArray(),
             'updated' => $raw->updated_at
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Retrieves a raw data from the given source.
-     *
-     * @apiEndpointURIFragment string userName     usr001
-     * @apiEndpointURIFragment int    sourceId     1
-     * @apiEndpointURIFragment string collection collectionName
-     * @apiEndpointResponse 200 schema/raw/rawEntity.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user   = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
-
-        $raw = $this->repository->findOneBySourceAndCollection($source, $request->getAttribute('collection'));
-
-        $body = [
-            'data' => $raw->toArray()
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes all raw data from a given source.
-     *
-     * @apiEndpointResponse 200 schema/raw/deleteAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Raw\\DeleteAll');
-
-        $user   = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
-
-        $command
-            ->setParameter('user', $user)
-            ->setParameter('source', $source);
-
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes a raw data from a given source.
-     *
-     * @apiEndpointURIFragment string userName     usr001
-     * @apiEndpointURIFragment int    sourceId     1
-     * @apiEndpointURIFragment string collection collectionName
-     * @apiEndpointResponse    200    schema/raw/deleteOne.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Raw\\DeleteOne');
-
-        $user   = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
-
-        $command
-            ->setParameter('user', $user)
-            ->setParameter('source', $source)
-            ->setParameter('collection', $request->getAttribute('collection'));
-
-        $this->commandBus->handle($command);
-        $body = [
-            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

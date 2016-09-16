@@ -11,7 +11,8 @@
         },
         "creator": {
             "description": "Feature Creator",
-            "type": "integer"
+            "type": "object",
+            "$ref": "../service/serviceEntity.json"
         },
         "type": {
             "description": "Feature Type",
@@ -28,8 +29,7 @@
         "source": {
             "description": "Source entity",
             "type": "object",
-            "$ref": "../source/sourceEntity.json",
-            "pattern": ""
+            "$ref": "../source/sourceEntity.json"
         },
         "created_at": {
             "description": "Feature's creation unixtime",
