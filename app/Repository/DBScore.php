@@ -41,6 +41,15 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
     /**
      * {@inheritdoc}
      */
+    protected $orderableKeys = [
+        'attribute',
+        'name',
+        'created_at'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $relationships = [
         'user' => [
             'type'       => 'MANY_TO_ONE',
