@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class GetOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -28,7 +28,7 @@ class GetOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
@@ -58,7 +58,7 @@ class GetOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );

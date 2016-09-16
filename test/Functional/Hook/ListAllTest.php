@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -21,14 +21,14 @@ class ListAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks';
+        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks';
     }
 
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
@@ -55,8 +55,8 @@ class ListAllTest extends AbstractFunctional {
     public function testErrorCredentialDoesntBelongToCompany() {
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => '/1.0/management/credentials/1e772b1e4d57560422e07565600aca48/hooks',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'REQUEST_URI'        => '/1.0/companies/veridu-ltd/credentials/1e772b1e4d57560422e07565600aca48/hooks',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 

@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class GetOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -21,14 +21,14 @@ class GetOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961';
+        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961';
     }
 
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
@@ -53,12 +53,12 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/management/credentials/dummy';
+        $this->uri = '/1.0/companies/veridu-ltd/credentials/dummy';
 
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );

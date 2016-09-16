@@ -15,7 +15,7 @@ use Test\Functional\Traits;
 
 class DeleteOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -24,21 +24,21 @@ class DeleteOneTest extends AbstractFunctional {
 
         $this->httpMethod = 'DELETE';
         $this->populate(
-            '/1.0/management/settings',
+            '/1.0/companies/veridu-ltd/settings',
             'GET',
             [
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/management/settings/%s', $this->entity['id']);
+        $this->uri    = sprintf('/1.0/companies/veridu-ltd/settings/%s', $this->entity['id']);
     }
 
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );

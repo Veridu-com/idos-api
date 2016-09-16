@@ -8,13 +8,13 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Traits;
 
-trait RequiresCompanyToken {
-    public function testInvalidCompanyTokenHeader() {
+trait RequiresIdentityToken {
+    public function testInvalidIdentityTokenHeader() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'        => $this->uri,
                 'REQUEST_METHOD'     => $this->httpMethod,
-                'HTTP_AUTHORIZATION' => 'CompanyToken dummy'
+                'HTTP_AUTHORIZATION' => 'IdentityToken dummy'
             ]
         );
         $request  = $this->createRequest($environment);
@@ -37,12 +37,12 @@ trait RequiresCompanyToken {
         );
     }
 
-    public function testInvalidCompanyTokenQueryString() {
+    public function testInvalidIdentityTokenQueryString() {
         $environment = $this->createEnvironment(
             [
                 'REQUEST_URI'    => $this->uri,
                 'REQUEST_METHOD' => $this->httpMethod,
-                'QUERY_STRING'   => 'companyToken=dummy'
+                'QUERY_STRING'   => 'identityToken=dummy'
             ]
         );
         $request  = $this->createRequest($environment);
