@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SlugMutator;
-
 /**
  * Features Entity.
  *
@@ -26,13 +24,19 @@ use App\Extension\SlugMutator;
  * @property int    $updated_at
  */
 class Feature extends AbstractEntity {
-    use SlugMutator;
-
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'source', 'name', 'creator', 'type', 'value', 'created_at', 'updated_at'];
-
+    protected $visible = [
+        'id',
+        'source',
+        'name',
+        'creator',
+        'type',
+        'value',
+        'created_at',
+        'updated_at'
+    ];
     /**
      * {@inheritdoc}
      */
@@ -41,7 +45,6 @@ class Feature extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $secure = ['value'];
-
     /**
      * {@inheritdoc}
      */
