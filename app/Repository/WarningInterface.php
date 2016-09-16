@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
  */
 interface WarningInterface extends RepositoryInterface {
     /**
-     * Gets all Gates based on their user id.
+     * Gets all Warnings based on their user id.
      *
      * @param int $userId
      *

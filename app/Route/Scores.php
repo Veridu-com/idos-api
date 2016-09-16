@@ -155,7 +155,7 @@ class Scores implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->patch(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9-_]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z]+}',
                 'App\Controller\Scores:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -225,7 +225,7 @@ class Scores implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9-_]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z]+}',
                 'App\Controller\Scores:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -294,7 +294,7 @@ class Scores implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9-_]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z]+}',
                 'App\Controller\Scores:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

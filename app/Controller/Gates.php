@@ -288,7 +288,7 @@ class Gates implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function upsertOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
         $service  = $request->getAttribute('service');
 

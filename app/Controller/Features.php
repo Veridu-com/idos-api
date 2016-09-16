@@ -269,7 +269,7 @@ class Features implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id);
+        $source = $this->sourceRepository->find($request->getParsedBodyParam('decoded_source_id'), $user->id);
         $service = $request->getAttribute('service');
         $featureId = $request->getAttribute('decodedFeatureId');
 
@@ -311,8 +311,13 @@ class Features implements ControllerInterface {
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
-        $source = $request->getParsedBodyParam('sourceId') !== 0 ? $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id) : null;
+        $source = null;
         $service = $request->getAttribute('service');
+
+        $sourceId = $request->getParsedBodyParam('decoded_source_id');
+        if ($sourceId !== 0) {
+            $this->sourceRepository->find($sourceId, $user->id);
+        }
 
         $command = $this->commandFactory->create('Feature\\Upsert');
         $command

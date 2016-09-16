@@ -10,6 +10,7 @@ namespace App\Route;
 
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
+use App\Controller\ControllerInterface;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -38,7 +39,7 @@ class Attributes implements RouteInterface {
      * {@inheritdoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Attributes::class] = function (ContainerInterface $container) {
+        $app->getContainer()[\App\Controller\Attributes::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Attributes(
                 $container->get('repositoryFactory')->create('Attribute'),
                 $container->get('commandBus'),
@@ -149,7 +150,7 @@ class Attributes implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9-_]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
                 'App\Controller\Attributes:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -216,7 +217,7 @@ class Attributes implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9-_]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
                 'App\Controller\Attributes:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
