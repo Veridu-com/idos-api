@@ -41,6 +41,17 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
     /**
      * {@inheritdoc}
      */
+    protected $orderableKeys = [
+        'name',
+        'slug',
+        'pass',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $relationships = [
         'user' => [
             'type'       => 'MANY_TO_ONE',
