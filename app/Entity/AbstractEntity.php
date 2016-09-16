@@ -329,6 +329,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 }
             }
 
+            //@FIXME: check if this does not break other endpoints
             if ($value !== null) {
                 $return[$attribute] = $value;
             }

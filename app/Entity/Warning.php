@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use App\Extension\SlugMutator;
+
 /**
  * Warnings Entity.
  *
@@ -21,6 +23,8 @@ namespace App\Entity;
  * @property int    $updated_at
  */
 class Warning extends AbstractEntity {
+    use SlugMutator;
+
     /**
      * {@inheritdoc}
      */
@@ -44,18 +48,4 @@ class Warning extends AbstractEntity {
     public $relationships = [
         'creator' => 'Service'
     ];
-
-    /**
-     * Property Mutator for $name.
-     *
-     * @param string $value
-     *
-     * @return App\Entity\Warning
-     */
-    public function setNameAttribute(string $value) : self {
-        $this->attributes['name'] = $value;
-        $this->attributes['slug'] = Utils::slugify($value);
-
-        return $this;
-    }
 }

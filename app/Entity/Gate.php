@@ -48,18 +48,4 @@ class Gate extends AbstractEntity {
     public $relationships = [
         'creator' => 'Service'
     ];
-
-    /**
-     * Property Mutator for $name.
-     *
-     * @param string $name
-     *
-     * @return App\Entity\Gate
-     */
-    public function setNameAttribute(string $name) : self {
-        $this->attributes['name'] = $name;
-        $this->attributes['slug'] = Utils::slugify($name);
-
-        return $this;
-    }
 }
