@@ -60,13 +60,12 @@ class Digested implements ControllerInterface {
     /**
      * Retrieve a complete list of the data digested by a given source.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment int    sourceId 1
-     * @apiEndpointParam       query  string   names  numOfFriends
      * @apiEndpointResponse 200 schema/digested/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Repository\DBDigested::getAllByUserIdSourceIdAndNames
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -96,9 +95,12 @@ class Digested implements ControllerInterface {
      * Created a new digested data for a given source.
      *
      * @apiEndpointResponse 201 schema/digested/digestedEntity.json
+     * @apiEndpointRequiredParam body string value 1 Digested value
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Digested::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -130,12 +132,13 @@ class Digested implements ControllerInterface {
     /**
      * Updates a digested data from the given source.
      *
-     * @apiEndpointURIFragment   string digestedName numOfFriends
-     * @apiEndpointRequiredParam body   string       value        1
+     * @apiEndpointRequiredParam body   string       value        1 DigestedValue
      * @apiEndpointResponse 200 schema/digested/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Handler\Digested::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -166,13 +169,12 @@ class Digested implements ControllerInterface {
     /**
      * Retrieves a digested data from the given source.
      *
-     * @apiEndpointURIFragment string userName     usr001
-     * @apiEndpointURIFragment int    sourceId     1
-     * @apiEndpointURIFragment string digestedName numOfFriends
      * @apiEndpointResponse 200 schema/digested/digestedEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBDigested::findOneByUserIdSourceIdAndName
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -204,6 +206,8 @@ class Digested implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Digested::handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -228,13 +232,12 @@ class Digested implements ControllerInterface {
     /**
      * Deletes a digested data from a given source.
      *
-     * @apiEndpointURIFragment string userName     usr001
-     * @apiEndpointURIFragment int    sourceId     1
-     * @apiEndpointURIFragment string digestedName numOfFriends
      * @apiEndpointResponse    200    schema/digested/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Digested::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
