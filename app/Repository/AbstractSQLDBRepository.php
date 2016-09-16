@@ -347,6 +347,39 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     }
 
     /**
+     * Gets query modifiers (limit, order, sort).
+     *
+     * @param      Illuminate\Database\Query\Builder $query        The query to be modified
+     * @param      array                             $queryParams  The query parameters
+     *
+     * @return     Illuminate\Database\Query\Builder  The modified query
+     */
+    public function treatQueryModifiers(Builder $query, array $queryParams) {
+        var_dump($queryParams);exit;
+        foreach ($queryParams as $param => $value) {
+            switch ($param) {
+                case 'filter:order':
+                    $query = $query->orderBy($value);
+                    break;
+
+                case 'filter:sort':
+                    if ($value !== 'ASC' || $value !== 'DESC') {
+                        continue;
+                    }
+
+                    $query = $query->sort($value);
+                    break;
+
+                case 'filter:limit':
+                    $query = $query->limit((int) $value);
+                    break;
+            }
+        }
+
+        return $query;
+    }
+
+    /**
      * Fetches all entities matching the given constraints, possibly filtered by query params
      * that comes from the user request. You can also specify which data will be fetched
      * specifying the columns array.
@@ -406,6 +439,11 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             }
         }
 
+        $query = $this->treatQueryModifiers($query, $queryParams);
+
+        if ($this->getTableName() === 'features') {
+            var_dump($query->toSql());exit;
+        }
 
         return $this->castHydrate($query->get($getColumns));
     }
