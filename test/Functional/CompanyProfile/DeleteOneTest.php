@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class DeleteOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -29,7 +29,7 @@ class DeleteOneTest extends AbstractFunctional {
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
@@ -57,7 +57,7 @@ class DeleteOneTest extends AbstractFunctional {
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );

@@ -86,7 +86,7 @@ class CompanyProfiles implements RouteInterface {
                 'App\Controller\CompanyProfiles:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('companyProfiles:listAll');
     }
 
@@ -115,7 +115,7 @@ class CompanyProfiles implements RouteInterface {
                 'App\Controller\CompanyProfiles:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('companyProfiles:getOne');
     }
 
@@ -148,7 +148,7 @@ class CompanyProfiles implements RouteInterface {
                 'App\Controller\CompanyProfiles:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('companyProfiles:deleteOne');
     }
 }
