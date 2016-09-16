@@ -32,5 +32,10 @@ class Raw extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
+    protected $json = ['data'];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $secure = ['data'];
 }
