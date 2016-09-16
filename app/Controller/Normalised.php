@@ -60,13 +60,13 @@ class Normalised implements ControllerInterface {
     /**
      * Retrieve a list of the data normalised entries of a source.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment int    sourceId 1
      * @apiEndpointParam       query  string   names firstName
      * @apiEndpointResponse    200    schema/normalised/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Repository\DBNormalised::getAllByUserIdSourceIdAndNames
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -95,12 +95,14 @@ class Normalised implements ControllerInterface {
     /**
      * Created a new normalised data entry for a source.
      *
-     * @apiEndpointRequiredParam body   string     name  firstName
-     * @apiEndpointRequiredParam body   string     value John
+     * @apiEndpointRequiredParam body   string     name  firstName normalised name
+     * @apiEndpointRequiredParam body   string     value John normalised value
      * @apiEndpointResponse 201 schema/normalised/normalisedEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Normalised::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -129,15 +131,48 @@ class Normalised implements ControllerInterface {
         return $this->commandBus->handle($command);
     }
 
+     /**
+     * Deletes all normalised data entries from a source.
+     *
+     * @apiEndpointResponse 200 schema/normalised/deleteAll.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Normalised::handleDeleteAll
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $command = $this->commandFactory->create('Normalised\\DeleteAll');
+        $command
+            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'));
+
+        $body = [
+            'deleted' => $this->commandBus->handle($command)
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+
     /**
      * Updates a normalised data entry of a source.
      *
-     * @apiEndpointURIFragment   string normalisedName firstName
-     * @apiEndpointRequiredParam body   string     value     John
+     * @apiEndpointRequiredParam body   string     value     John normalised value
      * @apiEndpointResponse      200    schema/normalised/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Handler\Normalised::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -168,13 +203,13 @@ class Normalised implements ControllerInterface {
     /**
      * Retrieves normalised data entries from a source.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment int    sourceId 1
-     * @apiEndpointParam       query  string   normalisedName firstName
+     * @apiEndpointParam       query  string   normalisedName firstName normalised name
      * @apiEndpointResponse 200 schema/normalised/normalisedEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBNormalised::findOneByUserIdSourceIdAndName
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -199,44 +234,14 @@ class Normalised implements ControllerInterface {
     }
 
     /**
-     * Deletes all normalised data entries from a source.
-     *
-     * @apiEndpointResponse 200 schema/normalised/deleteAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Normalised\\DeleteAll');
-        $command
-            ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('sourceId', (int) $request->getAttribute('decodedSourceId'));
-
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Deletes a normalised data entry from a source.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment int    sourceId 1
-     * @apiEndpointURIFragment string normalisedName firstName
      * @apiEndpointResponse 200 schema/normalised/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Normalised::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
