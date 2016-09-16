@@ -158,7 +158,7 @@ class ServiceHandler implements RouteInterface {
      *
      * Retrieves all public information from a Service handler.
      *
-     * @apiEndpoint GET /service-handlers/{serviceHandlerId:[0-9]+}
+     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
      * @apiAuth header token CompanyToken XXX A valid Company Token
      * @apiAuth query token CompanyToken XXX A valid Company Token
@@ -190,7 +190,7 @@ class ServiceHandler implements RouteInterface {
      *
      * Updates a single Service handler instance.
      *
-     * @apiEndpoint GET /service-handlers/{serviceHandlerId:[0-9]+}
+     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
      * @apiAuth header token CompanyToken XXX A valid Company Token
      * @apiAuth query token CompanyToken XXX A valid Company Token
@@ -222,7 +222,7 @@ class ServiceHandler implements RouteInterface {
      *
      * Deletes a single Service handler that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /service-handlers/{serviceHandlerId:[0-9]+}
+     * @apiEndpoint DELETE /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
      * @apiAuth header token CompanyToken XXX A valid Company Token
      * @apiAuth query token CompanyToken XXX A valid Company Token
