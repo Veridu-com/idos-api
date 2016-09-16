@@ -6,14 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Gate;
+namespace App\Command\Score;
 
 use App\Command\AbstractCommand;
 
 /**
- * Gate "Create New" Command.
+ * Score "Upsert" Command.
  */
-class CreateNew extends AbstractCommand {
+class Upsert extends AbstractCommand {
     /**
      * Attribute's user.
      *
@@ -29,23 +29,27 @@ class CreateNew extends AbstractCommand {
     public $service;
 
     /**
-     * Gate's name (user input).
+     * Score's Attribute.
+     *
+     * @var App\Entity\Attribute
+     */
+    public $attribute;
+
+    /**
+     * New score name.
      *
      * @var string
      */
     public $name;
-
     /**
-     * Gate's value (user input).
+     * New score value.
      *
-     * @var bool
+     * @var string
      */
-    public $pass;
+    public $value;
 
     /**
      * {@inheritdoc}
-     *
-     * @return App\Command\Gate\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
@@ -56,12 +60,16 @@ class CreateNew extends AbstractCommand {
             $this->service = $parameters['service'];
         }
 
+        if (isset($parameters['attribute'])) {
+            $this->attribute = $parameters['attribute'];
+        }
+
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
 
-        if (isset($parameters['pass'])) {
-            $this->pass = $parameters['pass'];
+        if (isset($parameters['value'])) {
+            $this->value = $parameters['value'];
         }
 
         return $this;

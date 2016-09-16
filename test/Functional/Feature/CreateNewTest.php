@@ -26,7 +26,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features';
     }
 
-    public function testSuccess() {
+    public function testSuccessNoUpsert() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -34,16 +34,20 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name    = 'Testing';
+        $name    = 'feature-test';
+        $type    = 'string';
         $value   = 'testing';
         $request = $this->createRequest(
             $environment, json_encode(
                 [
+                    'sourceId' => 1,
                     'name'  => $name,
+                    'type' => $type,
                     'value' => $value
                 ]
             )
         );
+
         $response = $this->process($request);
         $this->assertSame(201, $response->getStatusCode());
 
@@ -51,6 +55,8 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame($name, $body['data']['name']);
+        $this->assertSame(1, $body['data']['creator']);
+        $this->assertSame($type, $body['data']['type']);
         $this->assertSame($value, $body['data']['value']);
         /*
          * Validates Response using the Json Schema.
@@ -60,6 +66,7 @@ class CreateNewTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
+
 
     public function testEmptyName() {
         $environment = $this->createEnvironment(
@@ -79,6 +86,7 @@ class CreateNewTest extends AbstractFunctional {
                 ]
             )
         );
+
         $response = $this->process($request);
         $this->assertSame(400, $response->getStatusCode());
 
@@ -114,13 +122,62 @@ class CreateNewTest extends AbstractFunctional {
         );
         $response = $this->process($request);
         $this->assertSame(400, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
         /*
          * Validates Response using the Json Schema.
          */
+        $this->assertTrue(
+            $this->validateSchema('error.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
+    public function testSuccessNoUpsertDuplicate() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name    = 'feature-test-2';
+        $type    = 'string';
+        $value   = 'testing';
+
+        //First, we are going to create a feature without upsert flag
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'sourceId' => 1,
+                    'name'  => $name,
+                    'type' => $type,
+                    'value' => $value
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame($name, $body['data']['name']);
+        $this->assertSame(1, $body['data']['creator']);
+        $this->assertSame($type, $body['data']['type']);
+        $this->assertSame($value, $body['data']['value']);
+
+        $this->assertTrue(
+            $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+
+        //Now, we are going to try to create the same feature again, and it must fail
+        $response = $this->process($request);
+        $this->assertSame(500, $response->getStatusCode());
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+        
         $this->assertTrue(
             $this->validateSchema('error.json', json_decode((string) $response->getBody())),
             $this->schemaErrors

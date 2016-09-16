@@ -15,11 +15,25 @@ use App\Command\AbstractCommand;
  */
 class DeleteAll extends AbstractCommand {
     /**
-     * User id that whose gates will be deleted.
+     * Attribute's user.
      *
-     * @var int
+     * @var App\Entity\User
      */
-    public $userId;
+    public $user;
+
+    /**
+     * Attribute's creator.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Query params.
+     *
+     * @var array
+     */
+    public $queryParams;
 
     /**
      * {@inheritdoc}
@@ -27,8 +41,16 @@ class DeleteAll extends AbstractCommand {
      * @return App\Command\Gate\DeleteAll
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['userId'])) {
-            $this->userId = $parameters['userId'];
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
+        if (isset($parameters['queryParams'])) {
+            $this->queryParams = $parameters['queryParams'];
         }
 
         return $this;

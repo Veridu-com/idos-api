@@ -11,6 +11,7 @@ class S25GatesSeed extends AbstractSeed {
         $data = [
             [
                 'user_id'    => 1,
+                'creator'    => 1,
                 'name'       => 'Gate one',
                 'slug'       => 'gate-one',
                 'pass'       => true,
@@ -19,6 +20,7 @@ class S25GatesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 1,
+                'creator'    => 1,
                 'name'       => 'Gate two',
                 'slug'       => 'gate-two',
                 'pass'       => true,

@@ -91,9 +91,10 @@ class Warning implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : WarningEntity {
         try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
             $this->validator->assertName($command->name);
             $this->validator->assertName($command->reference);
-            $this->validator->assertId($command->userId);
         } catch (ValidationException $e) {
             throw new Validate\WarningException(
                 $e->getFullMessage(),
@@ -102,24 +103,27 @@ class Warning implements HandlerInterface {
             );
         }
 
-        $warning = $this->repository->create(
+        $entity = $this->repository->create(
             [
+                'user_id'    => $command->user->id,
+                'creator'    => $command->service->id,
                 'name'       => $command->name,
                 'reference'  => $command->reference,
-                'user_id'    => $command->userId,
                 'created_at' => time()
             ]
         );
 
         try {
-            $warning = $this->repository->save($warning);
-            $event   = new Created($warning);
+            $entity = $this->repository->save($entity);
+            $entity = $this->repository->hydrateRelations($entity);
+
+            $event   = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Create\WarningException('Error while trying to create a warning', 500, $e);
         }
 
-        return $warning;
+        return $entity;
     }
 
     /**
@@ -131,7 +135,8 @@ class Warning implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertId($command->userId);
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
         } catch (ValidationException $e) {
             throw new Validate\WarningException(
                 $e->getFullMessage(),
@@ -140,13 +145,25 @@ class Warning implements HandlerInterface {
             );
         }
 
-        $deletedWarnings = $this->repository->findByUserId($command->userId);
+        $entities = $this->repository->findBy([
+            'user_id' => $command->user->id,
+            'creator' => $command->service->id
+        ], $command->queryParams);
 
-        $rowsAffected = $this->repository->deleteByUserId($command->userId);
-        $event        = new DeletedMulti($deletedWarnings);
-        $this->emitter->emit($event);
+        $affectedRows = 0;
 
-        return $rowsAffected;
+        try {
+            foreach ($entities as $entity) {
+                $affectedRows += $this->repository->delete($entity->id);
+            }
+
+            $event        = new DeletedMulti($entities);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while deleting warnings');
+        }
+
+        return $affectedRows;
     }
 
     /**
@@ -156,10 +173,11 @@ class Warning implements HandlerInterface {
      *
      * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         try {
-            $this->validator->assertSlug($command->warningSlug);
-            $this->validator->assertId($command->userId);
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertSlug($command->slug);
         } catch (ValidationException $e) {
             throw new Validate\WarningException(
                 $e->getFullMessage(),
@@ -168,14 +186,17 @@ class Warning implements HandlerInterface {
             );
         }
 
-        $warning = $this->repository->findByUserIdAndSlug($command->userId, $command->warningSlug);
+        $entity = $this->repository->findOneBySlug($command->user->id, $command->service->id, $command->slug);
 
-        $rowsAffected = $this->repository->delete($warning->id);
-        if (! $rowsAffected) {
-            throw new NotFound\WarningException('No warnings found for deletion', 404);
+        try {
+            $affectedRows = $this->repository->delete($entity->id);
+            
+            $event = new Deleted($entity);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new AppException('Error while deleting warning');
         }
 
-        $event = new Deleted($warning);
-        $this->emitter->emit($event);
+        return $affectedRows;
     }
 }

@@ -11,6 +11,7 @@ class S25WarningsSeed extends AbstractSeed {
         $data = [
             [
                 'user_id'    => 1,
+                'creator'    => 1,
                 'name'       => 'warning one',
                 'slug'       => 'warning-one',
                 'reference'  => 'firstName',
@@ -19,6 +20,7 @@ class S25WarningsSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 1,
+                'creator'    => 1,
                 'name'       => 'warning two',
                 'slug'       => 'warning-two',
                 'reference'  => 'lastName',

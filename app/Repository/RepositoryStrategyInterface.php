@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
+use App\Factory\Repository;
+
 /**
  * Repository Strategy Interface.
  */
@@ -24,9 +26,10 @@ interface RepositoryStrategyInterface {
     /**
      * Builds a new repository.
      *
+     * @param App\Factory\Repository $repositoryFactory
      * @param string $className
      *
      * @return App\Repository\RepositoryInterface
      */
-    public function build(string $className) : RepositoryInterface;
+    public function build(Repository $repositoryFactory, string $className) : RepositoryInterface;
 }

@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Factory\Entity;
+use App\Factory\Repository;
 use Illuminate\Database\Connection as SQLConnection;
 use Jenssegers\Optimus\Optimus;
 
@@ -19,7 +20,7 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * Entity Factory.
      *
-     * @var App\Entity\EntityFactory
+     * @var App\Factory\Entity
      */
     public $entityFactory;
     /**
@@ -74,16 +75,16 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * {@inheritdoc}
      */
-    public function build(string $className) : RepositoryInterface {
+    public function build(Repository $repositoryFactory, string $className) : RepositoryInterface {
         $reflectionClass = new \ReflectionClass($className);
         $parentClass     = $reflectionClass->getParentClass()->getName();
 
         switch ($parentClass) {
             case 'App\Repository\AbstractSQLDBRepository':
-                return new $className($this->entityFactory, $this->optimus, $this->sqlConnection);
+                return new $className($this->entityFactory, $repositoryFactory, $this->optimus, $this->sqlConnection);
 
             case 'App\Repository\AbstractNoSQLDBRepository':
-                return new $className($this->entityFactory, $this->optimus, $this->noSqlConnector);
+                return new $className($this->entityFactory, $repositoryFactory, $this->optimus, $this->noSqlConnector);
 
             default:
                 throw new AppException('Invalid repository parent class');

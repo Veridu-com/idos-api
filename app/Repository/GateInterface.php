@@ -20,9 +20,12 @@ interface GateInterface extends RepositoryInterface {
      *
      * @param int $userId
      *
-     * @return array
+     * @return Illuminate\Database\Collection
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : array;
+    public function findByUserId(int $userId, array $queryParams = []) : Collection;
+
+    public function findOneBySlug(int $userId, int $serviceId, string $slug) : Gate;
+    public function findOneByName(int $userId, int $serviceId, string $name) : Gate;
 
     /**
      * Deletes all gates based on their user id.
@@ -32,15 +35,6 @@ interface GateInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByUserId(int $userId) : int;
-
-    /**
-     * Returns a collection of gates based on their user id.
-     *
-     * @param int $userId
-     *
-     * @return Illuminate\Support\Collection
-     */
-    public function findByUserId(int $userId) : Collection;
 
     /**
      * Returns a Gate based on the user id and the slug.

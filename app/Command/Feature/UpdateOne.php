@@ -15,19 +15,42 @@ use App\Command\AbstractCommand;
  */
 class UpdateOne extends AbstractCommand {
     /**
-     * Feature's slug.
+     * Feature's User.
+     *
+     * @var App\Entity\User
+     */
+    public $user;
+
+    /**
+     * Feature's Source (user input).
+     *
+     * @var App\Entity\Source
+     */
+    public $source;
+
+    /**
+     * Feature's Service (creator).
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Feature's id (user input).
      *
      * @var string
      */
-    public $featureSlug;
+    public $featureId;
+
     /**
-     * User's id.
+     * Feature's type (user input).
      *
-     * @var int
+     * @var string
      */
-    public $userId;
+    public $type;
+
     /**
-     * Feature's property value (user input).
+     * Feature's value (user input).
      *
      * @var object
      */
@@ -36,19 +59,31 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Feature\UpdateOne
+     * @return App\Command\Feature\CreateNew
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['source'])) {
+            $this->source = $parameters['source'];
+        }
+
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
+        if (isset($parameters['featureId'])) {
+            $this->featureId = $parameters['featureId'];
+        }
+
+        if (isset($parameters['type'])) {
+            $this->type = $parameters['type'];
+        }
+
         if (isset($parameters['value'])) {
             $this->value = $parameters['value'];
-        }
-
-        if (isset($parameters['userId'])) {
-            $this->userId = $parameters['userId'];
-        }
-
-        if (isset($parameters['featureSlug'])) {
-            $this->featureSlug = $parameters['featureSlug'];
         }
 
         return $this;
