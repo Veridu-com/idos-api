@@ -161,7 +161,7 @@ class Sources implements RouteInterface {
      *
      * Retrieves all information from a Source.
      *
-     * @apiEndpoint GET /profiles/{userName/sources/{sourceId:[0-9]+}
+     * @apiEndpoint GET /profiles/{userName/sources/{sourceId}
      * @apiGroup Profile Source
      * @apiAuth header token userToken XXX User's Token
      * @apiAuth query token userToken XXX User's Token
@@ -193,7 +193,7 @@ class Sources implements RouteInterface {
      *
      * Updates a Source's specific information.
      *
-     * @apiEndpoint PUT /profiles/{userName}/sources/{sourceId:[0-9]+}
+     * @apiEndpoint PUT /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile Source
      * @apiAuth header token userToken XXX User's Token
      * @apiAuth query token userToken XXX User's Token
@@ -225,7 +225,7 @@ class Sources implements RouteInterface {
      *
      * Deletes a source from the target user.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/sources/{sourceId:[0-9]+}
+     * @apiEndpoint DELETE /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile Source
      * @apiAuth header token userToken XXX User's Token
      * @apiAuth query token userToken XXX User's Token
