@@ -15,7 +15,7 @@ use App\Command\Sso\CreateNewGoogle;
 use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
 use App\Command\Sso\CreateNewTwitter;
-use App\Entity\Source;
+use App\Entity\Source as SourceIdentity;
 use App\Entity\User;
 use App\Exception\Create;
 use App\Factory\Command;
