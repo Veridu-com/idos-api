@@ -75,6 +75,8 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBFeature::getAllByUserId
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -108,6 +110,8 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBFeature::findByUserIdAndSlug
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -133,12 +137,14 @@ class Features implements ControllerInterface {
     /**
      * Creates a new Feture for the given user.
      *
-     * @apiEndpointRequiredParam body string name XYZ Feature name
-     * @apiEndpointRequiredParam body string value ZYX Feature value
+     * @apiEndpointRequiredParam body string name Friend count  Feature name
+     * @apiEndpointRequiredParam body string value 17 Feature value
      * @apiEndpointResponse 201 schema/feature/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Feature::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -175,6 +181,8 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Feature::handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -204,6 +212,8 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Feature::handleDeleteOne
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -231,12 +241,14 @@ class Features implements ControllerInterface {
     /**
      * Updates one Feature of the User.
      *
-     * @apiEndpointRequiredParam body string name XYZ Feature name
-     * @apiEndpointRequiredParam body string value ZYX Feature value
+     * @apiEndpointRequiredParam body string name  Friend count  Feature name
+     * @apiEndpointRequiredParam body string value 17 Feature value
      * @apiEndpointResponse 200 schema/feature/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Feature::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
