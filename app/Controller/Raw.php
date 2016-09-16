@@ -85,7 +85,7 @@ class Raw implements ControllerInterface {
         $service     = $request->getAttribute('service');
         $queryParams = $request->getQueryParams();
 
-        $entities = $this->repository->findByUserId($user->id);
+        $entities = $this->repository->findByUserId($user->id, $queryParams);
 
         $body = [
             'data'    => $entities->toArray(),
