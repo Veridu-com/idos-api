@@ -122,7 +122,6 @@ class Attribute implements HandlerInterface {
         );
 
         try {
-<<<<<<< HEAD
             $attribute = $this->repository->save($attribute);
             $event     = new Created($attribute);
             $this->emitter->emit($event);
@@ -156,10 +155,8 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
-=======
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
->>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
 
             $event = new Created($entity);
             $this->emitter->emit($event);

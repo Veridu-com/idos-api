@@ -124,45 +124,7 @@ class Attributes implements RouteInterface {
             ->setName('attribute:createNew');
     }
 
-<<<<<<< HEAD
     /**
-     * Update an attribute.
-     *
-     * Updates an attribute for the given user.
-     *
-     * @apiEndpoint PUT /profiles/{userName}/attributes/{attributeName}
-     * @apiGroup Profile Attributes
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName data-name
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/management/members/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Members::updateOne
-     */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->put(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
-                'App\Controller\Attributes:updateOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('attribute:updateOne');
-    }
-
-    /**
-=======
-    /*
->>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
      * Retrieves an attribute.
      *
      * Retrieves an attribute from the given user.

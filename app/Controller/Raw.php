@@ -197,7 +197,6 @@ class Raw implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-<<<<<<< HEAD
 
     /**
      * Retrieves a raw data from the given source.
@@ -319,6 +318,4 @@ class Raw implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-=======
->>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
 }

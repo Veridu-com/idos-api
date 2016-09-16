@@ -87,6 +87,7 @@ class Raw implements HandlerInterface {
      *
      * @param App\Command\Raw\CreateNew $command
      *
+     * @see App\Repository\DBRaw::findOne
      * @see App\Repository\DBRaw::create
      * @see App\Repository\DBRaw::save
      *
@@ -140,7 +141,8 @@ class Raw implements HandlerInterface {
      *
      * @param App\Command\Raw\UpdateOne $command
      *
-     * @see App\Repository\DBRaw::updateOneBySourceAndCollection
+     * @see App\Repository\DBRaw::findOne
+     * @see App\Repository\DBRaw::save
      *
      * @throws App\Exception\Validate\RawException
      * @throws App\Exception\Update\RawException
@@ -163,58 +165,13 @@ class Raw implements HandlerInterface {
         $entity->source = $command->source;
         $entity->data   = $command->data;
 
-<<<<<<< HEAD
-    /**
-     * Deletes a raw data from a given source.
-     *
-     * @param App\Command\Raw\DeleteOne $command
-     *
-     * @see App\Repository\DBRaw::findOneBySourceAndCollection
-     * @see App\Repository\DBRaw::deleteOneBySourceAndCollection
-     *
-     * @throws App\Exception\Validate\RawException
-     * @throws App\Exception\NotFound\RawException
-     *
-     * @return void
-     */
-    public function handleDeleteOne(DeleteOne $command) {
-=======
->>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
         try {
             $entity = $this->repository->save($entity);
 
-<<<<<<< HEAD
-        $event = new Deleted($raw);
-        $this->emitter->emit($event);
-    }
-
-    /**
-     * Deletes all raw data from a given source.
-     *
-     * @param App\Command\Raw\DeleteAll $command
-     *
-     * @see App\Repository\DBRaw::getAllBySourceAndCollections
-     * @see App\Repository\DBRaw::deleteBySource
-     *
-     * @throws App\Exception\Validate\RawException;
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertSource($command->source);
-        } catch (ValidationException $e) {
-            throw new Validate\RawException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-=======
             $event = new Updated($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\RawException('Error while trying to update raw', 500, $e);
->>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
         }
 
         return $entity;
