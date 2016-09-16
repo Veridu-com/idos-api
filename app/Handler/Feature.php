@@ -22,7 +22,6 @@ use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
-use Illuminate\Database\QueryException;
 use App\Repository\FeatureInterface;
 use App\Repository\SourceInterface;
 use App\Validator\Feature as FeatureValidator;
@@ -97,10 +96,10 @@ class Feature implements HandlerInterface {
         FeatureValidator $validator,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
+        $this->repository       = $repository;
         $this->sourceRepository = $sourceRepository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->validator        = $validator;
+        $this->emitter          = $emitter;
     }
 
     /**
@@ -117,7 +116,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertLongName($command->name);
             $this->validator->assertName($command->type);
             //$this->validator->assertValue($command->value);
-            
+
             if ($command->source !== null) {
                 $this->validator->assertSource($command->source);
             }
@@ -131,13 +130,13 @@ class Feature implements HandlerInterface {
 
         $feature = $this->repository->create(
             [
-                'user_id'    => $command->user->id,
-                'source_id'    => $command->source !== null ? $command->source->id : null,
-                'name'       => $command->name,
+                'user_id'       => $command->user->id,
+                'source_id'     => $command->source !== null ? $command->source->id : null,
+                'name'          => $command->name,
                 'creator'       => $command->service->id,
-                'type'       => $command->type,
-                'value'      => $command->value,
-                'created_at' => time()
+                'type'          => $command->type,
+                'value'         => $command->value,
+                'created_at'    => time()
             ]
         );
 
@@ -145,7 +144,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
-            $event   = new Created($feature);
+            $event = new Created($feature);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\FeatureException('Error while trying to create a feature', 500, $e);
@@ -187,7 +186,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
-            $event   = new Updated($feature);
+            $event = new Updated($feature);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\FeatureException('Error while trying to update a feature', 500, $e);
@@ -216,10 +215,12 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $deletedFeatures = $this->repository->findBy([
+        $deletedFeatures = $this->repository->findBy(
+            [
             'user_id' => $command->user->id,
             'creator' => $command->service->id
-        ], $command->queryParams);
+            ], $command->queryParams
+        );
 
         $affectedRows = 0;
 
@@ -253,11 +254,13 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOneBy([
+        $feature = $this->repository->findOneBy(
+            [
             'user_id' => $command->user->id,
             'creator' => $command->service->id,
-            'id' => $command->featureId
-        ]);
+            'id'      => $command->featureId
+            ]
+        );
 
         if ($feature->sourceId !== null && $feature->sourceId !== $command->user->id) {
             throw new NotFound();
@@ -288,44 +291,43 @@ class Feature implements HandlerInterface {
         $this->validator->assertLongName($command->name);
         $this->validator->assertName($command->type);
         //$this->validator->assertValue($command->value);
-        
+
         if ($command->source !== null) {
             $this->validator->assertSource($command->source);
         }
 
-        $feature = null;
+        $feature   = null;
         $inserting = false;
         try {
             $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->id : 0, $command->service->id, $command->name);
-            
-            $feature->type = $command->type;
-            $feature->value = $command->value;
+
+            $feature->type      = $command->type;
+            $feature->value     = $command->value;
             $feature->updatedAt = time();
         } catch (NotFound $e) {
             $inserting = true;
-            
+
             $feature = $this->repository->create(
                 [
-                    'user_id'    => $command->user->id,
-                    'source_id'    => $command->source !== null ? $command->source->id : null,
-                    'name'       => $command->name,
+                    'user_id'       => $command->user->id,
+                    'source_id'     => $command->source !== null ? $command->source->id : null,
+                    'name'          => $command->name,
                     'creator'       => $command->service->id,
-                    'type'       => $command->type,
-                    'value'      => $command->value,
-                    'created_at' => time()
+                    'type'          => $command->type,
+                    'value'         => $command->value,
+                    'created_at'    => time()
                 ]
             );
         }
-
 
         try {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
             if ($inserting) {
-                $event   = new Created($feature);
+                $event = new Created($feature);
             } else {
-                $event   = new Updated($feature);
+                $event = new Updated($feature);
             }
 
             $this->emitter->emit($event);

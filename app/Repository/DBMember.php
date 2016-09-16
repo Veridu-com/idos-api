@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Member;
-use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -89,12 +88,12 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
      */
     protected $relationships = [
         'user' => [
-            'type' => 'MANY_TO_ONE',
-            'table' => 'users',
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'users',
             'foreignKey' => 'user_id',
-            'key' => 'id',
-            'entity' => 'User',
-            'hydrate' => [
+            'key'        => 'id',
+            'entity'     => 'User',
+            'hydrate'    => [
                 'username',
                 'created_at'
             ]
@@ -125,9 +124,11 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
      * {@inheritdoc}
      */
     public function findOne(int $memberId) : Member {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'id' => $memberId
-        ]);
+            ]
+        );
     }
 
     /**

@@ -17,7 +17,7 @@ use Test\Functional\Traits;
 class ExchangeTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresUserToken,
-        Traits\RejectsCompanyToken,
+        Traits\RejectsIdentityToken,
         Traits\RejectsCredentialToken;
 
     protected function setUp() {

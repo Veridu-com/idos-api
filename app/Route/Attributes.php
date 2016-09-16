@@ -8,9 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
-use App\Controller\ControllerInterface;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 

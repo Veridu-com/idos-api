@@ -81,7 +81,7 @@ class Scores implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user          = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $service       = $request->getAttribute('service');
 
         $entities = $this->repository->findBy(['user_id' => $user->id], $request->getQueryParams());
 
@@ -116,7 +116,7 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Score\\CreateNew');
@@ -157,9 +157,9 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
-        $name = $request->getAttribute('scoreName');
+        $name    = $request->getAttribute('scoreName');
 
         $command = $this->commandFactory->create('Score\\UpdateOne');
         $command
@@ -199,7 +199,7 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Score\\Upsert');
@@ -271,7 +271,7 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Score\\DeleteAll');
@@ -307,9 +307,9 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
-        $name = $request->getAttribute('scoreName');
+        $name    = $request->getAttribute('scoreName');
 
         $command = $this->commandFactory->create('Score\\DeleteOne');
         $command

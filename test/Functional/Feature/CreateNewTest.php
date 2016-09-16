@@ -17,7 +17,7 @@ class CreateNewTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
@@ -41,9 +41,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment, json_encode(
                 [
                     'sourceId' => 1,
-                    'name'  => $name,
-                    'type' => $type,
-                    'value' => $value
+                    'name'     => $name,
+                    'type'     => $type,
+                    'value'    => $value
                 ]
             )
         );
@@ -66,7 +66,6 @@ class CreateNewTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 
     public function testEmptyName() {
         $environment = $this->createEnvironment(
@@ -148,9 +147,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment, json_encode(
                 [
                     'sourceId' => 1,
-                    'name'  => $name,
-                    'type' => $type,
-                    'value' => $value
+                    'name'     => $name,
+                    'type'     => $type,
+                    'value'    => $value
                 ]
             )
         );
@@ -177,7 +176,7 @@ class CreateNewTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
-        
+
         $this->assertTrue(
             $this->validateSchema('error.json', json_decode((string) $response->getBody())),
             $this->schemaErrors

@@ -18,7 +18,7 @@ interface FeatureInterface extends RepositoryInterface {
     /**
      * Returns all features based on their user id.
      *
-     * @param int $userId
+     * @param int   $userId
      * @param array $queryParams
      *
      * @return Collection
@@ -28,7 +28,7 @@ interface FeatureInterface extends RepositoryInterface {
     /**
      * Deletes all features based on their user id.
      *
-     * @param int $userId
+     * @param int   $userId
      * @param array $queryParams
      *
      * @return int
@@ -38,10 +38,10 @@ interface FeatureInterface extends RepositoryInterface {
     /**
      * Returns a feature based on its user id, source id, service id (creator) and id.
      *
-     * @param int    $userId    The user id
-     * @param int    $sourceId  The source id
-     * @param int    $serviceId The service id
-     * @param int    $id        The feature id
+     * @param int $userId    The user id
+     * @param int $sourceId  The source id
+     * @param int $serviceId The service id
+     * @param int $id        The feature id
      */
     public function findOneById(int $userId, int $sourceId, int $serviceId, int $id) : Feature;
 

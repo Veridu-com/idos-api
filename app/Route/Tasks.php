@@ -60,7 +60,7 @@ class Tasks implements RouteInterface {
      *
      * Create a new task for the given process.
      *
-     * @apiEndpoint POST profiles/{processId}/tasks
+     * @apiEndpoint POST /profiles/{userName}/processes//{processId}/tasks
      * @apiGroup Profile Tasks
      * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
@@ -91,7 +91,7 @@ class Tasks implements RouteInterface {
      *
      * Retrieves all public information from a Task.
      *
-     * @apiEndpoint GET /profiles/{processId}/tasks/{taskId}
+     * @apiEndpoint GET /profiles/{userName}/processes/{processId}/tasks/{taskId}
      * @apiGroup Profile Tasks
      * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
@@ -122,7 +122,7 @@ class Tasks implements RouteInterface {
      *
      * Updates Task's specific information.
      *
-     * @apiEndpoint PUT /profiles/{processId}/tasks/{taskId}
+     * @apiEndpoint PUT /profiles/{userName}/processes/{processId}/tasks/{taskId}
      * @apiGroup Profile Tasks
      * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token

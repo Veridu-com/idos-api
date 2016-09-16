@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\CompanyProfile\DeleteOne;
-use App\Entity\CompanyProfile as CompanyProfileEntity;
 use App\Event\CompanyProfile\Deleted;
 use App\Exception\NotFound;
 use App\Exception\Validate;
@@ -65,7 +64,7 @@ class CompanyProfile implements HandlerInterface {
      *
      * @param App\Repository\UserInterface $repository
      * @param App\Validator\User           $validator
-     * @param \League\Event\Emitter           $emitter
+     * @param \League\Event\Emitter        $emitter
      *
      * @return void
      */
@@ -97,7 +96,7 @@ class CompanyProfile implements HandlerInterface {
             );
         }
 
-        $user = $this->repository->find($command->userId);
+        $user         = $this->repository->find($command->userId);
         $rowsAffected = $this->repository->delete($command->userId);
 
         if (! $rowsAffected) {

@@ -28,12 +28,12 @@ class GetOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
         $response = $this->process($request);
-        $body = json_decode((string) $response->getBody(), true);
+        $body     = json_decode((string) $response->getBody(), true);
 
         $this->assertSame(200, $response->getStatusCode());
 
@@ -59,7 +59,7 @@ class GetOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );

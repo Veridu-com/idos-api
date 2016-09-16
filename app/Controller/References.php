@@ -127,7 +127,7 @@ class References implements ControllerInterface {
     /**
      * Updates a reference data from the given source.
      *
-     * @apiEndpointRequiredParam body string value
+     * @apiEndpointRequiredParam body string value WRONG FORMAT HERE FIXME
      * @apiEndpointResponse 200 schema/reference/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request

@@ -46,7 +46,7 @@ class Feature extends AbstractEntity {
      * {@inheritdoc}
      */
     public $relationships = [
-        'source' => 'Source',
+        'source'  => 'Source',
         'creator' => 'Service'
     ];
 
@@ -54,7 +54,6 @@ class Feature extends AbstractEntity {
         if ($this->attributes['type'] === 'integer') {
             return (int) $value;
         }
-
 
         if ($this->attributes['type'] === 'boolean') {
             return (bool) $value;

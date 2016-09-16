@@ -112,7 +112,7 @@ class Gates implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
         $service  = $request->getAttribute('service');
-        $slug = $request->getAttribute('gateSlug');
+        $slug     = $request->getAttribute('gateSlug');
 
         $gate = $this->repository->findOneBySlug($user->id, $service->id, $slug);
 
@@ -215,7 +215,7 @@ class Gates implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
         $service  = $request->getAttribute('service');
-        $slug = $request->getAttribute('gateSlug');
+        $slug     = $request->getAttribute('gateSlug');
 
         $command = $this->commandFactory->create('Gate\\DeleteOne');
         $command->setParameter('user', $user)
@@ -251,7 +251,7 @@ class Gates implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
         $service  = $request->getAttribute('service');
-        $slug = $request->getAttribute('gateSlug');
+        $slug     = $request->getAttribute('gateSlug');
 
         $command = $this->commandFactory->create('Gate\\UpdateOne');
         $command

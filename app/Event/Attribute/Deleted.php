@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Event\Attribute;
 
-use App\Entity\Attribute;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 

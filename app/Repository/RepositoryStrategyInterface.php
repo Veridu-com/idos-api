@@ -27,7 +27,7 @@ interface RepositoryStrategyInterface {
      * Builds a new repository.
      *
      * @param App\Factory\Repository $repositoryFactory
-     * @param string $className
+     * @param string                 $className
      *
      * @return App\Repository\RepositoryInterface
      */
