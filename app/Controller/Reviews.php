@@ -61,7 +61,7 @@ class Reviews implements ControllerInterface {
      * Retrieve a complete list of reviews, given an user and an warning.
      *
      * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointParam query string warnings
+     * @apiEndpointParam query string warnings WRONG FORMAT HERE FIXME
      * @apiEndpointResponse 200 schema/review/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -132,7 +132,7 @@ class Reviews implements ControllerInterface {
     /**
      * Updates a review data from the given source.
      *
-     * @apiEndpointRequiredParam body string value
+     * @apiEndpointRequiredParam body string value WRONG FORMAT HERE FIXME
      * @apiEndpointResponse 200 schema/review/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request

@@ -14,7 +14,7 @@ class ListAllTest extends AbstractRawFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();

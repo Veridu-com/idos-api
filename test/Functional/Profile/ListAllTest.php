@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
