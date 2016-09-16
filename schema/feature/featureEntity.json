@@ -22,10 +22,6 @@
         "value": {
             "description": "Feature value"
         },
-        "user_id": {
-            "description": "User owner of the feature",
-            "type": "integer"
-        },
         "source": {
             "description": "Source entity",
             "type": "object",
@@ -45,7 +41,6 @@
         "creator",
         "type",
         "value",
-        "user_id",
         "created_at",
         "updated_at"
     ]
