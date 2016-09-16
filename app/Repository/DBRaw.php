@@ -32,19 +32,19 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     protected $entityName = 'Raw';
 
     public function findByUserId(int $userId, array $queryParams = []) : Collection {
-        $rawFilters = [];
+        $rawFilters    = [];
         $sourceFilters = [];
         foreach ($queryParams as $param => $value) {
             if (strpos($param, ':') === false) {
                 $rawFilters[$param] = $value;
             } else {
-                $param = str_replace('source:', '', $param);
+                $param                 = str_replace('source:', '', $param);
                 $sourceFilters[$param] = $value;
             }
         }
 
         $sourceRepository = $this->repositoryFactory->create('Source');
-        $sources = $sourceRepository->findBy(['user_id' => $userId], $sourceFilters);
+        $sources          = $sourceRepository->findBy(['user_id' => $userId], $sourceFilters);
 
         $entities = new Collection();
         foreach ($sources as $source) {
@@ -55,12 +55,11 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
                 $this->selectCollection($collection->getName());
 
                 try {
-                    $entity = $this->find($source->id);
+                    $entity             = $this->find($source->id);
                     $entity->collection = $collection->getName();
 
                     $entities->push($entity);
                 } catch (NotFound $e) {
-
                 }
             }
         }

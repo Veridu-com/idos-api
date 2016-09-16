@@ -34,7 +34,7 @@ class UpdateOne extends AbstractCommand {
      * @var string
      */
     public $slug;
-    
+
     /**
      * Gate's property pass (user input).
      *

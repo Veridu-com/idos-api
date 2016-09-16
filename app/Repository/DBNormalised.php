@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Normalised;
-use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -40,12 +39,12 @@ class DBNormalised extends AbstractSQLDBRepository implements NormalisedInterfac
      */
     protected $relationships = [
         'source' => [
-            'type' => 'MANY_TO_ONE',
-            'table' => 'sources',
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'sources',
             'foreignKey' => 'source_id',
-            'key' => 'id',
-            'entity' => 'Source',
-            'hydrate' => false
+            'key'        => 'id',
+            'entity'     => 'Source',
+            'hydrate'    => false
         ],
     ];
 
@@ -53,20 +52,24 @@ class DBNormalised extends AbstractSQLDBRepository implements NormalisedInterfac
      * {@inheritdoc}
      */
     public function getAllByUserIdAndSourceId(int $userId, int $sourceId) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'source.user_id' => $userId,
-            'source.id' => $sourceId
-        ]);
+            'source.id'      => $sourceId
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function getAllByUserIdSourceIdAndNames(int $userId, int $sourceId, array $queryParams = []) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'source.user_id' => $userId,
-            'source.id' => $sourceId
-        ], $queryParams);
+            'source.id'      => $sourceId
+            ], $queryParams
+        );
     }
 
     /**
@@ -80,11 +83,13 @@ class DBNormalised extends AbstractSQLDBRepository implements NormalisedInterfac
      * {@inheritdoc}
      */
     public function findOneByUserIdSourceIdAndName(int $userId, int $sourceId, string $name) : Normalised {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'source.user_id' => $userId,
-            'source.id' => $sourceId,
-            'name' => $name
-        ]);
+            'source.id'      => $sourceId,
+            'name'           => $name
+            ]
+        );
     }
 
     /**

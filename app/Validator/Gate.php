@@ -13,7 +13,7 @@ namespace App\Validator;
  */
 class Gate implements ValidatorInterface {
     use Traits\AssertId,
-    	Traits\AssertEntity,
+        Traits\AssertEntity,
         Traits\AssertName,
         Traits\AssertSlug,
         Traits\AssertFlag,

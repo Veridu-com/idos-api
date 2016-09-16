@@ -33,7 +33,7 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
      */
     protected $filterableKeys = [
         'creator.name' => 'string',
-        'name' => 'string'
+        'name'         => 'string'
     ];
 
     /**
@@ -41,23 +41,23 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
      */
     protected $relationships = [
         'user' => [
-            'type' => 'MANY_TO_ONE',
-            'table' => 'users',
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'users',
             'foreignKey' => 'user_id',
-            'key' => 'id',
-            'entity' => 'User',
-            'nullable' => false,
-            'hydrate' => false
+            'key'        => 'id',
+            'entity'     => 'User',
+            'nullable'   => false,
+            'hydrate'    => false
         ],
-        
+
         'creator' => [
-            'type' => 'MANY_TO_ONE',
-            'table' => 'services',
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'services',
             'foreignKey' => 'creator',
-            'key' => 'id',
-            'entity' => 'Service',
-            'nullable' => false,
-            'hydrate' => [
+            'key'        => 'id',
+            'entity'     => 'Service',
+            'nullable'   => false,
+            'hydrate'    => [
                 'name'
             ]
         ],
@@ -67,10 +67,12 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
      * {@inheritdoc}
      */
     public function findByUserId(int $userId, array $queryParams = []) : Collection {
-        $result = $this->findBy([
+        $result = $this->findBy(
+            [
             'user_id' => $userId
-        ], $queryParams);
-        
+            ], $queryParams
+        );
+
         return $result;
     }
 

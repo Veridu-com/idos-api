@@ -18,11 +18,11 @@ use App\Event\Score\Created;
 use App\Event\Score\Deleted;
 use App\Event\Score\DeletedMulti;
 use App\Event\Score\Updated;
+use App\Exception\AppException;
 use App\Exception\Create;
+use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
-use App\Exception\AppException;
-use App\Exception\NotFound;
 use App\Repository\ScoreInterface;
 use App\Validator\Score as ScoreValidator;
 use Interop\Container\ContainerInterface;
@@ -113,14 +113,16 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->create([
+        $entity = $this->repository->create(
+            [
             'user_id'    => $command->user->id,
             'creator'    => $command->service->id,
             'attribute'  => $command->attribute,
             'name'       => $command->name,
             'value'      => $command->value,
             'created_at' => time()
-        ]);
+            ]
+        );
 
         try {
             $entity = $this->repository->save($entity);
@@ -161,7 +163,7 @@ class Score implements HandlerInterface {
 
         $entity->attribute  = $command->attribute;
         $entity->value      = $command->value;
-        $entity->updatedAt = time();
+        $entity->updatedAt  = time();
 
         try {
             $entity = $this->repository->save($entity);
@@ -190,17 +192,17 @@ class Score implements HandlerInterface {
         $this->validator->assertName($command->name);
         $this->validator->assertScore($command->value);
 
-        $entity = null;
+        $entity    = null;
         $inserting = false;
         try {
             $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
-            
+
             $entity->attribute = $command->attribute;
             $entity->value     = $command->value;
             $entity->updatedAt = time();
         } catch (NotFound $e) {
             $inserting = true;
-            
+
             $entity = $this->repository->create(
                 [
                     'user_id'    => $command->user->id,
@@ -213,15 +215,14 @@ class Score implements HandlerInterface {
             );
         }
 
-
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
             if ($inserting) {
-                $event   = new Created($entity);
+                $event = new Created($entity);
             } else {
-                $event   = new Updated($entity);
+                $event = new Updated($entity);
             }
 
             $this->emitter->emit($event);
@@ -256,7 +257,7 @@ class Score implements HandlerInterface {
 
         try {
             $affectedRows = $this->repository->delete($entity->id);
-            
+
             $event = new Deleted($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -285,10 +286,12 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entities = $this->repository->findBy([
+        $entities = $this->repository->findBy(
+            [
             'user_id' => $command->user->id,
             'creator' => $command->service->id
-        ], $command->queryParams);
+            ], $command->queryParams
+        );
 
         $affectedRows = 0;
 
@@ -297,7 +300,7 @@ class Score implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event        = new DeletedMulti($entities);
+            $event = new DeletedMulti($entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting scores');

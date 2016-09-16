@@ -348,8 +348,8 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     /**
      * Generates a valid identity token to be used on requests.
      *
-     * @param string|null $identityPublicKey    Overrides the default identity
-     * @param string|null $identityPrivKey      Overrides the default identity
+     * @param string|null $identityPublicKey Overrides the default identity
+     * @param string|null $identityPrivKey   Overrides the default identity
      *
      * @return string
      */

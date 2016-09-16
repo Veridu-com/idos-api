@@ -18,7 +18,7 @@ interface ScoreInterface extends RepositoryInterface {
     /**
      * Returns all features based on their user id.
      *
-     * @param int $userId
+     * @param int   $userId
      * @param array $queryParams
      *
      * @return Collection

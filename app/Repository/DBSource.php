@@ -32,8 +32,8 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'id' => 'decoded',
-        'name' => 'string',
+        'id'         => 'decoded',
+        'name'       => 'string',
         'created_at' => 'date'
     ];
 

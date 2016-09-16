@@ -18,13 +18,13 @@ interface AttributeInterface extends RepositoryInterface {
     /**
      * Returns all features based on their user id.
      *
-     * @param int $userId
+     * @param int   $userId
      * @param array $queryParams
      *
      * @return Collection
      */
     public function findByUserId(int $userId, array $queryParams = []) : Collection;
-    
+
     /**
      * Gets all Attribute entities based on their user_id, filtering them by name.
      *

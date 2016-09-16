@@ -183,16 +183,16 @@ class Gate implements HandlerInterface {
         $this->validator->assertName($command->name);
         $this->validator->assertFlag($command->pass);
 
-        $entity = null;
+        $entity    = null;
         $inserting = false;
         try {
             $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
-            
+
             $entity->pass      = $this->validator->validateFlag($command->pass);
             $entity->updatedAt = time();
         } catch (NotFound $e) {
             $inserting = true;
-            
+
             $entity = $this->repository->create(
                 [
                     'user_id'    => $command->user->id,
@@ -204,15 +204,14 @@ class Gate implements HandlerInterface {
             );
         }
 
-
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
             if ($inserting) {
-                $event   = new Created($entity);
+                $event = new Created($entity);
             } else {
-                $event   = new Updated($entity);
+                $event = new Updated($entity);
             }
 
             $this->emitter->emit($event);
@@ -242,10 +241,12 @@ class Gate implements HandlerInterface {
             );
         }
 
-        $entities = $this->repository->findBy([
+        $entities = $this->repository->findBy(
+            [
             'user_id' => $command->user->id,
             'creator' => $command->service->id
-        ], $command->queryParams);
+            ], $command->queryParams
+        );
 
         $affectedRows = 0;
 
@@ -254,7 +255,7 @@ class Gate implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event        = new DeletedMulti($entities);
+            $event = new DeletedMulti($entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\GateException('Error while trying to delete all gates', 500, $e);
@@ -287,7 +288,7 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->findOneBySlug($command->user->id, $command->service->id, $command->slug);
 
             $affectedRows = $this->repository->delete($entity->id);
-            
+
             $event = new Deleted($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {

@@ -180,7 +180,7 @@ class Credential implements HandlerInterface {
             );
         }
 
-        $credential = $this->repository->find($command->credential->id);
+        $credential   = $this->repository->find($command->credential->id);
         $rowsAffected = $this->repository->delete($command->credential->id);
 
         if (! $rowsAffected) {

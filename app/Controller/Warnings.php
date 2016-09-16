@@ -78,7 +78,7 @@ class Warnings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
         $entities = $this->repository->findBy(['user_id' => $user->id], $request->getQueryParams());
@@ -112,7 +112,7 @@ class Warnings implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
-        $slug = $request->getAttribute('warningSlug');
+        $slug    = $request->getAttribute('warningSlug');
 
         $entity = $this->repository->findOneBySlug($user->id, $service->id, $slug);
 
@@ -143,7 +143,7 @@ class Warnings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Warning\\CreateNew');
@@ -180,7 +180,7 @@ class Warnings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Warning\\DeleteAll');
@@ -213,9 +213,9 @@ class Warnings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
-        $slug = $request->getAttribute('warningSlug');
+        $slug    = $request->getAttribute('warningSlug');
 
         $command = $this->commandFactory->create('Warning\\DeleteOne');
         $command

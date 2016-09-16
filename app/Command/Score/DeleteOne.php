@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Command\Score;
 
 use App\Command\AbstractCommand;
-use App\Entity\Attribute;
 
 /**
  * Score "Delete One" Command.
@@ -21,7 +20,7 @@ class DeleteOne extends AbstractCommand {
      * @var App\Entity\User
      */
     public $user;
-    
+
     /**
      * Score's Creator.
      *
