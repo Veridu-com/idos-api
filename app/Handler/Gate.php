@@ -91,6 +91,11 @@ class Gate implements HandlerInterface {
      *
      * @param App\Command\Gate\CreateNew $command
      *
+     * @see App\Repository\DBGate::save
+     *
+     * @throws App\Exception\Validate\GateException
+     * @throws App\Exception\Create\GateException
+     *
      * @return App\Entity\Gate
      */
     public function handleCreateNew(CreateNew $command) : GateEntity {
@@ -131,6 +136,12 @@ class Gate implements HandlerInterface {
      *
      * @param App\Command\Gate\UpdateOne $command
      *
+     * @see App\Repository\DBGate::findByUserIdAndSlug
+     * @see App\Repository\DBGate::save
+     *
+     * @throws App\Exception\Validate\GateException
+     * @throws App\Exception\Update\GateException
+     *
      * @return App\Entity\Gate
      */
     public function handleUpdateOne(UpdateOne $command) : GateEntity {
@@ -167,6 +178,11 @@ class Gate implements HandlerInterface {
      *
      * @param App\Command\Gate\DeleteAll $command
      *
+     * @see App\Repository\DBGate::findByUserId
+     * @see App\Repository\DBGate::deleteByUserId
+     *
+     * @throws App\Exception\Validate\GateException
+     *
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
@@ -194,6 +210,12 @@ class Gate implements HandlerInterface {
      * Deletes a Gate.
      *
      * @param App\Command\Gate\DeleteOne $command
+     *
+     * @see App\Repository\DBGate::findByUserIdAndSlug
+     * @see App\Repository\DBGate::delete
+     *
+     * @throws App\Exception\Validate\GateException
+     * @throws App\Exception\NotFound\GateException
      *
      * @return void
      */

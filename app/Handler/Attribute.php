@@ -94,6 +94,7 @@ class Attribute implements HandlerInterface {
      * @see App\Repository\DBAttribute::save
      *
      * @throws App\Exception\Validade\AttributeExceptions
+     * @throws App\Exception\Create\AttributeExceptions
      *
      * @return App\Entity\Attribute
      */
@@ -134,10 +135,11 @@ class Attribute implements HandlerInterface {
      *
      * @param App\Command\Attribute\UpdateOne $command
      *
-     * @throws App\Exception\Validate\AttributeException
-     *
      * @see App\Repository\DBAttribute::findOneByUserIdAndName
      * @see App\Repository\DBAttrubute::save
+     *
+     * @throws App\Exception\Validate\AttributeException
+     * @throws App\Exception\Update\AttributeException
      *
      * @return App\Entity\Attribute
      */
@@ -175,6 +177,7 @@ class Attribute implements HandlerInterface {
      * @see App\Repository\DBAttribute::deleteOneByUSerIdAndName
      *
      * @throws App\Exception\Validate\AttributeException
+     * @throws App\Exception\NotFound\AttributeException
      *
      * @return void
      */

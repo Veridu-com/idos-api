@@ -90,6 +90,12 @@ class Raw implements HandlerInterface {
      *
      * @param App\Command\Raw\CreateNew $command
      *
+     * @see App\Repository\DBRaw::create
+     * @see App\Repository\DBRaw::save
+     *
+     * @throws App\Exception\Validate\RawException
+     * @throws App\Exception\Create\RawException
+     *
      * @return App\Entity\Raw
      */
     public function handleCreateNew(CreateNew $command) : RawEntity {
@@ -129,6 +135,11 @@ class Raw implements HandlerInterface {
      *
      * @param App\Command\Raw\UpdateOne $command
      *
+     * @see App\Repository\DBRaw::updateOneBySourceAndCollection
+     *
+     * @throws App\Exception\Validate\RawException
+     * @throws App\Exception\Update\RawException
+     *
      * @return App\Entity\Raw
      */
     public function handleUpdateOne(UpdateOne $command) : RawEntity {
@@ -158,6 +169,12 @@ class Raw implements HandlerInterface {
      * Deletes a raw data from a given source.
      *
      * @param App\Command\Raw\DeleteOne $command
+     *
+     * @see App\Repository\DBRaw::findOneBySourceAndCollection
+     * @see App\Repository\DBRaw::deleteOneBySourceAndCollection
+     *
+     * @throws App\Exception\Validate\RawException
+     * @throws App\Exception\NotFound\RawException
      *
      * @return void
      */
@@ -189,6 +206,11 @@ class Raw implements HandlerInterface {
      * Deletes all raw data from a given source.
      *
      * @param App\Command\Raw\DeleteAll $command
+     *
+     * @see App\Repository\DBRaw::getAllBySourceAndCollections
+     * @see App\Repository\DBRaw::deleteBySource
+     *
+     * @throws App\Exception\Validate\RawException;
      *
      * @return int
      */

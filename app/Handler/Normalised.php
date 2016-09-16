@@ -92,6 +92,12 @@ class Normalised implements HandlerInterface {
      *
      * @param App\Command\Normalised\CreateNew $command
      *
+     * @see App\Repository\DBNormalised::create
+     * @see App\Repository\DBNormalised::save
+     *
+     * @throws App\Exception\Validate\NormalisedException
+     * @throws App\Exception\Create\NormalisedException
+     *
      * @return App\Entity\Normalised
      */
     public function handleCreateNew(CreateNew $command) : NormalisedEntity {
@@ -138,6 +144,12 @@ class Normalised implements HandlerInterface {
      *
      * @param App\Command\Normalised\UpdateOne $command
      *
+     * @see App\Repository\DBNormalised::findOneByUserIdSourceIdAndName
+     * @see App\Repository\DBNormalised::save
+     *
+     * @throws App\Exception\Validate\NormalisedException
+     * @throws App\Exception\Update\NormalisedException
+     *
      * @return App\Entity\Normalised
      */
     public function handleUpdateOne(UpdateOne $command) : NormalisedEntity {
@@ -172,6 +184,12 @@ class Normalised implements HandlerInterface {
      * Deletes a normalised data from a given source.
      *
      * @param App\Command\Normalised\DeleteOne $command
+     *
+     * @see App\Repository\DBNormalised::findOneByUserIdSourceIdAndName
+     * @see App\Repository\DBNormalised::deleteOneBySourceIdAndName
+     *
+     * @throws App\Exception\Validate\NormalisedExcpetion
+     * @throws App\Exception\NotFound\NormalisedExcpetion
      *
      * @return void
      */
@@ -211,6 +229,11 @@ class Normalised implements HandlerInterface {
      * Deletes all normalised data from a given source.
      *
      * @param App\Command\Normalised\DeleteAll $command
+     *
+     * @see App\Repository\DBNormalised::getAllByUserIdAndSourceId
+     * @see App\Repository\DBNormalised::deleteBySourceId
+     *
+     * @throws App\Exception\Validate\NormalisedException
      *
      * @return int
      */

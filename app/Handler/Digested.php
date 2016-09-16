@@ -92,6 +92,12 @@ class Digested implements HandlerInterface {
      *
      * @param App\Command\Digested\CreateNew $command
      *
+     * @see App\Repository\DBDigested::create
+     * @see App\Repository\DBDigested::save
+     *
+     * @throws App\Exception\Validate\DigestedException
+     * @throws App\Exception\Create\DigestedException
+     *
      * @return App\Entity\Digested
      */
     public function handleCreateNew(CreateNew $command) : DigestedEntity {
@@ -134,6 +140,12 @@ class Digested implements HandlerInterface {
      *
      * @param App\Command\Digested\UpdateOne $command
      *
+     * @see App\Repository\DBDigested::findOneByUserIdSourceIdAndName
+     * @see App\Repository\DBDigested::save
+     *
+     * @throws App\Exception\Validate\DigestedException
+     * @throws App\Exception\Update\DigestedException
+     *
      * @return App\Entity\Digested
      */
     public function handleUpdateOne(UpdateOne $command) : DigestedEntity {
@@ -175,6 +187,12 @@ class Digested implements HandlerInterface {
      *
      * @param App\Command\Digested\DeleteOne $command
      *
+     * @see App\Repository\DBDigested::findOneByUserIdSourceIdAndName
+     * @see App\Repository\DBDigested::deleteOneBySourceIdAndName
+     *
+     * @throws App\Exception\Validate\DigestedException
+     * @throws App\Exception\NotFound\DigestedException
+     *
      * @return void
      */
     public function handleDeleteOne(DeleteOne $command) {
@@ -212,6 +230,11 @@ class Digested implements HandlerInterface {
      * Deletes all digested data from a given source.
      *
      * @param App\Command\Digested\DeleteAll $command
+     *
+     * @see App\Repository\DBDigested::getAllByUserIdAndSourceId
+     * @see App\Repository\DBDigested::deleteBySourceId
+     *
+     * @throws App\Exception\Validate\DigestedException
      *
      * @return int
      */
