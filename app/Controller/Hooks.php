@@ -69,11 +69,12 @@ class Hooks implements ControllerInterface {
     /**
      * Lists all hooks associated with given credential.
      *
-     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse    200    schema/hook/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Repository\DBHook::getAllByCredentialPubKey
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -101,11 +102,15 @@ class Hooks implements ControllerInterface {
     /**
      * Creates a new hook for the given credential.
      *
-     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
+     * @apiEndpointRequiredParam body string trigger company.create Trigger
+     * @apiEndpointRequiredParam body string url http://test.com/example.php Url
+     * @apiEndpointRequiredParam body boolean subscribed false Subscribed
      * @apiEndpointResponse 201 schema/hook/hookEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Hook::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -139,11 +144,15 @@ class Hooks implements ControllerInterface {
     /**
      * Updates a hook from the given credential.
      *
-     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
+     * @apiEndpointRequiredParam body string trigger company.create Trigger
+     * @apiEndpointRequiredParam body string url http://test.com/example.php Url
+     * @apiEndpointRequiredParam body boolean subscribed false Subscribed
      * @apiEndpointResponse 200 schema/hook/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Handler\Hook:handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -178,7 +187,6 @@ class Hooks implements ControllerInterface {
     /**
      * Retrieves a hook from the given credential.
      *
-     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/hookEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -215,11 +223,12 @@ class Hooks implements ControllerInterface {
     /**
      * Deletes a hook from the given credential.
      *
-     * @apiEndpointURIFragment string pubKey 4c9184f37cff01bcdc32dc486ec36961
      * @apiEndpointResponse 200 schema/hook/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Hook::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

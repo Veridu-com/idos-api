@@ -75,6 +75,8 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBGate::getAllByUserId
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -108,6 +110,8 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBGate::findByUserIdAndSlug
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -133,12 +137,14 @@ class Gates implements ControllerInterface {
     /**
      * Creates a new Feture for the given user.
      *
-     * @apiEndpointRequiredParam body string name XYZ Gate name
-     * @apiEndpointRequiredParam body boolean pass ZYX Gate pass
+     * @apiEndpointRequiredParam body string name 18+ Gate name
+     * @apiEndpointRequiredParam body boolean pass t Gate pass
      * @apiEndpointResponse 201 schema/gate/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Gate::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -175,6 +181,8 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Gate::handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -204,6 +212,8 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Gate::handleDeleteOne
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -231,12 +241,14 @@ class Gates implements ControllerInterface {
     /**
      * Updates one Gate of the User.
      *
-     * @apiEndpointRequiredParam body string name XYZ Gate name
-     * @apiEndpointRequiredParam body boolean pass ZYX Gate pass
+     * @apiEndpointRequiredParam body string name 18+ Gate name
+     * @apiEndpointRequiredParam body boolean pass f Gate pass
      * @apiEndpointResponse 200 schema/gate/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Gate::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
