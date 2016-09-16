@@ -13,7 +13,7 @@ use App\Extension\SlugMutator;
 /**
  * Features Entity.
  *
- * @apiEntity schema/user/featureEntity.json
+ * @apiEntity schema/feature/featureEntity.json
  *
  * @property int    $id
  * @property string $name

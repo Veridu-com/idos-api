@@ -91,6 +91,10 @@ class Attribute implements HandlerInterface {
      *
      * @param App\Command\Attribute\CreateNew $command
      *
+     * @see App\Repository\DBAttribute::save
+     *
+     * @throws App\Exception\Validade\AttributeExceptions
+     *
      * @return App\Entity\Attribute
      */
     public function handleCreateNew(CreateNew $command) : AttributeEntity {
@@ -130,6 +134,11 @@ class Attribute implements HandlerInterface {
      *
      * @param App\Command\Attribute\UpdateOne $command
      *
+     * @throws App\Exception\Validate\AttributeException
+     *
+     * @see App\Repository\DBAttribute::findOneByUserIdAndName
+     * @see App\Repository\DBAttrubute::save
+     *
      * @return App\Entity\Attribute
      */
     public function handleUpdateOne(UpdateOne $command) : AttributeEntity {
@@ -162,6 +171,11 @@ class Attribute implements HandlerInterface {
      *
      * @param App\Command\Attribute\DeleteOne $command
      *
+     * @see App\Repository\DBAttribute::findOneByUserIdAndName
+     * @see App\Repository\DBAttribute::deleteOneByUSerIdAndName
+     *
+     * @throws App\Exception\Validate\AttributeException
+     *
      * @return void
      */
     public function handleDeleteOne(DeleteOne $command) {
@@ -191,6 +205,9 @@ class Attribute implements HandlerInterface {
      * Deletes all attribute data from a given user.
      *
      * @param App\Command\Attribute\DeleteAll $command
+     *
+     * @see App\Repository\DBAttribute::getAllByUserIdAndNames
+     * @see App\Repository\DBAttribute::deleteByUserId
      *
      * @return int
      */
