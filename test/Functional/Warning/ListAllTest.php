@@ -13,7 +13,7 @@ class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RequiresCompanyToken;
+        Traits\RequiresIdentityToken;
 
     protected function setUp() {
         parent::setUp();

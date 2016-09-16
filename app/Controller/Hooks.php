@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Exception\NotFound;
 use App\Factory\Command;
 use App\Repository\CredentialInterface;
 use App\Repository\HookInterface;
@@ -79,8 +80,15 @@ class Hooks implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $credentialPubKey = $request->getAttribute('pubKey');
+        $targetCompany = $request->getAttribute('targetCompany');
+        
+        $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
 
-        $hooks = $this->repository->getAllByCredentialPubKey($credentialPubKey);
+        if ($credential->companyId != $targetCompany->id) {
+            throw new NotFound;
+        }
+
+        $hooks = $this->repository->getAllByCredentialPubKeyAndCompanyId($credentialPubKey, $targetCompany->id);
 
         $body = [
             'data'    => $hooks->toArray(),

@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class GetOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -25,7 +25,7 @@ class GetOneTest extends AbstractFunctional {
             '/1.0/companies/veridu-ltd/permissions',
             'GET',
             [
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
@@ -36,7 +36,7 @@ class GetOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
@@ -68,7 +68,7 @@ class GetOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
@@ -97,12 +97,12 @@ class GetOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
