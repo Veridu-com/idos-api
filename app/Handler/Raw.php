@@ -9,18 +9,14 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Raw\CreateNew;
-use App\Command\Raw\DeleteAll;
-use App\Command\Raw\DeleteOne;
 use App\Command\Raw\UpdateOne;
 use App\Entity\Raw as RawEntity;
 use App\Event\Raw\Created;
-use App\Event\Raw\Deleted;
-use App\Event\Raw\DeletedMulti;
 use App\Event\Raw\Updated;
 use App\Exception\Create;
+use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
-use App\Exception\NotFound;
 use App\Repository\RawInterface;
 use App\Validator\Raw as RawValidator;
 use Interop\Container\ContainerInterface;
@@ -110,7 +106,6 @@ class Raw implements HandlerInterface {
 
             throw new Create\RawException('Error while trying to create raw', 500, $e);
         } catch (NotFound $e) {
-
         }
 
         $raw = $this->repository->create(
@@ -153,12 +148,12 @@ class Raw implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->findOne($command->source, $command->collection);
+        $entity         = $this->repository->findOne($command->source, $command->collection);
         $entity->source = $command->source;
-        $entity->data = $command->data;
+        $entity->data   = $command->data;
 
         try {
-            $entity   = $this->repository->save($entity);
+            $entity = $this->repository->save($entity);
 
             $event = new Updated($entity);
             $this->emitter->emit($event);

@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\ServiceHandler;
-use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -65,21 +64,21 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
      */
     protected $relationships = [
         'company' => [
-            'type' => 'MANY_TO_ONE',
-            'table' => 'companies',
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'companies',
             'foreignKey' => 'company_id',
-            'key' => 'id',
-            'entity' => 'Company',
-            'hydrate' => false
+            'key'        => 'id',
+            'entity'     => 'Company',
+            'hydrate'    => false
         ],
 
         'service' => [
-            'type' => 'MANY_TO_ONE',
-            'table' => 'services',
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'services',
             'foreignKey' => 'service_id',
-            'key' => 'id',
-            'entity' => 'Service',
-            'hydrate' => [
+            'key'        => 'id',
+            'entity'     => 'Service',
+            'hydrate'    => [
                 'id',
                 'name',
                 'url',
@@ -97,10 +96,12 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
      * {@inheritdoc}
      */
     public function findOne(int $companyId, int $serviceHandlerId) : ServiceHandler {
-        return $this->findOneBy([
-            'id' => $serviceHandlerId,
+        return $this->findOneBy(
+            [
+            'id'         => $serviceHandlerId,
             'company_id' => $companyId
-        ]);
+            ]
+        );
     }
 
     /**
@@ -130,9 +131,11 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
      * {@inheritdoc}
      */
     public function getAllByCompanyId(int $companyId) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'service.company_id' => $companyId
-        ]);
+            ]
+        );
 
         /*$array = $query
             ->join('services', 'services.id', '=', 'service_handlers.service_id')

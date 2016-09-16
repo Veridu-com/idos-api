@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Command\Score;
 
 use App\Command\AbstractCommand;
-use App\Entity\Attribute;
 
 /**
  * Score "Delete All" Command.

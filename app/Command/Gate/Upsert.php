@@ -55,7 +55,7 @@ class Upsert extends AbstractCommand {
         if (isset($parameters['service'])) {
             $this->service = $parameters['service'];
         }
-        
+
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }

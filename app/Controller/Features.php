@@ -11,12 +11,11 @@ namespace App\Controller;
 use App\Exception\NotFound;
 use App\Factory\Command;
 use App\Repository\FeatureInterface;
-use App\Repository\UserInterface;
 use App\Repository\SourceInterface;
+use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Illuminate\Support\Collection;
 
 /**
  * Handles requests to /profiles/:userName/features.
@@ -70,11 +69,11 @@ class Features implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository     = $repository;
-        $this->userRepository = $userRepository;
+        $this->repository       = $repository;
+        $this->userRepository   = $userRepository;
         $this->sourceRepository = $sourceRepository;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
+        $this->commandBus       = $commandBus;
+        $this->commandFactory   = $commandFactory;
     }
 
     /**
@@ -89,7 +88,7 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user   = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
         $entities = $this->repository->findByUserId($user->id, $request->getQueryParams());
@@ -122,13 +121,15 @@ class Features implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-        $featureId = $request->getAttribute('decodedFeatureId');
+        $service     = $request->getAttribute('service');
+        $featureId   = $request->getAttribute('decodedFeatureId');
 
-        $feature = $this->repository->findOneBy([
+        $feature = $this->repository->findOneBy(
+            [
             'user_id' => $user->id,
-            'id' => $featureId
-        ]);
+            'id'      => $featureId
+            ]
+        );
 
         if ($feature->sourceId !== null && $feature->sourceId !== $user->id) {
             throw new NotFound();
@@ -161,8 +162,8 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
-        $source = $request->getParsedBodyParam('sourceId') !== 0 ? $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id) : null;
+        $user    = $request->getAttribute('targetUser');
+        $source  = $request->getParsedBodyParam('sourceId') !== 0 ? $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id) : null;
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Feature\\CreateNew');
@@ -200,7 +201,7 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Feature\\DeleteAll');
@@ -233,8 +234,8 @@ class Features implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-        $featureId = $request->getAttribute('decodedFeatureId');
+        $service     = $request->getAttribute('service');
+        $featureId   = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Feature\\DeleteOne');
         $command->setParameter('user', $user)
@@ -269,9 +270,9 @@ class Features implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $source = $this->sourceRepository->find($request->getParsedBodyParam('decoded_source_id'), $user->id);
-        $service = $request->getAttribute('service');
-        $featureId = $request->getAttribute('decodedFeatureId');
+        $source      = $this->sourceRepository->find($request->getParsedBodyParam('decoded_source_id'), $user->id);
+        $service     = $request->getAttribute('service');
+        $featureId   = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Feature\\UpdateOne');
         $command
@@ -310,8 +311,8 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
-        $source = null;
+        $user    = $request->getAttribute('targetUser');
+        $source  = null;
         $service = $request->getAttribute('service');
 
         $sourceId = $request->getParsedBodyParam('decoded_source_id');

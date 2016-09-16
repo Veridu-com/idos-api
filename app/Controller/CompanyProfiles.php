@@ -9,10 +9,10 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Factory\Command;
+use App\Repository\AttributeInterface;
+use App\Repository\GateInterface;
 use App\Repository\UserInterface;
 use App\Repository\WarningInterface;
-use App\Repository\GateInterface;
-use App\Repository\AttributeInterface;
 use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -69,8 +69,8 @@ class CompanyProfiles implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\UserInterface $repository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param \League\Tactician\CommandBus $commandBus
+     * @param App\Factory\Command          $commandFactory
      *
      * @return void
      */
@@ -83,13 +83,13 @@ class CompanyProfiles implements ControllerInterface {
         Command $commandFactory,
         Optimus $optimus
     ) {
-        $this->repository     = $repository;
-        $this->warningRepository     = $warningRepository;
-        $this->gateRepository     = $gateRepository;
+        $this->repository              = $repository;
+        $this->warningRepository       = $warningRepository;
+        $this->gateRepository          = $gateRepository;
         $this->attributeRepository     = $attributeRepository;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
-        $this->optimus        = $optimus;
+        $this->commandBus              = $commandBus;
+        $this->commandFactory          = $commandFactory;
+        $this->optimus                 = $optimus;
     }
 
     /**
@@ -105,26 +105,26 @@ class CompanyProfiles implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('company');
 
-        $data = [];
+        $data     = [];
         $profiles = $this->repository->findByCompanyId($company->id);
 
         foreach ($profiles as $profile) {
             $warnings = $this->warningRepository->findByUserId($profile->id);
-            $gates = $this->gateRepository->findByUserId($profile->id);
+            $gates    = $this->gateRepository->findByUserId($profile->id);
 
-            $firstNames = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'firstname']);
+            $firstNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'firstname']);
             $firstNamesArray = [];
             foreach ($firstNames as $firstName) {
                 $firstNamesArray[] = $firstName->value;
             }
 
-            $middleNames = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'middlename']);
+            $middleNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'middlename']);
             $middleNamesArray = [];
             foreach ($middleNames as $middleName) {
                 $middleNamesArray[] = $middleName->value;
             }
 
-            $lastNames = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'lastname']);
+            $lastNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'lastname']);
             $lastNamesArray = [];
             foreach ($lastNames as $lastName) {
                 $lastNamesArray[] = $lastName->value;
@@ -132,11 +132,11 @@ class CompanyProfiles implements ControllerInterface {
 
             $data[] = array_merge(
                 $profile->toArray(),
-                ['warnings' => $warnings->toArray()],
-                ['gates' => $gates->toArray()],
-                ['firstnames' => $firstNamesArray],
+                ['warnings'    => $warnings->toArray()],
+                ['gates'       => $gates->toArray()],
+                ['firstnames'  => $firstNamesArray],
                 ['middlenames' => $middleNamesArray],
-                ['lastnames' => $lastNamesArray]
+                ['lastnames'   => $lastNamesArray]
             );
         }
 
@@ -174,21 +174,21 @@ class CompanyProfiles implements ControllerInterface {
         $profile = $this->repository->find($userId);
 
         $warnings = $this->warningRepository->findByUserId($profile->id);
-        $gates = $this->gateRepository->findByUserId($profile->id);
+        $gates    = $this->gateRepository->findByUserId($profile->id);
 
-        $firstNames = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'firstname']);
+        $firstNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'firstname']);
         $firstNamesArray = [];
         foreach ($firstNames as $firstName) {
             $firstNamesArray[] = $firstName->value;
         }
 
-        $middleNames = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'middlename']);
+        $middleNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'middlename']);
         $middleNamesArray = [];
         foreach ($middleNames as $middleName) {
             $middleNamesArray[] = $middleName->value;
         }
 
-        $lastNames = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'lastname']);
+        $lastNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'lastname']);
         $lastNamesArray = [];
         foreach ($lastNames as $lastName) {
             $lastNamesArray[] = $lastName->value;
@@ -196,11 +196,11 @@ class CompanyProfiles implements ControllerInterface {
 
         $data = array_merge(
             $profile->toArray(),
-            ['warnings' => $warnings->toArray()],
-            ['gates' => $gates->toArray()],
-            ['firstnames' => $firstNamesArray],
+            ['warnings'    => $warnings->toArray()],
+            ['gates'       => $gates->toArray()],
+            ['firstnames'  => $firstNamesArray],
             ['middlenames' => $middleNamesArray],
-            ['lastnames' => $lastNamesArray]
+            ['lastnames'   => $lastNamesArray]
         );
 
         $body = [

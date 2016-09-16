@@ -80,12 +80,12 @@ class Hooks implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $credentialPubKey = $request->getAttribute('pubKey');
-        $targetCompany = $request->getAttribute('targetCompany');
-        
+        $targetCompany    = $request->getAttribute('targetCompany');
+
         $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
 
         if ($credential->companyId != $targetCompany->id) {
-            throw new NotFound;
+            throw new NotFound();
         }
 
         $hooks = $this->repository->getAllByCredentialPubKeyAndCompanyId($credentialPubKey, $targetCompany->id);

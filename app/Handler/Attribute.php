@@ -11,15 +11,12 @@ namespace App\Handler;
 use App\Command\Attribute\CreateNew;
 use App\Command\Attribute\DeleteAll;
 use App\Command\Attribute\DeleteOne;
-use App\Command\Attribute\UpdateOne;
 use App\Entity\Attribute as AttributeEntity;
 use App\Event\Attribute\Created;
 use App\Event\Attribute\Deleted;
 use App\Event\Attribute\DeletedMulti;
-use App\Event\Attribute\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
-use App\Exception\Update;
 use App\Exception\Validate;
 use App\Repository\AttributeInterface;
 use App\Validator\Attribute as AttributeValidator;
@@ -108,14 +105,16 @@ class Attribute implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->create([
+        $entity = $this->repository->create(
+            [
             'user_id'    => $command->user->id,
             'creator'    => $command->service->id,
             'name'       => $command->name,
             'value'      => $command->value,
             'support'    => $command->support,
             'created_at' => time()
-        ]);
+            ]
+        );
 
         try {
             $entity = $this->repository->save($entity);
@@ -149,11 +148,14 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
-        $entities = $this->repository->findBy([
+
+        $entities = $this->repository->findBy(
+            [
             'user_id' => $command->user->id,
             'creator' => $command->service->id,
-            'name' => $command->name
-        ]);
+            'name'    => $command->name
+            ]
+        );
 
         $affectedRows = 0;
 
@@ -162,7 +164,7 @@ class Attribute implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event        = new Deleted($entities);
+            $event = new Deleted($entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\AttributeException('No attributes found for deletion', 404);
@@ -184,10 +186,12 @@ class Attribute implements HandlerInterface {
         $this->validator->assertService($command->service);
         $this->validator->assertArray($command->queryParams);
 
-        $entities = $this->repository->findBy([
+        $entities = $this->repository->findBy(
+            [
             'user_id' => $command->user->id,
             'creator' => $command->service->id
-        ], $command->queryParams);
+            ], $command->queryParams
+        );
 
         $affectedRows = 0;
 
@@ -196,7 +200,7 @@ class Attribute implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event        = new DeletedMulti($entities);
+            $event = new DeletedMulti($entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\AttributeException('Error while deleting all attributes', 404);

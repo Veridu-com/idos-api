@@ -117,7 +117,7 @@ class Warning implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event   = new Created($entity);
+            $event = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Create\WarningException('Error while trying to create a warning', 500, $e);
@@ -145,10 +145,12 @@ class Warning implements HandlerInterface {
             );
         }
 
-        $entities = $this->repository->findBy([
+        $entities = $this->repository->findBy(
+            [
             'user_id' => $command->user->id,
             'creator' => $command->service->id
-        ], $command->queryParams);
+            ], $command->queryParams
+        );
 
         $affectedRows = 0;
 
@@ -157,7 +159,7 @@ class Warning implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event        = new DeletedMulti($entities);
+            $event = new DeletedMulti($entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting warnings');
@@ -190,7 +192,7 @@ class Warning implements HandlerInterface {
 
         try {
             $affectedRows = $this->repository->delete($entity->id);
-            
+
             $event = new Deleted($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {

@@ -13,7 +13,7 @@ namespace App\Validator;
  */
 class Attribute implements ValidatorInterface {
     use Traits\AssertId,
-    	Traits\AssertEntity,
+        Traits\AssertEntity,
         Traits\AssertName,
         Traits\AssertValue,
         Traits\AssertFloat,

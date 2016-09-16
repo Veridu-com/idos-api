@@ -117,7 +117,6 @@ class ServiceHandler implements HandlerInterface {
             ]
         );
 
-
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
@@ -149,7 +148,7 @@ class ServiceHandler implements HandlerInterface {
                 $e
             );
         }
-        
+
         $entity = $this->repository->findOne($command->companyId, $command->serviceHandlerId);
 
         $allowedListeners = $entity->service()->listens;
