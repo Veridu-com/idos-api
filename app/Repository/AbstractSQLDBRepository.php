@@ -51,6 +51,13 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     protected $filterableKeys = [];
 
     /**
+     * Orderable keys of the repository.
+     *
+     * @var array
+     */
+    protected $orderableKeys = [];
+
+    /**
      * Begin a fluent query against a database table.
      *
      * @return \Illuminate\Database\Query\Builder
@@ -343,6 +350,33 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     }
 
     /**
+     * Gets query modifiers (limit, order, sort).
+     *
+     * @param      Illuminate\Database\Query\Builder $query        The query to be modified
+     * @param      array                             $queryParams  The query parameters
+     *
+     * @return     Illuminate\Database\Query\Builder  The modified query
+     */
+    public function treatQueryModifiers(Builder $query, array $queryParams) {
+        
+        if (isset($queryParams['filter:order']) && in_array($queryParams['filter:order'], $this->orderableKeys)) {
+            $order = 'ASC';
+
+            if (isset($queryParams['filter:sort']) && (in_array($queryParams['filter:sort'], ['ASC', 'DESC']))) {
+                $order = $queryParams['filter:sort'];
+            }
+
+            $query = $query->orderBy($queryParams['filter:order'], $order);
+        }
+
+        if (isset($queryParams['filter:limit']) && (int) $queryParams['filter:limit'] > 0) {
+            $query = $query->limit((int) $queryParams['filter:limit']);
+        }
+
+        return $query;
+    }
+
+    /**
      * Fetches all entities matching the given constraints, possibly filtered by query params
      * that comes from the user request. You can also specify which data will be fetched
      * specifying the columns array.
@@ -401,6 +435,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                 $getColumns = array_merge($getColumns, $this->getRelationColumnsAliases($relation, $columns));
             }
         }
+
+        $query = $this->treatQueryModifiers($query, $queryParams);
 
         return $this->castHydrate($query->get($getColumns));
     }

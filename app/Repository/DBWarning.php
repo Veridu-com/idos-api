@@ -41,6 +41,17 @@ class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
     /**
      * {@inheritdoc}
      */
+    protected $orderableKeys = [
+        'name',
+        'slug',
+        'reference',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $relationships = [
         'user' => [
             'type'       => 'MANY_TO_ONE',

@@ -39,6 +39,16 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
     /**
      * {@inheritdoc}
      */
+    protected $orderableKeys = [
+        'name',
+        'support',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $relationships = [
         'user' => [
             'type'       => 'MANY_TO_ONE',

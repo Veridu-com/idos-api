@@ -158,7 +158,7 @@ class Service implements RouteInterface {
      *
      * Retrieves all public information from a Service.
      *
-     * @apiEndpoint GET /services/{serviceId:[0-9]+}
+     * @apiEndpoint GET /services/{serviceId}
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -190,7 +190,7 @@ class Service implements RouteInterface {
      *
      * Updates Service's specific information.
      *
-     * @apiEndpoint PUT /services/{serviceId:[0-9]+}
+     * @apiEndpoint PUT /services/{serviceId}
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -222,7 +222,7 @@ class Service implements RouteInterface {
      *
      * Deletes a single Service that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /services/{serviceId:[0-9]+}
+     * @apiEndpoint DELETE /services/{serviceId}
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token

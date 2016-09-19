@@ -169,8 +169,11 @@ class Features implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
-        $source  = $request->getParsedBodyParam('sourceId') !== 0 ? $this->sourceRepository->find($request->getParsedBodyParam('sourceId'), $user->id) : null;
         $service = $request->getAttribute('service');
+        $source = null;
+        if ($request->getParsedBodyParam('decoded_source_id') !== null) {
+            $source = $this->sourceRepository->find($request->getParsedBodyParam('decoded_source_id'), $user->id);
+        }
 
         $command = $this->commandFactory->create('Feature\\CreateNew');
         $command

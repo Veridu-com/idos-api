@@ -61,7 +61,7 @@ class Raw implements RouteInterface {
      *
      * Retrieve a complete list of the raw data by a given source.
      *
-     * @apiEndpoint GET /profiles/{userName}/sources/{sourceId}/raw
+     * @apiEndpoint GET /profiles/{userName}/raw
      * @apiGroup Sources Raw
      * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
@@ -94,7 +94,7 @@ class Raw implements RouteInterface {
      *
      * Creates a new raw data for the given source.
      *
-     * @apiEndpoint POST /profiles/{userName}/source/{sourceId}/raw
+     * @apiEndpoint POST /profiles/{userName}/raw
      * @apiGroup Sources Raw
      * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token

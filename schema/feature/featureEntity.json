@@ -12,7 +12,13 @@
         "creator": {
             "description": "Feature Creator",
             "type": "object",
-            "$ref": "../service/serviceEntity.json"
+            "properties": {
+                "name": {
+                    "description": "Service Name",
+                    "type": "string",
+                    "pattern": ""
+                }
+            }
         },
         "type": {
             "description": "Feature Type",

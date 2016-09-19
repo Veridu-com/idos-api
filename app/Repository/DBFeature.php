@@ -44,6 +44,16 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
+    protected $orderableKeys = [
+        'name',
+        'type',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $relationships = [
         'user' => [
             'type'       => 'MANY_TO_ONE',
