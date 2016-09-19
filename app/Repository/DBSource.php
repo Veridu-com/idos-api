@@ -31,6 +31,15 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     /**
      * {@inheritdoc}
      */
+    protected $filterableKeys = [
+        'id'         => 'decoded',
+        'name'       => 'string',
+        'created_at' => 'date'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOne(int $id, int $userId) : Source {
         return $this->findOneBy(
             [

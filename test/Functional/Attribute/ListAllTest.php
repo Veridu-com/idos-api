@@ -15,7 +15,7 @@ class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
@@ -56,7 +56,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=%1'
+                    'QUERY_STRING'       => 'name=*1'
                 ]
             )
         );
@@ -91,7 +91,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=user2%'
+                    'QUERY_STRING'       => 'name=user2*'
                 ]
             )
         );

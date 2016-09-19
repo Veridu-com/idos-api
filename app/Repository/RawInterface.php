@@ -17,15 +17,8 @@ use Illuminate\Support\Collection;
  * Raw Repository Interface.
  */
 interface RawInterface extends RepositoryInterface {
-    /**
-     * Gets all Raw entities based on Source, possibly filtering by name.
-     *
-     * @param App\Entity\Source $source
-     * @param array             $collections
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAllBySourceAndCollections(Source $source, array $collectionNames = []) : Collection;
+    public function findByUserId(int $userId, array $queryParams = []) : Collection;
+    public function findOne(Source $source, string $collection) : Raw;
 
     /*
      * Deletes all Raw entities based on source.

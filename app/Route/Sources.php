@@ -88,7 +88,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::USER | Auth::CREDENTIAL))
+            ->add($auth(Auth::CREDENTIAL | Auth::USER))
             ->setName('sources:listAll');
     }
 
@@ -120,7 +120,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER | Auth::CREDENTIAL))
+            ->add($auth(Auth::CREDENTIAL | Auth::USER))
             ->setName('sources:createNew');
     }
 
@@ -152,7 +152,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER | Auth::CREDENTIAL))
+            ->add($auth(Auth::CREDENTIAL | Auth::USER))
             ->setName('sources:deleteAll');
     }
 
@@ -161,7 +161,7 @@ class Sources implements RouteInterface {
      *
      * Retrieves all information from a Source.
      *
-     * @apiEndpoint GET /profiles/{userName/sources/{sourceId:[0-9]+}
+     * @apiEndpoint GET /profiles/{userName/sources/{sourceId}
      * @apiGroup Profile Source
      * @apiAuth header token userToken XXX User's Token
      * @apiAuth query token userToken XXX User's Token
@@ -184,7 +184,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER | Auth::CREDENTIAL))
+            ->add($auth(Auth::CREDENTIAL | Auth::USER))
             ->setName('sources:getOne');
     }
 
@@ -193,7 +193,7 @@ class Sources implements RouteInterface {
      *
      * Updates a Source's specific information.
      *
-     * @apiEndpoint PUT /profiles/{userName}/sources/{sourceId:[0-9]+}
+     * @apiEndpoint PUT /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile Source
      * @apiAuth header token userToken XXX User's Token
      * @apiAuth query token userToken XXX User's Token
@@ -216,7 +216,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER | Auth::CREDENTIAL))
+            ->add($auth(Auth::CREDENTIAL | Auth::USER))
             ->setName('sources:updateOne');
     }
 
@@ -225,7 +225,7 @@ class Sources implements RouteInterface {
      *
      * Deletes a source from the target user.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/sources/{sourceId:[0-9]+}
+     * @apiEndpoint DELETE /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile Source
      * @apiAuth header token userToken XXX User's Token
      * @apiAuth query token userToken XXX User's Token
@@ -248,7 +248,7 @@ class Sources implements RouteInterface {
                 'App\Controller\Sources:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER | Auth::CREDENTIAL))
+            ->add($auth(Auth::CREDENTIAL | Auth::USER))
             ->setName('sources:deleteOne');
     }
 }

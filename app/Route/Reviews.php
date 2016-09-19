@@ -39,6 +39,7 @@ class Reviews implements RouteInterface {
         $app->getContainer()[\App\Controller\Reviews::class] = function (ContainerInterface $container) {
             return new \App\Controller\Reviews(
                 $container->get('repositoryFactory')->create('Review'),
+                $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
                 $container->get('optimus')
@@ -60,7 +61,7 @@ class Reviews implements RouteInterface {
      *
      * Retrieve all reviews from a given user, matching one or more warnings.
      *
-     * @apiEndpoint GET /profiles/{userName}/reviews
+     * @apiEndpoint GET companies/{companySlug}/profiles/{userId}/reviews
      * @apiGroup Profiles Review
      * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
      * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
@@ -80,7 +81,7 @@ class Reviews implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews',
                 'App\Controller\Reviews:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -92,7 +93,7 @@ class Reviews implements RouteInterface {
      *
      * Creates a new review for the given user.
      *
-     * @apiEndpoint POST /profiles/{userName}/reviews
+     * @apiEndpoint POST companies/{companySlug}/profiles/{userId}/reviews
      * @apiGroup Sources Review
      * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
      * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
@@ -112,7 +113,7 @@ class Reviews implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews',
                 'App\Controller\Reviews:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -125,7 +126,7 @@ class Reviews implements RouteInterface {
      *
      * Updates an review for the given user and reference.
      *
-     * @apiEndpoint PUT /profiles/{userName}/reviews/{reviewId}
+     * @apiEndpoint PUT companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
      * @apiGroup Profile Reviews
      * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
@@ -146,7 +147,7 @@ class Reviews implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews/{reviewId:[0-9]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
                 'App\Controller\Reviews:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -159,7 +160,7 @@ class Reviews implements RouteInterface {
      *
      * Retrieves an review from the given user.
      *
-     * @apiEndpoint GET /profiles/{userName}/reviews/{reviewId}
+     * @apiEndpoint GET companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
      * @apiGroup Sources Review
      * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
      * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
@@ -180,7 +181,7 @@ class Reviews implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/reviews/{reviewId:[0-9]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
                 'App\Controller\Reviews:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

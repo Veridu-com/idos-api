@@ -81,14 +81,14 @@ class Scores implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user          = $request->getAttribute('targetUser');
-        $attributeName = $request->getAttribute('attributeName');
+        $service       = $request->getAttribute('service');
 
-        $scores = $this->repository->getAllByUserIdAttributeNameAndNames($user->id, $attributeName, $request->getQueryParams());
+        $entities = $this->repository->findBy(['user_id' => $user->id], $request->getQueryParams());
 
         $body = [
-            'data'    => $scores->toArray(),
+            'data'    => $entities->toArray(),
             'updated' => (
-                $scores->isEmpty() ? time() : max($scores->max('updatedAt'), $scores->max('createdAt'))
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 
@@ -116,21 +116,20 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+
         $command = $this->commandFactory->create('Score\\CreateNew');
-
-        $user          = $request->getAttribute('targetUser');
-        $attributeName = $request->getAttribute('attributeName');
-
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
-            ->setParameter('attribute', $this->attributeRepository->findOneByUserIdAndName($user->id, $attributeName));
+            ->setParameter('service', $service);
 
-        $score = $this->commandBus->handle($command);
+        $entity = $this->commandBus->handle($command);
 
         $body = [
             'status' => true,
-            'data'   => $score->toArray()
+            'data'   => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -158,16 +157,16 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+        $name    = $request->getAttribute('scoreName');
+
         $command = $this->commandFactory->create('Score\\UpdateOne');
-
-        $user          = $request->getAttribute('targetUser');
-        $attributeName = $request->getAttribute('attributeName');
-
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
-            ->setParameter('attribute', $this->attributeRepository->findOneByUserIdAndName($user->id, $attributeName))
-            ->setParameter('name', $request->getAttribute('scoreName'));
+            ->setParameter('service', $service)
+            ->setParameter('name', $name);
 
         $score = $this->commandBus->handle($command);
 
@@ -178,6 +177,47 @@ class Scores implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Created a new score for a given attribute.
+     *
+     * @apiEndpointURIFragment string userName usr001
+     * @apiEndpointURIFragment string    attributeName firstName
+     * @apiEndpointRequiredParam body   string     name  overall
+     * @apiEndpointRequiredParam body   float     value 0.2
+     * @apiEndpointResponse 201 schema/score/scoreEntity.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+
+        $command = $this->commandFactory->create('Score\\Upsert');
+        $command
+            ->setParameters($request->getParsedBody())
+            ->setParameter('user', $user)
+            ->setParameter('service', $service);
+
+        $entity = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => true,
+            'data'   => $entity->toArray()
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('statusCode', isset($entity->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -199,11 +239,11 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user          = $request->getAttribute('targetUser');
-        $attributeName = $request->getAttribute('attributeName');
-        $name          = $request->getAttribute('scoreName');
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+        $name    = $request->getAttribute('scoreName');
 
-        $score = $this->repository->findOneByUserIdAttributeNameAndName($user->id, $attributeName, $name);
+        $score = $this->repository->findOneByName($user->id, $service->id, $name);
 
         $body = [
             'data' => $score->toArray()
@@ -231,14 +271,14 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+
         $command = $this->commandFactory->create('Score\\DeleteAll');
-
-        $user          = $request->getAttribute('targetUser');
-        $attributeName = $request->getAttribute('attributeName');
-
         $command
             ->setParameter('user', $user)
-            ->setParameter('attribute', $this->attributeRepository->findOneByUserIdAndName($user->id, $attributeName));
+            ->setParameter('service', $service)
+            ->setParameter('queryParams', $request->getQueryParams());
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -267,15 +307,15 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+        $name    = $request->getAttribute('scoreName');
+
         $command = $this->commandFactory->create('Score\\DeleteOne');
-
-        $user          = $request->getAttribute('targetUser');
-        $attributeName = $request->getAttribute('attributeName');
-
         $command
             ->setParameter('user', $user)
-            ->setParameter('attribute', $this->attributeRepository->findOneByUserIdAndName($user->id, $attributeName))
-            ->setParameter('name', $request->getAttribute('scoreName'));
+            ->setParameter('service', $service)
+            ->setParameter('name', $name);
 
         $this->commandBus->handle($command);
         $body = [

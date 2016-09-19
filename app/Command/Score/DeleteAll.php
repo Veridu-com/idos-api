@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Command\Score;
 
 use App\Command\AbstractCommand;
-use App\Entity\Attribute;
 
 /**
  * Score "Delete All" Command.
@@ -21,12 +20,20 @@ class DeleteAll extends AbstractCommand {
      * @var App\Entity\User
      */
     public $user;
+
     /**
-     * Score's Attribute.
+     * Score's Creator.
      *
-     * @var App\Entity\Attribute
+     * @var App\Entity\Service
      */
-    public $attribute;
+    public $service;
+
+    /**
+     * Query Params.
+     *
+     * @var array
+     */
+    public $queryParams;
 
     /**
      * {@inheritdoc}
@@ -36,8 +43,12 @@ class DeleteAll extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['attribute'])) {
-            $this->attribute = $parameters['attribute'];
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
+        if (isset($parameters['queryParams'])) {
+            $this->queryParams = $parameters['queryParams'];
         }
 
         return $this;

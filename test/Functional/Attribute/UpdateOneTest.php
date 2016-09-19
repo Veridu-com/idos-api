@@ -17,7 +17,7 @@ class UpdateOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         $this->httpMethod = 'PUT';

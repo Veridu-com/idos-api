@@ -35,29 +35,6 @@ echo App\Helper\Token::generateIdentityToken(
 ```
 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1ZDQxNDAyYWJjNGIyYTc2Yjk3MTlkOTExMDE3YzU5MiJ9.iL4KCEGvoYgTW8NGmP32o9k8UB45ydkhCS7nkEJ2iyg
 
-## Company Token
-
-### With User
-
-```php
-echo App\Helper\Token::generateCompanyToken(
-    '4c9184f37cff01bcdc32dc486ec36961:usr001',
-    '8b5fe9db84e338b424ed6d59da3254a0',
-    '4e37dae79456985ae0d27a67639cf335'
-);
-```
-
-`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI4YjVmZTlkYjg0ZTMzOGI0MjRlZDZkNTlkYTMyNTRhMCIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxOnVzcjAwMSJ9.Dxh-qrVXkS3PHNHkkh50IMxtKQoS3W3HHClOs6h0gnM`
-
-### Without User
-
-```php
-echo App\Helper\Token::generateCompanyToken(
-    '',
-    '8b5fe9db84e338b424ed6d59da3254a0',
-    '4e37dae79456985ae0d27a67639cf335'
-);
-```
 
 `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI4YjVmZTlkYjg0ZTMzOGI0MjRlZDZkNTlkYTMyNTRhMCJ9.7o7r5gl5tgdkOZALhYZgB1wd_Rn8keWVDSHcyfcquOo`
 

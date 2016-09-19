@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use App\Extension\SlugMutator;
+
 /**
  * Warnings Entity.
  *
@@ -21,11 +23,14 @@ namespace App\Entity;
  * @property int    $updated_at
  */
 class Warning extends AbstractEntity {
+    use SlugMutator;
+
     /**
      * {@inheritdoc}
      */
     protected $visible = [
         'id',
+        'creator',
         'name',
         'slug',
         'reference',
@@ -36,4 +41,11 @@ class Warning extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'creator' => 'Service'
+    ];
 }

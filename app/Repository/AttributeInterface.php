@@ -16,13 +16,15 @@ use Illuminate\Support\Collection;
  */
 interface AttributeInterface extends RepositoryInterface {
     /**
-     * Gets all Attribute entities based on their user_id.
+     * Returns all features based on their user id.
      *
-     * @param int $userId
+     * @param int   $userId
+     * @param array $queryParams
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
-    public function getAllByUserId(int $userId) : Collection;
+    public function findByUserId(int $userId, array $queryParams = []) : Collection;
+
     /**
      * Gets all Attribute entities based on their user_id, filtering them by name.
      *

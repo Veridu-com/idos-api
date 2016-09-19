@@ -33,36 +33,98 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'slug'       => 'string',
-        'created_at' => 'date'
+        'source.id'    => 'decoded',
+        'source.name'  => 'string',
+        'creator.name' => 'string',
+        'name'         => 'string',
+        'type'         => 'string',
+        'created_at'   => 'date'
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : array {
-        $dbQuery = $this->query()->where('user_id', $userId);
+    protected $orderableKeys = [
+        'name',
+        'type',
+        'created_at',
+        'updated_at'
+    ];
 
-        return $this->paginate(
-            $this->filter($dbQuery, $queryParams),
-            $queryParams
+    /**
+     * {@inheritdoc}
+     */
+    protected $relationships = [
+        'user' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'users',
+            'foreignKey' => 'user_id',
+            'key'        => 'id',
+            'entity'     => 'User',
+            'nullable'   => false,
+            'hydrate'    => false
+        ],
+
+        'source' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'sources',
+            'foreignKey' => 'source_id',
+            'key'        => 'id',
+            'entity'     => 'Source',
+            'nullable'   => true,
+            'hydrate'    => [
+                'id',
+                'user_id',
+                'name',
+                'tags',
+                'created_at',
+                'updated_at'
+            ]
+        ],
+
+        'creator' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'services',
+            'foreignKey' => 'creator',
+            'key'        => 'id',
+            'entity'     => 'Service',
+            'nullable'   => false,
+            'hydrate'    => [
+                'name'
+            ]
+        ],
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByUserId(int $userId, array $queryParams = []) : Collection {
+        $result = $this->findBy(
+            [
+            'user_id' => $userId
+            ], $queryParams
         );
+
+        return $result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteByUserId(int $userId) : int {
+    public function deleteByUserId(int $userId, array $queryParams = []) : int {
         return $this->deleteByKey('user_id', $userId);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByUserId(int $userId) : Collection {
-        return $this->findBy(
+    public function findOneById(int $userId, int $sourceId, int $serviceId, int $id) : Feature {
+        return $this->findOneBy(
             [
-                'user_id' => $userId,
+            'user_id'   => $userId,
+            'source_id' => $sourceId,
+            'creator'   => $serviceId,
+            'id'        => $id
             ]
         );
     }
@@ -70,11 +132,13 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByUserIdAndSlug(int $userId, string $featureSlug) : Feature {
+    public function findOneByName(int $userId, int $sourceId, int $serviceId, string $name) : Feature {
         return $this->findOneBy(
             [
-                'user_id' => $userId,
-                'slug'    => $featureSlug
+            'user_id'   => $userId,
+            'source_id' => $sourceId,
+            'creator'   => $serviceId,
+            'name'      => $name
             ]
         );
     }

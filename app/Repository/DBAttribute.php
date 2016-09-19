@@ -32,14 +32,58 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'name' => 'string'
+        'creator.name' => 'string',
+        'name'         => 'string'
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId) : Collection {
-        return $this->findBy(['user_id' => $userId]);
+    protected $orderableKeys = [
+        'name',
+        'support',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $relationships = [
+        'user' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'users',
+            'foreignKey' => 'user_id',
+            'key'        => 'id',
+            'entity'     => 'User',
+            'nullable'   => false,
+            'hydrate'    => false
+        ],
+
+        'creator' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'services',
+            'foreignKey' => 'creator',
+            'key'        => 'id',
+            'entity'     => 'Service',
+            'nullable'   => false,
+            'hydrate'    => [
+                'name'
+            ]
+        ],
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByUserId(int $userId, array $queryParams = []) : Collection {
+        $result = $this->findBy(
+            [
+            'user_id' => $userId
+            ], $queryParams
+        );
+
+        return $result;
     }
 
     /**

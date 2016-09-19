@@ -33,20 +33,90 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'slug'       => 'string',
-        'created_at' => 'date'
+        'creator.name' => 'string',
+        'name'         => 'string',
+        'slug'         => 'string',
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : array {
-        $dbQuery = $this->query()->where('user_id', $userId);
+    protected $orderableKeys = [
+        'name',
+        'slug',
+        'pass',
+        'created_at',
+        'updated_at'
+    ];
 
-        return $this->paginate(
-            $this->filter($dbQuery, $queryParams),
-            $queryParams
+    /**
+     * {@inheritdoc}
+     */
+    protected $relationships = [
+        'user' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'users',
+            'foreignKey' => 'user_id',
+            'key'        => 'id',
+            'entity'     => 'User',
+            'nullable'   => false,
+            'hydrate'    => false
+        ],
+
+        'creator' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'services',
+            'foreignKey' => 'creator',
+            'key'        => 'id',
+            'entity'     => 'Service',
+            'nullable'   => false,
+            'hydrate'    => [
+                'name'
+            ]
+        ],
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByUserId(int $userId, array $queryParams = []) : Collection {
+        $entities = $this->findBy(
+            [
+            'user_id' => $userId
+            ], $queryParams
         );
+
+        return $entities;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneBySlug(int $userId, int $serviceId, string $slug) : Gate {
+        $entity = $this->findOneBy(
+            [
+            'user_id' => $userId,
+            'creator' => $serviceId,
+            'slug'    => $slug
+            ]
+        );
+
+        return $entity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByName(int $userId, int $serviceId, string $name) : Gate {
+        $entity = $this->findOneBy(
+            [
+            'user_id' => $userId,
+            'creator' => $serviceId,
+            'name'    => $name
+            ]
+        );
+
+        return $entity;
     }
 
     /**
@@ -54,17 +124,6 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
      */
     public function deleteByUserId(int $userId) : int {
         return $this->deleteByKey('user_id', $userId);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByUserId(int $userId) : Collection {
-        return $this->findBy(
-            [
-                'user_id' => $userId,
-            ]
-        );
     }
 
     /**

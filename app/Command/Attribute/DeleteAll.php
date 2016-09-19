@@ -20,12 +20,20 @@ class DeleteAll extends AbstractCommand {
      * @var App\Entity\User
      */
     public $user;
+
     /**
-     * Attribute's filters.
+     * Attribute's service.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+
+    /**
+     * Query params.
      *
      * @var array
      */
-    public $filters;
+    public $queryParams;
 
     /**
      * {@inheritdoc}
@@ -35,8 +43,12 @@ class DeleteAll extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['filters'])) {
-            $this->filters = $parameters['filters'];
+        if (isset($parameters['service'])) {
+            $this->service = $parameters['service'];
+        }
+
+        if (isset($parameters['queryParams'])) {
+            $this->queryParams = $parameters['queryParams'];
         }
 
         return $this;

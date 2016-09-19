@@ -66,7 +66,7 @@ class Hooks implements RouteInterface {
      *
      * Retrieve a complete list of all hooks that belong to the requesting credential.
      *
-     * @apiEndpoint GET /management/credentials/{pubKey}/hooks
+     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
@@ -102,7 +102,7 @@ class Hooks implements RouteInterface {
      *
      * Creates a new hook for the requesting credential.
      *
-     * @apiEndpoint POST /management/credentials/{pubKey}/hooks
+     * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
@@ -139,7 +139,7 @@ class Hooks implements RouteInterface {
      *
      * Updates a hook that belongs to the requesting credential.
      *
-     * @apiEndpoint PUT /management/credentials/{pubKey}/hooks/{hookId:[0-9]+}
+     * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
@@ -178,7 +178,7 @@ class Hooks implements RouteInterface {
      *
      * Delete all hooks that belong to the requesting company.
      *
-     * @apiEndpoint DELETE /management/credentials/{pubKey}/hooks
+     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
@@ -215,7 +215,7 @@ class Hooks implements RouteInterface {
      *
      * Retrieves all public information from a hook
      *
-     * @apiEndpoint GET /management/credentials/{pubKey}/hooks/{hookId:[0-9]+}
+     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token
@@ -254,7 +254,7 @@ class Hooks implements RouteInterface {
      *
      * Deletes a hook that belongs to the requesting credential.
      *
-     * @apiEndpoint DELETE /management/credentials/{pubKey}/hooks/{hookId:[0-9]+}
+     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
      * @apiAuth header token CredentialToken XXX A valid Credential Token
      * @apiAuth query token credentialToken XXX A valid Credential Token

@@ -166,21 +166,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             return $this->{$method}($value);
         }
 
-        // Tests if it is a secure field
-        if ((in_array($key, $this->secure))) {
-            if (is_resource($value)) {
-                $value = stream_get_contents($value, -1, 0);
-            }
-
-            if (strpos((string) $value, 'secure:') === false) {
-                $this->attributes[$key] = sprintf(
-                    'secure:%s',
-                    // $this->secure->lock($value)
-                    $value
-                );
-            }
-        }
-
         // Tests if it is not a encoded json
         // how: a decoded json is never a string.
         if ((in_array($key, $this->json)) && (! is_string($value))) {
@@ -191,6 +176,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = date($this->dateFormat, $value);
         }
 
+        // Tests if it is a secure field
         if ((isset($this->secure)) && (in_array($key, $this->secure))) {
             if (is_resource($value)) {
                 $value = stream_get_contents($value, -1, 0);
@@ -246,17 +232,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         if ((in_array($key, $this->dates)) && ($value !== null)) {
             $value = strtotime($value);
-        }
-
-        if ((in_array($key, $this->secure))) {
-            if (is_resource($value)) {
-                $value = stream_get_contents($value, -1, 0);
-            }
-
-            if (strpos((string) $value, 'secure:') === 0) {
-                $value = substr($value, 7);
-                // $value = $this->secure->unlock($value);
-            }
         }
 
         if ((in_array($key, $this->json)) && ($value !== null)) {
@@ -317,11 +292,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             $value = null;
-            if ($this->relationships && isset($this->relationships[$attribute])) {
+            if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
                 // populating relations
-                if (isset($this->relations[$attribute])) {
-                    $value = $this->$attribute()->toArray();
-                }
+                $value = $this->$attribute()->toArray();
             } else {
                 // populating own attributes
                 $value = $this->getAttribute($attribute);
@@ -332,7 +305,10 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 }
             }
 
-            $return[$attribute] = $value;
+            //@FIXME: check if this does not break other endpoints
+            if ($value !== null) {
+                $return[$attribute] = $value;
+            }
         }
 
         return $return;

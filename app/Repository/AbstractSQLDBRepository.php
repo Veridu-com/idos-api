@@ -9,8 +9,10 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\EntityInterface;
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Factory\Entity;
+use App\Factory\Repository;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
@@ -21,24 +23,19 @@ use Jenssegers\Optimus\Optimus;
  */
 abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
-     * Entity Factory.
-     *
-     * @var App\Factory\Entity
-     */
-    protected $entityFactory;
-
-    /**
      * DB Table Name.
      *
      * @var string
      */
     protected $tableName = null;
+
     /**
      * Entity Name.
      *
      * @var string
      */
     protected $entityName = null;
+
     /**
      * DB Connection.
      *
@@ -52,6 +49,13 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @var array
      */
     protected $filterableKeys = [];
+
+    /**
+     * Orderable keys of the repository.
+     *
+     * @var array
+     */
+    protected $orderableKeys = [];
 
     /**
      * Begin a fluent query against a database table.
@@ -101,6 +105,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * Class constructor.
      *
      * @param App\Factory\Entity                       $entityFactory
+     * @param App\Factory\Repository                   $repositoryFactory
      * @param \Jenssegers\Optimus\Optimus              $optimus
      * @param \Illuminate\Database\ConnectionInterface $sqlConnection
      *
@@ -108,10 +113,11 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      */
     public function __construct(
         Entity $entityFactory,
+        Repository $repositoryFactory,
         Optimus $optimus,
         ConnectionInterface $sqlConnection
     ) {
-        parent::__construct($entityFactory, $optimus);
+        parent::__construct($entityFactory, $repositoryFactory, $optimus);
         $this->dbConnection = $sqlConnection;
     }
 
@@ -126,14 +132,68 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     }
 
     /**
+     * Hydrates the relations of the entities. This method should be called when the provided
+     * entities doesn't have the data of its relations (i.e. the provided entities were not
+     * fetched in a single query with all necessary columns in the select). Generally, you would
+     * call this method after creating an entity with its relations ids and saving it.
+     *
+     * Basically this method instantiates the relations repositories and fetches the necessary
+     * data, so be aware that calling this method may generate additional queries.
+     *
+     * @param EntityInterface|array $entities An entity or an array of entities
+     *
+     * @return EntityInterface|array The resulting entity or array of entities
+     */
+    public function hydrateRelations($entities) {
+        //@FIXME: this method is hydrating the relations attributes even if its not in the 'hydrate' property of the relation in the repository config, it must behave like castHydrate
+        if (is_array($entities)) {
+            foreach ($entities as $key => $entity) {
+                $entities[$key] = $this->hydrateRelations($entity);
+            }
+
+            return $entities;
+        }
+
+        foreach ($this->relationships as $relation => $properties) {
+            if (! $properties['hydrate']) {
+                continue;
+            }
+
+            switch ($properties['type']) {
+                case 'ONE_TO_ONE':
+                    break;
+                case 'ONE_TO_MANY':
+                    break;
+                case 'MANY_TO_ONE':
+                    $relationEntityName = $properties['entity'];
+                    $tableForeignKey    = $properties['foreignKey'];
+                    $relationTableKey   = $properties['key'];
+                    $hydrateColumns     = $properties['hydrate'];
+
+                    $relationEntity = null;
+                    if ($entities->$tableForeignKey !== null && $hydrateColumns) {
+                        $relationRepository = $this->repositoryFactory->create($relationEntityName);
+                        $relationEntity     = $relationRepository->findOneBy([$relationTableKey => $entities->$tableForeignKey], [], $hydrateColumns);
+                    }
+
+                    $entities->relations[$relation] = $relationEntity;
+                    break;
+                case 'MANY_TO_MANY':
+                    break;
+            }
+        }
+
+        return $entities;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function save(EntityInterface $entity) : EntityInterface {
         $serialized = $entity->serialize();
 
         if (! $entity->id) {
-            $id = $this->query()
-                ->insertGetId($serialized);
+            $id = $this->query()->insertGetId($serialized);
 
             return $this->create(array_merge(['id' => $id], $entity->serialize()));
         }
@@ -144,6 +204,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $affectedRows             = $this->query()
             ->where('id', $entity->id)
             ->update($serialized);
+
         if (! $affectedRows) {
             throw new \RuntimeException(
                 sprintf(
@@ -241,18 +302,415 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     }
 
     /**
-     * {@inheritdoc}
+     * Converts the query params from the request into valid constraints to be merged in the
+     * findBy method constraints.
+     *
+     * @param array $queryParams The query parameters
+     *
+     * @return array The constraints.
      */
-    public function findBy(array $constraints, array $queryParams = []) : Collection {
-        $query = $this->query();
+    public function getFilterConstraints(array $queryParams) {
+        $constraints = [];
 
-        foreach ($constraints as $key => $value) {
-            $query = $query->where($key, $value);
+        foreach ($queryParams as $queryParam => $value) {
+            $queryParam = str_replace(':', '.', $queryParam);
+
+            if (isset($this->filterableKeys[$queryParam])) {
+                $type     = $this->filterableKeys[$queryParam];
+                $operator = '=';
+
+                switch ($type) {
+                    case 'date':
+                        break;
+
+                    case 'boolean':
+                        $value = (bool) $value;
+                        break;
+
+                    case 'integer':
+                        $value = (int) $value;
+                        break;
+
+                    case 'decoded':
+                        $value = $this->optimus->decode((int) $value);
+                        break;
+
+                    case 'string':
+                        $value    = str_replace('*', '%', $value);
+                        $operator = 'ilike';
+
+                    default:
+                }
+
+                $constraints[$queryParam] = [$value, $operator];
+            }
         }
 
-        $query = $this->filter($query, $queryParams);
+        return $constraints;
+    }
 
-        return $query->get();
+    /**
+     * Gets query modifiers (limit, order, sort).
+     *
+     * @param      Illuminate\Database\Query\Builder $query        The query to be modified
+     * @param      array                             $queryParams  The query parameters
+     *
+     * @return     Illuminate\Database\Query\Builder  The modified query
+     */
+    public function treatQueryModifiers(Builder $query, array $queryParams) {
+        
+        if (isset($queryParams['filter:order']) && in_array($queryParams['filter:order'], $this->orderableKeys)) {
+            $order = 'ASC';
+
+            if (isset($queryParams['filter:sort']) && (in_array($queryParams['filter:sort'], ['ASC', 'DESC']))) {
+                $order = $queryParams['filter:sort'];
+            }
+
+            $query = $query->orderBy($queryParams['filter:order'], $order);
+        }
+
+        if (isset($queryParams['filter:limit']) && (int) $queryParams['filter:limit'] > 0) {
+            $query = $query->limit((int) $queryParams['filter:limit']);
+        }
+
+        return $query;
+    }
+
+    /**
+     * Fetches all entities matching the given constraints, possibly filtered by query params
+     * that comes from the user request. You can also specify which data will be fetched
+     * specifying the columns array.
+     *
+     * The constraints array may include constraints involving the entity or its relations. It
+     * is also possible to specify the desired operator for each constraint. Be aware that
+     * including constraints using the entities relations may generate inner joins or left joins
+     * in the generated query, although no additional queries are made.
+     *
+     * The query params array will be converted into valid constraints and merged into the
+     * constraints array. These params may also include filters using the entity relations. Be
+     * aware that including filters using the entity relations may generate additional joins in
+     * the query.
+     *
+     * By default the fetched columns of the entity will be the ones specified in the 'public'
+     * array in the entity class. Also, by default the fetched columns of the entity relations
+     * are the ones specified in each relation property 'hydrate' inside the 'relationship' array
+     * specified in the entity repository. All of these may be overwriten by specifying them in
+     * the columns array.
+     *
+     * @param array $constraints The constraints
+     * @param array $queryParams The query parameters
+     * @param array $columns     The columns to fetch
+     *
+     * @return Illuminate\Database\Collection The collection of fetched entities
+     */
+    public function findBy(array $constraints, array $queryParams = [], array $columns = ['*']) : Collection {
+        $query = $this->query();
+
+        $constraints = array_merge($constraints, $this->getFilterConstraints($queryParams));
+
+        foreach ($constraints as $column => $value) {
+            if (is_array($value)) {
+                $operator = $value[1];
+                $value    = $value[0];
+
+                $query = $this->where($query, $column, $value, $operator);
+            } else {
+                $query = $this->where($query, $column, $value);
+            }
+        }
+
+        $getColumns = [];
+
+        foreach ($columns as $column) {
+            if (strpos('.', $column) !== false) {
+                continue;
+            }
+
+            $getColumns[] = $this->getTableName() . '.' . $column;
+        }
+
+        foreach ($this->relationships as $relation => $properties) {
+            if ($properties['hydrate']) {
+                $query      = $this->joinWithRelation($query, $relation);
+                $getColumns = array_merge($getColumns, $this->getRelationColumnsAliases($relation, $columns));
+            }
+        }
+
+        $query = $this->treatQueryModifiers($query, $queryParams);
+
+        return $this->castHydrate($query->get($getColumns));
+    }
+
+    /**
+     * Inserts necessary wheres and joins in the current query. A join will be added to the query
+     * if the column is from any of the entity relations.
+     *
+     * @param Illuminate\Database\Query\Builder $query    The query
+     * @param string                            $column   The column
+     * @param mixed                             $value    The value
+     * @param string                            $operator The operator
+     *
+     * @throws \App\Exception\AppException
+     *
+     * @return Illuminate\Database\Query\Builder The query builder
+     */
+    protected function where($query, string $column, $value, $operator = '=') {
+        $isRelationConstraint = false;
+        $relationName         = null;
+        $relationColumn       = null;
+
+        if (strpos($column, '.') !== false) {
+            $column               = explode('.', $column);
+            $relationName         = $column[0];
+            $relationColumn       = $column[1];
+            $isRelationConstraint = true;
+        } elseif (($relationName = $this->getRelationByForeignKey($column)) !== null) {
+            $relationColumn       = $this->relationships[$relationName]['key'];
+            $isRelationConstraint = true;
+        }
+
+        if (! $isRelationConstraint) {
+            return $query->where($this->getTableName() . '.' . $column, $operator, $value);
+        }
+
+        if (! isset($this->relationships[$relationName])) {
+            throw new AppException('No relation named "' . $relationName . '" found for entity ' . $this->entityName);
+        }
+
+        $relationProperties = $this->relationships[$relationName];
+        $relationType       = $relationProperties['type'];
+
+        switch ($relationType) {
+            case 'ONE_TO_ONE':
+                $query = $this->treatOneToOneRelation($query, $relationColumn, $value, $relationProperties, $operator);
+                break;
+            case 'ONE_TO_MANY':
+                $query = $this->treatOneToManyRelation($query, $relationColumn, $value, $relationProperties, $operator);
+                break;
+            case 'MANY_TO_ONE':
+                $query = $this->treatManyToOneRelation($query, $relationColumn, $value, $relationProperties, $operator);
+                break;
+            case 'MANY_TO_MANY':
+                $query = $this->treatManyToManyRelation($query, $relationColumn, $value, $relationProperties, $operator);
+                break;
+        }
+
+        return $query;
+    }
+
+    /**
+     * Treats a constraint for a many-to-one relation.
+     *
+     * @param Illuminate\Database\Query\Builder $query              The query
+     * @param string                            $relationColumn     The relation column
+     * @param mixed                             $value              The value
+     * @param array                             $relationProperties The relation properties (from 'relationship' array)
+     * @param string                            $operator           The operator
+     *
+     * @return Illuminate\Database\Query\Builder The query builder
+     */
+    protected function treatManyToOneRelation($query, $relationColumn, $value, $relationProperties, $operator = '=') {
+        $relationTable    = $relationProperties['table'];
+        $relationTableKey = $relationProperties['key'];
+        $table            = $this->getTableName();
+        $tableForeignKey  = $relationProperties['foreignKey'];
+        $shouldHydrate    = $relationProperties['hydrate'];
+
+        $requiresJoin     = false;
+        $hasAlreadyJoined = false;
+        $joinClauseKey    = null;
+        if ($query->joins) {
+            foreach ($query->joins as $key => $joinClause) {
+                if ($joinClause->table === $relationTable) {
+                    $hasAlreadyJoined = true;
+                    $joinClauseKey    = $key;
+                    break;
+                }
+            }
+        }
+
+        if ($relationColumn !== $relationTableKey || $shouldHydrate) {
+            $requiresJoin = 'inner';
+        }
+
+        if ($requiresJoin && $relationColumn === $relationTableKey && ($value === 0 || $this->optimus->encode($value) === 0)) {
+            $requiresJoin = 'left';
+            $value        = null;
+        }
+
+        if ($hasAlreadyJoined && $query->joins[$joinClauseKey]->type !== $requiresJoin) {
+            $query->joins[$joinClauseKey]->type = 'left';
+        }
+
+        if (! $hasAlreadyJoined && $requiresJoin) {
+            $joinMethod = ($requiresJoin === 'left') ? 'leftJoin' : 'join';
+            $query      = $query->$joinMethod($relationTable, $table . '.' . $tableForeignKey, '=', $relationTable . '.' . $relationTableKey);
+        }
+
+        if ($value === null) {
+            if ($relationColumn === $relationTableKey) {
+                $query->whereNull($table . '.' . $tableForeignKey);
+            } else {
+                $query->whereNull($relationTable . '.' . $relationColumn);
+            }
+        } else {
+            if ($relationColumn === $relationTableKey) {
+                $query->where($table . '.' . $tableForeignKey, $operator, $value);
+            } else {
+                $query->where($relationTable . '.' . $relationColumn, $operator, $value);
+            }
+        }
+
+        return $query;
+    }
+
+    protected function treatOneToManyRelation($query, $relationColumn, $value, $relationProperties, $operator = '=') {
+        $relationTable           = $relationProperties['table'];
+        $relationTableForeignKey = $relationProperties['foreignKey'];
+        $relationKey             = $relationProperties['key'];
+
+        $query = $query->join($relationTable, $relationTable . '.' . $relationTableForeignKey, '=', $this->getTableName() . '.' . $relationKey);
+
+        return $query;
+    }
+
+    /**
+     * Determines if there is already a join for the given relation in the query.
+     *
+     * @param Illuminate\Database\Query\Builder $query        The query
+     * @param string                            $relationName The relation name
+     *
+     * @return bool True if there is already a join for the given relation.
+     */
+    protected function hasJoinWithRelation($query, $relationName) {
+        $relationProperties = $this->relationships[$relationName];
+        $relationTable      = $relationProperties['table'];
+
+        if ($query->joins) {
+            foreach ($query->joins as $key => $joinClause) {
+                if ($joinClause->table === $relationTable) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * This method verifies if the query needs a join based on the entity relation. If any
+     * additional joins are needed, they will be inserted into the query.
+     *
+     * This method is necessary because of the following scenario: suppose you have entity X with
+     * relation 'y' (so the table of X has column 'y_id'). If I call the findBy method with a
+     * constraint that is y.id = 1, no additional joins will be generated at this point, since
+     * the y.id = 1 constraint can be satisfied by x.y_id = 1. Although, if you specify that
+     * some columns of the relation 'y' should be fetched in the findBy, this method will detect
+     * the missing join that is necessary.
+     *
+     * @param Illuminate\Database\Query\Builder $query        The query
+     * @param string                            $relationName The relation name
+     *
+     * @return Illuminate\Database\Query\Builder The new query
+     */
+    protected function joinWithRelation($query, $relationName) {
+        if ($this->hasJoinWithRelation($query, $relationName)) {
+            return $query;
+        }
+
+        $relationProperties = $this->relationships[$relationName];
+        $relationType       = $relationProperties['type'];
+        $relationTable      = $relationProperties['table'];
+        $table              = $this->getTableName();
+
+        switch ($relationType) {
+            case 'ONE_TO_ONE':
+                $query = $query->join();
+                break;
+            case 'ONE_TO_MANY':
+                $relationTableForeignKey = $relationProperties['foreignKey'];
+                $tableKey                = $relationProperties['key'];
+
+                $query = $query->join($relationTable, $relationTable . '.' . $relationTableForeignKey, '=', $table . '.' . $tableKey);
+                break;
+            case 'MANY_TO_ONE':
+                $relationTableKey = $relationProperties['key'];
+                $tableForeignKey  = $relationProperties['foreignKey'];
+                $nullable         = $relationProperties['nullable'];
+
+                $joinMethod = $nullable ? 'leftJoin' : 'join';
+
+                $query = $query->$joinMethod($relationTable, $table . '.' . $tableForeignKey, '=', $relationTable . '.' . $relationTableKey);
+                break;
+            case 'MANY_TO_MANY':
+                $query = $query->join();
+                break;
+        }
+
+        return $query;
+    }
+
+    /**
+     * Returns which relation is using the given foreign key.
+     *
+     * @param string $foreignKeyColumn The foreign key column
+     *
+     * @return string The relation name (as in the 'relationship' array).
+     */
+    protected function getRelationByForeignKey($foreignKeyColumn) {
+        foreach ($this->relationships as $relationName => $relationProperties) {
+            $relationForeignKeyColumn = null;
+            switch($relationProperties['type']) {
+                case 'ONE_TO_ONE':
+                    break;
+                case 'ONE_TO_MANY':
+                    break;
+                case 'MANY_TO_ONE':
+                    $relationForeignKeyColumn = $relationProperties['foreignKey'];
+                    break;
+                case 'MANY_TO_MANY':
+                    break;
+            }
+
+            if ($relationForeignKeyColumn === $foreignKeyColumn) {
+                return $relationName;
+            }
+        }
+
+        return;
+    }
+
+    /**
+     * Returns aliases to use in the query for the specified columns.
+     *
+     * @param string $relation The relation
+     * @param array  $columns  The columns
+     *
+     * @return array The alias ready to use in the query.
+     */
+    public function getRelationColumnsAliases($relation, array $columns = ['*']) {
+        $getColumns         = [];
+        $relationProperties = $this->relationships[$relation];
+        $hydrateColumns     = $relationProperties['hydrate'];
+        $relationTable      = $relationProperties['table'];
+
+        if ($columns !== ['*'] && (! isset($columns[$relation]) || empty($columns[$relation]))) {
+            return [];
+        }
+
+        if ($columns === ['*'] || (isset($columns[$relation]) && empty($columns[$relation]))) {
+            $columns[$relation] = $hydrateColumns;
+
+            if (! $hydrateColumns) {
+                return [];
+            }
+        }
+
+        foreach ($columns[$relation] as $column) {
+            $getColumns[] = $relationTable . '.' . $column . ' as ' . $relation . '.' . $column;
+        }
+
+        return $getColumns;
     }
 
     /**
@@ -317,9 +775,14 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         }
 
         foreach ($filters as $key => $filter) {
-            $value  = $filter['value'];
-            $type   = $filter['type'];
-            $column = $this->getTableName() . '.' . $key;
+            $keyParts = explode(':', $key);
+            $value    = $filter['value'];
+            $type     = $filter['type'];
+            $column   = isset($this->keyAlias[$key]) ? $this->keyAlias[$key] : ($this->getTableName() . '.' . $key);
+
+            if (count($keyParts) == 2 && $keyParts[1] === 'id' && (int) $value === 0) {
+                return $query->whereNull($column);
+            }
 
             switch ($type) {
                 case 'date':
@@ -355,6 +818,10 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                     } else {
                         $query = $query->where($column, '=', false);
                     }
+                    break;
+
+                case 'decoded':
+                    $query = $query->where($column, '=', $this->optimus->decode($value));
                     break;
 
                 default:

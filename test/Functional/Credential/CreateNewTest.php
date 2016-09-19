@@ -15,7 +15,7 @@ use Test\Functional\Traits;
 
 class CreateNewTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -23,14 +23,14 @@ class CreateNewTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/management/credentials';
+        $this->uri        = '/1.0/companies/veridu-ltd/credentials';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -67,7 +67,7 @@ class CreateNewTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -102,7 +102,7 @@ class CreateNewTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 

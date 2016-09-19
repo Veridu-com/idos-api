@@ -15,7 +15,7 @@ use Test\Functional\Traits;
 
 class UpdateOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -23,14 +23,14 @@ class UpdateOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/management/credentials/4c9184f37cff01bcdc32dc486ec36961';
+        $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -56,12 +56,12 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/management/credentials/dummy';
+        $this->uri = '/1.0/companies/veridu-ltd/credentials/dummy';
 
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -90,7 +90,7 @@ class UpdateOneTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 

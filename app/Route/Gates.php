@@ -30,6 +30,7 @@ class Gates implements RouteInterface {
             'gates:createNew',
             'gates:getOne',
             'gates:updateOne',
+            'gates:upsert',
             'gates:deleteOne'
         ];
     }
@@ -56,6 +57,7 @@ class Gates implements RouteInterface {
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
+        self::upsert($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -236,12 +238,43 @@ class Gates implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/gates/{gateSlug:[a-z0-9_-]+}',
                 'App\Controller\Gates:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('gates:updateOne');
+    }
+
+    /**
+     * Update a single Gate.
+     *
+     * Updates Gate's specific information.
+     *
+     * @apiEndpoint PUT /profiles/{userName}/gates/{gateSlug}
+     * @apiGroup Profile Gates
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/profile/gates/updateOne.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Gates::updateOne
+     */
+    private static function upsert(App $app, callable $auth, callable $permission) {
+        $app
+            ->put(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/gates',
+                'App\Controller\Gates:upsert'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('gates:upsert');
     }
 }

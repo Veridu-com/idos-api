@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -28,7 +28,7 @@ class ListAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
@@ -56,8 +56,8 @@ class ListAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader(),
-                    'QUERY_STRING'       => 'slug=%1'
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader(),
+                    'QUERY_STRING'       => 'slug=*1'
                 ]
             )
         );
@@ -92,8 +92,8 @@ class ListAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader(),
-                    'QUERY_STRING'       => 'slug=user-2%'
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader(),
+                    'QUERY_STRING'       => 'slug=user-2*'
                 ]
             )
         );

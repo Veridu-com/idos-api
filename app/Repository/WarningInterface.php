@@ -20,41 +20,9 @@ interface WarningInterface extends RepositoryInterface {
      *
      * @param int $userId
      *
-     * @return array
+     * @return Illuminate\Database\Collection
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : array;
-
-    /**
-     * Deletes all warnings based on their user id.
-     *
-     * @param int $userId
-     *
-     * @return int
-     */
-    public function deleteByUserId(int $userId) : int;
-
-    /**
-     * Returns a collection of warnings based on their user id.
-     *
-     * @param int $userId
-     *
-     * @return Illuminate\Support\Collection
-     */
-    public function findByUserId(int $userId) : Collection;
-
-    /**
-     * Returns a Warning based on the user id and the slug.
-     *
-     * @param int    $userId      The user identifier
-     * @param string $warningSlug The warning slug
-     */
-    public function findByUserIdAndSlug(int $userId, string $warningSlug) : Warning;
-
-    /**
-     * Returns a Warning based on the user id and the id.
-     *
-     * @param int    $userId The user identifier
-     * @param string $id     The warning id
-     */
-    public function findByUserIdAndId(int $userId, int $id) : Warning;
+    public function findByUserId(int $userId, array $queryParams = []) : Collection;
+    public function findOneBySlug(int $userId, int $serviceId, string $slug) : Warning;
+    public function findOneByName(int $userId, int $serviceId, string $name) : Warning;
 }

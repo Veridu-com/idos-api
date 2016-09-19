@@ -8,30 +8,31 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\SlugMutator;
-
 /**
  * Features Entity.
  *
  * @apiEntity schema/user/featureEntity.json
  *
  * @property int    $id
+ * @property int    $user_id
  * @property string $name
- * @property string $slug
+ * @property string $creator
+ * @property string $type
  * @property string $value
  * @property int    $user_id
  * @property int    $created_at
  * @property int    $updated_at
  */
 class Feature extends AbstractEntity {
-    use SlugMutator;
-
     /**
      * {@inheritdoc}
      */
     protected $visible = [
+        'id',
+        'source',
         'name',
-        'slug',
+        'creator',
+        'type',
         'value',
         'created_at',
         'updated_at'
@@ -44,4 +45,27 @@ class Feature extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $secure = ['value'];
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'source'  => 'Source',
+        'creator' => 'Service'
+    ];
+
+    public function getValueAttribute($value) {
+        if ($this->attributes['type'] === 'integer') {
+            return (int) $value;
+        }
+
+        if ($this->attributes['type'] === 'boolean') {
+            return (bool) $value;
+        }
+
+        if ($this->attributes['type'] === 'double') {
+            return (double) $value;
+        }
+
+        return $value;
+    }
 }
