@@ -33,8 +33,6 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'source.id'    => 'decoded',
-        'source.name'  => 'string',
         'creator.name' => 'string',
         'name'         => 'string',
         'type'         => 'string',
@@ -63,23 +61,6 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
             'entity'     => 'User',
             'nullable'   => false,
             'hydrate'    => false
-        ],
-
-        'source' => [
-            'type'       => 'MANY_TO_ONE',
-            'table'      => 'sources',
-            'foreignKey' => 'source_id',
-            'key'        => 'id',
-            'entity'     => 'Source',
-            'nullable'   => true,
-            'hydrate'    => [
-                'id',
-                'user_id',
-                'name',
-                'tags',
-                'created_at',
-                'updated_at'
-            ]
         ],
 
         'creator' => [
@@ -118,11 +99,11 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneById(int $userId, int $sourceId, int $serviceId, int $id) : Feature {
+    public function findOneById(int $userId, string $sourceName, int $serviceId, int $id) : Feature {
         return $this->findOneBy(
             [
             'user_id'   => $userId,
-            'source_id' => $sourceId,
+            'source'    => $sourceName,
             'creator'   => $serviceId,
             'id'        => $id
             ]
@@ -132,11 +113,11 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByName(int $userId, int $sourceId, int $serviceId, string $name) : Feature {
+    public function findOneByName(int $userId, string $sourceName, int $serviceId, string $name) : Feature {
         return $this->findOneBy(
             [
             'user_id'   => $userId,
-            'source_id' => $sourceId,
+            'source'    => $sourceName,
             'creator'   => $serviceId,
             'name'      => $name
             ]

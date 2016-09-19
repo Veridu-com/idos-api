@@ -136,7 +136,7 @@ class Feature implements HandlerInterface {
         $feature = $this->repository->create(
             [
                 'user_id'       => $command->user->id,
-                'source_id'     => $command->source !== null ? $command->source->id : null,
+                'source'        => $command->source !== null ? $command->source->name : null,
                 'name'          => $command->name,
                 'creator'       => $command->service->id,
                 'type'          => $command->type,
@@ -187,7 +187,7 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOneById($command->user->id, $command->source->id, $command->service->id, $command->featureId);
+        $feature = $this->repository->findOneById($command->user->id, $command->source->name, $command->service->id, $command->featureId);
 
         $feature->type      = $command->type;
         $feature->value     = $command->value;
@@ -284,9 +284,9 @@ class Feature implements HandlerInterface {
             ]
         );
 
-        if ($feature->sourceId !== null && $feature->sourceId !== $command->user->id) {
+        /*if ($feature->sourceId !== null && $feature->sourceId !== $command->user->id) {
             throw new NotFound();
-        }
+        }*/
 
         $affectedRows = $this->repository->delete($feature->id);
 
@@ -321,7 +321,7 @@ class Feature implements HandlerInterface {
         $feature   = null;
         $inserting = false;
         try {
-            $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->id : 0, $command->service->id, $command->name);
+            $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->name : null, $command->service->id, $command->name);
 
             $feature->type      = $command->type;
             $feature->value     = $command->value;
@@ -332,7 +332,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->create(
                 [
                     'user_id'       => $command->user->id,
-                    'source_id'     => $command->source !== null ? $command->source->id : null,
+                    'source'     => $command->source !== null ? $command->source->name : null,
                     'name'          => $command->name,
                     'creator'       => $command->service->id,
                     'type'          => $command->type,

@@ -10,7 +10,7 @@ class S24SourcesSeed extends AbstractSeed {
         $data = [
             [
                 'user_id'    => 1,
-                'name'       => 'source-1',
+                'name'       => 'facebook',
                 'ipaddr'     => '192.168.0.1',
                 'tags'       => json_encode(['otp_check' => 'email']),
                 'created_at' => date('Y-m-d H:i:s'),
@@ -18,7 +18,7 @@ class S24SourcesSeed extends AbstractSeed {
             ],
             [
                 'user_id' => 1,
-                'name'    => 'source-2',
+                'name'    => 'facebook',
                 'ipaddr'  => '192.168.0.2',
                 'tags'    => json_encode(
                     [
@@ -31,7 +31,7 @@ class S24SourcesSeed extends AbstractSeed {
             ],
             [
                 'user_id' => 2,
-                'name'    => 'source-3',
+                'name'    => 'linkedin',
                 'ipaddr'  => '192.168.0.3',
                 'tags'    => json_encode(
                     [
@@ -44,7 +44,7 @@ class S24SourcesSeed extends AbstractSeed {
             ],
             [
                 'user_id' => 2,
-                'name'    => 'source-4',
+                'name'    => 'facebook',
                 'ipaddr'  => '192.168.0.4',
                 'tags'    => json_encode(
                     [
