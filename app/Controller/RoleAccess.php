@@ -67,8 +67,6 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws
-     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -206,7 +204,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Handler\RoleAccess::handleDeleteOne
+     * @see App\Handler\RoleAccess::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

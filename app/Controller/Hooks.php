@@ -160,7 +160,7 @@ class Hooks implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Handler\Hook:handleUpdateOne
+     * @see App\Handler\Hook::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

@@ -168,7 +168,7 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBCredential:findByPubKey
+     * @see App\Repository\DBCredential::findByPubKey
      * @see App\Handler\Credential::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
@@ -207,7 +207,7 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBCredential:findByPubKey
+     * @see App\Repository\DBCredential::findByPubKey
      * @see App\Handler\Credential::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
