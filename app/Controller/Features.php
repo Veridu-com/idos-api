@@ -127,9 +127,9 @@ class Features implements ControllerInterface {
             'id'      => $featureId
         ]);
 
-        /*if ($feature->sourceId !== null && $feature->sourceId !== $user->id) {
-            throw new NotFound();
-        }*/
+        if ($feature->source !== null) {
+            $this->sourceRepository->findOneByName($feature->source, $user->id);
+        }
 
         $body = [
             'data'    => $feature->toArray(),
@@ -158,12 +158,13 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-        $source = null;
+        $user     = $request->getAttribute('targetUser');
+        $service  = $request->getAttribute('service');
+        $source   = null;
+        $sourceId = $request->getParsedBodyParam('source_id');
 
-        if ($request->getParsedBodyParam('source') !== null) {
-            $source = $this->sourceRepository->findOneByName($request->getParsedBodyParam('source'), $user->id);
+        if ($sourceId !== null) {
+            $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
         }
 
         $command = $this->commandFactory->create('Feature\\CreateNew');
@@ -270,9 +271,14 @@ class Features implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $source      = $this->sourceRepository->findOneByName($request->getParsedBodyParam('source'), $user->id);
         $service     = $request->getAttribute('service');
         $featureId   = $request->getAttribute('decodedFeatureId');
+        $source      = null;
+        $sourceId = $request->getParsedBodyParam('source_id');
+
+        if ($sourceId !== null) {
+            $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
+        }
 
         $command = $this->commandFactory->create('Feature\\UpdateOne');
         $command
@@ -312,12 +318,12 @@ class Features implements ControllerInterface {
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
-        $source  = null;
         $service = $request->getAttribute('service');
-        $sourceName = $request->getParsedBodyParam('source');
-        
-        if ($sourceName !== null) {
-            $source = $this->sourceRepository->findOneByName($sourceName, $user->id);
+        $source  = null;
+        $sourceId = $request->getParsedBodyParam('source_id');
+
+        if ($sourceId !== null) {
+            $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
         }
 
         $command = $this->commandFactory->create('Feature\\Upsert');
