@@ -156,6 +156,7 @@ class Attribute implements HandlerInterface {
             );
         }
 
+        try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
