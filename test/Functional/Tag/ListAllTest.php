@@ -21,7 +21,7 @@ class ListAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags';
+        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/tags';
     }
 
     public function testSuccess() {
@@ -72,8 +72,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $tag) {
-            $this->assertContains($tag['name'], ['User 2 Tag 1']);
-            $this->assertContains($tag['slug'], ['user-2-tag-1']);
+            $this->assertContains($tag['name'], ['User 1 Tag 1']);
+            $this->assertContains($tag['slug'], ['user-1-tag-1']);
         }
 
         /*
@@ -93,7 +93,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->identityTokenHeader(),
-                    'QUERY_STRING'       => 'slug=user-2*'
+                    'QUERY_STRING'       => 'slug=user-1*'
                 ]
             )
         );
@@ -107,8 +107,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $tag) {
-            $this->assertContains($tag['name'], ['User 2 Tag 1', 'User 2 Tag 2']);
-            $this->assertContains($tag['slug'], ['user-2-tag-1', 'user-2-tag-2']);
+            $this->assertContains($tag['name'], ['User 1 Tag 1', 'User 1 Tag 2']);
+            $this->assertContains($tag['slug'], ['user-1-tag-1', 'user-1-tag-2']);
         }
 
         /*

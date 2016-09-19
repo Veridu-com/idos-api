@@ -80,7 +80,7 @@ class Tags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $tags = $this->repository->getAllByUserIdAndTagSlugs($user->id, $request->getQueryParams());
 
@@ -117,9 +117,11 @@ class Tags implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Tag\\CreateNew');
 
+        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
+
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('user', $request->getAttribute('targetUser'));
+            ->setParameter('user', $user);
 
         $tag = $this->commandBus->handle($command);
 
@@ -151,7 +153,7 @@ class Tags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
+        $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
         $tagSlug = $request->getAttribute('tagSlug');
 
         $tag = $this->repository->findOneByUserIdAndSlug($user->id, $tagSlug);
@@ -183,7 +185,8 @@ class Tags implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Tag\\DeleteAll');
-        $command->setParameter('user', $request->getAttribute('targetUser'));
+        $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $command->setParameter('user', $user);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
@@ -212,8 +215,9 @@ class Tags implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Tag\\DeleteOne');
+        $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
         $command
-            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('user', $user)
             ->setParameter('slug', $request->getAttribute('tagSlug'));
 
         $this->commandBus->handle($command);

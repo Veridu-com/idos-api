@@ -19,18 +19,13 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Tag's updated unixtime",
-            "type": "integer"
-        },
-        "updated_at": {
             "description": "Tag's last update unixtime",
-            "type": ["integer", "null"]
+            "type": ["integer", null]
         }
     },
     "required": [
         "name",
         "slug",
-        "created_at",
-        "updated_at"
+        "created_at"
     ]
 }

@@ -31,7 +31,6 @@
     "require": {
         "akrabat/rka-ip-address-middleware": "^0.4",
         "apix/cache": "1.2.*",
-        "bandwidth-throttle/token-bucket": "^1.1",
         "defuse/php-encryption": "^2.0",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.6",

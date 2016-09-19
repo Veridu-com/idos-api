@@ -63,7 +63,7 @@ class Tags implements RouteInterface {
      *
      * Retrieve a complete list of all tags that belong to the requesting user.
      *
-     * @apiEndpoint GET /profiles/{userName}/tags
+     * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/tags
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -83,7 +83,7 @@ class Tags implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
                 'App\Controller\Tags:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -95,7 +95,7 @@ class Tags implements RouteInterface {
      *
      * Creates a new tag for the requesting user.
      *
-     * @apiEndpoint POST /profiles/{userName}/tags
+     * @apiEndpoint POST /companies/{companySlug}/profiles/{userId}/tags
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -115,7 +115,7 @@ class Tags implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
                 'App\Controller\Tags:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -128,7 +128,7 @@ class Tags implements RouteInterface {
      *
      * Delete all tags that belong to the requesting user.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/tags
+     * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}/tags
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -148,7 +148,7 @@ class Tags implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
                 'App\Controller\Tags:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -161,7 +161,7 @@ class Tags implements RouteInterface {
      *
      * Retrieves all public information from a Tag
      *
-     * @apiEndpoint GET /profiles/{userName}/tags/{tagSlug}
+     * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/tags/{tagSlug}
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -182,7 +182,7 @@ class Tags implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags/{tagSlug:[a-z0-9_-]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags/{tagSlug:[a-z0-9_-]+}',
                 'App\Controller\Tags:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -195,7 +195,7 @@ class Tags implements RouteInterface {
      *
      * Deletes a single Tag that belongs to the requesting user.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/tags/{tagSlug}
+     * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}/tags/{tagSlug}
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -216,7 +216,7 @@ class Tags implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/tags/{tagSlug:[a-z0-9_-]+}',
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags/{tagSlug:[a-z0-9_-]+}',
                 'App\Controller\Tags:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
