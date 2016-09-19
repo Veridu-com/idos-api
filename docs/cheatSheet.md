@@ -110,15 +110,15 @@
 
 ### Profile Tags
 
-[GET /1.0/profiles/{userName}/tags](profiles/tags/listAll.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/tags](companyProfiles/tags/listAll.md)
 
-[DELETE /1.0/profiles/{userName}/tags](profiles/tags/deleteAll.md)
+[DELETE /1.0/companies/:companySlug/profiles/:userId/tags](companyProfiles/tags/deleteAll.md)
 
-[GET /1.0/profiles/{userName}/tags/{tagSlug}](profiles/tags/getOne.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/tags/{tagSlug}](companyProfiles/tags/getOne.md)
 
-[POST /1.0/profiles/{userName}/tags/{tagSlug}](profiles/tags/createNew.md)
+[POST /1.0/companies/:companySlug/profiles/:userId/tags/{tagSlug}](companyProfiles/tags/createNew.md)
 
-[DELETE /1.0/profiles/{userName}/tags/{tagSlug}](profiles/tags/deleteOne.md)
+[DELETE /1.0/companies/:companySlug/profiles/:userId/tags/{tagSlug}](companyProfiles/tags/deleteOne.md)
 
 ### Profile Tasks
 
