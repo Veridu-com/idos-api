@@ -11,7 +11,7 @@ namespace App\Entity;
 /**
  * RoleAccesss Entity.
  *
- * @apiEntity schema/setting/settingEntity.json
+ * @apiEntity schema/role-access/roleAccessEntity.json
  *
  * @property int        $id
  * @property int        $identity_id

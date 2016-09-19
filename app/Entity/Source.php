@@ -11,7 +11,7 @@ namespace App\Entity;
 /**
  * Sources Entity.
  *
- * @apiEntity schema/source/credentialEntity.json
+ * @apiEntity schema/source/sourceEntity.json
  */
 class Source extends AbstractEntity {
     /**
