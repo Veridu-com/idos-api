@@ -61,11 +61,13 @@ class Tokens implements ControllerInterface {
     /**
      * Created a new token data for a given source.
      *
-     * @apiEndpointRequiredParam body string slug WRONG FORMAT HERE FIXME
+     * @apiEndpointRequiredParam body string slug
      * @apiEndpointResponse 201 schema/token/tokenEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBCompany::findBySlug
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

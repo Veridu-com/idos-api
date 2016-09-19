@@ -75,6 +75,8 @@ class Warnings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBWarning::findBy
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -107,6 +109,8 @@ class Warnings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBWarning::findOneBySlug
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -133,12 +137,14 @@ class Warnings implements ControllerInterface {
     /**
      * Creates a new Feture for the given user.
      *
-     * @apiEndpointRequiredParam body string name XYZ Warning name
-     * @apiEndpointRequiredParam body string value ZYX Warning value
+     * @apiEndpointRequiredParam body string name warning test Warning name
+     * @apiEndpointRequiredParam body string reference firstName Warning reference
      * @apiEndpointResponse 201 schema/warning/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Warning::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -177,6 +183,8 @@ class Warnings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Warning::handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -209,6 +217,8 @@ class Warnings implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Warning::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

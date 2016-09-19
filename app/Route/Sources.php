@@ -67,8 +67,9 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/sources
      * @apiGroup Profile Source
-     * @apiAuth header token userToken XXX User's Token
-     * @apiAuth query token userToken XXX User's Token
+     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     *
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -99,8 +100,8 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/sources
      * @apiGroup Profile Source
-     * @apiAuth header token userToken XXX User's Token
-     * @apiAuth query token userToken XXX User's Token
+     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -113,7 +114,7 @@ class Sources implements RouteInterface {
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Sources::createNew
      */
-    private static function createnew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/sources',
@@ -131,8 +132,8 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/sources
      * @apiGroup Profile Source
-     * @apiAuth header token userToken XXX User's Token
-     * @apiAuth query token userToken XXX User's Token
+     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -163,8 +164,9 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName/sources/{sourceId}
      * @apiGroup Profile Source
-     * @apiAuth header token userToken XXX User's Token
-     * @apiAuth query token userToken XXX User's Token
+     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -195,8 +197,9 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile Source
-     * @apiAuth header token userToken XXX User's Token
-     * @apiAuth query token userToken XXX User's Token
+     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -227,8 +230,9 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile Source
-     * @apiAuth header token userToken XXX User's Token
-     * @apiAuth query token userToken XXX User's Token
+     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
      * @param \callable $auth

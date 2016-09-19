@@ -87,6 +87,11 @@ class Warning implements HandlerInterface {
      *
      * @param App\Command\Warning\CreateNew $command
      *
+     * @throws App\Exception\Validate\WarningException
+     * @throws App\Exception\Create\WarningException
+     * @see App\Repository\DBWarning::save
+     * @see App\Repository\DBWarning::hydrateRelations
+     *
      * @return App\Entity\Warning
      */
     public function handleCreateNew(CreateNew $command) : WarningEntity {
@@ -131,6 +136,11 @@ class Warning implements HandlerInterface {
      *
      * @param App\Command\Warning\DeleteAll $command
      *
+     * @throws App\Exception\Validate\WarningException
+     * @throws App\Exception\AppException
+     * @see App\Repository\DBWarning::findBy
+     * @see App\Repository\DBWarning::delete
+     *
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
@@ -172,6 +182,11 @@ class Warning implements HandlerInterface {
      * Deletes a Warning.
      *
      * @param App\Command\Warning\DeleteOne $command
+     *
+     * @throws App\Exception\Validate\WarningException
+     * @throws App\Exception\AppException
+     * @see App\Repository\DBWarning::findOneBySlug
+     * @see App\Repository\DBWarning::delete
      *
      * @return void
      */

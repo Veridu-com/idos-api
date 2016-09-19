@@ -65,8 +65,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/tags
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -97,8 +97,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/tags
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -130,8 +130,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/tags
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -156,15 +156,15 @@ class Tags implements RouteInterface {
             ->setName('tags:deleteAll');
     }
 
-    /*
+    /**
      * Retrieve a single Tag.
      *
      * Retrieves all public information from a Tag
      *
      * @apiEndpoint GET /profiles/{userName}/tags/{tagSlug}
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string tagSlug tag-test
      *
@@ -190,15 +190,15 @@ class Tags implements RouteInterface {
             ->setName('tags:getOne');
     }
 
-    /*
+    /**
      * Deletes a single Tag.
      *
      * Deletes a single Tag that belongs to the requesting user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/tags/{tagSlug}
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string tagSlug tag-test
      *

@@ -137,37 +137,6 @@ class Credentials implements RouteInterface {
     }
 
     /**
-     * Delete All Credentials.
-     *
-     * Deletes all credentials that belong to the requesting company.
-     *
-     * @apiEndpoint DELETE /management/credentials
-     * @apiGroup Company Credentials
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     *
-     * @return void
-     *
-     * @link docs/companies/credentials/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Credentials::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/management/credentials',
-                'App\Controller\Credentials:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
-            ->setName('credentials:deleteAll');
-    }
-
-    /**
      * Retrieve a single Credential.
      *
      * Retrieves all public information from a Credential

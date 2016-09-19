@@ -86,6 +86,11 @@ class Task implements HandlerInterface {
      *
      * @param App\Command\Task\CreateNew $command
      *
+     * @throws App\Exception\Validate\TaskException
+     * @throws App\Exception\Create\TaskException
+     * @see App\Repository\DBTask::create
+     * @see App\Repository\DBTask::save
+     *
      * @return App\Entity\Task
      */
     public function handleCreateNew(CreateNew $command) : TaskEntity {
@@ -130,6 +135,11 @@ class Task implements HandlerInterface {
      * Updates a Task.
      *
      * @param App\Command\Task\UpdateOne $command
+     *
+     * @see App\Repository\DBTask::find
+     * @see App\Repository\DBTask::save
+     * @throws App\Exception\Validate\TaskException
+     * @throws App\Exception\Update\TaskException
      *
      * @return App\Entity\Task
      */

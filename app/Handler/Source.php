@@ -93,6 +93,9 @@ class Source implements HandlerInterface {
      *
      * @param App\Command\Source\CreateNew $command
      *
+     * @throws App\Exception\Validate\SourceException
+     * @throws App\Exception\Ckreate\SourceException
+     *
      * @return App\Entity\Source
      */
     public function handleCreateNew(CreateNew $command) : SourceEntity {
@@ -168,6 +171,11 @@ class Source implements HandlerInterface {
      * Updates a source.
      *
      * @param App\Command\Source\UpdateOne $command
+     *
+     * @throws App\Exception\Validate\SourceException
+     * @throws App\Exception\NotAllowed\SourceException
+     * @throws App\Exception\AppException
+     * @throws App\Exception\Update\SourceException
      *
      * @return App\Entity\Source
      */
@@ -254,6 +262,10 @@ class Source implements HandlerInterface {
      *
      * @param App\Command\Source\DeleteOne $command
      *
+     * @throws App\Exception\Validate\SourceException
+     * @throws App\Exception\NotFound\SourceException
+     * @see App\Repository\DBSource::delete
+     *
      * @return void
      */
     public function handleDeleteOne(DeleteOne $command) {
@@ -282,6 +294,10 @@ class Source implements HandlerInterface {
      * Deletes all sources from a user ($command->userId).
      *
      * @param App\Command\Source\DeleteAll $command
+     *
+     * @throws App\Exception\Validate\SourceException
+     * @see App\Repository\DBSource::getAllByUserId
+     * @see App\Repository\DBSource::deleteByUserId
      *
      * @return int
      */
