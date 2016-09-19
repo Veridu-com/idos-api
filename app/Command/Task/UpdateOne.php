@@ -54,7 +54,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Task\CreateNew
+     * @return App\Command\Task\UpdateOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {

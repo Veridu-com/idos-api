@@ -16,11 +16,11 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/:userName/warnings.
+ * Handles requests to companies/{companySlug}/profiles/{userId}/warnings.
  */
 class Warnings implements ControllerInterface {
     /**
-     * Setting Repository instance.
+     * Warning Repository instance.
      *
      * @var App\Repository\WarningInterface
      */
@@ -178,7 +178,7 @@ class Warnings implements ControllerInterface {
     /**
      * Deletes all Warnings that belongs to the User.
      *
-     * @apiEndpointResponse 200 schema/setting/deleteAll.json
+     * @apiEndpointResponse 200 schema/warning/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

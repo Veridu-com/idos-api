@@ -21,14 +21,14 @@ class GetOneTest extends AbstractFunctional {
         $this->httpMethod = 'GET';
 
         $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/reviews',
+            '/1.0/companies/veridu-ltd/profiles/1321189817/reviews',
             'GET',
             [
                 'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/reviews/%s', $this->entity['id']);
+        $this->uri    = sprintf('/1.0/companies/veridu-ltd/profiles/1321189817/reviews/%s', $this->entity['id']);
     }
 
     public function testSuccess() {
@@ -61,7 +61,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/reviews/00000000';
+        $this->uri = '/1.0/companies/veridu-ltd/profiles/1321189817/reviews/0000000';
 
         $request = $this->createRequest(
             $this->createEnvironment(

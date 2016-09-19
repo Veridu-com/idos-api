@@ -11,12 +11,13 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\ReviewInterface;
+use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/review.
+ * Handles requests to companies/{companySlug}/profiles/{userId}/reviews.
  */
 class Reviews implements ControllerInterface {
     /**
@@ -25,6 +26,12 @@ class Reviews implements ControllerInterface {
      * @var App\Repository\ReviewInterface
      */
     private $repository;
+    /**
+     * User Repository instance.
+     *
+     * @var App\Repository\UserInterface
+     */
+    private $userRepository;
     /**
      * Command Bus instance.
      *
@@ -49,10 +56,12 @@ class Reviews implements ControllerInterface {
      */
     public function __construct(
         ReviewInterface $repository,
+        UserInterface $userRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->repository     = $repository;
+        $this->userRepository     = $userRepository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }
@@ -70,7 +79,7 @@ class Reviews implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user       = $request->getAttribute('targetUser');
+        $user       = $this->userRepository->find($request->getAttribute('decodedUserId'));
         $warningIds = $request->getQueryParam('warnings', []);
 
         if ($warningIds) {
@@ -107,10 +116,11 @@ class Reviews implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Review\\CreateNew');
+        $user       = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('user', $request->getAttribute('targetUser'));
+            ->setParameter('user', $user);
 
         $review = $this->commandBus->handle($command);
 
@@ -141,10 +151,12 @@ class Reviews implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user       = $this->userRepository->find($request->getAttribute('decodedUserId'));
+
         $command = $this->commandFactory->create('Review\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('user', $user)
             ->setParameter('id', (int) $request->getAttribute('decodedReviewId'));
 
         $review = $this->commandBus->handle($command);
@@ -176,7 +188,7 @@ class Reviews implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user       = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $review = $this->repository->findOneByUserIdAndId($user->id, (int) $request->getAttribute('decodedReviewId'));
 
