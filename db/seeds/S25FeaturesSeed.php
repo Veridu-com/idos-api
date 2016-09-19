@@ -11,7 +11,7 @@ class S25FeaturesSeed extends AbstractSeed {
         $data = [
             [
                 'user_id'    => 1,
-                'source_id'  => 1,
+                'source'     => 'facebook',
                 'name'       => 'birthYear',
                 'creator'    => 1,
                 'type'       => 'integer',
@@ -21,7 +21,7 @@ class S25FeaturesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 1,
-                'source_id'  => 1,
+                'source'     => 'facebook',
                 'name'       => 'birthMonth',
                 'creator'    => 1,
                 'type'       => 'integer',
@@ -31,7 +31,7 @@ class S25FeaturesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 1,
-                'source_id'  => 2,
+                'source'     => 'facebook',
                 'name'       => 'birthDay',
                 'creator'    => 1,
                 'type'       => 'integer',
@@ -41,7 +41,7 @@ class S25FeaturesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 1,
-                'source_id'  => 2,
+                'source'     => 'facebook',
                 'name'       => 'numOfFriends',
                 'creator'    => 1,
                 'type'       => 'integer',
@@ -51,7 +51,7 @@ class S25FeaturesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 1,
-                'source_id'  => 2,
+                'source'     => 'facebook',
                 'name'       => 'isVerified',
                 'creator'    => 1,
                 'type'       => 'boolean',
@@ -61,7 +61,7 @@ class S25FeaturesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 2,
-                'source_id'  => 3,
+                'source'     => 'linkedin',
                 'name'       => 'isCelebrity',
                 'creator'    => 1,
                 'type'       => 'boolean',
@@ -71,7 +71,7 @@ class S25FeaturesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 1,
-                'source_id'  => null,
+                'source'     => null,
                 'name'       => 'submittedName',
                 'creator'    => 2,
                 'type'       => 'string',
@@ -81,7 +81,7 @@ class S25FeaturesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 2,
-                'source_id'  => null,
+                'source'     => null,
                 'name'       => 'submittedEmail',
                 'creator'    => 2,
                 'type'       => 'string',
