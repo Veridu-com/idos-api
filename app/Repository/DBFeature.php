@@ -36,6 +36,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
         'creator.name' => 'string',
         'name'         => 'string',
         'type'         => 'string',
+        'source'       => 'string',
         'created_at'   => 'date'
     ];
 
