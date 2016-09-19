@@ -88,7 +88,8 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings',
                 'App\Controller\Settings:listAll'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -109,7 +110,7 @@ class Settings implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
-     * @param \callabe $permission
+     * @param \callabe  $permission
      *
      * @return void
      *
@@ -124,7 +125,8 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings',
                 'App\Controller\Settings:createNew'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -161,7 +163,8 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:getOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -236,7 +239,8 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:deleteOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )

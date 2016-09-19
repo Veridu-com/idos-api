@@ -164,8 +164,6 @@ class Scores implements RouteInterface {
     }
 
     /**
-<<<<<<< HEAD
-=======
      * Update a score.
      *
      * Updates a score for the given attribute.

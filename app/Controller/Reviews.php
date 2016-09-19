@@ -60,10 +60,10 @@ class Reviews implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository     = $repository;
+        $this->repository         = $repository;
         $this->userRepository     = $userRepository;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
+        $this->commandBus         = $commandBus;
+        $this->commandFactory     = $commandFactory;
     }
 
     /**
@@ -115,7 +115,7 @@ class Reviews implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Review\\CreateNew');
+        $command    = $this->commandFactory->create('Review\\CreateNew');
         $user       = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $command
@@ -151,7 +151,7 @@ class Reviews implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user       = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $command = $this->commandFactory->create('Review\\UpdateOne');
         $command
@@ -188,7 +188,7 @@ class Reviews implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user       = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $review = $this->repository->findOneByUserIdAndId($user->id, (int) $request->getAttribute('decodedReviewId'));
 

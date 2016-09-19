@@ -116,6 +116,7 @@ class Setting implements HandlerInterface {
      * @param App\Command\Setting\GetOne $command
      *
      * @see App\Repository\DBSetting::findOneByCompanyAndId
+     *
      * @throws App\Exception\NotAllowed
      *
      * @return \Illuminate\Support\Collection

@@ -15,7 +15,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Permissions
+ * Permissions.
  *
  * Permissions are levels of access a Company has to specific features or information within the API. This is used to control or monetise access to features for customers and their users.
  *
@@ -83,7 +83,8 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions',
                 'App\Controller\Permissions:listAll'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -118,7 +119,8 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions',
                 'App\Controller\Permissions:createNew'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -186,7 +188,8 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions/{routeName:[a-zA-Z]+\:[a-zA-Z]+}',
                 'App\Controller\Permissions:getOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -223,7 +226,8 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions/{routeName:[a-zA-Z]+\:[a-zA-Z]+}',
                 'App\Controller\Permissions:deleteOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )

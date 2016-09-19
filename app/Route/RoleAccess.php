@@ -15,9 +15,10 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Role Access
+ * Role Access.
  *
  * RoleAccess is the level of permission about a User that is accessible from specific sources. It is used to limit what sensitive information (eg. last name, phone number etc) is available to specific Members or Users.
+ *
  * @link docs/access/roles/overview.md
  * @see App\Controller\RoleAccess
  */

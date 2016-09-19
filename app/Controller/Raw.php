@@ -78,6 +78,7 @@ class Raw implements ControllerInterface {
      *
      * @see App\Repository\DBSource::findOne
      * @see App\Repository\DBService::getAllBySourceAndCollections
+     *
      * @throws App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
@@ -117,6 +118,7 @@ class Raw implements ControllerInterface {
      *
      * @see App\Repository\DBSource::findOne
      * @see App\Handler\Raw::handleCreateNew
+     *
      * @throws App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
@@ -164,6 +166,7 @@ class Raw implements ControllerInterface {
      *
      * @see App\Repository\DBSource::findOne
      * @see App\Handler\Raw::handleUpdateOne
+     *
      * @throws App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
@@ -286,6 +289,7 @@ class Raw implements ControllerInterface {
      *
      * @see App\Repository\DBSource::findOne
      * @see App\Handler\Raw::handleDeleteOne
+     *
      * @throws App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface

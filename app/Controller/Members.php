@@ -99,6 +99,7 @@ class Members implements ControllerInterface {
 
     /**
      * Creates a new Member for the Target Company.
+     *
      * @apiEndpointRequiredParam body string role company:owner Role type
      * @apiEndpointRequiredParam body string userName jhondoe UserName
      * @apiEndpointResponse 201 schema/member/memberEntity.json
