@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Sources routing definitions.
+ * Profile Source
+ *
+ * A Profile Source is the online platform from which the API is accessing a user’s information (eg. Facebook, Twitter, LinkedIn etc.)
  *
  * @link docs/profiles/sources/overview.md
  * @see App\Controller\Sources
@@ -63,7 +65,7 @@ class Sources implements RouteInterface {
     /**
      * List all Sources.
      *
-     * Retrieve a complete list of all sources that belong to the requesting user.
+     * Retrieves a complete list of all sources that belong to the requesting user.
      *
      * @apiEndpoint GET /profiles/{userName}/sources
      * @apiGroup Profile Source
@@ -96,7 +98,7 @@ class Sources implements RouteInterface {
     /**
      * Create new Source.
      *
-     * Create a new source for the requesting user.
+     * Creates a new source for the requesting user.
      *
      * @apiEndpoint POST /profiles/{userName}/sources
      * @apiGroup Profile Source

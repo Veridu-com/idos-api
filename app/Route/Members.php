@@ -14,7 +14,8 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Members routing definitions.
+ * Company Members
+ * A Company Member is a user profile for an employee of a Company with an adjustable level of permissions and access to specific information. (eg. for distinguishing a low level employee with read-only permissions from an administrator)
  *
  * @link docs/companies/members/overview.md
  * @see App\Controller\Companies
@@ -61,7 +62,7 @@ class Members implements RouteInterface {
     /**
      * List all Members.
      *
-     * Retrieve a complete list of all members that belong to the requesting company.
+     * Retrieves a complete list of all members that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/members
      * @apiGroup Company Members
@@ -124,7 +125,7 @@ class Members implements RouteInterface {
     /**
      * Update a single Member.
      *
-     * Updates Member's role
+     * Updates the role for a single Member.
      *
      * @apiEndpoint PUT /companies/members/{userName}
      * @apiGroup Company Members

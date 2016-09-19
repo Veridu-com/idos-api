@@ -14,7 +14,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Service routing definitions.
+ * Company Services
+ *
+ * Company Services are what allows a company to add tailored functionality to the API in order to assess specific information. If a company wants to support a specific Profile Source, access a certain data point within a Profile, or change the way the API interprets data, Services are a simple and direct way of doing this.
  *
  * @link docs/services/overview.md
  * @see App\Controller\Services
@@ -62,7 +64,7 @@ class Service implements RouteInterface {
     /**
      * List all Services.
      *
-     * Retrieve a complete list of services that are visible to the requesting company.
+     * Retrieves a complete list of all services.
      *
      * @apiEndpoint GET /services
      * @apiGroup Company Service

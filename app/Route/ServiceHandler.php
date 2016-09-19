@@ -14,7 +14,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * ServiceHandler routing definitions.
+ * ServiceHandler
+ *
+ * A ServiceHandler allows a specific Company to have access to a certain Service. This allows control over and monetisation to the way they utilise the API, tailoring access for their own specific requirements.
  *
  * @link docs/service-handlers/overview.md
  * @see App\Controller\ServiceHandlers
@@ -62,7 +64,7 @@ class ServiceHandler implements RouteInterface {
     /**
      * List all Service handlers.
      *
-     * Retrieve a complete list of service handlers that belong to the requesting company.
+     * Retrieves a complete list of service handlers that belong to the requesting company.
      *
      * @apiEndpoint GET /service-handlers
      * @apiGroup Company ServiceHandler
@@ -93,7 +95,7 @@ class ServiceHandler implements RouteInterface {
     /**
      * Create new ServiceHandler.
      *
-     * Create a new service handler for the requesting company.
+     * Creates a new service handler for the requesting company.
      *
      * @apiEndpoint POST /service-handlers
      * @apiGroup Company ServiceHandler
@@ -156,7 +158,7 @@ class ServiceHandler implements RouteInterface {
     /**
      * Retrieve a single Service handler.
      *
-     * Retrieves all public information from a Service handler.
+     * Retrieves all public information from a single Service handler.
      *
      * @apiEndpoint GET /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
@@ -188,7 +190,7 @@ class ServiceHandler implements RouteInterface {
     /**
      * Update a single ServiceHandler.
      *
-     * Updates a single Service handler instance.
+     * Updates the information for a single ServiceHandler.
      *
      * @apiEndpoint GET /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler

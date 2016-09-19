@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Permissions routing definitions.
+ * Permissions
+ *
+ * Permissions are levels of access a Company has to specific features or information within the API. This is used to control or monetise access to features for customers and their users.
  *
  * @link docs/companies/permissions/overview.md
  * @see App\Controller\Permissions
@@ -59,7 +61,7 @@ class Permissions implements RouteInterface {
     /**
      * List all Permissions.
      *
-     * Retrieve a complete list of all permissions that belong to the requesting company.
+     * Retrieves a complete list of all permissions that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -93,7 +95,7 @@ class Permissions implements RouteInterface {
     /**
      * Create new Permission.
      *
-     * Create a new credential for the requesting company.
+     * Creates a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/permissions
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
