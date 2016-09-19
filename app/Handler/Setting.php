@@ -185,9 +185,10 @@ class Setting implements HandlerInterface {
      * @param App\Command\Setting\UpdateOne $command
      *
      * @throws App\Exception\Validate\SettingException
+     * @throws App\Exception\Update\SettingException
+     *
      * @see App\Repository\DBSetting::find
      * @see App\Repository\DBSetting::save
-     * @throws App\Exception\Update\SettingException
      *
      * @return App\Entity\Setting
      */

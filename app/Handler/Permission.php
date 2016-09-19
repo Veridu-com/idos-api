@@ -132,6 +132,7 @@ class Permission implements HandlerInterface {
      *
      * @see App\Repository\DBPermission::getAllByComanyId
      * @see App\Repository\DBPermission::deleteByCompanyId
+     *
      * @throws App\Exception\Validate\PermissionException
      *
      * @return int
@@ -164,6 +165,7 @@ class Permission implements HandlerInterface {
      *
      * @throws App\Exception\Validate\PermissionException
      * @throws App\Exception\NotFound\PermissionException
+     *
      * @see App\Repository\DBPermission::findOne
      * @see App\Repository\DBPermission::deleteOne
      *

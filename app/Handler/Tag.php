@@ -103,6 +103,7 @@ class Tag implements HandlerInterface {
      *
      * @throws App\Exception\Validate\TagException
      * @throws App\Exception\Create\TagException
+     *
      * @see App\Repository\DBTag::create
      * @see App\Repository\DBTag::save
      *
@@ -149,6 +150,7 @@ class Tag implements HandlerInterface {
      *
      * @throws App\Exception\Validate\TagException
      * @throws App\Exception\NotFound\TagException
+     *
      * @see App\Repository\DBTag::findOneByUserIdAndSlug
      * @see App\Repository\DBTag::deleteOneByUserIdAndSlug
      *

@@ -264,6 +264,7 @@ class Source implements HandlerInterface {
      *
      * @throws App\Exception\Validate\SourceException
      * @throws App\Exception\NotFound\SourceException
+     *
      * @see App\Repository\DBSource::delete
      *
      * @return void
@@ -296,6 +297,7 @@ class Source implements HandlerInterface {
      * @param App\Command\Source\DeleteAll $command
      *
      * @throws App\Exception\Validate\SourceException
+     *
      * @see App\Repository\DBSource::getAllByUserId
      * @see App\Repository\DBSource::deleteByUserId
      *

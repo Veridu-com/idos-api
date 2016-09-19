@@ -88,6 +88,7 @@ class Task implements HandlerInterface {
      *
      * @throws App\Exception\Validate\TaskException
      * @throws App\Exception\Create\TaskException
+     *
      * @see App\Repository\DBTask::create
      * @see App\Repository\DBTask::save
      *
@@ -138,6 +139,7 @@ class Task implements HandlerInterface {
      *
      * @see App\Repository\DBTask::find
      * @see App\Repository\DBTask::save
+     *
      * @throws App\Exception\Validate\TaskException
      * @throws App\Exception\Update\TaskException
      *

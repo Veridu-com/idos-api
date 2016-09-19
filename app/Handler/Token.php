@@ -87,6 +87,7 @@ class Token implements HandlerInterface {
      *
      * @throws App\Exception\Validate\TokenException
      * @throws App\Exception\Create\TokenException
+     *
      * @see App\Repository\DBToken::findAllRelatedToCompany
      *
      * @return string

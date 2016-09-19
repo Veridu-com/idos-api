@@ -89,6 +89,7 @@ class Warning implements HandlerInterface {
      *
      * @throws App\Exception\Validate\WarningException
      * @throws App\Exception\Create\WarningException
+     *
      * @see App\Repository\DBWarning::save
      * @see App\Repository\DBWarning::hydrateRelations
      *
@@ -138,6 +139,7 @@ class Warning implements HandlerInterface {
      *
      * @throws App\Exception\Validate\WarningException
      * @throws App\Exception\AppException
+     *
      * @see App\Repository\DBWarning::findBy
      * @see App\Repository\DBWarning::delete
      *
@@ -185,6 +187,7 @@ class Warning implements HandlerInterface {
      *
      * @throws App\Exception\Validate\WarningException
      * @throws App\Exception\AppException
+     *
      * @see App\Repository\DBWarning::findOneBySlug
      * @see App\Repository\DBWarning::delete
      *
