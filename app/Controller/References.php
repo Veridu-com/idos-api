@@ -60,12 +60,13 @@ class References implements ControllerInterface {
     /**
      * Retrieve a complete list of the data reference by a given source.
      *
-     * @apiEndpointURIFragment string userName usr001
      * @apiEndpointParam query string names firstName,middleName,lastName
      * @apiEndpointResponse 200 schema/reference/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Repository\DBReference::getAllByUserIdAndNames
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -93,10 +94,14 @@ class References implements ControllerInterface {
     /**
      * Created a new reference data for a given source.
      *
+     * @apiEndpointRequiredParam body string name reference-name Reference name
+     * @apiEndpointRequiredParam body string value reference-value Reference value
      * @apiEndpointResponse 201 schema/reference/referenceEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Reference::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -127,11 +132,13 @@ class References implements ControllerInterface {
     /**
      * Updates a reference data from the given source.
      *
-     * @apiEndpointRequiredParam body string value WRONG FORMAT HERE FIXME
+     * @apiEndpointRequiredParam body string value reference-value Reference value
      * @apiEndpointResponse 200 schema/reference/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Handler\Reference::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -161,12 +168,12 @@ class References implements ControllerInterface {
     /**
      * Retrieves a reference data from the given source.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointParam query string referenceName firstName
      * @apiEndpointResponse 200 schema/reference/referenceEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBReference::findOneByUserIdAndName
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -197,6 +204,8 @@ class References implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Reference::handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -220,12 +229,12 @@ class References implements ControllerInterface {
     /**
      * Deletes a reference data from a given source.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointParam query string referenceName firstName
      * @apiEndpointResponse 200 schema/reference/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Reference::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

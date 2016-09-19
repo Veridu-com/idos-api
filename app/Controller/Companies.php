@@ -106,8 +106,6 @@ class Companies implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
-     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -135,6 +133,8 @@ class Companies implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Company::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -172,7 +172,7 @@ class Companies implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
+     * @see App\Handler\Company::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -207,11 +207,9 @@ class Companies implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound
+     * @see App\Handler\Company::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
-     *
-     * @see App\Command\Company\UpdateOne
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');

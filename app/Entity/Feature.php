@@ -11,7 +11,7 @@ namespace App\Entity;
 /**
  * Features Entity.
  *
- * @apiEntity schema/user/featureEntity.json
+ * @apiEntity schema/feature/featureEntity.json
  *
  * @property int    $id
  * @property int    $user_id

@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Settings routing definitions.
+ * Company Settings.
+ *
+ * Company Settings is used for a wide range of minor and major changes for a specific Company. Settings are used to change multiple aspects of the layout of the API dashboard, the way certain information is displayed in order to tailor to a certain company’s thematic requests, or to create different environments suited to different purposes.
  *
  * @link docs/companies/settings/overview.md
  * @see App\Controller\Settings
@@ -61,16 +63,17 @@ class Settings implements RouteInterface {
     /**
      * List all Settings.
      *
-     * Retrieve a complete list of all settings that belong to the requesting company.
+     * Retrieves a complete list of all settings that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/settings
      * @apiGroup Company Settings
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -85,8 +88,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings',
                 'App\Controller\Settings:listAll'
             )
-            ->add(
-                $permission(
+            ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -98,15 +100,16 @@ class Settings implements RouteInterface {
     /**
      * Create new Setting.
      *
-     * Create a new credential for the requesting identity.
+     * Creates a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/settings
      * @apiGroup Company Settings
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callabe $permission
      *
      * @return void
      *
@@ -121,8 +124,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings',
                 'App\Controller\Settings:createNew'
             )
-            ->add(
-                $permission(
+            ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -138,8 +140,8 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/settings/{settingId}
      * @apiGroup Company Settings
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
      *
@@ -159,8 +161,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:getOne'
             )
-            ->add(
-                $permission(
+            ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -172,12 +173,12 @@ class Settings implements RouteInterface {
     /**
      * Update a single Setting.
      *
-     * Updates Setting's specific information.
+     * Updates the specific information for a single Setting.
      *
      * @apiEndpoint PUT /companies/{companySlug}/settings/{settingId}
      * @apiGroup Company Settings
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
      *
@@ -214,8 +215,8 @@ class Settings implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}/settings/{settingId}
      * @apiGroup Company Settings
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
      *
@@ -235,8 +236,7 @@ class Settings implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Settings:deleteOne'
             )
-            ->add(
-                $permission(
+            ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )

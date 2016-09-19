@@ -101,6 +101,12 @@ class Tag implements HandlerInterface {
      *
      * @param App\Command\Tag\CreateNew $command
      *
+     * @throws App\Exception\Validate\TagException
+     * @throws App\Exception\Create\TagException
+     *
+     * @see App\Repository\DBTag::create
+     * @see App\Repository\DBTag::save
+     *
      * @return App\Entity\Tag
      */
     public function handleCreateNew(CreateNew $command) : TagEntity {
@@ -142,6 +148,12 @@ class Tag implements HandlerInterface {
      *
      * @param App\Command\Tag\DeleteOne $command
      *
+     * @throws App\Exception\Validate\TagException
+     * @throws App\Exception\NotFound\TagException
+     *
+     * @see App\Repository\DBTag::findOneByUserIdAndSlug
+     * @see App\Repository\DBTag::deleteOneByUserIdAndSlug
+     *
      * @return void
      */
     public function handleDeleteOne(DeleteOne $command) {
@@ -171,6 +183,9 @@ class Tag implements HandlerInterface {
      * Deletes all tags ($command->companyId).
      *
      * @param App\Command\Tag\DeleteAll $command
+     *
+     * @see App\Repository\DBTag::getAllByUserId
+     * @see App\Repository\DBTag::deleteByUserId
      *
      * @return int
      */

@@ -3,7 +3,6 @@
  * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
  * All rights reserved.
  */
-
 declare(strict_types = 1);
 
 namespace App\Route;
@@ -63,11 +62,10 @@ class Raw implements RouteInterface {
      * Retrieve a complete list of the raw data by a given source.
      *
      * @apiEndpoint GET /profiles/{userName}/raw
-     * @apiGroup Sources Raw
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiGroup Profiles Raw
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -96,11 +94,10 @@ class Raw implements RouteInterface {
      * Creates a new raw data for the given source.
      *
      * @apiEndpoint POST /profiles/{userName}/raw
-     * @apiGroup Sources Raw
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiGroup Profiles Raw
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -130,12 +127,11 @@ class Raw implements RouteInterface {
      * Updates a raw data in the given source.
      *
      * @apiEndpoint PUT /profiles/{userName}/raw/{sourceId}
-     * @apiGroup Company Members
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiGroup Profiles Raw
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
-     * @apiEndpointURIFragment string collection data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -148,7 +144,7 @@ class Raw implements RouteInterface {
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Members::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/raw/{sourceId:[0-9]+}',
@@ -158,4 +154,5 @@ class Raw implements RouteInterface {
             ->add($auth(Auth::CREDENTIAL))
             ->setName('raw:updateOne');
     }
+
 }

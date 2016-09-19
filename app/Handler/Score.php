@@ -96,6 +96,13 @@ class Score implements HandlerInterface {
      *
      * @param App\Command\Score\CreateNew $command
      *
+     * @see App\Repository\DBScore::create
+     * @see App\Repository\DBScore::save
+     * @see App\Repository\DBScore::hydrateRelations
+     *
+     * @throws App\Exception\Validate\ScoreException
+     * @throws App\Exception\Create\ScoreException
+     *
      * @return App\Entity\Score
      */
     public function handleCreateNew(CreateNew $command) : ScoreEntity {
@@ -142,6 +149,13 @@ class Score implements HandlerInterface {
      *
      * @param App\Command\Score\UpdateOne $command
      *
+     * @see App\Repository\DBScore::findOneByName
+     * @see App\Repository\DBScore::save
+     * @see App\Repository\DBScore::hydrate
+     *
+     * @throws App\Exception\Validate\ScoreException
+     * @throws App\Exception\Update\ScoreException
+     *
      * @return App\Entity\Score
      */
     public function handleUpdateOne(UpdateOne $command) : ScoreEntity {
@@ -182,6 +196,14 @@ class Score implements HandlerInterface {
      * Updates a score for a given attribute.
      *
      * @param App\Command\Score\Upsert $command
+     *
+     * @see App\Repository\DBScore::findOneByName
+     * @see App\Repository\DBScore::create
+     * @see App\Repository\DBScore::save
+     * @see App\Repository\DBScore::hydrateRelations
+     *
+     * @throws App\Exception\NotFound\ScoreException
+     * @throws App\Exception\Update\ScoreException
      *
      * @return App\Entity\Score
      */
@@ -238,6 +260,12 @@ class Score implements HandlerInterface {
      *
      * @param App\Command\Score\DeleteOne $command
      *
+     * @see App\Repository\DBScore::findOneByName
+     * @see App\Repository\DBScore::delete
+     *
+     * @throws App\Exception\Validate\ScoreException
+     * @throws App\Exception\NotFound\ScoreException
+     *
      * @return void
      */
     public function handleDeleteOne(DeleteOne $command) : int {
@@ -271,6 +299,12 @@ class Score implements HandlerInterface {
      * Deletes all score from a given attribute.
      *
      * @param App\Command\Score\DeleteAll $command
+     *
+     * @see App\Repository\DBScore::findBy
+     * @see App\Repository\DBScore::delete
+     *
+     * @throws App\Exception\Validate\ScoreException
+     * @throws App\Exception\AppException
      *
      * @return int
      */

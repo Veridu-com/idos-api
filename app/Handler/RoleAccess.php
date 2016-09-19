@@ -92,6 +92,9 @@ class RoleAccess implements HandlerInterface {
      *
      * @param App\Command\RoleAccess\CreateNew $command
      *
+     * @throws App\Exception\Validate\RoleAccessException
+     * @throws App\Exception\Create\RoleAccessException
+     *
      * @return App\Entity\RoleAccess
      */
     public function handleCreateNew(CreateNew $command) : RoleAccessEntity {
@@ -137,6 +140,8 @@ class RoleAccess implements HandlerInterface {
      *
      * @param App\Command\RoleAccess\DeleteAll $command
      *
+     * @throws App\Exception\Validate\RoleAccessException
+     *
      * @return int number of affected rows
      */
     public function handleDeleteAll(DeleteAll $command) : int {
@@ -164,6 +169,9 @@ class RoleAccess implements HandlerInterface {
      * Updates a RoleAccess.
      *
      * @param App\Command\RoleAccess\UpdateOne $command
+     *
+     * @throws App\Exception\Validate\RoleAccessException
+     * @throws App\Exception\Update\RoleAccessException
      *
      * @return App\Entity\RoleAccess
      */
@@ -201,6 +209,9 @@ class RoleAccess implements HandlerInterface {
      * Deletes a RoleAccess.
      *
      * @param App\Command\RoleAccess\DeleteOne $command
+     *
+     * @throws App\Exception\Validate\RoleAccessException
+     * @throws App\Exception\NotFound\RoleAccessException
      *
      * @return void
      */

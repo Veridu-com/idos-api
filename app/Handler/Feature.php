@@ -107,6 +107,11 @@ class Feature implements HandlerInterface {
      *
      * @param App\Command\Feature\CreateNew $command
      *
+     * @see App\Repository\DBFeature::save
+     *
+     * @throws App\Exception\Validate\FeatureException
+     * @throws App\Exception\Create\FeatureException
+     *
      * @return App\Entity\Feature
      */
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
@@ -158,6 +163,12 @@ class Feature implements HandlerInterface {
      *
      * @param App\Command\Feature\UpdateOne $command
      *
+     * @see App\Repository\DBFeature::findByUserIdAndSlug
+     * @see App\Repository\DBFeature:save
+     *
+     * @throws App\Exception\Validate\FeatureException
+     * @throws App\Exception\Update\FeatureException
+     *
      * @return App\Entity\Feature
      */
     public function handleUpdateOne(UpdateOne $command) : FeatureEntity {
@@ -200,6 +211,11 @@ class Feature implements HandlerInterface {
      *
      * @param App\Command\Feature\DeleteAll $command
      *
+     * @see App\Repository\DBFeature::findByUserId
+     * @see App\Repository\DBFeature::deleteByUserId
+     *
+     * @throws App\Exception\Validate\FeatureException
+     *
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
@@ -238,6 +254,12 @@ class Feature implements HandlerInterface {
      * Deletes a Feature.
      *
      * @param App\Command\Feature\DeleteOne $command
+     *
+     * @see App\Repository\DBFeature::findByUserIdAndSlug
+     * @see App\Repository\DBFeature::delete
+     *
+     * @throws App\Exception\Validate\FeatureException
+     * @throws App\Exception\NotFound\FeatureException
      *
      * @return void
      */

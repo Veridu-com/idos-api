@@ -27,7 +27,7 @@ class CreateNewFacebook extends AbstractCommand {
      */
     public $credentialPubKey;
     /**
-     * Credential public key.
+     * Provider key.
      *
      * @var string
      */

@@ -74,6 +74,8 @@ class Tasks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBTask::find
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -98,15 +100,17 @@ class Tasks implements ControllerInterface {
     /**
      * Creates a new Task for the given process.
      *
-     * @apiEndpointRequiredParam body string name XYZ Task name
-     * @apiEndpointRequiredParam body string event ZYX Task event
-     * @apiEndpointRequiredParam body boolean running ZYX Task running flag
-     * @apiEndpointRequiredParam body boolean success ZYX Task success flag
-     * @apiEndpointRequiredParam body string message ZYX Task message
+     * @apiEndpointRequiredParam body string name Task test Task name
+     * @apiEndpointRequiredParam body string event user:created Task event
+     * @apiEndpointRequiredParam body boolean running false Task running flag
+     * @apiEndpointRequiredParam body boolean success true Task success flag
+     * @apiEndpointRequiredParam body string message xyz Task message
      * @apiEndpointResponse 201 schema/task/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Task::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -143,10 +147,12 @@ class Tasks implements ControllerInterface {
      * @apiEndpointRequiredParam body boolean running ZYX Task running flag
      * @apiEndpointRequiredParam body boolean success ZYX Task success flag
      * @apiEndpointRequiredParam body string message ZYX Task message
-     * @apiEndpointResponse 201 schema/task/updateOne.json
+     * @apiEndpointResponse 200 schema/task/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Task::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -182,6 +188,9 @@ class Tasks implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBProcess::find
+     * @see App\Repository\DBTask::getAllByProcessId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

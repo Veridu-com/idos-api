@@ -76,6 +76,8 @@ class Sources implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBSource::getAllByUserId
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -109,6 +111,8 @@ class Sources implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBSource::findOne
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -140,13 +144,14 @@ class Sources implements ControllerInterface {
      *  - Phone should carry phone_number, country_code and optionally otp.
      *  - Submitted can carry as many fields as wanted.
      *
-     * @apiEndpointRequiredParam body string name Source's name.
-     * @apiEndpointRequiredParam body array  tags Source's tags.
-     *
+     * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
+     * @apiEndpointParam body string ipaddr 192.168.0.1 Ip Address
      * @apiEndpointResponse 201 schema/sources/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Source::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -182,6 +187,8 @@ class Sources implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Source::handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -212,6 +219,9 @@ class Sources implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBSource::findOne
+     * @see App\Handler\Source::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -248,10 +258,15 @@ class Sources implements ControllerInterface {
      *  - E-mail can carry a otp_check for OTP verification.
      *  - SMS can carry a otp_check for OTP verification.
      *
-     * @apiEndpointParam body string otp_check OTP Code check for One Time Password Verifications
+     * @apiEndpointParam body string otpCode OTP Code check for One Time Password Verifications
+     * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
+     * @apiEndpointParam body string ipaddr 192.168.0.1 Ip Address
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBSource::findOne
+     * @see App\Handler\Source::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

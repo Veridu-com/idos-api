@@ -14,7 +14,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Service routing definitions.
+ * Company Services
+ *
+ * Company Services are what allows a company to add tailored functionality to the API in order to assess specific information. If a company wants to support a specific Profile Source, access a certain data point within a Profile, or change the way the API interprets data, Services are a simple and direct way of doing this.
  *
  * @link docs/services/overview.md
  * @see App\Controller\Services
@@ -62,12 +64,12 @@ class Service implements RouteInterface {
     /**
      * List all Services.
      *
-     * Retrieve a complete list of services that are visible to the requesting company.
+     * Retrieves a complete list of all services.
      *
      * @apiEndpoint GET /services
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -97,8 +99,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint POST /services
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -128,8 +130,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint DELETE /services
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -160,8 +162,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint GET /services/{serviceId}
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  int  serviceId 12345
      *
      * @param \Slim\App $app
@@ -192,8 +194,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint PUT /services/{serviceId}
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment int serviceId 1
      *
      * @param \Slim\App $app
@@ -224,8 +226,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint DELETE /services/{serviceId}
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment int serviceId 1
      *
      * @param \Slim\App $app

@@ -59,9 +59,6 @@ class Credentials implements ControllerInterface {
     /**
      * Lists all Credentials that belongs to the Target Company.
      *
-     * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Credential creation date (lower bound)
-     * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Credential creation date (upper bound)
-     * @apiEndpointParam query int page 10|1 Current page
      * @apiEndpointResponse 200 schema/credential/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -101,6 +98,8 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
+     * @see App\Handler\Credential::handleCreateNew
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -137,6 +136,8 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
+     * @see App\Repository\DBCredential::findByPubKey
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -166,6 +167,9 @@ class Credentials implements ControllerInterface {
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Repository\DBCredential:findByPubKey
+     * @see App\Handler\Credential::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -202,6 +206,9 @@ class Credentials implements ControllerInterface {
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Repository\DBCredential:findByPubKey
+     * @see App\Handler\Credential::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

@@ -11,7 +11,7 @@ namespace App\Entity;
 /**
  * Task Entity.
  *
- * @apiEntity schema/user/processEntity.json
+ * @apiEntity schema/tasks/taskEntity.json
  *
  * @property int     $id
  * @property string  $name

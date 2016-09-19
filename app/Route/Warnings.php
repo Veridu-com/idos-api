@@ -64,11 +64,13 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/warnings
      * @apiGroup Profile Warnings
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -95,11 +97,13 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint POST profiles/{userName}/warnings
      * @apiGroup Profile Warnings
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -126,11 +130,14 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/warnings/{warningSlug}
      * @apiGroup Profile Warnings
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
+     * @apiEndpointURIFragment string wariningSlug warning-test
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -157,11 +164,13 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/warnings
      * @apiGroup Profile Warnings
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -188,11 +197,14 @@ class Warnings implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/warnings/{warningSlug}
      * @apiGroup Profile Warnings
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
+     * @apiEndpointURIFragment string warningSlug warning-test
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

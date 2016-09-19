@@ -65,9 +65,9 @@ class Attributes implements RouteInterface {
      * Retrieve a complete list of the attributes by a given user.
      *
      * @apiEndpoint GET /profiles/{userName}/attributes
-     * @apiGroup Sources Attribute
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiGroup Profiles Attribute
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -97,9 +97,9 @@ class Attributes implements RouteInterface {
      * Creates a new attribute for the given user.
      *
      * @apiEndpoint POST /profiles/{userName}/attributes
-     * @apiGroup Sources Attribute
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiGroup Profiles Attribute
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -124,15 +124,15 @@ class Attributes implements RouteInterface {
             ->setName('attribute:createNew');
     }
 
-    /*
+    /**
      * Retrieves an attribute.
      *
      * Retrieves an attribute from the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}
-     * @apiGroup Sources Attribute
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiGroup Profiles Attribute
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName data-name
      *
@@ -164,9 +164,9 @@ class Attributes implements RouteInterface {
      * Deletes all attributes from the given user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/attributes
-     * @apiGroup Sources Attribute
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiGroup Profiles Attribute
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -191,15 +191,15 @@ class Attributes implements RouteInterface {
             ->setName('attribute:deleteAll');
     }
 
-    /*
+    /**
      * Deletes an attribute.
      *
      * Deletes an attribute from the given user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/attributes/{attributeName}
-     * @apiGroup Sources Attribute
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiGroup Profiles Attribute
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName data-name
      *

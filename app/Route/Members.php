@@ -14,7 +14,8 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Members routing definitions.
+ * Company Members
+ * A Company Member is a user profile for an employee of a Company with an adjustable level of permissions and access to specific information. (eg. for distinguishing a low level employee with read-only permissions from an administrator)
  *
  * @link docs/companies/members/overview.md
  * @see App\Controller\Companies
@@ -61,12 +62,12 @@ class Members implements RouteInterface {
     /**
      * List all Members.
      *
-     * Retrieve a complete list of all members that belong to the requesting company.
+     * Retrieves a complete list of all members that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/members
      * @apiGroup Company Members
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -96,8 +97,8 @@ class Members implements RouteInterface {
      *
      * @apiEndpoint POST /companies/members
      * @apiGroup Company Members
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -124,12 +125,12 @@ class Members implements RouteInterface {
     /**
      * Update a single Member.
      *
-     * Updates Member's role
+     * Updates the role for a single Member.
      *
      * @apiEndpoint PUT /companies/members/{userName}
      * @apiGroup Company Members
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string userName johndoe
      *
      * @param \Slim\App $app
@@ -161,8 +162,8 @@ class Members implements RouteInterface {
      *
      * @apiEndpoint GET /companies/members/{userName}
      * @apiGroup Company Members
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app
@@ -194,8 +195,8 @@ class Members implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/members/{userName}
      * @apiGroup Company Members
-     * @apiAuth header token IdentityToken XXX A valid Identity Token
-     * @apiAuth query token IdentityToken XXX A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app

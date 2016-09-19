@@ -69,10 +69,10 @@ class Scores implements ControllerInterface {
     /**
      * Retrieve a complete list of the score by a given attribute.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment string attributeName firstName
      * @apiEndpointParam       query  string   names firstName,lastName
      * @apiEndpointResponse    200    schema/score/listAll.json
+     *
+     * @see App\Repository\DBScore::findBy
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -104,11 +104,11 @@ class Scores implements ControllerInterface {
     /**
      * Created a new score for a given attribute.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment string    attributeName firstName
      * @apiEndpointRequiredParam body   string     name  overall
      * @apiEndpointRequiredParam body   float     value 0.2
      * @apiEndpointResponse 201 schema/score/scoreEntity.json
+     *
+     * @see App\Handler\Score::handleCreateNew
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -145,11 +145,11 @@ class Scores implements ControllerInterface {
     /**
      * Updates a score from the given attribute.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment string    attributeName firstName
-     * @apiEndpointRequiredParam body   string     name  overall
-     * @apiEndpointRequiredParam body   float     value 0.2
+     * @apiEndpointRequiredParam body   string     name  overall attribute name
+     * @apiEndpointRequiredParam body   float     value 0.2 Score value
      * @apiEndpointResponse      200    schema/score/updateOne.json
+     *
+     * @see App\Handler\Score::handleUpdateOne
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -187,10 +187,8 @@ class Scores implements ControllerInterface {
     /**
      * Created a new score for a given attribute.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment string    attributeName firstName
-     * @apiEndpointRequiredParam body   string     name  overall
-     * @apiEndpointRequiredParam body   float     value 0.2
+     * @apiEndpointRequiredParam body   string     name  overall attribute name
+     * @apiEndpointRequiredParam body   float     value 0.2 score value
      * @apiEndpointResponse 201 schema/score/scoreEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -228,10 +226,10 @@ class Scores implements ControllerInterface {
     /**
      * Retrieves a score from the given attribute.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment string    attributeName firstName
-     * @apiEndpointParam       query  string   scoreName overall
+     * @apiEndpointParam       query  string   scoreName overall Score name
      * @apiEndpointResponse 200 schema/score/scoreEntity.json
+     *
+     * @see App\Repository\DBScore::findOneByName
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -261,12 +259,12 @@ class Scores implements ControllerInterface {
     /**
      * Deletes all scores from a given attribute.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment string    attributeName firstName
-     * @apiEndpointResponse 200 schema/score/deleteAll.json
+      * @apiEndpointResponse 200 schema/score/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Score::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -296,13 +294,12 @@ class Scores implements ControllerInterface {
     /**
      * Deletes a score from a given attribute.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment string    attributeName firstName
-     * @apiEndpointURIFragment string scoreName overall
      * @apiEndpointResponse 200 schema/score/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Score::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

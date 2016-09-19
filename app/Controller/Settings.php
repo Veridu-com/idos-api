@@ -139,13 +139,15 @@ class Settings implements ControllerInterface {
     /**
      * Creates a new Setting for the Target Company.
      *
-     * @apiEndpointRequiredParam body string section XXX Section name
-     * @apiEndpointRequiredParam body string property YYY Property name
-     * @apiEndpointRequiredParam body string value ZZZ Property value
+     * @apiEndpointRequiredParam body string section AppTokens Section name
+     * @apiEndpointRequiredParam body string property  1abc7jdoxsaz.facebook.key  Property name
+     * @apiEndpointRequiredParam body string value \x492361674b Property value
      * @apiEndpointResponse 201 schema/setting/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Settings::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -182,6 +184,8 @@ class Settings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Settings::handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -211,6 +215,8 @@ class Settings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Setting::handleDeleteOne
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -236,11 +242,13 @@ class Settings implements ControllerInterface {
     /**
      * Updates one Setting of the Target Company based on path paramaters section and property.
      *
-     * @apiEndpointRequiredParam body string value ZZZ Property value
+     * @apiEndpointRequiredParam body string value \x492361674b Property value
      * @apiEndpointResponse 200 schema/setting/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Setting::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

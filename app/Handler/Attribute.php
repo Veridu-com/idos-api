@@ -88,6 +88,11 @@ class Attribute implements HandlerInterface {
      *
      * @param App\Command\Attribute\CreateNew $command
      *
+     * @see App\Repository\DBAttribute::save
+     *
+     * @throws App\Exception\Validade\AttributeExceptions
+     * @throws App\Exception\Create\AttributeExceptions
+     *
      * @return App\Entity\Attribute
      */
     public function handleCreateNew(CreateNew $command) : AttributeEntity {
@@ -117,6 +122,39 @@ class Attribute implements HandlerInterface {
         );
 
         try {
+            $attribute = $this->repository->save($attribute);
+            $event     = new Created($attribute);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new Create\AttributeException('Error while trying to create an attribute', 500, $e);
+        }
+
+        return $attribute;
+    }
+
+    /**
+     * Updates a attribute data from a given user.
+     *
+     * @param App\Command\Attribute\UpdateOne $command
+     *
+     * @see App\Repository\DBAttribute::findOneByUserIdAndName
+     * @see App\Repository\DBAttrubute::save
+     *
+     * @throws App\Exception\Validate\AttributeException
+     * @throws App\Exception\Update\AttributeException
+     *
+     * @return App\Entity\Attribute
+     */
+    public function handleUpdateOne(UpdateOne $command) : AttributeEntity {
+        try {
+            $this->validator->assertValue($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\AttributeException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
@@ -133,6 +171,12 @@ class Attribute implements HandlerInterface {
      * Deletes a attribute data from a given user.
      *
      * @param App\Command\Attribute\DeleteOne $command
+     *
+     * @see App\Repository\DBAttribute::findOneByUserIdAndName
+     * @see App\Repository\DBAttribute::deleteOneByUSerIdAndName
+     *
+     * @throws App\Exception\Validate\AttributeException
+     * @throws App\Exception\NotFound\AttributeException
      *
      * @return void
      */
@@ -178,6 +222,9 @@ class Attribute implements HandlerInterface {
      * Deletes all attribute data from a given user.
      *
      * @param App\Command\Attribute\DeleteAll $command
+     *
+     * @see App\Repository\DBAttribute::getAllByUserIdAndNames
+     * @see App\Repository\DBAttribute::deleteByUserId
      *
      * @return int
      */

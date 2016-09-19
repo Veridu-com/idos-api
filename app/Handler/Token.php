@@ -85,6 +85,11 @@ class Token implements HandlerInterface {
      *
      * @param App\Command\Token\Exchange $command
      *
+     * @throws App\Exception\Validate\TokenException
+     * @throws App\Exception\Create\TokenException
+     *
+     * @see App\Repository\DBToken::findAllRelatedToCompany
+     *
      * @return string
      */
     public function handleExchange(Exchange $command) : string {

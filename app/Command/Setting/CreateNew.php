@@ -38,6 +38,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Setting's property value (user input).
      *
+     *
      * @var object
      */
     public $value;

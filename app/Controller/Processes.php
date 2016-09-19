@@ -65,6 +65,8 @@ class Processes implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBProccess::getAllByUserId
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -97,6 +99,8 @@ class Processes implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBProccess::find
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

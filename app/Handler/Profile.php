@@ -79,6 +79,8 @@ class Profile implements HandlerInterface {
      *
      * @param App\Command\Profile\ListAll $command
      *
+     * @see App\Repository\DBProfile::findByCompanyId
+     *
      * @return Illuminate\Support\Collection
      */
     public function handleListAll(ListAll $command) : Collection {

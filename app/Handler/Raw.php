@@ -87,6 +87,13 @@ class Raw implements HandlerInterface {
      *
      * @param App\Command\Raw\CreateNew $command
      *
+     * @see App\Repository\DBRaw::findOne
+     * @see App\Repository\DBRaw::create
+     * @see App\Repository\DBRaw::save
+     *
+     * @throws App\Exception\Validate\RawException
+     * @throws App\Exception\Create\RawException
+     *
      * @return App\Entity\Raw
      */
     public function handleCreateNew(CreateNew $command) : RawEntity {
@@ -133,6 +140,12 @@ class Raw implements HandlerInterface {
      * Updates a raw data from a given source.
      *
      * @param App\Command\Raw\UpdateOne $command
+     *
+     * @see App\Repository\DBRaw::findOne
+     * @see App\Repository\DBRaw::save
+     *
+     * @throws App\Exception\Validate\RawException
+     * @throws App\Exception\Update\RawException
      *
      * @return App\Entity\Raw
      */

@@ -62,11 +62,14 @@ class Tasks implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/processes//{processId}/tasks
      * @apiGroup Profile Tasks
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
+     * @apiEndpointURIFragment int processId 1325
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -93,11 +96,15 @@ class Tasks implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/processes/{processId}/tasks/{taskId}
      * @apiGroup Profile Tasks
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
+     * @apiEndpointURIFragment int processId 1325
+     * @apiEndpointURIFragment int taskId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -124,11 +131,15 @@ class Tasks implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/processes/{processId}/tasks/{taskId}
      * @apiGroup Profile Tasks
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
+     * @apiEndpointURIFragment int processId 1325
+     * @apiEndpointURIFragment int taskId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -155,11 +166,14 @@ class Tasks implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/processes/{processId}/tasks
      * @apiGroup Profile tasks
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
+     * @apiEndpointURIFragment int processId 1325
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

@@ -64,6 +64,7 @@ class Sso implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -90,11 +91,12 @@ class Sso implements RouteInterface {
      *
      * @apiEndpoint POST profiles/{userName}/features
      * @apiGroup Profile Sso
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -119,9 +121,11 @@ class Sso implements RouteInterface {
      *
      * @apiEndpoint GET /sso/{providerName}
      * @apiGroup Profile Sso
+     * @apiEndpointURIFragment string providerName facebook
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

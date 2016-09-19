@@ -64,12 +64,14 @@ class Hooks implements RouteInterface {
     /**
      * List all Hooks.
      *
-     * Retrieve a complete list of all hooks that belong to the requesting credential.
+     * Retrieves a complete list of all hooks that belong to the requesting credential.
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -98,14 +100,16 @@ class Hooks implements RouteInterface {
             ->setName('hooks:listAll');
     }
     /**
-     * Creates new hook.
+     * Create new hook.
      *
-     * Creates a new hook for the requesting credential.
+     * Create a new hook for the requesting credential.
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -141,10 +145,11 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
-     * @apiEndpointURIFragment int hookId 1
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
+     * @apiEndpointURIFragment int hookId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -176,12 +181,14 @@ class Hooks implements RouteInterface {
     /**
      * Delete all Hooks.
      *
-     * Delete all hooks that belong to the requesting company.
+     * Deletes all hooks that belong to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -197,7 +204,7 @@ class Hooks implements RouteInterface {
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/management/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
+                '/companies/{companySlug}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
                 'App\Controller\Hooks:deleteAll'
             )
             ->add(
@@ -217,10 +224,11 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
-     * @apiEndpointURIFragment int hookId 1
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
+     * @apiEndpointURIFragment int hookId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -250,16 +258,17 @@ class Hooks implements RouteInterface {
     }
 
     /**
-     * Deletes a single hook.
+     * Delete a single hook.
      *
      * Deletes a hook that belongs to the requesting credential.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
-     * @apiEndpointURIFragment int hookId 1
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
+     * @apiEndpointURIFragment int hookId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth

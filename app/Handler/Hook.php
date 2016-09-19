@@ -103,6 +103,14 @@ class Hook implements HandlerInterface {
      *
      * @param App\Command\Hook\CreateNew $command
      *
+     * @see App\Repository\DBHook::findByPubKey
+     * @see App\Repository\DBHook::create
+     * @see App\Repository\DBHook:save
+     *
+     * @throws App\Exception\Validate\HookException
+     * @throws App\Exception\NotFound\HookException
+     * @throws App\Exception\Create\HookException
+     *
      * @return App\Entity\Hook
      */
     public function handleCreateNew(CreateNew $command) : HookEntity {
@@ -148,6 +156,14 @@ class Hook implements HandlerInterface {
      * Updates a hook.
      *
      * @param App\Command\Hook\UpdateOne $command
+     *
+     * @see App\Repository\DBHook::findByPubKey
+     * @see App\Repository\DBHook::find
+     * @see App\Repository\DBHook::save
+     *
+     * @throws App\Exception\Validate\HookException
+     * @throws App\Exception\NotFound\HookException
+     * @throws App\Exception\Update\HookException
      *
      * @return App\Entity\Hook
      */
@@ -198,6 +214,13 @@ class Hook implements HandlerInterface {
      *
      * @param App\Command\Hook\DeleteOne $command
      *
+     * @see App\Repository\DBHook::findByPubKey
+     * @see App\Repository\DBHook::find
+     * @see App\Repository\DBHook::delete
+     *
+     * @throws App\Exception\Validate\HookException
+     * @throws App\Exception\NotFound\HookException
+     *
      * @return void
      */
     public function handleDeleteOne(DeleteOne $command) {
@@ -238,6 +261,11 @@ class Hook implements HandlerInterface {
      * Gets one Hook.
      *
      * @param App\Command\Hook\GetOne $command
+     *
+     * @see App\Repository\DBHook::findByPubKey
+     * @see App\Repository\DBHook::find
+     *
+     * @throws App\Exception\NotFound\HookException
      *
      * @return int
      */

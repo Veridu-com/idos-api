@@ -23,7 +23,8 @@ use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
 
-/**
+/**e/Tags.php
+    modified:   app/Route/Tasks.php
  * Handles Permission commands.
  */
 class Permission implements HandlerInterface {
@@ -88,6 +89,9 @@ class Permission implements HandlerInterface {
      *
      * @param App\Command\Permission\CreateNew $command
      *
+     * @throws App\Exception\Validate\PermissionException
+     * @throws App\Exception\Create\PermissionException
+     *
      * @return App\Entity\Permission
      */
     public function handleCreateNew(CreateNew $command) : PermissionEntity {
@@ -126,6 +130,11 @@ class Permission implements HandlerInterface {
      *
      * @param App\Command\Permission\DeleteAll $command
      *
+     * @see App\Repository\DBPermission::getAllByComanyId
+     * @see App\Repository\DBPermission::deleteByCompanyId
+     *
+     * @throws App\Exception\Validate\PermissionException
+     *
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
@@ -153,6 +162,12 @@ class Permission implements HandlerInterface {
      * Deletes a Permission.
      *
      * @param App\Command\Permission\DeleteOne $command
+     *
+     * @throws App\Exception\Validate\PermissionException
+     * @throws App\Exception\NotFound\PermissionException
+     *
+     * @see App\Repository\DBPermission::findOne
+     * @see App\Repository\DBPermission::deleteOne
      *
      * @return void
      */

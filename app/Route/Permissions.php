@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Permissions routing definitions.
+ * Permissions
+ *
+ * Permissions are levels of access a Company has to specific features or information within the API. This is used to control or monetise access to features for customers and their users.
  *
  * @link docs/companies/permissions/overview.md
  * @see App\Controller\Permissions
@@ -59,11 +61,11 @@ class Permissions implements RouteInterface {
     /**
      * List all Permissions.
      *
-     * Retrieve a complete list of all permissions that belong to the requesting company.
+     * Retrieves a complete list of all permissions that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions
-     * @apiAuth header token IdentityToken A valid Identity Token
-     * @apiAuth query token IdentityToken A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -81,8 +83,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions',
                 'App\Controller\Permissions:listAll'
             )
-            ->add(
-                $permission(
+            ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -94,11 +95,12 @@ class Permissions implements RouteInterface {
     /**
      * Create new Permission.
      *
-     * Create a new credential for the requesting company.
+     * Creates a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/permissions
-     * @apiAuth header token IdentityToken A valid Identity Token
-     * @apiAuth query token IdentityToken A valid Identity Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -116,8 +118,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions',
                 'App\Controller\Permissions:createNew'
             )
-            ->add(
-                $permission(
+            ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -127,11 +128,46 @@ class Permissions implements RouteInterface {
     }
 
     /**
+     * Deletes all permissions.
+     *
+     * Deletes all permissions that belongs to the requesting company.
+     *
+     * @apiEndpoint DELETE /companies/{companySlug}/permissions
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/companies/permissions/deleteAll.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Permissions::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/companies/{companySlug:[a-z0-9_-]+}/permissions',
+                'App\Controller\Permissions:deleteAll'
+            )
+            ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
+            ->add($auth(Auth::COMPANY))
+            ->setName('permissions:deleteAll');
+    }
+
+    /**
      * Retrieve a single Permission.
      *
      * Retrieves all public information from a Permission.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions/{routeName}
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string routeName attribute:listAll
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -150,8 +186,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions/{routeName:[a-zA-Z]+\:[a-zA-Z]+}',
                 'App\Controller\Permissions:getOne'
             )
-            ->add(
-                $permission(
+            ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
@@ -166,8 +201,11 @@ class Permissions implements RouteInterface {
      * Deletes a single Permission that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/permissions/{routeName}
-     * @apiAuth header token IdentityToken A valid Identity Token
-     * @apiAuth query token IdentityToken A valid Identity Token
+     *
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string routeName attribute:listAll
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -185,8 +223,7 @@ class Permissions implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions/{routeName:[a-zA-Z]+\:[a-zA-Z]+}',
                 'App\Controller\Permissions:deleteOne'
             )
-            ->add(
-                $permission(
+            ->add($permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )

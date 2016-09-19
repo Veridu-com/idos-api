@@ -70,7 +70,6 @@ class Members implements ControllerInterface {
     /**
      * Lists all Members that belongs to the Target Company.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointResponse 200 schema/member/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -100,11 +99,14 @@ class Members implements ControllerInterface {
 
     /**
      * Creates a new Member for the Target Company.
-     *
+     * @apiEndpointRequiredParam body string role company:owner Role type
+     * @apiEndpointRequiredParam body string userName jhondoe UserName
      * @apiEndpointResponse 201 schema/member/memberEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Member::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -142,6 +144,8 @@ class Members implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
+     * @see App\Handler\Handler::handleUpdateOne
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -167,14 +171,14 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Retrieves one Members of the Target Company based on the userName.
+     * Retrieves one Member of the Target Company based on the userName.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment int    userId 1
      * @apiEndpointResponse 200 schema/member/memberEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBMember::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -202,6 +206,8 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Member:handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -226,12 +232,12 @@ class Members implements ControllerInterface {
     /**
      * Deletes one Member of the Target Company based on the userId.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment int    userId 1
      * @apiEndpointResponse 200 schema/member/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Member:handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

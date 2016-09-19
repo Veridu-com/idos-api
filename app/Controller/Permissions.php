@@ -60,10 +60,12 @@ class Permissions implements ControllerInterface {
      * Lists all Permissions that belongs to the Target Company.
      *
      * @apiEndpointParam query int page Current page
-     * @apiEndpointResponse 200 Permission[]
+     * @apiEndpointResponse 200 schema/permission/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBPermission::getAllByCompanyId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -126,12 +128,12 @@ class Permissions implements ControllerInterface {
     /**
      * Retrieves one Permission of the Target Company based on path paramaters routeName.
      *
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string routeName company:listAll
-     * @apiEndpointResponse 200 Permission
+     * @apiEndpointResponse 200 schema/permission/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBPermission::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -156,10 +158,13 @@ class Permissions implements ControllerInterface {
     /**
      * Creates a new Permission for the Target Company.
      *
-     * @apiEndpointResponse 201 Permission
+     * @apiEndpointResponse 201 schema/permission/createNew.json
+     * @apiEndpointRequiredParam body string routeName attribute:listAll A valid route name
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Permission::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -193,10 +198,12 @@ class Permissions implements ControllerInterface {
      *
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string routeName company:listAll
-     * @apiEndpointResponse 200 -
+     * @apiEndpointResponse 200 schema/permission/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Permission::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

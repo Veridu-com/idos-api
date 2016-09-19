@@ -62,8 +62,8 @@ class Reviews implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/reviews
      * @apiGroup Profiles Review
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -93,9 +93,9 @@ class Reviews implements RouteInterface {
      * Creates a new review for the given user.
      *
      * @apiEndpoint POST /profiles/{userName}/reviews
-     * @apiGroup Sources Review
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiGroup Profiles Review
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -154,15 +154,15 @@ class Reviews implements RouteInterface {
             ->setName('review:updateOne');
     }
 
-    /*
+    /**
      * Retrieves an review.
      *
      * Retrieves an review from the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/reviews/{reviewId}
-     * @apiGroup Sources Review
-     * @apiAuth header key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
-     * @apiAuth query key credToken 2f476be4f457ef606f3b9177b5bf19c9 Credential's Token
+     * @apiGroup Profiles Review
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string reviewId data-name
      *

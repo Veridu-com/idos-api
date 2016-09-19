@@ -133,9 +133,18 @@ class Sso implements ControllerInterface {
      * Creates a token for the given user in the given provider.
      *
      * @apiEndpointResponse 201 schema/sso/createNew.json
+     * @apiEndpointParam body string key xyz Provider key
+     * @apiEndpointParam body string secret wzy Provider secret.
+     * @apiEndpointParam body string ipAddress 192.168.0.1 User ip address.
+     * @apiEndpointParam body string accessToken zxq Provider access token
+     * @apiEndpointParam body string credentialPubKey wxz Credential public key.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBCredental::findByPubKey
+     * @see App\Repository\DBSetting::findByCompanyIdSectionAndProperties
+     * @see App\Handler\Sso::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

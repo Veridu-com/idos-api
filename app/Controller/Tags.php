@@ -70,11 +70,12 @@ class Tags implements ControllerInterface {
     /**
      * Lists all Tags that belongs to the Target User.
      *
-     * @apiEndpointURIFragment string userName usr001
      * @apiEndpointResponse    200    schema/tag/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Repository\DBTag::getAllByUserIdAndTagSlugs
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -103,9 +104,13 @@ class Tags implements ControllerInterface {
      * Creates a new Tag for the Target User.
      *
      * @apiEndpointResponse 201 schema/tag/tagEntity.json
+     * @apiEndpointRequiredParam body string name Test Tag  Tag name
+     * @apiEndpointRequiredParam body string slug test-tag Tag slug
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Tag::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -136,12 +141,12 @@ class Tags implements ControllerInterface {
     /**
      * Retrieves one Tags of the Target User based on the userName.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment string userId   1
      * @apiEndpointResponse 200 schema/tag/tagEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\repository\DBTag::findOneByUserIdAndSlug
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -172,6 +177,8 @@ class Tags implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\Tag::handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -194,12 +201,12 @@ class Tags implements ControllerInterface {
     /**
      * Deletes one Tag of the Target User based on the userId.
      *
-     * @apiEndpointURIFragment string userName usr001
-     * @apiEndpointURIFragment string userId   1
      * @apiEndpointResponse    200    schema/tag/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Tag::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

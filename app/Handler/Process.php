@@ -86,6 +86,12 @@ class Process implements HandlerInterface {
      *
      * @param App\Command\Process\CreateNew $command
      *
+     * @see App\Repository\DBProcess::create
+     * @see App\Repository\DBProcess::save
+     *
+     * @throws App\Exception\Validate\ProcessException
+     * @throws App\Exception\Create\ProcessException
+     *
      * @return App\Entity\Process
      */
     public function handleCreateNew(CreateNew $command) : ProcessEntity {
@@ -125,6 +131,12 @@ class Process implements HandlerInterface {
      * Updates a Process.
      *
      * @param App\Command\Process\UpdateOne $command
+     *
+     * @see App\Repository\DBProcess::find
+     * @see App\Repository\DBProcess::save
+     *
+     * @throws App\Exception\Validate\ProcessException
+     * @throws App\Exception\Update\ProcessException
      *
      * @return App\Entity\Process
      */

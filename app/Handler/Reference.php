@@ -90,6 +90,12 @@ class Reference implements HandlerInterface {
      *
      * @param App\Command\Reference\CreateNew $command
      *
+     * @see App\Repository\DBReference::create
+     * @see App\Repository\DBReference::save
+     *
+     * @throws App\Exception\Validate\ReferenceException
+     * @throws App\Exception\Create\ReferenceException
+     *
      * @return App\Entity\Reference
      */
     public function handleCreateNew(CreateNew $command) : ReferenceEntity {
@@ -129,6 +135,12 @@ class Reference implements HandlerInterface {
      *
      * @param App\Command\Reference\UpdateOne $command
      *
+     * @see App\Repository\DBReference::findOneByUserIdAndName
+     * @see App\Repository\DBReference::save
+     *
+     * @throws App\Exception\Validate\ReferenceException
+     * @throws App\Exception\Update\ReferenceException
+     *
      * @return App\Entity\Reference
      */
     public function handleUpdateOne(UpdateOne $command) : ReferenceEntity {
@@ -161,6 +173,12 @@ class Reference implements HandlerInterface {
      *
      * @param App\Command\Reference\DeleteOne $command
      *
+     * @see App\Repository\DBReference::findOneByUserIdAndName
+     * @see App\Repository\DBReference::deleteOneByUserIdAndName
+     *
+     * @throws App\Exception\Validate\RerefenceException
+     * @throws App\Exception\NotFound\RerefenceException
+     *
      * @return void
      */
     public function handleDeleteOne(DeleteOne $command) {
@@ -190,6 +208,9 @@ class Reference implements HandlerInterface {
      * Deletes all reference data from a given user.
      *
      * @param App\Command\Reference\DeleteAll $command
+     *
+     * @see App\Repository\DBReference::getAllByUserId
+     * @see App\Repository\DBReference::deleteByUserId
      *
      * @return int
      */
