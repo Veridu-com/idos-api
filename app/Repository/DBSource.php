@@ -58,6 +58,24 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     /**
      * {@inheritdoc}
      */
+    public function findOneByName(string $name, int $userId) : Source {
+        return $this->findOneBy(
+            [
+                'name'      => $name,
+                'user_id' => $userId
+            ]
+        );
+
+        if($result->isEmpty()) {
+            throw new NotFound();
+        }
+
+        return $result->first();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAllByUserId(int $userId) : Collection {
         return $this->findBy(['user_id' => $userId]);
     }

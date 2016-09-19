@@ -26,6 +26,16 @@ interface SourceInterface extends RepositoryInterface {
     public function findOne(int $id, int $userId) : Source;
 
     /**
+     * Finds one Source based on its Name and User Id.
+     *
+     * @param string $name
+     * @param int    $userId
+     *
+     * @return App\Entity\Source
+     */
+    public function findOneByName(string $name, int $userId) : Source;
+
+    /**
      * Gets all Sources based on the User Id.
      *
      * @param int $userId
