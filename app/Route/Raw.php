@@ -62,11 +62,10 @@ class Raw implements RouteInterface {
      * Retrieve a complete list of the raw data by a given source.
      *
      * @apiEndpoint GET /profiles/{userName}/raw
-     * @apiGroup Sources Raw
+     * @apiGroup Profiles Raw
      * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -95,11 +94,10 @@ class Raw implements RouteInterface {
      * Creates a new raw data for the given source.
      *
      * @apiEndpoint POST /profiles/{userName}/raw
-     * @apiGroup Sources Raw
+     * @apiGroup Profiles Raw
      * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -128,13 +126,12 @@ class Raw implements RouteInterface {
      *
      * Updates a raw data in the given source.
      *
-     * @apiEndpoint PUT /profiles/{userName}/source/{sourceId}/raw/{collection}
-     * @apiGroup Sources Raw
+     * @apiEndpoint PUT /profiles/{userName}/raw/{sourceId}
+     * @apiGroup Profiles Raw
      * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
-     * @apiEndpointURIFragment string collection data-name
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -147,10 +144,10 @@ class Raw implements RouteInterface {
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Members::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}/raw/{collection:[a-zA-Z0-9_-]+}',
+            ->patch(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/raw/{sourceId:[0-9]+}',
                 'App\Controller\Raw:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
