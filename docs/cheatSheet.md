@@ -66,19 +66,13 @@
 
 ### Profile Attribute Reviews
 
-[GET /1.0/profiles/{userName}/reviews](profiles/reviews/listAll.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/reviews](companyProfiles/reviews/listAll.md)
 
-[DELETE /1.0/profiles/{userName}/reviews](profiles/reviews/deleteAll.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/reviews/:reviewId](companyProfiles/reviews/getOne.md)
 
-[GET /1.0/profiles/{userName}/reviews/{attributeName}](profiles/reviews/getOne.md)
+[POST /1.0/companies/:companySlug/profiles/:userId/reviews/:reviewId](companyProfiles/reviews/createNew.md)
 
-[POST /1.0/profiles/{userName}/reviews/{attributeName}](profiles/reviews/createNew.md)
-
-[DELETE /1.0/profiles/{userName}/reviews/{attributeName}](profiles/reviews/deleteOne.md)
-
-[GET /1.0/profiles/{userName}/reviews/{attributeName}/:id](profiles/reviews/getOne.md)
-
-[DELETE /1.0/profiles/{userName}/reviews/{attributeName}/:id](profiles/reviews/deleteOne.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/reviews/:reviewId](companyProfiles/reviews/getOne.md)
 
 ### Profile Sources
 
