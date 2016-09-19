@@ -144,7 +144,7 @@ class Raw implements RouteInterface {
      * @see App\Middleware\Permission::__invoke
      * @see App\Controller\Members::updateOne
      */
-     private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/raw/{sourceId:[0-9]+}',
@@ -154,5 +154,4 @@ class Raw implements RouteInterface {
             ->add($auth(Auth::CREDENTIAL))
             ->setName('raw:updateOne');
     }
-
 }

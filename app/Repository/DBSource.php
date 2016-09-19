@@ -62,7 +62,7 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
         return $this->findOneBy(
             [
                 'name'      => $name,
-                'user_id' => $userId
+                'user_id'   => $userId
             ]
         );
 

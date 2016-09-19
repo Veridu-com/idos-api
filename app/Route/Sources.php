@@ -15,7 +15,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile Source
+ * Profile Source.
  *
  * A Profile Source is the online platform from which the API is accessing a user’s information (eg. Facebook, Twitter, LinkedIn etc.)
  *
@@ -71,7 +71,6 @@ class Sources implements RouteInterface {
      * @apiGroup Profile Source
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
-     *
      *
      * @param \Slim\App $app
      * @param \callable $auth

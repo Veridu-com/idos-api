@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Exception\NotFound;
 use App\Factory\Command;
 use App\Repository\FeatureInterface;
 use App\Repository\SourceInterface;
@@ -126,10 +125,12 @@ class Features implements ControllerInterface {
         $service     = $request->getAttribute('service');
         $featureId   = $request->getAttribute('decodedFeatureId');
 
-        $feature = $this->repository->findOneBy([
+        $feature = $this->repository->findOneBy(
+            [
             'user_id' => $user->id,
             'id'      => $featureId
-        ]);
+            ]
+        );
 
         if ($feature->source !== null) {
             $this->sourceRepository->findOneByName($feature->source, $user->id);
@@ -286,7 +287,7 @@ class Features implements ControllerInterface {
         $service     = $request->getAttribute('service');
         $featureId   = $request->getAttribute('decodedFeatureId');
         $source      = null;
-        $sourceId = $request->getParsedBodyParam('source_id');
+        $sourceId    = $request->getParsedBodyParam('source_id');
 
         if ($sourceId !== null) {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
@@ -329,9 +330,9 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-        $source  = null;
+        $user     = $request->getAttribute('targetUser');
+        $service  = $request->getAttribute('service');
+        $source   = null;
         $sourceId = $request->getParsedBodyParam('source_id');
 
         if ($sourceId !== null) {

@@ -155,17 +155,18 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
+
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
             $event = new Created($entity);
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\AttributeException('Error while trying to create an attribute', 500, $e);
-        }
+    } catch (\Exception $e) {
+        throw new Create\AttributeException('Error while trying to create an attribute', 500, $e);
+    }
 
         return $entity;
-    }
+}
 
     /**
      * Deletes a attribute data from a given user.
@@ -180,43 +181,43 @@ class Attribute implements HandlerInterface {
      *
      * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
-            $this->validator->assertName($command->name);
-        } catch (ValidationException $e) {
-            throw new Validate\AttributeException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $entities = $this->repository->findBy(
-            [
-            'user_id' => $command->user->id,
-            'creator' => $command->service->id,
-            'name'    => $command->name
-            ]
+public function handleDeleteOne(DeleteOne $command) : int {
+    try {
+        $this->validator->assertUser($command->user);
+        $this->validator->assertService($command->service);
+        $this->validator->assertName($command->name);
+    } catch (ValidationException $e) {
+        throw new Validate\AttributeException(
+            $e->getFullMessage(),
+            400,
+            $e
         );
+    }
 
-        $affectedRows = 0;
+    $entities = $this->repository->findBy(
+        [
+        'user_id' => $command->user->id,
+        'creator' => $command->service->id,
+        'name'    => $command->name
+        ]
+    );
 
-        try {
-            foreach ($entities as $entity) {
-                $affectedRows += $this->repository->delete($entity->id);
-            }
+    $affectedRows = 0;
 
-            $event = new Deleted($entities);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new NotFound\AttributeException('No attributes found for deletion', 404);
+    try {
+        foreach ($entities as $entity) {
+            $affectedRows += $this->repository->delete($entity->id);
         }
 
-        $event = new Deleted($attribute);
+        $event = new Deleted($entities);
         $this->emitter->emit($event);
+    } catch (\Exception $e) {
+        throw new NotFound\AttributeException('No attributes found for deletion', 404);
     }
+
+    $event = new Deleted($attribute);
+    $this->emitter->emit($event);
+}
 
     /**
      * Deletes all attribute data from a given user.
@@ -228,31 +229,31 @@ class Attribute implements HandlerInterface {
      *
      * @return int
      */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertService($command->service);
-        $this->validator->assertArray($command->queryParams);
+public function handleDeleteAll(DeleteAll $command) : int {
+    $this->validator->assertUser($command->user);
+    $this->validator->assertService($command->service);
+    $this->validator->assertArray($command->queryParams);
 
-        $entities = $this->repository->findBy(
-            [
-            'user_id' => $command->user->id,
-            'creator' => $command->service->id
-            ], $command->queryParams
-        );
+    $entities = $this->repository->findBy(
+        [
+        'user_id' => $command->user->id,
+        'creator' => $command->service->id
+        ], $command->queryParams
+    );
 
-        $affectedRows = 0;
+    $affectedRows = 0;
 
-        try {
-            foreach ($entities as $entity) {
-                $affectedRows += $this->repository->delete($entity->id);
-            }
-
-            $event = new DeletedMulti($entities);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new NotFound\AttributeException('Error while deleting all attributes', 404);
+    try {
+        foreach ($entities as $entity) {
+            $affectedRows += $this->repository->delete($entity->id);
         }
 
-        return $affectedRows;
+        $event = new DeletedMulti($entities);
+        $this->emitter->emit($event);
+    } catch (\Exception $e) {
+        throw new NotFound\AttributeException('Error while deleting all attributes', 404);
     }
+
+    return $affectedRows;
+}
 }

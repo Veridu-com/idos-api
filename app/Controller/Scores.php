@@ -259,7 +259,7 @@ class Scores implements ControllerInterface {
     /**
      * Deletes all scores from a given attribute.
      *
-      * @apiEndpointResponse 200 schema/score/deleteAll.json
+     * @apiEndpointResponse 200 schema/score/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

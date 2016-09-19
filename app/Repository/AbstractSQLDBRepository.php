@@ -352,13 +352,13 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Gets query modifiers (limit, order, sort).
      *
-     * @param      Illuminate\Database\Query\Builder $query        The query to be modified
-     * @param      array                             $queryParams  The query parameters
+     * @param Illuminate\Database\Query\Builder $query       The query to be modified
+     * @param array                             $queryParams The query parameters
      *
-     * @return     Illuminate\Database\Query\Builder  The modified query
+     * @return Illuminate\Database\Query\Builder The modified query
      */
     public function treatQueryModifiers(Builder $query, array $queryParams) {
-        
+
         if (isset($queryParams['filter:order']) && in_array($queryParams['filter:order'], $this->orderableKeys)) {
             $order = 'ASC';
 

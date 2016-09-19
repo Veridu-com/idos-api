@@ -15,7 +15,7 @@ use Slim\App;
 
 /**
  * Company Members
- * A Company Member is a user profile for an employee of a Company with an adjustable level of permissions and access to specific information. (eg. for distinguishing a low level employee with read-only permissions from an administrator)
+ * A Company Member is a user profile for an employee of a Company with an adjustable level of permissions and access to specific information. (eg. for distinguishing a low level employee with read-only permissions from an administrator).
  *
  * @link docs/companies/members/overview.md
  * @see App\Controller\Companies

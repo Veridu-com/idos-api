@@ -16,7 +16,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Company
+ * Company.
  *
  * A Company is a profile within the API available for a customer who requires a sophisticated level of control over employees with different levels of Permission.
  *

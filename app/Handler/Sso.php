@@ -176,8 +176,9 @@ class Sso implements HandlerInterface {
      * @param string          $decodedResponseParam The response parameter that holds the user's id
      * @param Function|string $eventClass           The createNew event class name to be emitted
      *
-     * @throws App\Exception\AppException Exception thrown in case of error contacting the provider
+     * @throws App\Exception\AppException        Exception thrown in case of error contacting the provider
      * @throws App\Exception\Create\SsoException
+     *
      * @see App\Repository\DBCredential::findByPubKey
      * @see App\Repository\DBUser::getUsernameByProfileIdAndProviderNameAndCredentialId
      * @see App\Repository\DBUser::findByUsername
