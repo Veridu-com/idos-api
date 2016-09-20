@@ -80,8 +80,8 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user          = $request->getAttribute('targetUser');
-        $service       = $request->getAttribute('service');
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
 
         $entities = $this->repository->findBy(['user_id' => $user->id], $request->getQueryParams());
 

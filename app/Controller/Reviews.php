@@ -60,10 +60,10 @@ class Reviews implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository         = $repository;
-        $this->userRepository     = $userRepository;
-        $this->commandBus         = $commandBus;
-        $this->commandFactory     = $commandFactory;
+        $this->repository     = $repository;
+        $this->userRepository = $userRepository;
+        $this->commandBus     = $commandBus;
+        $this->commandFactory = $commandFactory;
     }
 
     /**
@@ -114,8 +114,8 @@ class Reviews implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command    = $this->commandFactory->create('Review\\CreateNew');
-        $user       = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $command = $this->commandFactory->create('Review\\CreateNew');
+        $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $command
             ->setParameters($request->getParsedBody())
