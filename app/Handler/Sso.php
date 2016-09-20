@@ -209,6 +209,8 @@ class Sso implements HandlerInterface {
         $decodedResponse = json_decode($response, true);
 
         if ($decodedResponse === null || isset($decodedResponse['error']) || isset($decodedResponse['errors'])) {
+            var_dump($response, $decodedResponse);
+            exit;
             throw new Create\SsoException('Error while trying to authenticate', 500);
         }
 
@@ -230,13 +232,11 @@ class Sso implements HandlerInterface {
         $this->createNewSource(
             $provider,
             $user,
-            json_encode(
-                [
-                    'profile_id'   => $decodedResponse[$decodedResponseParam],
-                    'access_token' => $command->accessToken,
-                    'sso'          => true
-                ]
-            ),
+            [
+                'profile_id'   => $decodedResponse[$decodedResponseParam],
+                'access_token' => $command->accessToken,
+                'sso'          => true
+            ],
             $command->ipAddress
         );
 

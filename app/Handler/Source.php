@@ -236,9 +236,11 @@ class Source implements HandlerInterface {
 
             // after 3 failed attempts, the otp is voided (avoids brute-force validation)
             if (($tags->otp_attempts > 2)
-                && ((! property_exists($tags, 'otp_verified'))
-                || (property_exists($tags, 'otp_verified')
-                && ! $tags->otp_verified))
+                && (
+                    (! property_exists($tags, 'otp_verified'))
+                    || (property_exists($tags, 'otp_verified')
+                    && ! $tags->otp_verified)
+                )
             ) {
                 $tags->otp_voided = true;
                 $source->tags     = $tags;

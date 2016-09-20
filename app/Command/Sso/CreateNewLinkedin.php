@@ -41,7 +41,7 @@ class CreateNewLinkedin extends AbstractCommand {
     /**
      * User ip address.
      *
-     * @var int
+     * @var string
      */
     public $ipAddress;
 

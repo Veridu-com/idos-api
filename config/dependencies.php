@@ -464,17 +464,13 @@ $container['secure'] = function (ContainerInterface $container) : Secure {
 // SSO Auth
 $container['ssoAuth'] = function (ContainerInterface $container) : callable {
     return function ($provider, $key, $secret) use ($container) {
-        $uriFactory = new UriFactory();
-        $currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
-        $currentUri->setQuery('');
-
         $storage = new Memory();
 
         // Setup the credentials for the requests
         $credentials = new Credentials(
             $key,
             $secret,
-            $currentUri->getAbsoluteUri()
+            ''
         );
 
         $settings = $container->get('settings');
@@ -486,6 +482,11 @@ $container['ssoAuth'] = function (ContainerInterface $container) : callable {
         $serviceFactory->setHttpClient($client);
 
         // Instantiate the service using the credentials, http client and storage mechanism for the token
-        return $serviceFactory->createService($provider, $credentials, $storage, $settings['sso_providers_scopes'][$provider]);
+        return $serviceFactory->createService(
+            $provider,
+            $credentials,
+            $storage,
+            $settings['sso_providers_scopes'][$provider]
+        );
     };
 };
