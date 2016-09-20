@@ -30,6 +30,7 @@ class Scores implements RouteInterface {
             'score:deleteAll',
             'score:getOne',
             'score:updateOne',
+            'score:upsert',
             'score:deleteOne'
         ];
     }

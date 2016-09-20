@@ -135,13 +135,13 @@ class Feature implements HandlerInterface {
 
         $feature = $this->repository->create(
             [
-                'user_id'       => $command->user->id,
-                'source'        => $command->source !== null ? $command->source->name : null,
-                'name'          => $command->name,
-                'creator'       => $command->service->id,
-                'type'          => $command->type,
-                'value'         => $command->value,
-                'created_at'    => time()
+                'user_id'    => $command->user->id,
+                'source'     => $command->source !== null ? $command->source->name : null,
+                'name'       => $command->name,
+                'creator'    => $command->service->id,
+                'type'       => $command->type,
+                'value'      => $command->value,
+                'created_at' => time()
             ]
         );
 
@@ -331,13 +331,13 @@ class Feature implements HandlerInterface {
 
             $feature = $this->repository->create(
                 [
-                    'user_id'       => $command->user->id,
-                    'source'        => $command->source !== null ? $command->source->name : null,
-                    'name'          => $command->name,
-                    'creator'       => $command->service->id,
-                    'type'          => $command->type,
-                    'value'         => $command->value,
-                    'created_at'    => time()
+                    'user_id'    => $command->user->id,
+                    'source'     => $command->source !== null ? $command->source->name : null,
+                    'name'       => $command->name,
+                    'creator'    => $command->service->id,
+                    'type'       => $command->type,
+                    'value'      => $command->value,
+                    'created_at' => time()
                 ]
             );
         }
