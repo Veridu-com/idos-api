@@ -59,11 +59,13 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
      * {@inheritdoc}
      */
     public function findOneByUserIdAndIdAndIdentityId(int $userId, int $id, int $identityId) : Review {
-        $result = $this->findBy([
+        $result = $this->findBy(
+            [
             'user_id'     => $userId,
             'identity_id' => $identityId,
             'id'          => $id
-        ]);
+            ]
+        );
 
         if ($result->isEmpty()) {
             throw new NotFound();

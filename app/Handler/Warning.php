@@ -104,7 +104,6 @@ class Warning implements HandlerInterface {
             if (isset($command->attribute)) {
                 $this->validator->assertSlug($command->attribute);
             }
-
         } catch (ValidationException $e) {
             throw new Validate\WarningException(
                 $e->getFullMessage(),

@@ -26,5 +26,4 @@ class CategoriesInit extends AbstractMigration {
             ->addForeignKey('service_id', 'services', 'id', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
             ->create();
     }
-
 }

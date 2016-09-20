@@ -57,9 +57,7 @@ class S12CategoriesSeed extends AbstractSeed {
 
         ];
 
-        $features =
-
-        $table = $this->table('categories');
+        $features = $table = $this->table('categories');
         $table
             ->insert($categories)
             ->save();

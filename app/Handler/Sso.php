@@ -230,13 +230,11 @@ class Sso implements HandlerInterface {
         $this->createNewSource(
             $provider,
             $user,
-            json_encode(
-                [
-                    'profile_id'   => $decodedResponse[$decodedResponseParam],
-                    'access_token' => $command->accessToken,
-                    'sso'          => true
-                ]
-            ),
+            [
+                'profile_id'   => $decodedResponse[$decodedResponseParam],
+                'access_token' => $command->accessToken,
+                'sso'          => true
+            ],
             $command->ipAddress
         );
 
