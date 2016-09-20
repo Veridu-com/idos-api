@@ -209,8 +209,6 @@ class Sso implements HandlerInterface {
         $decodedResponse = json_decode($response, true);
 
         if ($decodedResponse === null || isset($decodedResponse['error']) || isset($decodedResponse['errors'])) {
-            var_dump($response, $decodedResponse);
-            exit;
             throw new Create\SsoException('Error while trying to authenticate', 500);
         }
 
