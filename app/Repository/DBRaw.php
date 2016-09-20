@@ -35,7 +35,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $rawFilters    = [];
         $sourceFilters = [];
         foreach ($queryParams as $param => $value) {
-            if (strpos($param, ':') === false) {
+            if (strpos($param, 'source:') === false) {
                 $rawFilters[$param] = $value;
             } else {
                 $param                 = str_replace('source:', '', $param);
@@ -75,6 +75,10 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
                     $entity->collection = $collection->getName();
 
                     $entities->push($entity);
+
+                    if (isset($rawFilters['filter:limit']) && $entities->count() >= (int) $rawFilters['filter:limit']) {
+                        break 2;
+                    }
                 } catch (NotFound $e) {
                 }
             }
