@@ -215,7 +215,7 @@ class Attributes implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Attribute:handleDeleteAll
+     * @see App\Handler\Attribute::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -251,7 +251,7 @@ class Attributes implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Attribute:handleDeleteOne
+     * @see App\Handler\Attribute::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
