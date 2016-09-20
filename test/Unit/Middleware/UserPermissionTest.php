@@ -10,13 +10,13 @@ namespace Test\Unit\Middleware;
 
 use App\Entity\Company as CompanyEntity;
 use App\Entity\Role as RoleEntity;
-use App\Entity\RoleAccess as RoleAccessEntity;
+use App\Entity\User\RoleAccess as RoleAccessEntity;
 use App\Entity\User as UserEntity;
 use App\Exception\NotAllowed as NotAllowedException;
 use App\Factory\Entity as EntityFactory;
 use App\Middleware\UserPermission;
 use App\Repository\DBRoleAccess;
-use App\Repository\RoleAccessInterface;
+use App\Repository\User\RoleAccessInterface;
 use Illuminate\Database\ConnectionInterface;
 use Jenssegers\Optimus\Optimus;
 use Slim\Http\Request;
@@ -77,7 +77,7 @@ class UserPermissionTest extends AbstractUnit {
         $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
             ->getMock();
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('RoleAccess');
+        $entityFactory->create('User\RoleAccess');
         $routeMock = $this->getMockBuilder(RouteInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['getName'])

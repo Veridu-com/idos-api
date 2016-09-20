@@ -8,10 +8,10 @@ declare(strict_types = 1);
 
 namespace App\Middleware;
 
-use App\Entity\Member;
+use App\Entity\Company\Member;
 use App\Exception\NotAllowed;
 use App\Repository\CompanyInterface;
-use App\Repository\PermissionInterface;
+use App\Repository\Company\PermissionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -40,7 +40,7 @@ class EndpointPermission implements MiddlewareInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\PermissionInterface $permissionRepository
+     * @param App\Repository\Company\PermissionInterface $permissionRepository
      * @param App\Repository\CompanyInterface    $companyRepository
      * @param int                                $permissionType
      *
@@ -175,7 +175,7 @@ class EndpointPermission implements MiddlewareInterface {
      * Determines if Member is a Veridu Member.
      * This is needed for having Veridu protected settings visible.
      *
-     * @param \App\Entity\Member $member The member
+     * @param \App\Entity\Company\Member $member The member
      */
     private function isVeriduMember(Member $member) : bool {
         return $member->company()->id === 1;

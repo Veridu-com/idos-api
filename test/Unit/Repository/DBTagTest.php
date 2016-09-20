@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Repository;
 
-use App\Entity\Tag as TagEntity;
+use App\Entity\Profile\Tag as TagEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBTag;

@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Event\Permission;
 
-use App\Entity\Permission;
-use App\Event\Permission\Created;
+use App\Entity\Company\Permission;
+use App\Event\Company\Permission\Created;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 

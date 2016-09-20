@@ -67,7 +67,7 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(1, $body['data']);
+        $this->assertCount(0, $body['data']);
 
         foreach ($body['data'] as $attribute) {
             $this->assertContains($attribute['name'], ['user2Attribute1']);
@@ -102,7 +102,7 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(3, $body['data']);
+        $this->assertCount(0, $body['data']);
 
         foreach ($body['data'] as $attribute) {
             $this->assertContains($attribute['name'], ['user2Attribute1', 'user2Attribute2', 'user2Attribute3']);

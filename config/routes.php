@@ -27,7 +27,7 @@ $app->group(
                 continue;
             }
 
-            $className = sprintf('\\App\\Route\\%s', str_replace('.php', '', basename($file)));
+            $className = preg_replace('/^\\\app/', '', str_replace('.php', '', str_replace('/', '\\', str_replace('/config/../app/Route/', '/App/Route/', $file))));
 
             if (class_exists($className)) {
                 $className::register($this);

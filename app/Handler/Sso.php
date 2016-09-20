@@ -20,7 +20,7 @@ use App\Entity\User;
 use App\Exception\Create;
 use App\Factory\Command;
 use App\Helper\Token;
-use App\Repository\CredentialInterface;
+use App\Repository\Company\CredentialInterface;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -39,7 +39,7 @@ class Sso implements HandlerInterface {
     /**
      * Credential repository instance.
      *
-     * @var App\Repository\CredentialInterface
+     * @var App\Repository\Company\CredentialInterface
      */
     protected $credentialRepository;
     /**
@@ -78,7 +78,7 @@ class Sso implements HandlerInterface {
                     ->create('User'),
                 $container
                     ->get('repositoryFactory')
-                    ->create('Credential'),
+                    ->create('Company\Credential'),
                 $container
                     ->get('eventEmitter'),
                 $container
@@ -95,7 +95,7 @@ class Sso implements HandlerInterface {
      * Class constructor.
      *
      * @param App\Repository\UserInterface       $userRepository
-     * @param App\Repository\CredentialInterface $credentialRepository
+     * @param App\Repository\Company\CredentialInterface $credentialRepository
      * @param \League\Event\Emitter              $emitter
      * @param callable                           $service
      * @param \League\Tactician\CommandBus       $commandBus
@@ -149,7 +149,7 @@ class Sso implements HandlerInterface {
      * @param array            $tags     The tags
      * @param string           $ipAddr   The ip address
      *
-     * @return App\Entity\Source The created source
+     * @return App\Entity\Profile\Source The created source
      */
     private function createNewSource(string $provider, User $user, array $tags, string $ipAddr) : SourceEntity {
         $command = $this->commandFactory->create('Source\\CreateNew');

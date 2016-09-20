@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Event\Member;
 
-use App\Entity\Member;
-use App\Event\Member\DeletedMulti;
+use App\Entity\Company\Member;
+use App\Event\Company\Member\DeletedMulti;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;

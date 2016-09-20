@@ -8,24 +8,24 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Handler;
 
-use App\Command\Member\CreateNew;
-use App\Command\Member\DeleteAll;
-use App\Command\Member\DeleteOne;
-use App\Command\Member\UpdateOne;
-use App\Entity\Credential as CredentialEntity;
-use App\Entity\Member as MemberEntity;
+use App\Command\Company\Member\CreateNew;
+use App\Command\Company\Member\DeleteAll;
+use App\Command\Company\Member\DeleteOne;
+use App\Command\Company\Member\UpdateOne;
+use App\Entity\Company\Credential as CredentialEntity;
+use App\Entity\Company\Member as MemberEntity;
 use App\Entity\User as UserEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
-use App\Handler\Member;
-use App\Repository\CredentialInterface;
+use App\Handler\Company\Member;
+use App\Repository\Company\CredentialInterface;
 use App\Repository\DBCredential;
 use App\Repository\DBMember;
 use App\Repository\DBUser;
-use App\Repository\MemberInterface;
+use App\Repository\Company\MemberInterface;
 use App\Repository\UserInterface;
-use App\Validator\Member as MemberValidator;
+use App\Validator\Company\Member as MemberValidator;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -221,7 +221,7 @@ class MemberTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Member');
+        $entityFactory->create('Company\Member');
 
         $repository = $this->getMockBuilder(DBMember::class)
             ->setMethods(['create', 'save'])
@@ -286,7 +286,7 @@ class MemberTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Member');
+        $entityFactory->create('Company\Member');
 
         $repository = $this->getMockBuilder(DBMember::class)
             ->setMethods(['create', 'save'])
@@ -329,7 +329,7 @@ class MemberTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Member');
+        $entityFactory->create('Company\Member');
 
         $repository = $this->getMockBuilder(DBMember::class)
             ->setMethods(['delete'])
@@ -367,7 +367,7 @@ class MemberTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Member');
+        $entityFactory->create('Company\Member');
 
         $repository = $this->getMockBuilder(DBMember::class)
             ->setMethods(['deleteByCompanyId', 'getAllByCompanyId'])

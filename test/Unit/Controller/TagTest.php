@@ -9,11 +9,11 @@ declare(strict_types = 1);
 namespace Test\Unit\Controller;
 
 use App\Command\ResponseDispatch;
-use App\Command\Tag\CreateNew;
-use App\Command\Tag\DeleteAll;
-use App\Command\Tag\DeleteOne;
-use App\Controller\Tags;
-use App\Entity\Tag as TagEntity;
+use App\Command\Profile\Tag\CreateNew;
+use App\Command\Profile\Tag\DeleteAll;
+use App\Command\Profile\Tag\DeleteOne;
+use App\Controller\Profile\Tags;
+use App\Entity\Profile\Tag as TagEntity;
 use App\Entity\User as UserEntity;
 use App\Factory\Command;
 use App\Repository\DBTag;

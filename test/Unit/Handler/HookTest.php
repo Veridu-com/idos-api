@@ -8,26 +8,26 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Handler;
 
-use App\Command\Hook\CreateNew;
-use App\Command\Hook\DeleteAll;
-use App\Command\Hook\DeleteOne;
-use App\Command\Hook\UpdateOne;
+use App\Command\Company\Hook\CreateNew;
+use App\Command\Company\Hook\DeleteAll;
+use App\Command\Company\Hook\DeleteOne;
+use App\Command\Company\Hook\UpdateOne;
 use App\Entity\Company as CompanyEntity;
-use App\Entity\Credential as CredentialEntity;
-use App\Entity\Hook as HookEntity;
-use App\Event\Hook\Created;
-use App\Event\Hook\Deleted;
-use App\Event\Hook\DeletedMulti;
-use App\Event\Hook\Updated;
+use App\Entity\Company\Credential as CredentialEntity;
+use App\Entity\Company\Hook as HookEntity;
+use App\Event\Company\Hook\Created;
+use App\Event\Company\Hook\Deleted;
+use App\Event\Company\Hook\DeletedMulti;
+use App\Event\Company\Hook\Updated;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
-use App\Handler\Hook;
-use App\Repository\CredentialInterface;
+use App\Handler\Company\Hook;
+use App\Repository\Company\CredentialInterface;
 use App\Repository\DBCredential;
 use App\Repository\DBHook;
-use App\Repository\HookInterface;
-use App\Validator\Hook as HookValidator;
+use App\Repository\Company\HookInterface;
+use App\Validator\Company\Hook as HookValidator;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -201,7 +201,7 @@ class HookTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Hook');
+        $entityFactory->create('Company\Hook');
 
         $repository = $this->getMockBuilder(DBHook::class)
             ->setMethods(['create', 'save'])
@@ -254,7 +254,7 @@ class HookTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Hook');
+        $entityFactory->create('Company\Hook');
 
         $repository = $this->getMockBuilder(DBHook::class)
             ->setMethods(['create', 'save'])
@@ -312,7 +312,7 @@ class HookTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Hook');
+        $entityFactory->create('Company\Hook');
 
         $repository = $this->getMockBuilder(DBHook::class)
             ->setMethods(['find', 'delete'])
@@ -365,7 +365,7 @@ class HookTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Hook');
+        $entityFactory->create('Company\Hook');
 
         $repository = $this->getMockBuilder(DBHook::class)
             ->setMethods(['getAllByCredentialId', 'deleteByCredentialId'])

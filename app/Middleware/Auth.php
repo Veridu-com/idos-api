@@ -11,7 +11,7 @@ namespace App\Middleware;
 use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Repository\CompanyInterface;
-use App\Repository\CredentialInterface;
+use App\Repository\Company\CredentialInterface;
 use App\Repository\IdentityInterface;
 use App\Repository\ServiceInterface;
 use App\Repository\UserInterface;
@@ -32,7 +32,7 @@ class Auth implements MiddlewareInterface {
     /**
      * Credential Repository.
      *
-     * @var App\Repository\CredentialInterface
+     * @var App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
 
@@ -491,7 +491,7 @@ class Auth implements MiddlewareInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CredentialInterface $credentialRepository
+     * @param App\Repository\Company\CredentialInterface $credentialRepository
      * @param App\Repository\UserInterface       $userRepository
      * @param App\Repository\CompanyInterface    $companyRepository
      * @param App\Repository\IdentityInterface   $identityRepository

@@ -10,7 +10,7 @@ namespace App\Repository;
 
 use App\Entity\Company;
 use App\Entity\Identity;
-use App\Entity\Member;
+use App\Entity\Company\Member;
 use Illuminate\Support\Collection;
 
 /**

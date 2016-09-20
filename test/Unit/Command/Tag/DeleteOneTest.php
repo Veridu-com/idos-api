@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Tag;
 
-use App\Command\Tag\DeleteOne;
+use App\Command\Profile\Tag\DeleteOne;
 use Test\Unit\AbstractUnit;
 
 class DeleteOneTest extends AbstractUnit {
