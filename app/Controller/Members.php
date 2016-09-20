@@ -207,7 +207,7 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Member:handleDeleteAll
+     * @see App\Handler\Member::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -238,7 +238,7 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Member:handleDeleteOne
+     * @see App\Handler\Member::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

@@ -67,7 +67,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -99,7 +99,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -132,7 +132,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -165,7 +165,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int userId 1827452
      * @apiEndpointURIFragment string tagSlug tag-test
      *
      * @param \Slim\App $app
@@ -199,7 +199,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int userId 1827452
      * @apiEndpointURIFragment string tagSlug tag-test
      *
      * @param \Slim\App $app
