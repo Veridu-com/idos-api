@@ -56,7 +56,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=*1'
+                    'QUERY_STRING'       => 'name=first*'
                 ]
             )
         );
@@ -70,8 +70,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['user1Attribute1']);
-            $this->assertContains($attribute['value'], ['value-1']);
+            $this->assertContains($attribute['name'], ['firstname']);
+            $this->assertContains($attribute['value'], ['John']);
         }
 
         /*
@@ -91,7 +91,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=user1*'
+                    'QUERY_STRING'       => 'name=*name'
                 ]
             )
         );
@@ -105,8 +105,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['user1Attribute1', 'user1Attribute2']);
-            $this->assertContains($attribute['value'], ['value-1', 'value-2']);
+            $this->assertContains($attribute['name'], ['firstname', 'lastname']);
+            $this->assertContains($attribute['value'], ['John', 'Doe']);
         }
 
         /*
@@ -140,8 +140,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['user1Attribute1', 'user1Attribute2']);
-            $this->assertContains($attribute['value'], ['value-1', 'value-2']);
+            $this->assertContains($attribute['name'], ['firstname', 'lastname']);
+            $this->assertContains($attribute['value'], ['John', 'Doe']);
         }
 
         /*
@@ -175,8 +175,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['user1Attribute1', 'user1Attribute2']);
-            $this->assertContains($attribute['value'], ['value-1', 'value-2']);
+            $this->assertContains($attribute['name'], ['firstname', 'lastname']);
+            $this->assertContains($attribute['value'], ['John', 'Doe']);
         }
 
         /*
