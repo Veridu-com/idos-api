@@ -105,7 +105,7 @@ class Hook implements HandlerInterface {
      *
      * @see App\Repository\DBHook::findByPubKey
      * @see App\Repository\DBHook::create
-     * @see App\Repository\DBHook:save
+     * @see App\Repository\DBHook::save
      *
      * @throws App\Exception\Validate\HookException
      * @throws App\Exception\NotFound\HookException
