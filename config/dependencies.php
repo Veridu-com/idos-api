@@ -35,7 +35,6 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Monolog\Processor\WebProcessor;
 use OAuth\Common\Consumer\Credentials;
-use OAuth\Common\Http\Uri\UriFactory;
 use OAuth\Common\Storage\Memory;
 use OAuth\ServiceFactory;
 use Psr\Http\Message\ResponseInterface;

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Exception\AppException;
 use App\Factory\Command;
 use App\Repository\CredentialInterface;
 use App\Repository\SettingInterface;
@@ -15,7 +16,6 @@ use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Collection;
-use App\Exception\AppException;
 
 /**
  * Handles requests to /profiles/:userName/features.
@@ -150,9 +150,9 @@ class Sso implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $providerName = $request->getParsedBodyParam('provider');
+        $providerName     = $request->getParsedBodyParam('provider');
         $credentialPubKey = $request->getParsedBodyParam('credential');
-        $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
+        $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
 
         $availableProviders = $this->settings['sso_providers'];
         if (! in_array($providerName, $availableProviders)) {
