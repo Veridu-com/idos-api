@@ -95,8 +95,8 @@ class Features implements ControllerInterface {
         $entities = $this->repository->findByUserId($user->id, $request->getQueryParams());
 
         $body = [
-            'data'       => $entities->toArray(),
-            'updated'    => ($entities->isEmpty() ? null : max($entities->max('updatedAt'), $entities->max('createdAt')))
+            'data'    => $entities->toArray(),
+            'updated' => ($entities->isEmpty() ? null : max($entities->max('updatedAt'), $entities->max('createdAt')))
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -121,9 +121,9 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user        = $request->getAttribute('targetUser');
-        $service     = $request->getAttribute('service');
-        $featureId   = $request->getAttribute('decodedFeatureId');
+        $user      = $request->getAttribute('targetUser');
+        $service   = $request->getAttribute('service');
+        $featureId = $request->getAttribute('decodedFeatureId');
 
         $feature = $this->repository->findOneBy(
             [
@@ -245,9 +245,9 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user        = $request->getAttribute('targetUser');
-        $service     = $request->getAttribute('service');
-        $featureId   = $request->getAttribute('decodedFeatureId');
+        $user      = $request->getAttribute('targetUser');
+        $service   = $request->getAttribute('service');
+        $featureId = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Feature\\DeleteOne');
         $command->setParameter('user', $user)
@@ -283,11 +283,11 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user        = $request->getAttribute('targetUser');
-        $service     = $request->getAttribute('service');
-        $featureId   = $request->getAttribute('decodedFeatureId');
-        $source      = null;
-        $sourceId    = $request->getParsedBodyParam('source_id');
+        $user      = $request->getAttribute('targetUser');
+        $service   = $request->getAttribute('service');
+        $featureId = $request->getAttribute('decodedFeatureId');
+        $source    = null;
+        $sourceId  = $request->getParsedBodyParam('source_id');
 
         if ($sourceId !== null) {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
