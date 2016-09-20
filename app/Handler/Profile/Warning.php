@@ -17,12 +17,12 @@ use App\Event\Profile\Warning\Deleted;
 use App\Event\Profile\Warning\DeletedMulti;
 use App\Exception\Create;
 use App\Exception\Validate;
+use App\Handler\HandlerInterface;
 use App\Repository\Profile\WarningInterface;
 use App\Validator\Profile\Warning as WarningValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Handler\HandlerInterface;
 
 /**
  * Handles Warning commands.

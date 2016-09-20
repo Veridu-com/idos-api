@@ -45,9 +45,9 @@ class Requested extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\User       $user
-     * @param App\Entity\Company    $actingCompany
-     * @param App\Entity\Company    $targetCompany
+     * @param App\Entity\User               $user
+     * @param App\Entity\Company            $actingCompany
+     * @param App\Entity\Company            $targetCompany
      * @param App\Entity\Company\Credential $credential
      *
      * @return void

@@ -8,13 +8,13 @@ declare(strict_types = 1);
 
 namespace App\Controller\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\UserInterface;
 use App\Repository\Profile\WarningInterface;
+use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use App\Controller\ControllerInterface;
 
 /**
  * Handles requests to companies/{companySlug}/profiles/{userId}/warnings.
@@ -49,9 +49,9 @@ class Warnings implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\Profile\WarningInterface $repository
-     * @param App\Repository\UserInterface    $userRepository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param App\Repository\UserInterface            $userRepository
+     * @param \League\Tactician\CommandBus            $commandBus
+     * @param App\Factory\Command                     $commandFactory
      *
      * @return void
      */

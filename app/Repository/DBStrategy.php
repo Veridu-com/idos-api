@@ -72,8 +72,8 @@ class DBStrategy implements RepositoryStrategyInterface {
         $splitName = preg_split("/\\\/", $repositoryName);
 
         if (is_array($splitName) && count($splitName) > 1) {
-            $namespacePrefix = implode("\\", array_slice($splitName, 0, -1));
-            if (substr($namespacePrefix, -1) == "\\") {
+            $namespacePrefix = implode('\\', array_slice($splitName, 0, -1));
+            if (substr($namespacePrefix, -1) == '\\') {
                 $namespacePrefix = substr($namespacePrefix, 0, strlen($namespacePrefix) - 1);
             }
 

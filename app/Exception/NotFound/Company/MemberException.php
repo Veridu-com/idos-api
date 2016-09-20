@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Exception\NotFound\Company;
 
-use App\Exception\NotFound\Company;
-
 /**
  * Member not found exception.
  *

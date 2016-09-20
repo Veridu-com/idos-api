@@ -8,10 +8,10 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Controller;
 
-use App\Command\ResponseDispatch;
 use App\Command\Profile\Tag\CreateNew;
 use App\Command\Profile\Tag\DeleteAll;
 use App\Command\Profile\Tag\DeleteOne;
+use App\Command\ResponseDispatch;
 use App\Controller\Profile\Tags;
 use App\Entity\Profile\Tag as TagEntity;
 use App\Entity\User as UserEntity;

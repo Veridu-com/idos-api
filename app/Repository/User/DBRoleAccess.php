@@ -8,10 +8,10 @@ declare(strict_types = 1);
 
 namespace App\Repository\User;
 
-use App\Entity\User\RoleAccess;
 use App\Entity\User;
-use Illuminate\Support\Collection;
+use App\Entity\User\RoleAccess;
 use App\Repository\AbstractSQLDBRepository;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based User Repository Implementation.

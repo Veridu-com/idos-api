@@ -9,8 +9,8 @@ declare(strict_types = 1);
 namespace App\Repository\Company;
 
 use App\Entity\Company\Hook;
-use Illuminate\Support\Collection;
 use App\RepositoryInterface;
+use Illuminate\Support\Collection;
 
 /**
  * Hook Repository Interface.

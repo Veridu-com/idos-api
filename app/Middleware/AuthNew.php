@@ -10,8 +10,8 @@ namespace App\Middleware;
 
 use App\Exception\AppException;
 use App\Exception\NotFound;
-use App\Repository\CompanyInterface;
 use App\Repository\Company\CredentialInterface;
+use App\Repository\CompanyInterface;
 use App\Repository\ServiceInterface;
 use App\Repository\UserInterface;
 use Lcobucci\JWT\Parser as JWTParser;
@@ -459,12 +459,12 @@ class Auth implements MiddlewareInterface {
      * Class constructor.
      *
      * @param App\Repository\Company\CredentialInterface $credentialRepository
-     * @param App\Repository\UserInterface       $userRepository
-     * @param App\Repository\CompanyInterface    $companyRepository
-     * @param \Lcobucci\JWT\Parser               $jwtParser
-     * @param \Lcobucci\JWT\ValidationData       $jwtValidation
-     * @param \Lcobucci\JWT\Signer\Hmac\Sha256   $jwtSigner
-     * @param int                                $authorizationRequirement
+     * @param App\Repository\UserInterface               $userRepository
+     * @param App\Repository\CompanyInterface            $companyRepository
+     * @param \Lcobucci\JWT\Parser                       $jwtParser
+     * @param \Lcobucci\JWT\ValidationData               $jwtValidation
+     * @param \Lcobucci\JWT\Signer\Hmac\Sha256           $jwtSigner
+     * @param int                                        $authorizationRequirement
      */
     public function __construct(
         CredentialInterface $credentialRepository,

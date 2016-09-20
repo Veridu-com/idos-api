@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Command\Profile\Score;
 
 use App\Command\AbstractCommand;
-use App\Entity\Profile\Attribute;
 
 /**
  * Score "Delete One" Command.

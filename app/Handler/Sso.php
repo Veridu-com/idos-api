@@ -94,11 +94,11 @@ class Sso implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\UserInterface       $userRepository
+     * @param App\Repository\UserInterface               $userRepository
      * @param App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \League\Event\Emitter              $emitter
-     * @param callable                           $service
-     * @param \League\Tactician\CommandBus       $commandBus
+     * @param \League\Event\Emitter                      $emitter
+     * @param callable                                   $service
+     * @param \League\Tactician\CommandBus               $commandBus
      * @param App\Factory\Command
      *
      * @return void

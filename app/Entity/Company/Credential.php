@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Entity\Company;
 
-use App\Extension\SlugMutator;
 use App\Entity\AbstractEntity;
+use App\Extension\SlugMutator;
 
 /**
  * Credentials Entity.

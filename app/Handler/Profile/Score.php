@@ -21,12 +21,12 @@ use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Handler\HandlerInterface;
 use App\Repository\Profile\ScoreInterface;
 use App\Validator\Profile\Score as ScoreValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Handler\HandlerInterface;
 
 /**
  * Handles Score commands.
@@ -76,7 +76,7 @@ class Score implements HandlerInterface {
      *
      * @param App\Repository\Profile\ScoreInterface $repository
      * @param App\Validator\Profile\Score           $validator
-     * @param \League\Event\Emitter         $emitter
+     * @param \League\Event\Emitter                 $emitter
      *
      * @return void
      */

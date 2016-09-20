@@ -11,8 +11,8 @@ namespace App\Repository\Profile;
 use App\Entity\EntityInterface;
 use App\Entity\Profile\Raw;
 use App\Entity\Profile\Source;
-use Illuminate\Support\Collection;
 use App\Repository\RepositoryInterface;
+use Illuminate\Support\Collection;
 
 /**
  * Raw Repository Interface.
@@ -44,7 +44,7 @@ interface RawInterface extends RepositoryInterface {
      * Find a Raw entity based on its source and name.
      *
      * @param App\Entity\Profile\Source $source
-     * @param string            $name
+     * @param string                    $name
      *
      * @throws App\Exception\NotFound
      *
@@ -56,8 +56,8 @@ interface RawInterface extends RepositoryInterface {
      * Update a Raw entity based on its source and name.
      *
      * @param App\Entity\Profile\Source $source
-     * @param string            $name
-     * @param string            $data
+     * @param string                    $name
+     * @param string                    $data
      *
      * @throws App\Exception\NotFound
      *
@@ -69,7 +69,7 @@ interface RawInterface extends RepositoryInterface {
      * Deletes a Raw entity based on their source and name.
      *
      * @param App\Entity\Profile\Source $source
-     * @param string            $name
+     * @param string                    $name
      *
      * @return int
      */

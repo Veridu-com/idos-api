@@ -17,12 +17,12 @@ use App\Event\Company\Permission\DeletedMulti;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Validate;
+use App\Handler\HandlerInterface;
 use App\Repository\Company\PermissionInterface;
 use App\Validator\Company\Permission as PermissionValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Handler\HandlerInterface;
 
 /**e/Tags.php
     modified:   app/Route/Tasks.php

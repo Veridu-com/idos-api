@@ -8,13 +8,13 @@ declare(strict_types = 1);
 
 namespace App\Controller\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\Profile\ProcessInterface;
 use App\Repository\Profile\TaskInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use App\Controller\ControllerInterface;
 
 /**
  * Handles requests to /profiles/:userName/processes/:processId/:taskId.
@@ -50,8 +50,8 @@ class Tasks implements ControllerInterface {
      *
      * @param App\Repository\Profile\TaskInterface    $repository
      * @param App\Repository\Profile\ProcessInterface $processRepository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param \League\Tactician\CommandBus            $commandBus
+     * @param App\Factory\Command                     $commandFactory
      *
      * @return void
      */

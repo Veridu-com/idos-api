@@ -21,6 +21,7 @@ use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\MemberInterface;
 use App\Repository\UserInterface;
@@ -28,7 +29,6 @@ use App\Validator\Company\Member as MemberValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Handler\HandlerInterface;
 
 /**
  * Handles Member commands.

@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Event\CompanyProfile;
+namespace App\Event\Company\Profile;
 
 use App\Entity\User;
 use App\Event\AbstractEvent;

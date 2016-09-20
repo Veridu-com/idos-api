@@ -12,8 +12,8 @@ use App\Entity\EntityInterface;
 use App\Entity\Profile\Raw;
 use App\Entity\Profile\Source;
 use App\Exception\NotFound;
-use Illuminate\Support\Collection;
 use App\Repository\AbstractNoSQLDBRepository;
+use Illuminate\Support\Collection;
 
 /**
  * NoSQL Database-based Raw Data Repository Implementation.

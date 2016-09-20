@@ -6,14 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Exception\Validate;
+namespace App\Exception\NotFound\Company;
 
-use App\Exception\AppException;
+use App\Exception\NotFound;
 
 /**
- * CompanyProfile validate exception.
+ * CompanyProfile not found exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class CompanyProfileException extends AppException {
+class ProfileException extends NotFound {
 }

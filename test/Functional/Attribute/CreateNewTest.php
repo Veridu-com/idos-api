@@ -44,7 +44,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $body = json_decode((string) $response->getBody(), true);
+        $body     = json_decode((string) $response->getBody(), true);
         $this->assertSame(201, $response->getStatusCode());
 
         $this->assertNotEmpty($body);

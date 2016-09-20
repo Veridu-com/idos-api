@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Exception\NotAllowed\User;
 
-use App\Exception\NotAllowed\User;
-
 /**
  * RoleAccess not allowed exception.
  *

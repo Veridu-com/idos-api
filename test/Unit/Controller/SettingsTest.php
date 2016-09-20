@@ -8,11 +8,11 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Controller;
 
-use App\Command\ResponseDispatch;
 use App\Command\Company\Setting\CreateNew;
 use App\Command\Company\Setting\DeleteAll;
 use App\Command\Company\Setting\DeleteOne;
 use App\Command\Company\Setting\UpdateOne;
+use App\Command\ResponseDispatch;
 use App\Controller\Company\Settings;
 use App\Entity\Company;
 use App\Entity\Company\Setting as SettingEntity;

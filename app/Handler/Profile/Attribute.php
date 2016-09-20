@@ -16,16 +16,15 @@ use App\Entity\Profile\Attribute as AttributeEntity;
 use App\Event\Profile\Attribute\Created;
 use App\Event\Profile\Attribute\Deleted;
 use App\Event\Profile\Attribute\DeletedMulti;
-use App\Event\Profile\Attribute\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Validate;
+use App\Handler\HandlerInterface;
 use App\Repository\Profile\AttributeInterface;
 use App\Validator\Profile\Attribute as AttributeValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Handler\HandlerInterface;
 
 /**
  * Handles Attribute commands.

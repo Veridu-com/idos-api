@@ -10,8 +10,8 @@ namespace App\Middleware;
 
 use App\Entity\Company\Member;
 use App\Exception\NotAllowed;
-use App\Repository\CompanyInterface;
 use App\Repository\Company\PermissionInterface;
+use App\Repository\CompanyInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -41,8 +41,8 @@ class EndpointPermission implements MiddlewareInterface {
      * Class constructor.
      *
      * @param App\Repository\Company\PermissionInterface $permissionRepository
-     * @param App\Repository\CompanyInterface    $companyRepository
-     * @param int                                $permissionType
+     * @param App\Repository\CompanyInterface            $companyRepository
+     * @param int                                        $permissionType
      *
      * @return void
      */

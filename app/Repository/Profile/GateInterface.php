@@ -9,8 +9,8 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Gate;
-use Illuminate\Support\Collection;
 use App\Repository\RepositoryInterface;
+use Illuminate\Support\Collection;
 
 /**
  * Gate Repository Interface.

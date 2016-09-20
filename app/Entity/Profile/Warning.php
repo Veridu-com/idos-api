@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Entity\Profile;
 
 use App\Entity\AbstractEntity;
-
 use App\Extension\SlugMutator;
 
 /**

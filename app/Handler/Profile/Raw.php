@@ -9,23 +9,20 @@ declare(strict_types = 1);
 namespace App\Handler\Profile;
 
 use App\Command\Profile\Raw\CreateNew;
-use App\Command\Profile\Raw\DeleteAll;
-use App\Command\Profile\Raw\DeleteOne;
 use App\Command\Profile\Raw\UpdateOne;
 use App\Entity\Profile\Raw as RawEntity;
 use App\Event\Profile\Raw\Created;
-use App\Event\Profile\Raw\Deleted;
 use App\Event\Profile\Raw\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Handler\HandlerInterface;
 use App\Repository\Profile\RawInterface;
 use App\Validator\Profile\Raw as RawValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Handler\HandlerInterface;
 
 /**
  * Handles Raw commands.

@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Exception\NotAllowed\Company;
 
-use App\Exception\NotAllowed\Company;
-
 /**
  * Setting not allowed exception.
  *

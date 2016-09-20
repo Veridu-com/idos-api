@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Exception\NotAllowed\Profile;
 
-use App\Exception\NotAllowed\Profile;
-
 /**
  * Source not allowed exception.
  *

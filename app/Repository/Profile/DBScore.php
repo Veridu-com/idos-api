@@ -10,8 +10,8 @@ namespace App\Repository\Profile;
 
 use App\Entity\Profile\Score;
 use App\Exception\NotFound;
-use Illuminate\Support\Collection;
 use App\Repository\AbstractSQLDBRepository;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Score Repository Implementation.

@@ -11,9 +11,9 @@ namespace App\Route\User;
 use App\Entity\Role;
 use App\Entity\User\RoleAccess as RoleAccessEntity;
 use App\Middleware\Auth;
+use App\Route\RouteInterface;
 use Interop\Container\ContainerInterface;
 use Slim\App;
-use App\Route\RouteInterface;
 
 /**
  * Role Access.

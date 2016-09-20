@@ -9,8 +9,8 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Source;
-use Illuminate\Support\Collection;
 use App\Repository\AbstractSQLDBRepository;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Source Repository Implementation.

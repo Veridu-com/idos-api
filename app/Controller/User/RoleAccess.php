@@ -8,13 +8,13 @@ declare(strict_types = 1);
 
 namespace App\Controller\User;
 
+use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\User\RoleAccessInterface;
 use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use App\Controller\ControllerInterface;
 
 /**
  * Handles requests to /access/roles.
@@ -43,8 +43,8 @@ class RoleAccess implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\User\RoleAccessInterface $repository
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command                $commandFactory
+     * @param \League\Tactician\CommandBus            $commandBus
+     * @param App\Factory\Command                     $commandFactory
      *
      * @return void
      */

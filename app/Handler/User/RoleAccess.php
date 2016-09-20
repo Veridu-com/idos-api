@@ -21,12 +21,12 @@ use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Handler\HandlerInterface;
 use App\Repository\User\RoleAccessInterface;
 use App\Validator\User\RoleAccess as RoleAccessValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Handler\HandlerInterface;
 
 /**
  * Handles RoleAccess commands.

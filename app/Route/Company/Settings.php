@@ -11,9 +11,9 @@ namespace App\Route\Company;
 use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
+use App\Route\RouteInterface;
 use Interop\Container\ContainerInterface;
 use Slim\App;
-use App\Route\RouteInterface;
 
 /**
  * Company Settings.

@@ -10,9 +10,9 @@ namespace App\Validator\User;
 
 use App\Entity\Role;
 use App\Entity\User\RoleAccess as RoleAccessEntity;
-use Respect\Validation\Validator;
 use App\Validator\Traits;
 use App\Validator\ValidatorInterface;
+use Respect\Validation\Validator;
 
 /**
  * RoleAccess Validation Rules.

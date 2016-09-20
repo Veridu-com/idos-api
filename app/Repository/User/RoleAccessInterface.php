@@ -9,8 +9,8 @@ declare(strict_types = 1);
 namespace App\Repository\User;
 
 use App\Entity\User\RoleAccess;
-use Illuminate\Support\Collection;
 use App\Repository\RepositoryInterface;
+use Illuminate\Support\Collection;
 
 /**
  * RoleAccess Repository Interface.

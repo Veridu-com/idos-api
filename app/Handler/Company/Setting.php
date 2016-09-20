@@ -21,12 +21,12 @@ use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Handler\HandlerInterface;
 use App\Repository\Company\SettingInterface;
 use App\Validator\Company\Setting as SettingValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Handler\HandlerInterface;
 
 /**
  * Handles Setting commands.
@@ -74,7 +74,7 @@ class Setting implements HandlerInterface {
      *
      * @param App\Repository\Company\SettingInterface $repository
      * @param App\Validator\Company\Setting           $validator
-     * @param League\Event\Emitter            $emitter
+     * @param League\Event\Emitter                    $emitter
      *
      * @return void
      */

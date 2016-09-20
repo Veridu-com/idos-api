@@ -32,7 +32,7 @@ class OTP extends AbstractEvent {
      * Class constructor.
      *
      * @param App\Entity\Profile\Source $source
-     * @param string            $ipAddr
+     * @param string                    $ipAddr
      *
      * @return void
      */

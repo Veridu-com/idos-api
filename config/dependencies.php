@@ -246,7 +246,7 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
         $matches = [];
         preg_match_all('/.*Command\/(.*)\/(.*).php/', $commandPath, $matches);
 
-        $resource = preg_replace("/\//", "\\", $matches[1][0]);
+        $resource = preg_replace("/\//", '\\', $matches[1][0]);
         // $resource = $matches[1][0];
         $command  = $matches[2][0];
 
@@ -419,9 +419,18 @@ $container['optimus'] = function (ContainerInterface $container) : Optimus {
 // App files
 $container['globFiles'] = function () : array {
     return [
-        'routes'            => array_merge(glob(__DIR__ . '/../app/Route/*.php'), glob(__DIR__ . '/../app/Route/Company/*.php'), glob(__DIR__ . '/../app/Route/Profile/*.php'), glob(__DIR__ . '/../app/Route/User/*.php')),
-        'handlers'          => array_merge(glob(__DIR__ . '/../app/Handler/*.php'), glob(__DIR__ . '/../app/Handler/Company/*.php'), glob(__DIR__ . '/../app/Handler/Profile/*.php'), glob(__DIR__ . '/../app/Handler/User/*.php')),
-        'listenerProviders' => glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
+        'routes' =>
+            array_merge(
+                glob(__DIR__ . '/../app/Route/*.php'),
+                glob(__DIR__ . '/../app/Route/*/*.php')
+            ),
+        'handlers' =>
+            array_merge(
+                glob(__DIR__ . '/../app/Handler/*.php'),
+                glob(__DIR__ . '/../app/Handler/*/*.php')
+            ),
+        'listenerProviders' =>
+            glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
     ];
 };
 

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\Profile\RawInterface;
@@ -15,7 +16,6 @@ use App\Repository\Profile\SourceInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use App\Controller\ControllerInterface;
 
 /**
  * Handles requests to /profiles/{userName}/sources/{sourceId}/raw.
@@ -51,8 +51,8 @@ class Raw implements ControllerInterface {
      *
      * @param App\Repository\Profile\RawInterface    $repository
      * @param App\Repository\Profile\SourceInterface $sourceRepository
-     * @param \League\Tactician\CommandBus   $commandBus
-     * @param App\Factory\Command            $commandFactory
+     * @param \League\Tactician\CommandBus           $commandBus
+     * @param App\Factory\Command                    $commandFactory
      *
      * @return void
      */

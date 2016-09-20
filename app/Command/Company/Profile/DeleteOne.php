@@ -6,16 +6,16 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\CompanyProfile;
+namespace App\Command\Company\Profile;
 
 use App\Command\AbstractCommand;
 
 /**
- * CompanyProfile "Delete One" Command.
+ * Company\Profile "Delete One" Command.
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * CompanyProfile Id to be deleted.
+     * Company\Profile Id to be deleted.
      *
      * @var int
      */
@@ -24,7 +24,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\CompanyProfile\DeleteOne
+     * @return App\Command\Company\Profile\DeleteOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['userId'])) {

@@ -8,12 +8,12 @@ declare(strict_types = 1);
 
 namespace App\Controller\Company;
 
+use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\Company\PermissionInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use App\Controller\ControllerInterface;
 
 /**
  * Handles requests to /companies/{companySlug}/permissions.
@@ -42,8 +42,8 @@ class Permissions implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\Company\PermissionInterface $repository
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command                $commandFactory
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param App\Factory\Command                        $commandFactory
      *
      * @return void
      */

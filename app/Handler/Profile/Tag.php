@@ -17,13 +17,13 @@ use App\Event\Profile\Tag\Deleted;
 use App\Event\Profile\Tag\DeletedMulti;
 use App\Exception\Create;
 use App\Exception\Validate;
+use App\Handler\HandlerInterface;
 use App\Repository\Profile\TagInterface;
 use App\Repository\UserInterface;
 use App\Validator\Profile\Tag as TagValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Handler\HandlerInterface;
 
 /**
  * Handles Tag commands.
@@ -81,7 +81,7 @@ class Tag implements HandlerInterface {
      * @param App\Repository\Profile\TagInterface        $repository
      * @param App\Repository\Company\CredentialInterface $repository
      * @param App\Validator\Profile\Tag                  $validator
-     * @param \League\Event\Emitter              $emitter
+     * @param \League\Event\Emitter                      $emitter
      *
      * @return void
      */

@@ -10,8 +10,8 @@ namespace App\Repository\Company;
 
 use App\Entity\Company\Permission;
 use App\Exception\NotFound;
-use Illuminate\Support\Collection;
 use App\Repository\AbstractSQLDBRepository;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Permission Repository Implementation.

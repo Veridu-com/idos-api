@@ -10,8 +10,8 @@ namespace Test\Unit\Middleware;
 
 use App\Entity\Company as CompanyEntity;
 use App\Entity\Role as RoleEntity;
-use App\Entity\User\RoleAccess as RoleAccessEntity;
 use App\Entity\User as UserEntity;
+use App\Entity\User\RoleAccess as RoleAccessEntity;
 use App\Exception\NotAllowed as NotAllowedException;
 use App\Factory\Entity as EntityFactory;
 use App\Middleware\UserPermission;

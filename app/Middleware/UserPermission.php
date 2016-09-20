@@ -59,8 +59,8 @@ class UserPermission implements MiddlewareInterface {
      * Class constructor.
      *
      * @param \App\Repository\User\RoleAccessInterface $roleAccessRepository The role access repository
-     * @param string                              $resource             The resource
-     * @param int                                 $accessLevel          The access level
+     * @param string                                   $resource             The resource
+     * @param int                                      $accessLevel          The access level
      */
     public function __construct(RoleAccessInterface $roleAccessRepository, string $resource, int $accessLevel) {
         $this->roleAccessRepository = $roleAccessRepository;

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Controller\Company;
 
+use App\Controller\ControllerInterface;
 use App\Exception\NotFound;
 use App\Factory\Command;
 use App\Repository\Company\CredentialInterface;
@@ -15,7 +16,6 @@ use App\Repository\Company\HookInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use App\Controller\ControllerInterface;
 
 /**
  * Handles requests to /management/credentials/{pubKey}/hooks.
@@ -51,8 +51,8 @@ class Hooks implements ControllerInterface {
      *
      * @param App\Repository\Company\HookInterface       $repository
      * @param App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command                $commandFactory
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param App\Factory\Command                        $commandFactory
      *
      * @return void
      */
