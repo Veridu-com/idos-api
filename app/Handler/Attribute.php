@@ -122,14 +122,14 @@ class Attribute implements HandlerInterface {
         );
 
         try {
-            $attribute = $this->repository->save($attribute);
-            $event     = new Created($attribute);
+            $entity = $this->repository->save($entity);
+            $event  = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\AttributeException('Error while trying to create an attribute', 500, $e);
         }
 
-        return $attribute;
+        return $entity;
     }
 
     /**
@@ -216,8 +216,7 @@ class Attribute implements HandlerInterface {
             throw new NotFound\AttributeException('No attributes found for deletion', 404);
         }
 
-            $event = new Deleted($attribute);
-            $this->emitter->emit($event);
+        return $affectedRows;
     }
 
     /**

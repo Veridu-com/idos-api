@@ -52,7 +52,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/0000000');
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/0000000';
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [
@@ -61,11 +61,12 @@ class DeleteOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
+        $this->assertTrue($body['status']);
+        $this->assertSame(0, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.
