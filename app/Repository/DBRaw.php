@@ -43,6 +43,14 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
             }
         }
 
+        if (isset($rawFilters['filter:order'])) {
+            $sourceFilters['filter:order'] = $rawFilters['filter:order'];
+
+            if (isset($rawFilters['filter:sort'])) {
+                $sourceFilters['filter:sort'] = $rawFilters['filter:sort'];
+            }
+        }
+
         $sourceRepository = $this->repositoryFactory->create('Source');
         $sources          = $sourceRepository->findBy(['user_id' => $userId], $sourceFilters);
 
@@ -52,7 +60,30 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
 
             $collections = $this->listCollections();
             foreach ($collections as $collection) {
-                $this->selectCollection($collection->getName());
+                $collectionName = $collection->getName();
+
+                if (isset($rawFilters['collection'])) {
+                    $regex = '/^(' . $rawFilters['collection'] . ')$/';
+
+                    if (($firstWildcard = strpos($rawFilters['collection'], '*')) !== false) {
+                        //If there is a second wildcard that is after the first one
+                        if (($lastWildcard = strpos($rawFilters['collection'], '*', $firstWildcard + 1)) !== false) {
+                            $regex = '/(' . substr($rawFilters['collection'], $firstWildcard + 1, $lastWildcard - 1) . ')/';
+                        // If there is not a second wildcard and the one we found is at the end of the string
+                        } else if ($firstWildcard === (strlen($rawFilters['collection']) - 1)) {
+                            $regex = '/^(' . substr($rawFilters['collection'], 0, $firstWildcard) . ')/';
+                        // If there is not a second wildcard and the one we found is at the beginning of the string
+                        } else {
+                            $regex = '/(' . substr($rawFilters['collection'], $firstWildcard + 1) . ')$/';
+                        }
+                    }
+
+                    if (!preg_match($regex, $collectionName)) {
+                        continue;
+                    }
+                }
+
+                $this->selectCollection($collectionName);
 
                 try {
                     $entity             = $this->find($source->id);

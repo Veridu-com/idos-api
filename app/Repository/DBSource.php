@@ -40,6 +40,15 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     /**
      * {@inheritdoc}
      */
+    protected $orderableKeys = [
+        'name',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOne(int $id, int $userId) : Source {
         return $this->findOneBy(
             [
