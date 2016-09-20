@@ -39,8 +39,8 @@ class Identity extends AbstractEntity {
      * {@inheritdoc}
      */
     public $relationships = [
-        'role'      => 'Role',
-        'company'   => 'Company',
-        'member'    => 'Member'
+        'role'    => 'Role',
+        'company' => 'Company',
+        'member'  => 'Member'
     ];
 }

@@ -61,8 +61,8 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     public function findOneByName(string $name, int $userId) : Source {
         return $this->findOneBy(
             [
-                'name'      => $name,
-                'user_id'   => $userId
+                'name'    => $name,
+                'user_id' => $userId
             ]
         );
 
