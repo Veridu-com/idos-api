@@ -110,9 +110,9 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId     = (int) $request->getAttribute('decodedSettingId');
-        $identity      = $request->getAttribute('identity');
-        $company       = $request->getAttribute('targetCompany');
+        $settingId = (int) $request->getAttribute('decodedSettingId');
+        $identity  = $request->getAttribute('identity');
+        $company   = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Setting\\GetOne');
         $command

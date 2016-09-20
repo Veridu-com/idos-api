@@ -124,14 +124,14 @@ class Attribute implements HandlerInterface {
         );
 
         try {
-            $attribute = $this->repository->save($attribute);
-            $event     = new Created($attribute);
+            $entity = $this->repository->save($entity);
+            $event  = new Created($entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500, $e);
         }
 
-        return $attribute;
+        return $entity;
     }
 
     /**
@@ -182,7 +182,7 @@ class Attribute implements HandlerInterface {
      * @throws App\Exception\Validate\AttributeException
      * @throws App\Exception\NotFound\AttributeException
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
@@ -217,6 +217,8 @@ class Attribute implements HandlerInterface {
         } catch (\Exception $e) {
             throw new NotFound\Profile\AttributeException('No attributes found for deletion', 404);
         }
+
+        return $affectedRows;
     }
 
     /**

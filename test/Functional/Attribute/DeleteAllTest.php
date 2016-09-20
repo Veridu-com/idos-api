@@ -54,6 +54,7 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testDeleteFilter() {
+        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes?name=*1';
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -68,6 +69,7 @@ class DeleteAllTest extends AbstractFunctional {
                 ]
             )
         );
+
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 

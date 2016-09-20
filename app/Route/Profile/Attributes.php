@@ -32,7 +32,6 @@ class Attributes implements RouteInterface {
             'attribute:createNew',
             'attribute:deleteAll',
             'attribute:getOne',
-            'attribute:updateOne',
             'attribute:deleteOne'
         ];
     }

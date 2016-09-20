@@ -37,8 +37,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'attribute-test',
-                    'value' => 'value-test'
+                    'name'    => 'attribute-test',
+                    'value'   => 'value-test',
+                    'support' => 1.2
                 ]
             )
         );
@@ -51,6 +52,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertSame('attribute-test', $body['data']['name']);
         $this->assertSame('value-test', $body['data']['value']);
+        $this->assertSame(1.2, $body['data']['support']);
         /*
          * Validates Response using the Json Schema.
          */
@@ -75,8 +77,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => '',
-                    'value' => 'value-test'
+                    'name'    => '',
+                    'value'   => 'value-test',
+                    'support' => 1.2
                 ]
             )
         );
@@ -112,8 +115,47 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'Attribute name',
-                    'value' => ''
+                    'name'    => 'Attribute name',
+                    'value'   => '',
+                    'support' => 1.2
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testInvalidSupport() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'name'    => 'Attribute name',
+                    'value'   => 'value-test',
+                    'support' => ''
                 ]
             )
         );

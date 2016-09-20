@@ -155,14 +155,14 @@ class Source implements HandlerInterface {
             throw new Create\Profile\SourceException('Error while trying to create a setting', 500, $e);
         }
 
-        $this->emitter->emit(new Created($source, $command->ipaddr));
+        $this->emitter->emit(new Created($command->user, $source, $command->ipaddr));
 
         if ($sendOTP) {
-            $this->emitter->emit(new OTP($source, $command->ipaddr));
+            $this->emitter->emit(new OTP($command->user, $source, $command->ipaddr));
         }
 
         if ($sendCRA) {
-            $this->emitter->emit(new CRA($source, $command->ipaddr));
+            $this->emitter->emit(new CRA($command->user, $source, $command->ipaddr));
         }
 
         return $source;
@@ -182,6 +182,8 @@ class Source implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : SourceEntity {
         try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertId($command->user->id);
             $this->validator->assertSource($command->source);
             $this->validator->assertId($command->source->id);
             $this->validator->assertIpAddr($command->ipaddr);
@@ -235,7 +237,9 @@ class Source implements HandlerInterface {
 
             // after 3 failed attempts, the otp is voided (avoids brute-force validation)
             if (($tags->otp_attempts > 2)
-                && ((! property_exists($tags, 'otp_verified')) || (property_exists($tags, 'otp_verified') && ! $tags->otp_verified))
+                && ((! property_exists($tags, 'otp_verified'))
+                || (property_exists($tags, 'otp_verified')
+                && ! $tags->otp_verified))
             ) {
                 $tags->otp_voided = true;
                 $source->tags     = $tags;
@@ -250,7 +254,7 @@ class Source implements HandlerInterface {
 
         try {
             $source = $this->repository->save($source);
-            $this->emitter->emit(new Updated($source, $command->ipaddr));
+            $this->emitter->emit(new Updated($command->user, $source, $command->ipaddr));
         } catch (\Exception $e) {
             throw new Update\Profile\SourceException('Error while trying to update a source', 500, $e);
         }
@@ -272,6 +276,8 @@ class Source implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertId($command->user->id);
             $this->validator->assertSource($command->source);
             $this->validator->assertId($command->source->id);
             $this->validator->assertIpAddr($command->ipaddr);
@@ -289,7 +295,7 @@ class Source implements HandlerInterface {
             throw new NotFound\Profile\SourceException('No sources found for deletion', 404);
         }
 
-        $this->emitter->emit(new Deleted($command->source, $command->ipaddr));
+        $this->emitter->emit(new Deleted($command->user, $command->source, $command->ipaddr));
     }
 
     /**
@@ -320,7 +326,7 @@ class Source implements HandlerInterface {
         $sources = $this->repository->getAllByUserId($command->user->id);
         $deleted = $this->repository->deleteByUserId($command->user->id);
 
-        $this->emitter->emit(new DeletedMulti($sources, $command->ipaddr));
+        $this->emitter->emit(new DeletedMulti($command->user, $sources, $command->ipaddr));
 
         return $deleted;
     }

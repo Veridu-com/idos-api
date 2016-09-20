@@ -41,6 +41,15 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     /**
      * {@inheritdoc}
      */
+    protected $orderableKeys = [
+        'name',
+        'created_at',
+        'updated_at'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOne(int $id, int $userId) : Source {
         return $this->findOneBy(
             [
@@ -62,8 +71,8 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     public function findOneByName(string $name, int $userId) : Source {
         return $this->findOneBy(
             [
-                'name'      => $name,
-                'user_id'   => $userId
+                'name'    => $name,
+                'user_id' => $userId
             ]
         );
 

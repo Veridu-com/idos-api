@@ -38,6 +38,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
         'source'       => 'string',
         'name'         => 'string',
         'type'         => 'string',
+        'source'       => 'string',
         'created_at'   => 'date'
     ];
 
@@ -105,10 +106,10 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     public function findOneById(int $userId, string $sourceName, int $serviceId, int $id) : Feature {
         return $this->findOneBy(
             [
-            'user_id'   => $userId,
-            'source'    => $sourceName,
-            'creator'   => $serviceId,
-            'id'        => $id
+            'user_id' => $userId,
+            'source'  => $sourceName,
+            'creator' => $serviceId,
+            'id'      => $id
             ]
         );
     }
@@ -119,10 +120,10 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     public function findOneByName(int $userId, string $sourceName, int $serviceId, string $name) : Feature {
         return $this->findOneBy(
             [
-            'user_id'   => $userId,
-            'source'    => $sourceName,
-            'creator'   => $serviceId,
-            'name'      => $name
+            'user_id' => $userId,
+            'source'  => $sourceName,
+            'creator' => $serviceId,
+            'name'    => $name
             ]
         );
     }

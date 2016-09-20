@@ -175,8 +175,8 @@ class Credentials implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $identity    = $request->getAttribute('identity');
-        $credential  = $this->repository->findByPubKey($request->getAttribute('pubKey'));
+        $identity   = $request->getAttribute('identity');
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
 
         $command = $this->commandFactory->create('Credential\\UpdateOne');
         $command
