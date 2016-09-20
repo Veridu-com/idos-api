@@ -23,13 +23,9 @@
             "type": ["integer", "null"]
         }
     },
-    "dependencies": {
-        "slug": ["name"]
-    },
     "required": [
-        "name",
         "slug",
-        "reference",
+        "attribute",
         "created_at"
     ]
 }

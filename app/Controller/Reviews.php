@@ -60,10 +60,10 @@ class Reviews implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository         = $repository;
-        $this->userRepository     = $userRepository;
-        $this->commandBus         = $commandBus;
-        $this->commandFactory     = $commandFactory;
+        $this->repository     = $repository;
+        $this->userRepository = $userRepository;
+        $this->commandBus     = $commandBus;
+        $this->commandFactory = $commandFactory;
     }
 
     /**

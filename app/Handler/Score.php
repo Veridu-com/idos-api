@@ -175,9 +175,9 @@ class Score implements HandlerInterface {
 
         $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
 
-        $entity->attribute  = $command->attribute;
-        $entity->value      = $command->value;
-        $entity->updatedAt  = time();
+        $entity->attribute = $command->attribute;
+        $entity->value     = $command->value;
+        $entity->updatedAt = time();
 
         try {
             $entity = $this->repository->save($entity);

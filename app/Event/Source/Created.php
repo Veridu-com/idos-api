@@ -9,12 +9,19 @@ declare(strict_types = 1);
 namespace App\Event\Source;
 
 use App\Entity\Source;
+use App\Entity\User;
 use App\Event\AbstractEvent;
 
 /**
  * Created event.
  */
 class Created extends AbstractEvent {
+    /**
+     * Event related User.
+     *
+     * @var App\Entity\User
+     */
+    public $user;
     /**
      * Event related Source.
      *
@@ -31,12 +38,14 @@ class Created extends AbstractEvent {
     /**
      * Class constructor.
      *
+     * @param App\Entity\User   $user
      * @param App\Entity\Source $source
      * @param string            $ipAddr
      *
      * @return void
      */
-    public function __construct(Source $source, string $ipAddr) {
+    public function __construct(User $user, Source $source, string $ipAddr) {
+        $this->user   = $user;
         $this->source = $source;
         $this->ipAddr = $ipAddr;
     }

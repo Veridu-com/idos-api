@@ -32,13 +32,13 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name      = 'Testing';
-        $reference = 'firstName';
+        $name      = 'middle-name-mismatch';
+        $attribute = 'middle-name';
         $request   = $this->createRequest(
             $environment, json_encode(
                 [
-                    'name'      => $name,
-                    'reference' => $reference
+                    'slug'      => $name,
+                    'attribute' => $attribute
                 ]
             )
         );
@@ -48,8 +48,8 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertSame(201, $response->getStatusCode());
         $this->assertTrue($body['status']);
-        $this->assertSame($name, $body['data']['name']);
-        $this->assertSame($reference, $body['data']['reference']);
+        $this->assertSame($name, $body['data']['slug']);
+        $this->assertSame($attribute, $body['data']['attribute']);
         /*
          * Validates Response using the Json Schema.
          */
