@@ -63,22 +63,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
                 $collectionName = $collection->getName();
 
                 if (isset($rawFilters['collection'])) {
-                    $regex = '/^(' . $rawFilters['collection'] . ')$/';
-
-                    if (($firstWildcard = strpos($rawFilters['collection'], '*')) !== false) {
-                        //If there is a second wildcard that is after the first one
-                        if (($lastWildcard = strpos($rawFilters['collection'], '*', $firstWildcard + 1)) !== false) {
-                            $regex = '/(' . substr($rawFilters['collection'], $firstWildcard + 1, $lastWildcard - 1) . ')/';
-                        // If there is not a second wildcard and the one we found is at the end of the string
-                        } else if ($firstWildcard === (strlen($rawFilters['collection']) - 1)) {
-                            $regex = '/^(' . substr($rawFilters['collection'], 0, $firstWildcard) . ')/';
-                        // If there is not a second wildcard and the one we found is at the beginning of the string
-                        } else {
-                            $regex = '/(' . substr($rawFilters['collection'], $firstWildcard + 1) . ')$/';
-                        }
-                    }
-
-                    if (!preg_match($regex, $collectionName)) {
+                    if (! in_array($collectionName, explode(',', $rawFilters['collection']))) {
                         continue;
                     }
                 }
