@@ -81,27 +81,27 @@ class UserInit extends AbstractMigration {
         $warnings
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('creator', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])
-            ->addColumn('reference', 'text')
+            ->addColumn('attribute', 'text')
             ->addTimestamps()
             ->addIndex('user_id')
             ->addIndex('creator')
-            ->addIndex('name')
-            ->addIndex(['user_id', 'creator', 'name'], ['unique' => true])
             ->addIndex(['user_id', 'creator', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('slug', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
+            ->addForeignKey('attribute', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
             ->create();
 
         $tags = $this->table('tags');
         $tags
             ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])
             ->addTimestamps()
             ->addIndex(['user_id', 'slug'], ['unique' => true])
-            ->addIndex('user_id')
+            ->addIndex(['user_id', 'identity_id'])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 

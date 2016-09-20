@@ -36,7 +36,7 @@ class CreateNewTest extends AbstractFunctional {
         $request  = $this->createRequest(
             $environment, json_encode(
                 [
-                    'warning_id' => 1321189817,
+                    'warning_id' => 1860914067,
                     'positive'   => $positive
                 ]
             )

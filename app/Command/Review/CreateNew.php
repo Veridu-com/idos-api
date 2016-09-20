@@ -15,11 +15,17 @@ use App\Command\AbstractCommand;
  */
 class CreateNew extends AbstractCommand {
     /**
-     * Review's user.
+     * User reviewed.
      *
      * @var App\Entity\User
      */
     public $user;
+    /**
+     * Reviewer.
+     *
+     * @var App\Entity\Identity
+     */
+    public $identity;
     /**
      * Review's warningId.
      *

@@ -12,20 +12,7 @@ class S26ReviewsSeed extends AbstractSeed {
             [
                 'user_id'    => 1,
                 'warning_id' => 1,
-                'positive'   => 'false',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
-            ],
-            [
-                'user_id'    => 1,
-                'warning_id' => 1,
-                'positive'   => 'true',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
-            ],
-            [
-                'user_id'    => 1,
-                'warning_id' => 2,
+                'identity_id' => 1,
                 'positive'   => 'false',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
@@ -33,6 +20,7 @@ class S26ReviewsSeed extends AbstractSeed {
             [
                 'user_id'    => 1,
                 'warning_id' => 2,
+                'identity_id' => 1,
                 'positive'   => 'false',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null

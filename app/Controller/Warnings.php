@@ -151,7 +151,7 @@ class Warnings implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
-
+        
         $command = $this->commandFactory->create('Warning\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())

@@ -4,18 +4,13 @@
     "title": "Warning",
     "type": "object",
     "properties": {
-        "name": {
-            "description": "Warning Name",
-            "type": "string",
-            "pattern": ""
-        },
         "slug": {
-            "description": "Slug based on Warning's name",
+            "description": "Slug that references a category",
             "type": "string",
             "pattern": "[a-zA-Z0-9_-]+"
         },
-        "reference": {
-            "description": "Warning Reference",
+        "attribute": {
+            "description": "Warning attribute reference",
             "type": "string",
             "pattern": ""
         },

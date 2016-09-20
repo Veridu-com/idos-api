@@ -42,6 +42,8 @@ class CompanyProfiles implements RouteInterface {
                 $container->get('repositoryFactory')->create('Warning'),
                 $container->get('repositoryFactory')->create('Gate'),
                 $container->get('repositoryFactory')->create('Attribute'),
+                $container->get('repositoryFactory')->create('Source'),
+                $container->get('repositoryFactory')->create('Tag'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
                 $container->get('optimus')
