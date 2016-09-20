@@ -112,7 +112,7 @@ class Tag implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : TagEntity {
         try {
             $this->validator->assertName($command->name);
-            $this->validator->assertSlug($command->slug);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\TagException(
                 $e->getFullMessage(),
@@ -121,14 +121,15 @@ class Tag implements HandlerInterface {
             );
         }
 
-        $user = $command->user;
+        $user     = $command->user;
+        $identity = $command->identity;
 
         $tag = $this->repository->create(
             [
-                'user_id'    => $user->id,
-                'name'       => $command->name,
-                'slug'       => $command->slug,
-                'created_at' => time()
+                'user_id'     => $user->id,
+                'identity_id' => $identity->id,
+                'name'        => $command->name,
+                'created_at'  => time()
             ]
         );
 

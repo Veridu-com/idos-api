@@ -12,18 +12,24 @@ class S25WarningsSeed extends AbstractSeed {
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'name'       => 'warning one',
-                'slug'       => 'warning-one',
-                'reference'  => 'firstName',
+                'slug'       => 'first-name-mismatch',
+                'attribute'  => 'first-name',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => null
+            ],
+            [
+                'user_id'    => 2,
+                'creator'    => 1,
+                'slug'       => 'last-name-mismatch',
+                'attribute'  => 'last-name',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'name'       => 'warning two',
-                'slug'       => 'warning-two',
-                'reference'  => 'lastName',
+                'slug'       => 'last-name-mismatch',
+                'attribute'  => 'last-name',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],

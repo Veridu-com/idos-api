@@ -13,7 +13,7 @@ use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
-class CreateNewTest extends AbstractFunctional {
+class UpsertTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
@@ -22,11 +22,11 @@ class CreateNewTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'POST';
+        $this->httpMethod = 'PUT';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/scores';
     }
 
-    public function testSuccess() {
+    public function testCreated() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -54,12 +54,56 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame('firstName', $body['data']['attribute']);
         $this->assertSame('name-test', $body['data']['name']);
         $this->assertSame(0.6, $body['data']['value']);
+
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'score/createNew.json',
+                'score/upsert.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testUpdated() {
+        $this->testCreated();
+
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'attribute' => 'firstName',
+                    'name'      => 'name-test',
+                    'value'     => 0.8
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame('firstName', $body['data']['attribute']);
+        $this->assertSame('name-test', $body['data']['name']);
+        $this->assertSame(0.8, $body['data']['value']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'score/upsert.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -128,6 +172,7 @@ class CreateNewTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
+
         /*
          * Validates Response using the Json Schema.
          */

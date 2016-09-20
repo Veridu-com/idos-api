@@ -48,7 +48,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
                 $sourceFilters['filter:order'] = $rawFilters['filter:order'];
 
                 if (isset($rawFilters['filter:sort']) && substr_compare($rawFilters['filter:sort'], 'source:', 0, 7)) {
-                    $sourceFilters['filter:sort'] = $rawFilters['filter:sort'];    
+                    $sourceFilters['filter:sort'] = $rawFilters['filter:sort'];
                 }
             }
         }
@@ -87,7 +87,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         }
 
         if(isset($rawFilters['filter:order'])) {
-            $sort = 'ASC';
+            $sort = 'DESC';
 
             if (isset($rawFilters['filter:sort']) && in_array($rawFilters['filter:sort'], ['ASC', 'DESC'])) {
                 $sort = $rawFilters['filter:sort'];
