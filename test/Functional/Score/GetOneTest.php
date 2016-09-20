@@ -21,7 +21,7 @@ class GetOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/user1Attribute1/scores/user1Attribute1Score1';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/scores/user-1-score-1';
     }
 
     public function testSuccess() {
@@ -39,7 +39,7 @@ class GetOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('user1Attribute1Score1', $body['data']['name']);
+        $this->assertSame('user-1-score-1', $body['data']['name']);
         $this->assertSame(1.2, $body['data']['value']);
 
         /*
@@ -56,7 +56,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/user1Attribute1/scores/0000000';
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/scores/0000000';
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [

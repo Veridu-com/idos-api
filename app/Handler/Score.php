@@ -292,7 +292,7 @@ class Score implements HandlerInterface {
             throw new NotFound\ScoreException('No features found for deletion', 404);
         }
 
-        $this->emitter->emit(new Deleted($score));
+        return $affectedRows;
     }
 
     /**
