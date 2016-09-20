@@ -11,6 +11,8 @@ namespace App\Controller;
 use App\Factory\Command;
 use App\Repository\AttributeInterface;
 use App\Repository\GateInterface;
+use App\Repository\SourceInterface;
+use App\Repository\TagInterface;
 use App\Repository\UserInterface;
 use App\Repository\WarningInterface;
 use Jenssegers\Optimus\Optimus;
@@ -79,6 +81,8 @@ class CompanyProfiles implements ControllerInterface {
         WarningInterface $warningRepository,
         GateInterface $gateRepository,
         AttributeInterface $attributeRepository,
+        SourceInterface $sourceRepository,
+        TagInterface $tagRepository,
         CommandBus $commandBus,
         Command $commandFactory,
         Optimus $optimus
@@ -86,7 +90,9 @@ class CompanyProfiles implements ControllerInterface {
         $this->repository          = $repository;
         $this->warningRepository   = $warningRepository;
         $this->gateRepository      = $gateRepository;
+        $this->tagRepository       = $tagRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->sourceRepository    = $sourceRepository;
         $this->commandBus          = $commandBus;
         $this->commandFactory      = $commandFactory;
         $this->optimus             = $optimus;
@@ -103,14 +109,16 @@ class CompanyProfiles implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company = $request->getAttribute('targetCompany');
 
         $data     = [];
         $profiles = $this->repository->findByCompanyId($company->id);
 
         foreach ($profiles as $profile) {
             $warnings = $this->warningRepository->findByUserId($profile->id);
+            $tags     = $this->tagRepository->getAllByUserId($profile->id);
             $gates    = $this->gateRepository->findByUserId($profile->id);
+            $sources  = $this->sourceRepository->getAllByUserId($profile->id);
 
             $firstNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'firstname']);
             $firstNamesArray = [];
@@ -133,6 +141,8 @@ class CompanyProfiles implements ControllerInterface {
             $data[] = array_merge(
                 $profile->toArray(),
                 ['warnings'    => $warnings->toArray()],
+                ['sources'     => $sources->toArray()],
+                ['tags'        => $tags->toArray()],
                 ['gates'       => $gates->toArray()],
                 ['firstnames'  => $firstNamesArray],
                 ['middlenames' => $middleNamesArray],

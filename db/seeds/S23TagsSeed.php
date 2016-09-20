@@ -10,25 +10,29 @@ class S23TagsSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
-                'user_id' => 1,
-                'name'    => 'User 1 Tag 1',
-                'slug'    => 'user-1-tag-1'
+                'user_id'     => 1,
+                'identity_id' => 1,
+                'name'        => 'High-end customer',
+                'slug'        => 'high-end-customer'
             ],
             [
-                'user_id' => 1,
-                'name'    => 'User 1 Tag 2',
-                'slug'    => 'user-1-tag-2'
+                'user_id'     => 1,
+                'identity_id' => 1,
+                'name'        => 'Partner',
+                'slug'        => 'partner'
             ],
 
             [
-                'user_id' => 2,
-                'name'    => 'User 2 Tag 1',
-                'slug'    => 'user-2-tag-1'
+                'user_id'     => 2,
+                'identity_id' => 1,
+                'name'        => 'Low-end customer',
+                'slug'        => 'low-end-customer'
             ],
             [
-                'user_id' => 2,
-                'name'    => 'User 2 Tag 2',
-                'slug'    => 'user-2-tag-2'
+                'user_id'     => 1,
+                'identity_id' => 1,
+                'name'        => 'Repeat customer',
+                'slug'        => 'repeat-customer'
             ],
         ];
 

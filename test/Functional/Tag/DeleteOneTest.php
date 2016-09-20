@@ -21,7 +21,7 @@ class DeleteOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/tags/user-1-tag-1';
+        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/tags/high-end-customer';
     }
 
     public function testSuccess() {

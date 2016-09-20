@@ -29,17 +29,18 @@ class CreateNew extends AbstractCommand {
     public $service;
 
     /**
-     * Warning's name (user input).
+     * Warning's slug (user input).
      *
      * @var string
      */
-    public $name;
+    public $slug;
+
     /**
-     * Warning's reference (user input).
+     * Warning's attribute (user input).
      *
      * @var string
      */
-    public $reference;
+    public $attribute;
 
     /**
      * {@inheritdoc}
@@ -55,12 +56,12 @@ class CreateNew extends AbstractCommand {
             $this->service = $parameters['service'];
         }
 
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
+        if (isset($parameters['slug'])) {
+            $this->slug = $parameters['slug'];
         }
 
-        if (isset($parameters['reference'])) {
-            $this->reference = $parameters['reference'];
+        if (isset($parameters['attribute'])) {
+            $this->attribute = $parameters['attribute'];
         }
 
         return $this;

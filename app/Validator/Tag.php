@@ -13,6 +13,7 @@ namespace App\Validator;
  */
 class Tag implements ValidatorInterface {
     use Traits\AssertId,
+        Traits\AssertEntity,
         Traits\AssertName,
         Traits\AssertSlug;
 }

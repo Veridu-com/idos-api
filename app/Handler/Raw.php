@@ -204,21 +204,21 @@ class Raw implements HandlerInterface {
             );
         }
 
-        $entity = null;
+        $entity    = null;
         $inserting = false;
 
         try {
             $entity = $this->repository->findOne($command->source, $command->collection);
 
-            $entity->source = $command->source;
-            $entity->data = $command->data;
+            $entity->source     = $command->source;
+            $entity->data       = $command->data;
             $entity->updated_at = time();
         } catch (NotFound $e) {
         }
 
         if ($entity === null) {
             $inserting = true;
-            $entity = $this->repository->create(
+            $entity    = $this->repository->create(
                 [
                     'source'     => $command->source,
                     'collection' => $command->collection,
@@ -230,8 +230,8 @@ class Raw implements HandlerInterface {
         }
 
         try {
-            $entity   = $this->repository->save($entity);
-            $event = $inserting ? new Created($entity) : new Updated($entity);
+            $entity = $this->repository->save($entity);
+            $event  = $inserting ? new Created($entity) : new Updated($entity);
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
