@@ -38,7 +38,7 @@ class Created extends AbstractEvent {
      * @return void
      */
     public function __construct(Review $review, Identity $identity) {
-        $this->review = $review;
+        $this->review   = $review;
         $this->identity = $identity;
     }
 }

@@ -108,7 +108,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
         $identity = $identities->first();
 
         if (! $identity) {
-            throw new NotFound;
+            throw new NotFound();
         }
 
         // populating identities available companies

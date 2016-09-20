@@ -117,12 +117,12 @@ class Tags implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Tag\\CreateNew');
 
-        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
         $identity = $request->getAttribute('identity');
 
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('user',$user)
+            ->setParameter('user', $user)
             ->setParameter('identity', $identity);
 
         $tag = $this->commandBus->handle($command);

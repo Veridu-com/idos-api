@@ -87,15 +87,15 @@ class CompanyProfiles implements ControllerInterface {
         Command $commandFactory,
         Optimus $optimus
     ) {
-        $this->repository              = $repository;
-        $this->warningRepository       = $warningRepository;
-        $this->gateRepository          = $gateRepository;
-        $this->tagRepository          = $tagRepository;
-        $this->attributeRepository     = $attributeRepository;
-        $this->sourceRepository        = $sourceRepository;
-        $this->commandBus              = $commandBus;
-        $this->commandFactory          = $commandFactory;
-        $this->optimus                 = $optimus;
+        $this->repository          = $repository;
+        $this->warningRepository   = $warningRepository;
+        $this->gateRepository      = $gateRepository;
+        $this->tagRepository       = $tagRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->sourceRepository    = $sourceRepository;
+        $this->commandBus          = $commandBus;
+        $this->commandFactory      = $commandFactory;
+        $this->optimus             = $optimus;
     }
 
     /**

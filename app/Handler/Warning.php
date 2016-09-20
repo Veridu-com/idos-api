@@ -100,7 +100,7 @@ class Warning implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
             $this->validator->assertSlug($command->slug);
-            
+
             if (isset($command->attribute)) {
                 $this->validator->assertSlug($command->attribute);
             }
