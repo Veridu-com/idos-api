@@ -164,7 +164,7 @@ class Feature implements HandlerInterface {
      * @param App\Command\Feature\UpdateOne $command
      *
      * @see App\Repository\DBFeature::findByUserIdAndSlug
-     * @see App\Repository\DBFeature:save
+     * @see App\Repository\DBFeature::save
      *
      * @throws App\Exception\Validate\FeatureException
      * @throws App\Exception\Update\FeatureException

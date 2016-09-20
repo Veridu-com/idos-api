@@ -65,7 +65,7 @@ class Reviews implements RouteInterface {
      * @apiGroup Profiles Review
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -97,7 +97,7 @@ class Reviews implements RouteInterface {
      * @apiGroup Profiles Review
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -130,8 +130,8 @@ class Reviews implements RouteInterface {
      * @apiGroup Profile Reviews
      * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
      * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string reviewId data-name
+     * @apiEndpointURIFragment int userId 1827452
+     * @apiEndpointURIFragment int reviewId 21494
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -164,8 +164,8 @@ class Reviews implements RouteInterface {
      * @apiGroup Profiles Review
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string reviewId data-name
+     * @apiEndpointURIFragment int userId 1827452
+     * @apiEndpointURIFragment int reviewId 21494
      *
      * @param \Slim\App $app
      * @param \callable $auth

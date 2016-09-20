@@ -172,8 +172,8 @@ class Company implements HandlerInterface {
      *
      * @param App\Command\Company\DeleteOne $command
      *
-     * @throws App\Exception\Validate\CompanyException;
-     * @throws App\Exception\NotFound\CompanyException;
+     * @throws App\Exception\Validate\CompanyException
+     * @throws App\Exception\NotFound\CompanyException
      *
      * @return void
      */

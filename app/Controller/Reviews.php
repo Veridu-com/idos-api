@@ -69,7 +69,6 @@ class Reviews implements ControllerInterface {
     /**
      * Retrieve a complete list of reviews, given an user and an warning.
      *
-     * @apiEndpointURIFragment string userName usr001
      * @apiEndpointParam query string warnings WRONG FORMAT HERE FIXME
      * @apiEndpointResponse 200 schema/review/listAll.json
      *
@@ -178,7 +177,6 @@ class Reviews implements ControllerInterface {
     /**
      * Retrieves a review data from the given source.
      *
-     * @apiEndpointURIFragment string userName usr001
      * @apiEndpointParam query string reviewId 12345
      * @apiEndpointResponse 200 schema/review/reviewEntity.json
      *
