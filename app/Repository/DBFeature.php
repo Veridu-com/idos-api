@@ -34,6 +34,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
      */
     protected $filterableKeys = [
         'creator.name' => 'string',
+        'source'       => 'string',
         'name'         => 'string',
         'type'         => 'string',
         'created_at'   => 'date'
@@ -43,6 +44,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
      * {@inheritdoc}
      */
     protected $orderableKeys = [
+        'source',
         'name',
         'type',
         'created_at',
