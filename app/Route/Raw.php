@@ -26,10 +26,8 @@ class Raw implements RouteInterface {
         return [
             'raw:listAll',
             'raw:createNew',
-            'raw:deleteAll',
-            'raw:getOne',
             'raw:updateOne',
-            'raw:deleteOne'
+            'raw:upsert'
         ];
     }
 
@@ -54,6 +52,7 @@ class Raw implements RouteInterface {
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
+        self::upsert($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -88,6 +87,7 @@ class Raw implements RouteInterface {
             ->add($auth(Auth::CREDENTIAL))
             ->setName('raw:listAll');
     }
+
     /**
      * Creates a new raw data.
      *
@@ -153,5 +153,38 @@ class Raw implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('raw:updateOne');
+    }
+
+    /**
+     * Creates or updates raw data.
+     *
+     * Creates or update a raw data for the given source.
+     *
+     * @apiEndpoint POST /profiles/{userName}/raw
+     * @apiGroup Profiles Raw
+     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/sources/raw/upsert.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Raw::upsert
+     */
+    private static function upsert(App $app, callable $auth, callable $permission) {
+        $app
+            ->put(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/raw',
+                'App\Controller\Raw:upsert'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('raw:upsert');
     }
 }

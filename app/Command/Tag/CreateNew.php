@@ -15,11 +15,17 @@ use App\Command\AbstractCommand;
  */
 class CreateNew extends AbstractCommand {
     /**
-     * Tag's user.
+     * Tagged user.
      *
      * @var App\Entity\User
      */
     public $user;
+    /**
+     * Tag creator.
+     *
+     * @var App\Entity\Identity
+     */
+    public $identity;
     /**
      * New tag name.
      *

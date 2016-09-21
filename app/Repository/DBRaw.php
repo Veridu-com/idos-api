@@ -35,11 +35,21 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $rawFilters    = [];
         $sourceFilters = [];
         foreach ($queryParams as $param => $value) {
-            if (strpos($param, ':') === false) {
-                $rawFilters[$param] = $value;
-            } else {
-                $param                 = str_replace('source:', '', $param);
+            if (substr_compare($param, 'source:', 0, 7) === 0) {
+                $param                 = substr($param, 8);
                 $sourceFilters[$param] = $value;
+            } else {
+                $rawFilters[$param] = $value;
+            }
+        }
+
+        if (isset($rawFilters['filter:order'])) {
+            if (substr_compare($rawFilters['filter:order'], 'source:', 0, 7)) {
+                $sourceFilters['filter:order'] = $rawFilters['filter:order'];
+
+                if (isset($rawFilters['filter:sort']) && substr_compare($rawFilters['filter:sort'], 'source:', 0, 7)) {
+                    $sourceFilters['filter:sort'] = $rawFilters['filter:sort'];
+                }
             }
         }
 
@@ -52,15 +62,70 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
 
             $collections = $this->listCollections();
             foreach ($collections as $collection) {
-                $this->selectCollection($collection->getName());
+                $collectionName = $collection->getName();
+
+                if (isset($rawFilters['collection'])) {
+                    if (! in_array($collectionName, explode(',', $rawFilters['collection']))) {
+                        continue;
+                    }
+                }
+
+                $this->selectCollection($collectionName);
 
                 try {
                     $entity             = $this->find($source->id);
                     $entity->collection = $collection->getName();
 
                     $entities->push($entity);
+
+                    if (isset($rawFilters['filter:limit']) && $entities->count() >= (int) $rawFilters['filter:limit']) {
+                        break 2;
+                    }
                 } catch (NotFound $e) {
                 }
+            }
+        }
+
+        if(isset($rawFilters['filter:order'])) {
+            $sort = 'DESC';
+
+            if (isset($rawFilters['filter:sort']) && in_array($rawFilters['filter:sort'], ['ASC', 'DESC'])) {
+                $sort = $rawFilters['filter:sort'];
+            }
+
+            switch ($rawFilters['filter:order']) {
+                case 'latest':
+                    $keys = [];
+
+                    foreach ($entities as $key => $entity) {
+                        if ($entity->updated_at) {
+                            $keys[] = ['key' => $key, 'timestamp' => $entity->updated_at];
+                        } else {
+                            $keys[] = ['key' => $key, 'timestamp' => $entity->created_at];
+                        }
+                    }
+
+                    $comp = function ($a, $b) use ($sort) {
+                        if ($a['timestamp'] === $b['timestamp']) {
+                            return 0;
+                        }
+
+                        if ($sort === 'ASC') {
+                            return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
+                        } else {
+                            return ($a['timestamp'] > $b['timestamp']) ? -1 : 1;
+                        }
+                    };
+
+                    usort($keys, $comp);
+
+                    $orderedEntities = new Collection();
+                    foreach ($keys as $value) {
+                        $orderedEntities->push($entities[$value['key']]);
+                    }
+
+                    $entities = $orderedEntities;
+                    break;
             }
         }
 

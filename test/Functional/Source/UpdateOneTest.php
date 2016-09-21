@@ -43,7 +43,7 @@ class UpdateOneTest extends AbstractFunctional {
 
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('source-1', $body['data']['name']);
+        $this->assertSame('facebook', $body['data']['name']);
 
         /*
          * Validates Response using the Json Schema.

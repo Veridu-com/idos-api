@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /profiles/{userName}/attributes/{attributeName}/scores",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Score response payload",
+            "type": "object",
+            "$ref": "scoreEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

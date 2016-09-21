@@ -99,8 +99,11 @@ class Warning implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
-            $this->validator->assertName($command->name);
-            $this->validator->assertName($command->reference);
+            $this->validator->assertSlug($command->slug);
+
+            if (isset($command->attribute)) {
+                $this->validator->assertSlug($command->attribute);
+            }
         } catch (ValidationException $e) {
             throw new Validate\WarningException(
                 $e->getFullMessage(),
@@ -113,8 +116,8 @@ class Warning implements HandlerInterface {
             [
                 'user_id'    => $command->user->id,
                 'creator'    => $command->service->id,
-                'name'       => $command->name,
-                'reference'  => $command->reference,
+                'slug'       => $command->slug,
+                'attribute'  => $command->attribute,
                 'created_at' => time()
             ]
         );

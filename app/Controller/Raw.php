@@ -202,6 +202,55 @@ class Raw implements ControllerInterface {
     }
 
     /**
+     * Creates or updates a raw data for a given source.
+     *
+     * @apiEndpointResponse 201 schema/raw/rawEntity.json
+     * @apiEndpointRequiredParam body string collection collection-name Collection name
+     * @apiEndpointRequiredParam body string data data-value Data
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBSource::findOne
+     * @see App\Handler\Raw::handleCreateNew
+     *
+     * @throws App\Exception\AppException
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $command = $this->commandFactory->create('Raw\\Upsert');
+
+        $user     = $request->getAttribute('targetUser');
+        $service  = $request->getAttribute('service');
+        $sourceId = (int) $request->getParsedBodyParam('decoded_source_id');
+
+        $source = $this->sourceRepository->findOne($sourceId, $user->id);
+
+        $command
+            ->setParameters($request->getParsedBody())
+            ->setParameter('user', $user)
+            ->setParameter('service', $service)
+            ->setParameter('source', $source);
+
+        $raw = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => true,
+            'data'   => $raw->toArray()
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('statusCode', isset($entity->updatedAt) ? 200 : 201)
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
      * Retrieves a raw data from the given source.
      *
      * @apiEndpointURIFragment string collection collectionName

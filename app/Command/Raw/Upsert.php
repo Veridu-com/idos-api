@@ -6,62 +6,67 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Warning;
+namespace App\Command\Raw;
 
 use App\Command\AbstractCommand;
 
 /**
- * Warning "Create New" Command.
+ * Raw "Upsert" Command.
  */
-class CreateNew extends AbstractCommand {
+class Upsert extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Raw's user.
      *
      * @var App\Entity\User
      */
     public $user;
 
     /**
-     * Attribute's creator.
+     * Raw's Service.
      *
      * @var App\Entity\Service
      */
     public $service;
 
     /**
-     * Warning's slug (user input).
+     * Raw's Source.
      *
-     * @var string
+     * @var App\Entity\Source
      */
-    public $slug;
+    public $source;
 
     /**
-     * Warning's attribute (user input).
+     * New raw collection name.
      *
      * @var string
      */
-    public $attribute;
+    public $collection;
+
+    /**
+     * New raw data.
+     *
+     * @var string
+     */
+    public $data;
 
     /**
      * {@inheritdoc}
-     *
-     * @return App\Command\Warning\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['service'])) {
-            $this->service = $parameters['service'];
+        if (isset($parameters['source'])) {
+            $this->source = $parameters['source'];
         }
 
-        if (isset($parameters['slug'])) {
-            $this->slug = $parameters['slug'];
+        if (isset($parameters['collection'])) {
+            $this->collection = $parameters['collection'];
         }
 
-        if (isset($parameters['attribute'])) {
-            $this->attribute = $parameters['attribute'];
+        if (isset($parameters['data'])) {
+            $this->data = $parameters['data'];
         }
 
         return $this;

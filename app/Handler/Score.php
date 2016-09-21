@@ -175,9 +175,9 @@ class Score implements HandlerInterface {
 
         $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
 
-        $entity->attribute  = $command->attribute;
-        $entity->value      = $command->value;
-        $entity->updatedAt  = time();
+        $entity->attribute = $command->attribute;
+        $entity->value     = $command->value;
+        $entity->updatedAt = time();
 
         try {
             $entity = $this->repository->save($entity);
@@ -208,11 +208,19 @@ class Score implements HandlerInterface {
      * @return App\Entity\Score
      */
     public function handleUpsert(Upsert $command) : ScoreEntity {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertService($command->service);
-        $this->validator->assertName($command->attribute);
-        $this->validator->assertName($command->name);
-        $this->validator->assertScore($command->value);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertName($command->attribute);
+            $this->validator->assertName($command->name);
+            $this->validator->assertScore($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\ScoreException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $entity    = null;
         $inserting = false;
@@ -292,7 +300,7 @@ class Score implements HandlerInterface {
             throw new NotFound\ScoreException('No features found for deletion', 404);
         }
 
-        $this->emitter->emit(new Deleted($score));
+        return $affectedRows;
     }
 
     /**

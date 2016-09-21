@@ -138,9 +138,9 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name    = 'feature-test-2';
-        $type    = 'string';
-        $value   = 'testing';
+        $name  = 'feature-test-2';
+        $type  = 'string';
+        $value = 'testing';
 
         //First, we are going to create a feature without upsert flag
         $request = $this->createRequest(

@@ -30,6 +30,7 @@ class Scores implements RouteInterface {
             'score:deleteAll',
             'score:getOne',
             'score:updateOne',
+            'score:upsert',
             'score:deleteOne'
         ];
     }
@@ -155,7 +156,7 @@ class Scores implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->patch(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Scores:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -195,11 +196,10 @@ class Scores implements RouteInterface {
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('score:updateOne');
+            ->setName('score:upsert');
     }
 
     /*
->>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
      * Retrieves a score.
      *
      * Retrieves a score from a given attribute.
@@ -226,7 +226,7 @@ class Scores implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Scores:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -295,7 +295,7 @@ class Scores implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Scores:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
