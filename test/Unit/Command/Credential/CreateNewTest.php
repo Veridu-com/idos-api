@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Credential;
 
-use App\Command\Credential\CreateNew;
+use App\Command\Company\Credential\CreateNew;
 use Test\Unit\AbstractUnit;
 
 class CreateNewTest extends AbstractUnit {

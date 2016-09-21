@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Repository;
 
-use App\Entity\Hook as HookEntity;
+use App\Entity\Company\Hook as HookEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBHook;

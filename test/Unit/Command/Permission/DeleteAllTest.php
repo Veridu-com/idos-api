@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Permission;
 
-use App\Command\Permission\DeleteAll;
+use App\Command\Company\Permission\DeleteAll;
 use Test\Unit\AbstractUnit;
 
 class DeleteAllTest extends AbstractUnit {

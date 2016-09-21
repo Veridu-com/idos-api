@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Feature;
 
-use App\Command\Feature\DeleteOne;
+use App\Command\Profile\Feature\DeleteOne;
 use Test\Unit\AbstractUnit;
 
 class DeleteOneTest extends AbstractUnit {

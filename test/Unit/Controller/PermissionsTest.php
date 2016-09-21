@@ -8,13 +8,13 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Controller;
 
-use App\Command\Permission\CreateNew;
-use App\Command\Permission\DeleteAll;
-use App\Command\Permission\DeleteOne;
+use App\Command\Company\Permission\CreateNew;
+use App\Command\Company\Permission\DeleteAll;
+use App\Command\Company\Permission\DeleteOne;
 use App\Command\ResponseDispatch;
-use App\Controller\Permissions;
+use App\Controller\Company\Permissions;
 use App\Entity\Company as CompanyEntity;
-use App\Entity\Permission as PermissionEntity;
+use App\Entity\Company\Permission as PermissionEntity;
 use App\Factory\Command;
 use App\Repository\DBPermission;
 use Illuminate\Support\Collection;

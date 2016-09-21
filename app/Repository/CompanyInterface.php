@@ -9,8 +9,8 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Company;
+use App\Entity\Company\Member;
 use App\Entity\Identity;
-use App\Entity\Member;
 use Illuminate\Support\Collection;
 
 /**

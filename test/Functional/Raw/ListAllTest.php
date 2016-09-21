@@ -20,7 +20,7 @@ class ListAllTest extends AbstractRawFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
         $this->populateDb();
     }
 
@@ -44,7 +44,7 @@ class ListAllTest extends AbstractRawFunctional {
 
         foreach ($body['data'] as $raw) {
             $this->assertContains($raw['collection'], ['raw-1', 'raw-2', 'raw-3']);
-            $this->assertContains($raw['data'], ['data-1', 'data-2', 'data-3']);
+            $this->assertContains($raw['data'], [['test' => 'data'], ['test' => 'data2'], ['test' => 'data3']]);
         }
 
         /*
@@ -64,7 +64,7 @@ class ListAllTest extends AbstractRawFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'collections=raw-1'
+                    'QUERY_STRING'       => 'collection=raw-1'
                 ]
             )
         );
@@ -80,7 +80,7 @@ class ListAllTest extends AbstractRawFunctional {
 
         foreach ($body['data'] as $raw) {
             $this->assertContains($raw['collection'], ['raw-1']);
-            $this->assertContains($raw['data'], ['data-1']);
+            $this->assertContains($raw['data'], [['test' => 'data']]);
         }
 
         /*
@@ -100,7 +100,7 @@ class ListAllTest extends AbstractRawFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'collections=raw-1,raw-3'
+                    'QUERY_STRING'       => 'collection=raw-1,raw-3'
                 ]
             )
         );
@@ -115,7 +115,7 @@ class ListAllTest extends AbstractRawFunctional {
 
         foreach ($body['data'] as $raw) {
             $this->assertContains($raw['collection'], ['raw-1', 'raw-3']);
-            $this->assertContains($raw['data'], ['data-1', 'data-3']);
+            $this->assertContains($raw['data'], [['test' => 'data'], ['test' => 'data3']]);
         }
 
         /*

@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Event\Member;
 
-use App\Entity\Member;
-use App\Event\Member\Created;
+use App\Entity\Company\Member;
+use App\Event\Company\Member\Created;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 

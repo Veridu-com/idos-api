@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\Credential as CredentialEntity;
+use App\Entity\Company\Credential as CredentialEntity;
 use Illuminate\Support\Collection;
 
 /**
