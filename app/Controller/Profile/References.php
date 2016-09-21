@@ -107,7 +107,7 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Reference\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Reference\\CreateNew');
 
         $command
             ->setParameters($request->getParsedBody())
@@ -144,7 +144,7 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Reference\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\\Reference\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $request->getAttribute('targetUser'))
@@ -210,7 +210,7 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Reference\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\\Reference\\DeleteAll');
         $command
             ->setParameter('user', $request->getAttribute('targetUser'));
 
@@ -240,7 +240,7 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Reference\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\\Reference\\DeleteOne');
         $command
             ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('name', $request->getAttribute('referenceName'));

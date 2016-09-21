@@ -15,7 +15,7 @@ use App\Command\Sso\CreateNewGoogle;
 use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
 use App\Command\Sso\CreateNewTwitter;
-use App\Entity\Source as SourceEntity;
+use App\Entity\Profile\Source as SourceEntity;
 use App\Entity\User;
 use App\Exception\Create;
 use App\Factory\Command;
@@ -152,7 +152,7 @@ class Sso implements HandlerInterface {
      * @return App\Entity\Profile\Source The created source
      */
     private function createNewSource(string $provider, User $user, array $tags, string $ipAddr) : SourceEntity {
-        $command = $this->commandFactory->create('Source\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
 
         $command->setParameters(
             [

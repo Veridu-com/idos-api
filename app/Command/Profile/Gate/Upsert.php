@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Gate;
+namespace App\Command\Profile\Gate;
 
 use App\Command\AbstractCommand;
 
@@ -45,7 +45,7 @@ class Upsert extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Gate\Upsert
+     * @return App\Command\Profile\Gate\Upsert
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {

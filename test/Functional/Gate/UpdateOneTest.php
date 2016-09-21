@@ -22,7 +22,7 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
+        $this->httpMethod = 'PATCH';
         $this->populate(
             '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates',
             'GET',
@@ -106,7 +106,7 @@ class UpdateOneTest extends AbstractFunctional {
 
         $request  = $this->createRequest($environment, json_encode(['pass' => false]));
         $response = $this->process($request);
-        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

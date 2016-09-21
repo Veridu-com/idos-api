@@ -82,7 +82,7 @@ class Raw implements RouteInterface {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/raw',
-                'App\Controller\Raw:listAll'
+                'App\Controller\Profile\Raw:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
@@ -115,7 +115,7 @@ class Raw implements RouteInterface {
         $app
             ->post(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/raw',
-                'App\Controller\Raw:createNew'
+                'App\Controller\Profile\Raw:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
@@ -149,7 +149,7 @@ class Raw implements RouteInterface {
         $app
             ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/raw/{sourceId:[0-9]+}',
-                'App\Controller\Raw:updateOne'
+                'App\Controller\Profile\Raw:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
@@ -176,13 +176,13 @@ class Raw implements RouteInterface {
      * @link docs/sources/raw/upsert.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Raw::upsert
+     * @see App\Controller\Profile\Raw::upsert
      */
     private static function upsert(App $app, callable $auth, callable $permission) {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/raw',
-                'App\Controller\Raw:upsert'
+                'App\Controller\Profile\Raw:upsert'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))

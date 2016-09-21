@@ -153,7 +153,7 @@ class Gates implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $command = $this->commandFactory->create('Gate\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Gate\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
@@ -192,7 +192,7 @@ class Gates implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $command = $this->commandFactory->create('Gate\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\\Gate\\DeleteAll');
         $command
             ->setParameter('user', $user)
             ->setParameter('service', $service)
@@ -228,7 +228,7 @@ class Gates implements ControllerInterface {
         $service = $request->getAttribute('service');
         $slug    = $request->getAttribute('gateSlug');
 
-        $command = $this->commandFactory->create('Gate\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\\Gate\\DeleteOne');
         $command->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('slug', $slug);
@@ -266,7 +266,7 @@ class Gates implements ControllerInterface {
         $service = $request->getAttribute('service');
         $slug    = $request->getAttribute('gateSlug');
 
-        $command = $this->commandFactory->create('Gate\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\\Gate\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
@@ -305,7 +305,7 @@ class Gates implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $command = $this->commandFactory->create('Gate\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Gate\\Upsert');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)

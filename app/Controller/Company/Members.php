@@ -115,7 +115,7 @@ class Members implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $bodyRequest = $request->getParsedBody();
 
-        $command = $this->commandFactory->create('Member\\CreateNew');
+        $command = $this->commandFactory->create('Company\\Member\\CreateNew');
 
         $command
             ->setParameters($bodyRequest);
@@ -151,7 +151,7 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Member\\UpdateOne');
+        $command = $this->commandFactory->create('Company\\Member\\UpdateOne');
         $command
             ->setParameter('memberId', $request->getAttribute('decodedMemberId'))
             ->setParameters($request->getParsedBody());
@@ -214,7 +214,7 @@ class Members implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('company');
-        $command = $this->commandFactory->create('Member\\DeleteAll');
+        $command = $this->commandFactory->create('Company\\Member\\DeleteAll');
 
         $command->setParameter('companyId', $company->id);
 
@@ -244,7 +244,7 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Member\\DeleteOne');
+        $command = $this->commandFactory->create('Company\\Member\\DeleteOne');
         $command->setParameter('memberId', $request->getAttribute('decodedMemberId'));
 
         $this->commandBus->handle($command);

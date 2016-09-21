@@ -11,7 +11,7 @@ namespace App\Controller\Profile;
 use App\Controller\ControllerInterface;
 use App\Entity\User;
 use App\Factory\Command;
-use App\Repository\ReviewInterface;
+use App\Repository\Profile\ReviewInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -116,7 +116,7 @@ class Reviews implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command  = $this->commandFactory->create('Review\\CreateNew');
+        $command  = $this->commandFactory->create('Profile\\Review\\CreateNew');
         $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
         $identity = $request->getAttribute('identity');
 
@@ -157,7 +157,7 @@ class Reviews implements ControllerInterface {
         $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
         $identity = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Review\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\\Review\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)

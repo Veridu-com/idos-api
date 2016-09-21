@@ -87,8 +87,8 @@ class Review implements HandlerInterface {
      *
      * @param App\Command\Profile\Review\CreateNew $command
      *
-     * @see App\Repository\DBReview::create
-     * @see App\Repository\DBReview::save
+     * @see App\Repository\Profile\DBReview::create
+     * @see App\Repository\Profile\DBReview::save
      *
      * @throws App\Exception\Validate\ReviewException
      * @throws App\Exception\Create\ReviewException

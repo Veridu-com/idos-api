@@ -43,7 +43,7 @@ class Settings implements RouteInterface {
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Company\Settings::class] = function (ContainerInterface $container) {
             return new \App\Controller\Company\Settings(
-                $container->get('repositoryFactory')->create('Company\Credential'),
+                $container->get('repositoryFactory')->create('Company\Setting'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
                 $container->get('optimus')

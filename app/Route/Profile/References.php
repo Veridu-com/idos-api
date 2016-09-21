@@ -151,7 +151,7 @@ class References implements RouteInterface {
         $app
             ->delete(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/references',
-                'App\Controller\References:deleteAll'
+                'App\Controller\Profile\References:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
@@ -219,7 +219,7 @@ class References implements RouteInterface {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
-                'App\Controller\References:updateOne'
+                'App\Controller\Profile\References:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
