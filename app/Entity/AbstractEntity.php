@@ -295,7 +295,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
                 // populating relations
                 $relationEntity = $this->$attribute();
-                $value = $this->$attribute()->toArray();
+                $value          = $this->$attribute()->toArray();
 
                 foreach (array_diff($relationEntity->visible, array_keys($relationEntity->attributes)) as $deleteAttribute) {
                     unset($value[$deleteAttribute]);

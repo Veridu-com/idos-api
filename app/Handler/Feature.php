@@ -188,7 +188,7 @@ class Feature implements HandlerInterface {
         $feature = $this->repository->findOneBy([
             'user_id' => $command->user->id,
             'creator' => $command->service->id,
-            'id' => $command->featureId
+            'id'      => $command->featureId
         ]);
 
         $feature->type      = $command->type;

@@ -34,8 +34,8 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request  = $this->createRequest($environment, json_encode([
-            'type' => 'string',
+        $request = $this->createRequest($environment, json_encode([
+            'type'  => 'string',
             'value' => 'new value'
         ]));
 
@@ -70,8 +70,8 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request  = $this->createRequest($environment, json_encode([
-            'type' => 'string',
+        $request = $this->createRequest($environment, json_encode([
+            'type'  => 'string',
             'value' => 'new value'
         ]));
 
