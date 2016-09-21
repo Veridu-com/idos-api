@@ -428,7 +428,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
             if (in_array($list[$i], $combinations)) {
                 continue;
             }
-            
+
             $combinations[] = $list[$i];
             $this->combinatorics($list, $start + 1, $end - 1, $callback, $combinations);
             array_pop($combinations);
