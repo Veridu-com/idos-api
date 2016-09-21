@@ -68,13 +68,6 @@ class S12CategoriesSeed extends AbstractSeed {
                 'service_id'  => 1
             ],
             [
-                'name'        => 'Country name',
-                'slug'        => 'country-name',
-                'type'        => 'attribute',
-                'description' => 'Country name of a user.',
-                'service_id'  => 1
-            ],
-            [
                 'name'        => 'Gender',
                 'slug'        => 'gender',
                 'type'        => 'attribute',
