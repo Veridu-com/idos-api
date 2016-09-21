@@ -418,4 +418,20 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
 
         return sprintf('CredentialToken %s', $token);
     }
+
+    public function combinatorics(array $list, int $start, int $end, callable $callback, array $combinations = []) {
+        if ($end === 0) {
+            return $callback($combinations);
+        }
+
+        for ($i = $start; $i <= count($list) - $end; $i++) {
+            if (in_array($list[$i], $combinations)) {
+                continue;
+            }
+            
+            $combinations[] = $list[$i];
+            $this->combinatorics($list, $start + 1, $end - 1, $callback, $combinations);
+            array_pop($combinations);
+        }
+    }
 }

@@ -300,7 +300,7 @@ class Gates implements ControllerInterface {
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function upsertOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
@@ -310,11 +310,11 @@ class Gates implements ControllerInterface {
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
-        $gate = $this->commandBus->handle($command);
+        $entity = $this->commandBus->handle($command);
 
         $body = [
             'status' => true,
-            'data'   => $gate->toArray()
+            'data'   => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

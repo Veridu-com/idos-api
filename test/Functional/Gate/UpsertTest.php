@@ -13,7 +13,7 @@ use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
-class DeleteAllTest extends AbstractFunctional {
+class UpsertTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
@@ -22,53 +22,65 @@ class DeleteAllTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'DELETE';
+        $this->httpMethod = 'PUT';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates';
+    }
 
-        $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates',
-            'GET',
+    public function testCreated() {
+        $environment = $this->createEnvironment(
             [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates';
-    }
 
-    public function testSuccess() {
         $request = $this->createRequest(
-            $this->createEnvironment(
+            $environment,
+            json_encode(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                    'name' => 'name-test',
+                    'pass' => true
                 ]
             )
         );
+
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(2, $body['deleted']);
+        $this->assertSame('name-test', $body['data']['name']);
+        $this->assertTrue($body['data']['pass']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'gate/deleteAll.json',
+                'gate/upsert.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
 
-    public function testNameFilter() {
+    public function testUpdated() {
+        $this->testCreated();
+
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
         $request = $this->createRequest(
-            $this->createEnvironment(
+            $environment,
+            json_encode(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=*one'
+                    'name'      => 'name-test',
+                    'value'     => false
                 ]
             )
         );
@@ -79,104 +91,124 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(1, $body['deleted']);
+        $this->assertSame('name-test', $body['data']['name']);
+        $this->assertFalse($body['data']['pass']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'gate/deleteAll.json',
+                'gate/upsert.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
 
-    public function testNameFilterMultiple() {
+    public function testEmptyName() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
         $request = $this->createRequest(
-            $this->createEnvironment(
+            $environment,
+            json_encode(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=Gate*'
+                    'name'      => '',
+                    'value'     => 0.6
                 ]
             )
         );
 
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(500, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-        $this->assertSame(2, $body['deleted']);
+        $this->assertFalse($body['status']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'gate/deleteAll.json',
+                'error.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
 
-    public function testCreatorNameFilter() {
+    public function testEmptyPass() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
         $request = $this->createRequest(
-            $this->createEnvironment(
+            $environment,
+            json_encode(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'creator:name=idOS FB Scraper'
+                    'name' => 'name-value',
+                    'pass' => null
                 ]
             )
         );
 
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(500, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-        $this->assertSame(2, $body['deleted']);
-
+        $this->assertFalse($body['status']);
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'gate/deleteAll.json',
+                'error.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
 
-    public function testCreatorNameFilterMultiple() {
+    public function testInvalidPass() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
         $request = $this->createRequest(
-            $this->createEnvironment(
+            $environment,
+            json_encode(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'creator:name=id*'
+                    'name' => 'name-value',
+                    'pass' => 'test'
                 ]
             )
         );
 
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(500, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-        $this->assertSame(2, $body['deleted']);
-
+        $this->assertFalse($body['status']);
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'gate/deleteAll.json',
+                'error.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
