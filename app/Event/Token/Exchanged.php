@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Token;
 
 use App\Entity\Company;
-use App\Entity\Credential;
+use App\Entity\Company\Credential;
 use App\Entity\User;
 use App\Event\AbstractEvent;
 
@@ -44,18 +44,18 @@ class Exchanged extends AbstractEvent {
     /**
      * Credential corresponding to the authenticated user.
      *
-     * @var App\Entity\Credential
+     * @var App\Entity\Company\Credential
      */
     public $credential;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\User       $user
-     * @param App\Entity\User       $highestRoleUser
-     * @param App\Entity\Company    $actingCompany
-     * @param App\Entity\Company    $targetCompany
-     * @param App\Entity\Credential $credential
+     * @param App\Entity\User               $user
+     * @param App\Entity\User               $highestRoleUser
+     * @param App\Entity\Company            $actingCompany
+     * @param App\Entity\Company            $targetCompany
+     * @param App\Entity\Company\Credential $credential
      *
      * @return void
      */

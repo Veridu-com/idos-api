@@ -128,7 +128,7 @@ class Token {
      * @param string $handlerPubKey    The token issuer (handler's public key)
      * @param string $handlerPrivKey   The token signature secret (handler's private key)
      *
-     * @see \App\Repository\CredentialInterface
+     * @see \App\Repository\Company\CredentialInterface
      *
      * @return string
      */

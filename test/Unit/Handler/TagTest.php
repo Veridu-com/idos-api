@@ -8,21 +8,21 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Handler;
 
-use App\Command\Tag\CreateNew;
-use App\Command\Tag\DeleteAll;
-use App\Command\Tag\DeleteOne;
-use App\Entity\Tag as TagEntity;
+use App\Command\Profile\Tag\CreateNew;
+use App\Command\Profile\Tag\DeleteAll;
+use App\Command\Profile\Tag\DeleteOne;
+use App\Entity\Profile\Tag as TagEntity;
 use App\Entity\User as UserEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
-use App\Handler\Tag;
-use App\Repository\CredentialInterface;
+use App\Handler\Profile\Tag;
+use App\Repository\Company\CredentialInterface;
 use App\Repository\DBTag;
 use App\Repository\DBUser;
-use App\Repository\TagInterface;
+use App\Repository\Profile\TagInterface;
 use App\Repository\UserInterface;
-use App\Validator\Tag as TagValidator;
+use App\Validator\Profile\Tag as TagValidator;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -184,7 +184,7 @@ class TagTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Tag');
+        $entityFactory->create('Profile\Tag');
 
         $repository = $this->getMockBuilder(DBTag::class)
             ->setMethods(['create', 'save'])
@@ -231,7 +231,7 @@ class TagTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Tag');
+        $entityFactory->create('Profile\Tag');
 
         $repository = $this->getMockBuilder(DBTag::class)
             ->setMethods(['delete'])
@@ -277,7 +277,7 @@ class TagTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Tag');
+        $entityFactory->create('Profile\Tag');
 
         $repository = $this->getMockBuilder(DBTag::class)
             ->setMethods(['deleteByUserId', 'getAllByUserId'])

@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Validator;
 
-use App\Validator\Hook;
+use App\Validator\Company\Hook;
 use Respect\Validation\Exceptions\ExceptionInterface;
 use Test\Unit\AbstractUnit;
 

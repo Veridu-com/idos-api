@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Event\Setting;
 
-use App\Entity\Setting;
-use App\Event\Setting\Updated;
+use App\Entity\Company\Setting;
+use App\Event\Company\Setting\Updated;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 

@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Repository;
 
-use App\Entity\Member as MemberEntity;
+use App\Entity\Company\Member as MemberEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBMember;

@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Repository;
 
-use App\Entity\Credential as CredentialEntity;
+use App\Entity\Company\Credential as CredentialEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBCredential;

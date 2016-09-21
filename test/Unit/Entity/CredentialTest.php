@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Entity;
 
-use App\Entity\Credential;
+use App\Entity\Company\Credential;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 

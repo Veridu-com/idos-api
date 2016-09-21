@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Repository;
 
-use App\Entity\Feature as FeatureEntity;
+use App\Entity\Profile\Feature as FeatureEntity;
 use App\Factory\Entity;
 use App\Repository\DBFeature;
 use Illuminate\Database\Connection;
