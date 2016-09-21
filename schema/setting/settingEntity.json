@@ -36,7 +36,6 @@
         "section",
         "property",
         "value",
-        "created_at",
-        "updated_at"
+        "created_at"
     ]
 }

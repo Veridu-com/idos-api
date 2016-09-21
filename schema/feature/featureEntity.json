@@ -30,8 +30,7 @@
         },
         "source": {
             "description": "Source entity",
-            "type": "object",
-            "$ref": "../source/sourceEntity.json"
+            "type": "string"
         },
         "created_at": {
             "description": "Feature's creation unixtime",
@@ -47,7 +46,6 @@
         "creator",
         "type",
         "value",
-        "created_at",
-        "updated_at"
+        "created_at"
     ]
 }

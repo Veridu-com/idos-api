@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Feature;
+namespace App\Command\Profile\Feature;
 
 use App\Command\AbstractCommand;
 
@@ -59,7 +59,7 @@ class Upsert extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Feature\Upsert
+     * @return App\Command\Profile\Feature\Upsert
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {

@@ -12,6 +12,7 @@ use App\Command\Profile\Score\CreateNew;
 use App\Command\Profile\Score\DeleteAll;
 use App\Command\Profile\Score\DeleteOne;
 use App\Command\Profile\Score\UpdateOne;
+use App\Command\Profile\Score\Upsert;
 use App\Entity\Profile\Score as ScoreEntity;
 use App\Event\Profile\Score\Created;
 use App\Event\Profile\Score\Deleted;
@@ -99,8 +100,8 @@ class Score implements HandlerInterface {
      * @see App\Repository\DBScore::save
      * @see App\Repository\DBScore::hydrateRelations
      *
-     * @throws App\Exception\Validate\ScoreException
-     * @throws App\Exception\Create\ScoreException
+     * @throws App\Exception\Validate\Profile\ScoreException
+     * @throws App\Exception\Create\Profile\ScoreException
      *
      * @return App\Entity\Score
      */
@@ -152,8 +153,8 @@ class Score implements HandlerInterface {
      * @see App\Repository\DBScore::save
      * @see App\Repository\DBScore::hydrate
      *
-     * @throws App\Exception\Validate\ScoreException
-     * @throws App\Exception\Update\ScoreException
+     * @throws App\Exception\Validate\Profile\ScoreException
+     * @throws App\Exception\Update\Profile\ScoreException
      *
      * @return App\Entity\Score
      */
@@ -202,7 +203,7 @@ class Score implements HandlerInterface {
      * @see App\Repository\DBScore::hydrateRelations
      *
      * @throws App\Exception\NotFound\ScoreException
-     * @throws App\Exception\Update\ScoreException
+     * @throws App\Exception\Update\Profile\ScoreException
      *
      * @return App\Entity\Score
      */
@@ -214,7 +215,7 @@ class Score implements HandlerInterface {
             $this->validator->assertName($command->name);
             $this->validator->assertScore($command->value);
         } catch (ValidationException $e) {
-            throw new Validate\ScoreException(
+            throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -256,7 +257,7 @@ class Score implements HandlerInterface {
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new Update\ScoreException('Error while trying to upsert a score', 500, $e);
+            throw new Update\Profile\ScoreException('Error while trying to upsert a score', 500, $e);
         }
 
         return $entity;
@@ -270,7 +271,7 @@ class Score implements HandlerInterface {
      * @see App\Repository\DBScore::findOneByName
      * @see App\Repository\DBScore::delete
      *
-     * @throws App\Exception\Validate\ScoreException
+     * @throws App\Exception\Validate\Profile\ScoreException
      * @throws App\Exception\NotFound\ScoreException
      *
      * @return void
@@ -310,7 +311,7 @@ class Score implements HandlerInterface {
      * @see App\Repository\DBScore::findBy
      * @see App\Repository\DBScore::delete
      *
-     * @throws App\Exception\Validate\ScoreException
+     * @throws App\Exception\Validate\Profile\ScoreException
      * @throws App\Exception\AppException
      *
      * @return int
@@ -320,7 +321,7 @@ class Score implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
         } catch (ValidationException $e) {
-            throw new Validate\ScoreException(
+            throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
                 400,
                 $e

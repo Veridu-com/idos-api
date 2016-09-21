@@ -29,7 +29,7 @@ class GetOneTest extends AbstractFunctional {
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/%s', $this->entity['slug']);
+        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/%s', $this->entity['id']);
     }
 
     public function testSuccess() {
@@ -60,7 +60,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/dummy-ltd';
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/0000';
 
         $request = $this->createRequest(
             $this->createEnvironment(

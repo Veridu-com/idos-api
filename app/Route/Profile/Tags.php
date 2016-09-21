@@ -85,7 +85,7 @@ class Tags implements RouteInterface {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
-                'App\Controller\Tags:listAll'
+                'App\Controller\Profile\Tags:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
@@ -117,7 +117,7 @@ class Tags implements RouteInterface {
         $app
             ->post(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
-                'App\Controller\Tags:createNew'
+                'App\Controller\Profile\Tags:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
@@ -150,7 +150,7 @@ class Tags implements RouteInterface {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
-                'App\Controller\Tags:deleteAll'
+                'App\Controller\Profile\Tags:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
@@ -184,7 +184,7 @@ class Tags implements RouteInterface {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags/{tagSlug:[a-z0-9_-]+}',
-                'App\Controller\Tags:getOne'
+                'App\Controller\Profile\Tags:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
@@ -218,7 +218,7 @@ class Tags implements RouteInterface {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags/{tagSlug:[a-z0-9_-]+}',
-                'App\Controller\Tags:deleteOne'
+                'App\Controller\Profile\Tags:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))

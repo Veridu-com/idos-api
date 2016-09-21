@@ -37,9 +37,9 @@ class Reviews implements RouteInterface {
      * {@inheritdoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Reviews::class] = function (ContainerInterface $container) {
-            return new \App\Controller\Reviews(
-                $container->get('repositoryFactory')->create('Review'),
+        $app->getContainer()[\App\Controller\Profile\Reviews::class] = function (ContainerInterface $container) {
+            return new \App\Controller\Profile\Reviews(
+                $container->get('repositoryFactory')->create('Profile\Review'),
                 $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
@@ -83,7 +83,7 @@ class Reviews implements RouteInterface {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews',
-                'App\Controller\Reviews:listAll'
+                'App\Controller\Profile\Reviews:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
@@ -115,7 +115,7 @@ class Reviews implements RouteInterface {
         $app
             ->post(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews',
-                'App\Controller\Reviews:createNew'
+                'App\Controller\Profile\Reviews:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
@@ -149,7 +149,7 @@ class Reviews implements RouteInterface {
         $app
             ->put(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
-                'App\Controller\Reviews:updateOne'
+                'App\Controller\Profile\Reviews:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
@@ -183,7 +183,7 @@ class Reviews implements RouteInterface {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
-                'App\Controller\Reviews:getOne'
+                'App\Controller\Profile\Reviews:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))

@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Source;
 
-use App\Entity\Source;
+use App\Entity\Profile\Source;
 use App\Entity\User;
 use App\Event\AbstractEvent;
 
@@ -44,7 +44,7 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Source $source, string $ipAddr) {
+    public function __construct(User $user, Source $source, string $ipAddr) {
         $this->user   = $user;
         $this->source = $source;
         $this->ipAddr = $ipAddr;

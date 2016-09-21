@@ -59,10 +59,10 @@ class Setting implements HandlerInterface {
             return new \App\Handler\Company\Setting(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Company\Credential'),
+                    ->create('Company\Setting'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Company\Credential'),
+                    ->create('Company\Setting'),
                 $container
                     ->get('eventEmitter')
             );

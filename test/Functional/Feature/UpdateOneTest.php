@@ -22,7 +22,7 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
+        $this->httpMethod = 'PATCH';
         $this->populate(
             '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features',
             'GET',
@@ -31,7 +31,7 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/';
+        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/%s', $this->entity['id']);
     }
 
     public function testSuccess() {
