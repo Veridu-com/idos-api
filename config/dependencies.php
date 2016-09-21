@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 use Apix\Cache;
 use App\Command;
-use App\Event\ListenerProvider;
 use App\Exception\AppException;
 use App\Factory;
 use App\Handler;
@@ -430,8 +429,8 @@ $container['eventEmitter'] = function (ContainerInterface $container) : Emitter 
     $providers = array_map(
         function ($providerFile) {
             return preg_replace(
-                '/.*?Listener\/(.*)\/ListenerProvider.php/',
-                'App\\Listener\\\$1\\ListenerProvider',
+                '/.*?Listener\/(.*)\/(.*)Provider.php/',
+                'App\\Listener\\\$1\\\$2Provider',
                 $providerFile
             );
         },
