@@ -8,9 +8,11 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Raw;
 
+use Slim\Http\Response;
+use Slim\Http\Uri;
 use Test\Functional\Traits;
 
-class ListAllTest extends AbstractRawFunctional {
+class UpdateOneTest extends AbstractRawFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
@@ -18,17 +20,26 @@ class ListAllTest extends AbstractRawFunctional {
 
     protected function setUp() {
         parent::setUp();
-
-        $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
         $this->populateDb();
+
+        $this->httpMethod = 'PATCH';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw/1321189817';
     }
 
     public function testSuccess() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
         $request = $this->createRequest(
-            $this->createEnvironment(
+            $environment,
+            json_encode(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                    'collection' => 'raw-1',
+                    'data' => ['test' => 'data2']
                 ]
             )
         );
@@ -39,91 +50,88 @@ class ListAllTest extends AbstractRawFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-
-        $this->assertCount(3, $body['data']);
-
-        foreach ($body['data'] as $raw) {
-            $this->assertContains($raw['collection'], ['raw-1', 'raw-2', 'raw-3']);
-            $this->assertContains($raw['data'], [['test' => 'data'], ['test' => 'data2'], ['test' => 'data3']]);
-        }
+        $this->assertSame('raw-1', $body['data']['collection']);
+        $this->assertSame(['test' => 'data2'], $body['data']['data']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'raw/listAll.json',
+                'raw/upsert.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
 
-    public function testFilter() {
+    public function testNotFound() {
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw/000000';
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
         $request = $this->createRequest(
-            $this->createEnvironment(
+            $environment,
+            json_encode(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'collection=raw-1'
+                    'collection' => 'raw-1',
+                    'data' => ['test' => 'data']
                 ]
             )
         );
 
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-
-        $this->assertCount(1, $body['data']);
-
-        foreach ($body['data'] as $raw) {
-            $this->assertContains($raw['collection'], ['raw-1']);
-            $this->assertContains($raw['data'], [['test' => 'data']]);
-        }
-
+        $this->assertFalse($body['status']);
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'raw/listAll.json',
+                'error.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
-    }
+    }    
 
-    public function testFilterMultiple() {
+    public function testEmptyCollection() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
         $request = $this->createRequest(
-            $this->createEnvironment(
+            $environment,
+            json_encode(
                 [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'collection=raw-1,raw-3'
+                    'collection' => '',
+                    'data' => ['test' => 'data']
                 ]
             )
         );
 
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
-
-        foreach ($body['data'] as $raw) {
-            $this->assertContains($raw['collection'], ['raw-1', 'raw-3']);
-            $this->assertContains($raw['data'], [['test' => 'data'], ['test' => 'data3']]);
-        }
-
+        $this->assertFalse($body['status']);
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'raw/listAll.json',
+                'error.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

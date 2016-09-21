@@ -35,28 +35,35 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      *
      * @var \Slim\App
      */
-    private static $app;
+    protected static $app;
 
     /**
      * Phinx Application Instance.
      *
      * @var Phinx\Console\PhinxApplication
      */
-    private static $phinxApp;
+    protected static $phinxApp;
 
     /**
      * Phinx TextWrapper Instance.
      *
      * @var Phinx\Wrapper\TextWrapper
      */
-    private static $phinxTextWrapper;
+    protected static $phinxTextWrapper;
 
     /**
      * SQL Database Connection.
      *
      * @var Illuminate\Database\Connection
      */
-    private static $sqlConnection;
+    protected static $sqlConnection;
+
+    /**
+     * NoSQL Database Connection.
+     *
+     * @var callable
+     */
+    protected static $noSqlConnection;
 
     /**
      * Message of the errors of a failed schema assertion.
@@ -125,6 +132,10 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
 
         if (! self::$sqlConnection) {
             self::$sqlConnection = self::$app->getContainer()->get('sql');
+        }
+
+        if (! self::$noSqlConnection) {
+            self::$noSqlConnection = self::$app->getContainer()->get('nosql');
         }
     }
 
