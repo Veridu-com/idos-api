@@ -50,78 +50,6 @@ class ListAllTest extends AbstractFunctional {
         );
     }
 
-    public function testNameFilter() {
-        $request = $this->createRequest(
-            $this->createEnvironment(
-                [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=*one'
-                ]
-            )
-        );
-
-        $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-        $this->assertCount(1, $body['data']);
-
-        foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['name'], ['warning one']);
-            $this->assertContains($warning['slug'], ['warning-one']);
-            $this->assertContains($warning['reference'], ['firstName']);
-        }
-
-        /*
-         * Validates Response using the Json Schema.
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'warning/listAll.json',
-                json_decode((string) $response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testNameFilterMultiple() {
-        $request = $this->createRequest(
-            $this->createEnvironment(
-                [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=w*'
-                ]
-            )
-        );
-
-        $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
-
-        foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['name'], ['warning one', 'warning two']);
-            $this->assertContains($warning['slug'], ['warning-one', 'warning-two']);
-            $this->assertContains($warning['reference'], ['firstName', 'lastName']);
-        }
-
-        /*
-         * Validates Response using the Json Schema.
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'warning/listAll.json',
-                json_decode((string) $response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
     public function testCreatorNameFilter() {
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -141,9 +69,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['name'], ['warning one', 'warning two']);
-            $this->assertContains($warning['slug'], ['warning-one', 'warning-two']);
-            $this->assertContains($warning['reference'], ['firstName', 'lastName']);
+            $this->assertContains($warning['slug'], ['first-name-mismatch', 'last-name-mismatch']);
+            $this->assertContains($warning['attribute'], ['first-name', 'last-name']);
         }
 
         /*
@@ -177,9 +104,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['name'], ['warning one', 'warning two']);
-            $this->assertContains($warning['slug'], ['warning-one', 'warning-two']);
-            $this->assertContains($warning['reference'], ['firstName', 'lastName']);
+            $this->assertContains($warning['slug'], ['first-name-mismatch', 'last-name-mismatch']);
+            $this->assertContains($warning['attribute'], ['first-name', 'last-name']);
         }
 
         /*
@@ -199,7 +125,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'slug=*one'
+                    'QUERY_STRING'       => 'slug=first*'
                 ]
             )
         );
@@ -213,9 +139,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['name'], ['warning one']);
-            $this->assertContains($warning['slug'], ['warning-one']);
-            $this->assertContains($warning['reference'], ['firstName']);
+            $this->assertContains($warning['slug'], ['first-name-mismatch']);
+            $this->assertContains($warning['attribute'], ['first-name']);
         }
 
         /*
@@ -235,7 +160,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'slug=w*'
+                    'QUERY_STRING'       => 'slug=*name*'
                 ]
             )
         );
@@ -249,9 +174,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['name'], ['warning one', 'warning two']);
-            $this->assertContains($warning['slug'], ['warning-one', 'warning-two']);
-            $this->assertContains($warning['reference'], ['firstName', 'lastName']);
+            $this->assertContains($warning['slug'], ['first-name-mismatch', 'last-name-mismatch']);
+            $this->assertContains($warning['attribute'], ['first-name', 'last-name']);
         }
 
         /*
@@ -270,7 +194,7 @@ class ListAllTest extends AbstractFunctional {
         $orderableKeys = [
             'name',
             'slug',
-            'reference',
+            'attribute',
             'created_at',
             'updated_at'
         ];
