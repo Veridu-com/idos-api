@@ -22,13 +22,6 @@ class UpdateOne extends AbstractCommand {
     public $user;
 
     /**
-     * Feature's Source (user input).
-     *
-     * @var App\Entity\Source
-     */
-    public $source;
-
-    /**
      * Feature's Service (creator).
      *
      * @var App\Entity\Service
@@ -64,10 +57,6 @@ class UpdateOne extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
-        }
-
-        if (isset($parameters['source'])) {
-            $this->source = $parameters['source'];
         }
 
         if (isset($parameters['service'])) {

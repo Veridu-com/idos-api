@@ -29,9 +29,9 @@
             "description": "Feature value"
         },
         "source": {
-            "description": "Source entity",
-            "type": "object",
-            "$ref": "../source/sourceEntity.json"
+            "description": "Source name",
+            "type": ["string", "null"],
+            "pattern": ""
         },
         "created_at": {
             "description": "Feature's creation unixtime",
