@@ -79,8 +79,8 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'      => 'name-test',
-                    'value'     => false
+                    'name'  => 'name-test',
+                    'value' => false
                 ]
             )
         );
@@ -118,8 +118,8 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'      => '',
-                    'value'     => 0.6
+                    'name'  => '',
+                    'value' => 0.6
                 ]
             )
         );
@@ -203,7 +203,7 @@ class UpsertTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
-        
+
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',

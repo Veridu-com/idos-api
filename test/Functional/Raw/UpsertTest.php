@@ -38,9 +38,9 @@ class UpsertTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id' => 1321189817,
+                    'source_id'  => 1321189817,
                     'collection' => 'name-test',
-                    'data' => ['test' => 'data']
+                    'data'       => ['test' => 'data']
                 ]
             )
         );
@@ -80,9 +80,9 @@ class UpsertTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id' => 1321189817,
+                    'source_id'  => 1321189817,
                     'collection' => 'name-test',
-                    'data' => ['test' => 'data2']
+                    'data'       => ['test' => 'data2']
                 ]
             )
         );
@@ -120,9 +120,9 @@ class UpsertTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id' => null,
+                    'source_id'  => null,
                     'collection' => 'name-test',
-                    'data' => ['test' => 'data']
+                    'data'       => ['test' => 'data']
                 ]
             )
         );
@@ -158,9 +158,9 @@ class UpsertTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id' => 1321189817,
+                    'source_id'  => 1321189817,
                     'collection' => '',
-                    'data' => ['test' => 'data']
+                    'data'       => ['test' => 'data']
                 ]
             )
         );

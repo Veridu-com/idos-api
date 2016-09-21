@@ -39,7 +39,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'collection' => 'raw-1',
-                    'data' => ['test' => 'data2']
+                    'data'       => ['test' => 'data2']
                 ]
             )
         );
@@ -66,7 +66,7 @@ class UpdateOneTest extends AbstractRawFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw/000000';
+        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw/000000';
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -79,7 +79,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'collection' => 'raw-1',
-                    'data' => ['test' => 'data']
+                    'data'       => ['test' => 'data']
                 ]
             )
         );
@@ -100,7 +100,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             ),
             $this->schemaErrors
         );
-    }    
+    }
 
     public function testEmptyCollection() {
         $environment = $this->createEnvironment(
@@ -115,7 +115,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'collection' => '',
-                    'data' => ['test' => 'data']
+                    'data'       => ['test' => 'data']
                 ]
             )
         );
