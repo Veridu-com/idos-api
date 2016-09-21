@@ -62,27 +62,9 @@ class DeleteOneTest extends AbstractFunctional {
         );
 
         $this->checkEntityDoesNotExist();
-        $this->checkForbiddenAccessTo($this->deletedEndpoint['uri'], $this->deletedEndpoint['httpMethod']);
-    }
 
-    /**
-     * Tries to assert forbidden access to given $uri, $method.
-     *
-     * @param string $uri URI of the route
-     * @param string method HTTP method of the route
-     */
-    public function checkForbiddenAccessTo(string $uri, string $method) {
-        $this->httpMethod = $method;
-        $this->uri        = $uri;
-        $request          = $this->createRequest(
-            $this->createEnvironment(
-                [
-                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
-                ]
-            )
-        );
         $response = $this->process($request);
-        $this->assertSame(403, $response->getStatusCode());
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

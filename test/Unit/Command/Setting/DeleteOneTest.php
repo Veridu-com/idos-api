@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Setting;
 
-use App\Command\Setting\DeleteOne;
+use App\Command\Company\Setting\DeleteOne;
 use Test\Unit\Command\AbstractCommandTest;
 
 class DeleteOneTest extends AbstractCommandTest {

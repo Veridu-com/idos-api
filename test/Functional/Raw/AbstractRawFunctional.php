@@ -12,23 +12,24 @@ use Test\Functional\AbstractFunctional;
 
 abstract class AbstractRawFunctional extends AbstractFunctional {
     protected function populateDb() {
-        $response = $this->process(
+        /*$response = $this->process(
             $this->createRequest(
                 $this->createEnvironment(
                     [
-                        'REQUEST_URI'        => '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw',
+                        'REQUEST_URI'        => '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw',
                         'REQUEST_METHOD'     => 'DELETE',
                         'HTTP_CONTENT_TYPE'  => 'application/json',
                         'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
                     ]
                 )
             )
-        );
+        );*/
+        (self::$noSqlConnection)('facebook')->getMongoDB()->drop();
 
         $environment = $this->createEnvironment(
             [
-                'REQUEST_URI'        => '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw',
-                'REQUEST_METHOD'     => 'POST',
+                'REQUEST_URI'        => '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw',
+                'REQUEST_METHOD'     => 'PUT',
                 'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
@@ -39,8 +40,9 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
                 $environment,
                 json_encode(
                     [
+                        'source_id'  => 1321189817,
                         'collection' => 'raw-1',
-                        'data'       => 'data-1'
+                        'data'       => ['test' => 'data']
                     ]
                 )
             )
@@ -51,8 +53,9 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
                 $environment,
                 json_encode(
                     [
+                        'source_id'  => 1321189817,
                         'collection' => 'raw-2',
-                        'data'       => 'data-2'
+                        'data'       => ['test' => 'data2']
                     ]
                 )
             )
@@ -63,8 +66,9 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
                 $environment,
                 json_encode(
                     [
+                        'source_id'  => 1321189817,
                         'collection' => 'raw-3',
-                        'data'       => 'data-3'
+                        'data'       => ['test' => 'data3']
                     ]
                 )
             )

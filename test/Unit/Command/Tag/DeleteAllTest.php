@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Tag;
 
-use App\Command\Tag\DeleteAll;
+use App\Command\Profile\Tag\DeleteAll;
 use Test\Unit\AbstractUnit;
 
 class DeleteAllTest extends AbstractUnit {

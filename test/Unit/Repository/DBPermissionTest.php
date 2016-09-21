@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Repository;
 
-use App\Entity\Permission;
+use App\Entity\Company\Permission;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBPermission;

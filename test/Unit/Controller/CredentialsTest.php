@@ -8,14 +8,14 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Controller;
 
-use App\Command\Credential\CreateNew;
-use App\Command\Credential\DeleteAll;
-use App\Command\Credential\DeleteOne;
-use App\Command\Credential\UpdateOne;
+use App\Command\Company\Credential\CreateNew;
+use App\Command\Company\Credential\DeleteAll;
+use App\Command\Company\Credential\DeleteOne;
+use App\Command\Company\Credential\UpdateOne;
 use App\Command\ResponseDispatch;
-use App\Controller\Credentials;
+use App\Controller\Company\Credentials;
 use App\Entity\Company as CompanyEntity;
-use App\Entity\Credential as CredentialEntity;
+use App\Entity\Company\Credential as CredentialEntity;
 use App\Factory\Command;
 use App\Repository\DBCredential;
 use Illuminate\Support\Collection;

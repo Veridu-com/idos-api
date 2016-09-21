@@ -51,6 +51,7 @@ class CreateNewTest extends AbstractFunctional {
         $providerName     = 'facebook';
         $credentialPubKey = '4c9184f37cff01bcdc32dc486ec36961';
         $accessToken      = 'EAAEO02ZBeZBwMBAHF5DHSVt7gIUR75zeTlUoJUOFdM6rNUNVWBZCR97GHbFgkskqIe2UKPDIPxQy2WZAAyw4gGZCX3Cllz4WfUU3xnr9jPzvPwbirhAXN26ZAR2E7vfHTsjZA5rFgbKXGaqChU1HlzL';
+
         $request          = $this->createRequest(
             $environment, json_encode(
                 [
@@ -62,7 +63,7 @@ class CreateNewTest extends AbstractFunctional {
         );
         $response = $this->process($request);
 
-        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+        $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
 

@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Setting;
 
-use App\Command\Setting\UpdateOne;
+use App\Command\Company\Setting\UpdateOne;
 use Test\Unit\Command\AbstractCommandTest;
 
 class UpdateOneTest extends AbstractCommandTest {

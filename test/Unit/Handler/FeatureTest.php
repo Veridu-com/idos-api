@@ -8,18 +8,18 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Handler;
 
-use App\Command\Feature\CreateNew;
-use App\Command\Feature\DeleteAll;
-use App\Command\Feature\DeleteOne;
-use App\Command\Feature\UpdateOne;
-use App\Entity\Feature as FeatureEntity;
+use App\Command\Profile\Feature\CreateNew;
+use App\Command\Profile\Feature\DeleteAll;
+use App\Command\Profile\Feature\DeleteOne;
+use App\Command\Profile\Feature\UpdateOne;
+use App\Entity\Profile\Feature as FeatureEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
-use App\Handler\Feature;
+use App\Handler\Profile\Feature;
 use App\Repository\DBFeature;
-use App\Repository\FeatureInterface;
-use App\Validator\Feature as FeatureValidator;
+use App\Repository\Profile\FeatureInterface;
+use App\Validator\Profile\Feature as FeatureValidator;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -171,7 +171,7 @@ class FeatureTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Feature');
+        $entityFactory->create('Profile\Feature');
 
         $featureRepository = $this->getMockBuilder(DBFeature::class)
             ->setMethods(['save'])
@@ -238,7 +238,7 @@ class FeatureTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Feature');
+        $entityFactory->create('Profile\Feature');
 
         $amount         = 1;
         $repositoryMock = $this->getMockBuilder(DBFeature::class)
@@ -313,7 +313,7 @@ class FeatureTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Feature');
+        $entityFactory->create('Profile\Feature');
 
         $featureRepository = $this->getMockBuilder(DBFeature::class)
             ->setMethods(['findByUserIdAndSlug', 'save'])
@@ -389,7 +389,7 @@ class FeatureTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Feature');
+        $entityFactory->create('Profile\Feature');
 
         $featureRepository = $this->getMockBuilder(DBFeature::class)
             ->setMethods(['findByUserIdAndSlug', 'delete'])
