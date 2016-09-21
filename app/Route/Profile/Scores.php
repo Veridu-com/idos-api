@@ -197,11 +197,10 @@ class Scores implements RouteInterface {
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('score:updateOne');
+            ->setName('score:upsert');
     }
 
     /*
->>>>>>> a38e96869539b1a64f620f98801db275ab75a3ad
      * Retrieves a score.
      *
      * Retrieves a score from a given attribute.

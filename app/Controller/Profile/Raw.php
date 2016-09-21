@@ -234,11 +234,11 @@ class Raw implements ControllerInterface {
             ->setParameter('service', $service)
             ->setParameter('source', $source);
 
-        $raw = $this->commandBus->handle($command);
+        $entity = $this->commandBus->handle($command);
 
         $body = [
             'status' => true,
-            'data'   => $raw->toArray()
+            'data'   => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
