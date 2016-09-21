@@ -21,6 +21,12 @@ class CreateNewTwitter extends AbstractCommand {
      */
     public $accessToken;
     /**
+     * Provider token secret.
+     *
+     * @var string
+     */
+    public $tokenSecret;
+    /**
      * Credential public key.
      *
      * @var string
@@ -41,7 +47,7 @@ class CreateNewTwitter extends AbstractCommand {
     /**
      * User ip address.
      *
-     * @var int
+     * @var string
      */
     public $ipAddress;
 
@@ -65,6 +71,10 @@ class CreateNewTwitter extends AbstractCommand {
 
         if (isset($parameters['accessToken'])) {
             $this->accessToken = $parameters['accessToken'];
+        }
+
+        if (isset($parameters['tokenSecret'])) {
+            $this->accessToken = $parameters['tokenSecret'];
         }
 
         if (isset($parameters['credentialPubKey'])) {

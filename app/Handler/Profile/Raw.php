@@ -10,6 +10,7 @@ namespace App\Handler\Profile;
 
 use App\Command\Profile\Raw\CreateNew;
 use App\Command\Profile\Raw\UpdateOne;
+use App\Command\Profile\Raw\Upsert;
 use App\Entity\Profile\Raw as RawEntity;
 use App\Event\Profile\Raw\Created;
 use App\Event\Profile\Raw\Updated;
@@ -173,6 +174,73 @@ class Raw implements HandlerInterface {
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\RawException('Error while trying to update raw', 500, $e);
+        }
+
+        return $entity;
+    }
+
+    /**
+     * Creates or updates a raw data in the given source.
+     *
+     * @param App\Command\Raw\Upsert $command
+     *
+     * @see App\Repository\DBRaw::findOne
+     * @see App\Repository\DBRaw::create
+     * @see App\Repository\DBRaw::save
+     *
+     * @throws App\Exception\Validate\RawException
+     * @throws App\Exception\Create\RawException
+     *
+     * @return App\Entity\Raw
+     */
+    public function handleUpsert(Upsert $command) : RawEntity {
+        try {
+            $this->validator->assertSource($command->source);
+            $this->validator->assertName($command->collection);
+        } catch (ValidationException $e) {
+            throw new Validate\RawException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $entity    = null;
+        $inserting = false;
+
+        try {
+            $entity = $this->repository->findOne($command->source, $command->collection);
+
+            $entity->source     = $command->source;
+            $entity->data       = $command->data;
+            $entity->updated_at = time();
+        } catch (NotFound $e) {
+        }
+
+        if ($entity === null) {
+            $inserting = true;
+            $entity    = $this->repository->create(
+                [
+                    'source'     => $command->source,
+                    'collection' => $command->collection,
+                    'data'       => $command->data,
+                    'created_at' => time(),
+                    'updated_at' => null
+                ]
+            );
+        }
+
+        try {
+            $entity = $this->repository->save($entity);
+            $event  = $inserting ? new Created($entity) : new Updated($entity);
+
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            if ($inserting) {
+                throw new Create\RawException('Error while trying to create raw', 500, $e);
+            } else {
+                throw new Update\RawException('Error while trying to update raw', 500, $e);
+            }
         }
 
         return $entity;

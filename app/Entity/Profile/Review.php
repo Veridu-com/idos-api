@@ -24,9 +24,13 @@ class Review extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'positive', 'created_at'];
+    protected $visible = ['id', 'warning_id', 'positive', 'created_at'];
     /**
      * {@inheritdoc}
      */
-    protected $dates = ['created_at'];
+    protected $dates = ['created_at', 'updated_at'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $obfuscated = ['id', 'warning_id'];
 }

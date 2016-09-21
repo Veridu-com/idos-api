@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Identity;
+use App\Exception\NotFound;
 use Illuminate\Support\Collection;
 
 /**
@@ -81,7 +82,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
 
             if (! array_has($members['ids'], $member['id'])) {
                 $member = $this->entityFactory->create(
-                    'Member',
+                    'Company\Member',
                     $member
                 );
                 $members['ids'][$member->id] = $member;
@@ -105,6 +106,10 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
         }
 
         $identity = $identities->first();
+
+        if (! $identity) {
+            throw new NotFound();
+        }
 
         // populating identities available companies
         $identity->relations['company'] = new Collection($companies['entities']);

@@ -10,10 +10,10 @@ namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\AttributeInterface;
-use App\Repository\GateInterface;
+use App\Repository\Profile\AttributeInterface;
+use App\Repository\Profile\GateInterface;
 use App\Repository\UserInterface;
-use App\Repository\WarningInterface;
+use App\Repository\Profile\WarningInterface;
 use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -104,7 +104,7 @@ class Profiles implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company = $request->getAttribute('targetCompany');
 
         $data     = [];
         $profiles = $this->repository->findByCompanyId($company->id);

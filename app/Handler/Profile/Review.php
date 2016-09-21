@@ -100,6 +100,7 @@ class Review implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertId($command->warningId);
             $this->validator->assertFlag($command->positive);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReviewException(
                 $e->getFullMessage(),
@@ -110,16 +111,17 @@ class Review implements HandlerInterface {
 
         $review = $this->repository->create(
             [
-                'user_id'    => $command->user->id,
-                'warning_id' => $command->warningId,
-                'positive'   => $this->validator->validateFlag($command->positive),
-                'created_at' => time()
+                'user_id'     => $command->user->id,
+                'identity_id' => $command->identity->id,
+                'warning_id'  => $command->warningId,
+                'positive'    => $this->validator->validateFlag($command->positive),
+                'created_at'  => time()
             ]
         );
 
         try {
             $review = $this->repository->save($review);
-            $event  = new Created($review);
+            $event  = new Created($review, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ReviewException('Error while trying to create a review', 500, $e);
@@ -146,6 +148,7 @@ class Review implements HandlerInterface {
             $this->validator->assertId($command->id);
             $this->validator->assertUser($command->user);
             $this->validator->assertFlag($command->positive);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReviewException(
                 $e->getFullMessage(),
@@ -154,7 +157,7 @@ class Review implements HandlerInterface {
             );
         }
 
-        $review           = $this->repository->findOneByUserIdAndId($command->user->id, $command->id);
+        $review           = $this->repository->findOneByUserIdAndIdAndIdentityId($command->user->id, $command->id, $command->identity->id);
         $review->positive = $command->positive;
 
         try {

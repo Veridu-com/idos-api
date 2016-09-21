@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Handler\Company;
 
-use App\Command\CompanyProfile\DeleteOne;
-use App\Event\CompanyProfile\Deleted;
+use App\Command\Company\Profile\DeleteOne;
+use App\Event\Company\Profile\Deleted;
 use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Handler\HandlerInterface;
@@ -22,7 +22,7 @@ use Respect\Validation\Exceptions\ValidationException;
 /**
  * Handles CompanyProfile commands.
  */
-class CompanyProfile implements HandlerInterface {
+class Profile implements HandlerInterface {
     /**
      * User Repository instance.
      *
@@ -47,7 +47,7 @@ class CompanyProfile implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
-            return new \App\Handler\CompanyProfile(
+            return new \App\Handler\Company\Profile(
                 $container
                     ->get('repositoryFactory')
                     ->create('user'),
@@ -80,9 +80,9 @@ class CompanyProfile implements HandlerInterface {
     }
 
     /**
-     * Deletes a CompanyProfile.
+     * Deletes a Company Profile.
      *
-     * @param App\Command\CompanyProfile\DeleteOne $command
+     * @param App\Command\Company\Profile\DeleteOne $command
      *
      * @return int
      */

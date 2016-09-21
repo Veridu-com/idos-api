@@ -21,7 +21,7 @@ use Slim\App;
  * @link docs/company/profiles/overview.md
  * @see App\Controller\Company\Profiles
  */
-class CompanyProfiles implements RouteInterface {
+class Profiles implements RouteInterface {
     /**
      * {@inheritdoc}
      */
@@ -40,9 +40,9 @@ class CompanyProfiles implements RouteInterface {
         $app->getContainer()[\App\Controller\Company\Profiles::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Profiles(
                 $container->get('repositoryFactory')->create('User'),
-                $container->get('repositoryFactory')->create('Warning'),
-                $container->get('repositoryFactory')->create('Gate'),
-                $container->get('repositoryFactory')->create('Attribute'),
+                $container->get('repositoryFactory')->create('Profile\Warning'),
+                $container->get('repositoryFactory')->create('Profile\Gate'),
+                $container->get('repositoryFactory')->create('Profile\Attribute'),
                 $container->get('commandBus'),
                 $container->get('commandFactory'),
                 $container->get('optimus')

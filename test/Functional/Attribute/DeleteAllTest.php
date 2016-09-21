@@ -54,7 +54,7 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testDeleteFilter() {
-        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes?name=*1';
+        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes?name=first*';
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',

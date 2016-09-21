@@ -34,6 +34,9 @@ class DeleteOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
+
+        var_dump(json_decode((string) $response->getBody(), true)); return;
+
         $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);

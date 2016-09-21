@@ -175,7 +175,7 @@ class Features implements ControllerInterface {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
         }
 
-        $command = $this->commandFactory->create('Feature\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Feature\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
@@ -215,7 +215,7 @@ class Features implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $command = $this->commandFactory->create('Feature\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');
         $command->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('queryParams', $request->getQueryParams());
@@ -250,7 +250,7 @@ class Features implements ControllerInterface {
         $service   = $request->getAttribute('service');
         $featureId = $request->getAttribute('decodedFeatureId');
 
-        $command = $this->commandFactory->create('Feature\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
         $command->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('featureId', $featureId);
@@ -294,7 +294,7 @@ class Features implements ControllerInterface {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
         }
 
-        $command = $this->commandFactory->create('Feature\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\\Feature\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
@@ -340,7 +340,7 @@ class Features implements ControllerInterface {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
         }
 
-        $command = $this->commandFactory->create('Feature\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Feature\\Upsert');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)

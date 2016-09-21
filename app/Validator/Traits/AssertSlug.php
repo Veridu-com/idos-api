@@ -25,7 +25,7 @@ trait AssertSlug {
      */
     public function assertSlug($slug) {
         Validator::slug()
-            ->length(1, 15)
+            ->length(1, 60)
             ->assert($slug);
     }
 }

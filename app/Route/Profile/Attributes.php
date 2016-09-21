@@ -14,7 +14,6 @@ use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 use App\Route\RouteInterface;
-use App\Controller\ControllerInterface;
 
 /**
  * Attribute routing definitions.

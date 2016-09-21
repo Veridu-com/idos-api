@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Exception\AppException;
 use App\Factory\Command;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\SettingInterface;
@@ -149,98 +150,93 @@ class Sso implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $requestBody = $request->getParsedBody();
-        $provider    = $requestBody['providerName'];
+        $providerName     = $request->getParsedBodyParam('provider');
+        $credentialPubKey = $request->getParsedBodyParam('credential');
+        $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
 
         $availableProviders = $this->settings['sso_providers'];
+        if (! in_array($providerName, $availableProviders)) {
+            throw new AppException('Unsupported Provider', 400);
+        }
 
-        foreach ($availableProviders as $providerName) {
-            if ($provider == $providerName) {
-                $credentialPubKey = $requestBody['credentialPubKey'];
-                $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
+        // hosted social application (credential based)
+        $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $providerName);
+        $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $providerName);
+        // hosted social application (company based)
+        $providerSettingKey = sprintf('%s.key', $providerName);
+        $providerSettingSec = sprintf('%s.secret', $providerName);
 
-                $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
-                    $credential->company_id,
-                    'AppTokens',
-                    [
-                        sprintf('%s.%s.key', $credentialPubKey, $providerName),
-                        sprintf('%s.%s.secret', $credentialPubKey, $providerName)
-                    ]
-                );
+        $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
+            $credential->companyId,
+            'AppTokens',
+            [
+                $credentialSettingKey,
+                $credentialSettingSec
+            ]
+        );
 
-                if (count($settings) > 2) {
-                    $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
-                        $credential->company_id,
-                        'AppTokens',
-                        [
-                            sprintf('%s.key', $providerName),
-                            sprintf('%s.secret', $providerName)
-                        ]
-                    );
-                }
+        if (count($settings) < 2) {
+            $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
+                $credential->companyId,
+                'AppTokens',
+                [
+                    $providerSettingKey,
+                    $providerSettingSec
+                ]
+            );
+        }
 
-                switch ($providerName) {
-                    case 'amazon':
-                        $command = $this->commandFactory->create('Sso\\CreateNewAmazon');
-                        break;
-                    case 'facebook':
-                        $command = $this->commandFactory->create('Sso\\CreateNewFacebook');
-                        break;
-                    case 'google':
-                        $command = $this->commandFactory->create('Sso\\CreateNewGoogle');
-                        break;
-                    case 'linkedin':
-                        $command = $this->commandFactory->create('Sso\\CreateNewLinkedin');
-                        break;
-                    case 'paypal':
-                        $command = $this->commandFactory->create('Sso\\CreateNewPaypal');
-                        break;
-                    case 'twitter':
-                        $command = $this->commandFactory->create('Sso\\CreateNewTwitter');
-                        break;
-                }
+        switch ($providerName) {
+            case 'amazon':
+                $command = $this->commandFactory->create('Sso\\CreateNewAmazon');
+                break;
+            case 'facebook':
+                $command = $this->commandFactory->create('Sso\\CreateNewFacebook');
+                break;
+            case 'google':
+                $command = $this->commandFactory->create('Sso\\CreateNewGoogle');
+                break;
+            case 'linkedin':
+                $command = $this->commandFactory->create('Sso\\CreateNewLinkedin');
+                break;
+            case 'paypal':
+                $command = $this->commandFactory->create('Sso\\CreateNewPaypal');
+                break;
+            case 'twitter':
+                $command = $this->commandFactory->create('Sso\\CreateNewTwitter');
+                break;
+        }
 
-                foreach ($settings as $setting) {
-                    if ($setting->property == sprintf('%s.%s.key', $credentialPubKey, $providerName) || sprintf('%s.key', $providerName)) {
-                        $command->setParameter('key', $setting->value);
-                    }
+        foreach ($settings as $setting) {
+            if (in_array($setting->property, [$credentialSettingKey, $providerSettingKey])) {
+                $command->setParameter('key', $setting->value);
+            }
 
-                    if ($setting->property == sprintf('%s.%s.secret', $credentialPubKey, $providerName) || sprintf('%s.secret', $providerName)) {
-                        $command->setParameter('secret', $setting->value);
-                    }
-                }
-
-                $command
-                    ->setParameter('ipAddress', $request->getAttribute('ip_address'))
-                    ->setParameter('accessToken', $requestBody['accessToken'])
-                    ->setParameter('credentialPubKey', $requestBody['credentialPubKey']);
-
-                $token = $this->commandBus->handle($command);
-
-                $body = [
-                    'status' => true,
-                    'data'   => $token
-                ];
-
-                $command = $this->commandFactory->create('ResponseDispatch');
-                $command
-                    ->setParameter('statusCode', 201)
-                    ->setParameter('request', $request)
-                    ->setParameter('response', $response)
-                    ->setParameter('body', $body);
-
-                return $this->commandBus->handle($command);
+            if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
+                $command->setParameter('secret', $setting->value);
             }
         }
 
+        $command
+            ->setParameter('ipAddress', $request->getAttribute('ip_address'))
+            ->setParameter('accessToken', $request->getParsedBodyParam('access_token'))
+            ->setParameter('credentialPubKey', $credentialPubKey);
+
+        $tokenSecret = $request->getParsedBodyParam('token_secret');
+        if ($tokenSecret) {
+            $command->setParameter('tokenSecret', $tokenSecret);
+        }
+
+        $token = $this->commandBus->handle($command);
+
         $body = [
-            'status' => false,
-            'data'   => 'Provider not found'
+            'status' => true,
+            'data'   => $token
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', 400)
+            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

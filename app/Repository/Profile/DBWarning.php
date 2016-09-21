@@ -35,17 +35,15 @@ class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
      */
     protected $filterableKeys = [
         'creator.name' => 'string',
-        'name'         => 'string',
-        'slug'         => 'string',
+        'slug'         => 'string'
     ];
 
     /**
      * {@inheritdoc}
      */
     protected $orderableKeys = [
-        'name',
         'slug',
-        'reference',
+        'attribute',
         'created_at',
         'updated_at'
     ];
