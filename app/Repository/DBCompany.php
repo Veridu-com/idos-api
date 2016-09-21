@@ -84,18 +84,18 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
         $query = $this->query('members', Member::class);
         $id    = $query->insertGetId(
             [
-            'company_id'  => $company->id,
-            'identity_id' => $identity->id,
-            'role'        => $role
+                'company_id'  => $company->id,
+                'identity_id' => $identity->id,
+                'role'        => $role
             ]
         );
         if ($id) {
             $member = $this->entityFactory->create(
-                'Member', [
-                'role'     => $role,
-                'company'  => $company->id,
-                'identity' => $identity->id,
-
+                'Company\Member',
+                [
+                    'role'     => $role,
+                    'company'  => $company->id,
+                    'identity' => $identity->id,
                 ]
             );
             $member->relations['company']  = $company;

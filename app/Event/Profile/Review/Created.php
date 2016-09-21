@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Review;
 
-use App\Entity\Profile\Review;
 use App\Entity\Identity;
+use App\Entity\Profile\Review;
 use App\Event\AbstractEvent;
 
 /**
