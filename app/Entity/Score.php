@@ -23,7 +23,7 @@ class Score extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['creator', 'attribute', 'name', 'value', 'created_at'];
+    protected $visible = ['creator', 'attribute', 'name', 'value', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
