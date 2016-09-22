@@ -287,7 +287,7 @@ class Gates implements RouteInterface {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/gates',
-                'App\Controller\Gates:upsert'
+                'App\Controller\Profile\Gates:upsert'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))

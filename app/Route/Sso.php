@@ -37,7 +37,7 @@ class Sso implements RouteInterface {
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Sso::class] = function (ContainerInterface $container) {
             return new \App\Controller\Sso(
-                $container->get('repositoryFactory')->create('Company\Credential'),
+                $container->get('repositoryFactory')->create('Company\Setting'),
                 $container->get('repositoryFactory')->create('Company\Credential'),
                 $container->get('settings'),
                 $container->get('commandBus'),

@@ -159,7 +159,7 @@ class Sources implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
 
-        $command = $this->commandFactory->create('Source\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
@@ -195,7 +195,7 @@ class Sources implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
 
-        $command = $this->commandFactory->create('Source\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\\Source\\DeleteAll');
         $command
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
@@ -232,7 +232,7 @@ class Sources implements ControllerInterface {
 
         $source = $this->repository->findOne($sourceId, $user->id);
 
-        $command = $this->commandFactory->create('Source\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\\Source\\DeleteOne');
         $command
             ->setParameter('user', $user)
             ->setParameter('source', $source)
@@ -277,7 +277,7 @@ class Sources implements ControllerInterface {
 
         $source = $this->repository->findOne($sourceId, $user->id);
 
-        $command = $this->commandFactory->create('Source\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\\Source\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)

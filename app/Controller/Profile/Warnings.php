@@ -153,7 +153,7 @@ class Warnings implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $command = $this->commandFactory->create('Warning\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Warning\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
@@ -192,7 +192,7 @@ class Warnings implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $command = $this->commandFactory->create('Warning\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\\Warning\\DeleteAll');
         $command
             ->setParameter('user', $user)
             ->setParameter('service', $service)
@@ -228,7 +228,7 @@ class Warnings implements ControllerInterface {
         $service = $request->getAttribute('service');
         $slug    = $request->getAttribute('warningSlug');
 
-        $command = $this->commandFactory->create('Warning\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\\Warning\\DeleteOne');
         $command
             ->setParameter('user', $user)
             ->setParameter('service', $service)

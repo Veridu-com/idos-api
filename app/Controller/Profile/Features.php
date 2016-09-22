@@ -287,18 +287,11 @@ class Features implements ControllerInterface {
         $user      = $request->getAttribute('targetUser');
         $service   = $request->getAttribute('service');
         $featureId = $request->getAttribute('decodedFeatureId');
-        $source    = null;
-        $sourceId  = $request->getParsedBodyParam('source_id');
-
-        if ($sourceId !== null) {
-            $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
-        }
 
         $command = $this->commandFactory->create('Profile\\Feature\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
-            ->setParameter('source', $source)
             ->setParameter('service', $service)
             ->setParameter('featureId', $featureId);
 

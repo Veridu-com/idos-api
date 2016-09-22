@@ -17,24 +17,7 @@ foreach ($handlers as $file) {
         continue;
     }
 
-    $className =
-        preg_replace(
-            '/^\\\app/',
-            '',
-            str_replace(
-                '.php',
-                '',
-                str_replace(
-                    '/',
-                    '\\',
-                    str_replace(
-                        '/config/../app/Handler/',
-                        '/App/Handler/',
-                        $file
-                    )
-                )
-            )
-        );
+    $className = str_replace('.php', '', str_replace('/', '\\', 'App/Handler/' . substr($file, strpos($file, '/config/../app/Handler/') + 23)));
 
     if (class_exists($className)) {
         $className::register($container);

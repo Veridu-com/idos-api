@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Source;
 
-use App\Entity\Source;
+use App\Entity\Profile\Source;
 use App\Entity\User;
 use App\Event\AbstractEvent;
 

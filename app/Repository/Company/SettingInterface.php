@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository\Company;
 
 use App\Entity\Company\Setting;
-use App\RepositoryInterface;
+use App\Repository\RepositoryInterface;
 use Illuminate\Support\Collection;
 
 /**

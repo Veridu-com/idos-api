@@ -12,6 +12,7 @@ use App\Command\Profile\Feature\CreateNew;
 use App\Command\Profile\Feature\DeleteAll;
 use App\Command\Profile\Feature\DeleteOne;
 use App\Command\Profile\Feature\UpdateOne;
+use App\Command\Profile\Feature\Upsert;
 use App\Entity\Profile\Feature as FeatureEntity;
 use App\Event\Profile\Feature\Created;
 use App\Event\Profile\Feature\Deleted;
@@ -23,6 +24,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\FeatureInterface;
+use App\Repository\Profile\SourceInterface;
 use App\Validator\Profile\Feature as FeatureValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -42,7 +44,7 @@ class Feature implements HandlerInterface {
     /**
      * Source Repository instance.
      *
-     * @var App\Repository\FeatureInterface
+     * @var App\Repository\SourceInterface
      */
     protected $sourceRepository;
 
@@ -71,7 +73,7 @@ class Feature implements HandlerInterface {
                     ->create('Profile\Feature'),
                 $container
                     ->get('repositoryFactory')
-                    ->create('Source'),
+                    ->create('Profile\Source'),
                 $container
                     ->get('validatorFactory')
                     ->create('Profile\Feature'),
@@ -119,8 +121,6 @@ class Feature implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->name);
             $this->validator->assertName($command->type);
-            //$this->validator->assertValue($command->value);
-
             if ($command->source !== null) {
                 $this->validator->assertSource($command->source);
             }
@@ -173,11 +173,9 @@ class Feature implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : FeatureEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertSource($command->source);
             $this->validator->assertService($command->service);
             $this->validator->assertId($command->featureId);
             $this->validator->assertName($command->type);
-            //$this->validator->assertValue($command->value);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -186,7 +184,11 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOneById($command->user->id, $command->source->name, $command->service->id, $command->featureId);
+        $feature = $this->repository->findOneBy([
+            'user_id' => $command->user->id,
+            'creator' => $command->service->id,
+            'id'      => $command->featureId
+        ]);
 
         $feature->type      = $command->type;
         $feature->value     = $command->value;
@@ -232,9 +234,10 @@ class Feature implements HandlerInterface {
 
         $deletedFeatures = $this->repository->findBy(
             [
-            'user_id' => $command->user->id,
-            'creator' => $command->service->id
-            ], $command->queryParams
+                'user_id' => $command->user->id,
+                'creator' => $command->service->id
+            ],
+            $command->queryParams
         );
 
         $affectedRows = 0;
@@ -298,9 +301,9 @@ class Feature implements HandlerInterface {
     /**
      * Creates or update a feature.
      *
-     * @param App\Command\Feature\Upsert $command
+     * @param App\Command\Profile\Feature\Upsert $command
      *
-     * @return App\Entity\Feature
+     * @return App\Entity\Profile\Feature
      */
     public function handleUpsert(Upsert $command) : FeatureEntity {
         $this->validator->assertUser($command->user);
@@ -348,7 +351,7 @@ class Feature implements HandlerInterface {
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\FeatureException('Error while trying to upsert a feature', 404);
+            throw new NotFound\FeatureException('Error while trying to upsert a feature', 404, $e);
         }
 
         return $feature;

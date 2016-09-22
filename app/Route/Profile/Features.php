@@ -44,7 +44,7 @@ class Features implements RouteInterface {
             return new \App\Controller\Profile\Features(
                 $container->get('repositoryFactory')->create('Profile\Feature'),
                 $container->get('repositoryFactory')->create('User'),
-                $container->get('repositoryFactory')->create('Source'),
+                $container->get('repositoryFactory')->create('Profile\Source'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );
@@ -155,7 +155,7 @@ class Features implements RouteInterface {
         $app
             ->delete(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureId:[0-9]+}',
-                'App\Controller\Features:deleteOne'
+                'App\Controller\Profile\Features:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
@@ -221,7 +221,7 @@ class Features implements RouteInterface {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureId:[0-9]+}',
-                'App\Controller\Features:getOne'
+                'App\Controller\Profile\Features:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
@@ -254,7 +254,7 @@ class Features implements RouteInterface {
         $app
             ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureId:[0-9]+}',
-                'App\Controller\Features:updateOne'
+                'App\Controller\Profile\Features:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
@@ -279,13 +279,13 @@ class Features implements RouteInterface {
      * @link docs/profile/features/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Features::createNew
+     * @see App\Controller\Profile\Features::createNew
      */
     private static function upsert(App $app, callable $auth, callable $permission) {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
-                'App\Controller\Features:upsert'
+                'App\Controller\Profile\Features:upsert'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))

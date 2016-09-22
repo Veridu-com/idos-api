@@ -40,10 +40,10 @@ class CreateNewTest extends AbstractFunctional {
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                    'sourceId' => 1,
-                    'name'     => $name,
-                    'type'     => $type,
-                    'value'    => $value
+                    'source_id' => 1321189817,
+                    'name'      => $name,
+                    'type'      => $type,
+                    'value'     => $value
                 ]
             )
         );
@@ -55,7 +55,6 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame($name, $body['data']['name']);
-        $this->assertSame(1, $body['data']['creator']);
         $this->assertSame($type, $body['data']['type']);
         $this->assertSame($value, $body['data']['value']);
         /*
@@ -146,10 +145,10 @@ class CreateNewTest extends AbstractFunctional {
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                    'sourceId' => 1,
-                    'name'     => $name,
-                    'type'     => $type,
-                    'value'    => $value
+                    'source_id' => 1321189817,
+                    'name'      => $name,
+                    'type'      => $type,
+                    'value'     => $value
                 ]
             )
         );
@@ -161,7 +160,6 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame($name, $body['data']['name']);
-        $this->assertSame(1, $body['data']['creator']);
         $this->assertSame($type, $body['data']['type']);
         $this->assertSame($value, $body['data']['value']);
 

@@ -118,7 +118,7 @@ class Tasks implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $processId = $request->getAttribute('decodedProcessId');
 
-        $command = $this->commandFactory->create('Task\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Task\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameters(['processId' => $processId]);
@@ -160,7 +160,7 @@ class Tasks implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $taskId = $request->getAttribute('decodedTaskId');
 
-        $command = $this->commandFactory->create('Task\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\\Task\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('id', $taskId);

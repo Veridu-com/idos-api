@@ -125,7 +125,7 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Raw\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Raw\\CreateNew');
 
         $user     = $request->getAttribute('targetUser');
         $service  = $request->getAttribute('service');
@@ -179,7 +179,7 @@ class Raw implements ControllerInterface {
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
-        $command = $this->commandFactory->create('Raw\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\\Raw\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
@@ -220,7 +220,7 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Raw\\Upsert');
+        $command = $this->commandFactory->create('Profile\\Raw\\Upsert');
 
         $user     = $request->getAttribute('targetUser');
         $service  = $request->getAttribute('service');
@@ -303,7 +303,7 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Raw\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\\Raw\\DeleteAll');
 
         $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
@@ -345,7 +345,7 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Raw\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\\Raw\\DeleteOne');
 
         $user   = $request->getAttribute('targetUser');
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
