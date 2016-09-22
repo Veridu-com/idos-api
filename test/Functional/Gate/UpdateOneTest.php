@@ -23,15 +23,7 @@ class UpdateOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'PATCH';
-        $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates',
-            'GET',
-            [
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-            ]
-        );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/%s', $this->entity['slug']);
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/gate-one';
     }
 
     public function testSuccess() {

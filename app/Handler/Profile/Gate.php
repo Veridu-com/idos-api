@@ -12,6 +12,7 @@ use App\Command\Profile\Gate\CreateNew;
 use App\Command\Profile\Gate\DeleteAll;
 use App\Command\Profile\Gate\DeleteOne;
 use App\Command\Profile\Gate\UpdateOne;
+use App\Command\Profile\Gate\Upsert;
 use App\Entity\Profile\Gate as GateEntity;
 use App\Event\Profile\Gate\Created;
 use App\Event\Profile\Gate\Deleted;
@@ -145,7 +146,7 @@ class Gate implements HandlerInterface {
      * @see App\Repository\DBGate::save
      *
      * @throws App\Exception\Validate\GateException
-     * @throws App\Exception\Update\GateException
+     * @throws App\Exception\Update\Profile\GateException
      *
      * @return App\Entity\Gate
      */
@@ -227,7 +228,7 @@ class Gate implements HandlerInterface {
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new Update\GateException('Error while trying to upsert a gate', 500, $e);
+            throw new Update\Profile\GateException('Error while trying to upsert a gate', 500, $e);
         }
 
         return $entity;
@@ -274,7 +275,7 @@ class Gate implements HandlerInterface {
             $event = new DeletedMulti($entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new Update\GateException('Error while trying to delete all gates', 500, $e);
+            throw new Update\Profile\GateException('Error while trying to delete all gates', 500, $e);
         }
 
         return $affectedRows;
