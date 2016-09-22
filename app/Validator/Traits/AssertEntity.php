@@ -51,7 +51,7 @@ trait AssertEntity {
      * @return void
      */
     public function assertCredential($credential) {
-        Validator::instance('App\\Entity\\Credential')
+        Validator::instance('App\\Entity\\Company\\Credential')
             ->assert($credential);
     }
 
@@ -65,7 +65,7 @@ trait AssertEntity {
      * @return void
      */
     public function assertHook($hook) {
-        Validator::instance('App\\Entity\\Hook')
+        Validator::instance('App\\Entity\\Company\\Hook')
             ->assert($hook);
     }
 
@@ -79,7 +79,7 @@ trait AssertEntity {
      * @return void
      */
     public function assertSource($source) {
-        Validator::instance('App\\Entity\\Source')
+        Validator::instance('App\\Entity\\Profile\\Source')
             ->assert($source);
     }
 

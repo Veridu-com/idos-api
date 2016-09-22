@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Member;
 
-use App\Command\Member\UpdateOne;
+use App\Command\Company\Member\UpdateOne;
 use Test\Unit\AbstractUnit;
 
 class UpdateOneTest extends AbstractUnit {

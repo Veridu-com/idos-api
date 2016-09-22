@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Validator;
 
-use App\Validator\Credential;
+use App\Validator\Company\Credential;
 use Respect\Validation\Exceptions\ExceptionInterface;
 use Respect\Validation\Validator;
 use Test\Unit\AbstractUnit;

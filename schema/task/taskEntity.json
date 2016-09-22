@@ -42,8 +42,6 @@
         "name",
         "event",
         "running",
-        "success",
-        "created_at",
-        "updated_at"
+        "created_at"
     ]
 }

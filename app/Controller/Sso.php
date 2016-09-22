@@ -10,8 +10,8 @@ namespace App\Controller;
 
 use App\Exception\AppException;
 use App\Factory\Command;
-use App\Repository\CredentialInterface;
-use App\Repository\SettingInterface;
+use App\Repository\Company\CredentialInterface;
+use App\Repository\Company\SettingInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,13 +24,13 @@ class Sso implements ControllerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\SettingInterface
+     * @var App\Repository\Company\SettingInterface
      */
     private $settingRepository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\CredentialInterface
+     * @var App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
@@ -55,11 +55,11 @@ class Sso implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\SettingInterface    $settingRepository
-     * @param App\Repository\CredentialInterface $credentialRepository
-     * @param \Slim\Collection                   $settings
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command                $commandFactory
+     * @param App\Repository\Company\SettingInterface    $settingRepository
+     * @param App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \Slim\Collection                           $settings
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param App\Factory\Command                        $commandFactory
      *
      * @return void
      */

@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Event\Tag;
 
-use App\Entity\Tag;
-use App\Event\Tag\Updated;
+use App\Entity\Profile\Tag;
+use App\Event\Profile\Tag\Updated;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 

@@ -239,13 +239,14 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
     $settings = $container->get('settings');
     $log      = $container->get('log');
 
-    $commandPaths = glob(__DIR__ . '/../app/Command/*/*.php');
+    $commandPaths = array_merge(glob(__DIR__ . '/../app/Command/*/*.php'), glob(__DIR__ . '/../app/Command/*/*/*.php'));
     $commands     = [];
     foreach ($commandPaths as $commandPath) {
         $matches = [];
         preg_match_all('/.*Command\/(.*)\/(.*).php/', $commandPath, $matches);
 
-        $resource = $matches[1][0];
+        $resource = preg_replace("/\//", '\\', $matches[1][0]);
+        // $resource = $matches[1][0];
         $command  = $matches[2][0];
 
         $commands[sprintf('App\\Command\\%s\\%s', $resource, $command)] = sprintf('App\\Handler\\%s', $resource);
@@ -299,7 +300,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
         $jwt               = $container->get('jwt');
 
         return new Auth(
-            $repositoryFactory->create('Credential'),
+            $repositoryFactory->create('Company\Credential'),
             $repositoryFactory->create('Identity'),
             $repositoryFactory->create('User'),
             $repositoryFactory->create('Company'),
@@ -316,7 +317,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
 $container['endpointPermissionMiddleware'] = function (ContainerInterface $container) : callable {
     return function ($permissionType, $allowedRolesBits = 0x00) use ($container) {
         return new Middleware\EndpointPermission(
-            $container->get('repositoryFactory')->create('Permission'),
+            $container->get('repositoryFactory')->create('Company\Permission'),
             $container->get('repositoryFactory')->create('Company'),
             $permissionType,
             $allowedRolesBits
@@ -327,7 +328,7 @@ $container['endpointPermissionMiddleware'] = function (ContainerInterface $conta
 // User Permission Middleware
 $container['userPermissionMiddleware'] = function (ContainerInterface $container) {
     return function ($resource, $resourceAccessLevel) use ($container) {
-        $roleAccessRepository = $container->get('repositoryFactory')->create('RoleAccess');
+        $roleAccessRepository = $container->get('repositoryFactory')->create('User\RoleAccess');
 
         return new Middleware\UserPermission($roleAccessRepository, $resource, $resourceAccessLevel);
     };
@@ -417,9 +418,18 @@ $container['optimus'] = function (ContainerInterface $container) : Optimus {
 // App files
 $container['globFiles'] = function () : array {
     return [
-        'routes'            => glob(__DIR__ . '/../app/Route/*.php'),
-        'handlers'          => glob(__DIR__ . '/../app/Handler/*.php'),
-        'listenerProviders' => glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
+        'routes' =>
+            array_merge(
+                glob(__DIR__ . '/../app/Route/*.php'),
+                glob(__DIR__ . '/../app/Route/*/*.php')
+            ),
+        'handlers' =>
+            array_merge(
+                glob(__DIR__ . '/../app/Handler/*.php'),
+                glob(__DIR__ . '/../app/Handler/*/*.php')
+            ),
+        'listenerProviders' =>
+            glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
     ];
 };
 

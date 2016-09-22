@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Permission;
 
-use App\Command\Permission\DeleteOne;
+use App\Command\Company\Permission\DeleteOne;
 use Test\Unit\AbstractUnit;
 
 class DeleteOneTest extends AbstractUnit {

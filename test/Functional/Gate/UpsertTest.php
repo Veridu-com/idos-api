@@ -203,9 +203,7 @@ class UpsertTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
-        /*
-         * Validates Response using the Json Schema.
-         */
+
         $this->assertTrue(
             $this->validateSchema(
                 'error.json',

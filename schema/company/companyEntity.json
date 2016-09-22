@@ -25,7 +25,7 @@
         },
         "updated_at": {
             "description": "Company's last update unixtime",
-            "type": ["integer", "null"]
+            "type": ["integer", null]
         }
     },
     "dependencies": {
@@ -35,7 +35,6 @@
         "name",
         "slug",
         "public_key",
-        "created_at",
-        "updated_at"
+        "created_at"
     ]
 }

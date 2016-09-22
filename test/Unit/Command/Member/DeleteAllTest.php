@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Member;
 
-use App\Command\Member\DeleteAll;
+use App\Command\Company\Member\DeleteAll;
 use Test\Unit\AbstractUnit;
 
 class DeleteAllTest extends AbstractUnit {
