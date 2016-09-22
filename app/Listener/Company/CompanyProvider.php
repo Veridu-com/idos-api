@@ -12,20 +12,20 @@ use App\Event\Company;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 
-class ListenerProvider extends Listener\AbstractListenerProvider {
+class CompanyProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
             Company\Created::class => [
-                new Listener\LogFiredEventListener($container->get('log')('API'))
+                new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
             Company\Updated::class => [
-                new Listener\LogFiredEventListener($container->get('log')('API'))
+                new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
             Company\Deleted::class => [
-                new Listener\LogFiredEventListener($container->get('log')('API'))
+                new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
             Company\DeletedMulti::class => [
-                new Listener\LogFiredEventListener($container->get('log')('API'))
+                new Listener\LogFiredEventListener($container->get('log')('Event'))
             ]
         ];
     }

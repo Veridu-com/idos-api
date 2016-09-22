@@ -14,14 +14,11 @@ use App\Command\Profile\Score\DeleteOne;
 use App\Command\Profile\Score\UpdateOne;
 use App\Command\Profile\Score\Upsert;
 use App\Entity\Profile\Score as ScoreEntity;
-use App\Event\Profile\Score\Created;
-use App\Event\Profile\Score\Deleted;
-use App\Event\Profile\Score\DeletedMulti;
-use App\Event\Profile\Score\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ScoreInterface;
 use App\Validator\Profile\Score as ScoreValidator;
@@ -38,21 +35,25 @@ class Score implements HandlerInterface {
      *
      * @var App\Repository\Profile\ScoreInterface
      */
-    protected $repository;
-
+    private $repository;
     /**
      * Score Validator instance.
      *
      * @var App\Validator\Profile\Score
      */
-    protected $validator;
-
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var \League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -67,6 +68,8 @@ class Score implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Score'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -75,20 +78,23 @@ class Score implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\ScoreInterface $repository
-     * @param App\Validator\Profile\Score           $validator
-     * @param \League\Event\Emitter                 $emitter
+     * @param App\Repository\ScoreInterface $repository
+     * @param App\Validator\Score           $validator
+     * @param App\Factory\Event             $eventFactory
+     * @param \League\Event\Emitter         $emitter
      *
      * @return void
      */
     public function __construct(
         ScoreInterface $repository,
         ScoreValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -135,7 +141,7 @@ class Score implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = new Created($entity);
+            $event = $this->eventFactory->create('Profile\\Score\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ScoreException('Error while trying to create a score', 500, $e);
@@ -183,7 +189,7 @@ class Score implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = new Updated($entity);
+            $event = $this->eventFactory->create('Profile\\Score\\Updated', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ScoreException('Error while trying to update a score', 500, $e);
@@ -250,9 +256,9 @@ class Score implements HandlerInterface {
             $entity = $this->repository->hydrateRelations($entity);
 
             if ($inserting) {
-                $event = new Created($entity);
+                $event = $this->eventFactory->create('Profile\\Score\\Created', $entity);
             } else {
-                $event = new Updated($entity);
+                $event = $this->eventFactory->create('Profile\\Score\\Updated', $entity);
             }
 
             $this->emitter->emit($event);
@@ -294,7 +300,7 @@ class Score implements HandlerInterface {
         try {
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = new Deleted($entity);
+            $event = $this->eventFactory->create('Profile\\Score\\Deleted', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\ScoreException('No features found for deletion', 404);
@@ -342,7 +348,7 @@ class Score implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = new DeletedMulti($entities);
+            $event = $this->eventFactory->create('Profile\\Score\\DeletedMulti', $entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting scores');

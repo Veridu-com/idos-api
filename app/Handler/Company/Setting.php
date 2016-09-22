@@ -14,13 +14,11 @@ use App\Command\Company\Setting\GetOne;
 use App\Command\Company\Setting\ListAll;
 use App\Command\Company\Setting\UpdateOne;
 use App\Entity\Company\Setting as SettingEntity;
-use App\Event\Company\Setting\Created;
-use App\Event\Company\Setting\Deleted;
-use App\Event\Company\Setting\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Company\SettingInterface;
 use App\Validator\Company\Setting as SettingValidator;
@@ -37,19 +35,25 @@ class Setting implements HandlerInterface {
      *
      * @var App\Repository\Company\SettingInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Setting Validator instance.
      *
      * @var App\Validator\Company\Setting
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -64,6 +68,8 @@ class Setting implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Company\Setting'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -72,20 +78,23 @@ class Setting implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\SettingInterface $repository
-     * @param App\Validator\Company\Setting           $validator
-     * @param League\Event\Emitter                    $emitter
+     * @param App\Repository\SettingInterface $repository
+     * @param App\Validator\Setting           $validator
+     * @param App\Factory\Event               $eventFactory
+     * @param \League\Event\Emitter           $emitter
      *
      * @return void
      */
     public function __construct(
         SettingInterface $repository,
         SettingValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -172,7 +181,7 @@ class Setting implements HandlerInterface {
 
         try {
             $setting = $this->repository->save($setting);
-            $event   = new Created($setting, $command->company);
+            $event   = $this->eventFactory->create('Company\\Setting\\Created', $setting, $command->company);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\SettingException('Error while trying to create a setting', 500, $e);
@@ -214,7 +223,7 @@ class Setting implements HandlerInterface {
 
         try {
             $setting = $this->repository->save($setting);
-            $event   = new Updated($setting);
+            $event   = $this->eventFactory->create('Company\\Setting\\Updated', $setting);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Company\SettingException('Error while trying to update a setting', 500, $e);
@@ -247,7 +256,7 @@ class Setting implements HandlerInterface {
 
         $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
 
-        $event = new DeletedMulti($settings);
+        $event = $this->eventFactory->create('Company\\Setting\\DeletedMulti', $settings);
         $this->emitter->emit($event);
 
         return $rowsAffected;
@@ -282,7 +291,7 @@ class Setting implements HandlerInterface {
             throw new NotFound\Company\SettingException('No settings found for deletion', 404);
         }
 
-        $event = new Deleted($setting);
+        $event = $this->eventFactory->create('Company\\Setting\\Deleted', $setting);
         $this->emitter->emit($event);
     }
 }

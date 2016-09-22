@@ -14,14 +14,11 @@ use App\Command\Profile\Gate\DeleteOne;
 use App\Command\Profile\Gate\UpdateOne;
 use App\Command\Profile\Gate\Upsert;
 use App\Entity\Profile\Gate as GateEntity;
-use App\Event\Profile\Gate\Created;
-use App\Event\Profile\Gate\Deleted;
-use App\Event\Profile\Gate\DeletedMulti;
-use App\Event\Profile\Gate\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\GateInterface;
 use App\Validator\Profile\Gate as GateValidator;
@@ -38,19 +35,25 @@ class Gate implements HandlerInterface {
      *
      * @var App\Repository\Profile\GateInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Gate Validator instance.
      *
      * @var App\Validator\Profile\Gate
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -65,6 +68,8 @@ class Gate implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Gate'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -73,19 +78,23 @@ class Gate implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\GateInterface $repository
-     * @param App\Validator\Profile\Gate           $validator
+     * @param App\Repository\GateInterface $repository
+     * @param App\Validator\Gate           $validator
+     * @param App\Factory\Event            $eventFactory
+     * @param \League\Event\Emitter        $emitter
      *
      * @return void
      */
     public function __construct(
         GateInterface $repository,
         GateValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -128,7 +137,7 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = new Created($entity);
+            $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Create\Profile\GateException('Error while trying to create a gate', 500, $e);
@@ -173,7 +182,7 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = new Updated($entity);
+            $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Update\Profile\GateException('Error while trying to update a gate', 500, $e);
@@ -221,9 +230,9 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->hydrateRelations($entity);
 
             if ($inserting) {
-                $event = new Created($entity);
+                $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity);
             } else {
-                $event = new Updated($entity);
+                $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity);
             }
 
             $this->emitter->emit($event);
@@ -272,7 +281,7 @@ class Gate implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = new DeletedMulti($entities);
+            $event = $this->eventFactory->create('Profile\\Gate\\DeletedMulti', $entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\GateException('Error while trying to delete all gates', 500, $e);
@@ -312,7 +321,7 @@ class Gate implements HandlerInterface {
 
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = new Deleted($entity);
+            $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\Profile\GateException('No gates found for deletion', 404);

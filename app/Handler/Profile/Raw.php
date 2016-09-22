@@ -12,12 +12,11 @@ use App\Command\Profile\Raw\CreateNew;
 use App\Command\Profile\Raw\UpdateOne;
 use App\Command\Profile\Raw\Upsert;
 use App\Entity\Profile\Raw as RawEntity;
-use App\Event\Profile\Raw\Created;
-use App\Event\Profile\Raw\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\RawInterface;
 use App\Validator\Profile\Raw as RawValidator;
@@ -34,19 +33,25 @@ class Raw implements HandlerInterface {
      *
      * @var App\Repository\Profile\RawInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Raw Validator instance.
      *
      * @var App\Validator\Profile\Raw
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var \League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -61,6 +66,8 @@ class Raw implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Raw'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -69,19 +76,23 @@ class Raw implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\RawInterface $repository
-     * @param App\Validator\Profile\Raw           $validator
+     * @param App\Repository\RawInterface $repository
+     * @param App\Validator\Raw           $validator
+     * @param App\Factory\Event           $eventFactory
+     * @param \League\Event\Emitter       $emitter
      *
      * @return void
      */
     public function __construct(
         RawInterface $repository,
         RawValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -93,8 +104,8 @@ class Raw implements HandlerInterface {
      * @see App\Repository\DBRaw::create
      * @see App\Repository\DBRaw::save
      *
-     * @throws App\Exception\Validate\RawException
-     * @throws App\Exception\Create\RawException
+     * @throws App\Exception\Validate\Profile\RawException
+     * @throws App\Exception\Create\Profile\RawException
      *
      * @return App\Entity\Raw
      */
@@ -113,7 +124,7 @@ class Raw implements HandlerInterface {
         try {
             $entity = $this->repository->findOne($command->source, $command->collection);
 
-            throw new Create\RawException('Error while trying to create raw', 500, $e);
+            throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
         } catch (NotFound $e) {
         }
 
@@ -128,7 +139,7 @@ class Raw implements HandlerInterface {
 
         try {
             $raw   = $this->repository->save($raw);
-            $event = new Created($raw);
+            $event = $this->eventFactory->create('Profile\\Raw\\Created', $raw);
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -146,7 +157,7 @@ class Raw implements HandlerInterface {
      * @see App\Repository\DBRaw::findOne
      * @see App\Repository\DBRaw::save
      *
-     * @throws App\Exception\Validate\RawException
+     * @throws App\Exception\Validate\Profile\RawException
      * @throws App\Exception\Update\RawException
      *
      * @return App\Entity\Raw
@@ -170,7 +181,7 @@ class Raw implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
 
-            $event = new Updated($entity);
+            $event = $this->eventFactory->create('Profile\\Raw\\Updated', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\RawException('Error while trying to update raw', 500, $e);
@@ -188,8 +199,8 @@ class Raw implements HandlerInterface {
      * @see App\Repository\DBRaw::create
      * @see App\Repository\DBRaw::save
      *
-     * @throws App\Exception\Validate\RawException
-     * @throws App\Exception\Create\RawException
+     * @throws App\Exception\Validate\Profile\RawException
+     * @throws App\Exception\Create\Profile\RawException
      *
      * @return App\Entity\Raw
      */
@@ -198,7 +209,7 @@ class Raw implements HandlerInterface {
             $this->validator->assertSource($command->source);
             $this->validator->assertName($command->collection);
         } catch (ValidationException $e) {
-            throw new Validate\RawException(
+            throw new Validate\Profile\RawException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -232,14 +243,18 @@ class Raw implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = $inserting ? new Created($entity) : new Updated($entity);
+            if ($inserting) {
+                $event = $this->eventFactory->create('Profile\\Raw\\Created', $entity);
+            } else {
+                $event = $this->eventFactory->create('Profile\\Raw\\Updated', $entity);
+            }
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             if ($inserting) {
-                throw new Create\RawException('Error while trying to create raw', 500, $e);
+                throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
             } else {
-                throw new Update\RawException('Error while trying to update raw', 500, $e);
+                throw new Update\Profile\RawException('Error while trying to update raw', 500, $e);
             }
         }
 

@@ -40,9 +40,9 @@ class HandleCredentialTokenTest extends AbstractAuthFunctional {
                     $credential = $request->getAttribute('credential');
 
                     $data = [
-                    'service'    => $service->serialize(),
-                    'company'    => $company->serialize(),
-                    'credential' => $credential->serialize()
+                        'service'    => $service->serialize(),
+                        'company'    => $company->serialize(),
+                        'credential' => $credential->serialize()
                     ];
 
                     return $response->withJson($data, 200);

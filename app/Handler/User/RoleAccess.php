@@ -13,14 +13,11 @@ use App\Command\User\RoleAccess\DeleteAll;
 use App\Command\User\RoleAccess\DeleteOne;
 use App\Command\User\RoleAccess\UpdateOne;
 use App\Entity\User\RoleAccess as RoleAccessEntity;
-use App\Event\User\RoleAccess\Created;
-use App\Event\User\RoleAccess\Deleted;
-use App\Event\User\RoleAccess\DeletedMulti;
-use App\Event\User\RoleAccess\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\User\RoleAccessInterface;
 use App\Validator\User\RoleAccess as RoleAccessValidator;
@@ -37,20 +34,25 @@ class RoleAccess implements HandlerInterface {
      *
      * @var App\Repository\User\RoleAccessInterface
      */
-    protected $repository;
-
+    private $repository;
     /**
      * RoleAccess Validator instance.
      *
      * @var App\Validator\User\RoleAccess
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -65,6 +67,8 @@ class RoleAccess implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('User\RoleAccess'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -73,19 +77,23 @@ class RoleAccess implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\User\RoleAccessInterface
-     * @param App\Validator\User\RoleAccess
+     * @param App\Repository\RoleAccessInterface $repository
+     * @param App\Validator\RoleAccess           $validator
+     * @param App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */
     public function __construct(
         RoleAccessInterface $repository,
         RoleAccessValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -127,7 +135,7 @@ class RoleAccess implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = new Created($entity);
+            $event  = $this->eventFactory->create('User\\RoleAccess\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\User\RoleAccessException('Error while trying to create a role access', 500, $e);
@@ -160,7 +168,7 @@ class RoleAccess implements HandlerInterface {
 
         $rowsAffected = $this->repository->deleteAllFromIdentity($command->identityId);
 
-        $event = new DeletedMulti($roleAccesses);
+        $event = $this->eventFactory->create('User\\RoleAccess\\DeletedMulti', $roleAccesses);
         $this->emitter->emit($event);
 
         return $rowsAffected;
@@ -197,7 +205,7 @@ class RoleAccess implements HandlerInterface {
         // saves entity
         try {
             $entity = $this->repository->save($entity);
-            $event  = new Updated($entity);
+            $event  = $this->eventFactory->create('User\\RoleAccess\\Updated', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\User\RoleAccessException('Error while trying to update a role access', 500, $e);
@@ -235,7 +243,7 @@ class RoleAccess implements HandlerInterface {
             throw new NotFound\User\RoleAccessException('No role accesses found for deletion', 404);
         }
 
-        $event = new Deleted($roleAccess);
+        $event = $this->eventFactory->create('User\\RoleAccess\\Deleted', $roleAccess);
         $this->emitter->emit($event);
     }
 }

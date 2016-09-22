@@ -13,14 +13,11 @@ use App\Command\Company\Member\DeleteAll;
 use App\Command\Company\Member\DeleteOne;
 use App\Command\Company\Member\UpdateOne;
 use App\Entity\Company\Member as MemberEntity;
-use App\Event\Company\Member\Created;
-use App\Event\Company\Member\Deleted;
-use App\Event\Company\Member\DeletedMulti;
-use App\Event\Company\Member\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\MemberInterface;
@@ -39,31 +36,37 @@ class Member implements HandlerInterface {
      *
      * @var App\Repository\Company\MemberInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Credential Repository instance.
      *
      * @var App\Repository\Company\CredentialInterface
      */
-    protected $credentialRepository;
+    private $credentialRepository;
     /**
      * User Repository instance.
      *
      * @var App\Repository\UserInterface
      */
-    protected $userRepository;
+    private $userRepository;
     /**
      * Member Validator instance.
      *
      * @var App\Validator\Company\Member
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -84,6 +87,8 @@ class Member implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Company\Member'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -92,9 +97,11 @@ class Member implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\MemberInterface     $repository
-     * @param App\Repository\Company\CredentialInterface $repository
-     * @param App\Validator\Company\Member               $validator
+     * @param App\Repository\MemberInterface     $repository
+     * @param App\Repository\CredentialInterface $repository
+     * @param App\Validator\Member               $validator
+     * @param App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */
@@ -103,12 +110,14 @@ class Member implements HandlerInterface {
         CredentialInterface $credentialRepository,
         UserInterface $userRepository,
         MemberValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
         $this->userRepository       = $userRepository;
         $this->validator            = $validator;
+        $this->eventFactory         = $eventFactory;
         $this->emitter              = $emitter;
     }
 
@@ -154,7 +163,7 @@ class Member implements HandlerInterface {
 
         try {
             $member = $this->repository->save($member);
-            $event  = new Created($member);
+            $event  = $this->eventFactory->create('Company\\Member\\Created', $member);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\MemberException('Error while trying to create a member', 500, $e);
@@ -193,7 +202,7 @@ class Member implements HandlerInterface {
 
         try {
             $member = $this->repository->saveOne($member);
-            $event  = new Updated($member);
+            $event  = $this->eventFactory->create('Company\\Member\\Updated', $member);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Company\MemberException('Error while trying to update a member', 500, $e);
@@ -230,7 +239,7 @@ class Member implements HandlerInterface {
             throw new NotFound\Company\MemberException('No members found for deletion', 404);
         }
 
-        $event = new Deleted($member);
+        $event = $this->eventFactory->create('Company\\Member\\Deleted', $member);
         $this->emitter->emit($event);
     }
 
@@ -248,7 +257,7 @@ class Member implements HandlerInterface {
 
         $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
 
-        $event = new DeletedMulti($members);
+        $event = $this->eventFactory->create('Company\\Member\\DeletedMulti', $members);
         $this->emitter->emit($event);
 
         return $rowsAffected;

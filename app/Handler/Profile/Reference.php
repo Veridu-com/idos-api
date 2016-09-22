@@ -13,13 +13,10 @@ use App\Command\Profile\Reference\DeleteAll;
 use App\Command\Profile\Reference\DeleteOne;
 use App\Command\Profile\Reference\UpdateOne;
 use App\Entity\Profile\Reference as ReferenceEntity;
-use App\Event\Profile\Reference\Created;
-use App\Event\Profile\Reference\Deleted;
-use App\Event\Profile\Reference\DeletedMulti;
-use App\Event\Profile\Reference\Updated;
 use App\Exception\Create;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ReferenceInterface;
 use App\Validator\Profile\Reference as ReferenceValidator;
@@ -36,19 +33,25 @@ class Reference implements HandlerInterface {
      *
      * @var App\Repository\Profile\ReferenceInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Reference Validator instance.
      *
      * @var App\Validator\Profile\Reference
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var \League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -63,6 +66,8 @@ class Reference implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Reference'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -71,19 +76,23 @@ class Reference implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\ReferenceInterface $repository
-     * @param App\Validator\Profile\Reference           $validator
+     * @param App\Repository\ReferenceInterface $repository
+     * @param App\Validator\Reference           $validator
+     * @param App\Factory\Event                 $eventFactory
+     * @param \League\Event\Emitter             $emitter
      *
      * @return void
      */
     public function __construct(
         ReferenceInterface $repository,
         ReferenceValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -122,7 +131,7 @@ class Reference implements HandlerInterface {
 
         try {
             $reference = $this->repository->save($reference);
-            $event     = new Created($reference);
+            $event     = $this->eventFactory->create('Profile\\Reference\\Created', $reference);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ReferenceException('Error while trying to create a reference', 500, $e);
@@ -160,7 +169,7 @@ class Reference implements HandlerInterface {
 
         try {
             $reference = $this->repository->save($reference);
-            $event     = new Updated($reference);
+            $event     = $this->eventFactory->create('Profile\\Reference\\Updated', $reference);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ReferenceException('Error while trying to update a feature', 500, $e);
@@ -201,7 +210,7 @@ class Reference implements HandlerInterface {
             throw new NotFound\Profile\ReferenceException('No references found for deletion', 404);
         }
 
-        $event = new Deleted($reference);
+        $event = $this->eventFactory->create('Profile\\Reference\\Deleted', $reference);
         $this->emitter->emit($event);
     }
 
@@ -219,7 +228,7 @@ class Reference implements HandlerInterface {
         $references = $this->repository->getAllByUserId($command->user->id);
 
         $affectedRows = $this->repository->deleteByUserId($command->user->id);
-        $event        = new DeletedMulti($references);
+        $event        = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references);
         $this->emitter->emit($event);
 
         return $affectedRows;

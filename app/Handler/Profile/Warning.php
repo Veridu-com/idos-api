@@ -12,11 +12,9 @@ use App\Command\Profile\Warning\CreateNew;
 use App\Command\Profile\Warning\DeleteAll;
 use App\Command\Profile\Warning\DeleteOne;
 use App\Entity\Profile\Warning as WarningEntity;
-use App\Event\Profile\Warning\Created;
-use App\Event\Profile\Warning\Deleted;
-use App\Event\Profile\Warning\DeletedMulti;
 use App\Exception\Create;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\WarningInterface;
 use App\Validator\Profile\Warning as WarningValidator;
@@ -33,19 +31,25 @@ class Warning implements HandlerInterface {
      *
      * @var App\Repository\Profile\WarningInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Warning Validator instance.
      *
      * @var App\Validator\Profile\Warning
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -60,6 +64,8 @@ class Warning implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Warning'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -68,19 +74,23 @@ class Warning implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\WarningInterface $repository
-     * @param App\Validator\Profile\Warning           $validator
+     * @param App\Repository\WarningInterface $repository
+     * @param App\Validator\Warning           $validator
+     * @param App\Factory\Event               $eventFactory
+     * @param \League\Event\Emitter           $emitter
      *
      * @return void
      */
     public function __construct(
         WarningInterface $repository,
         WarningValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -127,7 +137,7 @@ class Warning implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = new Created($entity);
+            $event = $this->eventFactory->create('Profile\\Warning\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Create\Profile\WarningException('Error while trying to create a warning', 500, $e);
@@ -175,7 +185,7 @@ class Warning implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = new DeletedMulti($entities);
+            $event = $this->eventFactory->create('Profile\\Warning\\DeletedMulti', $entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting warnings');
@@ -215,7 +225,7 @@ class Warning implements HandlerInterface {
         try {
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = new Deleted($entity);
+            $event = $this->eventFactory->create('Profile\\Warning\\Deleted', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting warning');
