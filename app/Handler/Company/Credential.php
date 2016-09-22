@@ -12,13 +12,11 @@ use App\Command\Company\Credential\CreateNew;
 use App\Command\Company\Credential\DeleteOne;
 use App\Command\Company\Credential\UpdateOne;
 use App\Entity\Company\Credential as CredentialEntity;
-use App\Event\Company\Credential\Created;
-use App\Event\Company\Credential\Deleted;
-use App\Event\Company\Credential\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Validator\Company\Credential as CredentialValidator;
@@ -36,19 +34,25 @@ class Credential implements HandlerInterface {
      *
      * @var App\Repository\Company\CredentialInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Credential Validator instance.
      *
      * @var App\Validator\Company\Credential
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -63,6 +67,8 @@ class Credential implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Company\Credential'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -71,19 +77,23 @@ class Credential implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\CredentialInterface
-     * @param App\Validator\Company\Credential
+     * @param App\Repository\CredentialInterface $repository
+     * @param App\Validator\Credential           $validator
+     * @param App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */
     public function __construct(
         CredentialInterface $repository,
         CredentialValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -123,7 +133,7 @@ class Credential implements HandlerInterface {
 
         try {
             $credential = $this->repository->save($credential);
-            $event      = new Created($credential, $command->identity);
+            $event      = $this->eventFactory->create('Company\\Credential\\Created', $credential, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\CredentialException('Error while trying to create a credential', 500, $e);
@@ -160,7 +170,7 @@ class Credential implements HandlerInterface {
 
         try {
             $credential = $this->repository->save($credential);
-            $event      = new Updated($credential, $command->identity);
+            $event      = $this->eventFactory->create('Company\\Credential\\Updated', $credential, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Company\CredentialException('Error while trying to update a credential', 500, $e);
@@ -197,7 +207,7 @@ class Credential implements HandlerInterface {
             throw new NotFound\Company\CredentialException('No credentials found for deletion', 404);
         }
 
-        $event = new Deleted($credential, $command->identity);
+        $event = $this->eventFactory->create('Company\\Credential\\Deleted', $credential, $command->identity);
         $this->emitter->emit($event);
     }
 }

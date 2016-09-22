@@ -11,11 +11,10 @@ namespace App\Handler\Profile;
 use App\Command\Profile\Process\CreateNew;
 use App\Command\Profile\Process\UpdateOne;
 use App\Entity\Profile\Process as ProcessEntity;
-use App\Event\Profile\Process\Created;
-use App\Event\Profile\Process\Updated;
 use App\Exception\Create;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ProcessInterface;
 use App\Validator\Profile\Process as ProcessValidator;
@@ -32,19 +31,25 @@ class Process implements HandlerInterface {
      *
      * @var App\Repository\Profile\ProcessInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Process Validator instance.
      *
      * @var App\Validator\Profile\Process
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -59,6 +64,8 @@ class Process implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Process'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -67,19 +74,23 @@ class Process implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\ProcessInterface $repository
-     * @param App\Validator\Profile\Process           $validator
+     * @param App\Repository\ProcessInterface $repository
+     * @param App\Validator\Process           $validator
+     * @param App\Factory\Event               $eventFactory
+     * @param \League\Event\Emitter           $emitter
      *
      * @return void
      */
     public function __construct(
         ProcessInterface $repository,
         ProcessValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -119,7 +130,7 @@ class Process implements HandlerInterface {
 
         try {
             $this->repository->save($process);
-            $event = new Created($process);
+            $event = $this->eventFactory->create('Profile\\Process\\Created', $process);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ProcessException('Error while trying to create a process', 500, $e);
@@ -162,7 +173,7 @@ class Process implements HandlerInterface {
 
         try {
             $process = $this->repository->save($process);
-            $event   = new Updated($process);
+            $event   = $this->eventFactory->create('Profile\\Process\\Updated', $process);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ProcessException('Error while trying to update a feature', 500, $e);

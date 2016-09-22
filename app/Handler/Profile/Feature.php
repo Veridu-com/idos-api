@@ -14,14 +14,11 @@ use App\Command\Profile\Feature\DeleteOne;
 use App\Command\Profile\Feature\UpdateOne;
 use App\Command\Profile\Feature\Upsert;
 use App\Entity\Profile\Feature as FeatureEntity;
-use App\Event\Profile\Feature\Created;
-use App\Event\Profile\Feature\Deleted;
-use App\Event\Profile\Feature\DeletedMulti;
-use App\Event\Profile\Feature\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\FeatureInterface;
 use App\Repository\Profile\SourceInterface;
@@ -39,28 +36,34 @@ class Feature implements HandlerInterface {
      *
      * @var App\Repository\Profile\FeatureInterface
      */
-    protected $repository;
+    private $repository;
 
     /**
      * Source Repository instance.
      *
      * @var App\Repository\SourceInterface
      */
-    protected $sourceRepository;
+    private $sourceRepository;
 
     /**
      * Feature Validator instance.
      *
      * @var App\Validator\Profile\Feature
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
 
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -78,6 +81,8 @@ class Feature implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Feature'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -86,8 +91,10 @@ class Feature implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\FeatureInterface $repository
-     * @param App\Validator\Profile\Feature           $validator
+     * @param App\Repository\FeatureInterface $repository
+     * @param App\Validator\Feature           $validator
+     * @param App\Factory\Event               $eventFactory
+     * @param \League\Event\Emitter           $emitter
      *
      * @return void
      */
@@ -95,11 +102,13 @@ class Feature implements HandlerInterface {
         FeatureInterface $repository,
         SourceInterface $sourceRepository,
         FeatureValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository       = $repository;
         $this->sourceRepository = $sourceRepository;
         $this->validator        = $validator;
+        $this->eventFactory     = $eventFactory;
         $this->emitter          = $emitter;
     }
 
@@ -148,7 +157,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
-            $event = new Created($feature);
+            $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\FeatureException('Error while trying to create a feature', 500, $e);
@@ -198,7 +207,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
-            $event = new Updated($feature);
+            $event = $this->eventFactory->create('Profile\\Feature\\Updated', $feature);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\FeatureException('Error while trying to update a feature', 500, $e);
@@ -246,7 +255,7 @@ class Feature implements HandlerInterface {
             $affectedRows += $this->repository->delete($deletedFeature->id);
         }
 
-        $event = new DeletedMulti($deletedFeatures);
+        $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures);
         $this->emitter->emit($event);
 
         return $affectedRows;
@@ -292,7 +301,7 @@ class Feature implements HandlerInterface {
             throw new NotFound\Profile\FeatureException('No features found for deletion', 404);
         }
 
-        $event = new Deleted($feature);
+        $event = $this->eventFactory->create('Profile\\Feature\\Deleted', $feature);
         $this->emitter->emit($event);
 
         return $affectedRows;
@@ -344,9 +353,9 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->hydrateRelations($feature);
 
             if ($inserting) {
-                $event = new Created($feature);
+                $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature);
             } else {
-                $event = new Updated($feature);
+                $event = $this->eventFactory->create('Profile\\Feature\\Updated', $feature);
             }
 
             $this->emitter->emit($event);

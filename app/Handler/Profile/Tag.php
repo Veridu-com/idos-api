@@ -12,11 +12,9 @@ use App\Command\Profile\Tag\CreateNew;
 use App\Command\Profile\Tag\DeleteAll;
 use App\Command\Profile\Tag\DeleteOne;
 use App\Entity\Profile\Tag as TagEntity;
-use App\Event\Profile\Tag\Created;
-use App\Event\Profile\Tag\Deleted;
-use App\Event\Profile\Tag\DeletedMulti;
 use App\Exception\Create;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\TagInterface;
 use App\Repository\UserInterface;
@@ -34,25 +32,31 @@ class Tag implements HandlerInterface {
      *
      * @var App\Repository\Profile\TagInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * User Repository instance.
      *
      * @var App\Repository\UserInterface
      */
-    protected $userRepository;
+    private $userRepository;
     /**
      * Tag Validator instance.
      *
      * @var App\Validator\Profile\Tag
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -70,6 +74,8 @@ class Tag implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Tag'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -78,10 +84,11 @@ class Tag implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\TagInterface        $repository
-     * @param App\Repository\Company\CredentialInterface $repository
-     * @param App\Validator\Profile\Tag                  $validator
-     * @param \League\Event\Emitter                      $emitter
+     * @param App\Repository\TagInterface        $repository
+     * @param App\Repository\CredentialInterface $repository
+     * @param App\Validator\Tag                  $validator
+     * @param App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */
@@ -89,11 +96,13 @@ class Tag implements HandlerInterface {
         TagInterface $repository,
         UserInterface $userRepository,
         TagValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository     = $repository;
         $this->userRepository = $userRepository;
         $this->validator      = $validator;
+        $this->eventFactory   = $eventFactory;
         $this->emitter        = $emitter;
     }
 
@@ -136,7 +145,7 @@ class Tag implements HandlerInterface {
 
         try {
             $tag   = $this->repository->save($tag);
-            $event = new Created($tag);
+            $event = $this->eventFactory->create('Profile\\Tag\\Created', $tag);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\TagException('Error while trying to create a tag', 500, $e);
@@ -177,7 +186,7 @@ class Tag implements HandlerInterface {
             throw new NotFound\Profile\TagException('No tags found for deletion', 404);
         }
 
-        $event = new Deleted($tag);
+        $event = $this->eventFactory->create('Profile\\Tag\\Deleted', $tag);
         $this->emitter->emit($event);
     }
 
@@ -196,7 +205,7 @@ class Tag implements HandlerInterface {
 
         $rowsAffected = $this->repository->deleteByUserId($command->user->id);
 
-        $event = new DeletedMulti($tags);
+        $event = $this->eventFactory->create('Profile\\Tag\\DeletedMulti', $tags);
         $this->emitter->emit($event);
 
         return $rowsAffected;

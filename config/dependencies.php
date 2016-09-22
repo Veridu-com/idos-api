@@ -246,7 +246,7 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
 
         $resource = preg_replace("/\//", '\\', $matches[1][0]);
         // $resource = $matches[1][0];
-        $command  = $matches[2][0];
+        $command = $matches[2][0];
 
         $commands[sprintf('App\\Command\\%s\\%s', $resource, $command)] = sprintf('App\\Handler\\%s', $resource);
     }
@@ -290,6 +290,11 @@ $container['validatorFactory'] = function (ContainerInterface $container) : Fact
 // App Entity Factory
 $container['entityFactory'] = function (ContainerInterface $container) : Factory\Entity {
     return new Factory\Entity($container->get('optimus'));
+};
+
+// App Event Factory
+$container['eventFactory'] = function (ContainerInterface $container) : Factory\Event {
+    return new Factory\Event();
 };
 
 // Auth Middleware
@@ -417,18 +422,15 @@ $container['optimus'] = function (ContainerInterface $container) : Optimus {
 // App files
 $container['globFiles'] = function () : array {
     return [
-        'routes' =>
-            array_merge(
-                glob(__DIR__ . '/../app/Route/*.php'),
-                glob(__DIR__ . '/../app/Route/*/*.php')
-            ),
-        'handlers' =>
-            array_merge(
-                glob(__DIR__ . '/../app/Handler/*.php'),
-                glob(__DIR__ . '/../app/Handler/*/*.php')
-            ),
-        'listenerProviders' =>
-            glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
+        'routes' => array_merge(
+            glob(__DIR__ . '/../app/Route/*.php'),
+            glob(__DIR__ . '/../app/Route/*/*.php')
+        ),
+        'handlers' => array_merge(
+            glob(__DIR__ . '/../app/Handler/*.php'),
+            glob(__DIR__ . '/../app/Handler/*/*.php')
+        ),
+        'listenerProviders' => glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
     ];
 };
 
@@ -497,4 +499,23 @@ $container['ssoAuth'] = function (ContainerInterface $container) : callable {
             $settings['sso_providers_scopes'][$provider]
         );
     };
+};
+
+// Gearman Client
+$container['gearmanClient'] = function (ContainerInterface $container) : GearmanClient {
+    $settings = $container->get('settings');
+    $gearman  = new \GearmanClient();
+    if (isset($settings['gearman']['timeout'])) {
+        $gearman->setTimeout($settings['gearman']['timeout']);
+    }
+
+    foreach ($settings['gearman']['servers'] as $server) {
+        if (is_array($server)) {
+            $gearman->addServer($server[0], $server[1]);
+        } else {
+            $gearman->addServer($server);
+        }
+    }
+
+    return $gearman;
 };
