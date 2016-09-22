@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\Setting;
+use App\Entity\Company\Setting;
 use Illuminate\Support\Collection;
 
 /**

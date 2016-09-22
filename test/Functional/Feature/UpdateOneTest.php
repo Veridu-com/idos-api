@@ -22,16 +22,8 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
-        $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features',
-            'GET',
-            [
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-            ]
-        );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/';
+        $this->httpMethod = 'PATCH';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/1321189817';
     }
 
     public function testSuccess() {
@@ -42,8 +34,10 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $newValue = 'new value';
-        $request  = $this->createRequest($environment, json_encode(['value' => $newValue]));
+        $request = $this->createRequest($environment, json_encode([
+            'type'  => 'string',
+            'value' => 'new value'
+        ]));
 
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
@@ -51,7 +45,8 @@ class UpdateOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame($newValue, $body['data']['value']);
+        $this->assertSame('string', $body['data']['type']);
+        $this->assertSame('new value', $body['data']['value']);
 
         /*
          * Validates Response using the Json Schema.
@@ -75,7 +70,10 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode(['value' => 'new value']));
+        $request = $this->createRequest($environment, json_encode([
+            'type'  => 'string',
+            'value' => 'new value'
+        ]));
 
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());

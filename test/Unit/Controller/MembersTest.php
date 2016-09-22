@@ -8,14 +8,14 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Controller;
 
-use App\Command\Member\CreateNew;
-use App\Command\Member\DeleteAll;
-use App\Command\Member\DeleteOne;
-use App\Command\Member\UpdateOne;
+use App\Command\Company\Member\CreateNew;
+use App\Command\Company\Member\DeleteAll;
+use App\Command\Company\Member\DeleteOne;
+use App\Command\Company\Member\UpdateOne;
 use App\Command\ResponseDispatch;
-use App\Controller\Members;
+use App\Controller\Company\Members;
 use App\Entity\Company as CompanyEntity;
-use App\Entity\Member as MemberEntity;
+use App\Entity\Company\Member as MemberEntity;
 use App\Entity\User as UserEntity;
 use App\Factory\Command;
 use App\Repository\DBMember;

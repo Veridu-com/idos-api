@@ -82,7 +82,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
 
             if (! array_has($members['ids'], $member['id'])) {
                 $member = $this->entityFactory->create(
-                    'Member',
+                    'Company\Member',
                     $member
                 );
                 $members['ids'][$member->id] = $member;

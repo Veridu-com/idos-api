@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Feature;
 
-use App\Command\Feature\DeleteAll;
+use App\Command\Profile\Feature\DeleteAll;
 use Test\Unit\AbstractUnit;
 
 class DeleteAllTest extends AbstractUnit {
