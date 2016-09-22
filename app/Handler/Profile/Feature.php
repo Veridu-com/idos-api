@@ -121,7 +121,6 @@ class Feature implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->name);
             $this->validator->assertName($command->type);
-
             if ($command->source !== null) {
                 $this->validator->assertSource($command->source);
             }
@@ -174,7 +173,6 @@ class Feature implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : FeatureEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertSource($command->source);
             $this->validator->assertService($command->service);
             $this->validator->assertId($command->featureId);
             $this->validator->assertName($command->type);
@@ -186,7 +184,11 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOneById($command->user->id, $command->source->name, $command->service->id, $command->featureId);
+        $feature = $this->repository->findOneBy([
+            'user_id' => $command->user->id,
+            'creator' => $command->service->id,
+            'id'      => $command->featureId
+        ]);
 
         $feature->type      = $command->type;
         $feature->value     = $command->value;
