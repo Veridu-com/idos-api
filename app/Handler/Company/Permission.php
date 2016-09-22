@@ -11,12 +11,10 @@ namespace App\Handler\Company;
 use App\Command\Company\Permission\CreateNew;
 use App\Command\Company\Permission\DeleteOne;
 use App\Entity\Company\Permission as PermissionEntity;
-use App\Event\Company\Permission\Created;
-use App\Event\Company\Permission\Deleted;
-use App\Event\Company\Permission\DeletedMulti;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Company\PermissionInterface;
 use App\Validator\Company\Permission as PermissionValidator;
@@ -34,19 +32,25 @@ class Permission implements HandlerInterface {
      *
      * @var App\Repository\Company\PermissionInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Permission Validator instance.
      *
      * @var App\Validator\Company\Permission
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -61,6 +65,8 @@ class Permission implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Company\Permission'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -69,20 +75,23 @@ class Permission implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\PermissionInterface
-     * @param App\Validator\Company\Permission
-     * @param \League\Event\Emitter
+     * @param App\Repository\PermissionInterface $repository
+     * @param App\Validator\Permission           $validator
+     * @param App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */
     public function __construct(
         PermissionInterface $repository,
         PermissionValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -117,7 +126,7 @@ class Permission implements HandlerInterface {
 
         try {
             $permission = $this->repository->save($permission);
-            $event      = new Created($permission);
+            $event      = $this->eventFactory->create('Company\\Permission\\Created', $permission);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\PermissionException('Error while trying to create a permission', 500, $e);
@@ -153,7 +162,7 @@ class Permission implements HandlerInterface {
 
         $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
 
-        $event = new DeletedMulti($permissions);
+        $event = $this->eventFactory->create('Company\\Permission\\DeletedMulti', $permissions);
         $this->emitter->emit($event);
 
         return $affectedRows;
@@ -192,7 +201,7 @@ class Permission implements HandlerInterface {
             throw new NotFound\Company\PermissionException('No permissions found for deletion', 404);
         }
 
-        $event = new Deleted($permission);
+        $event = $this->eventFactory->create('Company\\Permission\\Deleted', $permission);
         $this->emitter->emit($event);
     }
 }

@@ -24,19 +24,25 @@ class Profile implements HandlerInterface {
      *
      * @var App\Repository\UserInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Profile Validator instance.
      *
      * @var App\Validator\Profile
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -51,6 +57,8 @@ class Profile implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -61,17 +69,21 @@ class Profile implements HandlerInterface {
      *
      * @param App\Repository\UserInterface $repository
      * @param App\Validator\Profile        $validator
+     * @param App\Factory\Event            $eventFactory
+     * @param \League\Event\Emitter        $emitter
      *
      * @return void
      */
     public function __construct(
         UserInterface $repository,
         ProfileValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**

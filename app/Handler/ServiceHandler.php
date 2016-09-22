@@ -13,14 +13,11 @@ use App\Command\ServiceHandler\DeleteAll;
 use App\Command\ServiceHandler\DeleteOne;
 use App\Command\ServiceHandler\UpdateOne;
 use App\Entity\ServiceHandler as ServiceHandlerEntity;
-use App\Event\ServiceHandler\Created;
-use App\Event\ServiceHandler\Deleted;
-use App\Event\ServiceHandler\DeletedMulti;
-use App\Event\ServiceHandler\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Repository\ServiceHandlerInterface;
 use App\Validator\ServiceHandler as ServiceHandlerValidator;
 use Interop\Container\ContainerInterface;
@@ -36,19 +33,25 @@ class ServiceHandler implements HandlerInterface {
      *
      * @var App\Repository\ServiceHandlerInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * ServiceHandler Validator instance.
      *
      * @var App\Validator\ServiceHandler
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -63,6 +66,8 @@ class ServiceHandler implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('ServiceHandler'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -73,6 +78,7 @@ class ServiceHandler implements HandlerInterface {
      *
      * @param App\Repository\ServiceHandlerInterface $repository
      * @param App\Validator\ServiceHandler           $validator
+     * @param App\Factory\Event                      $eventFactory
      * @param \League\Event\Emitter                  $emitter
      *
      * @return void
@@ -80,11 +86,13 @@ class ServiceHandler implements HandlerInterface {
     public function __construct(
         ServiceHandlerInterface $repository,
         ServiceHandlerValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -120,7 +128,7 @@ class ServiceHandler implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
-            $event  = new Created($entity);
+            $event  = $this->eventFactory->create('ServiceHandler\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\ServiceHandler('Error while trying to create a service handler', 500, $e);
@@ -169,7 +177,7 @@ class ServiceHandler implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
-            $event  = new Updated($entity);
+            $event  = $this->eventFactory->create('ServiceHandler\\Updated', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\ServiceHandler('Error while trying to update a service handler', 500, $e);
@@ -200,7 +208,7 @@ class ServiceHandler implements HandlerInterface {
 
         $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
 
-        $event = new DeletedMulti($serviceHandlers);
+        $event = $this->eventFactory->create('ServiceHandler\\DeletedMulti', $serviceHandlers);
         $this->emitter->emit($event);
 
         return $rowsAffected;
@@ -235,7 +243,7 @@ class ServiceHandler implements HandlerInterface {
             throw new NotFound\ServiceHandler('No service handlers found for deletion', 404);
         }
 
-        $event = new Deleted($serviceHandler);
+        $event = $this->eventFactory->create('ServiceHandler\\Deleted', $serviceHandler);
         $this->emitter->emit($event);
     }
 }

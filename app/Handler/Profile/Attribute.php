@@ -13,12 +13,10 @@ use App\Command\Profile\Attribute\DeleteAll;
 use App\Command\Profile\Attribute\DeleteOne;
 use App\Command\Profile\Attribute\UpdateOne;
 use App\Entity\Profile\Attribute as AttributeEntity;
-use App\Event\Profile\Attribute\Created;
-use App\Event\Profile\Attribute\Deleted;
-use App\Event\Profile\Attribute\DeletedMulti;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\AttributeInterface;
 use App\Validator\Profile\Attribute as AttributeValidator;
@@ -35,19 +33,25 @@ class Attribute implements HandlerInterface {
      *
      * @var App\Repository\Profile\AttributeInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Attribute Validator instance.
      *
      * @var App\Validator\Profile\Attribute
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var \League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -62,6 +66,8 @@ class Attribute implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Attribute'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -70,19 +76,23 @@ class Attribute implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\AttributeInterface $repository
-     * @param App\Validator\Profile\Attribute           $validator
+     * @param App\Repository\AttributeInterface $repository
+     * @param App\Validator\Attribute           $validator
+     * @param App\Factory\Event                 $eventFactory
+     * @param \League\Event\Emitter             $emitter
      *
      * @return void
      */
     public function __construct(
         AttributeInterface $repository,
         AttributeValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -125,7 +135,7 @@ class Attribute implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = new Created($entity);
+            $event  = $this->eventFactory->create('Profile\\Attribute\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500, $e);
@@ -162,7 +172,7 @@ class Attribute implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = new Created($entity);
+            $event = $this->eventFactory->create('Profile\\Attribute\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\AttributeException('Error while trying to update an attribute', 500, $e);
@@ -212,7 +222,7 @@ class Attribute implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = new Deleted($entities);
+            $event = $this->eventFactory->create('Profile\\Attribute\\Deleted', $entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\Profile\AttributeException('No attributes found for deletion', 404);
@@ -250,7 +260,7 @@ class Attribute implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = new DeletedMulti($entities);
+            $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\AttributeException('Error while deleting all attributes', 404);

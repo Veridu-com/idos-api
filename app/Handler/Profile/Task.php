@@ -11,11 +11,10 @@ namespace App\Handler\Profile;
 use App\Command\Profile\Task\CreateNew;
 use App\Command\Profile\Task\UpdateOne;
 use App\Entity\Profile\Task as TaskEntity;
-use App\Event\Profile\Task\Created;
-use App\Event\Profile\Task\Updated;
 use App\Exception\Create;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\TaskInterface;
 use App\Validator\Profile\Task as TaskValidator;
@@ -32,19 +31,25 @@ class Task implements HandlerInterface {
      *
      * @var App\Repository\Profile\TaskInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Task Validator instance.
      *
      * @var App\Validator\Profile\Task
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -59,6 +64,8 @@ class Task implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Task'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -67,19 +74,23 @@ class Task implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\TaskInterface $repository
-     * @param App\Validator\Profile\Task           $validator
+     * @param App\Repository\TaskInterface $repository
+     * @param App\Validator\Task           $validator
+     * @param App\Factory\Event            $eventFactory
+     * @param \League\Event\Emitter        $emitter
      *
      * @return void
      */
     public function __construct(
         TaskInterface $repository,
         TaskValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -124,7 +135,7 @@ class Task implements HandlerInterface {
 
         try {
             $task  = $this->repository->save($task);
-            $event = new Created($task);
+            $event = $this->eventFactory->create('Profile\\Task\\Created', $task);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\TaskException('Error while trying to create a task', 500, $e);
@@ -188,7 +199,7 @@ class Task implements HandlerInterface {
 
         try {
             $task  = $this->repository->save($task);
-            $event = new Updated($task);
+            $event = $this->eventFactory->create('Profile\\Task\\Updated', $task);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\TaskException('Error while trying to update a task', 500, $e);

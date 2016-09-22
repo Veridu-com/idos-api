@@ -13,15 +13,11 @@ use App\Command\Profile\Source\DeleteAll;
 use App\Command\Profile\Source\DeleteOne;
 use App\Command\Profile\Source\UpdateOne;
 use App\Entity\Profile\Source as SourceEntity;
-use App\Event\Profile\Source\Created;
-use App\Event\Profile\Source\Deleted;
-use App\Event\Profile\Source\DeletedMulti;
-use App\Event\Profile\Source\OTP;
-use App\Event\Profile\Source\Updated;
 use App\Exception\AppException;
 use App\Exception\Create;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Validator\Profile\Source as SourceValidator;
@@ -38,19 +34,25 @@ class Source implements HandlerInterface {
      *
      * @var App\Repository\Profile\SourceInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Source Validator instance.
      *
      * @var App\Validator\Profile\Source
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var \League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -65,6 +67,8 @@ class Source implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Source'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -73,20 +77,23 @@ class Source implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\SourceInterface $repository
-     * @param App\Validator\Profile\Source           $validator
-     * @param \League\Event\Emitter                  $emitter
+     * @param App\Repository\SourceInterface $repository
+     * @param App\Validator\Source           $validator
+     * @param App\Factory\Event              $eventFactory
+     * @param \League\Event\Emitter          $emitter
      *
      * @return void
      */
     public function __construct(
         SourceInterface $repository,
         SourceValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -155,14 +162,14 @@ class Source implements HandlerInterface {
             throw new Create\Profile\SourceException('Error while trying to create a setting', 500, $e);
         }
 
-        $this->emitter->emit(new Created($command->user, $source, $command->ipaddr));
+        $this->emitter->emit($this->eventFactory->create('Profile\\Source\\Created', $command->user, $source, $command->ipaddr));
 
         if ($sendOTP) {
-            $this->emitter->emit(new OTP($command->user, $source, $command->ipaddr));
+            $this->emitter->emit($this->eventFactory->create('Profile\\Source\\OTP', $command->user, $source, $command->ipaddr));
         }
 
         if ($sendCRA) {
-            $this->emitter->emit(new CRA($command->user, $source, $command->ipaddr));
+            $this->emitter->emit($this->eventFactory->create('Profile\\Source\\CRA', $command->user, $source, $command->ipaddr));
         }
 
         return $source;
@@ -254,7 +261,7 @@ class Source implements HandlerInterface {
 
         try {
             $source = $this->repository->save($source);
-            $this->emitter->emit(new Updated($command->user, $source, $command->ipaddr));
+            $this->emitter->emit($this->eventFactory->create('Profile\\Source\\Updated', $command->user, $source, $command->ipaddr));
         } catch (\Exception $e) {
             throw new Update\Profile\SourceException('Error while trying to update a source', 500, $e);
         }
@@ -295,7 +302,7 @@ class Source implements HandlerInterface {
             throw new NotFound\Profile\SourceException('No sources found for deletion', 404);
         }
 
-        $this->emitter->emit(new Deleted($command->user, $command->source, $command->ipaddr));
+        $this->emitter->emit($this->eventFactory->create('Profile\\Source\\Deleted', $command->user, $command->source, $command->ipaddr));
     }
 
     /**
@@ -326,7 +333,7 @@ class Source implements HandlerInterface {
         $sources = $this->repository->getAllByUserId($command->user->id);
         $deleted = $this->repository->deleteByUserId($command->user->id);
 
-        $this->emitter->emit(new DeletedMulti($command->user, $sources, $command->ipaddr));
+        $this->emitter->emit($this->eventFactory->create('Profile\\Source\\DeletedMulti', $command->user, $sources, $command->ipaddr));
 
         return $deleted;
     }

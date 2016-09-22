@@ -13,13 +13,11 @@ use App\Command\Company\Hook\DeleteOne;
 use App\Command\Company\Hook\GetOne;
 use App\Command\Company\Hook\UpdateOne;
 use App\Entity\Company\Hook as HookEntity;
-use App\Event\Company\Hook\Created;
-use App\Event\Company\Hook\Deleted;
-use App\Event\Company\Hook\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\HookInterface;
@@ -37,25 +35,31 @@ class Hook implements HandlerInterface {
      *
      * @var App\Repository\Company\HookInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Credential Repository instance.
      *
      * @var App\Repository\Company\CredentialInterface
      */
-    protected $credentialRepository;
+    private $credentialRepository;
     /**
      * Hook Validator instance.
      *
      * @var App\Validator\Company\Hook
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -73,6 +77,8 @@ class Hook implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Company\Hook'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -81,9 +87,11 @@ class Hook implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\HookInterface       $repository
-     * @param App\Repository\Company\CredentialInterface $repository
-     * @param App\Validator\Company\Hook                 $validator
+     * @param App\Repository\HookInterface       $repository
+     * @param App\Repository\CredentialInterface $repository
+     * @param App\Validator\Hook                 $validator
+     * @param App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */
@@ -91,11 +99,13 @@ class Hook implements HandlerInterface {
         HookInterface $repository,
         CredentialInterface $credentialRepository,
         HookValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
         $this->validator            = $validator;
+        $this->eventFactory         = $eventFactory;
         $this->emitter              = $emitter;
     }
 
@@ -144,7 +154,7 @@ class Hook implements HandlerInterface {
 
         try {
             $hook  = $this->repository->save($hook);
-            $event = new Created($hook);
+            $event = $this->eventFactory->create('Company\\Hook\\Created', $hook);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\HookException('Error while trying to create a hook', 500, $e);
@@ -201,7 +211,7 @@ class Hook implements HandlerInterface {
 
         try {
             $hook  = $this->repository->save($hook);
-            $event = new Updated($hook);
+            $event = $this->eventFactory->create('Company\\Hook\\Updated', $hook);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Company\HookException('Error while trying to update a hook', 500, $e);
@@ -254,7 +264,7 @@ class Hook implements HandlerInterface {
             throw new NotFound\Company\HookException('No hooks found for deletion', 404);
         }
 
-        $event = new Deleted($hook);
+        $event = $this->eventFactory->create('Company\\Hook\\Deleted', $hook);
         $this->emitter->emit($event);
     }
 

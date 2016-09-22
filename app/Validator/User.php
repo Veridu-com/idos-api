@@ -12,5 +12,7 @@ namespace App\Validator;
  * User Validation Rules.
  */
 class User implements ValidatorInterface {
-    use Traits\AssertId;
+    use Traits\AssertEntity,
+        Traits\AssertId,
+        Traits\AssertUserName;
 }

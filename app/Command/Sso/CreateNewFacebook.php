@@ -15,6 +15,12 @@ use App\Command\AbstractCommand;
  */
 class CreateNewFacebook extends AbstractCommand {
     /**
+     * API Version.
+     *
+     * @var string
+     */
+    public $apiVersion;
+    /**
      * Provider access token.
      *
      * @var string
@@ -51,6 +57,10 @@ class CreateNewFacebook extends AbstractCommand {
      * @return App\Command\Sso\CreateNewFacebook
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['apiVersion'])) {
+            $this->apiVersion = $parameters['apiVersion'];
+        }
+
         if (isset($parameters['key'])) {
             $this->key = $parameters['key'];
         }

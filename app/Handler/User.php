@@ -11,11 +11,11 @@ namespace App\Handler;
 use App\Command\User\CreateNew;
 use App\Entity\User as UserEntity;
 use App\Exception\Create;
-use App\Factory\Command;
+use App\Factory\Event;
 use App\Repository\UserInterface;
+use App\Validator\User as UserValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
-use League\Tactician\CommandBus;
 
 /**
  * Handles User commands.
@@ -26,25 +26,25 @@ class User implements HandlerInterface {
      *
      * @var App\Repository\UserInterface
      */
-    protected $repository;
+    private $repository;
+    /**
+     * User Validator instance.
+     *
+     * @var App\Validator\User
+     */
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
-    /**
-     * Command Bus instance.
-     *
-     * @var \League\Tactician\CommandBus
-     */
-    private $commandBus;
-    /**
-     * Command Factory instance.
-     *
-     * @var App\Factory\Command
-     */
-    private $commandFactory;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -56,11 +56,12 @@ class User implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('User'),
                 $container
-                    ->get('eventEmitter'),
+                    ->get('validatorFactory')
+                    ->create('User'),
                 $container
-                    ->get('commandBus'),
+                    ->get('eventFactory'),
                 $container
-                    ->get('commandFactory')
+                    ->get('eventEmitter')
             );
         };
     }
@@ -69,22 +70,22 @@ class User implements HandlerInterface {
      * Class constructor.
      *
      * @param App\Repository\UserInterface $repository
+     * @param App\Validator\User           $validator
+     * @param App\Factory\Event            $eventFactory
      * @param \League\Event\Emitter        $emitter
-     * @param \League\Tactician\CommandBus
-     * @param App\Factory\Command
      *
      * @return void
      */
     public function __construct(
         UserInterface $repository,
-        Emitter $emitter,
-        CommandBus $commandBus,
-        Command $commandFactory
+        UserValidator $validator,
+        Event $eventFactory,
+        Emitter $emitter
     ) {
-        $this->repository     = $repository;
-        $this->emitter        = $emitter;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -92,19 +93,36 @@ class User implements HandlerInterface {
      *
      * @param App\Command\User\CreateNew $command
      *
+     * @throws App\Exception\Validate\UserException
+     * @throws App\Exception\Create\UserException
+     *
      * @return App\Entity\User
      */
     public function handleCreateNew(CreateNew $command) : UserEntity {
+        try {
+            $this->validator->assertCredential($command->credential);
+            $this->validator->assertId($command->credential->id);
+            $this->validator->assertUserName($command->username);
+        } catch (ValidationException $e) {
+            throw new Validate\UserException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
         $user = $this->repository->create(
             [
-                'credential_id' => $command->credentialId,
+                'credential_id' => $command->credential->id,
                 'role'          => $command->role,
                 'username'      => $command->username,
             ]
         );
 
         try {
-            $user = $this->repository->save($user);
+            $user  = $this->repository->save($user);
+            $event = $this->eventFactory->create('User\\Created', $user);
+            $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\UserException('Error while trying to create an user', 500, $e);
         }

@@ -9,9 +9,9 @@ declare(strict_types = 1);
 namespace App\Handler\Company;
 
 use App\Command\Company\Profile\DeleteOne;
-use App\Event\Company\Profile\Deleted;
 use App\Exception\NotFound;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\UserInterface;
 use App\Validator\User as UserValidator;
@@ -28,19 +28,25 @@ class Profile implements HandlerInterface {
      *
      * @var App\Repository\UserInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * User Validator instance.
      *
      * @var App\Validator\User
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var \League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -65,6 +71,7 @@ class Profile implements HandlerInterface {
      *
      * @param App\Repository\UserInterface $repository
      * @param App\Validator\User           $validator
+     * @param App\Factory\Event            $eventFactory
      * @param \League\Event\Emitter        $emitter
      *
      * @return void
@@ -72,11 +79,13 @@ class Profile implements HandlerInterface {
     public function __construct(
         UserInterface $repository,
         UserValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -104,7 +113,7 @@ class Profile implements HandlerInterface {
             throw new NotFound\Company\ProfileException('No profiles found for deletion', 404);
         }
 
-        $event = new Deleted($user);
+        $event = $this->eventFactory->create('Company\\Profile\\Deleted', $user);
         $this->emitter->emit($event);
 
         return $rowsAffected;
