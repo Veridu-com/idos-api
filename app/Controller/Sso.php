@@ -162,16 +162,19 @@ class Sso implements ControllerInterface {
         // hosted social application (credential based)
         $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $providerName);
         $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $providerName);
+        $credentialSettingVer = sprintf('%s.%s.version', $credentialPubKey, $providerName);
         // hosted social application (company based)
         $providerSettingKey = sprintf('%s.key', $providerName);
         $providerSettingSec = sprintf('%s.secret', $providerName);
+        $providerSettingVer = sprintf('%s.version', $providerName);
 
         $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
             $credential->companyId,
             'AppTokens',
             [
                 $credentialSettingKey,
-                $credentialSettingSec
+                $credentialSettingSec,
+                $credentialSettingVer
             ]
         );
 
@@ -181,7 +184,8 @@ class Sso implements ControllerInterface {
                 'AppTokens',
                 [
                     $providerSettingKey,
-                    $providerSettingSec
+                    $providerSettingSec,
+                    $providerSettingVer
                 ]
             );
         }
@@ -214,6 +218,10 @@ class Sso implements ControllerInterface {
 
             if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
                 $command->setParameter('secret', $setting->value);
+            }
+
+            if (in_array($setting->property, [$credentialSettingVer, $providerSettingVer])) {
+                $command->setParameter('apiVersion', $setting->value);
             }
         }
 

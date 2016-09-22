@@ -15,6 +15,12 @@ use App\Command\AbstractCommand;
  */
 class CreateNewTwitter extends AbstractCommand {
     /**
+     * API Version.
+     *
+     * @var string
+     */
+    public $apiVersion;
+    /**
      * Provider access token.
      *
      * @var string
@@ -57,6 +63,10 @@ class CreateNewTwitter extends AbstractCommand {
      * @return App\Command\Sso\CreateNewTwitter
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['apiVersion'])) {
+            $this->apiVersion = $parameters['apiVersion'];
+        }
+
         if (isset($parameters['key'])) {
             $this->key = $parameters['key'];
         }

@@ -11,11 +11,10 @@ namespace App\Handler\Profile;
 use App\Command\Profile\Review\CreateNew;
 use App\Command\Profile\Review\UpdateOne;
 use App\Entity\Profile\Review as ReviewEntity;
-use App\Event\Profile\Review\Created;
-use App\Event\Profile\Review\Updated;
 use App\Exception\Create;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ReviewInterface;
 use App\Validator\Profile\Review as ReviewValidator;
@@ -32,19 +31,25 @@ class Review implements HandlerInterface {
      *
      * @var App\Repository\Profile\ReviewInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Review Validator instance.
      *
      * @var App\Validator\Profile\Review
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var \League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -59,6 +64,8 @@ class Review implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Profile\Review'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -67,19 +74,23 @@ class Review implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\ReviewInterface $repository
-     * @param App\Validator\Profile\Review           $validator
+     * @param App\Repository\ReviewInterface $repository
+     * @param App\Validator\Review           $validator
+     * @param App\Factory\Event              $eventFactory
+     * @param \League\Event\Emitter          $emitter
      *
      * @return void
      */
     public function __construct(
         ReviewInterface $repository,
         ReviewValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -121,7 +132,7 @@ class Review implements HandlerInterface {
 
         try {
             $review = $this->repository->save($review);
-            $event  = new Created($review, $command->identity);
+            $event  = $this->eventFactory->create('Profile\\Review\\Created', $review, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ReviewException('Error while trying to create a review', 500, $e);
@@ -162,7 +173,7 @@ class Review implements HandlerInterface {
 
         try {
             $review = $this->repository->save($review);
-            $event  = new Updated($review);
+            $event  = $this->eventFactory->create('Profile\\Review\\Updated', $review);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ReviewException('Error while trying to update a review', 500, $e);

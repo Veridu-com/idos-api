@@ -15,6 +15,12 @@ use App\Command\AbstractCommand;
  */
 class CreateNewAmazon extends AbstractCommand {
     /**
+     * API Version.
+     *
+     * @var string
+     */
+    public $apiVersion;
+    /**
      * Provider access token.
      *
      * @var string
@@ -51,6 +57,10 @@ class CreateNewAmazon extends AbstractCommand {
      * @return App\Command\Sso\CreateNewAmazon
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['apiVersion'])) {
+            $this->apiVersion = $parameters['apiVersion'];
+        }
+
         if (isset($parameters['key'])) {
             $this->key = $parameters['key'];
         }
