@@ -31,8 +31,7 @@ class DeleteAllTest extends AbstractFunctional {
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features';
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features';
     }
 
     public function testSuccess() {

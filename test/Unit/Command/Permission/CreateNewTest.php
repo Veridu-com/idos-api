@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Permission;
 
-use App\Command\Permission\CreateNew;
+use App\Command\Company\Permission\CreateNew;
 use Test\Unit\AbstractUnit;
 
 class CreateNewTest extends AbstractUnit {

@@ -8,36 +8,51 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Middleware\Auth;
 
+use Phinx\Console\PhinxApplication;
+use Phinx\Wrapper\TextWrapper;
 use Slim\App;
 use Test\Functional\AbstractFunctional;
 
 abstract class AbstractAuthFunctional extends AbstractFunctional {
     /**
-     * Slim's Application Instance.
-     *
-     * @var \Slim\App
+     * Runs one time before any method of the Child classes.
      */
-    private $app;
+    public static function setUpBeforeClass() {
+        if (! self::$app) {
+            $app = new App(
+                ['settings' => $GLOBALS['appSettings']]
+            );
 
-    /**
-     * Load all the dependencies for the aplication.
-     *
-     * @return Slim\App $app
-     */
-    protected function getApp() : App {
-        if ($this->app) {
-            return $this->app;
+            require_once __ROOT__ . '/../config/dependencies.php';
+            require_once __ROOT__ . '/../config/handlers.php';
+
+            self::$app = $app;
         }
 
-        $app = new App(
-            ['settings' => $GLOBALS['appSettings']]
-        );
+        if (! self::$phinxApp) {
+            $phinxApp = new PhinxApplication();
 
-        require_once __ROOT__ . '/../config/dependencies.php';
-        require_once __ROOT__ . '/../config/handlers.php';
+            self::$phinxApp = $phinxApp;
+        }
 
-        $this->app = $app;
+        if (! self::$phinxTextWrapper) {
+            $phinxTextWrapper = new TextWrapper(self::$phinxApp);
+            $phinxTextWrapper->setOption('configuration', 'phinx.yml');
+            $phinxTextWrapper->setOption('parser', 'YAML');
+            $phinxTextWrapper->setOption('environment', 'testing');
+            $phinxTextWrapper->getRollback('testing', 0);
+            $phinxTextWrapper->getMigrate();
+            $phinxTextWrapper->getSeed();
 
-        return $app;
+            self::$phinxTextWrapper = $phinxTextWrapper;
+        }
+
+        if (! self::$sqlConnection) {
+            self::$sqlConnection = self::$app->getContainer()->get('sql');
+        }
+
+        if (! self::$noSqlConnection) {
+            self::$noSqlConnection = self::$app->getContainer()->get('nosql');
+        }
     }
 }

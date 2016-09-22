@@ -177,7 +177,7 @@ class UpdateOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/updateOne.json',
+                'score/updateOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

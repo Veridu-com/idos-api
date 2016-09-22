@@ -69,6 +69,17 @@ class DBStrategy implements RepositoryStrategyInterface {
      * {@inheritdoc}
      */
     public function getFormattedName(string $repositoryName) : string {
+        $splitName = preg_split("/\\\/", $repositoryName);
+
+        if (is_array($splitName) && count($splitName) > 1) {
+            $namespacePrefix = implode('\\', array_slice($splitName, 0, -1));
+            if (substr($namespacePrefix, -1) == '\\') {
+                $namespacePrefix = substr($namespacePrefix, 0, strlen($namespacePrefix) - 1);
+            }
+
+            return sprintf("%s\DB%s", $namespacePrefix, ucfirst(end($splitName)));
+        }
+
         return sprintf('DB%s', ucfirst($repositoryName));
     }
 

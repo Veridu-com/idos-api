@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Event\Hook;
 
-use App\Entity\Hook;
-use App\Event\Hook\Updated;
+use App\Entity\Company\Hook;
+use App\Event\Company\Hook\Updated;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 

@@ -10,8 +10,8 @@ namespace App\Controller;
 
 use App\Exception\AppException;
 use App\Factory\Command;
-use App\Repository\CredentialInterface;
-use App\Repository\SettingInterface;
+use App\Repository\Company\CredentialInterface;
+use App\Repository\Company\SettingInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,13 +24,13 @@ class Sso implements ControllerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\SettingInterface
+     * @var App\Repository\Company\SettingInterface
      */
     private $settingRepository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\CredentialInterface
+     * @var App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
@@ -55,11 +55,11 @@ class Sso implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\SettingInterface    $settingRepository
-     * @param App\Repository\CredentialInterface $credentialRepository
-     * @param \Slim\Collection                   $settings
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command                $commandFactory
+     * @param App\Repository\Company\SettingInterface    $settingRepository
+     * @param App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \Slim\Collection                           $settings
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -162,16 +162,19 @@ class Sso implements ControllerInterface {
         // hosted social application (credential based)
         $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $providerName);
         $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $providerName);
+        $credentialSettingVer = sprintf('%s.%s.version', $credentialPubKey, $providerName);
         // hosted social application (company based)
         $providerSettingKey = sprintf('%s.key', $providerName);
         $providerSettingSec = sprintf('%s.secret', $providerName);
+        $providerSettingVer = sprintf('%s.version', $providerName);
 
         $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
             $credential->companyId,
             'AppTokens',
             [
                 $credentialSettingKey,
-                $credentialSettingSec
+                $credentialSettingSec,
+                $credentialSettingVer
             ]
         );
 
@@ -181,7 +184,8 @@ class Sso implements ControllerInterface {
                 'AppTokens',
                 [
                     $providerSettingKey,
-                    $providerSettingSec
+                    $providerSettingSec,
+                    $providerSettingVer
                 ]
             );
         }
@@ -214,6 +218,10 @@ class Sso implements ControllerInterface {
 
             if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
                 $command->setParameter('secret', $setting->value);
+            }
+
+            if (in_array($setting->property, [$credentialSettingVer, $providerSettingVer])) {
+                $command->setParameter('apiVersion', $setting->value);
             }
         }
 

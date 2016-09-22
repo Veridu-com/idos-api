@@ -15,12 +15,14 @@ use App\Command\Sso\CreateNewGoogle;
 use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
 use App\Command\Sso\CreateNewTwitter;
+use App\Entity\Credential;
 use App\Entity\Source as SourceEntity;
 use App\Entity\User;
 use App\Exception\Create;
 use App\Factory\Command;
+use App\Factory\Event;
 use App\Helper\Token;
-use App\Repository\CredentialInterface;
+use App\Repository\Company\CredentialInterface;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -35,25 +37,31 @@ class Sso implements HandlerInterface {
      *
      * @var App\Repository\UserInterface
      */
-    protected $userRepository;
+    private $userRepository;
     /**
      * Credential repository instance.
      *
-     * @var App\Repository\CredentialInterface
+     * @var App\Repository\Company\CredentialInterface
      */
-    protected $credentialRepository;
+    private $credentialRepository;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
     /**
      * Provider auth service.
      *
      * @var callable
      */
-    protected $service;
+    private $service;
     /**
      * Command Bus instance.
      *
@@ -78,7 +86,9 @@ class Sso implements HandlerInterface {
                     ->create('User'),
                 $container
                     ->get('repositoryFactory')
-                    ->create('Credential'),
+                    ->create('Company\Credential'),
+                $container
+                    ->get('eventFactory'),
                 $container
                     ->get('eventEmitter'),
                 $container
@@ -94,18 +104,21 @@ class Sso implements HandlerInterface {
     /**
      * Class constructor.
      *
+     * @param App\Factory\Command
      * @param App\Repository\UserInterface       $userRepository
      * @param App\Repository\CredentialInterface $credentialRepository
+     * @param App\Factory\Event                  $eventFactory
      * @param \League\Event\Emitter              $emitter
      * @param callable                           $service
      * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command
+     * @param App\Factory\Command                $commandFactory
      *
      * @return void
      */
     public function __construct(
         UserInterface $userRepository,
         CredentialInterface $credentialRepository,
+        Event $eventFactory,
         Emitter $emitter,
         callable $service,
         CommandBus $commandBus,
@@ -113,6 +126,7 @@ class Sso implements HandlerInterface {
     ) {
         $this->userRepository       = $userRepository;
         $this->credentialRepository = $credentialRepository;
+        $this->eventFactory         = $eventFactory;
         $this->emitter              = $emitter;
         $this->service              = $service;
         $this->commandBus           = $commandBus;
@@ -122,19 +136,19 @@ class Sso implements HandlerInterface {
     /**
      * Creates a new user.
      *
-     * @param int    $credentialId The credential identifier
-     * @param string $role         The role
-     * @param string $username     The username
+     * @param App\Entity\Credential $credential The credential
+     * @param string                $role       The role
+     * @param string                $username   The username
      *
      * @return App\Entity\User The created user
      */
-    private function createNewUser(int $credentialId, string $role, string $username) : User {
+    private function createNewUser(Credential $credential, string $role, string $username) : User {
         $command = $this->commandFactory->create('User\\CreateNew');
         $command->setParameters(
             [
-                'credentialId' => $credentialId,
-                'role'         => $role,
-                'username'     => $username,
+                'credential' => $credential,
+                'role'       => $role,
+                'username'   => $username,
             ]
         );
 
@@ -149,10 +163,10 @@ class Sso implements HandlerInterface {
      * @param array            $tags     The tags
      * @param string           $ipAddr   The ip address
      *
-     * @return App\Entity\Source The created source
+     * @return App\Entity\Profile\Source The created source
      */
     private function createNewSource(string $provider, User $user, array $tags, string $ipAddr) : SourceEntity {
-        $command = $this->commandFactory->create('Source\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
 
         $command->setParameters(
             [
@@ -223,7 +237,7 @@ class Sso implements HandlerInterface {
         if ($username) {
             $user = $this->userRepository->findByUserName($username, $credential->id);
         } else {
-            $user     = $this->createNewUser($credential->id, 'user', bin2hex(openssl_random_pseudo_bytes(10)));
+            $user     = $this->createNewUser($credential, 'user', bin2hex(openssl_random_pseudo_bytes(10)));
             $username = $user->username;
         }
 
@@ -238,7 +252,8 @@ class Sso implements HandlerInterface {
             $command->ipAddress
         );
 
-        $this->emitter->emit(new $eventClass($username));
+        $event = $this->eventFactory->create($eventClass, $username);
+        $this->emitter->emit($event);
 
         return Token::generateUserToken($username, $command->credentialPubKey, $credential->private);
     }
@@ -257,7 +272,7 @@ class Sso implements HandlerInterface {
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/user/profile',
             'user_id',
-            'App\Event\Sso\CreatedAmazon'
+            'Sso\\CreatedAmazon'
         );
     }
 
@@ -275,7 +290,7 @@ class Sso implements HandlerInterface {
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/me?fields=id',
             'id',
-            'App\Event\Sso\CreatedFacebook'
+            'Sso\\CreatedFacebook'
         );
     }
 
@@ -293,7 +308,7 @@ class Sso implements HandlerInterface {
             'OAuth\OAuth2\Token\StdOAuth2Token',
             'https://www.googleapis.com/oauth2/v1/userinfo',
             'id',
-            'App\Event\Sso\CreatedGoogle'
+            'Sso\\CreatedGoogle'
         );
     }
 
@@ -311,7 +326,7 @@ class Sso implements HandlerInterface {
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/people/~:(id)?format=json',
             'id',
-            'App\Event\Sso\CreatedLinkedin'
+            'Sso\\CreatedLinkedin'
         );
     }
 
@@ -329,7 +344,7 @@ class Sso implements HandlerInterface {
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/identity/openidconnect/userinfo/?schema=openid',
             'user_id',
-            'App\Event\Sso\CreatedPaypal'
+            'Sso\\CreatedPaypal'
         );
     }
 
@@ -347,7 +362,7 @@ class Sso implements HandlerInterface {
             'OAuth\OAuth1\Token\StdOAuth1Token',
             '/account/verify_credentials.json?include_entities=false&skip_status=true',
             'id_str',
-            'App\Event\Sso\CreatedTwitter'
+            'Sso\\CreatedTwitter'
         );
     }
 }

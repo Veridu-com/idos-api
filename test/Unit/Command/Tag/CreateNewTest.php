@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Tag;
 
-use App\Command\Tag\CreateNew;
+use App\Command\Profile\Tag\CreateNew;
 use Test\Unit\AbstractUnit;
 
 class CreateNewTest extends AbstractUnit {

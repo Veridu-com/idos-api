@@ -8,14 +8,14 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Controller;
 
+use App\Command\Company\Setting\CreateNew;
+use App\Command\Company\Setting\DeleteAll;
+use App\Command\Company\Setting\DeleteOne;
+use App\Command\Company\Setting\UpdateOne;
 use App\Command\ResponseDispatch;
-use App\Command\Setting\CreateNew;
-use App\Command\Setting\DeleteAll;
-use App\Command\Setting\DeleteOne;
-use App\Command\Setting\UpdateOne;
-use App\Controller\Settings;
+use App\Controller\Company\Settings;
 use App\Entity\Company;
-use App\Entity\Setting as SettingEntity;
+use App\Entity\Company\Setting as SettingEntity;
 use App\Factory\Command;
 use App\Repository\DBSetting;
 use Illuminate\Support\Collection;

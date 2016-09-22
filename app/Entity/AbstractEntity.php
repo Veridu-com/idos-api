@@ -294,7 +294,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = null;
             if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
                 // populating relations
-                $value = $this->$attribute()->toArray();
+                $relationEntity = $this->$attribute();
+                $value          = $this->$attribute()->toArray();
+
+                foreach (array_diff($relationEntity->visible, array_keys($relationEntity->attributes)) as $deleteAttribute) {
+                    unset($value[$deleteAttribute]);
+                }
             } else {
                 // populating own attributes
                 $value = $this->getAttribute($attribute);
@@ -305,10 +310,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 }
             }
 
-            //@FIXME: check if this does not break other endpoints
-            if ($value !== null) {
-                $return[$attribute] = $value;
-            }
+            $return[$attribute] = $value;
         }
 
         return $return;

@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Event\Feature;
 
-use App\Entity\Feature;
-use App\Event\Feature\DeletedMulti;
+use App\Entity\Profile\Feature;
+use App\Event\Profile\Feature\DeletedMulti;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;

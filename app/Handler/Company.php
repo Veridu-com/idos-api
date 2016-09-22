@@ -12,13 +12,11 @@ use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteOne;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
-use App\Event\Company\Created;
-use App\Event\Company\Deleted;
-use App\Event\Company\Updated;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Repository\CompanyInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
@@ -35,19 +33,25 @@ class Company implements HandlerInterface {
      *
      * @var App\Repository\CompanyInterface
      */
-    protected $repository;
+    private $repository;
     /**
      * Company Validator instance.
      *
      * @var App\Validator\Company
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var \League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -62,6 +66,8 @@ class Company implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Company'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -72,6 +78,7 @@ class Company implements HandlerInterface {
      *
      * @param App\Repository\CompanyInterface $repository
      * @param App\Validator\Company           $validator
+     * @param App\Factory\Event               $eventFactory
      * @param \League\Event\Emitter           $emitter
      *
      * @return void
@@ -79,11 +86,13 @@ class Company implements HandlerInterface {
     public function __construct(
         CompanyInterface $repository,
         CompanyValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
-        $this->emitter    = $emitter;
+        $this->repository   = $repository;
+        $this->validator    = $validator;
+        $this->eventFactory = $eventFactory;
+        $this->emitter      = $emitter;
     }
 
     /**
@@ -121,7 +130,7 @@ class Company implements HandlerInterface {
 
         try {
             $company = $this->repository->saveNewCompany($company, $command->identity);
-            $event   = new Created($company, $command->identity);
+            $event   = $this->eventFactory->create('Company\\Created', $company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\CompanyException('Error while trying to create a company', 500, $e);
@@ -158,7 +167,7 @@ class Company implements HandlerInterface {
 
         try {
             $company = $this->repository->save($company);
-            $event   = new Updated($company, $command->identity);
+            $event   = $this->eventFactory->create('Company\\Updated', $company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\CompanyException('Error while trying to update a company', 500, $e);
@@ -195,7 +204,7 @@ class Company implements HandlerInterface {
             throw new NotFound\CompanyException('No companies found for deletion', 404);
         }
 
-        $event = new Deleted($command->company, $command->identity);
+        $event = $this->eventFactory->create('Company\\Deleted', $command->company, $command->identity);
         $this->emitter->emit($event);
     }
 }

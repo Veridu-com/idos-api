@@ -62,7 +62,8 @@ class DeleteAllTest extends AbstractFunctional {
             ]
         );
 
-        $request  = $this->createRequest($environment);
+        $request = $this->createRequest($environment);
+
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 

@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Validator;
 
-use App\Validator\Permission;
+use App\Validator\Company\Permission;
 use Respect\Validation\Exceptions\ExceptionInterface;
 use Test\Unit\AbstractUnit;
 

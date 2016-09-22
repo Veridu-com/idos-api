@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Event\Credential;
 
-use App\Entity\Credential;
-use App\Event\Credential\Deleted;
+use App\Entity\Company\Credential;
+use App\Event\Company\Credential\Deleted;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
