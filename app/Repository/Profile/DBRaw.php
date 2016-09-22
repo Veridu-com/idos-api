@@ -54,7 +54,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
             }
         }
 
-        $sourceRepository = $this->repositoryFactory->create('Source');
+        $sourceRepository = $this->repositoryFactory->create('Profile\\Source');
         $sources          = $sourceRepository->findBy(['user_id' => $userId], $sourceFilters);
 
         $entities = new Collection();

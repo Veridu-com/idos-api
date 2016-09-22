@@ -30,7 +30,7 @@ class Score extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $dates = ['created_at'];
+    protected $dates = ['created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
