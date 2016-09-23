@@ -163,8 +163,7 @@ class ScrapeEventListener extends AbstractListener {
         }
 
         $credential = $this->credentialRepository->find($event->user->credentialId);
-        $trigger    = sprintf('idos:source.%s.added', strtolower($event->source->name));
-        $handlers   = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($credential->companyId, $trigger);
+        $handlers   = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($credential->companyId, (string) $event);
 
         if ($handlers->isEmpty()) {
             return $this->dispatchUnhandleEvent($event);
