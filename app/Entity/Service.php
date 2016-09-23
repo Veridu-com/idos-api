@@ -52,7 +52,6 @@ class Service extends AbstractEntity {
         'url',
         'public',
         'access',
-        'enabled',
         'listens',
         'triggers',
         'created_at',
