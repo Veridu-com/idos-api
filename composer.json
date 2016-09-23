@@ -16,6 +16,10 @@
         {
             "name": "Caue Lorenzato",
             "email": "caue@veridu.com"
+        },
+        {
+            "name": "Rafael Andreatta",
+            "email": "andreatta@veridu.com"
         }
     ],
     "autoload": {
@@ -33,6 +37,7 @@
         "giggsey/libphonenumber-for-php": "^7.3",
         "illuminate/database": "5.*",
         "illuminate/pagination": "5.*",
+        "jenssegers/mongodb": "^3.0",
         "jenssegers/optimus": "^0.2",
         "justinrainbow/json-schema": "^2.0",
         "lcobucci/jwt": "^3.1",
@@ -40,6 +45,7 @@
         "league/tactician": "^1.0",
         "league/tactician-container": "^1.0",
         "league/tactician-logger": "^0.9",
+        "lusitanian/oauth": "~0.3",
         "monolog/monolog": "^1.13",
         "raveren/kint": "^1.0",
         "respect/validation": "^1.0",
@@ -47,9 +53,7 @@
         "robmorgan/phinx": "0.*",
         "slim/http-cache": "^0.3",
         "slim/slim": "^3.0",
-        "tedivm/stash": "^0.14",
-        "jenssegers/mongodb": "^3.0",
-        "lusitanian/oauth": "~0.3"
+        "tedivm/stash": "^0.14"
     },
     "require-dev": {
         "ext-xsl": "*",
@@ -59,7 +63,6 @@
         "phploc/phploc": "@stable",
         "phpmd/phpmd" : "@stable",
         "phpunit/dbunit": "@stable",
-        "phpunit/php-code-coverage": "^3.0.0",
         "phpunit/phpunit": "@stable",
         "psy/psysh": "@stable",
         "sebastian/phpcpd": "@stable",

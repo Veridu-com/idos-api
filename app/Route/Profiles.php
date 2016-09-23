@@ -56,11 +56,12 @@ class Profiles implements RouteInterface {
      *
      * @apiEndpoint GET /profiles
      * @apiGroup Company Profile
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -76,7 +77,7 @@ class Profiles implements RouteInterface {
                 'App\Controller\Profiles:listAll'
             )
             ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::CREDENTIAL))
             ->setName('profile:listAll');
     }
 }

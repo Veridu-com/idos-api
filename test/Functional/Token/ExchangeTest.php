@@ -17,7 +17,7 @@ use Test\Functional\Traits;
 class ExchangeTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresUserToken,
-        Traits\RejectsCompanyToken,
+        Traits\RejectsIdentityToken,
         Traits\RejectsCredentialToken;
 
     protected function setUp() {
@@ -52,7 +52,7 @@ class ExchangeTest extends AbstractFunctional {
 
         $this->assertSame(200, $response->getStatusCode());
 
-        $body     = json_decode((string) $response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertNotEmpty($body['data']);
@@ -62,7 +62,7 @@ class ExchangeTest extends AbstractFunctional {
         /**
          * Second part, decode the token and test for its integrity.
          */
-        $authMiddleware = $this->getApp()->getContainer()->get('authMiddleware')(Auth::COMPANY);
+        $authMiddleware = $this->getApp()->getContainer()->get('authMiddleware')(Auth::IDENTITY);
         $reflection     = new \ReflectionClass($authMiddleware);
         $method         = $reflection->getMethod('handleCompanyToken');
         $method->setAccessible(true);

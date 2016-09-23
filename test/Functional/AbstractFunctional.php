@@ -35,28 +35,35 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      *
      * @var \Slim\App
      */
-    private static $app;
+    protected static $app;
 
     /**
      * Phinx Application Instance.
      *
      * @var Phinx\Console\PhinxApplication
      */
-    private static $phinxApp;
+    protected static $phinxApp;
 
     /**
      * Phinx TextWrapper Instance.
      *
      * @var Phinx\Wrapper\TextWrapper
      */
-    private static $phinxTextWrapper;
+    protected static $phinxTextWrapper;
 
     /**
      * SQL Database Connection.
      *
      * @var Illuminate\Database\Connection
      */
-    private static $sqlConnection;
+    protected static $sqlConnection;
+
+    /**
+     * NoSQL Database Connection.
+     *
+     * @var callable
+     */
+    protected static $noSqlConnection;
 
     /**
      * Message of the errors of a failed schema assertion.
@@ -125,6 +132,10 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
 
         if (! self::$sqlConnection) {
             self::$sqlConnection = self::$app->getContainer()->get('sql');
+        }
+
+        if (! self::$noSqlConnection) {
+            self::$noSqlConnection = self::$app->getContainer()->get('nosql');
         }
     }
 
@@ -346,48 +357,40 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * Generates a valid company token to be used on requests.
+     * Generates a valid identity token to be used on requests.
      *
-     * @param string|null $subject        Overrides the default subject value (4c9184f37cff01bcdc32dc486ec36961:usr001)
-     * @param string|null $companyPubKey  Overrides the default company
-     * @param string|null $companyPrivKey Overrides the default company
+     * @param string|null $identityPublicKey Overrides the default identity
+     * @param string|null $identityPrivKey   Overrides the default identity
      *
      * @return string
      */
-    protected function companyToken(
-        $subject = '4c9184f37cff01bcdc32dc486ec36961:f67b96dcf96b49d713a520ce9f54053c',
-        $companyPubKey = null,
-        $companyPrivKey = null
+    protected function identityToken(
+        $identityPublicKey = '5d41402abc4b2a76b9719d911017c592',
+        $identityPrivKey = '7d793037a0760186574b0282f2f435e7'
     ) {
-        if ((empty($companyPubKey)) || (empty($companyPrivKey))) {
-            $companyPubKey  = '8b5fe9db84e338b424ed6d59da3254a0';
-            $companyPrivKey = '4e37dae79456985ae0d27a67639cf335';
-        }
-
-        return Token::generateCompanyToken(
-            $subject,
-            $companyPubKey,
-            $companyPrivKey
+        return Token::generateIdentityToken(
+            $identityPublicKey,
+            $identityPrivKey
         );
     }
 
     /**
-     * Generates a valid company token header to be used on requests.
+     * Generates a valid identity token header to be used on requests.
      *
      * @param string|null $token Overrides the default token
      *
      * @return string
      */
-    protected function companyTokenHeader($token = null) {
+    protected function identityTokenHeader($token = null) {
         if (empty($token)) {
-            $token = $this->companyToken();
+            $token = $this->identityToken();
         }
 
-        return sprintf('CompanyToken %s', $token);
+        return sprintf('IdentityToken %s', $token);
     }
 
     /**
-     * Generates a valid company token to be used on requests.
+     * Generates a valid identity token to be used on requests.
      *
      * @param string|null $credentialPubKey Overrides the default credentialPubKey value (4c9184f37cff01bcdc32dc486ec36961)
      * @param string|null $handlerPubKey    Overrides the default handler
@@ -425,5 +428,21 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         }
 
         return sprintf('CredentialToken %s', $token);
+    }
+
+    public function combinatorics(array $list, int $start, int $end, callable $callback, array $combinations = []) {
+        if ($end === 0) {
+            return $callback($combinations);
+        }
+
+        for ($i = $start; $i <= count($list) - $end; $i++) {
+            if (in_array($list[$i], $combinations)) {
+                continue;
+            }
+
+            $combinations[] = $list[$i];
+            $this->combinatorics($list, $start + 1, $end - 1, $callback, $combinations);
+            array_pop($combinations);
+        }
     }
 }

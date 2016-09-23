@@ -9,10 +9,9 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Token\Exchange;
-use App\Event\Token\Exchanged;
-use App\Event\Token\Requested;
 use App\Exception\Create;
 use App\Exception\Validate;
+use App\Factory\Event;
 use App\Helper\Token as TokenHelper;
 use App\Repository\UserInterface;
 use App\Validator\Token as TokenValidator;
@@ -29,19 +28,25 @@ class Token implements HandlerInterface {
      *
      * @var App\Repository\UserInterface
      */
-    protected $userRepository;
+    private $userRepository;
     /**
      * Token Validator instance.
      *
      * @var App\Validator\Token
      */
-    protected $validator;
+    private $validator;
+    /**
+     * Event factory instance.
+     *
+     * @var App\Factory\Event
+     */
+    private $eventFactory;
     /**
      * Event emitter instance.
      *
      * @var League\Event\Emitter
      */
-    protected $emitter;
+    private $emitter;
 
     /**
      * {@inheritdoc}
@@ -56,6 +61,8 @@ class Token implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('Token'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };
@@ -66,6 +73,7 @@ class Token implements HandlerInterface {
      *
      * @param App\Repository\UserInterface $userRepository
      * @param App\Validator\Token          $validator
+     * @param App\Factory\Event            $eventFactory
      * @param \League\Event\Emitter        $emitter
      *
      * @return void
@@ -73,10 +81,12 @@ class Token implements HandlerInterface {
     public function __construct(
         UserInterface $userRepository,
         TokenValidator $validator,
+        Event $eventFactory,
         Emitter $emitter
     ) {
         $this->userRepository = $userRepository;
         $this->validator      = $validator;
+        $this->eventFactory   = $eventFactory;
         $this->emitter        = $emitter;
     }
 
@@ -84,6 +94,11 @@ class Token implements HandlerInterface {
      * Creates a new attribute data in the given user.
      *
      * @param App\Command\Token\Exchange $command
+     *
+     * @throws App\Exception\Validate\TokenException
+     * @throws App\Exception\Create\TokenException
+     *
+     * @see App\Repository\DBToken::findAllRelatedToCompany
      *
      * @return string
      */
@@ -106,7 +121,13 @@ class Token implements HandlerInterface {
         $targetCompany = $command->targetCompany;
         $credential    = $command->credential;
 
-        $event = new Requested($user, $actingCompany, $targetCompany, $credential);
+        $event = $this->eventFactory->create(
+            'Token\\Requested',
+            $user,
+            $actingCompany,
+            $targetCompany,
+            $credential
+        );
         $this->emitter->emit($event);
 
         try {
@@ -119,7 +140,14 @@ class Token implements HandlerInterface {
                 $targetCompany->private_key
             );
 
-            $event = new Exchanged($user, $highestRoleUser, $actingCompany, $targetCompany, $credential);
+            $event = $this->eventFactory->create(
+                'Token\\Exchanged',
+                $user,
+                $highestRoleUser,
+                $actingCompany,
+                $targetCompany,
+                $credential
+            );
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\TokenException('Unable to exchange the user token by a company token', 500, $e);

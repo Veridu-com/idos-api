@@ -14,7 +14,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Service routing definitions.
+ * Company Services.
+ *
+ * Company Services are what allows a company to add tailored functionality to the API in order to assess specific information. If a company wants to support a specific Profile Source, access a certain data point within a Profile, or change the way the API interprets data, Services are a simple and direct way of doing this.
  *
  * @link docs/services/overview.md
  * @see App\Controller\Services
@@ -62,12 +64,12 @@ class Service implements RouteInterface {
     /**
      * List all Services.
      *
-     * Retrieve a complete list of services that are visible to the requesting company.
+     * Retrieves a complete list of all services.
      *
      * @apiEndpoint GET /services
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -86,7 +88,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service:listAll');
     }
 
@@ -97,8 +99,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint POST /services
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -117,7 +119,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service:createNew');
     }
 
@@ -128,8 +130,8 @@ class Service implements RouteInterface {
      *
      * @apiEndpoint DELETE /services
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -149,7 +151,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service:deleteAll');
     }
 
@@ -158,10 +160,10 @@ class Service implements RouteInterface {
      *
      * Retrieves all public information from a Service.
      *
-     * @apiEndpoint GET /services/{serviceId:[0-9]+}
+     * @apiEndpoint GET /services/{serviceId}
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  int  serviceId 12345
      *
      * @param \Slim\App $app
@@ -181,7 +183,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service:getOne');
     }
 
@@ -190,10 +192,10 @@ class Service implements RouteInterface {
      *
      * Updates Service's specific information.
      *
-     * @apiEndpoint PUT /services/{serviceId:[0-9]+}
+     * @apiEndpoint PUT /services/{serviceId}
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment int serviceId 1
      *
      * @param \Slim\App $app
@@ -213,7 +215,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service:updateOne');
     }
 
@@ -222,10 +224,10 @@ class Service implements RouteInterface {
      *
      * Deletes a single Service that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /services/{serviceId:[0-9]+}
+     * @apiEndpoint DELETE /services/{serviceId}
      * @apiGroup Company Service
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment int serviceId 1
      *
      * @param \Slim\App $app
@@ -245,7 +247,7 @@ class Service implements RouteInterface {
                 'App\Controller\Services:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service:deleteOne');
     }
 }

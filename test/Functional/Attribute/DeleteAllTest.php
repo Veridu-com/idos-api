@@ -15,7 +15,7 @@ class DeleteAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
@@ -39,7 +39,7 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(3, $body['deleted']);
+        $this->assertSame(2, $body['deleted']);
 
         /*
          * Validates Json Schema with Json Response
@@ -54,6 +54,7 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testDeleteFilter() {
+        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes?name=first*';
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -61,9 +62,8 @@ class DeleteAllTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode([
-            'name' => '%1'
-        ]));
+        $request = $this->createRequest($environment);
+
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 

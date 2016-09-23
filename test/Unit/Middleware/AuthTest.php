@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace Test\Unit\Middleware;
 
 use App\Entity\Company as CompanyEntity;
-use App\Entity\Credential as CredentialEntity;
+use App\Entity\Company\Credential as CredentialEntity;
 use App\Entity\User as UserEntity;
 use App\Exception\AppException;
 use App\Exception\NotFound;
@@ -81,7 +81,7 @@ class AuthTest extends AbstractUnit {
     //         ->getMock();
 
     //     $entityFactory = new EntityFactory($this->optimus);
-    //     // $entityFactory->create('Credential');
+    //     // $entityFactory->create('Company\Credential');
     //     // $entityFactory->create('User');
     //     // $entityFactory->create('Company');
 

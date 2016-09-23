@@ -15,11 +15,12 @@ class WarningsInit extends AbstractMigration {
         $reviews = $this->table('reviews');
         $reviews
             ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('warning_id', 'integer', ['null' => false])
             ->addColumn('positive', 'boolean', ['null' => false])
             ->addTimestamps()
-            ->addIndex('user_id')
-            ->addIndex('warning_id')
+            ->addIndex(['identity_id', 'user_id', 'warning_id'], ['unique' => true])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('warning_id', 'warnings', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();

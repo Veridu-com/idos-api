@@ -8,18 +8,18 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Handler;
 
-use App\Command\Setting\CreateNew;
-use App\Command\Setting\DeleteAll;
-use App\Command\Setting\DeleteOne;
-use App\Command\Setting\UpdateOne;
-use App\Entity\Setting as SettingEntity;
+use App\Command\Company\Setting\CreateNew;
+use App\Command\Company\Setting\DeleteAll;
+use App\Command\Company\Setting\DeleteOne;
+use App\Command\Company\Setting\UpdateOne;
+use App\Entity\Company\Setting as SettingEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
-use App\Handler\Setting;
+use App\Handler\Company\Setting;
+use App\Repository\Company\SettingInterface;
 use App\Repository\DBSetting;
-use App\Repository\SettingInterface;
-use App\Validator\Setting as SettingValidator;
+use App\Validator\Company\Setting as SettingValidator;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -157,7 +157,7 @@ class SettingTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Setting');
+        $entityFactory->create('Company\Credential');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
             ->setMethods(['save'])
@@ -224,7 +224,7 @@ class SettingTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Setting');
+        $entityFactory->create('Company\Credential');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
             ->setMethods(['deleteByCompanyId', 'findByCompanyId'])
@@ -314,7 +314,7 @@ class SettingTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Setting');
+        $entityFactory->create('Company\Credential');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
             ->setMethods(['find', 'save'])
@@ -394,7 +394,7 @@ class SettingTest extends AbstractUnit {
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
-        $entityFactory->create('Setting');
+        $entityFactory->create('Company\Credential');
 
         $settingRepository = $this->getMockBuilder(DBSetting::class)
             ->setMethods(['delete', 'find'])

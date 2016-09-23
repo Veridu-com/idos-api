@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Entity;
 
-use App\Entity\Setting;
+use App\Entity\Company\Setting;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 

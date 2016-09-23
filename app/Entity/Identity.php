@@ -21,9 +21,10 @@ class Identity extends AbstractEntity {
         'id',
         'reference',
         'public_key',
-        'private_key',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'member',
+        'company',
     ];
     /**
      * {@inheritdoc}
@@ -33,4 +34,13 @@ class Identity extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $secure = ['private_key'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'role'    => 'Role',
+        'company' => 'Company',
+        'member'  => 'Member'
+    ];
 }

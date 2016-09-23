@@ -4,10 +4,26 @@
     "title": "Score",
     "type": "object",
     "properties": {
+        "creator": {
+            "description": "Score Creator",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Service Name",
+                    "type": "string",
+                    "pattern": ""
+                }
+            }
+        },
+        "attribute": {
+            "description": "Score attribute name",
+            "type": "string",
+            "pattern": "[a-zA-Z0-9-_]"
+        },
         "name": {
             "description": "Score name",
             "type": "string",
-            "pattern": ""
+            "pattern": "[a-zA-Z0-9-_]"
         },
         "value": {
             "description": "Score value",
@@ -23,6 +39,7 @@
         }
     },
     "required": [
+        "attribute",
         "name",
         "value",
         "created_at"

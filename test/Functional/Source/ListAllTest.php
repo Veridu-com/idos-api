@@ -15,7 +15,7 @@ class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresUserToken,
         Traits\RequiresCredentialToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
@@ -42,7 +42,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         $this->assertSame(1321189817, $body['data'][0]['id']);
-        $this->assertSame('source-1', $body['data'][0]['name']);
+        $this->assertSame('facebook', $body['data'][0]['name']);
         $this->assertArrayHasKey('otp_check', $body['data'][0]['tags']);
         $this->assertSame('email', $body['data'][0]['tags']['otp_check']);
 
@@ -85,7 +85,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         $this->assertSame(1321189817, $body['data'][0]['id']);
-        $this->assertSame('source-1', $body['data'][0]['name']);
+        $this->assertSame('facebook', $body['data'][0]['name']);
         $this->assertArrayHasKey('otp_check', $body['data'][0]['tags']);
         $this->assertSame('email', $body['data'][0]['tags']['otp_check']);
 

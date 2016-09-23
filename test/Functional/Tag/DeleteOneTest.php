@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class DeleteOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -21,14 +21,14 @@ class DeleteOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags/user-2-tag-1';
+        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/tags/high-end-customer';
     }
 
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
@@ -52,11 +52,11 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags/0000000';
+        $this->uri = '/1.0/companies/veridu-ltd/profiles/1321189817/tags/0000000';
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );

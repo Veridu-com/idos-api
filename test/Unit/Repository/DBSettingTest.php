@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Repository;
 
-use App\Entity\Setting as SettingEntity;
+use App\Entity\Company\Setting as SettingEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Repository\DBSetting;

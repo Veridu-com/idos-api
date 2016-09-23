@@ -15,11 +15,23 @@ use App\Command\AbstractCommand;
  */
 class CreateNewTwitter extends AbstractCommand {
     /**
+     * API Version.
+     *
+     * @var string
+     */
+    public $apiVersion;
+    /**
      * Provider access token.
      *
      * @var string
      */
     public $accessToken;
+    /**
+     * Provider token secret.
+     *
+     * @var string
+     */
+    public $tokenSecret;
     /**
      * Credential public key.
      *
@@ -41,7 +53,7 @@ class CreateNewTwitter extends AbstractCommand {
     /**
      * User ip address.
      *
-     * @var int
+     * @var string
      */
     public $ipAddress;
 
@@ -51,6 +63,10 @@ class CreateNewTwitter extends AbstractCommand {
      * @return App\Command\Sso\CreateNewTwitter
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['apiVersion'])) {
+            $this->apiVersion = $parameters['apiVersion'];
+        }
+
         if (isset($parameters['key'])) {
             $this->key = $parameters['key'];
         }
@@ -65,6 +81,10 @@ class CreateNewTwitter extends AbstractCommand {
 
         if (isset($parameters['accessToken'])) {
             $this->accessToken = $parameters['accessToken'];
+        }
+
+        if (isset($parameters['tokenSecret'])) {
+            $this->accessToken = $parameters['tokenSecret'];
         }
 
         if (isset($parameters['credentialPubKey'])) {

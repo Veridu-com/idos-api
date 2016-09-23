@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Feature;
 
-use App\Command\Feature\UpdateOne;
+use App\Command\Profile\Feature\UpdateOne;
 use Test\Unit\AbstractUnit;
 
 class UpdateOneTest extends AbstractUnit {

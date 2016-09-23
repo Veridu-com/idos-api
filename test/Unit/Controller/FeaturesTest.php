@@ -8,13 +8,13 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Controller;
 
-use App\Command\Feature\CreateNew;
-use App\Command\Feature\DeleteAll;
-use App\Command\Feature\DeleteOne;
-use App\Command\Feature\UpdateOne;
+use App\Command\Profile\Feature\CreateNew;
+use App\Command\Profile\Feature\DeleteAll;
+use App\Command\Profile\Feature\DeleteOne;
+use App\Command\Profile\Feature\UpdateOne;
 use App\Command\ResponseDispatch;
-use App\Controller\Features;
-use App\Entity\Feature as FeatureEntity;
+use App\Controller\Profile\Features;
+use App\Entity\Profile\Feature as FeatureEntity;
 use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\DBFeature;

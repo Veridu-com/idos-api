@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\Feature;
 
-use App\Command\Feature\CreateNew;
+use App\Command\Profile\Feature\CreateNew;
 use Test\Unit\AbstractUnit;
 
 class CreateNewTest extends AbstractUnit {

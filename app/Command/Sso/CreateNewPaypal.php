@@ -15,6 +15,12 @@ use App\Command\AbstractCommand;
  */
 class CreateNewPaypal extends AbstractCommand {
     /**
+     * API Version.
+     *
+     * @var string
+     */
+    public $apiVersion;
+    /**
      * Provider access token.
      *
      * @var string
@@ -41,7 +47,7 @@ class CreateNewPaypal extends AbstractCommand {
     /**
      * User ip address.
      *
-     * @var int
+     * @var string
      */
     public $ipAddress;
 
@@ -51,6 +57,10 @@ class CreateNewPaypal extends AbstractCommand {
      * @return App\Command\Sso\CreateNewPaypal
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['apiVersion'])) {
+            $this->apiVersion = $parameters['apiVersion'];
+        }
+
         if (isset($parameters['key'])) {
             $this->key = $parameters['key'];
         }

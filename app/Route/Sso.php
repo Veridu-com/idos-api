@@ -37,8 +37,8 @@ class Sso implements RouteInterface {
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Sso::class] = function (ContainerInterface $container) {
             return new \App\Controller\Sso(
-                $container->get('repositoryFactory')->create('Setting'),
-                $container->get('repositoryFactory')->create('Credential'),
+                $container->get('repositoryFactory')->create('Company\Setting'),
+                $container->get('repositoryFactory')->create('Company\Credential'),
                 $container->get('settings'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
@@ -64,6 +64,7 @@ class Sso implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -90,11 +91,12 @@ class Sso implements RouteInterface {
      *
      * @apiEndpoint POST profiles/{userName}/features
      * @apiGroup Profile Sso
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -119,9 +121,11 @@ class Sso implements RouteInterface {
      *
      * @apiEndpoint GET /sso/{providerName}
      * @apiGroup Profile Sso
+     * @apiEndpointURIFragment string providerName facebook
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

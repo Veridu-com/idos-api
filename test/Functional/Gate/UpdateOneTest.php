@@ -17,21 +17,13 @@ class UpdateOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
-        $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates',
-            'GET',
-            [
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-            ]
-        );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/%s', $this->entity['slug']);
+        $this->httpMethod = 'PATCH';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/gates/gate-one';
     }
 
     public function testSuccess() {
@@ -106,7 +98,7 @@ class UpdateOneTest extends AbstractFunctional {
 
         $request  = $this->createRequest($environment, json_encode(['pass' => false]));
         $response = $this->process($request);
-        $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

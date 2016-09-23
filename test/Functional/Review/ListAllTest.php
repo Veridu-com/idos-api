@@ -11,7 +11,7 @@ use Test\Functional\Traits;
 
 class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -19,14 +19,14 @@ class ListAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/reviews';
+        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/reviews';
     }
 
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );

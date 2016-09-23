@@ -10,197 +10,135 @@
 
 [DELETE /1.0/profiles](profiles/deleteAll.md)
 
-[GET /1.0/profiles/:userName](profiles/getProfile.md)
+[GET /1.0/profiles/{userName}](profiles/getOne.md)
 
-[PUT /1.0/profiles/:userName](profiles/renameProfile.md)
+[PUT /1.0/profiles/{userName}](profiles/updateOne.md)
 
-[DELETE /1.0/profiles/:userName](profiles/deleteProfile.md)
+[DELETE /1.0/profiles/{userName}](profiles/deleteOne.md)
 
 ### Profile Attributes
 
-[GET /1.0/profiles/:userName/attributes](profiles/attributes/listAll.md)
+[GET /1.0/profiles/{userName}/attributes](profiles/attributes/listAll.md)
 
-[DELETE /1.0/profiles/:userName/attributes](profiles/attributes/deleteAll.md)
+[DELETE /1.0/profiles/{userName}/attributes](profiles/attributes/deleteAll.md)
 
-[GET /1.0/profiles/:userName/attributes/:attributeName](profiles/attributes/getAttribute.md)
+[GET /1.0/profiles/{userName}/attributes/{attributeName}](profiles/attributes/getOne.md)
 
-[POST /1.0/profiles/:userName/attributes/:attributeName](profiles/attributes/createAttribute.md)
+[POST /1.0/profiles/{userName}/attributes/{attributeName}](profiles/attributes/createNew.md)
 
-[DELETE /1.0/profiles/:userName/attributes/:attributeName](profiles/attributes/deleteAttribute.md)
+[DELETE /1.0/profiles/{userName}/attributes/{attributeName}](profiles/attributes/deleteOne.md)
 
-[GET /1.0/profiles/:userName/attributes/:attributeName/:index](profiles/attributes/getIndexedAttribute.md)
+### Profile Warnings
 
-[DELETE /1.0/profiles/:userName/attributes/:attributeName/:index](profiles/attributes/deleteIndexedAttribute.md)
+[GET /1.0/profiles/{userName}/warnings](profiles/warnings/listAll.md)
 
-### Profile Features
+[DELETE /1.0/profiles/{userName}/warnings](profiles/warnings/deleteAll.md)
 
-[GET /1.0/profiles/:userName/features](profiles/features/listAll.md)
+[GET /1.0/profiles/{userName}/warnings/{warningSlug}](profiles/warnings/getOne.md)
 
-[DELETE /1.0/profiles/:userName/features](profiles/features/deleteAll.md)
+[POST /1.0/profiles/{userName}/warnings/{warningSlug}](profiles/warnings/createNew.md)
 
-[POST /1.0/profiles/:userName/features](profiles/features/createNew.md)
-
-[PUT /1.0/profiles/:userName/features/:featureSlug](profiles/features/updateOne.md)
-
-[GET /1.0/profiles/:userName/features/:featureSlug](profiles/features/getOne.md)
-
-[DELETE /1.0/profiles/:userName/features/:featureSlug](profiles/features/deleteOne.md)
-
-### Profile Flags
-
-[GET /1.0/profiles/:userName/flags](profiles/flags/listAll.md)
-
-[DELETE /1.0/profiles/:userName/flags](profiles/flags/deleteAll.md)
-
-[GET /1.0/profiles/:userName/flags/:flagName](profiles/flags/getFlag.md)
-
-[POST /1.0/profiles/:userName/flags/:flagName](profiles/flags/createFlag.md)
-
-[DELETE /1.0/profiles/:userName/flags/:flagName](profiles/flags/deleteFlag.md)
+[DELETE /1.0/profiles/{userName}/warnings/{warningSlug}](profiles/warnings/deleteOne.md)
 
 ### Profile Gates
 
-[GET /1.0/profiles/:userName/gates](profiles/gates/listAll.md)
+[GET /1.0/profiles/{userName}/gates](profiles/gates/listAll.md)
 
-[DELETE /1.0/profiles/:userName/gates](profiles/gates/deleteAll.md)
+[DELETE /1.0/profiles/{userName}/gates](profiles/gates/deleteAll.md)
 
-[GET /1.0/profiles/:userName/gates/:gateName](profiles/gates/getGate.md)
+[GET /1.0/profiles/{userName}/gates/{gateSlug}](profiles/gates/getOne.md)
 
-[POST /1.0/profiles/:userName/gates/:gateName](profiles/gates/createGate.md)
+[POST /1.0/profiles/{userName}/gates/{gateSlug}](profiles/gates/createNew.md)
 
-[DELETE /1.0/profiles/:userName/gates/:gateName](profiles/gates/deleteGate.md)
+[DELETE /1.0/profiles/{userName}/gates/{gateSlug}](profiles/gates/deleteOne.md)
 
 ### Profile Attribute References
 
-[GET /1.0/profiles/:userName/references](profiles/references/listAll.md)
+[GET /1.0/profiles/{userName}/references](profiles/references/listAll.md)
 
-[DELETE /1.0/profiles/:userName/references](profiles/references/deleteAll.md)
+[POST /1.0/profiles/{userName}/references](profiles/references/createNew.md)
 
-[GET /1.0/profiles/:userName/references/:attributeName](profiles/references/getReference.md)
+[DELETE /1.0/profiles/{userName}/references](profiles/references/deleteAll.md)
 
-[POST /1.0/profiles/:userName/references/:attributeName](profiles/references/createReference.md)
+[GET /1.0/profiles/{userName}/references/{attributeName}](profiles/references/getOne.md)
 
-[DELETE /1.0/profiles/:userName/references/:attributeName](profiles/references/deleteReference.md)
+[DELETE /1.0/profiles/{userName}/references/{attributeName}](profiles/references/deleteOne.md)
 
 ### Profile Attribute Reviews
 
-[GET /1.0/profiles/:userName/reviews](profiles/reviews/listAll.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/reviews](companyProfiles/reviews/listAll.md)
 
-[DELETE /1.0/profiles/:userName/reviews](profiles/reviews/deleteAll.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/reviews/:reviewId](companyProfiles/reviews/getOne.md)
 
-[GET /1.0/profiles/:userName/reviews/:attributeName](profiles/reviews/getReview.md)
+[POST /1.0/companies/:companySlug/profiles/:userId/reviews/:reviewId](companyProfiles/reviews/createNew.md)
 
-[POST /1.0/profiles/:userName/reviews/:attributeName](profiles/reviews/createReview.md)
-
-[DELETE /1.0/profiles/:userName/reviews/:attributeName](profiles/reviews/deleteReview.md)
-
-[GET /1.0/profiles/:userName/reviews/:attributeName/:id](profiles/reviews/getIndexedReview.md)
-
-[DELETE /1.0/profiles/:userName/reviews/:attributeName/:id](profiles/reviews/deleteIndexedReview.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/reviews/:reviewId](companyProfiles/reviews/getOne.md)
 
 ### Profile Sources
 
-[GET /1.0/profiles/:userName/sources](profiles/sources/listAll.md)
+[GET /1.0/profiles/{userName}/sources](profiles/sources/listAll.md)
 
-[DELETE /1.0/profiles/:userName/sources](profiles/sources/deleteAll.md)
+[DELETE /1.0/profiles/{userName}/sources](profiles/sources/deleteAll.md)
 
-[POST /1.0/profiles/:userName/sources/:sourceName](profiles/sources/createSource.md)
+[PUT /1.0/profiles/{userName}/sources/{sourceId}](profiles/sources/createNew.md)
 
-[DELETE /1.0/profiles/:userName/sources/:sourceName](profiles/sources/deleteSource.md)
+[DELETE /1.0/profiles/{userName}/sources/{sourceId}](profiles/sources/deleteOne.md)
 
-#### E-mail OTP
+#### Normalised Data
 
-[PUT /1.0/profiles/:userName/sources/email](profiles/sources/emailConfirmation.md)
+[GET /1.0/profiles/{userName}/normalised](profiles/normalised/listAll.md)
 
-#### SMS OTP
+[POST /1.0/profiles/{userName}/normalised](profiles/normalised/createNew.md)
 
-[PUT /1.0/profiles/:userName/sources/sms](profiles/sources/smsConfirmation.md)
+[DELETE /1.0/profiles/{userName}/normalised](profiles/normalised/deleteAll.md)
 
-#### Submitted Data
+[GET /1.0/profiles/{userName}/normalised/:itemName](profiles/normalised/getOne.md)
 
-[PUT /1.0/profiles/:userName/sources/submitted](profiles/sources/updateSubmittedFields.md)
+[DELETE /1.0/profiles/{userName}/normalised/:itemName](profiles/normalised/deleteOne.md)
 
-[PUT /1.0/profiles/:userName/sources/submitted/:fieldName](profiles/sources/updateSubmittedField.md)
+#### Digested Data
 
-#### Knowledge-based Authentication
+[GET /1.0/profiles/{userName}/digested](profiles/sources/features/listAll.md)
 
-[PUT /1.0/profiles/:userName/sources/spotafriend](profiles/sources/spotafriendConfirmation.md)
+[POST /1.0/profiles/{userName}/digested](profiles/sources/features/createNew.md)
 
-#### Source Mapped Data
+[DELETE /1.0/profiles/{userName}/digested](profiles/sources/features/deleteAll.md)
 
-[GET /1.0/profiles/:userName/sources/:sourceName/mapped](profiles/sources/mapped/listAll.md)
+[GET /1.0/profiles/{userName}/digested/:itemName](profiles/sources/features/getOne.md)
 
-[DELETE /1.0/profiles/:userName/sources/:sourceName/mapped](profiles/sources/mapped/deleteAll.md)
-
-[GET /1.0/profiles/:userName/sources/:sourceName/mapped/:itemName](profiles/sources/mapped/getItem.md)
-
-[POST /1.0/profiles/:userName/sources/:sourceName/mapped/:itemName](profiles/sources/mapped/createItem.md)
-
-[DELETE /1.0/profiles/:userName/sources/:sourceName/mapped/:itemName](profiles/sources/mapped/deleteItem.md)
-
-#### Source Features
-
-[GET /1.0/profiles/:userName/sources/:sourceName/features](profiles/sources/features/listAll.md)
-
-[DELETE /1.0/profiles/:userName/sources/:sourceName/features](profiles/sources/features/deleteAll.md)
-
-[GET /1.0/profiles/:userName/sources/:sourceName/features/:itemName](profiles/sources/features/getItem.md)
-
-[POST /1.0/profiles/:userName/sources/:sourceName/features/:itemName](profiles/sources/features/createItem.md)
-
-[DELETE /1.0/profiles/:userName/sources/:sourceName/features/:itemName](profiles/sources/features/deleteItem.md)
+[DELETE /1.0/profiles/{userName}/digested/:itemName](profiles/sources/features/deleteOne.md)
 
 ### Profile Tags
 
-[GET /1.0/profiles/:userName/tags](profiles/tags/listAll.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/tags](companyProfiles/tags/listAll.md)
 
-[DELETE /1.0/profiles/:userName/tags](profiles/tags/deleteAll.md)
+[DELETE /1.0/companies/:companySlug/profiles/:userId/tags](companyProfiles/tags/deleteAll.md)
 
-[GET /1.0/profiles/:userName/tags/:tagName](profiles/tags/getTag.md)
+[GET /1.0/companies/:companySlug/profiles/:userId/tags/{tagSlug}](companyProfiles/tags/getOne.md)
 
-[POST /1.0/profiles/:userName/tags/:tagName](profiles/tags/createTag.md)
+[POST /1.0/companies/:companySlug/profiles/:userId/tags/{tagSlug}](companyProfiles/tags/createNew.md)
 
-[DELETE /1.0/profiles/:userName/tags/:tagName](profiles/tags/deleteTag.md)
+[DELETE /1.0/companies/:companySlug/profiles/:userId/tags/{tagSlug}](companyProfiles/tags/deleteOne.md)
 
 ### Profile Tasks
 
-[GET /1.0/profiles/:userName/processes](profiles/processes/listAll.md)
+[GET /1.0/profiles/{userName}/processes](profiles/processes/listAll.md)
 
-[GET /1.0/profiles/:userName/processes/:processId](profiles/processes/getOne.md)
+[GET /1.0/profiles/{userName}/processes/:processId](profiles/processes/getOne.md)
 
-[GET /1.0/profiles/:userName/processes/:processId/tasks](profiles/tasks/listAll.md)
+[GET /1.0/profiles/{userName}/processes/:processId/tasks](profiles/tasks/listAll.md)
 
-[POST /1.0/profiles/:userName/processes/:processId/tasks](profiles/tasks/createNew.md)
+[POST /1.0/profiles/{userName}/processes/:processId/tasks](profiles/tasks/createNew.md)
 
-[GET /1.0/profiles/:userName/processes/:processId/tasks/:taskId](profiles/tasks/getOne.md)
+[GET /1.0/profiles/{userName}/processes/:processId/tasks/:taskId](profiles/tasks/getOne.md)
 
-[PUT /1.0/profiles/:userName/processes/:processId/tasks/:taskId](profiles/tasks/updateOne.md)
-
-## Tokens API
-
-### Tokens
-
-[GET /1.0/tokens](tokens/listAll.md)
-
-[DELETE /1.0/tokens](tokens/deleteAll.md)
-
-[GET /1.0/tokens/:userName](tokens/listUserTokens.md)
-
-[POST /1.0/tokens/:userName](tokens/createUserToken.md)
-
-### User Tokens
-
-[GET /1.0/tokens/:userName/:token](tokens/getUserToken.md)
-
-[POST /1.0/tokens/:userName/:token](tokens/extendUserToken.md)
-
-[DELETE /1.0/tokens/:userName/:token](tokens/deleteUserToken.md)
+[PUT /1.0/profiles/{userName}/processes/:processId/tasks/:taskId](profiles/tasks/updateOne.md)
 
 ## SSO API
 
 [GET /1.0/sso](sso/listAll.md)
 
-[GET /1.0/sso/:providerName](sso/getOne.md)
+[GET /1.0/sso/{providerName}](sso/getOne.md)
 
 [POST /1.0/sso](sso/createNew.md)
 
@@ -212,43 +150,45 @@
 
 [GET /1.0/access/roles](access/roles/listAll.md)
 
-[GET /1.0/access/roles/:roleName](access/roles/getGetOne.md)
-
-[POST /1.0/access/roles/:roleName](access/roles/createNew.md)
+[POST /1.0/access/roles](access/roles/createNew.md)
 
 [DELETE /1.0/access/roles](access/roles/deleteAll.md)
 
-[DELETE /1.0/access/roles/:roleName](access/roles/deleteOne.md)
+[GET /1.0/access/roles/{roleAccessId}](access/roles/getOne.md)
+
+[PUT /1.0/access/roles/{roleAccessId}](access/roles/updateOne.md)
+
+[DELETE /1.0/access/roles/{roleAccessId}](access/roles/deleteOne.md)
 
 ### Company Access
 
 [GET /1.0/access/companies](access/companies/listAll.md)
 
-[GET /1.0/access/companies/:companyId](access/companies/getCompany.md)
+[GET /1.0/access/companies/{companySlug}](access/companies/getOne.md)
 
-[POST /1.0/access/companies/:companyId](access/companies/updateCompany.md)
+[POST /1.0/access/companies/{companySlug}](access/companies/updateCompany.md)
 
-[DELETE /1.0/access/companies/:companyId](access/companies/deleteCompany.md)
+[DELETE /1.0/access/companies/{companySlug}](access/companies/deleteOne.md)
 
 #### Company Members
 
 [GET /1.0/access/management/members](access/management/listAll.md)
 
-[GET /1.0/access/management/members/:roleName](access/management/getRole.md)
+[GET /1.0/access/management/members/:roleName](access/management/getOne.md)
 
 [POST /1.0/access/management/members/:roleName](access/management/updateRole.md)
 
-[DELETE /1.0/access/management/members/:roleName](access/management/deleteRole.md)
+[DELETE /1.0/access/management/members/:roleName](access/management/deleteOne.md)
 
 #### Company Users
 
-[GET /1.0/access/companies/:companyId/users](access/companies/users/listAll.md)
+[GET /1.0/access/companies/{companySlug}/users](access/companies/users/listAll.md)
 
-[GET /1.0/access/companies/:companyId/users/:userName](access/companies/users/getUser.md)
+[GET /1.0/access/companies/{companySlug}/users/{userName}](access/companies/users/getOne.md)
 
-[POST /1.0/access/companies/:companyId/users/:userName](access/companies/users/updateUser.md)
+[POST /1.0/access/companies/{companySlug}/users/{userName}](access/companies/users/updateUser.md)
 
-[DELETE /1.0/access/companies/:companyId/users/:userName](access/companies/users/deleteUser.md)
+[DELETE /1.0/access/companies/{companySlug}/users/{userName}](access/companies/users/deleteOne.md)
 
 ## Companies API
 
@@ -256,29 +196,37 @@
 
 [GET /1.0/companies](companies/listAll.md)
 
-[POST /1.0/companies](companies/createNew.md)
+[POST /1.0/companies/:companySlug](companies/createNew.md)
 
-[DELETE /1.0/companies](companies/deleteAll.md)
+[DELETE /1.0/companie:companySlugs](companies/deleteAll.md)
 
-[GET /1.0/companies/:companyId](companies/getCompany.md)
+[GET /1.0/companies/{companySlug}](companies/getOne.md)
 
-[PUT /1.0/companies/:companyId](companies/updateCompany.md)
+[PUT /1.0/companies/{companySlug}](companies/updateOne.md)
 
-[DELETE /1.0/companies/:companyId](companies/deleteCompany.md)
+[DELETE /1.0/companies/{companySlug}](companies/deleteOne.md)
 
 ### Company Permissions
 
-[GET /1.0/commpanies/:companyId/permissions](companies/permissions/listAll.md)
+[GET /1.0/companies/{companySlug}/permissions](companies/permissions/listAll.md)
 
-[POST /1.0/companies/:companyId/permissions](companies/permissions/createNew.md)
+[POST /1.0/companies/{companySlug}/permissions](companies/permissions/createNew.md)
 
-[DELETE /1.0/companies/:companyId/permissions](companies/permissions/deleteAll.md)
+[DELETE /1.0/companies/{companySlug}/permissions](companies/permissions/deleteAll.md)
 
-[GET /1.0/companies/:companyId/permissions/:endpointName](companies/permissions/getOne.md)
+[GET /1.0/companies/{companySlug}/permissions/{routeName}](companies/permissions/getOne.md)
 
-[PUT /1.0/companies/:companyId/permissions/:endpointName](companies/permissions/updateOne.md)
+[PUT /1.0/companies/{companySlug}/permissions/{routeName}](companies/permissions/updateOne.md)
 
-[DELETE /1.0/companies/:companyId/permissions/:endpointName](companies/permissions/deleteOne.md)
+[DELETE /1.0/companies/{companySlug}/permissions/{routeName}](companies/permissions/deleteOne.md)
+
+### Company Profiles
+
+[GET /1.0/commpanies/:companySlug/profiles](companies/profiles/listAll.md)
+
+[GET /1.0/companies/:companySlug/profiles/:userId](companies/profiles/getOne.md)
+
+[DELETE /1.0/companies/:companySlug/profiles/:userId](companies/profiles/deleteOne.md)
 
 ### Company Credentials
 
@@ -288,138 +236,84 @@
 
 [DELETE /1.0/management/credentials](companies/credentials/deleteAll.md)
 
-[GET /1.0/management/credentials/:pubKey](companies/credentials/getCredential.md)
+[GET /1.0/management/credentials/{pubKey}](companies/credentials/getOne.md)
 
-[POST /1.0/management/credentials/:pubKey](companies/credentials/updateCredential.md)
+[POST /1.0/management/credentials/{pubKey}](companies/credentials/updateOne.md)
 
-[DELETE /1.0/management/credentials/:pubKey](companies/credentials/deleteCredential.md)
+[DELETE /1.0/management/credentials/{pubKey}](companies/credentials/deleteOne.md)
 
 ### Credential Hooks
 
-[GET /1.0/management/credentials/:pubKey/hooks](management/hooks/listAll.md)
+[GET /1.0/management/credentials/{pubKey}/hooks](management/hooks/listAll.md)
 
-[POST /1.0/management/credentials/:pubKey/hooks](management/hooks/createNew.md)
+[POST /1.0/management/credentials/{pubKey}/hooks](management/hooks/createNew.md)
 
-[DELETE /1.0/management/credentials/:pubKey/hooks](management/hooks/deleteAll.md)
+[DELETE /1.0/management/credentials/{pubKey}/hooks](management/hooks/deleteAll.md)
 
-[GET /1.0/management/credentials/:pubKey/hooks/:hookId](management/hooks/getHook.md)
+[GET /1.0/management/credentials/{pubKey}/hooks/{hookId}](management/hooks/getOne.md)
 
-[POST /1.0/management/credentials/:pubKey/hooks/:hookId](management/hooks/updateHook.md)
+[POST /1.0/management/credentials/{pubKey}/hooks/{hookId}](management/hooks/updateOne.md)
 
-[DELETE /1.0/management/credentials/:pubKey/hooks/:hookId](management/hooks/deleteHook.md)
+[DELETE /1.0/management/credentials/{pubKey}/hooks/{hookId}](management/hooks/deleteOne.md)
 
 ### Company Settings
 
 [GET /1.0/management/settings](management/settings/listAll.md)
 
+[POST /1.0/management/settings](management/settings/createNew.md)
+
 [DELETE /1.0/management/settings](management/settings/deleteAll.md)
 
-[GET /1.0/management/settings/:category](management/settings/getCategory.md)
+[GET /1.0/management/settings/{settingId}](management/settings/getOne.md)
 
-[DELETE /1.0/management/settings/:category](management/settings/deleteCategory.md)
+[PUT /1.0/management/settings/{settingId}](management/settings/updateOne.md)
 
-[GET /1.0/management/settings/:category/:property](management/settings/getCategoryProperty.md)
-
-[POST /1.0/management/settings/:category/:property](management/settings/setCategoryProperty.md)
-
-[DELETE /1.0/management/settings/:category/:property](management/settings/unsetCategoryProperty.md)
+[DELETE /1.0/management/settings/{settingId}](management/settings/deleteOne.md)
 
 ### Company Members
 
-[GET /1.0/companies/:companyId/members](companies/members/listAll.md)
+[GET /1.0/management/members](companies/members/listAll.md)
 
-[POST /1.0/companies/:companyId/members](companies/members/createNew.md)
+[POST /1.0/management/members](companies/members/createNew.md)
 
-[GET /1.0/companies/:companyId/members/:userName](companies/members/getMember.md)
+[DELETE /1.0/management/members](companies/members/deleteAll.md)
 
-[POST /1.0/companies/:companyId/members/:userName](companies/members/updateMember.md)
+[GET /1.0/management/members/{memberId}](companies/members/getOne.md)
 
-[DELETE /1.0/companies/:companyId/members/:userName](companies/members/deleteMember.md)
+[POST /1.0/management/members/{memberId}](companies/members/updateOne.md)
 
-### Company Service Handlers
-
-[GET /1.0/companies/:companyId/services](companies/services/listAll.md)
-
-[GET /1.0/companies/:companyId/services/:serviceName](companies/services/listServiceHandlers.md)
-
-[DELETE /1.0/companies/:companyId/services/:serviceName](companies/services/unsetServiceHandlers.md)
-
-[GET /1.0/companies/:companyId/services/:serviceName/:handlerName](companies/services/getServiceHandler.md)
-
-[POST /1.0/companies/:companyId/services/:serviceName/:handlerName](companies/services/setServiceHandler.md)
-
-[DELETE /1.0/companies/:companyId/services/:serviceName/:handlerName](companies/services/unsetServiceHandler.md)
-
-### Company Daemon Handlers
-
-[GET /1.0/companies/:companyId/daemons](companies/daemons/listAll.md)
-
-[GET /1.0/companies/:companyId/daemons/:daemonName](companies/daemons/listDaemonHandlers.md)
-
-[DELETE /1.0/companies/:companyId/daemons/:daemonName](companies/daemons/unsetDaemonHandlers.md)
-
-[GET /1.0/companies/:companyId/daemons/:daemonName/:handlerName](companies/daemons/getDaemonHandler.md)
-
-[POST /1.0/companies/:companyId/daemons/:daemonName/:handlerName](companies/daemons/setDaemonHandler.md)
-
-[DELETE /1.0/companies/:companyId/daemons/:daemonName/:handlerName](companies/daemons/unsetDaemonHandler.md)
+[DELETE /1.0/management/members/{memberId}](companies/members/deleteOne.md)
 
 ## Metrics API
 
 [GET /1.0/metrics](metrics/listAll.md)
 
-[GET /1.0/metrics/:metricName](metrics/getMetric.md)
-
-[POST /1.0/metrics/:metricName](metrics/setMetric.md)
-
-[DELETE /1.0/metrics/:metricName](metrics/deleteMetric.md)
+[GET /1.0/metrics/:metricName](metrics/getOne.md)
 
 ## Services API
 
 [GET /1.0/services](services/listAll.md)
 
-### Service Handlers
-// Atualmente está assim:
-[GET /1.0/services/:serviceName](services/listServiceHandlers.md)
+[POST /1.0/services](services/createNew.md)
 
-[DELETE /1.0/services/:serviceName](services/deleteServiceHandlers.md)
+[DELETE /1.0/services](services/deleteAll.md)
 
-[GET /1.0/services/:serviceName/:handlerName](services/getServiceHandler.md)
+[GET /1.0/services/{serviceId}](services/getOne.md)
 
-[POST /1.0/services/:serviceName/:handlerName](services/createServiceHandler.md)
+[PUT /1.0/services/{serviceId}](services/updateOne.md)
 
-[PUT /1.0/services/:serviceName/:handlerName](services/updateServiceHandler.md)
+[DELETE /1.0/services/{serviceId}](services/deleteOne.md)
 
-[DELETE /1.0/services/:serviceName/:handlerName](services/deleteServiceHandler.md)
+##  Service Handlers API
 
-// Proposta:
-[GET /1.0/service-handlers](service-handlers/listAll.md)  (com sistema de filtragem)
-// get one
-[GET /1.0/service-handlers/:serviceSlug/:serviceHandlerSlug](service-handlers/getOne.md)
-// delete all
-[DELETE /1.0/service-handlers](service-handlers/deleteAll.md)
-// create ( { serviceSlug: 'email-service' ... } )
+[GET /1.0/service-handlers](service-handlers/listAll.md)
+
 [POST /1.0/service-handlers](service-handlers/createNew.md)
-// update
-[PUT /1.0/service-handlers/:serviceSlug/:serviceHandlerSlug](service-handlers/updateOne.md)
-// delete one
-[DELETE /1.0/service-handlers/:serviceSlug/:serviceHandlerSlug](service-handlers/deletOne.md)
 
+[DELETE /1.0/service-handlers](service-handlers/deleteAll.md)
 
-## Daemons API
+[GET /1.0/service-handlers/{serviceHandlerId}](service-handlers/getOne.md)
 
-[GET /1.0/daemons](daemons/listAll.md)
+[PUT /1.0/service-handlers/{serviceHandlerId}](service-handlers/updateOne.md)
 
-### Daemon Handlers
-
-[GET /1.0/daemons/:daemonName](daemons/listDaemonHandlers.md)
-
-[DELETE /1.0/daemons/:daemonName](daemons/deleteDaemonHandlers.md)
-
-[GET /1.0/daemons/:daemonName/:handlerName](daemons/getDaemonHandler.md)
-
-[POST /1.0/daemons/:daemonName/:handlerName](daemons/createDaemonHandler.md)
-
-[PUT /1.0/daemons/:daemonName/:handlerName](daemons/updateDaemonHandler.md)
-
-[DELETE /1.0/daemons/:daemonName/:handlerName](daemons/deleteDaemonHandler.md)
+[DELETE /1.0/service-handlers/{serviceHandlerId}](service-handlers/deletOne.md)

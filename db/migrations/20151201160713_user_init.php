@@ -12,8 +12,8 @@ use Phinx\Migration\AbstractMigration;
 class UserInit extends AbstractMigration {
     public function change() {
         // Links a user to an identity
-        $links = $this->table('links');
-        $links
+        $user_identities = $this->table('user_identities');
+        $user_identities
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addTimestamps()
@@ -28,11 +28,15 @@ class UserInit extends AbstractMigration {
         $attributes = $this->table('attributes');
         $attributes
             ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])
+            ->addColumn('support', 'float', ['null' => false, 'default' => 0.0])
             ->addTimestamps()
             ->addIndex('user_id')
+            ->addIndex('creator')
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         // Profile references values
@@ -73,69 +77,49 @@ class UserInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        // Profile Features
-        $features = $this->table('features');
-        $features
-            ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('slug', 'text', ['null' => false])
-            ->addColumn('value', 'binary')
-            ->addTimestamps()
-            ->addIndex('user_id')
-            ->addIndex(['user_id', 'slug'], ['unique' => true])
-            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        // Company members (FIXME Review this table)
-        $members = $this->table('members');
-        $members
-            ->addColumn('company_id', 'integer', ['null' => false])
-            ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('role', 'text', ['null' => false, 'default' => 'member'])
-            ->addTimestamps()
-            ->addIndex('company_id')
-            ->addIndex('user_id')
-            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
         $warnings = $this->table('warnings');
         $warnings
             ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])
-            ->addColumn('reference', 'text')
+            ->addColumn('attribute', 'text')
             ->addTimestamps()
             ->addIndex('user_id')
-            ->addIndex('name')
-            ->addIndex(['user_id', 'name'], ['unique' => true])
-            ->addIndex(['user_id', 'slug'], ['unique' => true])
+            ->addIndex('creator')
+            ->addIndex(['user_id', 'creator', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('slug', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
+            ->addForeignKey('attribute', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
             ->create();
 
         $tags = $this->table('tags');
         $tags
             ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])
             ->addTimestamps()
             ->addIndex(['user_id', 'slug'], ['unique' => true])
-            ->addIndex('user_id')
+            ->addIndex(['user_id', 'identity_id'])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $gates = $this->table('gates');
         $gates
             ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])
             ->addColumn('pass', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addTimestamps()
             ->addIndex('user_id')
+            ->addIndex('creator')
             ->addIndex('name')
-            ->addIndex(['user_id', 'name'], ['unique' => true])
-            ->addIndex(['user_id', 'slug'], ['unique' => true])
+            ->addIndex(['user_id', 'creator', 'name'], ['unique' => true])
+            ->addIndex(['user_id', 'creator', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $processes = $this->table('processes');

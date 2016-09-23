@@ -15,7 +15,7 @@ use Test\Functional\Traits;
 
 class UpdateOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -25,21 +25,21 @@ class UpdateOneTest extends AbstractFunctional {
         $this->httpMethod = 'PUT';
 
         $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/reviews',
+            '/1.0/companies/veridu-ltd/profiles/1321189817/reviews',
             'GET',
             [
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
         $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/reviews/%s', $this->entity['id']);
+        $this->uri    = sprintf('/1.0/companies/veridu-ltd/profiles/1321189817/reviews/%s', $this->entity['id']);
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -68,12 +68,12 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/reviews/00000000';
+        $this->uri = '/1.0/companies/veridu-ltd/profiles/1321189817/reviews/00000000';
 
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -102,7 +102,7 @@ class UpdateOneTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 

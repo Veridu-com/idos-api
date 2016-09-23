@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Attribute;
 
-use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
@@ -17,13 +16,13 @@ class CreateNewTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
 
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes';
     }
 
     public function testSuccess() {
@@ -38,20 +37,22 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'attribute-test',
-                    'value' => 'value-test'
+                    'name'    => 'attribute-test',
+                    'value'   => 'value-test',
+                    'support' => 1.2
                 ]
             )
         );
 
         $response = $this->process($request);
+        $body     = json_decode((string) $response->getBody(), true);
         $this->assertSame(201, $response->getStatusCode());
 
-        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('attribute-test', $body['data']['name']);
         $this->assertSame('value-test', $body['data']['value']);
+        $this->assertSame(1.2, $body['data']['support']);
         /*
          * Validates Response using the Json Schema.
          */
@@ -76,8 +77,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => '',
-                    'value' => 'value-test'
+                    'name'    => '',
+                    'value'   => 'value-test',
+                    'support' => 1.2
                 ]
             )
         );
@@ -113,8 +115,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'Attribute name',
-                    'value' => ''
+                    'name'    => 'Attribute name',
+                    'value'   => '',
+                    'support' => 1.2
                 ]
             )
         );
@@ -138,4 +141,41 @@ class CreateNewTest extends AbstractFunctional {
         );
     }
 
+    public function testInvalidSupport() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'name'    => 'Attribute name',
+                    'value'   => 'value-test',
+                    'support' => ''
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
 }

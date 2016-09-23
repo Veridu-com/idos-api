@@ -27,11 +27,11 @@ class CreateNew extends AbstractCommand {
      */
     public $role;
     /**
-     * User's credential Id.
+     * User's owner credential.
      *
-     * @var int
+     * @var App\Entity\Credential
      */
-    public $credentialId;
+    public $credential;
 
     /**
      * {@inheritdoc}
@@ -47,8 +47,8 @@ class CreateNew extends AbstractCommand {
             $this->role = $parameters['role'];
         }
 
-        if (isset($parameters['credentialId'])) {
-            $this->credentialId = $parameters['credentialId'];
+        if (isset($parameters['credential'])) {
+            $this->credential = $parameters['credential'];
         }
 
         return $this;

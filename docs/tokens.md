@@ -25,29 +25,16 @@ echo App\Helper\Token::generateUserToken(
 
 `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI0YzkxODRmMzdjZmYwMWJjZGMzMmRjNDg2ZWMzNjk2MSIsInN1YiI6InVzcjAwMSJ9.Bliu0m7HqKXUD7wLrvCmvTpTJmzq2ALDwUmErj6430M`
 
-## Company Token
-
-### With User
+## Identity Token
 
 ```php
-echo App\Helper\Token::generateCompanyToken(
-    '4c9184f37cff01bcdc32dc486ec36961:usr001',
-    '8b5fe9db84e338b424ed6d59da3254a0',
-    '4e37dae79456985ae0d27a67639cf335'
+echo App\Helper\Token::generateIdentityToken(
+    '5d41402abc4b2a76b9719d911017c592',
+    '7d793037a0760186574b0282f2f435e7'
 );
 ```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1ZDQxNDAyYWJjNGIyYTc2Yjk3MTlkOTExMDE3YzU5MiJ9.iL4KCEGvoYgTW8NGmP32o9k8UB45ydkhCS7nkEJ2iyg
 
-`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI4YjVmZTlkYjg0ZTMzOGI0MjRlZDZkNTlkYTMyNTRhMCIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxOnVzcjAwMSJ9.Dxh-qrVXkS3PHNHkkh50IMxtKQoS3W3HHClOs6h0gnM`
-
-### Without User
-
-```php
-echo App\Helper\Token::generateCompanyToken(
-    '',
-    '8b5fe9db84e338b424ed6d59da3254a0',
-    '4e37dae79456985ae0d27a67639cf335'
-);
-```
 
 `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI4YjVmZTlkYjg0ZTMzOGI0MjRlZDZkNTlkYTMyNTRhMCJ9.7o7r5gl5tgdkOZALhYZgB1wd_Rn8keWVDSHcyfcquOo`
 

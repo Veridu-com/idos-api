@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Entity;
 
-use App\Entity\Tag;
+use App\Entity\Profile\Tag;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 

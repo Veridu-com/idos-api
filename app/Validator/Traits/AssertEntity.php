@@ -27,6 +27,19 @@ trait AssertEntity {
         Validator::instance('App\\Entity\\Company')
             ->assert($company);
     }
+    /**
+     * Asserts a valid identity entity.
+     *
+     * @param mixed $identity
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertIdentity($identity) {
+        Validator::instance('App\\Entity\\Identity')
+            ->assert($identity);
+    }
 
     /**
      * Asserts a valid credential entity.
@@ -38,7 +51,7 @@ trait AssertEntity {
      * @return void
      */
     public function assertCredential($credential) {
-        Validator::instance('App\\Entity\\Credential')
+        Validator::instance('App\\Entity\\Company\\Credential')
             ->assert($credential);
     }
 
@@ -52,7 +65,7 @@ trait AssertEntity {
      * @return void
      */
     public function assertHook($hook) {
-        Validator::instance('App\\Entity\\Hook')
+        Validator::instance('App\\Entity\\Company\\Hook')
             ->assert($hook);
     }
 
@@ -66,7 +79,7 @@ trait AssertEntity {
      * @return void
      */
     public function assertSource($source) {
-        Validator::instance('App\\Entity\\Source')
+        Validator::instance('App\\Entity\\Profile\\Source')
             ->assert($source);
     }
 
@@ -82,5 +95,19 @@ trait AssertEntity {
     public function assertUser($user) {
         Validator::instance('App\\Entity\\User')
             ->assert($user);
+    }
+
+    /**
+     * Asserts a valid service entity.
+     *
+     * @param mixed $service
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertService($service) {
+        Validator::instance('App\\Entity\\Service')
+            ->assert($service);
     }
 }

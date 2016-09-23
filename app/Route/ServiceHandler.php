@@ -14,7 +14,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * ServiceHandler routing definitions.
+ * ServiceHandler.
+ *
+ * A ServiceHandler allows a specific Company to have access to a certain Service. This allows control over and monetisation to the way they utilise the API, tailoring access for their own specific requirements.
  *
  * @link docs/service-handlers/overview.md
  * @see App\Controller\ServiceHandlers
@@ -62,12 +64,12 @@ class ServiceHandler implements RouteInterface {
     /**
      * List all Service handlers.
      *
-     * Retrieve a complete list of service handlers that belong to the requesting company.
+     * Retrieves a complete list of service handlers that belong to the requesting company.
      *
      * @apiEndpoint GET /service-handlers
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -86,19 +88,19 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:listAll');
     }
 
     /**
      * Create new ServiceHandler.
      *
-     * Create a new service handler for the requesting company.
+     * Creates a new service handler for the requesting company.
      *
      * @apiEndpoint POST /service-handlers
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -117,7 +119,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:createNew');
     }
 
@@ -128,8 +130,8 @@ class ServiceHandler implements RouteInterface {
      *
      * @apiEndpoint DELETE /service-handlers
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -149,19 +151,19 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:deleteAll');
     }
 
     /**
      * Retrieve a single Service handler.
      *
-     * Retrieves all public information from a Service handler.
+     * Retrieves all public information from a single Service handler.
      *
-     * @apiEndpoint GET /service-handlers/{serviceHandlerId:[0-9]+}
+     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string serviceHandlerId 1
      *
      * @param \Slim\App $app
@@ -181,19 +183,19 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:getOne');
     }
 
     /**
      * Update a single ServiceHandler.
      *
-     * Updates a single Service handler instance.
+     * Updates the information for a single ServiceHandler.
      *
-     * @apiEndpoint GET /service-handlers/{serviceHandlerId:[0-9]+}
+     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  string  serviceHandlerId 1
      *
      * @param \Slim\App $app
@@ -213,7 +215,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:updateOne');
     }
 
@@ -222,10 +224,10 @@ class ServiceHandler implements RouteInterface {
      *
      * Deletes a single Service handler that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /service-handlers/{serviceHandlerId:[0-9]+}
+     * @apiEndpoint DELETE /service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  string  serviceHandlerId 1
      *
      * @param \Slim\App $app
@@ -245,7 +247,7 @@ class ServiceHandler implements RouteInterface {
                 'App\Controller\ServiceHandlers:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
+            ->add($auth(Auth::IDENTITY))
             ->setName('service-handlers:deleteOne');
     }
 }

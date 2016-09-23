@@ -61,12 +61,12 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Lists all Service handlers that belongs to the acting Company.
      *
-     * @apiEndpointParam    query   int     page 10|1 Current page
-     *
      * @apiEndpointResponse 200 schema/service-handlers/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBServiceHandler::getAllByCompanyId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -97,6 +97,8 @@ class ServiceHandlers implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBServiceHandler::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -129,6 +131,8 @@ class ServiceHandlers implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\ServiceHandler::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -165,6 +169,8 @@ class ServiceHandlers implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\ServiceHandler::handleDeleteAll
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -194,6 +200,8 @@ class ServiceHandlers implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Handler\ServiceHandler::handleDeleteOne
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
@@ -205,8 +213,9 @@ class ServiceHandlers implements ControllerInterface {
             ->setParameter('companyId', $company->id)
             ->setParameter('serviceHandlerId', $serviceHandlerId);
 
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $this->commandBus->handle($command)
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -228,6 +237,8 @@ class ServiceHandlers implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\ServiceHandler::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

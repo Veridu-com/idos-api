@@ -9,14 +9,28 @@
             "type": "string",
             "pattern": ""
         },
-        "slug": {
-            "description": "Slug based on Feature's name",
+        "creator": {
+            "description": "Feature Creator",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Service Name",
+                    "type": "string",
+                    "pattern": ""
+                }
+            }
+        },
+        "type": {
+            "description": "Feature Type",
             "type": "string",
-            "pattern": "[a-zA-Z0-9_-]+"
+            "pattern": ""
         },
         "value": {
-            "description": "Feature value",
-            "type": "string",
+            "description": "Feature value"
+        },
+        "source": {
+            "description": "Source name",
+            "type": ["string", "null"],
             "pattern": ""
         },
         "created_at": {
@@ -28,13 +42,11 @@
             "type": ["integer", "null"]
         }
     },
-    "dependencies": {
-        "slug": ["name"]
-    },
     "required": [
         "name",
-        "slug",
-        "created_at",
-        "updated_at"
+        "creator",
+        "type",
+        "value",
+        "created_at"
     ]
 }

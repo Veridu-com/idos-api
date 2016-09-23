@@ -128,7 +128,7 @@ class Token {
      * @param string $handlerPubKey    The token issuer (handler's public key)
      * @param string $handlerPrivKey   The token signature secret (handler's private key)
      *
-     * @see \App\Repository\CredentialInterface
+     * @see \App\Repository\Company\CredentialInterface
      *
      * @return string
      */
@@ -141,6 +141,33 @@ class Token {
             $credentialPubKey,
             $handlerPubKey,
             $handlerPrivKey
+        );
+    }
+
+    /**
+     * Generates an Identity Token.
+     *
+     * A identity token is a Identity's access grant to the API.
+     * It must be issued by the identity and auto-signed.
+     *
+     * Token details:
+     *  - Issuer: Handler's Public Key
+     *  - Subject: Credential's Public Key
+     *  - Signature secret: Handler's Private Key
+     *
+     * @param string $identityPubKey  The token issuer (identity's public key)
+     * @param string $identityPrivKey The token issuer (identity's private key)
+     *
+     * @return string
+     */
+    public static function generateIdentityToken(
+        string $identityPubKey,
+        string $identityPrivKey
+    ) : string {
+        return self::generateJwtToken(
+            null,
+            $identityPubKey,
+            $identityPrivKey
         );
     }
 }

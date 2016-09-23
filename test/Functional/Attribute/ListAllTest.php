@@ -15,13 +15,13 @@ class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/attributes';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes';
     }
 
     public function testSuccess() {
@@ -51,12 +51,12 @@ class ListAllTest extends AbstractFunctional {
         );
     }
 
-    public function testFilter() {
+    public function testNameFilter() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=%1'
+                    'QUERY_STRING'       => 'name=first*'
                 ]
             )
         );
@@ -70,8 +70,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['user2Attribute1']);
-            $this->assertContains($attribute['value'], ['value-3']);
+            $this->assertContains($attribute['name'], ['firstname']);
+            $this->assertContains($attribute['value'], ['John']);
         }
 
         /*
@@ -86,12 +86,12 @@ class ListAllTest extends AbstractFunctional {
         );
     }
 
-    public function testFilterMultiple() {
+    public function testNameFilterMultiple() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=user2%'
+                    'QUERY_STRING'       => 'name=*name'
                 ]
             )
         );
@@ -102,11 +102,11 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(3, $body['data']);
+        $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['user2Attribute1', 'user2Attribute2', 'user2Attribute3']);
-            $this->assertContains($attribute['value'], ['value-3', 'value-4', 'value-5']);
+            $this->assertContains($attribute['name'], ['firstname', 'lastname']);
+            $this->assertContains($attribute['value'], ['John', 'Doe']);
         }
 
         /*
@@ -119,5 +119,138 @@ class ListAllTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
+    }
+
+    public function testCreatorNameFilter() {
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING'       => 'creator:name=idOS FB Scraper'
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(2, $body['data']);
+
+        foreach ($body['data'] as $attribute) {
+            $this->assertContains($attribute['name'], ['firstname', 'lastname']);
+            $this->assertContains($attribute['value'], ['John', 'Doe']);
+        }
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'attribute/listAll.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testCreatorNameFilterMultiple() {
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING'       => 'creator:name=id*'
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(2, $body['data']);
+
+        foreach ($body['data'] as $attribute) {
+            $this->assertContains($attribute['name'], ['firstname', 'lastname']);
+            $this->assertContains($attribute['value'], ['John', 'Doe']);
+        }
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'attribute/listAll.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testOrdering() {
+        $orderableKeys = [
+            'name',
+            'support',
+            'created_at',
+            'updated_at'
+        ];
+
+        foreach (['ASC', 'DESC'] as $sort) {
+            foreach ($orderableKeys as $orderableKey) {
+                $request = $this->createRequest(
+                    $this->createEnvironment(
+                        [
+                            'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                            'QUERY_STRING'       => 'filter:order=' . $orderableKey . '&filter:sort=' . $sort
+                        ]
+                    )
+                );
+
+                $response = $this->process($request);
+                $this->assertSame(200, $response->getStatusCode());
+
+                $body = json_decode((string) $response->getBody(), true);
+                $this->assertNotEmpty($body);
+                $this->assertTrue($body['status']);
+                $this->assertCount(2, $body['data']);
+
+                $keys = [];
+
+                if (strpos(':', $orderableKey) !== false) {
+                    $orderableKey = explode(':', $orderableKey);
+                } else {
+                    foreach ($body['data'] as $entity) {
+                        $keys[] = isset($entity[$orderableKey]) ? $entity[$orderableKey] : null;
+                    }
+
+                    $orderedKeys = $keys;
+
+                    if ($sort === 'ASC') {
+                        sort($orderedKeys);
+                    } else {
+                        rsort($orderedKeys);
+                    }
+
+                    if ($orderedKeys !== $keys) {
+                        $this->fail('Failed asserting correctly ordered elements (' . $orderableKey . ', ' . $sort . ')');
+                    }
+                }
+
+                /*
+                 * Validates Response using the Json Schema.
+                 */
+                $this->assertTrue(
+                    $this->validateSchema(
+                        'attribute/listAll.json',
+                        json_decode((string) $response->getBody())
+                    ),
+                    $this->schemaErrors
+                );
+            }
+        }
     }
 }

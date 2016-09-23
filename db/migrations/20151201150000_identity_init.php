@@ -16,6 +16,7 @@ class IdentityInit extends AbstractMigration {
         $features
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('rank', 'integer', ['null' => false])
+            ->addColumn('bit', 'integer', ['null' => false])
             ->addColumn('created_at', 'timestamp', ['null' => false, 'timezone' => false, 'default' => 'CURRENT_TIMESTAMP'])
             ->addIndex('name', ['unique' => true])
             ->create();
@@ -34,6 +35,20 @@ class IdentityInit extends AbstractMigration {
             ->addIndex(['identity_id', 'role', 'resource'], ['unique' => true])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('role', 'roles', 'name', ['delete' => 'SET NULL', 'update' => 'SET NULL'])
+            ->create();
+
+        // Company members (FIXME Review this table)
+        $members = $this->table('members');
+        $members
+            ->addColumn('company_id', 'integer', ['null' => false])
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('role', 'text', ['null' => false, 'default' => 'member'])
+            ->addTimestamps()
+            ->addIndex('company_id')
+            ->addIndex('identity_id')
+            ->addForeignKey('role', 'roles', 'name', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
     }
 }

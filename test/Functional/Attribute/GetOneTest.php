@@ -15,7 +15,7 @@ class GetOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
@@ -50,7 +50,6 @@ class GetOneTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
-
     }
 
     public function testNotFound() {
@@ -63,18 +62,19 @@ class GetOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
+        $this->assertTrue($body['status']);
+        $this->assertEmpty($body['data']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'error.json',
+                'attribute/getOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

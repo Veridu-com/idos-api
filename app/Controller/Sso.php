@@ -8,9 +8,10 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Exception\AppException;
 use App\Factory\Command;
-use App\Repository\CredentialInterface;
-use App\Repository\SettingInterface;
+use App\Repository\Company\CredentialInterface;
+use App\Repository\Company\SettingInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,13 +24,13 @@ class Sso implements ControllerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\SettingInterface
+     * @var App\Repository\Company\SettingInterface
      */
     private $settingRepository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\CredentialInterface
+     * @var App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
@@ -54,11 +55,11 @@ class Sso implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\SettingInterface    $settingRepository
-     * @param App\Repository\CredentialInterface $credentialRepository
-     * @param \Slim\Collection                   $settings
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command                $commandFactory
+     * @param App\Repository\Company\SettingInterface    $settingRepository
+     * @param App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \Slim\Collection                           $settings
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -133,105 +134,117 @@ class Sso implements ControllerInterface {
      * Creates a token for the given user in the given provider.
      *
      * @apiEndpointResponse 201 schema/sso/createNew.json
+     * @apiEndpointParam body string key xyz Provider key
+     * @apiEndpointParam body string secret wzy Provider secret.
+     * @apiEndpointParam body string ipAddress 192.168.0.1 User ip address.
+     * @apiEndpointParam body string accessToken zxq Provider access token
+     * @apiEndpointParam body string credentialPubKey wxz Credential public key.
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see App\Repository\DBCredental::findByPubKey
+     * @see App\Repository\DBSetting::findByCompanyIdSectionAndProperties
+     * @see App\Handler\Sso::handleCreateNew
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $requestBody = $request->getParsedBody();
-        $provider    = $requestBody['providerName'];
+        $providerName     = $request->getParsedBodyParam('provider');
+        $credentialPubKey = $request->getParsedBodyParam('credential');
+        $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
 
         $availableProviders = $this->settings['sso_providers'];
+        if (! in_array($providerName, $availableProviders)) {
+            throw new AppException('Unsupported Provider', 400);
+        }
 
-        foreach ($availableProviders as $providerName) {
-            if ($provider == $providerName) {
-                $credentialPubKey = $requestBody['credentialPubKey'];
-                $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
+        // hosted social application (credential based)
+        $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $providerName);
+        $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $providerName);
+        $credentialSettingVer = sprintf('%s.%s.version', $credentialPubKey, $providerName);
+        // hosted social application (company based)
+        $providerSettingKey = sprintf('%s.key', $providerName);
+        $providerSettingSec = sprintf('%s.secret', $providerName);
+        $providerSettingVer = sprintf('%s.version', $providerName);
 
-                $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
-                    $credential->company_id,
-                    'AppTokens',
-                    [
-                        sprintf('%s.%s.key', $credentialPubKey, $providerName),
-                        sprintf('%s.%s.secret', $credentialPubKey, $providerName)
-                    ]
-                );
+        $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
+            $credential->companyId,
+            'AppTokens',
+            [
+                $credentialSettingKey,
+                $credentialSettingSec,
+                $credentialSettingVer
+            ]
+        );
 
-                if (count($settings) > 2) {
-                    $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
-                        $credential->company_id,
-                        'AppTokens',
-                        [
-                            sprintf('%s.key', $providerName),
-                            sprintf('%s.secret', $providerName)
-                        ]
-                    );
-                }
+        if (count($settings) < 2) {
+            $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
+                $credential->companyId,
+                'AppTokens',
+                [
+                    $providerSettingKey,
+                    $providerSettingSec,
+                    $providerSettingVer
+                ]
+            );
+        }
 
-                switch ($providerName) {
-                    case 'amazon':
-                        $command = $this->commandFactory->create('Sso\\CreateNewAmazon');
-                        break;
-                    case 'facebook':
-                        $command = $this->commandFactory->create('Sso\\CreateNewFacebook');
-                        break;
-                    case 'google':
-                        $command = $this->commandFactory->create('Sso\\CreateNewGoogle');
-                        break;
-                    case 'linkedin':
-                        $command = $this->commandFactory->create('Sso\\CreateNewLinkedin');
-                        break;
-                    case 'paypal':
-                        $command = $this->commandFactory->create('Sso\\CreateNewPaypal');
-                        break;
-                    case 'twitter':
-                        $command = $this->commandFactory->create('Sso\\CreateNewTwitter');
-                        break;
-                }
+        switch ($providerName) {
+            case 'amazon':
+                $command = $this->commandFactory->create('Sso\\CreateNewAmazon');
+                break;
+            case 'facebook':
+                $command = $this->commandFactory->create('Sso\\CreateNewFacebook');
+                break;
+            case 'google':
+                $command = $this->commandFactory->create('Sso\\CreateNewGoogle');
+                break;
+            case 'linkedin':
+                $command = $this->commandFactory->create('Sso\\CreateNewLinkedin');
+                break;
+            case 'paypal':
+                $command = $this->commandFactory->create('Sso\\CreateNewPaypal');
+                break;
+            case 'twitter':
+                $command = $this->commandFactory->create('Sso\\CreateNewTwitter');
+                break;
+        }
 
-                foreach ($settings as $setting) {
-                    if ($setting->property == sprintf('%s.%s.key', $credentialPubKey, $providerName) || sprintf('%s.key', $providerName)) {
-                        $command->setParameter('key', $setting->value);
-                    }
+        foreach ($settings as $setting) {
+            if (in_array($setting->property, [$credentialSettingKey, $providerSettingKey])) {
+                $command->setParameter('key', $setting->value);
+            }
 
-                    if ($setting->property == sprintf('%s.%s.secret', $credentialPubKey, $providerName) || sprintf('%s.secret', $providerName)) {
-                        $command->setParameter('secret', $setting->value);
-                    }
-                }
+            if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
+                $command->setParameter('secret', $setting->value);
+            }
 
-                $command
-                    ->setParameter('ipAddress', $request->getAttribute('ip_address'))
-                    ->setParameter('accessToken', $requestBody['accessToken'])
-                    ->setParameter('credentialPubKey', $requestBody['credentialPubKey']);
-
-                $token = $this->commandBus->handle($command);
-
-                $body = [
-                    'status' => true,
-                    'data'   => $token
-                ];
-
-                $command = $this->commandFactory->create('ResponseDispatch');
-                $command
-                    ->setParameter('statusCode', 201)
-                    ->setParameter('request', $request)
-                    ->setParameter('response', $response)
-                    ->setParameter('body', $body);
-
-                return $this->commandBus->handle($command);
+            if (in_array($setting->property, [$credentialSettingVer, $providerSettingVer])) {
+                $command->setParameter('apiVersion', $setting->value);
             }
         }
 
+        $command
+            ->setParameter('ipAddress', $request->getAttribute('ip_address'))
+            ->setParameter('accessToken', $request->getParsedBodyParam('access_token'))
+            ->setParameter('credentialPubKey', $credentialPubKey);
+
+        $tokenSecret = $request->getParsedBodyParam('token_secret');
+        if ($tokenSecret) {
+            $command->setParameter('tokenSecret', $tokenSecret);
+        }
+
+        $token = $this->commandBus->handle($command);
+
         $body = [
-            'status' => false,
-            'data'   => 'Provider not found'
+            'status' => true,
+            'data'   => $token
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', 400)
+            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

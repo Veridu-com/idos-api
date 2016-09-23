@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
-use App\Extension\NameToSlugMutator;
-
 /**
  * ServiceHandler's Entity.
  *
@@ -23,8 +21,6 @@ use App\Extension\NameToSlugMutator;
  * @property int        $updated_at
  */
 class ServiceHandler extends AbstractEntity {
-    use NameToSlugMutator;
-
     /**
      * {@inheritdoc}
      */

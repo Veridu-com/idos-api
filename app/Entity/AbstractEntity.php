@@ -43,6 +43,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $json = [];
     /**
+     * The attributes that should be secure.
+     *
+     * @var array
+     */
+    protected $secure = [];
+    /**
      * The relations of the entity.
      *
      * @var array
@@ -54,12 +60,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var array
      */
     protected $obfuscated = ['id'];
-    /**
-     * The attributes that should be secured.
-     *
-     * @var array
-     */
-    protected $secure = [];
     /**
      * The storage format of the model's date columns.
      *
@@ -176,6 +176,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = date($this->dateFormat, $value);
         }
 
+        // Tests if it is a secure field
         if ((isset($this->secure)) && (in_array($key, $this->secure))) {
             if (is_resource($value)) {
                 $value = stream_get_contents($value, -1, 0);
@@ -233,8 +234,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = strtotime($value);
         }
 
-        if ((in_array($key, $this->json)) && (is_string($value))) {
-            $value = json_decode($value, true);
+        if ((in_array($key, $this->json)) && ($value !== null)) {
+            $value = json_decode($value);
             if ($value === null) {
                 $value = [];
             }
@@ -291,10 +292,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             $value = null;
-            if ($this->relationships && isset($this->relationships[$attribute])) {
+            if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
                 // populating relations
-                if (isset($this->relations[$attribute])) {
-                    $value = $this->$attribute()->toArray();
+                $relationEntity = $this->$attribute();
+                $value          = $this->$attribute()->toArray();
+
+                foreach (array_diff($relationEntity->visible, array_keys($relationEntity->attributes)) as $deleteAttribute) {
+                    unset($value[$deleteAttribute]);
                 }
             } else {
                 // populating own attributes

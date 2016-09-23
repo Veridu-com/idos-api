@@ -9,6 +9,10 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Company;
+use App\Entity\Company\Member;
+use App\Entity\Identity;
+use App\Entity\Role;
+use App\Exception\AppException;
 use Illuminate\Support\Collection;
 
 /**
@@ -61,6 +65,46 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
      */
     public function delete(int $id, string $key = 'id') : int {
         return $this->deleteBy([$key => $id]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveNewCompany(Company $company, Identity $owner) : Company {
+        $company = parent::save($company);
+        $member  = $this->newMember($company, $owner, Role::COMPANY_OWNER);
+
+        return $company;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function newMember(Company $company, Identity $identity, string $role) : Member {
+        $query = $this->query('members', Member::class);
+        $id    = $query->insertGetId(
+            [
+                'company_id'  => $company->id,
+                'identity_id' => $identity->id,
+                'role'        => $role
+            ]
+        );
+        if ($id) {
+            $member = $this->entityFactory->create(
+                'Company\Member',
+                [
+                    'role'     => $role,
+                    'company'  => $company->id,
+                    'identity' => $identity->id,
+                ]
+            );
+            $member->relations['company']  = $company;
+            $member->relations['identity'] = $identity;
+
+            return $member;
+        }
+
+        throw new AppException(sprintf('Error creating Company Member on %s', get_class($this)), 500);
     }
 
     /**

@@ -13,7 +13,7 @@ use Test\Functional\Traits;
 
 class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -21,14 +21,14 @@ class ListAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags';
+        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/tags';
     }
 
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
@@ -56,8 +56,8 @@ class ListAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader(),
-                    'QUERY_STRING'       => 'slug=%1'
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader(),
+                    'QUERY_STRING'       => 'slug=high*'
                 ]
             )
         );
@@ -72,8 +72,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $tag) {
-            $this->assertContains($tag['name'], ['User 2 Tag 1']);
-            $this->assertContains($tag['slug'], ['user-2-tag-1']);
+            $this->assertContains($tag['name'], ['High-end customer']);
+            $this->assertContains($tag['slug'], ['high-end-customer']);
         }
 
         /*
@@ -92,8 +92,8 @@ class ListAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->companyTokenHeader(),
-                    'QUERY_STRING'       => 'slug=user-2%'
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader(),
+                    'QUERY_STRING'       => 'slug=*customer'
                 ]
             )
         );
@@ -107,8 +107,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $tag) {
-            $this->assertContains($tag['name'], ['User 2 Tag 1', 'User 2 Tag 2']);
-            $this->assertContains($tag['slug'], ['user-2-tag-1', 'user-2-tag-2']);
+            $this->assertContains($tag['name'], ['High-end customer', 'Repeat customer']);
+            $this->assertContains($tag['slug'], ['high-end-customer', 'repeat-customer']);
         }
 
         /*

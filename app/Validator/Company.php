@@ -14,6 +14,7 @@ namespace App\Validator;
 class Company implements ValidatorInterface {
     use Traits\AssertEntity,
         Traits\AssertId,
+        Traits\AssertString,
         Traits\AssertName,
         Traits\AssertParentId,
         Traits\AssertSlug,

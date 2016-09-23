@@ -78,7 +78,7 @@ $appSettings = [
         'strategy' => 'db',
         'cached'   => false
     ],
-    'secure' => ''
+    'secure' => '',
     'sso_providers' => [
         'amazon',
         'facebook',

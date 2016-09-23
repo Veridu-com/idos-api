@@ -21,23 +21,20 @@ class CreateNewTest extends AbstractFunctional {
         $this->uri        = '/1.0/sso';
 
         $this->getApp()->getContainer()['ssoAuth'] = function (ContainerInterface $container) : callable {
-            return function ($provider, $key, $secret) {
-
+            return function ($providerName, $key, $secret) {
                 $facebookMock = $this->getMockBuilder(Facebook::class)
                     ->disableOriginalConstructor()
                     ->setMethods(['getStorage', 'request', 'service'])
                     ->getMock();
 
                 $facebookMock->method('getStorage')
-                    ->will($this->returnValue(new Memory()));
+                    ->willReturn(new Memory());
 
                 $facebookMock->method('request')
-                    ->will($this->returnValue('{"id" : "123"}'));
+                    ->willReturn('{"id" : "123"}');
 
                 $facebookMock->method('service')
-                    ->will(
-                        $this->returnValue('Facebook')
-                    );
+                    ->willReturn('Facebook');
 
                 return $facebookMock;
             };
@@ -51,15 +48,16 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $provider         = 'facebook';
+        $providerName     = 'facebook';
         $credentialPubKey = '4c9184f37cff01bcdc32dc486ec36961';
         $accessToken      = 'EAAEO02ZBeZBwMBAHF5DHSVt7gIUR75zeTlUoJUOFdM6rNUNVWBZCR97GHbFgkskqIe2UKPDIPxQy2WZAAyw4gGZCX3Cllz4WfUU3xnr9jPzvPwbirhAXN26ZAR2E7vfHTsjZA5rFgbKXGaqChU1HlzL';
+
         $request          = $this->createRequest(
             $environment, json_encode(
                 [
-                    'providerName'     => $provider,
-                    'credentialPubKey' => $credentialPubKey,
-                    'accessToken'      => $accessToken
+                    'provider'     => $providerName,
+                    'credential'   => $credentialPubKey,
+                    'access_token' => $accessToken
                 ]
             )
         );

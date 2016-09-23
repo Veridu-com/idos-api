@@ -18,6 +18,7 @@ class CompanyInit extends AbstractMigration {
             ->addColumn('section', 'text', ['null' => false])
             ->addColumn('property', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => false])
+            ->addColumn('protected', 'boolean', ['null' => false, 'default' => false])
             ->addTimestamps()
             ->addIndex('company_id')
             ->addIndex(['company_id', 'section', 'property'], ['unique' => true])

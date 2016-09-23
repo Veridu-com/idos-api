@@ -16,13 +16,13 @@ class CreateNewTest extends AbstractRawFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
 
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/1321189817/raw';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
     }
 
     public function testSuccess() {
@@ -37,8 +37,9 @@ class CreateNewTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
+                    'source_id'  => 1321189817,
                     'collection' => 'collection-test',
-                    'data'       => 'value-test'
+                    'data'       => ['value' => 'test']
                 ]
             )
         );
@@ -47,11 +48,11 @@ class CreateNewTest extends AbstractRawFunctional {
 
         $this->assertSame(201, $response->getStatusCode());
 
-        $body     = json_decode((string) $response->getBody(), true);
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('collection-test', $body['data']['collection']);
-        $this->assertSame('value-test', $body['data']['data']);
+        $this->assertSame(['value' => 'test'], $body['data']['data']);
 
         /*
          * Validates Response using the Json Schema.
@@ -77,8 +78,9 @@ class CreateNewTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
+                    'source_id'  => 1321189817,
                     'collection' => '',
-                    'data'       => 'value-test'
+                    'data'       => ['value' => 'test']
                 ]
             )
         );

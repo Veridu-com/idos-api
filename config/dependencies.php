@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 use Apix\Cache;
 use App\Command;
-use App\Event\ListenerProvider;
 use App\Exception\AppException;
 use App\Factory;
 use App\Handler;
@@ -35,7 +34,6 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Monolog\Processor\WebProcessor;
 use OAuth\Common\Consumer\Credentials;
-use OAuth\Common\Http\Uri\UriFactory;
 use OAuth\Common\Storage\Memory;
 use OAuth\ServiceFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -240,14 +238,15 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
     $settings = $container->get('settings');
     $log      = $container->get('log');
 
-    $commandPaths = glob(__DIR__ . '/../app/Command/*/*.php');
+    $commandPaths = array_merge(glob(__DIR__ . '/../app/Command/*/*.php'), glob(__DIR__ . '/../app/Command/*/*/*.php'));
     $commands     = [];
     foreach ($commandPaths as $commandPath) {
         $matches = [];
         preg_match_all('/.*Command\/(.*)\/(.*).php/', $commandPath, $matches);
 
-        $resource = $matches[1][0];
-        $command  = $matches[2][0];
+        $resource = preg_replace("/\//", '\\', $matches[1][0]);
+        // $resource = $matches[1][0];
+        $command = $matches[2][0];
 
         $commands[sprintf('App\\Command\\%s\\%s', $resource, $command)] = sprintf('App\\Handler\\%s', $resource);
     }
@@ -293,6 +292,11 @@ $container['entityFactory'] = function (ContainerInterface $container) : Factory
     return new Factory\Entity($container->get('optimus'));
 };
 
+// App Event Factory
+$container['eventFactory'] = function (ContainerInterface $container) : Factory\Event {
+    return new Factory\Event();
+};
+
 // Auth Middleware
 $container['authMiddleware'] = function (ContainerInterface $container) : callable {
     return function ($authorizationRequirement) use ($container) {
@@ -300,7 +304,8 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
         $jwt               = $container->get('jwt');
 
         return new Auth(
-            $repositoryFactory->create('Credential'),
+            $repositoryFactory->create('Company\Credential'),
+            $repositoryFactory->create('Identity'),
             $repositoryFactory->create('User'),
             $repositoryFactory->create('Company'),
             $repositoryFactory->create('Service'),
@@ -314,11 +319,12 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
 
 // Permission Middleware
 $container['endpointPermissionMiddleware'] = function (ContainerInterface $container) : callable {
-    return function ($permissionType) use ($container) {
+    return function ($permissionType, $allowedRolesBits = 0x00) use ($container) {
         return new Middleware\EndpointPermission(
-            $container->get('repositoryFactory')->create('Permission'),
+            $container->get('repositoryFactory')->create('Company\Permission'),
             $container->get('repositoryFactory')->create('Company'),
-            $permissionType
+            $permissionType,
+            $allowedRolesBits
         );
     };
 };
@@ -326,7 +332,7 @@ $container['endpointPermissionMiddleware'] = function (ContainerInterface $conta
 // User Permission Middleware
 $container['userPermissionMiddleware'] = function (ContainerInterface $container) {
     return function ($resource, $resourceAccessLevel) use ($container) {
-        $roleAccessRepository = $container->get('repositoryFactory')->create('RoleAccess');
+        $roleAccessRepository = $container->get('repositoryFactory')->create('User\RoleAccess');
 
         return new Middleware\UserPermission($roleAccessRepository, $resource, $resourceAccessLevel);
     };
@@ -416,8 +422,14 @@ $container['optimus'] = function (ContainerInterface $container) : Optimus {
 // App files
 $container['globFiles'] = function () : array {
     return [
-        'routes'            => glob(__DIR__ . '/../app/Route/*.php'),
-        'handlers'          => glob(__DIR__ . '/../app/Handler/*.php'),
+        'routes' => array_merge(
+            glob(__DIR__ . '/../app/Route/*.php'),
+            glob(__DIR__ . '/../app/Route/*/*.php')
+        ),
+        'handlers' => array_merge(
+            glob(__DIR__ . '/../app/Handler/*.php'),
+            glob(__DIR__ . '/../app/Handler/*/*.php')
+        ),
         'listenerProviders' => glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
     ];
 };
@@ -429,8 +441,8 @@ $container['eventEmitter'] = function (ContainerInterface $container) : Emitter 
     $providers = array_map(
         function ($providerFile) {
             return preg_replace(
-                '/.*?Listener\/(.*)\/ListenerProvider.php/',
-                'App\\Listener\\\$1\\ListenerProvider',
+                '/.*?Listener\/(.*)\/(.*)Provider.php/',
+                'App\\Listener\\\$1\\\$2Provider',
                 $providerFile
             );
         },
@@ -462,17 +474,13 @@ $container['secure'] = function (ContainerInterface $container) : Secure {
 // SSO Auth
 $container['ssoAuth'] = function (ContainerInterface $container) : callable {
     return function ($provider, $key, $secret) use ($container) {
-        $uriFactory = new UriFactory();
-        $currentUri = $uriFactory->createFromSuperGlobalArray($_SERVER);
-        $currentUri->setQuery('');
-
         $storage = new Memory();
 
         // Setup the credentials for the requests
         $credentials = new Credentials(
             $key,
             $secret,
-            $currentUri->getAbsoluteUri()
+            ''
         );
 
         $settings = $container->get('settings');
@@ -484,6 +492,30 @@ $container['ssoAuth'] = function (ContainerInterface $container) : callable {
         $serviceFactory->setHttpClient($client);
 
         // Instantiate the service using the credentials, http client and storage mechanism for the token
-        return $serviceFactory->createService($provider, $credentials, $storage, $settings['sso_providers_scopes'][$provider]);
+        return $serviceFactory->createService(
+            $provider,
+            $credentials,
+            $storage,
+            $settings['sso_providers_scopes'][$provider]
+        );
     };
+};
+
+// Gearman Client
+$container['gearmanClient'] = function (ContainerInterface $container) : GearmanClient {
+    $settings = $container->get('settings');
+    $gearman  = new \GearmanClient();
+    if (isset($settings['gearman']['timeout'])) {
+        $gearman->setTimeout($settings['gearman']['timeout']);
+    }
+
+    foreach ($settings['gearman']['servers'] as $server) {
+        if (is_array($server)) {
+            $gearman->addServer($server[0], $server[1]);
+        } else {
+            $gearman->addServer($server);
+        }
+    }
+
+    return $gearman;
 };

@@ -15,21 +15,13 @@ class GetOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RejectsCompanyToken;
+        Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features',
-            'GET',
-            [
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-            ]
-        );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/%s', $this->entity['slug']);
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/1321189817';
     }
 
     public function testSuccess() {
@@ -60,7 +52,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/dummy-ltd';
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/0000';
 
         $request = $this->createRequest(
             $this->createEnvironment(

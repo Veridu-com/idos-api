@@ -9,6 +9,8 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Company;
+use App\Entity\Company\Member;
+use App\Entity\Identity;
 use Illuminate\Support\Collection;
 
 /**
@@ -36,6 +38,15 @@ interface CompanyInterface extends RepositoryInterface {
      * @return App\Entity\Company
      */
     public function findBySlug(string $slug) : Company;
+
+    /**
+     * Creats a new member for the company.
+     *
+     * @param \App\Entity\Company  $company  The company
+     * @param \App\Entity\Identity $identity The identity
+     * @param string               $role     The role
+     */
+    public function newMember(Company $company, Identity $identity, string $role) : Member;
 
     /**
      * Gets all Companies based on their Parent Id.

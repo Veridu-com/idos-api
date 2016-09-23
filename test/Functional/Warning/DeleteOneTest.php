@@ -13,22 +13,13 @@ class DeleteOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
-        Traits\RequiresCompanyToken;
+        Traits\RequiresIdentityToken;
 
     protected function setUp() {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-
-        $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings',
-            'GET',
-            [
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-            ]
-        );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings/%s', $this->entity['slug']);
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings/first-name-mismatch';
     }
 
     public function testSuccess() {

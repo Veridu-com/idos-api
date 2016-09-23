@@ -9,8 +9,12 @@
         },
         "data": {
             "description": "Attribute response payload",
-            "type": "object",
-            "$ref": "attributeEntity.json"
+            "type": "array",
+            "items": {
+                "$ref": "attributeEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
         },
         "updated": {
             "description": "Unixtime of the last update",

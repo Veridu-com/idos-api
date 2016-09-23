@@ -56,8 +56,8 @@ class Tokens implements RouteInterface {
      *
      * @apiEndpoint GET /token
      * @apiGroup Token
-     * @apiAuth header token UserXXX User's Token
-     * @apiAuth query token userXXX User's Token
+     * @apiAuth header token User wqxehuwqwsthwosjbxwwsqwsdi User's Token
+     * @apiAuth query token user wqxehuwqwsthwosjbxwwsqwsdi User's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment string attributeName firstName
      *

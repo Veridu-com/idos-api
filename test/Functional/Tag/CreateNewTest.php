@@ -15,7 +15,7 @@ use Test\Functional\Traits;
 
 class CreateNewTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCompanyToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
 
@@ -23,14 +23,14 @@ class CreateNewTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/tags';
+        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/tags';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -48,6 +48,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
+
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('Tag Test', $body['data']['name']);
@@ -68,7 +69,7 @@ class CreateNewTest extends AbstractFunctional {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->companyTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
