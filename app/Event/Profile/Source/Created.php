@@ -51,9 +51,11 @@ class Created extends AbstractEvent {
     }
 
     /**
-     * Gets the event identifier
+     * Gets the event identifier.
+     *
+     * @return string 
     **/
     public function __toString() {
-        return sprintf('idos:source.%s.added', strtolower($this->source->name));
+        return sprintf('idos:source.%s.created', strtolower($this->source->name));
     }
 }

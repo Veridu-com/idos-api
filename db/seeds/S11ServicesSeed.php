@@ -19,7 +19,7 @@ class S11ServicesSeed extends AbstractSeed {
                 'auth_password' => 'secret',
                 'public'        => md5('public-1'), // ef970ffad1f1253a2182a88667233991
                 'private'       => md5('private-1'), // 213b83392b80ee98c8eb2a9fed9bb84d
-                'listens'       => json_encode(['idos:source.facebook.added']),
+                'listens'       => json_encode(['idos:source.facebook.created']),
                 'triggers'      => json_encode(['idos:scraper.facebook.completed']),
                 'enabled'       => true,
             ],
