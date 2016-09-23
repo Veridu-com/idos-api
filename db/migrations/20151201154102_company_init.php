@@ -45,6 +45,7 @@ class CompanyInit extends AbstractMigration {
             ->addColumn('public', 'text', ['null' => false])
             ->addColumn('private', 'text', ['null' => false])
             ->addColumn('production', 'boolean', ['null' => false, 'default' => false])
+            ->addColumn('special', 'boolean', ['null' => false, 'default' => false]) // can create dashboards (sso will behave differently)
             ->addTimestamps()
             ->addIndex('company_id')
             ->addIndex('slug')

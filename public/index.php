@@ -35,4 +35,6 @@ require_once __DIR__ . '/../config/handlers.php';
 
 require_once __DIR__ . '/../config/routes.php';
 
+require_once __DIR__ . '/../config/listeners.php';
+
 $app->run();

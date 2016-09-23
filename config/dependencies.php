@@ -434,28 +434,6 @@ $container['globFiles'] = function () : array {
     ];
 };
 
-// Register Event emitter & Event listeners
-$container['eventEmitter'] = function (ContainerInterface $container) : Emitter {
-    $emitter = new Emitter();
-
-    $providers = array_map(
-        function ($providerFile) {
-            return preg_replace(
-                '/.*?Listener\/(.*)\/(.*)Provider.php/',
-                'App\\Listener\\\$1\\\$2Provider',
-                $providerFile
-            );
-        },
-        $container->get('globFiles')['listenerProviders']
-    );
-
-    foreach ($providers as $provider) {
-        $emitter->useListenerProvider(new $provider($container));
-    }
-
-    return $emitter;
-};
-
 // Secure
 $container['secure'] = function (ContainerInterface $container) : Secure {
     $fileName = __DIR__ . '/../resources/secure.key';
@@ -518,4 +496,11 @@ $container['gearmanClient'] = function (ContainerInterface $container) : Gearman
     }
 
     return $gearman;
+};
+
+// Registering Event Emitter
+$container['eventEmitter'] = function (ContainerInterface $container) : Emitter {
+    $emitter = new Emitter();
+
+    return $emitter;
 };
