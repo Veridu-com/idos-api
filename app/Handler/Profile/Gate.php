@@ -140,7 +140,7 @@ class Gate implements HandlerInterface {
             $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            throw new Create\Profile\GateException('Error while trying to create a gate', 500, $e);
+            throw new Create\Profile\GateException('Error while trying to create a gate', 500, $exception);
         }
 
         return $entity;
