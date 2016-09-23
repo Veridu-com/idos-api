@@ -49,4 +49,11 @@ class Created extends AbstractEvent {
         $this->source = $source;
         $this->ipAddr = $ipAddr;
     }
+
+    /**
+     * Gets the event identifier
+    **/
+    public function __toString() {
+        return sprintf('idos:source.%s.added', strtolower($this->source->name));
+    }
 }
