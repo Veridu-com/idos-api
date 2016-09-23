@@ -177,7 +177,7 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
             ->join('services', 'services.id', 'service_id')
             ->where('service_handlers.company_id', $companyId)
             ->where('services.enabled', true)
-            ->whereRaw("jsonb_exists(service_handlers.listens, '$event')")
+            ->whereRaw("jsonb_exists(service_handlers.listens, ?)", [ $event ])
             ->get($this->queryAttributes);
 
         return $this->castHydrate($collection);

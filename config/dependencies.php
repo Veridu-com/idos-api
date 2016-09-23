@@ -498,28 +498,7 @@ $container['gearmanClient'] = function (ContainerInterface $container) : Gearman
     return $gearman;
 };
 
-$container['eventEmitter'] = $container->factory(function () : Emitter {
+$container['eventEmitter'] = function () : Emitter {
     $emitter = new Emitter;
     return $emitter;
-});
-
-
-// Event emitter initialization
-$emitter = $container->get('eventEmitter');
-
-$providers = array_map(
-    function ($providerFile) {
-        return preg_replace(
-            '/.*?Listener\/(.*)\/(.*)Provider.php/',
-            'App\\Listener\\\$1\\\$2Provider',
-            $providerFile
-        );
-    },
-    $container->get('globFiles')['listenerProviders']
-);
-
-if (empty($emitter->listeners)) {
-    foreach ($providers as $provider) {
-        $emitter->useListenerProvider(new $provider($container));
-    }
-}
+};

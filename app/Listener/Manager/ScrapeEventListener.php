@@ -157,7 +157,7 @@ class ScrapeEventListener extends AbstractListener {
      * @return void
      */
     public function handle(EventInterface $event) {
-        $valid = property_exists($event->source->tags, 'accessToken') && property_exists($event->source->tags, 'tokenSecret'); 
+        $valid = property_exists($event->source->tags, 'accessToken'); 
         
         if (! $valid) {
             return $this->dispatchUnhandleEvent($event);
@@ -167,7 +167,7 @@ class ScrapeEventListener extends AbstractListener {
         $trigger = sprintf('idos:source.%s.added', strtolower($event->source->name));
         $handlers = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($credential->companyId, $trigger);
 
-        if (empty($handlers)) {
+        if ($handlers->isEmpty()) {
             return $this->dispatchUnhandleEvent($event);
         }
 
@@ -190,10 +190,13 @@ class ScrapeEventListener extends AbstractListener {
                     'providerName' => $event->source->name,
                     'publicKey'    => $credential->public,
                     'sourceId'     => $event->source->id,
-                    'tokenSecret'  => $event->source->tags->tokenSecret,
                     'userName'     => $event->user->userName
                 ]
             ];
+
+            if(property_exists($event->source->tags, 'tokenSecret')) {
+                $payload['handler']['tokenSecret'] = $event->source->tags->tokenSecret;
+            }
 
             // add to manager queue
             $task = $this->gearmanClient->doBackground(
