@@ -104,8 +104,8 @@ class Raw implements HandlerInterface {
      * @see App\Repository\DBRaw::create
      * @see App\Repository\DBRaw::save
      *
-     * @throws App\Exception\Validate\RawException
-     * @throws App\Exception\Create\RawException
+     * @throws App\Exception\Validate\Profile\RawException
+     * @throws App\Exception\Create\Profile\RawException
      *
      * @return App\Entity\Raw
      */
@@ -124,7 +124,7 @@ class Raw implements HandlerInterface {
         try {
             $entity = $this->repository->findOne($command->source, $command->collection);
 
-            throw new Create\RawException('Error while trying to create raw', 500, $e);
+            throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
         } catch (NotFound $e) {
         }
 
@@ -157,7 +157,7 @@ class Raw implements HandlerInterface {
      * @see App\Repository\DBRaw::findOne
      * @see App\Repository\DBRaw::save
      *
-     * @throws App\Exception\Validate\RawException
+     * @throws App\Exception\Validate\Profile\RawException
      * @throws App\Exception\Update\RawException
      *
      * @return App\Entity\Raw
@@ -199,8 +199,8 @@ class Raw implements HandlerInterface {
      * @see App\Repository\DBRaw::create
      * @see App\Repository\DBRaw::save
      *
-     * @throws App\Exception\Validate\RawException
-     * @throws App\Exception\Create\RawException
+     * @throws App\Exception\Validate\Profile\RawException
+     * @throws App\Exception\Create\Profile\RawException
      *
      * @return App\Entity\Raw
      */
@@ -209,7 +209,7 @@ class Raw implements HandlerInterface {
             $this->validator->assertSource($command->source);
             $this->validator->assertName($command->collection);
         } catch (ValidationException $e) {
-            throw new Validate\RawException(
+            throw new Validate\Profile\RawException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -252,10 +252,10 @@ class Raw implements HandlerInterface {
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             if ($inserting) {
-                throw new Create\RawException('Error while trying to create raw', 500, $e);
+                throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
+            } else {
+                throw new Update\Profile\RawException('Error while trying to update raw', 500, $e);
             }
-
-            throw new Update\RawException('Error while trying to update raw', 500, $e);
         }
 
         return $entity;
