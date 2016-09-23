@@ -70,7 +70,7 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
             'key'        => 'id',
             'entity'     => 'Company',
             'hydrate'    => false,
-            'nullable' => false
+            'nullable'   => false
         ],
 
         'service' => [
@@ -169,15 +169,15 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
     /**
      * Gets all by company identifier and listener.
      *
-     * @param      integer  $companyId  The company identifier
-     * @param      string   $event      The event to look on "listens" column
+     * @param int    $companyId The company identifier
+     * @param string $event     The event to look on "listens" column
      */
     public function getAllByCompanyIdAndListener(int $companyId, string $event) {
         $collection = $this->query()
             ->join('services', 'services.id', 'service_id')
             ->where('service_handlers.company_id', $companyId)
             ->where('services.enabled', true)
-            ->whereRaw("jsonb_exists(service_handlers.listens, ?)", [ $event ])
+            ->whereRaw('jsonb_exists(service_handlers.listens, ?)', [$event])
             ->get($this->queryAttributes);
 
         return $this->castHydrate($collection);

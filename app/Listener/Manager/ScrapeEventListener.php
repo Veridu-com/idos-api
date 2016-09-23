@@ -9,9 +9,8 @@ declare(strict_types = 1);
 namespace App\Listener\Manager;
 
 use App\Entity\Company\Credential;
-use App\Exception\AppException;
-use App\Listener;
 use App\Factory\Event as EventFactory;
+use App\Listener;
 use App\Listener\AbstractListener;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\SettingInterface;
@@ -64,7 +63,7 @@ class ScrapeEventListener extends AbstractListener {
      * Loads application Key/Secret and API Version.
      *
      * @param \App\Entity\Company\Credential $credential
-     * @param string $sourceName
+     * @param string                         $sourceName
      *
      * @return array
      */
@@ -157,15 +156,15 @@ class ScrapeEventListener extends AbstractListener {
      * @return void
      */
     public function handle(EventInterface $event) {
-        $valid = property_exists($event->source->tags, 'accessToken'); 
-        
+        $valid = property_exists($event->source->tags, 'accessToken');
+
         if (! $valid) {
             return $this->dispatchUnhandleEvent($event);
         }
 
         $credential = $this->credentialRepository->find($event->user->credentialId);
-        $trigger = sprintf('idos:source.%s.added', strtolower($event->source->name));
-        $handlers = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($credential->companyId, $trigger);
+        $trigger    = sprintf('idos:source.%s.added', strtolower($event->source->name));
+        $handlers   = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($credential->companyId, $trigger);
 
         if ($handlers->isEmpty()) {
             return $this->dispatchUnhandleEvent($event);
@@ -214,7 +213,7 @@ class ScrapeEventListener extends AbstractListener {
 
         }
     }
-    
+
     /**
      * Dispatches an unhandle event.
      *

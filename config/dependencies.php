@@ -498,7 +498,9 @@ $container['gearmanClient'] = function (ContainerInterface $container) : Gearman
     return $gearman;
 };
 
-$container['eventEmitter'] = function () : Emitter {
-    $emitter = new Emitter;
+// Registering Event Emitter
+$container['eventEmitter'] = function (ContainerInterface $container) : Emitter {
+    $emitter = new Emitter();
+
     return $emitter;
 };
