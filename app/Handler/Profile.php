@@ -14,6 +14,7 @@ use App\Validator\Profile as ProfileValidator;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use App\Factory\Event;
 
 /**
  * Handles Profile commands.
