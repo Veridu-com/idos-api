@@ -31,7 +31,7 @@ class Main implements ControllerInterface {
      */
     private $commandBus;
     /**
-     * Command Factory Instance.publicpublicpublic
+     * Command Factory Instance.
      *
      * @var App\Factory\Command
      */
