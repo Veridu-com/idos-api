@@ -11,7 +11,7 @@ if (! isset($app)) {
 }
 
 /**
- * This file is responsible for initializing the event emitter 
+ * This file is responsible for initializing the event emitter
  * variable that will be inject through the application.
  **/
 $emitter = $container->get('eventEmitter');

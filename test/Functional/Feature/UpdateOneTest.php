@@ -34,10 +34,14 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode([
-            'type'  => 'string',
-            'value' => 'new value'
-        ]));
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                'type'  => 'string',
+                'value' => 'new value'
+                ]
+            )
+        );
 
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
@@ -70,10 +74,14 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode([
-            'type'  => 'string',
-            'value' => 'new value'
-        ]));
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                'type'  => 'string',
+                'value' => 'new value'
+                ]
+            )
+        );
 
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
