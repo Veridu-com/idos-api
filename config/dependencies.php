@@ -70,7 +70,20 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
                 $exception->getLine()
             )
         );
-        $log('Foundation')->error($exception->getTraceAsString());
+        $log('Foundation')->debug($exception->getTraceAsString());
+
+        $previousException = $exception->getPrevious();
+        if ($previousException) {
+            $log('Foundation')->error(
+                sprintf(
+                    '%s [%s:%d]',
+                    $previousException->getMessage(),
+                    $previousException->getFile(),
+                    $previousException->getLine()
+                )
+            );
+            $log('Foundation')->debug($previousException->getTraceAsString());
+        }
 
         if ($exception instanceof AppException) {
             $log('API')->info(

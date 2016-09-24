@@ -209,7 +209,6 @@ class ScrapeEventListener extends AbstractListener {
                 );
                 $this->emitter->emit($dispatchFailed);
             }
-
         }
     }
 
