@@ -100,6 +100,45 @@ class CreateNewTest extends AbstractFunctional {
         );
     }
 
+    public function testEmptyValue() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name    = 'empty-feature';
+        $type    = 'string';
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'source_id' => 1321189817,
+                    'name'      => $name,
+                    'type'      => $type,
+                    'value'     => null
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame($name, $body['data']['name']);
+        $this->assertSame($type, $body['data']['type']);
+        $this->assertNull($body['data']['value']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
     public function testInvalidName() {
         $environment = $this->createEnvironment(
             [

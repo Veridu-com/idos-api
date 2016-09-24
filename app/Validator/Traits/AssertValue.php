@@ -28,4 +28,19 @@ trait AssertValue {
             ->length(1, null)
             ->assert($value);
     }
+    /**
+     * Asserts a valid value, nullable.
+     *
+     * @param mixed $value
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertNullableValue($value) {
+        Validator::oneOf(
+            Validator::prnt()->length(1, null),
+            Validator::nullType()
+        )->assert($value);
+    }
 }
