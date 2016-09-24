@@ -37,7 +37,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $sourceFilters = [];
         foreach ($queryParams as $param => $value) {
             if (substr_compare($param, 'source:', 0, 7) === 0) {
-                $param                 = substr($param, 8);
+                $param                 = substr($param, 7);
                 $sourceFilters[$param] = $value;
             } else {
                 $rawFilters[$param] = $value;
