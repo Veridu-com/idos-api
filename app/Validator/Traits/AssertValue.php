@@ -24,9 +24,12 @@ trait AssertValue {
      * @return void
      */
     public function assertValue($value) {
-        Validator::prnt()
-            ->length(1, null)
-            ->assert($value);
+        Validator::oneOf(
+            Validator::floatVal(),
+            Validator::intVal(),
+            Validator::stringType()->length(1, null),
+            Validator::boolVal()
+        )->assert($value);
     }
     /**
      * Asserts a valid value, nullable.
@@ -39,7 +42,10 @@ trait AssertValue {
      */
     public function assertNullableValue($value) {
         Validator::oneOf(
-            Validator::prnt()->length(1, null),
+            Validator::floatVal(),
+            Validator::intVal(),
+            Validator::stringType()->length(1, null),
+            Validator::boolVal(),
             Validator::nullType()
         )->assert($value);
     }
