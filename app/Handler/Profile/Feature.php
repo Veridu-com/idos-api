@@ -130,8 +130,11 @@ class Feature implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->name);
             $this->validator->assertName($command->type);
+            $this->validator->assertNullableValue($command->value);
+            $sourceName = null;
             if ($command->source !== null) {
                 $this->validator->assertSource($command->source);
+                $sourceName = $command->source->name;
             }
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
@@ -144,7 +147,7 @@ class Feature implements HandlerInterface {
         $feature = $this->repository->create(
             [
                 'user_id'    => $command->user->id,
-                'source'     => $command->source !== null ? $command->source->name : null,
+                'source'     => $sourceName,
                 'name'       => $command->name,
                 'creator'    => $command->service->id,
                 'type'       => $command->type,
@@ -185,6 +188,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertId($command->featureId);
             $this->validator->assertName($command->type);
+            $this->validator->assertNullableValue($command->value);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -193,11 +197,13 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOneBy([
-            'user_id' => $command->user->id,
-            'creator' => $command->service->id,
-            'id'      => $command->featureId
-        ]);
+        $feature = $this->repository->findOneBy(
+            [
+                'user_id' => $command->user->id,
+                'creator' => $command->service->id,
+                'id'      => $command->featureId
+            ]
+        );
 
         $feature->type      = $command->type;
         $feature->value     = $command->value;
@@ -315,10 +321,19 @@ class Feature implements HandlerInterface {
      * @return App\Entity\Profile\Feature
      */
     public function handleUpsert(Upsert $command) : FeatureEntity {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertService($command->service);
-        $this->validator->assertLongName($command->name);
-        $this->validator->assertName($command->type);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertLongName($command->name);
+            $this->validator->assertName($command->type);
+            $this->validator->assertNullableValue($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $sourceName = null;
         if ($command->source !== null) {

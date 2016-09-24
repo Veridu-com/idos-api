@@ -103,7 +103,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneById(int $userId, string $sourceName, int $serviceId, int $id) : Feature {
+    public function findOneById(int $userId, $sourceName, int $serviceId, int $id) : Feature {
         return $this->findOneBy(
             [
             'user_id' => $userId,
@@ -117,7 +117,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByName(int $userId, string $sourceName, int $serviceId, string $name) : Feature {
+    public function findOneByName(int $userId, $sourceName, int $serviceId, string $name) : Feature {
         return $this->findOneBy(
             [
             'user_id' => $userId,
