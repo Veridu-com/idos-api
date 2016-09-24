@@ -139,6 +139,123 @@ class CreateNewTest extends AbstractFunctional {
         );
     }
 
+    public function testBooleanValue() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name    = 'boolean-feature';
+        $type    = 'boolean';
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'source_id' => 1321189817,
+                    'name'      => $name,
+                    'type'      => $type,
+                    'value'     => true
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame($name, $body['data']['name']);
+        $this->assertSame($type, $body['data']['type']);
+        $this->assertTrue($body['data']['value']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
+    public function testFloatValue() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name    = 'float-feature';
+        $type    = 'double';
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'source_id' => 1321189817,
+                    'name'      => $name,
+                    'type'      => $type,
+                    'value'     => 1.2
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame($name, $body['data']['name']);
+        $this->assertSame($type, $body['data']['type']);
+        $this->assertSame(1.2, $body['data']['value']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
+    public function testIntValue() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name    = 'int-feature';
+        $type    = 'integer';
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'source_id' => 1321189817,
+                    'name'      => $name,
+                    'type'      => $type,
+                    'value'     => 10
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame($name, $body['data']['name']);
+        $this->assertSame($type, $body['data']['type']);
+        $this->assertSame(10, $body['data']['value']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
     public function testInvalidName() {
         $environment = $this->createEnvironment(
             [
