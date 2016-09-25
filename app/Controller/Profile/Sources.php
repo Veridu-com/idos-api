@@ -158,10 +158,12 @@ class Sources implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
         $source = $this->commandBus->handle($command);

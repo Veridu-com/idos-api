@@ -87,10 +87,10 @@ class Task implements HandlerInterface {
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository   = $repository;
-        $this->validator    = $validator;
-        $this->eventFactory = $eventFactory;
-        $this->emitter      = $emitter;
+        $this->emitter            = $emitter;
+        $this->validator          = $validator;
+        $this->repository         = $repository;
+        $this->eventFactory       = $eventFactory;
     }
 
     /**
@@ -109,6 +109,7 @@ class Task implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : TaskEntity {
         try {
             $this->validator->assertName($command->name);
+            $this->validator->assertService($command->service);
             $this->validator->assertName($command->event);
             $this->validator->assertBooleanOrNull($command->running);
             $this->validator->assertBooleanOrNull($command->success);
@@ -125,6 +126,7 @@ class Task implements HandlerInterface {
             [
                 'name'       => $command->name,
                 'event'      => $command->event,
+                'creator'    => $command->service,
                 'running'    => $command->running,
                 'success'    => $command->success,
                 'message'    => $command->message,
@@ -160,6 +162,8 @@ class Task implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : TaskEntity {
         try {
             $this->validator->assertBooleanOrNull($command->success);
+            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user);
             $this->validator->assertId($command->id);
 
             $task = $this->repository->find($command->id);
@@ -199,8 +203,15 @@ class Task implements HandlerInterface {
 
         try {
             $task  = $this->repository->save($task);
-            $event = $this->eventFactory->create('Profile\\Task\\Updated', $task);
-            $this->emitter->emit($event);
+
+            $updated = $this->eventFactory->create('Profile\\Task\\Updated', $task);
+            $this->emitter->emit($updated);
+            
+            if ($task->success && ! $task->running) {
+                $completed = $this->eventFactory->create('Profile\\Task\\Completed', $task, $command->user, $command->credential, $task->event);
+                $this->emitter->emit($completed);
+            }
+
         } catch (\Exception $e) {
             throw new Update\Profile\TaskException('Error while trying to update a task', 500, $e);
         }

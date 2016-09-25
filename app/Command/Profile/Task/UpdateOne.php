@@ -21,6 +21,18 @@ class UpdateOne extends AbstractCommand {
      */
     public $name;
     /**
+     * Target User.
+     *
+     * @var App\Entity\User
+     */
+    public $user;
+    /**
+     * Target Credential.
+     *
+     * @var App\Entity\Company\Credential
+     */
+    public $credential;
+    /**
      * Task's trigger event.
      *
      * @var string

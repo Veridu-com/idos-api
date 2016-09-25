@@ -168,6 +168,7 @@ class Features implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
         $service  = $request->getAttribute('service');
+        $credential  = $request->getAttribute('credential');
         $source   = null;
         $sourceId = $request->getParsedBodyParam('source_id');
 
@@ -179,6 +180,7 @@ class Features implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
             ->setParameter('source', $source)
             ->setParameter('service', $service);
 

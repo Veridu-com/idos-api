@@ -162,7 +162,7 @@ class Source implements HandlerInterface {
             throw new Create\Profile\SourceException('Error while trying to create a setting', 500, $e);
         }
 
-        $this->emitter->emit($this->eventFactory->create('Profile\\Source\\Created', $command->user, $source, $command->ipaddr));
+        $this->emitter->emit($this->eventFactory->create('Profile\\Source\\Created', $source, $command->user, $command->credential, $command->ipaddr));
 
         if ($sendOTP) {
             $this->emitter->emit($this->eventFactory->create('Profile\\Source\\OTP', $command->user, $source, $command->ipaddr));

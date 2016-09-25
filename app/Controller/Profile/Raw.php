@@ -127,15 +127,17 @@ class Raw implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Profile\\Raw\\CreateNew');
 
-        $user     = $request->getAttribute('targetUser');
-        $service  = $request->getAttribute('service');
-        $sourceId = (int) $request->getParsedBodyParam('decoded_source_id');
+        $user       = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
+        $service    = $request->getAttribute('service');
+        $sourceId   = (int) $request->getParsedBodyParam('decoded_source_id');
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
             ->setParameter('service', $service)
             ->setParameter('source', $source);
 
