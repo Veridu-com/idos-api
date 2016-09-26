@@ -290,7 +290,7 @@ class Gates implements ControllerInterface {
     }
 
     /**
-     * Creates a new Feture for the given user.
+     * Creates a new Gate for the given user.
      *
      * @apiEndpointRequiredParam body string name XYZ Gate name
      * @apiEndpointRequiredParam body boolean pass ZYX Gate pass

@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Exception\NotFound\Profile;
 
+use App\Exception\NotFound;
+
 /**
  * Reference not found exception.
  *

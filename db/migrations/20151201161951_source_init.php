@@ -19,7 +19,7 @@ class SourceInit extends AbstractMigration {
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('type', 'text', ['null' => false])
-            ->addColumn('value', 'binary')
+            ->addColumn('value', 'binary', ['null' => true])
             ->addTimestamps()
             ->addIndex('user_id')
             ->addIndex('source')

@@ -84,13 +84,13 @@ class Profiles implements ControllerInterface {
         Command $commandFactory,
         Optimus $optimus
     ) {
-        $this->repository              = $repository;
-        $this->warningRepository       = $warningRepository;
-        $this->gateRepository          = $gateRepository;
-        $this->attributeRepository     = $attributeRepository;
-        $this->commandBus              = $commandBus;
-        $this->commandFactory          = $commandFactory;
-        $this->optimus                 = $optimus;
+        $this->repository          = $repository;
+        $this->warningRepository   = $warningRepository;
+        $this->gateRepository      = $gateRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->commandBus          = $commandBus;
+        $this->commandFactory      = $commandFactory;
+        $this->optimus             = $optimus;
     }
 
     /**

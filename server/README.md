@@ -24,8 +24,9 @@ In case you need, internal IP addresses for each server:
 - **srv-php**: 172.16.238.11, 172.16.239.11
 - **srv-db**: 172.16.239.12
 - **srv-queue**: 172.16.239.13
-- **srv-worker**: 172.16.239.14
+- **srv-manager**: 172.16.239.14
 - **srv-redis**: 172.16.239.15
+- **srv-nosql**: 172.16.239.16
 
 ### Database
 

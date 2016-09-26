@@ -70,7 +70,20 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
                 $exception->getLine()
             )
         );
-        $log('Foundation')->error($exception->getTraceAsString());
+        $log('Foundation')->debug($exception->getTraceAsString());
+
+        $previousException = $exception->getPrevious();
+        if ($previousException) {
+            $log('Foundation')->error(
+                sprintf(
+                    '%s [%s:%d]',
+                    $previousException->getMessage(),
+                    $previousException->getFile(),
+                    $previousException->getLine()
+                )
+            );
+            $log('Foundation')->debug($previousException->getTraceAsString());
+        }
 
         if ($exception instanceof AppException) {
             $log('API')->info(
@@ -434,28 +447,6 @@ $container['globFiles'] = function () : array {
     ];
 };
 
-// Register Event emitter & Event listeners
-$container['eventEmitter'] = function (ContainerInterface $container) : Emitter {
-    $emitter = new Emitter();
-
-    $providers = array_map(
-        function ($providerFile) {
-            return preg_replace(
-                '/.*?Listener\/(.*)\/(.*)Provider.php/',
-                'App\\Listener\\\$1\\\$2Provider',
-                $providerFile
-            );
-        },
-        $container->get('globFiles')['listenerProviders']
-    );
-
-    foreach ($providers as $provider) {
-        $emitter->useListenerProvider(new $provider($container));
-    }
-
-    return $emitter;
-};
-
 // Secure
 $container['secure'] = function (ContainerInterface $container) : Secure {
     $fileName = __DIR__ . '/../resources/secure.key';
@@ -518,4 +509,11 @@ $container['gearmanClient'] = function (ContainerInterface $container) : Gearman
     }
 
     return $gearman;
+};
+
+// Registering Event Emitter
+$container['eventEmitter'] = function (ContainerInterface $container) : Emitter {
+    $emitter = new Emitter();
+
+    return $emitter;
 };
