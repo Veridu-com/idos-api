@@ -20,19 +20,19 @@ class S11ServicesSeed extends AbstractSeed {
                 'public'        => md5('public-1'), // ef970ffad1f1253a2182a88667233991
                 'private'       => md5('private-1'), // 213b83392b80ee98c8eb2a9fed9bb84d
                 'listens'       => json_encode(['idos:source.facebook.created']),
-                'triggers'      => json_encode(['idos:scraper.facebook.completed']),
+                'triggers'      => json_encode(['idos:raw.facebook.created']),
                 'enabled'       => true,
             ],
             [
-                'name'          => 'idOS FB Data Mapper',
-                'url'           => 'https://data-mapper.idos.io',
+                'name'          => 'idOS FB Feature Extractor',
+                'url'           => 'https://feature-extractor.idos.io',
                 'company_id'    => 1,
                 'auth_username' => 'idos',
                 'auth_password' => 'secret',
                 'public'        => md5('public-2'), // 8c178e650645a1f2a0c7de98757373b6
                 'private'       => md5('private-2'), // e603de4692c2179446a96374bce86ce6
-                'listens'       => json_encode(['idos:scraper.facebook.completed']),
-                'triggers'      => json_encode(['idos:data-mapper.facebook.completed']),
+                'listens'       => json_encode(['idos:raw.facebook.created']),
+                'triggers'      => json_encode(['idos:feature.facebook.completed']),
                 'enabled'       => true,
             ],
             [

@@ -123,7 +123,6 @@ class Raw implements HandlerInterface {
 
         try {
             $entity = $this->repository->findOne($command->source, $command->collection);
-
             throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
         } catch (NotFound $e) {
         }
@@ -139,7 +138,7 @@ class Raw implements HandlerInterface {
 
         try {
             $raw   = $this->repository->save($raw);
-            $event = $this->eventFactory->create('Profile\\Raw\\Created', $raw);
+            $event = $this->eventFactory->create('Profile\\Raw\\Created', $raw, $command->user, $command->credential, $command->source);
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {

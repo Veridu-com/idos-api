@@ -21,6 +21,12 @@ class CreateNew extends AbstractCommand {
      */
     public $name;
     /**
+     * Task's creator.
+     *
+     * @var App\Entity\Service
+     */
+    public $service;
+    /**
      * Task's trigger event.
      *
      * @var string
