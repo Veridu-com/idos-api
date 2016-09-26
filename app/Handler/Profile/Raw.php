@@ -112,6 +112,8 @@ class Raw implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : RawEntity {
         try {
             $this->validator->assertSource($command->source);
+            $this->validator->assertUser($command->user);
+            $this->validator->assertCredential($command->credential);
             $this->validator->assertName($command->collection);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
@@ -138,7 +140,13 @@ class Raw implements HandlerInterface {
 
         try {
             $raw   = $this->repository->save($raw);
-            $event = $this->eventFactory->create('Profile\\Raw\\Created', $raw, $command->user, $command->credential, $command->source);
+            $event = $this->eventFactory->create(
+                'Profile\\Raw\\Created',
+                $raw,
+                $command->user,
+                $command->credential,
+                $command->source
+            );
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
