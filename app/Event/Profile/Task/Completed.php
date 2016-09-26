@@ -13,15 +13,13 @@ use App\Entity\Profile\Task;
 use App\Entity\Service;
 use App\Entity\User;
 use App\Event\AbstractEvent;
-use App\Event\ServiceQueueEventInterface;
+use App\Event\AbstractServiceQueueEvent;
 use App\Listener\QueueCompanyServiceHandlers;
 
 /**
  * Completed event.
  */
-class Completed extends AbstractEvent implements ServiceQueueEventInterface {
-    use QueueCompanyServiceHandlers;
-
+class Completed extends AbstractServiceQueueEvent {
     /**
      * Event related Task.
      *
@@ -71,19 +69,7 @@ class Completed extends AbstractEvent implements ServiceQueueEventInterface {
     public function getServiceHandlerPayload(array $merge = []) : array {
         return array_merge([], $merge);
     }
-
-    /**
-     * {inheritdoc}
-     */
-    public function getUser() : User {
-        return $this->user;
-    }
-    /**
-     * {inheritdoc}
-     */
-    public function getCredential() : Credential {
-        return $this->credential;
-    }
+    
     /**
      * {inheritdoc}
      */

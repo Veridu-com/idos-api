@@ -19,20 +19,6 @@ interface ServiceQueueEventInterface {
     public function getServiceHandlerPayload(array $merge = []) : array;
 
     /**
-     * Retrieves the event related credential.
-     * 
-     * @return \App\Entity\Company\Credential Credential entity
-     */
-    public function getCredential() : Credential;
-
-    /**
-     * Retrieves the event related user.
-     * 
-     * @return \App\Entity\User User entity
-     */
-    public function getUser() : User;
-
-    /**
      * String representation of the event.
      * 
      * @return string Must be the event's id.

@@ -12,12 +12,12 @@ use App\Entity\Profile\Feature;
 use App\Entity\Profile\Source;
 use App\Entity\User;
 use App\Event\AbstractEvent;
-use App\Event\ServiceQueueEventInterface;
+use App\Event\AbstractServiceQueueEvent;
 
 /**
  * Created event.
  */
-class Created extends AbstractEvent implements ServiceQueueEventInterface {
+class Created extends AbstractServiceQueueEvent {
     /**
      * Event related Feature.
      *
@@ -53,6 +53,19 @@ class Created extends AbstractEvent implements ServiceQueueEventInterface {
         $this->user = $user;
         $this->source = $source;
         $this->credential = $credential;
+    }
+
+    /**
+     * {inheritdoc}
+     */
+    public function getServiceHandlerPayload(array $merge = []) : array {
+        return array_merge([
+            'providerName' => $this->source->name,
+            'sourceId'     => $this->source->id,
+            'publicKey'    => $this->credential->public,
+            'processId'    => 1, // @FIXME process creation process must be reviewed
+            'userName'     => $this->user->username
+        ], $merge);
     }
 
     /**

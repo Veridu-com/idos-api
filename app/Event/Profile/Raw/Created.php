@@ -13,12 +13,12 @@ use App\Entity\Profile\Raw;
 use App\Entity\Profile\Source;
 use App\Entity\User;
 use App\Event\AbstractEvent;
-use App\Event\ServiceQueueEventInterface;
+use App\Event\AbstractServiceQueueEvent;
 
 /**
  * Created event.
  */
-class Created extends AbstractEvent implements ServiceQueueEventInterface {
+class Created extends AbstractServiceQueueEvent {
     /**
      * Event related Raw.
      *
@@ -68,25 +68,10 @@ class Created extends AbstractEvent implements ServiceQueueEventInterface {
         return array_merge([
             'providerName' => $this->source->name,
             'sourceId'     => $this->source->id,
-            'publicKeu'    => $this->credential->public,
+            'publicKey'    => $this->credential->public,
             'processId'    => 1, // @FIXME process creation process must be reviewed
             'userName'     => $this->user->username
         ], $merge);
-    }
-    
-
-    /**
-     * {inheritdoc}
-     */
-    public function getUser() : User {
-        return $this->user;
-    }
-
-    /**
-     * {inheritdoc}
-     */
-    public function getCredential() : Credential {
-        return $this->credential;
     }
 
     /**

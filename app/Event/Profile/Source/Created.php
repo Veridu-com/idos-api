@@ -12,12 +12,12 @@ use App\Entity\Company\Credential;
 use App\Entity\Profile\Source;
 use App\Entity\User;
 use App\Event\AbstractEvent;
-use App\Event\ServiceQueueEventInterface;
+use App\Event\AbstractServiceQueueEvent;
 
 /**
  * Created event.
  */
-class Created extends AbstractEvent implements ServiceQueueEventInterface {
+class Created extends AbstractServiceQueueEvent {
     /**
      * Event related User.
      *
@@ -65,20 +65,6 @@ class Created extends AbstractEvent implements ServiceQueueEventInterface {
             'sourceId'     => $this->source->id,
             'userName'     => $this->user->username
         ], $merge);
-    }
-
-    /**
-     * {inheritdoc}
-     */
-    public function getCredential() : Credential {
-        return $this->credential;
-    }
-
-    /**
-     * {inheritdoc}
-     */
-    public function getUser() : User {
-        return $this->user;
     }
 
     /**
