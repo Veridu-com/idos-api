@@ -166,8 +166,8 @@ class Tasks implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Task\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
-            ->setParameter('user', $user);
-            ->setParameter('credential', $credential);
+            ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
             ->setParameter('id', $taskId);
 
         $task = $this->commandBus->handle($command);

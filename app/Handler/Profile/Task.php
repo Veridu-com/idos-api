@@ -126,7 +126,7 @@ class Task implements HandlerInterface {
             [
                 'name'       => $command->name,
                 'event'      => $command->event,
-                'creator'    => $command->service,
+                'creator'    => $command->service->id,
                 'running'    => $command->running,
                 'success'    => $command->success,
                 'message'    => $command->message,
