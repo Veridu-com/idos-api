@@ -127,6 +127,7 @@ class Feature implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
         try {
             $this->validator->assertUser($command->user);
+            $this->validator->assertCredential($command->credential);
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->name);
             $this->validator->assertName($command->type);

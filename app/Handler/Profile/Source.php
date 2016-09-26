@@ -110,6 +110,7 @@ class Source implements HandlerInterface {
         try {
             $this->validator->assertShortName($command->name);
             $this->validator->assertUser($command->user);
+            $this->validator->assertCredential($command->credential);
             $this->validator->assertId($command->user->id);
             $this->validator->assertIpAddr($command->ipaddr);
         } catch (ValidationException $e) {
