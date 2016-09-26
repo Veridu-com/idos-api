@@ -4,10 +4,25 @@ DBSRV=srv-db
 QUEUESRV=srv-queue
 WORKERSRV=srv-worker
 REDISSRV=srv-redis
+NOSQLSRV=srv-nosql
 
 rename: clean
-	cat Makefile | sed s/srv-web/${WEBSRV}/ | sed s/srv-php/${PHPSRV}/ | sed s/srv-db/${DBSRV}/ | sed s/srv-queue/${QUEUESRV}/ | sed s/srv-worker/${WORKERSRV}/ | sed s/srv-redis/${REDISSRV}/ > /tmp/Makefile && mv /tmp/Makefile Makefile
-	cat docker-compose.yml | sed s/srv-web/${WEBSRV}/ | sed s/srv-php/${PHPSRV}/ | sed s/srv-db/${DBSRV}/ | sed s/srv-queue/${QUEUESRV}/ | sed s/srv-worker/${WORKERSRV}/ | sed s/srv-redis/${REDISSRV}/ > /tmp/docker-compose.yml && mv /tmp/docker-compose.yml docker-compose.yml
+	cat Makefile |
+	sed s/srv-web/${WEBSRV}/ |
+	sed s/srv-php/${PHPSRV}/ |
+	sed s/srv-db/${DBSRV}/ |
+	sed s/srv-queue/${QUEUESRV}/ |
+	sed s/srv-worker/${WORKERSRV}/ |
+	sed s/srv-redis/${REDISSRV}/ |
+	sed s/srv-mongo/${NOSQLSRV}/ > /tmp/Makefile && mv /tmp/Makefile Makefile
+	cat docker-compose.yml |
+	sed s/srv-web/${WEBSRV}/ |
+	sed s/srv-php/${PHPSRV}/ |
+	sed s/srv-db/${DBSRV}/ |
+	sed s/srv-queue/${QUEUESRV}/ |
+	sed s/srv-worker/${WORKERSRV}/ |
+	sed s/srv-redis/${REDISSRV}/ |
+	sed s/srv-mongo/${NOSQLSRV}/ > /tmp/docker-compose.yml && mv /tmp/docker-compose.yml docker-compose.yml
 	@echo You must run $(tput bold) \> make reset \< $(tput sgr0) to start your containers
 
 build: clean
@@ -98,6 +113,8 @@ phinx-seed:
 phinx-seed-testing:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phinx seed:run -e testing
 
+phinx-restore: phinx-migrate phinx-seed
+
 psql:
 	docker exec --interactive --tty ${DBSRV} psql -h localhost idos-api idos-api
 
@@ -109,3 +126,6 @@ gearadmin:
 
 redis-cli:
 	docker exec --interactive --tty ${REDISSRV} redis-cli
+
+mongo:
+	docker exec --interactive --tty ${NOSQLSRV} mongo
