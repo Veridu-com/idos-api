@@ -59,10 +59,11 @@ class Created extends AbstractEvent implements ServiceQueueEventInterface {
     public function getServiceHandlerPayload(array $merge = []) : array {
         return array_merge([
             'accessToken'  => $this->source->tags->accessToken,
+            'tokenSecret'  => $this->source->tags->tokenSecret,
             'providerName' => $this->source->name,
             'publicKey'    => $this->credential->public,
             'sourceId'     => $this->source->id,
-            'userName'     => $this->user->userName
+            'userName'     => $this->user->username
         ], $merge);
     }
 
