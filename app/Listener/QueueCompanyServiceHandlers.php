@@ -24,6 +24,7 @@ trait QueueCompanyServiceHandlers {
     public function queueListeningServices(int $companyId, ServiceQueueEventInterface $event, array $mergePayload = []) : bool {
         // find handlers
         $handlers   = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($companyId, (string) $event);
+        $success = true;
 
         if ($handlers->isEmpty()) {
             return $this->dispatchUnhandleEvent($event);
@@ -43,12 +44,14 @@ trait QueueCompanyServiceHandlers {
 
             if ($this->queue($payload)) {
                 $this->emitter->emit($this->eventFactory->create('Manager\\WorkQueued', $event));
-                return true;
+                continue;
             }
 
+            $success = false;
             $this->dispatchUnhandleEvent($event);
-            return false;
-        }    
+        }
+
+        return $success;
     }
 
     /**

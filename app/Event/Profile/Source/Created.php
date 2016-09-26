@@ -83,8 +83,8 @@ class Created extends AbstractEvent implements ServiceQueueEventInterface {
     /**
      * Gets the event identifier.
      *
-     * @return string 
-    **/
+     * @return string
+     **/
     public function __toString() {
         return sprintf('idos:source.%s.created', strtolower($this->source->name));
     }

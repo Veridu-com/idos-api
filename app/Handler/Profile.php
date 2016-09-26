@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Profile\ListAll;
+use App\Factory\Event;
 use App\Repository\UserInterface;
 use App\Validator\Profile as ProfileValidator;
 use Illuminate\Support\Collection;

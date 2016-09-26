@@ -119,8 +119,8 @@ class Feature implements HandlerInterface {
      *
      * @see App\Repository\DBFeature::save
      *
-     * @throws App\Exception\Validate\FeatureException
-     * @throws App\Exception\Create\FeatureException
+     * @throws App\Exception\Validate\Profile\FeatureException
+     * @throws App\Exception\Create\Profile\FeatureException
      *
      * @return App\Entity\Feature
      */
@@ -130,8 +130,11 @@ class Feature implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->name);
             $this->validator->assertName($command->type);
+            $this->validator->assertNullableValue($command->value);
+            $sourceName = null;
             if ($command->source !== null) {
                 $this->validator->assertSource($command->source);
+                $sourceName = $command->source->name;
             }
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
@@ -144,7 +147,7 @@ class Feature implements HandlerInterface {
         $feature = $this->repository->create(
             [
                 'user_id'    => $command->user->id,
-                'source'     => $command->source !== null ? $command->source->name : null,
+                'source'     => $sourceName,
                 'name'       => $command->name,
                 'creator'    => $command->service->id,
                 'type'       => $command->type,
@@ -174,8 +177,8 @@ class Feature implements HandlerInterface {
      * @see App\Repository\DBFeature::findByUserIdAndSlug
      * @see App\Repository\DBFeature::save
      *
-     * @throws App\Exception\Validate\FeatureException
-     * @throws App\Exception\Update\FeatureException
+     * @throws App\Exception\Validate\Profile\FeatureException
+     * @throws App\Exception\Update\Profile\FeatureException
      *
      * @return App\Entity\Feature
      */
@@ -185,6 +188,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertId($command->featureId);
             $this->validator->assertName($command->type);
+            $this->validator->assertNullableValue($command->value);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -193,11 +197,13 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOneBy([
-            'user_id' => $command->user->id,
-            'creator' => $command->service->id,
-            'id'      => $command->featureId
-        ]);
+        $feature = $this->repository->findOneBy(
+            [
+                'user_id' => $command->user->id,
+                'creator' => $command->service->id,
+                'id'      => $command->featureId
+            ]
+        );
 
         $feature->type      = $command->type;
         $feature->value     = $command->value;
@@ -224,7 +230,7 @@ class Feature implements HandlerInterface {
      * @see App\Repository\DBFeature::findByUserId
      * @see App\Repository\DBFeature::deleteByUserId
      *
-     * @throws App\Exception\Validate\FeatureException
+     * @throws App\Exception\Validate\Profile\FeatureException
      *
      * @return int
      */
@@ -269,8 +275,8 @@ class Feature implements HandlerInterface {
      * @see App\Repository\DBFeature::findByUserIdAndSlug
      * @see App\Repository\DBFeature::delete
      *
-     * @throws App\Exception\Validate\FeatureException
-     * @throws App\Exception\NotFound\FeatureException
+     * @throws App\Exception\Validate\Profile\FeatureException
+     * @throws App\Exception\NotFound\Profile\FeatureException
      *
      * @return void
      */
@@ -315,19 +321,35 @@ class Feature implements HandlerInterface {
      * @return App\Entity\Profile\Feature
      */
     public function handleUpsert(Upsert $command) : FeatureEntity {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertService($command->service);
-        $this->validator->assertLongName($command->name);
-        $this->validator->assertName($command->type);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertLongName($command->name);
+            $this->validator->assertName($command->type);
+            $this->validator->assertNullableValue($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
+        $sourceName = null;
         if ($command->source !== null) {
             $this->validator->assertSource($command->source);
+            $sourceName = $command->source->name;
         }
 
         $feature   = null;
         $inserting = false;
         try {
-            $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->name : null, $command->service->id, $command->name);
+            $feature = $this->repository->findOneByName(
+                $command->user->id,
+                $sourceName,
+                $command->service->id,
+                $command->name
+            );
 
             $feature->type      = $command->type;
             $feature->value     = $command->value;
@@ -338,7 +360,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->create(
                 [
                     'user_id'    => $command->user->id,
-                    'source'     => $command->source !== null ? $command->source->name : null,
+                    'source'     => $sourceName,
                     'name'       => $command->name,
                     'creator'    => $command->service->id,
                     'type'       => $command->type,
@@ -360,7 +382,7 @@ class Feature implements HandlerInterface {
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\FeatureException('Error while trying to upsert a feature', 404, $e);
+            throw new NotFound\Profile\FeatureException('Error while trying to upsert a feature', 404, $e);
         }
 
         return $feature;
