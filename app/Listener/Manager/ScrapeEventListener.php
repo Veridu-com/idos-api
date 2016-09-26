@@ -159,7 +159,7 @@ class ScrapeEventListener extends AbstractListener {
      * @return void
      */
     public function handle(EventInterface $event) {
-        $valid = property_exists($event->source->tags, 'accessToken');
+        $valid = property_exists($event->source->tags, 'access_token');
 
         if (! $valid) {
             return $this->dispatchUnhandleEvent($event);
