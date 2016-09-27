@@ -76,9 +76,7 @@ class Created extends AbstractServiceQueueEvent {
     }
 
     /**
-     * Gets the event identifier.
-     *
-     * @return string
+     * {inheritdoc}
      **/
     public function __toString() {
         return sprintf('idos:raw.%s.created', $this->source->name);

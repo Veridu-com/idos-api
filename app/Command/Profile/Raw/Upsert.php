@@ -36,6 +36,13 @@ class Upsert extends AbstractCommand {
     public $source;
 
     /**
+     * Target Credential.
+     *
+     * @var App\Entity\Company\Credential
+     */
+    public $credential;
+    
+    /**
      * New raw collection name.
      *
      * @var string
