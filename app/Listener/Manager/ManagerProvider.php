@@ -46,6 +46,10 @@ class ManagerProvider extends AbstractListenerProvider {
                 new Listener\LogFiredEventListener($eventLogger),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
+            Event\Profile\Raw\Updated::class => [
+                new Listener\LogFiredEventListener($eventLogger),
+                new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
+            ],
 
             // Feature created triggers Service Task listener
             Event\Profile\Feature\Created::class => [

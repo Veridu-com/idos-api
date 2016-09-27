@@ -20,7 +20,10 @@ class S30ServiceHandlersSeed extends AbstractSeed {
             [
                 'company_id' => 1,
                 'service_id' => 2, // raw created
-                'listens'    => json_encode(['idos:raw.facebook.created']),
+                'listens'    => json_encode([
+                    'idos:raw.facebook.created',
+                    'idos:raw.facebook.updated'
+                    ]),
                 'created_at' => $now
             ]
         ];
