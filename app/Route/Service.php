@@ -44,8 +44,7 @@ class Service implements RouteInterface {
             return new \App\Controller\Services(
                 $container->get('repositoryFactory')->create('Service'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

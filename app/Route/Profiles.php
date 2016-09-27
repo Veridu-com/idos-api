@@ -37,8 +37,7 @@ class Profiles implements RouteInterface {
             return new \App\Controller\Profiles(
                 $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

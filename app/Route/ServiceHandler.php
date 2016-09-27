@@ -44,8 +44,7 @@ class ServiceHandler implements RouteInterface {
             return new \App\Controller\ServiceHandlers(
                 $container->get('repositoryFactory')->create('ServiceHandler'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

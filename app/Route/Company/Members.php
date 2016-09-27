@@ -44,8 +44,7 @@ class Members implements RouteInterface {
                 $container->get('repositoryFactory')->create('Company\Member'),
                 $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

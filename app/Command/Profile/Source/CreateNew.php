@@ -41,6 +41,13 @@ class CreateNew extends AbstractCommand {
     public $user;
 
     /**
+     * Target Credential.
+     *
+     * @var App\Entity\Company\Credential
+     */
+    public $credential;
+
+    /**
      * {@inheritdoc}
      *
      * @return App\Command\Profile\Source\CreateNew

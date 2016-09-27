@@ -8,14 +8,15 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Source;
 
+use App\Entity\Company\Credential;
 use App\Entity\Profile\Source;
 use App\Entity\User;
-use App\Event\AbstractEvent;
+use App\Event\AbstractServiceQueueEvent;
 
 /**
  * Created event.
  */
-class Created extends AbstractEvent {
+class Created extends AbstractServiceQueueEvent {
     /**
      * Event related User.
      *
@@ -44,10 +45,32 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(User $user, Source $source, string $ipAddr) {
-        $this->user   = $user;
-        $this->source = $source;
-        $this->ipAddr = $ipAddr;
+    public function __construct(Source $source, User $user, Credential $credential, string $ipAddr) {
+        $this->user       = $user;
+        $this->source     = $source;
+        $this->credential = $credential;
+        $this->ipAddr     = $ipAddr;
+    }
+
+    /**
+     * {inheritdoc}.
+     */
+    public function getServiceHandlerPayload(array $merge = []) : array {
+        if (property_exists($this->source->tags, 'token_secret')) {
+            $merge['tokenSecret'] = $this->source->tags->token_secret;
+        }
+
+        $source = $this->source->toArray();
+
+        return array_merge(
+            [
+            'accessToken'  => $this->source->tags->access_token,
+            'providerName' => $this->source->name,
+            'publicKey'    => $this->credential->public,
+            'sourceId'     => $source['id'],
+            'userName'     => $this->user->username
+            ], $merge
+        );
     }
 
     /**

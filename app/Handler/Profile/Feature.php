@@ -127,6 +127,7 @@ class Feature implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
         try {
             $this->validator->assertUser($command->user);
+            $this->validator->assertCredential($command->credential);
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->name);
             $this->validator->assertName($command->type);
@@ -160,7 +161,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
-            $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature);
+            $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $command->credential, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\FeatureException('Error while trying to create a feature', 500, $e);

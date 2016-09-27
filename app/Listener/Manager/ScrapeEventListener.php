@@ -12,6 +12,7 @@ use App\Entity\Company\Credential;
 use App\Factory\Event as EventFactory;
 use App\Listener;
 use App\Listener\AbstractListener;
+use App\Listener\QueueCompanyServiceHandlers;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\SettingInterface;
 use App\Repository\ServiceHandlerInterface;
@@ -22,6 +23,8 @@ use League\Event\EventInterface;
  * Data Scraper Event Listener.
  */
 class ScrapeEventListener extends AbstractListener {
+    use QueueCompanyServiceHandlers;
+
     /**
      * Credential Repository instance.
      *
@@ -102,22 +105,24 @@ class ScrapeEventListener extends AbstractListener {
             );
         }
 
-        $return = [null, null, null];
+        $appKey     = null;
+        $appSecret  = null;
+        $apiVersion = null;
         foreach ($settings as $setting) {
             if (in_array($setting->property, [$credentialSettingKey, $providerSettingKey])) {
-                $return['key'] = $setting->value;
+                $appKey = $setting->value;
             }
 
             if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
-                $return['secret'] = $setting->value;
+                $appSecret = $setting->value;
             }
 
             if (in_array($setting->property, [$credentialSettingVer, $providerSettingVer])) {
-                $return['apiVersion'] = $setting->value;
+                $apiVersion = $setting->value;
             }
         }
 
-        return $return;
+        return [$appKey, $appSecret, $apiVersion];
     }
 
     /**
@@ -156,60 +161,22 @@ class ScrapeEventListener extends AbstractListener {
      * @return void
      */
     public function handle(EventInterface $event) {
-        $valid = property_exists($event->source->tags, 'accessToken');
+        $valid = property_exists($event->source->tags, 'access_token');
 
         if (! $valid) {
             return $this->dispatchUnhandleEvent($event);
         }
 
-        $credential = $this->credentialRepository->find($event->user->credentialId);
-        $handlers   = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($credential->companyId, (string) $event);
-
-        if ($handlers->isEmpty()) {
-            return $this->dispatchUnhandleEvent($event);
-        }
-
+        $credential                            = $this->credentialRepository->find($event->user->credentialId);
         list($appKey, $appSecret, $apiVersion) = $this->loadSettings($credential, $event->source->name);
 
-        foreach ($handlers as $handler) {
-            $service = $handler->service();
+        $mergePayload = [
+            'appKey'     => $appKey,
+            'appSecret'  => $appSecret,
+            'apiVersion' => $apiVersion
+        ];
 
-            // create payload
-            $payload = [
-                'name'    => $service->name,
-                'user'    => $service->authUsername,
-                'pass'    => $service->authPassword,
-                'url'     => $service->url,
-                'handler' => [
-                    'accessToken'  => $event->source->tags->accessToken,
-                    'apiVersion'   => $apiVersion,
-                    'appKey'       => $appKey,
-                    'appSecret'    => $appSecret,
-                    'providerName' => $event->source->name,
-                    'publicKey'    => $credential->public,
-                    'sourceId'     => $event->source->id,
-                    'userName'     => $event->user->userName
-                ]
-            ];
-
-            if(property_exists($event->source->tags, 'tokenSecret')) {
-                $payload['handler']['tokenSecret'] = $event->source->tags->tokenSecret;
-            }
-
-            // add to manager queue
-            $task = $this->gearmanClient->doBackground(
-                'manager',
-                json_encode($payload)
-            );
-            if ($this->gearmanClient->returnCode() !== \GEARMAN_SUCCESS) {
-                $dispatchFailed = $this->eventFactory->create(
-                    'Manager\\DispatchFailed',
-                    $payload,
-                    $this->gearmanClient->error()
-                );
-                $this->emitter->emit($dispatchFailed);
-            }
-        }
+        $this->queueListeningServices($credential->companyId, $event, $mergePayload);
     }
 
     /**

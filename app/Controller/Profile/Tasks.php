@@ -121,6 +121,7 @@ class Tasks implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Task\\CreateNew');
         $command
             ->setParameters($request->getParsedBody())
+            ->setParameter('service', $request->getAttribute('service'))
             ->setParameters(['processId' => $processId]);
 
         $task = $this->commandBus->handle($command);
@@ -158,11 +159,15 @@ class Tasks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $taskId = $request->getAttribute('decodedTaskId');
+        $taskId     = $request->getAttribute('decodedTaskId');
+        $user       = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Task\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody())
+            ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
             ->setParameter('id', $taskId);
 
         $task = $this->commandBus->handle($command);

@@ -166,10 +166,11 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
-        $service  = $request->getAttribute('service');
-        $source   = null;
-        $sourceId = $request->getParsedBodyParam('source_id');
+        $user        = $request->getAttribute('targetUser');
+        $service     = $request->getAttribute('service');
+        $credential  = $request->getAttribute('credential');
+        $source      = null;
+        $sourceId    = $request->getParsedBodyParam('source_id');
 
         if ($sourceId !== null) {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
@@ -179,6 +180,7 @@ class Features implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
             ->setParameter('source', $source)
             ->setParameter('service', $service);
 

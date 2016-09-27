@@ -42,8 +42,7 @@ class Reviews implements RouteInterface {
                 $container->get('repositoryFactory')->create('Profile\Review'),
                 $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

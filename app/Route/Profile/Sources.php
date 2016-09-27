@@ -46,8 +46,7 @@ class Sources implements RouteInterface {
             return new \App\Controller\Profile\Sources(
                 $container->get('repositoryFactory')->create('Profile\Source'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

@@ -41,8 +41,7 @@ class Raw implements RouteInterface {
                 $container->get('repositoryFactory')->create('Profile\Raw'),
                 $container->get('repositoryFactory')->create('Profile\Source'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 
