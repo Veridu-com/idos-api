@@ -222,10 +222,10 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
-        $service  = $request->getAttribute('service');
+        $user        = $request->getAttribute('targetUser');
+        $service     = $request->getAttribute('service');
         $credential  = $request->getAttribute('credential');
-        $sourceId = (int) $request->getParsedBodyParam('decoded_source_id');
+        $sourceId    = (int) $request->getParsedBodyParam('decoded_source_id');
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 

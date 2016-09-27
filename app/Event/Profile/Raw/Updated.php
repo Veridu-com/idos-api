@@ -60,7 +60,6 @@ class Updated extends AbstractServiceQueueEvent {
         $this->source     = $source;
     }
 
-
     /**
      * {inheritdoc}.
      */

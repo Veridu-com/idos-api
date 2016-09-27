@@ -24,9 +24,10 @@ trait QueueCompanyServiceHandlers {
     public function queueListeningServices(int $companyId, ServiceQueueEventInterface $event, array $mergePayload = []) : bool {
         // find handlers
         $handlers = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($companyId, (string) $event);
-                
+
         if ($handlers->isEmpty()) {
             $this->dispatchUnhandleEvent($event);
+
             return false;
         }
 

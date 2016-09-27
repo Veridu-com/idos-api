@@ -15,6 +15,7 @@ use App\Command\Profile\Source\UpdateOne;
 use App\Entity\Profile\Source as SourceEntity;
 use App\Exception\AppException;
 use App\Exception\Create;
+use App\Exception\NotAllowed;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
@@ -24,7 +25,6 @@ use App\Validator\Profile\Source as SourceValidator;
 use Interop\Container\ContainerINterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use App\Exception\NotAllowed;
 
 /**
  * Handles Source commands.
