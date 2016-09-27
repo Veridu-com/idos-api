@@ -56,10 +56,12 @@ class Created extends AbstractServiceQueueEvent {
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-        return array_merge(
-            [
-            'accessToken'  => $this->source->tags->accessToken,
-            'tokenSecret'  => $this->source->tags->tokenSecret,
+        if (property_exists($this->source->tags, 'token_secret')) {
+            $merge['tokenSecret'] = $this->source->tags->token_secret;
+        }
+
+        return array_merge([
+            'accessToken'  => $this->source->tags->access_token,
             'providerName' => $this->source->name,
             'publicKey'    => $this->credential->public,
             'sourceId'     => $this->source->id,
