@@ -170,13 +170,13 @@ class ScrapeEventListener extends AbstractListener {
         $credential                            = $this->credentialRepository->find($event->user->credentialId);
         list($appKey, $appSecret, $apiVersion) = $this->loadSettings($credential, $event->source->name);
 
-        $mergePaylod = [
+        $mergePayload = [
             'appKey'     => $appKey,
             'appSecret'  => $appSecret,
             'apiVersion' => $apiVersion
         ];
 
-        $this->queueListeningServices($credential->companyId, $event, $mergePaylod);
+        $this->queueListeningServices($credential->companyId, $event, $mergePayload);
     }
 
     /**
