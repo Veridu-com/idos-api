@@ -60,12 +60,14 @@ class Created extends AbstractServiceQueueEvent {
             $merge['tokenSecret'] = $this->source->tags->token_secret;
         }
 
+        $source = $this->source->toArray();
+
         return array_merge(
             [
             'accessToken'  => $this->source->tags->access_token,
             'providerName' => $this->source->name,
             'publicKey'    => $this->credential->public,
-            'sourceId'     => $this->source->id,
+            'sourceId'     => $source['id'],
             'userName'     => $this->user->username
             ], $merge
         );
