@@ -252,9 +252,21 @@ class Raw implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
             if ($inserting) {
-                $event = $this->eventFactory->create('Profile\\Raw\\Created', $entity);
+                $event = $this->eventFactory->create(
+                    'Profile\\Raw\\Created',
+                    $entity,
+                    $command->user,
+                    $command->credential,
+                    $command->source
+                );
             } else {
-                $event = $this->eventFactory->create('Profile\\Raw\\Updated', $entity);
+                $event = $this->eventFactory->create(
+                    'Profile\\Raw\\Updated',
+                    $entity,
+                    $command->user,
+                    $command->credential,
+                    $command->source
+                );
             }
 
             $this->emitter->emit($event);

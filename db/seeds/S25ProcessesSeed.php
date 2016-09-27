@@ -33,7 +33,7 @@ class S25ProcessesSeed extends AbstractSeed {
         $data = [
             [
                 'process_id' => 1,
-                'creator' => 1,
+                'creator'    => 1,
                 'name'       => 'Task one',
                 'event'      => 'user:created',
                 'running'    => true,
@@ -43,7 +43,7 @@ class S25ProcessesSeed extends AbstractSeed {
             ],
             [
                 'process_id' => 1,
-                'creator' => 1,
+                'creator'    => 1,
                 'name'       => 'Task two',
                 'event'      => 'user:created',
                 'success'    => true,
@@ -53,7 +53,7 @@ class S25ProcessesSeed extends AbstractSeed {
             ],
             [
                 'process_id' => 2,
-                'creator' => 1,
+                'creator'    => 1,
                 'name'       => 'Task three',
                 'event'      => 'user:created',
                 'running'    => true,

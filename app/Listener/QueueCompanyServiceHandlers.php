@@ -27,6 +27,7 @@ trait QueueCompanyServiceHandlers {
 
         if ($handlers->isEmpty()) {
             $this->dispatchUnhandleEvent($event);
+
             return false;
         }
 
