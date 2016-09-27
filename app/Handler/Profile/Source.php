@@ -24,6 +24,7 @@ use App\Validator\Profile\Source as SourceValidator;
 use Interop\Container\ContainerINterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
+use App\Exception\NotAllowed;
 
 /**
  * Handles Source commands.
