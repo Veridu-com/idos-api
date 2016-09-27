@@ -11,25 +11,24 @@ namespace App\Listener;
 use App\Event\ServiceQueueEventInterface;
 
 trait QueueCompanyServiceHandlers {
-
     /**
      * Queues Service Handlers' tasks for the given event and company.
-     * 
-     * @param  int                                  $companyId    Company identifier
-     * @param  App\Event\ServiceQueueEventInterface $event        Event identifier
-     * @param  array $mergePayload                  Payload that will be merged into "handler" property
-     * 
+     *
+     * @param int                                  $companyId    Company identifier
+     * @param App\Event\ServiceQueueEventInterface $event        Event identifier
+     * @param array                                $mergePayload Payload that will be merged into "handler" property
+     *
      * @return bool
      */
     public function queueListeningServices(int $companyId, ServiceQueueEventInterface $event, array $mergePayload = []) : bool {
         // find handlers
-        $handlers   = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($companyId, (string) $event);
-        $success = true;
+        $handlers = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($companyId, (string) $event);
 
         if ($handlers->isEmpty()) {
             return $this->dispatchUnhandleEvent($event);
         }
-        
+
+        $success = true;
         foreach ($handlers as $handler) {
             $service = $handler->service();
 
@@ -57,13 +56,13 @@ trait QueueCompanyServiceHandlers {
     /**
      * Queue work on the "manager" work queue.
      *
-     * @param  string $payload Payload to be sent
-     * 
+     * @param string $payload Payload to be sent
+     *
      * @return bool
      */
     private function queue(array $payload) : bool {
         $task = $this->gearmanClient->doBackground(
-            'idos-delivery',
+            sprintf('idos-manager-%s', str_replace('.', '', __VERSION__)),
             json_encode($payload)
         );
 

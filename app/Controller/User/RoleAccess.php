@@ -11,7 +11,6 @@ namespace App\Controller\User;
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\User\RoleAccessInterface;
-use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -51,13 +50,11 @@ class RoleAccess implements ControllerInterface {
     public function __construct(
         RoleAccessInterface $repository,
         CommandBus $commandBus,
-        Command $commandFactory,
-        Optimus $optimus
+        Command $commandFactory
     ) {
         $this->repository     = $repository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
-        $this->optimus        = $optimus;
     }
 
     /**

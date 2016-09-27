@@ -11,7 +11,6 @@ namespace App\Controller\Profile;
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\Profile\SourceInterface;
-use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -38,12 +37,6 @@ class Sources implements ControllerInterface {
      * @var App\Factory\Command
      */
     private $commandFactory;
-    /**
-     * Optimus instance.
-     *
-     * @var \Jenssegers\Optimus\Optimus
-     */
-    private $optimus;
 
     /**
      * Class constructor.
@@ -57,13 +50,11 @@ class Sources implements ControllerInterface {
     public function __construct(
         SourceInterface $repository,
         CommandBus $commandBus,
-        Command $commandFactory,
-        Optimus $optimus
+        Command $commandFactory
     ) {
         $this->repository     = $repository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
-        $this->optimus        = $optimus;
     }
 
     /**
@@ -157,7 +148,7 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Source\\CreateNew');

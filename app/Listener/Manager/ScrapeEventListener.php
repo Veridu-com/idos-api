@@ -105,22 +105,24 @@ class ScrapeEventListener extends AbstractListener {
             );
         }
 
-        $return = [null, null, null];
+        $appKey     = null;
+        $appSecret  = null;
+        $apiVersion = null;
         foreach ($settings as $setting) {
             if (in_array($setting->property, [$credentialSettingKey, $providerSettingKey])) {
-                $return['key'] = $setting->value;
+                $appKey = $setting->value;
             }
 
             if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
-                $return['secret'] = $setting->value;
+                $appSecret = $setting->value;
             }
 
             if (in_array($setting->property, [$credentialSettingVer, $providerSettingVer])) {
-                $return['apiVersion'] = $setting->value;
+                $apiVersion = $setting->value;
             }
         }
 
-        return $return;
+        return [$appKey, $appSecret, $apiVersion];
     }
 
     /**
@@ -165,13 +167,13 @@ class ScrapeEventListener extends AbstractListener {
             return $this->dispatchUnhandleEvent($event);
         }
 
-        $credential = $this->credentialRepository->find($event->user->credentialId);
+        $credential                            = $this->credentialRepository->find($event->user->credentialId);
         list($appKey, $appSecret, $apiVersion) = $this->loadSettings($credential, $event->source->name);
 
         $mergePaylod = [
-            'apiVersion'   => $apiVersion,
-            'appKey'       => $appKey,
-            'appSecret'    => $appSecret
+            'appKey'     => $appKey,
+            'appSecret'  => $appSecret,
+            'apiVersion' => $apiVersion
         ];
 
         $this->queueListeningServices($credential->companyId, $event, $mergePaylod);

@@ -15,9 +15,9 @@ use Interop\Container\ContainerInterface;
 
 class ManagerProvider extends AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
-        $repositoryFactory = $container->get('repositoryFactory');
-        $credentialRepository = $repositoryFactory->create('Company\Credential');
-        $settingRepository = $repositoryFactory->create('Company\Setting');
+        $repositoryFactory        = $container->get('repositoryFactory');
+        $credentialRepository     = $repositoryFactory->create('Company\Credential');
+        $settingRepository        = $repositoryFactory->create('Company\Setting');
         $serviceHandlerRepository = $repositoryFactory->create('ServiceHandler');
 
         $eventFactory      = $container->get('eventFactory');
@@ -25,7 +25,6 @@ class ManagerProvider extends AbstractListenerProvider {
         $gearmanClient     = $container->get('gearmanClient');
 
         $eventLogger = $container->get('log')('Event');
-
 
         $this->events = [
             Event\Manager\UnhandledEvent::class => [
@@ -61,7 +60,7 @@ class ManagerProvider extends AbstractListenerProvider {
             //  'onCompleted': [ event3, event4]
             // ]
             // Uses: Scraper calling other servies.
-            // 
+            //
             // Event\Profile\Task\Updated::class => [
             //     new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             // ],

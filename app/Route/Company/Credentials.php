@@ -45,8 +45,7 @@ class Credentials implements RouteInterface {
             return new \App\Controller\Company\Credentials(
                 $container->get('repositoryFactory')->create('Company\Credential'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

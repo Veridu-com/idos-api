@@ -11,7 +11,6 @@ namespace App\Event\Profile\Feature;
 use App\Entity\Profile\Feature;
 use App\Entity\Profile\Source;
 use App\Entity\User;
-use App\Event\AbstractEvent;
 use App\Event\AbstractServiceQueueEvent;
 
 /**
@@ -49,30 +48,32 @@ class Created extends AbstractServiceQueueEvent {
      * @return void
      */
     public function __construct(Feature $feature, User $user, Credential $credential, Source $source) {
-        $this->feature = $feature;
-        $this->user = $user;
-        $this->source = $source;
+        $this->feature    = $feature;
+        $this->user       = $user;
+        $this->source     = $source;
         $this->credential = $credential;
     }
 
     /**
-     * {inheritdoc}
+     * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-        return array_merge([
+        return array_merge(
+            [
             'providerName' => $this->source->name,
             'sourceId'     => $this->source->id,
             'publicKey'    => $this->credential->public,
             'processId'    => 1, // @FIXME process creation process must be reviewed
             'userName'     => $this->user->username
-        ], $merge);
+            ], $merge
+        );
     }
 
     /**
      * Gets the event identifier.
      *
-     * @return string 
-    **/ 
+     * @return string
+     **/
     public function __toString() {
         // @FIXME double check event identifier
         // does it can have or need $feature->name to be part of it?

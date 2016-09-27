@@ -10,7 +10,6 @@ namespace App\Controller;
 
 use App\Factory\Command;
 use App\Repository\CompanyInterface;
-use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -37,12 +36,6 @@ class Companies implements ControllerInterface {
      * @var App\Factory\Command
      */
     private $commandFactory;
-    /**
-     * Optimus instance.
-     *
-     * @var \Jenssegers\Optimus\Optimus
-     */
-    private $optimus;
 
     /**
      * Class constructor.
@@ -56,13 +49,11 @@ class Companies implements ControllerInterface {
     public function __construct(
         CompanyInterface $repository,
         CommandBus $commandBus,
-        Command $commandFactory,
-        Optimus $optimus
+        Command $commandFactory
     ) {
         $this->repository     = $repository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
-        $this->optimus        = $optimus;
     }
 
     /**

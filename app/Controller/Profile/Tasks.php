@@ -159,8 +159,8 @@ class Tasks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $taskId = $request->getAttribute('decodedTaskId');
-        $user = $request->getAttribute('targetUser');
+        $taskId     = $request->getAttribute('decodedTaskId');
+        $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Task\\UpdateOne');

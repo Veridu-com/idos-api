@@ -44,8 +44,7 @@ class Permissions implements RouteInterface {
             return new \App\Controller\Company\Permissions(
                 $container->get('repositoryFactory')->create('Company\Permission'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

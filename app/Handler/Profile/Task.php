@@ -202,16 +202,15 @@ class Task implements HandlerInterface {
         $task->updatedAt = time();
 
         try {
-            $task  = $this->repository->save($task);
+            $task = $this->repository->save($task);
 
             $updated = $this->eventFactory->create('Profile\\Task\\Updated', $task);
             $this->emitter->emit($updated);
-            
+
             if ($task->success && ! $task->running) {
                 $completed = $this->eventFactory->create('Profile\\Task\\Completed', $task, $command->user, $command->credential, $task->event);
                 $this->emitter->emit($completed);
             }
-
         } catch (\Exception $e) {
             throw new Update\Profile\TaskException('Error while trying to update a task', 500, $e);
         }
