@@ -12,7 +12,6 @@ use App\Entity\Company\Credential;
 use App\Entity\Profile\Raw;
 use App\Entity\Profile\Source;
 use App\Entity\User;
-use App\Event\AbstractEvent;
 use App\Event\AbstractServiceQueueEvent;
 
 /**
@@ -25,7 +24,7 @@ class Created extends AbstractServiceQueueEvent {
      * @var App\Entity\Profile\Raw
      */
     public $raw;
-    
+
     /**
      * Event related User.
      *
@@ -55,30 +54,32 @@ class Created extends AbstractServiceQueueEvent {
      * @return void
      */
     public function __construct(Raw $raw, User $user, Credential $credential, Source $source) {
-        $this->raw = $raw;
-        $this->user = $user;
+        $this->raw        = $raw;
+        $this->user       = $user;
         $this->credential = $credential;
-        $this->source = $source;
+        $this->source     = $source;
     }
 
     /**
-     * {inheritdoc}
+     * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-        return array_merge([
+        return array_merge(
+            [
             'providerName' => $this->source->name,
             'sourceId'     => $this->source->id,
             'publicKey'    => $this->credential->public,
             'processId'    => 1, // @FIXME process creation process must be reviewed
             'userName'     => $this->user->username
-        ], $merge);
+            ], $merge
+        );
     }
 
     /**
      * Gets the event identifier.
      *
-     * @return string 
-    **/
+     * @return string
+     **/
     public function __toString() {
         return sprintf('idos:raw.%s.created', $this->source->name);
     }

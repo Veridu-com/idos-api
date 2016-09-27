@@ -125,8 +125,8 @@ class Company implements HandlerInterface {
             ]
         );
 
-        $company->public_key  = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
-        $company->private_key = md5((string) time()); //Key::createNewRandomKey()->saveToAsciiSafeString();
+        $company->public_key  = Key::createNewRandomKey()->saveToAsciiSafeString();
+        $company->private_key = Key::createNewRandomKey()->saveToAsciiSafeString();
 
         try {
             $company = $this->repository->saveNewCompany($company, $command->identity);

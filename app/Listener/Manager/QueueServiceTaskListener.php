@@ -12,11 +12,11 @@ use App\Entity\Company\Credential;
 use App\Factory\Event as EventFactory;
 use App\Listener;
 use App\Listener\AbstractListener;
+use App\Listener\QueueCompanyServiceHandlers;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\ServiceHandlerInterface;
 use League\Event\Emitter;
 use League\Event\EventInterface;
-use App\Listener\QueueCompanyServiceHandlers;
 
 /**
  * Data Scraper Event Listener.

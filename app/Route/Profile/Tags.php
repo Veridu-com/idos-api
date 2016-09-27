@@ -43,8 +43,7 @@ class Tags implements RouteInterface {
                 $container->get('repositoryFactory')->create('Profile\Tag'),
                 $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

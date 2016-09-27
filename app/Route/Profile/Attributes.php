@@ -43,8 +43,7 @@ class Attributes implements RouteInterface {
             return new \App\Controller\Profile\Attributes(
                 $container->get('repositoryFactory')->create('Profile\Attribute'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

@@ -11,7 +11,6 @@ namespace App\Event\Profile\Source;
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Source;
 use App\Entity\User;
-use App\Event\AbstractEvent;
 use App\Event\AbstractServiceQueueEvent;
 
 /**
@@ -47,14 +46,14 @@ class Created extends AbstractServiceQueueEvent {
      * @return void
      */
     public function __construct(Source $source, User $user, Credential $credential, string $ipAddr) {
-        $this->user   = $user;
-        $this->source = $source;
+        $this->user       = $user;
+        $this->source     = $source;
         $this->credential = $credential;
-        $this->ipAddr = $ipAddr;
+        $this->ipAddr     = $ipAddr;
     }
 
     /**
-     * {inheritdoc}
+     * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
         if (property_exists($this->source->tags, 'token_secret')) {
@@ -67,7 +66,8 @@ class Created extends AbstractServiceQueueEvent {
             'publicKey'    => $this->credential->public,
             'sourceId'     => $this->source->id,
             'userName'     => $this->user->username
-        ], $merge);
+            ], $merge
+        );
     }
 
     /**

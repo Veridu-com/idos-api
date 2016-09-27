@@ -10,11 +10,8 @@ namespace App\Event\Profile\Task;
 
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Task;
-use App\Entity\Service;
 use App\Entity\User;
-use App\Event\AbstractEvent;
 use App\Event\AbstractServiceQueueEvent;
-use App\Listener\QueueCompanyServiceHandlers;
 
 /**
  * Completed event.
@@ -50,28 +47,28 @@ class Completed extends AbstractServiceQueueEvent {
      */
     /**
      * Class contructor.
-     * 
+     *
      * @param Task       $task            Task completed
      * @param User       $user            Target User
      * @param Credential $credential      Target Credential
      * @param string     $eventIdentifier Event identifier  eg.: "idos:scraper.facebook.completed" (comes from the Task "creator property")
      */
     public function __construct(Task $task, User $user, Credential $credential, string $eventIdentifier) {
-        $this->task = $task;
-        $this->user = $user;
-        $this->credential = $credential;
+        $this->task            = $task;
+        $this->user            = $user;
+        $this->credential      = $credential;
         $this->eventIdentifier = $eventIdentifier;
     }
 
     /**
-     * {inheritdoc}
+     * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
         return array_merge([], $merge);
     }
-    
+
     /**
-     * {inheritdoc}
+     * {inheritdoc}.
      */
     public function __toString() {
         return $this->eventIdentifier;

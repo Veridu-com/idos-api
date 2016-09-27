@@ -37,8 +37,7 @@ class Tokens implements RouteInterface {
             return new \App\Controller\Tokens(
                 $container->get('repositoryFactory')->create('Company'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

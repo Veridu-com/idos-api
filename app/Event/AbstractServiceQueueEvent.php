@@ -10,15 +10,14 @@ namespace App\Event;
 
 use App\Entity\Company\Credential;
 use App\Entity\User;
-use App\Event\ServiceQueueEventInterface;
 
 /**
-* AbstractServiceQueueEvent
-*/
+ * AbstractServiceQueueEvent.
+ */
 abstract class AbstractServiceQueueEvent extends AbstractEvent implements ServiceQueueEventInterface {
     /**
      * Retrieves the event related credential.
-     * 
+     *
      * @return \App\Entity\Company\Credential Credential entity
      */
     public function getCredential() : Credential {
@@ -27,9 +26,9 @@ abstract class AbstractServiceQueueEvent extends AbstractEvent implements Servic
 
     /**
      * Sets the event related credential.
-     * 
+     *
      * @param \App\Entity\Company\Credential Credential entity
-     * 
+     *
      * @return void
      */
     public function setCredential(Credential $credential) {
@@ -38,9 +37,9 @@ abstract class AbstractServiceQueueEvent extends AbstractEvent implements Servic
 
     /**
      * Sets the event related user.
-     * 
+     *
      * @param \App\Entity\User User entity
-     * 
+     *
      * @return void
      */
     public function setUser(User $user) {
@@ -49,7 +48,7 @@ abstract class AbstractServiceQueueEvent extends AbstractEvent implements Servic
 
     /**
      * Retrieves the event related user.
-     * 
+     *
      * @return \App\Entity\User User entity
      */
     public function getUser() : User {
