@@ -36,6 +36,18 @@ class S11ServicesSeed extends AbstractSeed {
                 'enabled'       => true,
             ],
             [
+                'name'          => 'idOS Machine learning models',
+                'url'           => 'https://machine-learning.idos.io',
+                'company_id'    => 1,
+                'auth_username' => 'idos',
+                'auth_password' => 'secret',
+                'public'        => md5('public-2'), // 8c178e650645a1f2a0c7de98757373b6
+                'private'       => md5('private-2'), // e603de4692c2179446a96374bce86ce6
+                'listens'       => json_encode(['idos:raw.facebook.created']),
+                'triggers'      => json_encode(['idos:feature.facebook.completed']),
+                'enabled'       => true,
+            ],
+            [
                 'name'          => 'idOS Overall Model',
                 'url'           => 'https://overall.idos.io',
                 'company_id'    => 1,
