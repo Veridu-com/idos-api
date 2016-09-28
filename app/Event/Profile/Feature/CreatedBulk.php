@@ -11,19 +11,20 @@ namespace App\Event\Profile\Feature;
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Feature;
 use App\Entity\Profile\Source;
+use App\Entity\Service;
 use App\Entity\User;
 use App\Event\AbstractServiceQueueEvent;
 
 /**
- * Created event.
+ * CreatedBulk event.
  */
-class Created extends AbstractServiceQueueEvent {
+class CreatedBulk extends AbstractServiceQueueEvent {
     /**
-     * Event related Feature.
+     * Event related Features.
      *
-     * @var App\Entity\Profile\Feature
+     * @var array
      */
-    public $feature;
+    public $features;
 
     /**
      * Event related Source.
@@ -42,32 +43,33 @@ class Created extends AbstractServiceQueueEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Feature    $feature
-     * @param App\Entity\User               $user
-     * @param App\Entity\Company\Credential $credential
-     * @param App\Entity\Profile\Source     $source|null
+     * @param array                          $features
+     * @param App\Entity\Service             $service
+     * @param App\Entity\User                $user
+     * @param App\Entity\Company\Credential  $credential
+     * @param App\Entity\Profile\Source|null $source
      *
      * @return void
      */
-    public function __construct(Feature $feature, User $user, Credential $credential, $source = null) {
-        $this->feature    = $feature;
+    public function __construct(array $features, Service $service, User $user, Credential $credential, $source = null) {
+        $this->features   = $features;
+        $this->service    = $service;
         $this->user       = $user;
-        $this->source     = $source;
         $this->credential = $credential;
+        $this->source       = $source;
     }
 
     /**
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-        $source = $this->source->toArray();
         return array_merge(
             [
-            'providerName' => $this->source->name,
-            'sourceId'     => $this->source ? $this->source->id : null,
-            'publicKey'    => $this->credential->public,
-            'processId'    => 1, // @FIXME process creation process must be reviewed
-            'userName'     => $this->user->username
+                'features'  => $this->features,
+                'sourceId'    => $this->source ? $this->source->id : null,
+                'publicKey' => $this->credential->public,
+                'processId' => 1, // @FIXME process creation process must be reviewed
+                'userName'  => $this->user->username
             ], $merge
         );
     }

@@ -84,6 +84,56 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     }
 
     /**
+     * Begins a transaction.
+     *
+     * @throws \Exception
+     * 
+     * @return void
+     */
+    public function beginTransaction() {
+        return $this->dbConnection->beginTransaction();
+    }
+
+    /**
+     * Commit the active database transaction.
+     *
+     * @throws \Exception
+     * 
+     * @return void
+     */
+    public function commit() {
+        return $this->dbConnection->commit();
+    }
+
+    /**
+     * Runs a raw SQL statement.
+     *
+     * @param string $query     The query
+     * @param array  $bindings  The bindings
+     *
+     * @throws \Illuminate\Database\QueryException
+     *
+     * @return bool   Success of the statement
+     */
+    public function runRaw(string $query, array $bindings =[]) : bool {
+        return $this->dbConnection->statement(
+            $this->dbConnection->raw($query), 
+            $bindings
+        );
+    }
+
+    /**
+     * Rollback the active database transaction.
+     *
+     * @throws \Exception
+     * 
+     * @return void
+     */
+    public function rollBack() {
+        return $this->dbConnection->rollBack();
+    }
+
+    /**
      * Get the table name.
      *
      * @return string

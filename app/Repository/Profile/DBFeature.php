@@ -115,6 +115,45 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     }
 
     /**
+     * Upsert a bulk of features.
+     *
+     * @param      integer  $userId     The user identifier
+     * @param      integer  $serviceId  The service identifier
+     * @param      array    $features   The features
+     *
+     * @return     bool   Success of the transaction.
+     */
+    public function upsertBulk(int $userId, int $serviceId, array $features) {
+        $this->beginTransaction();
+        $success = true;
+        
+        foreach ($features as $key => $feature) {
+            // user_id, source, name, creator(service_id), type, value 
+            $success =  $success && $this->runRaw('INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
+                ON CONFLICT (user_id, source, creator, name)
+                DO UPDATE set value = :value, type = :type
+               ',
+                [
+                    'user_id' => $userId,
+                    'source' => $feature['source'], 
+                    'name' => $feature['name'], 
+                    'creator' => $serviceId, 
+                    'type' => $feature['type'], 
+                    'value' => $feature['value']
+                ]
+            );
+        }
+
+        if ($success) {
+            $this->commit();
+        } else {
+            $this->rollBack();
+        }
+
+        return $success;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function findOneByName(int $userId, $sourceName, int $serviceId, string $name) : Feature {
