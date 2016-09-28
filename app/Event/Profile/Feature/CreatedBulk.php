@@ -9,9 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Feature;
 
 use App\Entity\Company\Credential;
-use App\Entity\Profile\Feature;
 use App\Entity\Profile\Source;
-use App\Entity\Service;
 use App\Entity\User;
 use App\Event\AbstractServiceQueueEvent;
 
@@ -52,7 +50,7 @@ class CreatedBulk extends AbstractServiceQueueEvent {
     public function __construct(User $user, Credential $credential, $source = null) {
         $this->user         = $user;
         $this->credential   = $credential;
-        $this->source   = $source;
+        $this->source       = $source;
     }
 
     /**

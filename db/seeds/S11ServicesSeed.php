@@ -41,8 +41,8 @@ class S11ServicesSeed extends AbstractSeed {
                 'company_id'    => 1,
                 'auth_username' => 'idos',
                 'auth_password' => 'secret',
-                'public'        => md5('public-2'), // 8c178e650645a1f2a0c7de98757373b6
-                'private'       => md5('private-2'), // e603de4692c2179446a96374bce86ce6
+                'public'        => md5('public-3'), // 043578887a8013e3805a789927b0fbf2
+                'private'       => md5('private-3'), // 36bf101e92f80f4033b588e6ce4a746b
                 'listens'       => json_encode(['idos:raw.facebook.created']),
                 'triggers'      => json_encode(['idos:feature.facebook.completed']),
                 'enabled'       => true,
@@ -53,8 +53,8 @@ class S11ServicesSeed extends AbstractSeed {
                 'company_id'    => 1,
                 'auth_username' => 'idos',
                 'auth_password' => 'secret',
-                'public'        => md5('public-3'), // 043578887a8013e3805a789927b0fbf2
-                'private'       => md5('private-3'), // 36bf101e92f80f4033b588e6ce4a746b
+                'public'        => md5('public-4'), // d9350e4efaa82ab03f6a116e7927887c
+                'private'       => md5('private-4'), // 790747e70231480a9d3773e11c9e6e33
                 // Why wildcard again??
                 'listens' => json_encode(
                     [
