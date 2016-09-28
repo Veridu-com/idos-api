@@ -24,12 +24,16 @@ class Feature implements ValidatorInterface {
         Traits\AssertArray;
 
     public function assertFeatures($features) {
-        Validator::arrayType()
-            ->each(
-              Validator::key('source_id', Validator::digit(), false) // not required
-                  ->key('name', Validator::stringType()->length(0, 50))
-                  ->key('type', Validator::stringType()->length(0, 50))
-                  ->key('value')
-            )->assert($features);
+        Validator::arrayType()->assert($features);
+        foreach ($features as $feature) {
+            Validator::key('value')->assert($feature);
+
+            $this->assertLongName($feature['name']);
+            $this->assertName($feature['type']);
+
+            if (key_exists('source_id', $feature)) {
+                $this->assertId($feature['source_id']);
+            }
+        }
     }
 }

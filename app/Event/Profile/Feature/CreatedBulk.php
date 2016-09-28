@@ -9,9 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Feature;
 
 use App\Entity\Company\Credential;
-use App\Entity\Profile\Feature;
 use App\Entity\Profile\Source;
-use App\Entity\Service;
 use App\Entity\User;
 use App\Event\AbstractServiceQueueEvent;
 
@@ -20,20 +18,6 @@ use App\Event\AbstractServiceQueueEvent;
  */
 class CreatedBulk extends AbstractServiceQueueEvent {
     /**
-     * Event related Features.
-     *
-     * @var array
-     */
-    public $features;
-
-    /**
-     * Event related Source.
-     *
-     * @var App\Entity\Profile\Source | null
-     */
-    public $source;
-
-    /**
      * Event related User.
      *
      * @var App\Entity\User
@@ -41,19 +25,29 @@ class CreatedBulk extends AbstractServiceQueueEvent {
     public $user;
 
     /**
+     * Event related Credential.
+     *
+     * @var App\Entity\Company\Credential
+     */
+    public $credential;
+
+    /**
+     * Event related Credential.
+     *
+     * @var App\Entity\Profile\Source
+     */
+    public $source;
+
+    /**
      * Class constructor.
      *
-     * @param array                          $features
-     * @param App\Entity\Service             $service
-     * @param App\Entity\User                $user
-     * @param App\Entity\Company\Credential  $credential
-     * @param App\Entity\Profile\Source|null $source
+     * @param App\Entity\User                  $user
+     * @param App\Entity\Company\Credential    $credential
+     * @param App\Entity\Profile\Source | null $source
      *
      * @return void
      */
-    public function __construct(array $features, Service $service, User $user, Credential $credential, $source = null) {
-        $this->features     = $features;
-        $this->service      = $service;
+    public function __construct(User $user, Credential $credential, $source = null) {
         $this->user         = $user;
         $this->credential   = $credential;
         $this->source       = $source;
@@ -65,11 +59,10 @@ class CreatedBulk extends AbstractServiceQueueEvent {
     public function getServiceHandlerPayload(array $merge = []) : array {
         return array_merge(
             [
-                'features'    => $this->features,
-                'sourceId'    => $this->source ? $this->source->id : null,
-                'publicKey'   => $this->credential->public,
-                'processId'   => 1, // @FIXME process creation process must be reviewed
-                'userName'    => $this->user->username
+                'publicKey' => $this->credential->public,
+                'userName'  => $this->user->username,
+                'source'    => $this->source ? $this->source->name : null,
+                'processId' => 1, // @FIXME process creation process must be reviewed
             ], $merge
         );
     }
