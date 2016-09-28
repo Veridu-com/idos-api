@@ -41,7 +41,7 @@ class UpsertBulk extends AbstractCommand {
      * @var App\Entity\Service
      */
     public $service;
-    
+
     /**
      * {@inheritdoc}
      *

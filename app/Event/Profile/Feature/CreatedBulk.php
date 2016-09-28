@@ -52,10 +52,10 @@ class CreatedBulk extends AbstractServiceQueueEvent {
      * @return void
      */
     public function __construct(array $features, Service $service, User $user, Credential $credential, $source = null) {
-        $this->features   = $features;
-        $this->service    = $service;
-        $this->user       = $user;
-        $this->credential = $credential;
+        $this->features     = $features;
+        $this->service      = $service;
+        $this->user         = $user;
+        $this->credential   = $credential;
         $this->source       = $source;
     }
 
@@ -65,11 +65,11 @@ class CreatedBulk extends AbstractServiceQueueEvent {
     public function getServiceHandlerPayload(array $merge = []) : array {
         return array_merge(
             [
-                'features'  => $this->features,
+                'features'    => $this->features,
                 'sourceId'    => $this->source ? $this->source->id : null,
-                'publicKey' => $this->credential->public,
-                'processId' => 1, // @FIXME process creation process must be reviewed
-                'userName'  => $this->user->username
+                'publicKey'   => $this->credential->public,
+                'processId'   => 1, // @FIXME process creation process must be reviewed
+                'userName'    => $this->user->username
             ], $merge
         );
     }

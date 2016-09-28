@@ -377,7 +377,7 @@ class Feature implements HandlerInterface {
         try {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
-            
+
             if ($inserting) {
                 $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $command->credential, $command->source);
             } else {
@@ -401,7 +401,7 @@ class Feature implements HandlerInterface {
     public function handleUpsertBulk(UpsertBulk $command) : bool {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);            
+            $this->validator->assertService($command->service);
             $this->validator->assertFeatures($command->features);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
@@ -410,26 +410,26 @@ class Feature implements HandlerInterface {
                 $e
             );
         }
-        
-        $features = $command->features;
-        $sources = [];
+
+        $features          = $command->features;
+        $sources           = [];
         $featuresPerSource = [];
 
         // put "source->name" on the feature register
         // retrieved from a sourceRepository->find
         // add to featuresPerSource so we can send events by source
         foreach ($features as $key => $feature) {
-            $sourceId = isset($feature['source_id']) ?  $feature['source_id'] : 0;
+            $sourceId                       = isset($feature['source_id']) ? $feature['source_id'] : 0;
             $featuresPerSource[$sourceId][] = $feature;
 
             if (isset($feature['source_id'])) {
-                if (!isset($sources[$feature['source_id']])) {
+                if (! isset($sources[$feature['source_id']])) {
                     $source = $this->sourceRepository->find($feature['decoded_source_id']);
                 } else {
                     $source = $sources[$feature['source_id']];
                 }
 
-                $features[$key]['source'] = $source->name;
+                $features[$key]['source']       = $source->name;
                 $sources[$feature['source_id']] = $source;
             } else {
 

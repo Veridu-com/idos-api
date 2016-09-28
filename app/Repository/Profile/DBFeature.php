@@ -117,16 +117,16 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * Upsert a bulk of features.
      *
-     * @param      integer  $userId     The user identifier
-     * @param      integer  $serviceId  The service identifier
-     * @param      array    $features   The features
+     * @param int   $userId    The user identifier
+     * @param int   $serviceId The service identifier
+     * @param array $features  The features
      *
-     * @return     bool   Success of the transaction.
+     * @return bool Success of the transaction.
      */
     public function upsertBulk(int $userId, int $serviceId, array $features) {
         $this->beginTransaction();
         $success = true;
-        
+
         foreach ($features as $key => $feature) {
             // user_id, source, name, creator(service_id), type, value 
             $success =  $success && $this->runRaw('INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
@@ -135,11 +135,11 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
                ',
                 [
                     'user_id' => $userId,
-                    'source' => $feature['source'], 
-                    'name' => $feature['name'], 
-                    'creator' => $serviceId, 
-                    'type' => $feature['type'], 
-                    'value' => $feature['value']
+                    'source'  => $feature['source'],
+                    'name'    => $feature['name'],
+                    'creator' => $serviceId,
+                    'type'    => $feature['type'],
+                    'value'   => $feature['value']
                 ]
             );
         }

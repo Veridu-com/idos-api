@@ -108,16 +108,16 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Runs a raw SQL statement.
      *
-     * @param string $query     The query
-     * @param array  $bindings  The bindings
+     * @param string $query    The query
+     * @param array  $bindings The bindings
      *
      * @throws \Illuminate\Database\QueryException
      *
-     * @return bool   Success of the statement
+     * @return bool Success of the statement
      */
-    public function runRaw(string $query, array $bindings =[]) : bool {
+    public function runRaw(string $query, array $bindings = []) : bool {
         return $this->dbConnection->statement(
-            $this->dbConnection->raw($query), 
+            $this->dbConnection->raw($query),
             $bindings
         );
     }
