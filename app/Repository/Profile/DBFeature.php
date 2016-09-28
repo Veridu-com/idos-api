@@ -131,8 +131,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
             // user_id, source, name, creator(service_id), type, value 
             $success =  $success && $this->runRaw('INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
                 ON CONFLICT (user_id, source, creator, name)
-                DO UPDATE set value = :value, type = :type
-               ',
+                DO UPDATE set value = :value, type = :type, updated_at = NOW()',
                 [
                     'user_id' => $userId,
                     'source'  => $feature['source'],

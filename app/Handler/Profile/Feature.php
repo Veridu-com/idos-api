@@ -401,6 +401,7 @@ class Feature implements HandlerInterface {
     public function handleUpsertBulk(UpsertBulk $command) : bool {
         try {
             $this->validator->assertUser($command->user);
+            $this->validator->assertCredential($command->credential);
             $this->validator->assertService($command->service);
             $this->validator->assertFeatures($command->features);
         } catch (ValidationException $e) {
@@ -422,6 +423,7 @@ class Feature implements HandlerInterface {
             $sourceId                       = isset($feature['source_id']) ? $feature['source_id'] : 0;
             $featuresPerSource[$sourceId][] = $feature;
 
+            // gets the source name for every feature that has a source
             if (isset($feature['source_id'])) {
                 if (! isset($sources[$feature['source_id']])) {
                     $source = $this->sourceRepository->find($feature['decoded_source_id']);
@@ -431,9 +433,8 @@ class Feature implements HandlerInterface {
 
                 $features[$key]['source']       = $source->name;
                 $sources[$feature['source_id']] = $source;
-            } else {
-
             }
+
         }
 
         $success = $this->repository->upsertBulk(
@@ -445,7 +446,7 @@ class Feature implements HandlerInterface {
         if ($success) {
             // creates 1 event per source
             foreach ($featuresPerSource as $sourceId => $sourceFeatures) {
-                $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $sourceFeatures, $command->service, $command->user, $command->credential, ($sourceId ? $sources[$sourceId] : null));
+                $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $command->user, $command->credential, ($sourceId ? $sources[$sourceId] : null));
                 $this->emitter->emit($event);
             }
         }
