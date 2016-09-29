@@ -61,7 +61,8 @@ class CreatedBulk extends AbstractServiceQueueEvent {
             [
                 'publicKey' => $this->credential->public,
                 'userName'  => $this->user->username,
-                'source'    => $this->source ? $this->source->name : null,
+                // FIXME may need to review this
+                // 'sourceId'    => $this->source ? $this->source->getEncodedId() : null,
                 'processId' => 1, // @FIXME process creation process must be reviewed
             ], $merge
         );

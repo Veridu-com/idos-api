@@ -434,7 +434,6 @@ class Feature implements HandlerInterface {
                 $features[$key]['source']       = $source->name;
                 $sources[$feature['source_id']] = $source;
             }
-
         }
 
         $success = $this->repository->upsertBulk(
