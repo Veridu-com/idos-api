@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Tags routing definitions.
+ * Profile Tags
+ *
+ * A Profile tag is used by a Company to categorise and organise certain Profiles for the purposes of improving management of large numbers of Users and data. A Company will use Profile Tags in order to create specific categories of Profiles for Members to easily assign or view.
  *
  * @link docs/profiles/tags/overview.md
  * @see App\Controller\Profile\Tags
@@ -67,6 +69,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
@@ -99,6 +102,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
@@ -132,6 +136,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
@@ -165,6 +170,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      * @apiEndpointURIFragment string tagSlug tag-test
      *
@@ -199,6 +205,7 @@ class Tags implements RouteInterface {
      * @apiGroup Profile Tags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      * @apiEndpointURIFragment string tagSlug tag-test
      *

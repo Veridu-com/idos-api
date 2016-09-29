@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Tasks routing definitions.
+ * Profile Tasks
+ *
+ * A Profile Task is a request a Service makes to the API to extract and provide specific information from the Raw data.
  *
  * @link docs/profile/tasks/overview.md
  * @see App\Controller\Profile\Tasks

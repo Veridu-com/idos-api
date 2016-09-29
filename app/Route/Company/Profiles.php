@@ -16,7 +16,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Company\Profiles routing definitions.
+ * Company Profile
+ *
+ * A Company Profile where a Company will access the collection of data on a specific User. This is where the Company can review in detail the raw data, attributes, features, warnings, and score gathered from all sources provided by a specific User
  *
  * @link docs/company/profiles/overview.md
  * @see App\Controller\Company\Profiles
@@ -64,9 +66,9 @@ class Profiles implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles
      * @apiGroup Company
-     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiAuth header token CompanyToken XXX A valid Company Token
      * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -102,6 +104,7 @@ class Profiles implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -133,6 +136,7 @@ class Profiles implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

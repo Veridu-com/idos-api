@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Score routing definitions.
+ * Attribute Score
+ *
+ * An Attribute Score is a numerical score given to a specific Attribute representing how strong it is within the Profile. If a User has listed different names across multiple sources, then the API will provide each name with a score representing it’s likelihood of being true
  *
  * @link docs/profiles/attributes/score/overview.md
  * @see App\Controller\Profile\Scores
@@ -72,7 +74,6 @@ class Scores implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName firstName
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -105,7 +106,6 @@ class Scores implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName firstName
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -139,7 +139,6 @@ class Scores implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName firstName
      * @apiEndpointURIFragment string scoreName overall
      *
      * @param \Slim\App $app
@@ -174,7 +173,6 @@ class Scores implements RouteInterface {
      * @apiAuth header token CredentialToken XXX Company's credential token
      * @apiAuth query token credentialToken XXX Company's credential token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName firstName
      * @apiEndpointURIFragment string scoreName overall
      *
      * @param \Slim\App $app
@@ -199,7 +197,7 @@ class Scores implements RouteInterface {
             ->setName('score:upsert');
     }
 
-    /*
+    /**
      * Retrieves a score.
      *
      * Retrieves a score from a given attribute.
@@ -209,7 +207,6 @@ class Scores implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName firstName
      * @apiEndpointURIFragment string scoreName overall
      *
      * @param \Slim\App $app
@@ -244,7 +241,6 @@ class Scores implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName firstName
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -278,7 +274,6 @@ class Scores implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName firstName
      * @apiEndpointURIFragment string scoreName overall
      *
      * @param \Slim\App $app

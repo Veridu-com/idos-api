@@ -238,8 +238,9 @@ class Sso implements ControllerInterface {
         $token = $this->commandBus->handle($command);
 
         $body = [
-            'status' => true,
-            'data'   => $token
+            'data'   => [
+                'user_token' => $token
+            ]
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

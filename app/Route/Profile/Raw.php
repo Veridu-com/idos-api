@@ -14,7 +14,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Raw routing definitions.
+ * Profiles Raw
+ *
+ * Profiles Raw is the raw data extracted from a Profile. This is what the API reads and extracts information in order to process more complex requests.
  *
  * @link docs/profiles/sources/raw/overview.md
  * @see App\Controller\Profile\Raw

@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Processes routing definitions.
+ * Profile Processes
+ *
+ * The Profile Process is literally the process the API uses in order to extract information from the raw data provided by the User. This Process is broken up by the Services that perform Tasks.
  *
  * @link docs/profile/processes/overview.md
  * @see App\Controller\Profile\Processes
@@ -60,6 +62,7 @@ class Processes implements RouteInterface {
      * @apiGroup Profile Processes
      * @apiAuth header key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -92,6 +95,8 @@ class Processes implements RouteInterface {
      * @apiGroup Profile Processes
      * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int processId 3412
      *
      * @param \Slim\App $app
      * @param \callable $auth

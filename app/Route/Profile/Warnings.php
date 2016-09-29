@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Warnings routing definitions.
+ * Profile Warnings.
+ *
+ * A Profile Warning is used to flag a Profile with a specific Feature or Gate response. If a Company wants Users over the age of 18, they could have a Profile Warning showing that a Profile has failed an 18+ Gate. If a Company wants to easily see if a Profile contains inconsistent names, a Profile Warning could be used in conjunction with the specific Feature.
  *
  * @link docs/profile/warnings/overview.md
  * @see App\Controller\Profile\Warnings

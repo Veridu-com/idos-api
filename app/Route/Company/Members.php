@@ -16,7 +16,8 @@ use Slim\App;
 
 /**
  * Company Members
- * A Company Member is a user profile for an employee of a Company with an adjustable level of permissions and access to specific information. (eg. for distinguishing a low level employee with read-only permissions from an administrator).
+ *
+ * A Company Member is a user profile for an employee of a Company with an adjustable level of permissions and access to specific information. (eg. for distinguishing a low level employee with read-only permissions from an administrator)
  *
  * @link docs/companies/members/overview.md
  * @see App\Controller\Companies
@@ -68,6 +69,7 @@ class Members implements RouteInterface {
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -99,6 +101,7 @@ class Members implements RouteInterface {
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -131,6 +134,7 @@ class Members implements RouteInterface {
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string userName johndoe
      *
      * @param \Slim\App $app
@@ -164,6 +168,7 @@ class Members implements RouteInterface {
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app
@@ -197,6 +202,7 @@ class Members implements RouteInterface {
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string userName
      *
      * @param \Slim\App $app

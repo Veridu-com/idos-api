@@ -23,7 +23,7 @@ class UpdateOne extends AbstractCommand {
      */
     public $tags;
     /**
-     * Source Entity.
+     * Source Entity.d
      *
      * @var App\Entity\Profile\Source
      */
