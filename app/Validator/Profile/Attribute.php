@@ -17,7 +17,7 @@ use App\Validator\ValidatorInterface;
 class Attribute implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertEntity,
-        Traits\AssertName,
+        Traits\AssertString,
         Traits\AssertValue,
         Traits\AssertFloat,
         Traits\AssertArray;

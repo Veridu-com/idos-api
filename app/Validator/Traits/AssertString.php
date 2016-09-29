@@ -15,15 +15,62 @@ use Respect\Validation\Validator;
  */
 trait AssertString {
     /**
-     * Asserts a valid long (1-60 chars long) string.
+     * Asserts a valid string, minimum 1 char long.
      *
      * @param mixed $string
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertString($string) {
+        Validator::prnt()
+            ->length(1, null)
+            ->assert($string);
+    }
+
+    /**
+     * Asserts a valid short (1-50 chars long) string.
+     *
+     * @param mixed $string
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertShortString($string) {
+        Validator::prnt()
+            ->length(1, 50)
+            ->assert($string);
+    }
+
+    /**
+     * Asserts a valid short (1-100 chars long) string.
+     *
+     * @param mixed $string
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertMediumString($string) {
+        Validator::prnt()
+            ->length(1, 100)
+            ->assert($string);
+    }
+
+    /**
+     * Asserts a valid long (1-255 chars long) string.
+     *
+     * @param mixed $string
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
     public function assertLongString($string) {
-        Validator::stringType()
-            ->length(1, 60)
+        Validator::prnt()
+            ->length(1, 255)
             ->assert($string);
     }
 }
