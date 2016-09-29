@@ -42,7 +42,9 @@ class Source extends AbstractEntity {
     public function getTagsAttribute($tags) {
         if (is_object($tags)) {
             foreach (get_object_vars($tags) as $key => $value) {
-                if (strpos($key, 'otp_', 0) !== false) {
+                if (strpos($key, 'otp_', 0) !== false ||
+                    ($key === 'access_token') ||
+                    ($key === 'secret_token')) {
                     unset($tags->$key);
                 }
             }
