@@ -21,7 +21,11 @@ trait QueueCompanyServiceHandlers {
      *
      * @return bool
      */
-    public function queueListeningServices(int $companyId, ServiceQueueEventInterface $event, array $mergePayload = []) : bool {
+    public function queueListeningServices(
+        int $companyId,
+        ServiceQueueEventInterface $event,
+        array $mergePayload = []
+    ) : bool {
         // find handlers
         $handlers = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($companyId, (string) $event);
 

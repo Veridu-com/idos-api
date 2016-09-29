@@ -94,6 +94,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
                     $exception->getLine()
                 )
             );
+            $log('API')->debug($exception->getTraceAsString());
 
             $body = [
                 'status' => false,

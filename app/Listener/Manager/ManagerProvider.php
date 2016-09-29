@@ -20,9 +20,9 @@ class ManagerProvider extends AbstractListenerProvider {
         $settingRepository        = $repositoryFactory->create('Company\Setting');
         $serviceHandlerRepository = $repositoryFactory->create('ServiceHandler');
 
-        $eventFactory      = $container->get('eventFactory');
-        $emitter           = $container->get('eventEmitter');
-        $gearmanClient     = $container->get('gearmanClient');
+        $eventFactory  = $container->get('eventFactory');
+        $emitter       = $container->get('eventEmitter');
+        $gearmanClient = $container->get('gearmanClient');
 
         $eventLogger = $container->get('log')('Event');
 

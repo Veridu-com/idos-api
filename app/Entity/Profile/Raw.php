@@ -24,7 +24,7 @@ class Raw extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['collection', 'data', 'created_at', 'updated_at'];
+    protected $visible = ['source', 'collection', 'data', 'created_at', 'updated_at'];
 
     /**
      * {@inheritdoc}
@@ -40,4 +40,11 @@ class Raw extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $secure = ['data'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'source' => 'Source'
+    ];
 }

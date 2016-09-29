@@ -66,7 +66,6 @@ class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
             ->where('user_id', $userId)
             ->orderBy('id', 'desc');
 
-
         if ($sourceId) {
             $query = $query->where('source_id', $sourceId);
         } else {

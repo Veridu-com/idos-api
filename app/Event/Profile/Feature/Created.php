@@ -70,7 +70,6 @@ class Created extends AbstractServiceQueueEvent {
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-
         return array_merge(
             [
             'providerName' => $this->source ? $this->source->name : null,
