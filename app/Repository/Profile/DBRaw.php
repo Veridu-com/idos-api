@@ -32,6 +32,24 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
      */
     protected $entityName = 'Profile\Raw';
 
+    /**
+     * {@inheritdoc}
+     */
+    protected $relationships = [
+        'source' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'sources',
+            'foreignKey' => 'source_id',
+            'key'        => 'id',
+            'entity'     => 'Source',
+            'nullable'   => false,
+            'hydrate'    => [
+                'id',
+                'name'
+            ]
+        ]
+    ];
+
     public function findByUserId(int $userId, array $queryParams = []) : Collection {
         $rawFilters    = [];
         $sourceFilters = [];
@@ -76,6 +94,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
                 try {
                     $entity             = $this->find($source->id);
                     $entity->collection = $collection->getName();
+                    $entity->source     = $source->toArray();
 
                     $entities->push($entity);
 
