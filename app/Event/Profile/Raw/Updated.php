@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Raw;
 
 use App\Entity\Company\Credential;
+use App\Entity\Profile\Process;
 use App\Entity\Profile\Raw;
 use App\Entity\Profile\Source;
 use App\Entity\User;
@@ -47,31 +48,38 @@ class Updated extends AbstractServiceQueueEvent {
     public $credential;
 
     /**
+     * Event related Process.
+     *
+     * @var App\Entity\Profile\Process
+     */
+    public $process;
+
+    /**
      * Class constructor.
      *
      * @param App\Entity\Profile\Raw $raw
      *
      * @return void
      */
-    public function __construct(Raw $raw, User $user, Credential $credential, Source $source) {
-        $this->raw        = $raw;
-        $this->user       = $user;
-        $this->credential = $credential;
-        $this->source     = $source;
+    public function __construct(Raw $raw, User $user, Credential $credential, Source $source, Process $process) {
+        $this->raw         = $raw;
+        $this->user        = $user;
+        $this->credential  = $credential;
+        $this->source      = $source;
+        $this->process     = $process;
     }
 
     /**
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-        $source = $this->source->toArray();
 
         return array_merge(
             [
             'providerName' => $this->source->name,
-            'sourceId'     => $source['id'],
+            'sourceId'     => $this->source->getEncodedId(),
             'publicKey'    => $this->credential->public,
-            'processId'    => 1, // @FIXME process creation process must be reviewed
+            'processId'    => $this->process->getEncodedId(),
             'userName'     => $this->user->username
             ], $merge
         );
