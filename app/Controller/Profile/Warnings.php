@@ -155,7 +155,7 @@ class Warnings implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Warning\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 

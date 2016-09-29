@@ -157,7 +157,7 @@ class Settings implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Setting\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('company', $company);
 
         $setting = $this->commandBus->handle($command);
@@ -258,7 +258,7 @@ class Settings implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Setting\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('settingId', $settingId);
 
         $setting = $this->commandBus->handle($command);

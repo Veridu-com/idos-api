@@ -143,7 +143,7 @@ class Services implements ControllerInterface {
 
         $command = $this->commandFactory->create('Service\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('company', $company);
 
         $entity = $this->commandBus->handle($command);
@@ -250,7 +250,7 @@ class Services implements ControllerInterface {
 
         $command = $this->commandFactory->create('Service\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('serviceId', $serviceId)
             ->setParameter('company', $company);
 
