@@ -67,6 +67,10 @@ class Feature extends AbstractEntity {
             return (double) $value;
         }
 
+        if ($this->attributes['type'] === 'array') {
+            return (array) json_decode($value);
+        }
+
         return $value;
     }
 }
