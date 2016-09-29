@@ -30,6 +30,12 @@ class Created extends AbstractServiceQueueEvent {
      */
     public $source;
     /**
+     * Event related Process.
+     *
+     * @var App\Entity\Profile\Process
+     */
+    public $process;
+    /**
      * Event related IP Address.
      *
      * @var string
@@ -60,15 +66,14 @@ class Created extends AbstractServiceQueueEvent {
             $merge['tokenSecret'] = $this->source->tags->token_secret;
         }
 
-        $source = $this->source->toArray();
-
         return array_merge(
             [
-            'accessToken'  => $this->source->tags->access_token,
-            'providerName' => $this->source->name,
-            'publicKey'    => $this->credential->public,
-            'sourceId'     => $source['id'],
-            'userName'     => $this->user->username
+            'accessToken'   => $this->source->tags->access_token,
+            'providerName'  => $this->source->name,
+            'publicKey'     => $this->credential->public,
+            'sourceId'      => $this->source->getEncodedId(),
+            'processId'     => $this->process->getEncodedId(),
+            'userName'      => $this->user->username
             ], $merge
         );
     }

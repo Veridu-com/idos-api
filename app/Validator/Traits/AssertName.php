@@ -122,7 +122,7 @@ trait AssertName {
     }
 
     /**
-     * Asserts a valid long (1-150 chars long) name.
+     * Asserts a valid long (1-255 chars long) name.
      *
      * @param mixed $name
      *
@@ -132,7 +132,7 @@ trait AssertName {
      */
     public function assertLongName($name) {
         Validator::prnt()
-            ->length(1, 150)
+            ->length(1, 255)
             ->assert($name);
     }
 

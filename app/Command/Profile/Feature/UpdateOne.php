@@ -22,6 +22,13 @@ class UpdateOne extends AbstractCommand {
     public $user;
 
     /**
+     * Target Credential.
+     *
+     * @var App\Entity\Company\Credential
+     */
+    public $credential;
+
+    /**
      * Feature's Service (creator).
      *
      * @var App\Entity\Service

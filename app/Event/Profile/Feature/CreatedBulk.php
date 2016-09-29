@@ -9,6 +9,8 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Feature;
 
 use App\Entity\Company\Credential;
+use App\Entity\Profile\Feature;
+use App\Entity\Profile\Process;
 use App\Entity\Profile\Source;
 use App\Entity\User;
 use App\Event\AbstractServiceQueueEvent;
@@ -18,6 +20,20 @@ use App\Event\AbstractServiceQueueEvent;
  */
 class CreatedBulk extends AbstractServiceQueueEvent {
     /**
+     * Event related Feature.
+     *
+     * @var App\Entity\Profile\Feature
+     */
+    public $features;
+
+    /**
+     * Event related Source.
+     *
+     * @var App\Entity\Profile\Source | null
+     */
+    public $source;
+
+    /**
      * Event related User.
      *
      * @var App\Entity\User
@@ -25,45 +41,43 @@ class CreatedBulk extends AbstractServiceQueueEvent {
     public $user;
 
     /**
-     * Event related Credential.
+     * Event related User.
      *
-     * @var App\Entity\Company\Credential
+     * @var App\Entity\Profile\Process
      */
-    public $credential;
-
-    /**
-     * Event related Credential.
-     *
-     * @var App\Entity\Profile\Source
-     */
-    public $source;
+    public $process;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\User                  $user
-     * @param App\Entity\Company\Credential    $credential
-     * @param App\Entity\Profile\Source | null $source
+     * @param array                          $features
+     * @param App\Entity\User                $user
+     * @param App\Entity\Company\Credential  $credential
+     * @param App\Entity\Profile\Process     $process
+     * @param App\Entity\Profile\Source|null $source
      *
      * @return void
      */
-    public function __construct(User $user, Credential $credential, $source = null) {
-        $this->user         = $user;
-        $this->credential   = $credential;
-        $this->source       = $source;
+    public function __construct(array $features, User $user, Credential $credential, Process $process, $source = null) {
+        $this->features    = $features;
+        $this->user        = $user;
+        $this->source      = $source;
+        $this->process     = $process;
+        $this->credential  = $credential;
     }
 
     /**
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
+
         return array_merge(
             [
-                'publicKey' => $this->credential->public,
-                'userName'  => $this->user->username,
-                // FIXME may need to review this
-                // 'sourceId'    => $this->source ? $this->source->getEncodedId() : null,
-                'processId' => 1, // @FIXME process creation process must be reviewed
+            'providerName' => $this->source ? $this->source->name : null,
+            'sourceId'     => $this->source ? $this->source->getEncodedId() : null,
+            'publicKey'    => $this->credential->public,
+            'processId'    => $this->process->getEncodedId(),
+            'userName'     => $this->user->username
             ], $merge
         );
     }
@@ -74,8 +88,6 @@ class CreatedBulk extends AbstractServiceQueueEvent {
      * @return string
      **/
     public function __toString() {
-        // @FIXME double check event identifier
-        // does it can have or need $feature->name to be part of it?
         return sprintf('idos:feature.%s.created', $this->source ? $this->source->name : 'profile');
     }
 }

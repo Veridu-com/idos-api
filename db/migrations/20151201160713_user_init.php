@@ -126,11 +126,14 @@ class UserInit extends AbstractMigration {
         $processes = $this->table('processes');
         $processes
             ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('source_id', 'integer', ['null' => true])
             ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('event', 'text', ['null' => false])
+            ->addColumn('event', 'text', ['null' => true])
             ->addTimestamps()
-            ->addIndex('user_id')
+            ->addIndex(['user_id'])
+            ->addIndex(['source_id'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $tasks = $this->table('tasks');

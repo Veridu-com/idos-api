@@ -20,6 +20,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
+use App\Repository\Profile\ProcessInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Validator\Profile\Source as SourceValidator;
 use Interop\Container\ContainerINterface;
@@ -65,6 +66,9 @@ class Source implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Profile\Source'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Process'),
+                $container
                     ->get('validatorFactory')
                     ->create('Profile\Source'),
                 $container
@@ -87,14 +91,16 @@ class Source implements HandlerInterface {
      */
     public function __construct(
         SourceInterface $repository,
+        ProcessInterface $processRepository,
         SourceValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository   = $repository;
-        $this->validator    = $validator;
-        $this->eventFactory = $eventFactory;
-        $this->emitter      = $emitter;
+        $this->repository        = $repository;
+        $this->processRepository = $processRepository;
+        $this->validator         = $validator;
+        $this->eventFactory      = $eventFactory;
+        $this->emitter           = $emitter;
     }
 
     /**
@@ -164,7 +170,22 @@ class Source implements HandlerInterface {
             throw new Create\Profile\SourceException('Error while trying to create a setting', 500, $e);
         }
 
-        $this->emitter->emit($this->eventFactory->create('Profile\\Source\\Created', $source, $command->user, $command->credential, $command->ipaddr));
+        $event = $this->eventFactory->create('Profile\\Source\\Created', $source, $command->user, $command->credential, $command->ipaddr);
+
+        try {
+            $processEntity = $this->processRepository->create([
+                'name'      => 'idos:verification',
+                'user_id'   => $command->user->id,
+                'source_id' => $source->id,
+                'event'     => (string) $event,
+            ]);
+            $processEntity = $this->processRepository->save($processEntity);
+        } catch (\Exception $e) {
+            throw new Create\Profile\SourceException('Error while trying to create a process for the Source', 500, $e);
+        }
+
+        $event->process = $processEntity;
+        $this->emitter->emit($event);
 
         if ($sendOTP) {
             $this->emitter->emit($this->eventFactory->create('Profile\\Source\\OTP', $command->user, $source, $command->ipaddr));

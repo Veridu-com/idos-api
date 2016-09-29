@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Repository\Profile;
 
+use App\Entity\Profile\Process;
+use App\Exception\NotFound;
 use App\Repository\AbstractSQLDBRepository;
 
 /**
@@ -40,6 +42,13 @@ class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
     /**
      * {@inheritdoc}
      */
+    public function findOneBySourceId(int $sourceId) : Process {
+        return $this->findOneBy(['source_id' => $sourceId]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAllByUserId(int $userId, array $queryParams = []) : array {
         $dbQuery = $this->query()->where('user_id', $userId);
 
@@ -47,5 +56,34 @@ class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
             $this->filter($dbQuery, $queryParams),
             $queryParams
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findLastByUserIdSourceIdAndEvent(int $userId, $sourceId, $event) : Process {
+        $query = $this->query()
+            ->where('user_id', $userId)
+            ->orderBy('id', 'desc');
+
+        if ($sourceId) {
+            $query = $query->where('source_id', $sourceId);
+        } else {
+            $query = $query->whereNull('source_id');
+        }
+
+        if ($event) {
+            $query = $query->where('event', $event);
+        } else {
+            $query = $query->whereNull('event');
+        }
+
+        $process = $query->first();
+
+        if (! $process) {
+            throw new NotFound();
+        }
+
+        return $process;
     }
 }
