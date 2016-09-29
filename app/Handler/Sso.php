@@ -165,7 +165,13 @@ class Sso implements HandlerInterface {
      *
      * @return App\Entity\Profile\Source The created source
      */
-    private function createNewSource(string $provider, User $user, array $tags, Credential $credential, string $ipAddr) : SourceEntity {
+    private function createNewSource(
+        string $provider,
+        User $user,
+        array $tags,
+        Credential $credential,
+        string $ipAddr
+    ) : SourceEntity {
         $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
 
         $command->setParameters(
@@ -227,7 +233,7 @@ class Sso implements HandlerInterface {
         $decodedResponse = json_decode($response, true);
 
         if ($decodedResponse === null || isset($decodedResponse['error']) || isset($decodedResponse['errors'])) {
-            throw new Create\SsoException($response); //'Error while trying to authenticate', 500);
+            throw new Create\SsoException('Error while trying to authenticate', 500);
         }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);

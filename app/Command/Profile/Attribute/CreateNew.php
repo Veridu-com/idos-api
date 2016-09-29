@@ -45,7 +45,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Attribute support.
      *
-     * @var string
+     * @var float
      */
     public $support;
 

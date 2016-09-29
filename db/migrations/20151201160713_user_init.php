@@ -37,7 +37,7 @@ class UserInit extends AbstractMigration {
             ->addIndex('creator')
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('name', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
+            // ->addForeignKey('name', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
             ->create();
 
         // Profile references values
@@ -90,8 +90,8 @@ class UserInit extends AbstractMigration {
             ->addIndex(['user_id', 'creator', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('slug', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
-            ->addForeignKey('attribute', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
+            // ->addForeignKey('slug', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
+            // ->addForeignKey('attribute', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
             ->create();
 
         $tags = $this->table('tags');
