@@ -61,11 +61,11 @@ class Created extends AbstractServiceQueueEvent {
      *
      * @return void
      */
-    public function __construct(Raw $raw, User $user, Credential $credential, Source $source, Process $profile) {
+    public function __construct(Raw $raw, User $user, Credential $credential, Source $source, Process $process) {
         $this->raw        = $raw;
         $this->user       = $user;
         $this->credential = $credential;
-        $this->profile    = $profile;
+        $this->process    = $process;
         $this->source     = $source;
     }
 
