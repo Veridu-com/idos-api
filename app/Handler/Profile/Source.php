@@ -170,7 +170,13 @@ class Source implements HandlerInterface {
             throw new Create\Profile\SourceException('Error while trying to create a setting', 500, $e);
         }
 
-        $event = $this->eventFactory->create('Profile\\Source\\Created', $source, $command->user, $command->credential, $command->ipaddr);
+        $event = $this->eventFactory->create(
+            'Profile\\Source\\Created',
+            $source,
+            $command->user,
+            $command->credential,
+            $command->ipaddr
+        );
 
         try {
             $processEntity = $this->processRepository->create([
@@ -188,11 +194,25 @@ class Source implements HandlerInterface {
         $this->emitter->emit($event);
 
         if ($sendOTP) {
-            $this->emitter->emit($this->eventFactory->create('Profile\\Source\\OTP', $command->user, $source, $command->ipaddr));
+            $this->emitter->emit(
+                $this->eventFactory->create(
+                    'Profile\\Source\\OTP',
+                    $command->user,
+                    $source,
+                    $command->ipaddr
+                )
+            );
         }
 
         if ($sendCRA) {
-            $this->emitter->emit($this->eventFactory->create('Profile\\Source\\CRA', $command->user, $source, $command->ipaddr));
+            $this->emitter->emit(
+                $this->eventFactory->create(
+                    'Profile\\Source\\CRA',
+                    $command->user,
+                    $source,
+                    $command->ipaddr
+                )
+            );
         }
 
         return $source;
@@ -217,6 +237,7 @@ class Source implements HandlerInterface {
             $this->validator->assertSource($command->source);
             $this->validator->assertId($command->source->id);
             $this->validator->assertIpAddr($command->ipaddr);
+            $this->validator->assertArray($command->tags);
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),
@@ -231,7 +252,7 @@ class Source implements HandlerInterface {
         $tags = json_decode($serialized['tags']);
 
         if ((isset($tags->otp_voided))) {
-            throw new NotAllowed\Profile\SourceException('Too many tries', 500, $e);
+            throw new NotAllowed\Profile\SourceException('Too many tries', 500);
         }
 
         if (isset($command->otpCode)) {
@@ -279,12 +300,27 @@ class Source implements HandlerInterface {
             }
         }
 
+        foreach ($command->tags as $key => $value) {
+            if (substr_compare($key, 'otp_', 0, 4) == 0) {
+                continue;
+            }
+
+            $tags->$key = $value;
+        }
+
         $source->tags      = $tags;
         $source->updatedAt = time();
 
         try {
             $source = $this->repository->save($source);
-            $this->emitter->emit($this->eventFactory->create('Profile\\Source\\Updated', $command->user, $source, $command->ipaddr));
+            $this->emitter->emit(
+                $this->eventFactory->create(
+                    'Profile\\Source\\Updated',
+                    $command->user,
+                    $source,
+                    $command->ipaddr
+                )
+            );
         } catch (\Exception $e) {
             throw new Update\Profile\SourceException('Error while trying to update a source', 500, $e);
         }
@@ -325,7 +361,14 @@ class Source implements HandlerInterface {
             throw new NotFound\Profile\SourceException('No sources found for deletion', 404);
         }
 
-        $this->emitter->emit($this->eventFactory->create('Profile\\Source\\Deleted', $command->user, $command->source, $command->ipaddr));
+        $this->emitter->emit(
+            $this->eventFactory->create(
+                'Profile\\Source\\Deleted',
+                $command->user,
+                $command->source,
+                $command->ipaddr
+            )
+        );
     }
 
     /**
@@ -356,7 +399,14 @@ class Source implements HandlerInterface {
         $sources = $this->repository->getAllByUserId($command->user->id);
         $deleted = $this->repository->deleteByUserId($command->user->id);
 
-        $this->emitter->emit($this->eventFactory->create('Profile\\Source\\DeletedMulti', $command->user, $sources, $command->ipaddr));
+        $this->emitter->emit(
+            $this->eventFactory->create(
+                'Profile\\Source\\DeletedMulti',
+                $command->user,
+                $sources,
+                $command->ipaddr
+            )
+        );
 
         return $deleted;
     }
