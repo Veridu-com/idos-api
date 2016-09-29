@@ -10,18 +10,20 @@ class S25ProcessesSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
-                'user_id'    => 1,
-                'name'       => 'Process one',
-                'event'      => 'user:created',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
+                'user_id'      => 1,
+                'source_id'    => 1,
+                'name'         => 'idos:verification',
+                'event'        => 'idos:source.facebook.created',
+                'created_at'   => date('Y-m-d H:i:s'),
+                'updated_at'   => null
             ],
             [
-                'user_id'    => 1,
-                'name'       => 'Process two',
-                'event'      => 'user:updated',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
+                'user_id'      => 1,
+                'name'         => 'Some random process for the user',
+                'source_id'    => null,
+                'event'        => null,
+                'created_at'   => date('Y-m-d H:i:s'),
+                'updated_at'   => null
             ]
         ];
 

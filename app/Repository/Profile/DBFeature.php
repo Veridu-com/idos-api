@@ -128,8 +128,13 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
         $success = true;
 
         foreach ($features as $key => $feature) {
-            // user_id, source, name, creator(service_id), type, value 
-            $success =  $success && $this->runRaw('INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
+            if ($feature['type'] === 'array') {
+                $feature['value'] = json_encode($feature['value']);
+            }
+
+            // user_id, source, name, creator(service_id), type, value
+            $success = $success && $this->runRaw(
+                'INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
                 ON CONFLICT (user_id, source, creator, name)
                 DO UPDATE set value = :value, type = :type, updated_at = NOW()',
                 [

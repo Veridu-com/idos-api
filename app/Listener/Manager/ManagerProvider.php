@@ -20,9 +20,9 @@ class ManagerProvider extends AbstractListenerProvider {
         $settingRepository        = $repositoryFactory->create('Company\Setting');
         $serviceHandlerRepository = $repositoryFactory->create('ServiceHandler');
 
-        $eventFactory      = $container->get('eventFactory');
-        $emitter           = $container->get('eventEmitter');
-        $gearmanClient     = $container->get('gearmanClient');
+        $eventFactory  = $container->get('eventFactory');
+        $emitter       = $container->get('eventEmitter');
+        $gearmanClient = $container->get('gearmanClient');
 
         $eventLogger = $container->get('log')('Event');
 
@@ -56,13 +56,14 @@ class ManagerProvider extends AbstractListenerProvider {
                 new Listener\LogFiredEventListener($eventLogger),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
-
-            // Feature created triggers Service Task listener
+            Event\Profile\Feature\Updated::class => [
+                new Listener\LogFiredEventListener($eventLogger),
+                new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
+            ],
             Event\Profile\Feature\CreatedBulk::class => [
                 new Listener\LogFiredEventListener($eventLogger),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
-
             // Task Updated created triggers Service Task listener
             // @FIXME Talk to Flávio if we need this granularity
             // task [

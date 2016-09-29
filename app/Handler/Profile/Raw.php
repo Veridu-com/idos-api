@@ -18,6 +18,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
+use App\Repository\Profile\ProcessInterface;
 use App\Repository\Profile\RawInterface;
 use App\Validator\Profile\Raw as RawValidator;
 use Interop\Container\ContainerInterface;
@@ -63,6 +64,9 @@ class Raw implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Profile\Raw'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Process'),
+                $container
                     ->get('validatorFactory')
                     ->create('Profile\Raw'),
                 $container
@@ -85,14 +89,16 @@ class Raw implements HandlerInterface {
      */
     public function __construct(
         RawInterface $repository,
+        ProcessInterface $processRepository,
         RawValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository   = $repository;
-        $this->validator    = $validator;
-        $this->eventFactory = $eventFactory;
-        $this->emitter      = $emitter;
+        $this->repository          = $repository;
+        $this->processRepository   = $processRepository;
+        $this->validator           = $validator;
+        $this->eventFactory        = $eventFactory;
+        $this->emitter             = $emitter;
     }
 
     /**
@@ -126,8 +132,8 @@ class Raw implements HandlerInterface {
         // We must assert thet there is no raw data with the given source and collection
         try {
             $entity = $this->repository->findOne($command->source, $command->collection);
-            throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
         } catch (NotFound $e) {
+            throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
         }
 
         $raw = $this->repository->create(
@@ -141,12 +147,16 @@ class Raw implements HandlerInterface {
 
         try {
             $raw   = $this->repository->save($raw);
+
+            $process = $this->processRepository->findBySourceId($command->source->id);
+
             $event = $this->eventFactory->create(
                 'Profile\\Raw\\Created',
                 $raw,
                 $command->user,
                 $command->credential,
-                $command->source
+                $command->source,
+                $process
             );
 
             $this->emitter->emit($event);
@@ -236,6 +246,8 @@ class Raw implements HandlerInterface {
         } catch (NotFound $e) {
         }
 
+        $process = $this->processRepository->findOneBySourceId($command->source->id);
+
         if ($entity === null) {
             $inserting = true;
             $entity    = $this->repository->create(
@@ -257,7 +269,8 @@ class Raw implements HandlerInterface {
                     $entity,
                     $command->user,
                     $command->credential,
-                    $command->source
+                    $command->source,
+                    $process
                 );
             } else {
                 $event = $this->eventFactory->create(
@@ -265,7 +278,8 @@ class Raw implements HandlerInterface {
                     $entity,
                     $command->user,
                     $command->credential,
-                    $command->source
+                    $command->source,
+                    $process
                 );
             }
 
