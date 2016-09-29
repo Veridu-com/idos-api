@@ -16,7 +16,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Hooks routing definitions.
+ * Company Hook
+ *
+ * A Hook is a feature that allows a Company to receive updates or alerts when a User changes their data in a specific way. If a User deletes or updates a certain attribute, a Hook will update or alert the Company in realtime.
  *
  * @link docs/management/hooks/overview.md
  * @see App\Controller\Company\Hooks
