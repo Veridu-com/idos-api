@@ -156,6 +156,10 @@ class Feature implements HandlerInterface {
             );
         }
 
+        if (is_array($command->value)) {
+            $command->value = json_encode($command->value);
+        }
+
         $feature = $this->repository->create(
             [
                 'user_id'    => $command->user->id,
@@ -218,6 +222,10 @@ class Feature implements HandlerInterface {
                 'id'      => $command->featureId
             ]
         );
+
+        if (is_array($command->value)) {
+            $command->value = json_encode($command->value);
+        }
 
         $feature->type      = $command->type;
         $feature->value     = $command->value;
@@ -354,6 +362,10 @@ class Feature implements HandlerInterface {
         if ($command->source !== null) {
             $this->validator->assertSource($command->source);
             $sourceName = $command->source->name;
+        }
+
+        if (is_array($command->value)) {
+            $command->value = json_encode($command->value);
         }
 
         $feature   = null;
