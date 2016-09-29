@@ -43,8 +43,7 @@ class References implements RouteInterface {
             return new \App\Controller\Profile\References(
                 $container->get('repositoryFactory')->create('Profile\Reference'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

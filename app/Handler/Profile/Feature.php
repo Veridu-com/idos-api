@@ -13,6 +13,7 @@ use App\Command\Profile\Feature\DeleteAll;
 use App\Command\Profile\Feature\DeleteOne;
 use App\Command\Profile\Feature\UpdateOne;
 use App\Command\Profile\Feature\Upsert;
+use App\Command\Profile\Feature\UpsertBulk;
 use App\Entity\Profile\Feature as FeatureEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -119,19 +120,25 @@ class Feature implements HandlerInterface {
      *
      * @see App\Repository\DBFeature::save
      *
-     * @throws App\Exception\Validate\FeatureException
-     * @throws App\Exception\Create\FeatureException
+     * @throws App\Exception\Validate\Profile\FeatureException
+     * @throws App\Exception\Create\Profile\FeatureException
      *
      * @return App\Entity\Feature
      */
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
         try {
             $this->validator->assertUser($command->user);
+            $this->validator->assertCredential($command->credential);
+
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->name);
+
             $this->validator->assertName($command->type);
+            $this->validator->assertNullableValue($command->value);
+            $sourceName = null;
             if ($command->source !== null) {
                 $this->validator->assertSource($command->source);
+                $sourceName = $command->source->name;
             }
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
@@ -144,7 +151,7 @@ class Feature implements HandlerInterface {
         $feature = $this->repository->create(
             [
                 'user_id'    => $command->user->id,
-                'source'     => $command->source !== null ? $command->source->name : null,
+                'source'     => $sourceName,
                 'name'       => $command->name,
                 'creator'    => $command->service->id,
                 'type'       => $command->type,
@@ -157,7 +164,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
-            $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature);
+            $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $command->credential, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\FeatureException('Error while trying to create a feature', 500, $e);
@@ -174,8 +181,8 @@ class Feature implements HandlerInterface {
      * @see App\Repository\DBFeature::findByUserIdAndSlug
      * @see App\Repository\DBFeature::save
      *
-     * @throws App\Exception\Validate\FeatureException
-     * @throws App\Exception\Update\FeatureException
+     * @throws App\Exception\Validate\Profile\FeatureException
+     * @throws App\Exception\Update\Profile\FeatureException
      *
      * @return App\Entity\Feature
      */
@@ -185,6 +192,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertId($command->featureId);
             $this->validator->assertName($command->type);
+            $this->validator->assertNullableValue($command->value);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -193,11 +201,13 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOneBy([
-            'user_id' => $command->user->id,
-            'creator' => $command->service->id,
-            'id'      => $command->featureId
-        ]);
+        $feature = $this->repository->findOneBy(
+            [
+                'user_id' => $command->user->id,
+                'creator' => $command->service->id,
+                'id'      => $command->featureId
+            ]
+        );
 
         $feature->type      = $command->type;
         $feature->value     = $command->value;
@@ -224,7 +234,7 @@ class Feature implements HandlerInterface {
      * @see App\Repository\DBFeature::findByUserId
      * @see App\Repository\DBFeature::deleteByUserId
      *
-     * @throws App\Exception\Validate\FeatureException
+     * @throws App\Exception\Validate\Profile\FeatureException
      *
      * @return int
      */
@@ -269,8 +279,8 @@ class Feature implements HandlerInterface {
      * @see App\Repository\DBFeature::findByUserIdAndSlug
      * @see App\Repository\DBFeature::delete
      *
-     * @throws App\Exception\Validate\FeatureException
-     * @throws App\Exception\NotFound\FeatureException
+     * @throws App\Exception\Validate\Profile\FeatureException
+     * @throws App\Exception\NotFound\Profile\FeatureException
      *
      * @return void
      */
@@ -315,19 +325,35 @@ class Feature implements HandlerInterface {
      * @return App\Entity\Profile\Feature
      */
     public function handleUpsert(Upsert $command) : FeatureEntity {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertService($command->service);
-        $this->validator->assertLongName($command->name);
-        $this->validator->assertName($command->type);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertLongName($command->name);
+            $this->validator->assertName($command->type);
+            $this->validator->assertNullableValue($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
+        $sourceName = null;
         if ($command->source !== null) {
             $this->validator->assertSource($command->source);
+            $sourceName = $command->source->name;
         }
 
         $feature   = null;
         $inserting = false;
         try {
-            $feature = $this->repository->findOneByName($command->user->id, $command->source !== null ? $command->source->name : null, $command->service->id, $command->name);
+            $feature = $this->repository->findOneByName(
+                $command->user->id,
+                $sourceName,
+                $command->service->id,
+                $command->name
+            );
 
             $feature->type      = $command->type;
             $feature->value     = $command->value;
@@ -338,7 +364,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->create(
                 [
                     'user_id'    => $command->user->id,
-                    'source'     => $command->source !== null ? $command->source->name : null,
+                    'source'     => $sourceName,
                     'name'       => $command->name,
                     'creator'    => $command->service->id,
                     'type'       => $command->type,
@@ -353,16 +379,78 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->hydrateRelations($feature);
 
             if ($inserting) {
-                $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature);
+                $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $command->credential, $command->source);
             } else {
-                $event = $this->eventFactory->create('Profile\\Feature\\Updated', $feature);
+                $event = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $command->credential, $command->source);
             }
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\FeatureException('Error while trying to upsert a feature', 404, $e);
+            throw new NotFound\Profile\FeatureException('Error while trying to upsert a feature', 404, $e);
         }
 
         return $feature;
+    }
+    /**
+     * Creates or update a feature.
+     *
+     * @param App\Command\Profile\Feature\Upsert $command
+     *
+     * @return bool
+     */
+    public function handleUpsertBulk(UpsertBulk $command) : bool {
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertCredential($command->credential);
+            $this->validator->assertService($command->service);
+            $this->validator->assertFeatures($command->features);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $features          = $command->features;
+        $sources           = [];
+        $featuresPerSource = [];
+
+        // put "source->name" on the feature register
+        // retrieved from a sourceRepository->find
+        // add to featuresPerSource so we can send events by source
+        foreach ($features as $key => $feature) {
+            $sourceId                       = isset($feature['source_id']) ? $feature['source_id'] : 0;
+            $featuresPerSource[$sourceId][] = $feature;
+
+            // gets the source name for every feature that has a source
+            if (isset($feature['source_id'])) {
+                if (! isset($sources[$feature['source_id']])) {
+                    $source = $this->sourceRepository->find($feature['decoded_source_id']);
+                } else {
+                    $source = $sources[$feature['source_id']];
+                }
+
+                $features[$key]['source']       = $source->name;
+                $sources[$feature['source_id']] = $source;
+            }
+
+        }
+
+        $success = $this->repository->upsertBulk(
+            $command->user->id,
+            $command->service->id,
+            $features
+        );
+
+        if ($success) {
+            // creates 1 event per source
+            foreach ($featuresPerSource as $sourceId => $sourceFeatures) {
+                $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $command->user, $command->credential, ($sourceId ? $sources[$sourceId] : null));
+                $this->emitter->emit($event);
+            }
+        }
+
+        return $success;
     }
 }

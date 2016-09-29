@@ -22,6 +22,13 @@ class Upsert extends AbstractCommand {
     public $user;
 
     /**
+     * Target Credential.
+     *
+     * @var App\Entity\Company\Credential
+     */
+    public $credential;
+
+    /**
      * Feature's Source (user input).
      *
      * @var App\Entity\Source

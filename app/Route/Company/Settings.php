@@ -45,8 +45,7 @@ class Settings implements RouteInterface {
             return new \App\Controller\Company\Settings(
                 $container->get('repositoryFactory')->create('Company\Setting'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

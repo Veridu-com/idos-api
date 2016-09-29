@@ -112,6 +112,8 @@ class Raw implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : RawEntity {
         try {
             $this->validator->assertSource($command->source);
+            $this->validator->assertUser($command->user);
+            $this->validator->assertCredential($command->credential);
             $this->validator->assertName($command->collection);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
@@ -121,9 +123,9 @@ class Raw implements HandlerInterface {
             );
         }
 
+        // We must assert thet there is no raw data with the given source and collection
         try {
             $entity = $this->repository->findOne($command->source, $command->collection);
-
             throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
         } catch (NotFound $e) {
         }
@@ -139,7 +141,13 @@ class Raw implements HandlerInterface {
 
         try {
             $raw   = $this->repository->save($raw);
-            $event = $this->eventFactory->create('Profile\\Raw\\Created', $raw);
+            $event = $this->eventFactory->create(
+                'Profile\\Raw\\Created',
+                $raw,
+                $command->user,
+                $command->credential,
+                $command->source
+            );
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -244,9 +252,21 @@ class Raw implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
             if ($inserting) {
-                $event = $this->eventFactory->create('Profile\\Raw\\Created', $entity);
+                $event = $this->eventFactory->create(
+                    'Profile\\Raw\\Created',
+                    $entity,
+                    $command->user,
+                    $command->credential,
+                    $command->source
+                );
             } else {
-                $event = $this->eventFactory->create('Profile\\Raw\\Updated', $entity);
+                $event = $this->eventFactory->create(
+                    'Profile\\Raw\\Updated',
+                    $entity,
+                    $command->user,
+                    $command->credential,
+                    $command->source
+                );
             }
 
             $this->emitter->emit($event);

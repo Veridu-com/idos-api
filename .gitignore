@@ -1,6 +1,7 @@
 *.bak
 *.DS_Store
 *.log
+*.phar
 *.sublime-project
 *.sublime-workspace
 .php_cs

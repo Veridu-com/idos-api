@@ -46,8 +46,7 @@ class RoleAccess implements RouteInterface {
             return new \App\Controller\User\RoleAccess(
                 $container->get('repositoryFactory')->create('User\RoleAccess'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

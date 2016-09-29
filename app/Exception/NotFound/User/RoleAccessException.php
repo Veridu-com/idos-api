@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Exception\NotFound\User;
 
+use App\Exception\NotFound;
+
 /**
  * RoleAccess not found exception.
  *

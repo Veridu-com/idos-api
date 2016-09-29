@@ -39,10 +39,13 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
         'services.id as service.id',
         'services.name as service.name',
         'services.url as service.url',
+        'services.public as service.public',
+        'services.access as service.access',
+        'services.enabled as service.enabled',
         'services.listens as service.listens',
         'services.triggers as service.triggers',
-        'services.enabled as service.enabled',
-        'services.access as service.access',
+        'services.auth_username as service.auth_username',
+        'services.auth_password as service.auth_password',
         'services.created_at as service.created_at',
         'services.updated_at as service.updated_at',
     ];
@@ -69,7 +72,8 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
             'foreignKey' => 'company_id',
             'key'        => 'id',
             'entity'     => 'Company',
-            'hydrate'    => false
+            'hydrate'    => false,
+            'nullable'   => false
         ],
 
         'service' => [
@@ -88,7 +92,8 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
                 'access',
                 'created_at',
                 'updated_at'
-            ]
+            ],
+            'nullable' => false
         ],
     ];
 
@@ -162,5 +167,22 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
      */
     public function deleteByCompanyId(int $companyId) : int {
         return $this->deleteByKey('company_id', $companyId);
+    }
+
+    /**
+     * Gets all by company identifier and listener.
+     *
+     * @param int    $companyId The company identifier
+     * @param string $event     The event to look on "listens" column
+     */
+    public function getAllByCompanyIdAndListener(int $companyId, string $event) {
+        $collection = $this->query()
+            ->join('services', 'services.id', 'service_id')
+            ->where('service_handlers.company_id', $companyId)
+            ->where('services.enabled', true)
+            ->whereRaw('jsonb_exists(service_handlers.listens, ?)', [$event])
+            ->get($this->queryAttributes);
+
+        return $this->castHydrate($collection);
     }
 }

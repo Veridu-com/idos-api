@@ -12,7 +12,7 @@ class S22AttributesSeed extends AbstractSeed {
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'name'       => 'firstname',
+                'name'       => 'first-name',
                 'value'      => 'John',
                 'support'    => 1.2,
                 'created_at' => date('Y-m-d H:i:s'),
@@ -21,7 +21,7 @@ class S22AttributesSeed extends AbstractSeed {
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'name'       => 'lastname',
+                'name'       => 'last-name',
                 'value'      => 'Doe',
                 'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
@@ -30,7 +30,7 @@ class S22AttributesSeed extends AbstractSeed {
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'name'       => 'firstname',
+                'name'       => 'first-name',
                 'value'      => 'Janis',
                 'support'    => 1.4,
                 'created_at' => date('Y-m-d H:i:s'),
@@ -39,7 +39,7 @@ class S22AttributesSeed extends AbstractSeed {
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'name'       => 'lastname',
+                'name'       => 'last-name',
                 'value'      => 'Joplin',
                 'support'    => 1.5,
                 'created_at' => date('Y-m-d H:i:s'),
@@ -48,7 +48,7 @@ class S22AttributesSeed extends AbstractSeed {
             [
                 'user_id'    => 2,
                 'creator'    => 2,
-                'name'       => 'firstname',
+                'name'       => 'first-name',
                 'value'      => 'Cássio',
                 'support'    => 1.6,
                 'created_at' => date('Y-m-d H:i:s'),

@@ -37,7 +37,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     $identity = $request->getAttribute('identity');
 
                     $data = [
-                        'identity'    => $identity->serialize(),
+                        'identity' => $identity->serialize(),
                     ];
 
                     return $response->withJson($data, 200);
@@ -87,7 +87,7 @@ class HandleCompanyTokenTest extends AbstractAuthFunctional {
                     $identity = $request->getAttribute('identity');
 
                     $data = [
-                        'identity'    => $identity->serialize(),
+                        'identity' => $identity->serialize(),
                     ];
 
                     return $response->withJson($data, 200);

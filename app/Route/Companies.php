@@ -45,8 +45,7 @@ class Companies implements RouteInterface {
             return new \App\Controller\Companies(
                 $container->get('repositoryFactory')->create('Company'),
                 $container->get('commandBus'),
-                $container->get('commandFactory'),
-                $container->get('optimus')
+                $container->get('commandFactory')
             );
         };
 

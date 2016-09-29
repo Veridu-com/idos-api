@@ -12,6 +12,9 @@ services:
     networks:
       idos-ipv4-front:
         ipv4_address: 172.16.238.10
+    dns:
+      - 208.67.220.220
+      - 208.67.222.222
   php-fpm:
     container_name: srv-php
     image: idos/php-fpm:latest
@@ -21,15 +24,20 @@ services:
       - postgresql
       - gearman
       - redis
+      - mongodb
     links:
       - "postgresql:srv-db"
       - "gearman:srv-queue"
       - "redis:srv-redis"
+      - "mongodb:srv-nosql"
     networks:
       idos-ipv4-front:
         ipv4_address: 172.16.238.11
       idos-ipv4-back:
         ipv4_address: 172.16.239.11
+    dns:
+      - 208.67.220.220
+      - 208.67.222.222
   postgresql:
     container_name: srv-db
     image: veridu/postgresql:latest
@@ -38,30 +46,38 @@ services:
     networks:
       idos-ipv4-back:
         ipv4_address: 172.16.239.12
+    dns:
+      - 208.67.220.220
+      - 208.67.222.222
   gearman:
     container_name: srv-queue
     image: veridu/gearman:latest
     networks:
       idos-ipv4-back:
         ipv4_address: 172.16.239.13
-  php:
-    container_name: srv-worker
-    image: idos/php:latest
-    depends_on:
-      - postgresql
-      - gearman
-    links:
-      - "postgresql:srv-db"
-      - "gearman:srv-queue"
-    networks:
-      idos-ipv4-back:
-        ipv4_address: 172.16.239.14
+    dns:
+      - 208.67.220.220
+      - 208.67.222.222
   redis:
     container_name: srv-redis
     image: veridu/redis:latest
     networks:
       idos-ipv4-back:
         ipv4_address: 172.16.239.15
+    dns:
+      - 208.67.220.220
+      - 208.67.222.222
+  mongodb:
+    container_name: srv-nosql
+    image: mongo:latest
+    ports:
+      - "127.0.0.1:27017:27017"
+    dns:
+      - 208.67.220.220
+      - 208.67.222.222
+    networks:
+      idos-ipv4-back:
+        ipv4_address: 172.16.239.16
 networks:
   idos-ipv4-front:
     driver: bridge

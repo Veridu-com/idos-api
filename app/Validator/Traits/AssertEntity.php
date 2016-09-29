@@ -27,6 +27,7 @@ trait AssertEntity {
         Validator::instance('App\\Entity\\Company')
             ->assert($company);
     }
+
     /**
      * Asserts a valid identity entity.
      *
@@ -109,5 +110,19 @@ trait AssertEntity {
     public function assertService($service) {
         Validator::instance('App\\Entity\\Service')
             ->assert($service);
+    }
+
+    /**
+     * Asserts a valid Service Handler entity.
+     *
+     * @param mixed $entity
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertServiceHandler($entity) {
+        Validator::instance('App\\Entity\\ServiceHandler')
+            ->assert($entity);
     }
 }

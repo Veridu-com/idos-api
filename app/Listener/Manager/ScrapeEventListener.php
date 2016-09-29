@@ -8,8 +8,14 @@ declare(strict_types = 1);
 
 namespace App\Listener\Manager;
 
-use App\Repository\CredentialInterface;
-use App\Repository\SettingInterface;
+use App\Entity\Company\Credential;
+use App\Factory\Event as EventFactory;
+use App\Listener;
+use App\Listener\AbstractListener;
+use App\Listener\QueueCompanyServiceHandlers;
+use App\Repository\Company\CredentialInterface;
+use App\Repository\Company\SettingInterface;
+use App\Repository\ServiceHandlerInterface;
 use League\Event\Emitter;
 use League\Event\EventInterface;
 
@@ -17,6 +23,8 @@ use League\Event\EventInterface;
  * Data Scraper Event Listener.
  */
 class ScrapeEventListener extends AbstractListener {
+    use QueueCompanyServiceHandlers;
+
     /**
      * Credential Repository instance.
      *
@@ -57,16 +65,19 @@ class ScrapeEventListener extends AbstractListener {
     /**
      * Loads application Key/Secret and API Version.
      *
-     * @param string $credentialPubKey
-     * @param string $sourceName
+     * @param \App\Entity\Company\Credential $credential
+     * @param string                         $sourceName
      *
      * @return array
      */
-    private function loadSettings(string $credentialPubKey, string $sourceName) : array {
+    private function loadSettings(Credential $credential, string $sourceName) : array {
+        $credentialPubKey = $credential->public;
+
         // hosted social application (credential based)
         $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $sourceName);
         $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $sourceName);
         $credentialSettingVer = sprintf('%s.%s.version', $credentialPubKey, $sourceName);
+
         // hosted social application (company based)
         $providerSettingKey = sprintf('%s.key', $sourceName);
         $providerSettingSec = sprintf('%s.secret', $sourceName);
@@ -94,22 +105,24 @@ class ScrapeEventListener extends AbstractListener {
             );
         }
 
-        $return = [null, null, null];
+        $appKey     = null;
+        $appSecret  = null;
+        $apiVersion = null;
         foreach ($settings as $setting) {
             if (in_array($setting->property, [$credentialSettingKey, $providerSettingKey])) {
-                $return['key'] = $setting->value;
+                $appKey = $setting->value;
             }
 
             if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
-                $return['secret'] = $setting->value;
+                $appSecret = $setting->value;
             }
 
             if (in_array($setting->property, [$credentialSettingVer, $providerSettingVer])) {
-                $return['apiVersion'] = $setting->value;
+                $apiVersion = $setting->value;
             }
         }
 
-        return $return;
+        return [$appKey, $appSecret, $apiVersion];
     }
 
     /**
@@ -128,7 +141,7 @@ class ScrapeEventListener extends AbstractListener {
         CredentialInterface $credentialRepository,
         ServiceHandlerInterface $serviceHandlerRepository,
         SettingInterface $settingRepository,
-        Event $eventFactory,
+        EventFactory $eventFactory,
         Emitter $emitter,
         \GearmanClient $gearmanClient
     ) {
@@ -148,52 +161,36 @@ class ScrapeEventListener extends AbstractListener {
      * @return void
      */
     public function handle(EventInterface $event) {
-        $credential = $this->credentialRepository->find($event->user->credentialId);
+        $valid = property_exists($event->source->tags, 'access_token');
 
-        try {
-            $trigger = sprintf('idos:source.%s.created', strtolower($event->source->name));
-            $handler = $this->serviceRepository->findXXX($credential->companyId, $trigger);
-
-            list($appKey, $appSecret, $apiVersion) = $this->loadSettings($credential->public, $event->source->name);
-
-            $payload = [
-                'name'    => $handler->name,
-                'user'    => $handler->authUsername,
-                'pass'    => $handler->authPassword,
-                'url'     => $handler->url,
-                'handler' => [
-                    'accessToken'  => $event->source->tags->accessToken,
-                    'apiVersion'   => $apiVersion,
-                    'appKey'       => $appKey,
-                    'appSecret'    => $appSecret,
-                    'providerName' => $event->source->name,
-                    'publicKey'    => $credential->public,
-                    'sourceId'     => $event->source->id,
-                    'tokenSecret'  => $event->source->tags->tokenSecret,
-                    'userName'     => $event->user->userName
-                ]
-            ];
-
-            // add to manager queue
-            $task = $this->gearmanClient->doBackground(
-                'manager',
-                json_encode($payload)
-            );
-            if ($this->gearmanClient->returnCode() !== \GEARMAN_SUCCESS) {
-                $dispatchFailed = $this->eventFactory->create(
-                    'Manager\\DispatchFailed',
-                    $payload,
-                    $this->gearmanClient->error()
-                );
-                $this->emitter->emit($dispatchFailed);
-            }
-        } catch (NotFound $exception) {
-            // dispatch event
-            $unhandledEvent = $this->eventFactory->create(
-                'Manager\\UnhandledEvent',
-                $event
-            );
-            $this->emitter->emit($unhandledEvent);
+        if (! $valid) {
+            return $this->dispatchUnhandleEvent($event);
         }
+
+        $credential                            = $this->credentialRepository->find($event->user->credentialId);
+        list($appKey, $appSecret, $apiVersion) = $this->loadSettings($credential, $event->source->name);
+
+        $mergePayload = [
+            'appKey'     => $appKey,
+            'appSecret'  => $appSecret,
+            'apiVersion' => $apiVersion
+        ];
+
+        $this->queueListeningServices($credential->companyId, $event, $mergePayload);
+    }
+
+    /**
+     * Dispatches an unhandle event.
+     *
+     * @param EventInterface $event
+     *
+     * @return void
+     */
+    private function dispatchUnhandleEvent(EventInterface $event) {
+        $unhandledEvent = $this->eventFactory->create(
+            'Manager\\UnhandledEvent',
+            $event
+        );
+        $this->emitter->emit($unhandledEvent);
     }
 }

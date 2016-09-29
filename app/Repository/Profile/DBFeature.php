@@ -103,7 +103,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneById(int $userId, string $sourceName, int $serviceId, int $id) : Feature {
+    public function findOneById(int $userId, $sourceName, int $serviceId, int $id) : Feature {
         return $this->findOneBy(
             [
             'user_id' => $userId,
@@ -115,9 +115,47 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     }
 
     /**
+     * Upsert a bulk of features.
+     *
+     * @param int   $userId    The user identifier
+     * @param int   $serviceId The service identifier
+     * @param array $features  The features
+     *
+     * @return bool Success of the transaction.
+     */
+    public function upsertBulk(int $userId, int $serviceId, array $features) {
+        $this->beginTransaction();
+        $success = true;
+
+        foreach ($features as $key => $feature) {
+            // user_id, source, name, creator(service_id), type, value 
+            $success =  $success && $this->runRaw('INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
+                ON CONFLICT (user_id, source, creator, name)
+                DO UPDATE set value = :value, type = :type, updated_at = NOW()',
+                [
+                    'user_id' => $userId,
+                    'source'  => $feature['source'],
+                    'name'    => $feature['name'],
+                    'creator' => $serviceId,
+                    'type'    => $feature['type'],
+                    'value'   => $feature['value']
+                ]
+            );
+        }
+
+        if ($success) {
+            $this->commit();
+        } else {
+            $this->rollBack();
+        }
+
+        return $success;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function findOneByName(int $userId, string $sourceName, int $serviceId, string $name) : Feature {
+    public function findOneByName(int $userId, $sourceName, int $serviceId, string $name) : Feature {
         return $this->findOneBy(
             [
             'user_id' => $userId,

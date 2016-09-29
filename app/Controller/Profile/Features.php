@@ -166,10 +166,11 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
-        $service  = $request->getAttribute('service');
-        $source   = null;
-        $sourceId = $request->getParsedBodyParam('source_id');
+        $user        = $request->getAttribute('targetUser');
+        $service     = $request->getAttribute('service');
+        $credential  = $request->getAttribute('credential');
+        $source      = null;
+        $sourceId    = $request->getParsedBodyParam('source_id');
 
         if ($sourceId !== null) {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
@@ -179,6 +180,7 @@ class Features implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
             ->setParameter('source', $source)
             ->setParameter('service', $service);
 
@@ -324,10 +326,11 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
-        $service  = $request->getAttribute('service');
-        $source   = null;
-        $sourceId = $request->getParsedBodyParam('source_id');
+        $user        = $request->getAttribute('targetUser');
+        $service     = $request->getAttribute('service');
+        $credential  = $request->getAttribute('credential');
+        $source      = null;
+        $sourceId    = $request->getParsedBodyParam('source_id');
 
         if ($sourceId !== null) {
             $source = $this->sourceRepository->findOne($request->getParsedBodyParam('decoded_source_id'), $user->id);
@@ -337,6 +340,7 @@ class Features implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
             ->setParameter('source', $source)
             ->setParameter('service', $service);
 
@@ -345,6 +349,46 @@ class Features implements ControllerInterface {
         $body = [
             'status' => true,
             'data'   => $feature->toArray()
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('statusCode', isset($feature->updatedAt) ? 200 : 201)
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Creates or updates features for the given user.
+     *
+     * @apiEndpointRequiredParam body string name XYZ Feature name
+     * @apiEndpointRequiredParam body string value ZYX Feature value
+     * @apiEndpointResponse 201 schema/feature/createNew.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function upsertBulk(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user        = $request->getAttribute('targetUser');
+        $service     = $request->getAttribute('service');
+        $credential  = $request->getAttribute('credential');
+
+        $command = $this->commandFactory->create('Profile\\Feature\\UpsertBulk');
+        $command
+            ->setParameter('features', $request->getParsedBody())
+            ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
+            ->setParameter('service', $service);
+
+        $success = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => $success
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -127,15 +127,17 @@ class Raw implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Profile\\Raw\\CreateNew');
 
-        $user     = $request->getAttribute('targetUser');
-        $service  = $request->getAttribute('service');
-        $sourceId = (int) $request->getParsedBodyParam('decoded_source_id');
+        $user       = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
+        $service    = $request->getAttribute('service');
+        $sourceId   = (int) $request->getParsedBodyParam('decoded_source_id');
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
         $command
             ->setParameters($request->getParsedBody())
             ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
             ->setParameter('service', $service)
             ->setParameter('source', $source);
 
@@ -175,7 +177,7 @@ class Raw implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
         $service  = $request->getAttribute('service');
-        $sourceId = (int) $request->getAttribute('decodedSourceId');
+        $sourceId = (int) $request->getAttribute('decoded_source_id');
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
@@ -220,16 +222,17 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Raw\\Upsert');
-
-        $user     = $request->getAttribute('targetUser');
-        $service  = $request->getAttribute('service');
-        $sourceId = (int) $request->getParsedBodyParam('decoded_source_id');
+        $user        = $request->getAttribute('targetUser');
+        $service     = $request->getAttribute('service');
+        $credential  = $request->getAttribute('credential');
+        $sourceId    = (int) $request->getParsedBodyParam('decoded_source_id');
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
+        $command = $this->commandFactory->create('Profile\\Raw\\Upsert');
         $command
             ->setParameters($request->getParsedBody())
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('source', $source);

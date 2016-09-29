@@ -14,7 +14,6 @@ use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\GateInterface;
 use App\Repository\Profile\WarningInterface;
 use App\Repository\UserInterface;
-use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -59,19 +58,16 @@ class Profiles implements ControllerInterface {
      * @var App\Factory\Command
      */
     private $commandFactory;
-    /**
-     * Optimus instance.
-     *
-     * @var \Jenssegers\Optimus\Optimus
-     */
-    private $optimus;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\UserInterface $repository
-     * @param \League\Tactician\CommandBus $commandBus
-     * @param App\Factory\Command          $commandFactory
+     * @param App\Repository\UserInterface      $repository
+     * @param App\Repository\WarningInterface   $warningRepository
+     * @param App\Repository\GateInterface      $gateRepository
+     * @param App\Repository\AttributeInterface $attributeRepository
+     * @param \League\Tactician\CommandBus      $commandBus
+     * @param App\Factory\Command               $commandFactory
      *
      * @return void
      */
@@ -81,16 +77,14 @@ class Profiles implements ControllerInterface {
         GateInterface $gateRepository,
         AttributeInterface $attributeRepository,
         CommandBus $commandBus,
-        Command $commandFactory,
-        Optimus $optimus
+        Command $commandFactory
     ) {
-        $this->repository              = $repository;
-        $this->warningRepository       = $warningRepository;
-        $this->gateRepository          = $gateRepository;
-        $this->attributeRepository     = $attributeRepository;
-        $this->commandBus              = $commandBus;
-        $this->commandFactory          = $commandFactory;
-        $this->optimus                 = $optimus;
+        $this->repository          = $repository;
+        $this->warningRepository   = $warningRepository;
+        $this->gateRepository      = $gateRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->commandBus          = $commandBus;
+        $this->commandFactory      = $commandFactory;
     }
 
     /**
