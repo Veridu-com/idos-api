@@ -212,6 +212,9 @@ class Sso implements HandlerInterface {
 
         $token = new $tokenClass();
         $token->setAccessToken($command->accessToken);
+        if (isset($command->tokenSecret)) {
+            $token->setAccessTokenSecret($command->tokenSecret);
+        }
 
         $service->getStorage()->storeAccessToken($service->service(), $token);
 
@@ -224,7 +227,7 @@ class Sso implements HandlerInterface {
         $decodedResponse = json_decode($response, true);
 
         if ($decodedResponse === null || isset($decodedResponse['error']) || isset($decodedResponse['errors'])) {
-            throw new Create\SsoException('Error while trying to authenticate', 500);
+            throw new Create\SsoException($response); //'Error while trying to authenticate', 500);
         }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
@@ -242,14 +245,20 @@ class Sso implements HandlerInterface {
             $username = $user->username;
         }
 
-        $this->createNewSource(
-            $provider,
-            $user,
-            [
+        $array = [
                 'profile_id'   => $decodedResponse[$decodedResponseParam],
                 'access_token' => $command->accessToken,
                 'sso'          => true
-            ],
+        ];
+
+        if (isset($command->tokenSecret)) {
+            $array['token_secret'] = $command->tokenSecret;
+        }
+
+        $this->createNewSource(
+            $provider,
+            $user,
+            $array,
             $credential,
             $command->ipAddress
         );
