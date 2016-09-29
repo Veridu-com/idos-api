@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Gates routing definitions.
+ * Profile Gates
+ *
+ * A Profile Gate is a criterion set by a Company who requires a polar yes-no answer for a specific, vital feature of a Profile. For example if a Company requires Users to be over the age of 18, a Gate is used to filter out any User not fulfilling this criterion. Multiple Gates can be used to create more specific criteria if needed. For example if a Company requires Users to be over the age of 18 and living and in the USA, it would require 3 Gates, one for the age, one for employment and one for residency.
  *
  * @link docs/profile/gates/overview.md
  * @see App\Controller\Profile\Gates
@@ -270,11 +272,13 @@ class Gates implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/gates/{gateSlug}
      * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

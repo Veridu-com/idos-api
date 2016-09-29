@@ -15,7 +15,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Features routing definitions.
+ * Profile Feature
+ *
+ * A Profile Feature is a specific question the API can answer using data extracted from the Profile. An example feature could be “quantity of uploaded photos” and the API will give a quantitative answer. Another example feature could be “User’s Facebook and Twitter name matches” and the API will give a polar yes-no answer.
  *
  * @link docs/profile/features/overview.md
  * @see App\Controller\Profile\Features
@@ -141,6 +143,7 @@ class Features implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int featureId 3214
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -207,6 +210,7 @@ class Features implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int featureId 3214
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -240,6 +244,7 @@ class Features implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int featureId 3214
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -270,8 +275,9 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint PUT profiles/{userName}/features
      * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token  CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token  credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -301,8 +307,9 @@ class Features implements RouteInterface {
      *
      * @apiEndpoint PUT profiles/{userName}/features/bulk
      * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken XXX A valid Credential Token
-     * @apiAuth query token credentialToken XXX A valid Credential Token
+     * @apiAuth header token  CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token  credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth

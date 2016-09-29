@@ -71,6 +71,7 @@ class Sources implements RouteInterface {
      * @apiGroup Profile Source
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -103,6 +104,7 @@ class Sources implements RouteInterface {
      * @apiGroup Profile Source
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -135,6 +137,7 @@ class Sources implements RouteInterface {
      * @apiGroup Profile Source
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -167,6 +170,7 @@ class Sources implements RouteInterface {
      * @apiGroup Profile Source
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
@@ -200,6 +204,7 @@ class Sources implements RouteInterface {
      * @apiGroup Profile Source
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
@@ -233,6 +238,7 @@ class Sources implements RouteInterface {
      * @apiGroup Profile Source
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
      *
      * @param \Slim\App $app
