@@ -135,7 +135,7 @@ class Raw implements ControllerInterface {
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
             ->setParameter('service', $service)
@@ -183,7 +183,7 @@ class Raw implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Raw\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('source', $source);
@@ -231,7 +231,7 @@ class Raw implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Raw\\Upsert');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)

@@ -174,7 +174,7 @@ class Permissions implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Permission\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('companyId', $targetCompany->id);
 
         $permission = $this->commandBus->handle($command);

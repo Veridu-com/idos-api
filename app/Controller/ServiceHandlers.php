@@ -141,7 +141,7 @@ class ServiceHandlers implements ControllerInterface {
 
         $command = $this->commandFactory->create('ServiceHandler\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('companyId', $company->id);
 
         $entity = $this->commandBus->handle($command);
@@ -248,7 +248,7 @@ class ServiceHandlers implements ControllerInterface {
 
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('serviceHandlerId', $serviceHandlerId)
             ->setParameter('companyId', $company->id);
 

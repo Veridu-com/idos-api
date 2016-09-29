@@ -142,7 +142,7 @@ class RoleAccess implements ControllerInterface {
 
         $command = $this->commandFactory->create('RoleAccess\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identityId', $user->identityId);
         $entity = $this->commandBus->handle($command);
 
@@ -248,7 +248,7 @@ class RoleAccess implements ControllerInterface {
 
         $command = $this->commandFactory->create('RoleAccess\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('roleAccessId', $decodedRoleAccessId)
             ->setParameter('identityId', $user->identityId);
 

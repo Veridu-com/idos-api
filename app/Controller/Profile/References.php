@@ -110,7 +110,7 @@ class References implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Reference\\CreateNew');
 
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $request->getAttribute('targetUser'));
 
         $reference = $this->commandBus->handle($command);
