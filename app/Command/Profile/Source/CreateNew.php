@@ -65,6 +65,10 @@ class CreateNew extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
+        if (isset($parameters['credential'])) {
+            $this->credential = $parameters['credential'];
+        }
+
         if (isset($parameters['ipaddr'])) {
             $this->ipaddr = $parameters['ipaddr'];
         }

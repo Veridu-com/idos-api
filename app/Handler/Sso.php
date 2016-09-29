@@ -15,8 +15,8 @@ use App\Command\Sso\CreateNewGoogle;
 use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
 use App\Command\Sso\CreateNewTwitter;
-use App\Entity\Credential;
-use App\Entity\Source as SourceEntity;
+use App\Entity\Company\Credential;
+use App\Entity\Profile\Source as SourceEntity;
 use App\Entity\User;
 use App\Exception\Create;
 use App\Factory\Command;
@@ -165,7 +165,7 @@ class Sso implements HandlerInterface {
      *
      * @return App\Entity\Profile\Source The created source
      */
-    private function createNewSource(string $provider, User $user, array $tags, string $ipAddr) : SourceEntity {
+    private function createNewSource(string $provider, User $user, array $tags, Credential $credential, string $ipAddr) : SourceEntity {
         $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
 
         $command->setParameters(
@@ -173,6 +173,7 @@ class Sso implements HandlerInterface {
                 'name'   => $provider,
                 'user'   => $user,
                 'tags'   => $tags,
+                'credential' => $credential,
                 'ipaddr' => $ipAddr,
             ]
         );
@@ -249,6 +250,7 @@ class Sso implements HandlerInterface {
                 'access_token' => $command->accessToken,
                 'sso'          => true
             ],
+            $credential,
             $command->ipAddress
         );
 
