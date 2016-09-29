@@ -107,6 +107,9 @@ phinx-migrate-testing:
 phinx-rollback:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phinx rollback
 
+phinx-rollback-all:
+	docker exec --interactive --tty ${PHPSRV} vendor/bin/phinx rollback -t 0
+
 phinx-seed:
 	docker exec --interactive --tty ${PHPSRV} vendor/bin/phinx seed:run
 

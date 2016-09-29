@@ -60,15 +60,12 @@ class Created extends AbstractServiceQueueEvent {
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-        $source = $this->source->toArray();
-
         return array_merge(
             [
-            'providerName' => $this->source->name,
-            'sourceId'     => $this->source ? $this->source->id : null,
             'publicKey'    => $this->credential->public,
-            'processId'    => 1, // @FIXME process creation process must be reviewed
             'userName'     => $this->user->username
+            'sourceId'     => $this->source ? $this->source->getEncodedId() : null,
+            'processId'    => 1, // @FIXME process creation process must be reviewed
             ], $merge
         );
     }
