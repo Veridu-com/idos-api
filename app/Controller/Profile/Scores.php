@@ -122,7 +122,7 @@ class Scores implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Score\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -164,7 +164,7 @@ class Scores implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Score\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('name', $name);
@@ -203,7 +203,7 @@ class Scores implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Score\\Upsert');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 

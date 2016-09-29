@@ -120,7 +120,7 @@ class Tasks implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Task\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('service', $request->getAttribute('service'))
             ->setParameters(['processId' => $processId]);
 
@@ -165,7 +165,7 @@ class Tasks implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Task\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
             ->setParameter('id', $taskId);

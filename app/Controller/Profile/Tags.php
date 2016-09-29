@@ -122,7 +122,7 @@ class Tags implements ControllerInterface {
         $identity = $request->getAttribute('identity');
 
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('identity', $identity);
 

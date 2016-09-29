@@ -113,7 +113,7 @@ class Attributes implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Attribute\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -150,7 +150,7 @@ class Attributes implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Profile\\Attribute\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('name', $request->getAttribute('attributeName'));
 

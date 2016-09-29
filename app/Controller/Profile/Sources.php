@@ -152,7 +152,7 @@ class Sources implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
@@ -270,7 +270,7 @@ class Sources implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Source\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));

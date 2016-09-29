@@ -154,7 +154,7 @@ class Members implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\Member\\UpdateOne');
         $command
             ->setParameter('memberId', $request->getAttribute('decodedMemberId'))
-            ->setParameters($request->getParsedBody());
+            ->setParameters($request->getParsedBody() ?: []);
 
         $member = $this->commandBus->handle($command);
 

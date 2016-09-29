@@ -178,7 +178,7 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Feature\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
             ->setParameter('source', $source)
@@ -293,7 +293,7 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Feature\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('credential', $credential)
@@ -340,7 +340,7 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Feature\\Upsert');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
             ->setParameter('source', $source)
