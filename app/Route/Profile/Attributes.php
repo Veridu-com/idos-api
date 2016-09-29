@@ -16,7 +16,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Attribute routing definitions.
+ * Profile Attribute
+ *
+ * A Profile Attribute is a piece of information within a Profile that has been extracted by the API. This information can be simple like a full name, or more detailed like a Users hometown or employment. If the API has extracted multiple results for one Attribute, they will all be listed with an Attribute Score.
  *
  * @link docs/profiles/attribute/overview.md
  * @see App\Controller\Profile\Attribute

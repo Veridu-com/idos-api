@@ -15,7 +15,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Reference routing definitions.
+ * A Profile Reference is the information a User initially provides as true information, which the API can use as a reference during processing the Raw data of the Users Profile in order to authenticate its legitimacy.
  *
  * @link docs/profiles/reference/overview.md
  * @see App\Controller\Profile\Reference
@@ -216,7 +216,7 @@ class References implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
                 'App\Controller\Profile\References:updateOne'
             )
@@ -225,7 +225,7 @@ class References implements RouteInterface {
             ->setName('reference:updateOne');
     }
 
-    /*
+    /**
      * Deletes an reference.
      *
      * Deletes an reference from the given user.

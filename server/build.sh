@@ -79,3 +79,12 @@ if [ `docker ps -a | grep redis` ]; then
 fi
 make build
 cd -
+
+# builds idos/skynet
+cp conf.d/skynet-web.war docker/idos/skynet/
+cd docker/idos/skynet
+if [ `docker ps -a | grep skynet` ]; then
+    make clean
+fi
+make build
+cd -

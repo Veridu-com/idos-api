@@ -178,7 +178,7 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Feature\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
             ->setParameter('source', $source)
@@ -286,15 +286,17 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user      = $request->getAttribute('targetUser');
-        $service   = $request->getAttribute('service');
-        $featureId = $request->getAttribute('decodedFeatureId');
+        $user         = $request->getAttribute('targetUser');
+        $service      = $request->getAttribute('service');
+        $credential   = $request->getAttribute('credential');
+        $featureId    = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Profile\\Feature\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service)
+            ->setParameter('credential', $credential)
             ->setParameter('featureId', $featureId);
 
         $feature = $this->commandBus->handle($command);
@@ -338,7 +340,7 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Feature\\Upsert');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
             ->setParameter('source', $source)

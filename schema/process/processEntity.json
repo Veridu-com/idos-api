@@ -11,7 +11,7 @@
         },
         "event": {
             "description": "Event that triggered the process",
-            "type": "string",
+            "type": ["string", "null"],
             "pattern": ""
         },
         "created_at": {

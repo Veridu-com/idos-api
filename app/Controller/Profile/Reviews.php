@@ -121,7 +121,7 @@ class Reviews implements ControllerInterface {
         $identity = $request->getAttribute('identity');
 
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('identity', $identity);
 
@@ -159,7 +159,7 @@ class Reviews implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Review\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('identity', $identity)
             ->setParameter('id', (int) $request->getAttribute('decodedReviewId'));

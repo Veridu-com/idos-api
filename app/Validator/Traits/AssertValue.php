@@ -46,6 +46,7 @@ trait AssertValue {
             Validator::intVal(),
             Validator::stringType()->length(1, null),
             Validator::boolVal(),
+            Validator::arrayType(),
             Validator::nullType()
         )->assert($value);
     }

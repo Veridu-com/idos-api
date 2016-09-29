@@ -18,7 +18,7 @@ use Slim\App;
 /**
  * Role Access.
  *
- * RoleAccess is the level of permission about a User that is accessible from specific sources. It is used to limit what sensitive information (eg. last name, phone number etc) is available to specific Members or Users.
+ * Access Roles are the level of permissions a User has that are accessible from specific sources. It is used to limit what sensitive information (eg. last name, phone number etc) is available to specific Members or Users.
  *
  * @link docs/access/roles/overview.md
  * @see App\Controller\User\RoleAccess
@@ -233,6 +233,7 @@ class RoleAccess implements RouteInterface {
      * @apiGroup Access Roles
      * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
      *
      * @param \Slim\App $app
      * @param \callable $auth

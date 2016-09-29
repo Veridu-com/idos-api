@@ -137,7 +137,6 @@ class Sources implements ControllerInterface {
      *  - Submitted can carry as many fields as wanted.
      *
      * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
-     * @apiEndpointParam body string ipaddr 192.168.0.1 Ip Address
      * @apiEndpointResponse 201 schema/sources/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -153,7 +152,7 @@ class Sources implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
@@ -254,7 +253,6 @@ class Sources implements ControllerInterface {
      *
      * @apiEndpointParam body string otpCode OTP Code check for One Time Password Verifications
      * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
-     * @apiEndpointParam body string ipaddr 192.168.0.1 Ip Address
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -272,7 +270,7 @@ class Sources implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Source\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));

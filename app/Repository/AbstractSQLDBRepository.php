@@ -87,7 +87,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * Begins a transaction.
      *
      * @throws \Exception
-     * 
+     *
      * @return void
      */
     public function beginTransaction() {
@@ -98,7 +98,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * Commit the active database transaction.
      *
      * @throws \Exception
-     * 
+     *
      * @return void
      */
     public function commit() {
@@ -126,7 +126,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * Rollback the active database transaction.
      *
      * @throws \Exception
-     * 
+     *
      * @return void
      */
     public function rollBack() {

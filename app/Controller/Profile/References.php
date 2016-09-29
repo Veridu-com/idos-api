@@ -110,7 +110,7 @@ class References implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Reference\\CreateNew');
 
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $request->getAttribute('targetUser'));
 
         $reference = $this->commandBus->handle($command);
@@ -146,7 +146,7 @@ class References implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $command = $this->commandFactory->create('Profile\\Reference\\UpdateOne');
         $command
-            ->setParameters($request->getParsedBody())
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('name', $request->getAttribute('referenceName'));
 
