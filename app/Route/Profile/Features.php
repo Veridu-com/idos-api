@@ -32,6 +32,7 @@ class Features implements RouteInterface {
             'features:getOne',
             'features:updateOne',
             'features:upsert',
+            'features:upsertBulk',
             'features:deleteOne'
         ];
     }
@@ -60,6 +61,7 @@ class Features implements RouteInterface {
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::upsert($app, $authMiddleware, $permissionMiddleware);
+        self::upsertBulk($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -290,5 +292,36 @@ class Features implements RouteInterface {
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('features:upsert');
+    }
+
+    /**
+     * Create or update features.
+     *
+     * Create or update features for the given user.
+     *
+     * @apiEndpoint PUT profiles/{userName}/features/bulk
+     * @apiGroup Profile Features
+     * @apiAuth header token CredentialToken XXX A valid Credential Token
+     * @apiAuth query token credentialToken XXX A valid Credential Token
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     *
+     * @return void
+     *
+     * @link docs/profile/features/createNew.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Profile\Features::createNew
+     */
+    private static function upsertBulk(App $app, callable $auth, callable $permission) {
+        $app
+            ->put(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features/bulk',
+                'App\Controller\Profile\Features:upsertBulk'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('features:upsertBulk');
     }
 }

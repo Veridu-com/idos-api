@@ -101,8 +101,18 @@ class OptimusDecode implements MiddlewareInterface {
         if (is_array($parsedBody)) {
             // adds decoded values to $parsedBody
             foreach ($parsedBody as $key => $value) {
-                if ($this->matchDecodableBodyKey($key)) {
-                    $parsedBody[$this->getDecodedBodyName($key)] = $this->optimus->decode($value);
+                if (is_string($key)) {
+                    // object request
+                    if ($this->matchDecodableBodyKey($key)) {
+                        $parsedBody[$this->getDecodedBodyName($key)] = $this->optimus->decode($value);
+                    }
+                } else {
+                    // array request
+                    foreach ($value as $objKey => $objValue) {
+                        if ($this->matchDecodableBodyKey($objKey)) {
+                            $parsedBody[$key][$this->getDecodedBodyName($objKey)] = $this->optimus->decode($objValue);
+                        }
+                    }
                 }
             }
 

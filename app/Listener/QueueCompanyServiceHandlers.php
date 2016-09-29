@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Listener;
 
 use App\Event\ServiceQueueEventInterface;
+use League\Event\EventInterface;
 
 trait QueueCompanyServiceHandlers {
     /**
@@ -25,7 +26,9 @@ trait QueueCompanyServiceHandlers {
         $handlers = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($companyId, (string) $event);
 
         if ($handlers->isEmpty()) {
-            return $this->dispatchUnhandleEvent($event);
+            $this->dispatchUnhandleEvent($event);
+
+            return false;
         }
 
         $success = true;
@@ -66,7 +69,7 @@ trait QueueCompanyServiceHandlers {
             json_encode($payload)
         );
 
-        return $this->gearmanClient->returnCode() !== \GEARMAN_SUCCESS;
+        return $this->gearmanClient->returnCode() == \GEARMAN_SUCCESS;
     }
 
     /**

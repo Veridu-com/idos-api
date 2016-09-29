@@ -64,10 +64,12 @@ class Created extends AbstractServiceQueueEvent {
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
+        $source = $this->source->toArray();
+
         return array_merge(
             [
             'providerName' => $this->source->name,
-            'sourceId'     => $this->source->id,
+            'sourceId'     => $source['id'],
             'publicKey'    => $this->credential->public,
             'processId'    => 1, // @FIXME process creation process must be reviewed
             'userName'     => $this->user->username
@@ -76,9 +78,7 @@ class Created extends AbstractServiceQueueEvent {
     }
 
     /**
-     * Gets the event identifier.
-     *
-     * @return string
+     * {inheritdoc}.
      **/
     public function __toString() {
         return sprintf('idos:raw.%s.created', $this->source->name);
