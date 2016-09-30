@@ -15,29 +15,6 @@ use Respect\Validation\Validator;
  */
 trait AssertName {
     /**
-     * Validates if $input is compound of latin chars.
-     *
-     * @param mixed $input
-     *
-     * @return bool
-     */
-    public function latinChars($input) : bool {
-        $alphabet = array_merge(
-            [32],
-            range(65, 90),
-            range(97, 122),
-            range(195, 207)
-        );
-        foreach (str_split($input) as $char) {
-            if (! in_array(ord($char), $alphabet)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * Asserts a valid name, minimum 1 char long.
      *
      * @param mixed $name
@@ -48,19 +25,6 @@ trait AssertName {
      */
     public function assertName($name) {
         Validator::prnt()
-            ->length(1, null)
-            ->assert($name);
-    }
-
-    /**
-     * Asserts a valid latin name, minimum 1 char long.
-     *
-     * @param mixed $name
-     *
-     * @return void
-     */
-    public function assertLatinName($name) {
-        Validator::callback([$this, 'latinChars'])
             ->length(1, null)
             ->assert($name);
     }
@@ -81,19 +45,6 @@ trait AssertName {
     }
 
     /**
-     * Asserts a valid short (1-50 chars long) latin name.
-     *
-     * @param mixed $name
-     *
-     * @return void
-     */
-    public function assertShortLatinName($name) {
-        Validator::callback([$this, 'latinChars'])
-            ->length(1, 50)
-            ->assert($name);
-    }
-
-    /**
      * Asserts a valid short (1-100 chars long) name.
      *
      * @param mixed $name
@@ -104,19 +55,6 @@ trait AssertName {
      */
     public function assertMediumName($name) {
         Validator::prnt()
-            ->length(1, 100)
-            ->assert($name);
-    }
-
-    /**
-     * Asserts a valid medium (1-100 chars long) latin name.
-     *
-     * @param mixed $name
-     *
-     * @return void
-     */
-    public function assertMediumLatinName($name) {
-        Validator::callback([$this, 'latinChars'])
             ->length(1, 100)
             ->assert($name);
     }
@@ -133,19 +71,6 @@ trait AssertName {
     public function assertLongName($name) {
         Validator::prnt()
             ->length(1, 255)
-            ->assert($name);
-    }
-
-    /**
-     * Asserts a valid long (1-150 chars long) latin name.
-     *
-     * @param mixed $name
-     *
-     * @return void
-     */
-    public function assertLongLatinName($name) {
-        Validator::callback([$this, 'latinChars'])
-            ->length(1, 150)
             ->assert($name);
     }
 }

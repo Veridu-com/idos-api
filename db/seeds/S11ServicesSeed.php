@@ -13,8 +13,7 @@ class S11ServicesSeed extends AbstractSeed {
         $servicesData = [
             [
                 'name'          => 'idOS Scraper',
-                // 'url'           => 'https://scraper.idos.io',
-                'url'           => 'https://localhost:8081/index.php/1.0/scrape',
+                'url'           => 'https://handler.idos.io/1.0/scrape',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -38,8 +37,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Feature Extractor',
-                // 'url'           => 'https://feature-extractor.idos.io',
-                'url'           => 'https://localhost:8082/index.php/1.0/feature',
+                'url'           => 'https://handler.idos.io/1.0/feature',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -63,7 +61,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthYear Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/birthyear-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/birthyear-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -87,7 +85,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS FirstName Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/firstname-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/firstname-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -111,7 +109,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS LastName Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/lastname-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/lastname-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -135,7 +133,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthDay Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/birthday-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/birthday-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -159,7 +157,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthMonth Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/birthmonth-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/birthmonth-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -183,7 +181,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Country Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/country-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/country-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -207,7 +205,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS E-mail Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/email-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/email-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -231,7 +229,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS City Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/city-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/city-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -255,7 +253,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS ZipCode Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/zipcode-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/zipcode-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -279,7 +277,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Phone Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/phone-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/phone-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -303,7 +301,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Street Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/street-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/street-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -327,7 +325,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Gender Candidates',
-                'url'           => 'https://localhost:8083/skynet-web/rest/gender-candidates',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/gender-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -351,7 +349,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS FirstName Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/firstname-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/firstname-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -375,7 +373,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Overall Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/overall-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/overall-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -399,7 +397,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthYear Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/birthyear-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/birthyear-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -423,7 +421,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS LastName Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/lastname-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/lastname-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -447,7 +445,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthDay Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/birthday-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/birthday-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -471,7 +469,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthMonth Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/birthmonth-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/birthmonth-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -495,7 +493,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Country Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/country-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/country-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -519,7 +517,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS E-mail Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/email-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/email-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -543,7 +541,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Overall Model C',
-                'url'           => 'https://localhost:8083/skynet-web/rest/overall-cs-nb',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/overall-cs-nb',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -567,7 +565,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS City Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/city-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/city-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -591,7 +589,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS ZipCode Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/zipcode-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/zipcode-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -615,7 +613,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Phone Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/phone-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/phone-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -639,7 +637,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Street Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/street-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/street-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -663,7 +661,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Gender Model M',
-                'url'           => 'https://localhost:8083/skynet-web/rest/gender-mlp',
+                'url'           => 'https://handler.idos.io/skynet-web/rest/gender-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',

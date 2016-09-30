@@ -15,7 +15,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Attribute Score
+ * Attribute Score.
  *
  * An Attribute Score is a numerical score given to a specific Attribute representing how strong it is within the Profile. If a User has listed different names across multiple sources, then the API will provide each name with a score representing it’s likelihood of being true
  *

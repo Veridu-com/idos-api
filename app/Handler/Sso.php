@@ -23,6 +23,7 @@ use App\Factory\Command;
 use App\Factory\Event;
 use App\Helper\Token;
 use App\Repository\Company\CredentialInterface;
+use App\Repository\IdentityInterface;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -33,17 +34,23 @@ use League\Tactician\CommandBus;
  */
 class Sso implements HandlerInterface {
     /**
-     * User repository instance.
+     * User Repository instance.
      *
      * @var App\Repository\UserInterface
      */
     private $userRepository;
     /**
-     * Credential repository instance.
+     * Credential Repository instance.
      *
      * @var App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
+    /**
+     * Identity Repository instance.
+     *
+     * @var App\Repository\IdentityInterface
+     */
+    private $identityRepository;
     /**
      * Event factory instance.
      *
@@ -88,6 +95,9 @@ class Sso implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Company\Credential'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Identity'),
+                $container
                     ->get('eventFactory'),
                 $container
                     ->get('eventEmitter'),
@@ -107,6 +117,7 @@ class Sso implements HandlerInterface {
      * @param App\Factory\Command
      * @param App\Repository\UserInterface       $userRepository
      * @param App\Repository\CredentialInterface $credentialRepository
+     * @param App\Repository\IdentityInterface   $identityRepository
      * @param App\Factory\Event                  $eventFactory
      * @param \League\Event\Emitter              $emitter
      * @param callable                           $service
@@ -118,6 +129,7 @@ class Sso implements HandlerInterface {
     public function __construct(
         UserInterface $userRepository,
         CredentialInterface $credentialRepository,
+        IdentityInterface $identityRepository,
         Event $eventFactory,
         Emitter $emitter,
         callable $service,
@@ -126,6 +138,7 @@ class Sso implements HandlerInterface {
     ) {
         $this->userRepository       = $userRepository;
         $this->credentialRepository = $credentialRepository;
+        $this->identityRepository   = $identityRepository;
         $this->eventFactory         = $eventFactory;
         $this->emitter              = $emitter;
         $this->service              = $service;
@@ -158,23 +171,29 @@ class Sso implements HandlerInterface {
     /**
      * Creates a new source.
      *
-     * @param string           $provider The provider
-     * @param \App\Entity\User $user     The user
-     * @param array            $tags     The tags
-     * @param string           $ipAddr   The ip address
+     * @param string           $sourceName The provider
+     * @param \App\Entity\User $user       The user
+     * @param array            $tags       The tags
+     * @param string           $ipAddr     The ip address
      *
      * @return App\Entity\Profile\Source The created source
      */
-    private function createNewSource(string $provider, User $user, array $tags, Credential $credential, string $ipAddr) : SourceEntity {
+    private function createNewSource(
+        string $sourceName,
+        User $user,
+        array $tags,
+        Credential $credential,
+        string $ipAddr
+    ) : SourceEntity {
         $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
 
         $command->setParameters(
             [
-                'name'   => $provider,
-                'user'   => $user,
-                'tags'   => $tags,
+                'name'       => $sourceName,
+                'user'       => $user,
+                'tags'       => $tags,
                 'credential' => $credential,
-                'ipaddr' => $ipAddr,
+                'ipaddr'     => $ipAddr,
             ]
         );
 
@@ -184,7 +203,7 @@ class Sso implements HandlerInterface {
     /**
      * Creates a new sso source and a new user token.
      *
-     * @param string          $provider             The provider
+     * @param string          $sourceName           The provider
      * @param AbstractCommand $command              The CreateNew command for the provider
      * @param Function|string $tokenClass           The oauth token class
      * @param string          $serviceRequestUrl    The provider url that will be used to get the user id
@@ -198,20 +217,23 @@ class Sso implements HandlerInterface {
      * @see App\Repository\DBUser::getUsernameByProfileIdAndProviderNameAndCredentialId
      * @see App\Repository\DBUser::findByUsername
      *
-     * @return string The generated token
+     * @return array An array of generated tokens (userToken and optionally identityToken)
      */
     private function createNew(
-        string $provider,
+        string $sourceName,
         AbstractCommand $command,
         string $tokenClass,
         string $serviceRequestUrl,
         string $decodedResponseParam,
         string $eventClass
-    ) : string {
-        $service = call_user_func_array($this->service, [$provider, $command->key, $command->secret]);
+    ) : array {
+        $service = call_user_func_array($this->service, [$sourceName, $command->appKey, $command->appSecret]);
 
         $token = new $tokenClass();
         $token->setAccessToken($command->accessToken);
+        if (isset($command->tokenSecret)) {
+            $token->setAccessTokenSecret($command->tokenSecret);
+        }
 
         $service->getStorage()->storeAccessToken($service->service(), $token);
 
@@ -231,7 +253,7 @@ class Sso implements HandlerInterface {
 
         $username = $this->userRepository->getUsernameByProfileIdAndProviderNameAndCredentialId(
             $decodedResponse[$decodedResponseParam],
-            $provider,
+            $sourceName,
             $credential->id
         );
 
@@ -242,14 +264,20 @@ class Sso implements HandlerInterface {
             $username = $user->username;
         }
 
-        $this->createNewSource(
-            $provider,
-            $user,
-            [
+        $array = [
                 'profile_id'   => $decodedResponse[$decodedResponseParam],
                 'access_token' => $command->accessToken,
                 'sso'          => true
-            ],
+        ];
+
+        if (isset($command->tokenSecret)) {
+            $array['token_secret'] = $command->tokenSecret;
+        }
+
+        $this->createNewSource(
+            $sourceName,
+            $user,
+            $array,
             $credential,
             $command->ipAddress
         );
@@ -257,7 +285,33 @@ class Sso implements HandlerInterface {
         $event = $this->eventFactory->create($eventClass, $username);
         $this->emitter->emit($event);
 
-        return Token::generateUserToken($username, $command->credentialPubKey, $credential->private);
+        $tokens = [
+            'user_token' => Token::generateUserToken($username, $command->credentialPubKey, $credential->private)
+        ];
+
+        if ($credential->special) {
+            $identities = $this->identityRepository->findBySourceNameAndProfileId(
+                $sourceName,
+                $decodedResponse[$decodedResponseParam],
+                $command->appKey ?: 'Veridu'
+            );
+
+            if ($identities->isEmpty()) {
+                $command = $this->commandFactory->create('Identity\\CreateNew');
+                $command
+                    ->setParameter('sourceName', $sourceName)
+                    ->setParameter('profileId', $decodedResponse[$decodedResponseParam])
+                    ->setParameter('appKey', $command->appKey ?: 'Veridu');
+
+                $identity = $this->commandBus->handle($command);
+            } else {
+                $identity = $identities->first();
+            }
+
+            $tokens['identity_token'] = Token::generateIdentityToken($identity->publicKey, $identity->privateKey);
+        }
+
+        return $tokens;
     }
 
     /**

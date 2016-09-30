@@ -95,7 +95,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
                     $entity             = $this->find($source->id);
                     $entity->collection = $collection->getName();
                     //@FIXME do this through castHydrateEntity
-                    $entity->source     = $source->toArray();
+                    $entity->source = $source->toArray();
 
                     $entities->push($entity);
 

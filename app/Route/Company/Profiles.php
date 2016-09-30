@@ -16,7 +16,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Company Profile
+ * Company Profile.
  *
  * A Company Profile where a Company will access the collection of data on a specific User. This is where the Company can review in detail the raw data, attributes, features, warnings, and score gathered from all sources provided by a specific User
  *
@@ -42,6 +42,9 @@ class Profiles implements RouteInterface {
         $app->getContainer()[\App\Controller\Company\Profiles::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Profiles(
                 $container->get('repositoryFactory')->create('User'),
+                $container->get('repositoryFactory')->create('Profile\Source'),
+                $container->get('repositoryFactory')->create('Profile\Tag'),
+                $container->get('repositoryFactory')->create('Profile\Review'),
                 $container->get('repositoryFactory')->create('Profile\Warning'),
                 $container->get('repositoryFactory')->create('Profile\Gate'),
                 $container->get('repositoryFactory')->create('Profile\Attribute'),

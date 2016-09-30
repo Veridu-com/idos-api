@@ -213,11 +213,11 @@ class Sso implements ControllerInterface {
 
         foreach ($settings as $setting) {
             if (in_array($setting->property, [$credentialSettingKey, $providerSettingKey])) {
-                $command->setParameter('key', $setting->value);
+                $command->setParameter('appKey', $setting->value);
             }
 
             if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
-                $command->setParameter('secret', $setting->value);
+                $command->setParameter('appSecret', $setting->value);
             }
 
             if (in_array($setting->property, [$credentialSettingVer, $providerSettingVer])) {
@@ -235,12 +235,8 @@ class Sso implements ControllerInterface {
             $command->setParameter('tokenSecret', $tokenSecret);
         }
 
-        $token = $this->commandBus->handle($command);
-
         $body = [
-            'data'   => [
-                'user_token' => $token
-            ]
+            'data' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

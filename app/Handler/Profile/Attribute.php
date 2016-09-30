@@ -111,7 +111,7 @@ class Attribute implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
-            $this->validator->assertName($command->name);
+            $this->validator->assertLongName($command->name);
             $this->validator->assertValue($command->value);
             $this->validator->assertFloat($command->support);
         } catch (ValidationException $e) {
@@ -198,7 +198,7 @@ class Attribute implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
-            $this->validator->assertName($command->name);
+            $this->validator->assertLongName($command->name);
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),

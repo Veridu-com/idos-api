@@ -143,6 +143,10 @@ abstract class AbstractRepository implements RepositoryInterface {
         }
 
         foreach ($relationships as $databasePrefix => $entityName) {
+            if (! isset($this->relationships[$databasePrefix])) {
+                continue;
+            }
+
             $relationProperties = $this->relationships[$databasePrefix];
             //@FIXME: make this method work for all relationship types
             $foreignKey = $relationProperties['foreignKey'];

@@ -14,7 +14,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profiles Raw
+ * Profiles Raw.
  *
  * Profiles Raw is the raw data extracted from a Profile. This is what the API reads and extracts information in order to process more complex requests.
  *

@@ -17,9 +17,15 @@ class User extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'username', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'username', 'credential', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'credential' => 'Company\Credential'
+    ];
 }
