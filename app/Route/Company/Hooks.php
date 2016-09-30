@@ -31,7 +31,6 @@ class Hooks implements RouteInterface {
         return [
             'hooks:listAll',
             'hooks:createNew',
-            'hooks:deleteAll',
             'hooks:getOne',
             'hooks:updateOne',
             'hooks:deleteOne'
@@ -57,7 +56,6 @@ class Hooks implements RouteInterface {
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
