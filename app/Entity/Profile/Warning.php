@@ -28,7 +28,7 @@ class Warning extends AbstractEntity {
     protected $visible = [
         'id',
         'creator',
-        'warning',
+        'review',
         'slug',
         'attribute',
         'created_at',
@@ -44,6 +44,6 @@ class Warning extends AbstractEntity {
      */
     public $relationships = [
         'creator' => 'Service',
-        'warning' => 'Warning'
+        'review' => 'Review'
     ];
 }
