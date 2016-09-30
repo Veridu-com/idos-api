@@ -152,7 +152,7 @@ class Reviews implements RouteInterface {
         $app
             ->put(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
-                'App\Controller\Profile\Reviews:updateOne's
+                'App\Controller\Profile\Reviews:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
