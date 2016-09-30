@@ -180,7 +180,6 @@ class Feature implements HandlerInterface {
             $event   = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $command->credential, $process, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-
             throw new Create\Profile\FeatureException('Error while trying to create a feature', 500, $e);
         }
 
@@ -407,6 +406,7 @@ class Feature implements HandlerInterface {
             } else {
                 $event = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $command->credential, $process, $command->source);
             }
+
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\Profile\FeatureException('Error while trying to upsert a feature', 404, $e);
@@ -467,7 +467,6 @@ class Feature implements HandlerInterface {
         );
 
         if ($success) {
-
             // creates 1 event per source
             // sourceId will be 0 to null sources
             foreach ($featuresPerSource as $sourceId => $sourceFeatures) {
@@ -486,7 +485,7 @@ class Feature implements HandlerInterface {
      * Gets the process.
      *
      * @param CommandInterface $command The command
-     * 
+     *
      * @return App\Entity\Profile\Process
      */
     private function getRelatedProcess(int $userId, $source = null) : Process {
@@ -500,15 +499,16 @@ class Feature implements HandlerInterface {
 
             return $this->processRepository->findLastByUserIdSourceIdAndEvent($userId, $sourceId, $event);
         } catch (NotFound $e) {
-            $entity = $this->processRepository->create([
+            $entity = $this->processRepository->create(
+                [
                 'name'      => 'idos:verification',
                 'user_id'   => $userId,
                 'source_id' => $sourceId,
                 'event'     => $event
-            ]);
+                ]
+            );
 
             return $this->processRepository->save($entity);
         }
     }
-
 }

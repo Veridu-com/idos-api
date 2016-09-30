@@ -146,7 +146,7 @@ class Raw implements HandlerInterface {
         );
 
         try {
-            $raw   = $this->repository->save($raw);
+            $raw = $this->repository->save($raw);
 
             $process = $this->processRepository->findBySourceId($command->source->id);
 

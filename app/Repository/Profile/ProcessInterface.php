@@ -39,11 +39,10 @@ interface ProcessInterface extends RepositoryInterface {
      * @param int         $userId The user identifier
      * @param int|null    $source The source
      * @param string|null $event  The event
-     * 
+     *
      * @throws App\Exception\NotFound
      *
      * @return App\Entity\Profile\Process
      */
     public function findLastByUserIdSourceIdAndEvent(int $userId, $sourceId, $event) : Process;
-
 }
