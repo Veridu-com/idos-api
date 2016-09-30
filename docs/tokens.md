@@ -37,15 +37,3 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI1ZDQxNDAyYWJjNGIyYTc2Yjk3MTlkOTE
 
 
 `eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI4YjVmZTlkYjg0ZTMzOGI0MjRlZDZkNTlkYTMyNTRhMCJ9.7o7r5gl5tgdkOZALhYZgB1wd_Rn8keWVDSHcyfcquOo`
-
-## Credential Token
-
-```php
-echo App\Helper\Token::generateCredentialToken(
-    '4c9184f37cff01bcdc32dc486ec36961',
-    'ef970ffad1f1253a2182a88667233991',
-    '213b83392b80ee98c8eb2a9fed9bb84d'
-);
-```
-
-`eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJlZjk3MGZmYWQxZjEyNTNhMjE4MmE4ODY2NzIzMzk5MSIsInN1YiI6IjRjOTE4NGYzN2NmZjAxYmNkYzMyZGM0ODZlYzM2OTYxIn0.oeiD9R7FlnMBiDW3UClRO39nvbMM-TTZkyedYaSysCc`
