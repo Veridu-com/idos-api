@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "POST /sso",
+    "title": "GET /sso",
     "type": "object",
     "properties": {
         "status": {
@@ -9,7 +9,7 @@
         },
         "data": {
             "description": "Sso response payload",
-            "type": "string"
+            "type": "array"
         }
     },
     "required": [
@@ -17,4 +17,3 @@
         "data"
     ]
 }
-

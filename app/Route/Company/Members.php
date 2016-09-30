@@ -65,7 +65,7 @@ class Members implements RouteInterface {
      *
      * Retrieves a complete list of all members that belong to the requesting company.
      *
-     * @apiEndpoint GET /companies/members
+     * @apiEndpoint GET /companies/{companySlug}/members
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -97,7 +97,7 @@ class Members implements RouteInterface {
      *
      * Creates a new member for the requesting company.
      *
-     * @apiEndpoint POST /companies/members
+     * @apiEndpoint POST /companies/{companySlug}/members
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -130,12 +130,12 @@ class Members implements RouteInterface {
      *
      * Updates the role for a single Member.
      *
-     * @apiEndpoint PUT /companies/members/{userName}
+     * @apiEndpoint PUT /companies/{companySlug}/members/{memberId}
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string userName johndoe
+     * @apiEndpointURIFragment int memberId 1243
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -159,18 +159,17 @@ class Members implements RouteInterface {
             ->setName('members:updateOne');
     }
 
-    /*
+    /**
      * Retrieve a single Member.
      *
      * Retrieves all public information from a Member
      *
-     * @apiEndpoint GET /companies/members/{userName}
+     * @apiEndpoint GET /companies/{companySlug}/members/{memberId}
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string userName
-     *
+     * @apiEndpointURIFragment int memberId 1243
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission
@@ -193,18 +192,17 @@ class Members implements RouteInterface {
             ->setName('members:getOne');
     }
 
-    /*
+    /**
      * Deletes a single Member.
      *
      * Deletes a single Member that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/members/{userName}
+     * @apiEndpoint DELETE /companies/{companySlug}/members/{memberId}
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string userName
-     *
+     * @apiEndpointURIFragment int memberId 1243
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission

@@ -61,7 +61,7 @@ class Profiles implements ControllerInterface {
     /**
      * Lists all Profiles that are visible to the acting Company.
      *
-     * @apiEndpointResponse 200 schema/profiles/listAll.json
+     * @apiEndpointResponse 200 schema/profile/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

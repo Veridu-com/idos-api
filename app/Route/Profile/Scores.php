@@ -69,8 +69,8 @@ class Scores implements RouteInterface {
      *
      * Retrieve a complete list of the scores from a given attribute.
      *
-     * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}/scores
-     * @apiGroup Attributes Score
+     * @apiEndpoint GET /profiles/{userName}/scores
+     * @apiGroup Profile Scores
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -101,8 +101,8 @@ class Scores implements RouteInterface {
      *
      * Creates a new score for the given attribute.
      *
-     * @apiEndpoint POST /profiles/{userName}/attributes/{attributeName}/scores
-     * @apiGroup Attributes Score
+     * @apiEndpoint POST /profiles/{userName}/scores
+     * @apiGroup Profile Scores
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -134,8 +134,8 @@ class Scores implements RouteInterface {
      *
      * Updates a score for the given attribute.
      *
-     * @apiEndpoint PUT /profiles/{userName}/attributes/{attributeName}/scores/{scoreName}
-     * @apiGroup Company Members
+     * @apiEndpoint PUT /profiles/{userName}/scores/{scoreName}
+     * @apiGroup Profile Scores
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -164,16 +164,15 @@ class Scores implements RouteInterface {
     }
 
     /**
-     * Update a score.
+     * Create or update a score.
      *
-     * Updates a score for the given attribute.
+     * Creates or updates a score for the given attribute.
      *
-     * @apiEndpoint PUT /profiles/{userName}/attributes/{attributeName}/scores/{scoreName}
-     * @apiGroup Company Members
-     * @apiAuth header token CredentialToken XXX Company's credential token
-     * @apiAuth query token credentialToken XXX Company's credential token
+     * @apiEndpoint PUT /profiles/{userName}/scores
+     * @apiGroup Profile Scores
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string scoreName overall
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -202,8 +201,8 @@ class Scores implements RouteInterface {
      *
      * Retrieves a score from a given attribute.
      *
-     * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}/scores/{scoreName}
-     * @apiGroup Attributes Score
+     * @apiEndpoint GET /profiles/{userName}/scores/{scoreName}
+     * @apiGroup Profile Scores
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -236,8 +235,8 @@ class Scores implements RouteInterface {
      *
      * Deletes all scores of a given attribute.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/attributes/{attributeName}/scores
-     * @apiGroup Attributes Score
+     * @apiEndpoint DELETE /profiles/{userName}/scores
+     * @apiGroup Profile Scores
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -269,8 +268,8 @@ class Scores implements RouteInterface {
      *
      * Deletes a score from a given attribute.
      *
-     * @apiEndpoint DELETE /profiles/{userName}/attributes/{attributeName}/scores/{scoreName}
-     * @apiGroup Attributes Score
+     * @apiEndpoint DELETE /profiles/{userName}/scores/{scoreName}
+     * @apiGroup Profile Scores
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2

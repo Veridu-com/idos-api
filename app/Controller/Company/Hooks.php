@@ -71,7 +71,7 @@ class Hooks implements ControllerInterface {
     /**
      * Lists all hooks associated with given credential.
      *
-     * @apiEndpointResponse    200    schema/hook/listAll.json
+     * @apiEndpointResponse 200 schema/hook/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response

@@ -14,7 +14,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Sso routing definitions.
+ * Profile SSO
+ *
+ * Profile SSO is the “Single Sign-On” service that a User can use to easily authenticate themselves across multiple platforms using the Veridu service, without having to use/create new login credentials for each platform.
  *
  * @link docs/sso/overview.md
  * @see App\Controller\Sso
@@ -85,11 +87,11 @@ class Sso implements RouteInterface {
     }
 
     /**
-     * Create new Feature.
+     * Create new SSO.
      *
-     * Create a new feature for the given user.
+     * Create a new sso.
      *
-     * @apiEndpoint POST profiles/{userName}/features
+     * @apiEndpoint POST /sso
      * @apiGroup Profile Sso
      * @apiAuth header key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token

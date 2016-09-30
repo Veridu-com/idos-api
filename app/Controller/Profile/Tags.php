@@ -71,7 +71,7 @@ class Tags implements ControllerInterface {
     /**
      * Lists all Tags that belongs to the Target User.
      *
-     * @apiEndpointResponse    200    schema/tag/listAll.json
+     * @apiEndpointResponse 200 schema/tag/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -207,7 +207,7 @@ class Tags implements ControllerInterface {
     /**
      * Deletes one Tag of the Target User based on the userId.
      *
-     * @apiEndpointResponse    200    schema/tag/deleteOne.json
+     * @apiEndpointResponse 200 schema/tag/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
