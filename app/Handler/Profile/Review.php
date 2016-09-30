@@ -168,7 +168,7 @@ class Review implements HandlerInterface {
             );
         }
 
-        $review           = $this->repository->findOneByUserIdAndIdAndIdentityId($command->user->id, $command->id, $command->identity->id);
+        $review           = $this->repository->find($command->id);
         $review->positive = $command->positive;
 
         try {
