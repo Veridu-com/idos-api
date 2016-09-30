@@ -133,7 +133,7 @@ class Profiles implements ControllerInterface {
                 $warningReview = null;
                 foreach ($reviews as $review) {
                     if ($review->warningId === $warning->id) {
-                        $warningReview = $review;
+                        $warningReview = $review->toArray();
                         break;
                     }
                 }
