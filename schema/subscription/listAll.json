@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Subscription response payload",
+            "type": "array",
+            "items": {
+                "$ref": "subscriptionEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "status",
+        "data",
+        "updated"
+    ]
+}

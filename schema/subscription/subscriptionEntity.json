@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/subscription/subscriptionEntity.json",
+    "title": "Subscription",
+    "type": "object",
+    "properties": {
+        "gate_id": {
+            "description": "Gate related to the subscription",
+            "type": "integer"
+        },
+        "warning_id": {
+            "description": "Warning related to the subscription",
+            "type": "integer"
+        },
+        "credential_id": {
+            "description": "Credential related to the subscription",
+            "type": "integer"
+        },
+        "identity_id": {
+            "description": "Identity related to the subscription",
+            "type": "integer"
+        },
+        "created_at": {
+            "description": "Credential's creation unixtimestamp",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Credential's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "credential_id",
+        "identity_id",
+        "created_at"
+    ]
+}
