@@ -30,17 +30,30 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
      * @var string
      */
     protected $entityName = 'User';
+    /**
+     * {@inheritdoc}
+     */
+    protected $relationships = [
+        'credential' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'credentials',
+            'foreignKey' => 'credential_id',
+            'key'        => 'id',
+            'entity'     => 'Credential',
+            'nullable'   => false,
+            'hydrate'    => [
+                'public'
+            ]
+        ],
+    ];
 
     /**
      * {@inheritdoc}
      */
     public function findByCompanyId(int $companyId) : Collection {
-        $result = $this->query()
-            ->selectRaw('users.*')
-            ->join('credentials', 'users.credential_id', '=', 'credentials.id')
-            ->where('credentials.company_id', '=', $companyId);
-
-        return $result->get();
+        return $this->findBy([
+            'credential.company_id' => $companyId
+        ]);
     }
 
     /**
