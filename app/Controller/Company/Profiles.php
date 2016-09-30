@@ -12,6 +12,7 @@ use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\GateInterface;
+use App\Repository\Profile\ReviewInterface;
 use App\Repository\Profile\WarningInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
@@ -28,6 +29,12 @@ class Profiles implements ControllerInterface {
      * @var App\Repository\UserInterface
      */
     private $repository;
+    /**
+     * ReviewRepository instance.
+     *
+     * @var App\Repository\ReviewInterface
+     */
+    private $reviewRepository;
     /**
      * WarningRepository instance.
      *
@@ -63,6 +70,7 @@ class Profiles implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\UserInterface      $repository
+     * @param App\Repository\ReviewInterface    $reviewRepository
      * @param App\Repository\WarningInterface   $warningRepository
      * @param App\Repository\GateInterface      $gateRepository
      * @param App\Repository\AttributeInterface $attributeRepository
@@ -73,6 +81,7 @@ class Profiles implements ControllerInterface {
      */
     public function __construct(
         UserInterface $repository,
+        ReviewInterface $reviewRepository,
         WarningInterface $warningRepository,
         GateInterface $gateRepository,
         AttributeInterface $attributeRepository,
@@ -80,6 +89,7 @@ class Profiles implements ControllerInterface {
         Command $commandFactory
     ) {
         $this->repository          = $repository;
+        $this->reviewRepository    = $reviewRepository;
         $this->warningRepository   = $warningRepository;
         $this->gateRepository      = $gateRepository;
         $this->attributeRepository = $attributeRepository;
@@ -104,6 +114,7 @@ class Profiles implements ControllerInterface {
         $profiles = $this->repository->findByCompanyId($company->id);
 
         foreach ($profiles as $profile) {
+            $reviews = $this->reviewRepository->findByUserId($profile->id);
             $warnings = $this->warningRepository->findByUserId($profile->id);
             $gates    = $this->gateRepository->findByUserId($profile->id);
 
@@ -127,6 +138,7 @@ class Profiles implements ControllerInterface {
 
             $data[] = array_merge(
                 $profile->toArray(),
+                ['reviews'     => $reviews->toArray()],
                 ['warnings'    => $warnings->toArray()],
                 ['gates'       => $gates->toArray()],
                 ['firstnames'  => $firstNamesArray],
