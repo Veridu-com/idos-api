@@ -12,7 +12,9 @@ use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\GateInterface;
+use App\Repository\Profile\ReviewInterface;
 use App\Repository\Profile\WarningInterface;
+use App\Repository\Profile\TagInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -28,6 +30,18 @@ class Profiles implements ControllerInterface {
      * @var App\Repository\UserInterface
      */
     private $repository;
+    /**
+     * TagRepository instance.
+     *
+     * @var App\Repository\TagInterface
+     */
+    private $tagRepository;
+    /**
+     * ReviewRepository instance.
+     *
+     * @var App\Repository\ReviewInterface
+     */
+    private $reviewRepository;
     /**
      * WarningRepository instance.
      *
@@ -63,6 +77,8 @@ class Profiles implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\UserInterface      $repository
+     * @param App\Repository\TagInterface       $tagRepository
+     * @param App\Repository\ReviewInterface    $reviewRepository
      * @param App\Repository\WarningInterface   $warningRepository
      * @param App\Repository\GateInterface      $gateRepository
      * @param App\Repository\AttributeInterface $attributeRepository
@@ -73,6 +89,8 @@ class Profiles implements ControllerInterface {
      */
     public function __construct(
         UserInterface $repository,
+        TagInterface $tagRepository,
+        ReviewInterface $reviewRepository,
         WarningInterface $warningRepository,
         GateInterface $gateRepository,
         AttributeInterface $attributeRepository,
@@ -80,6 +98,8 @@ class Profiles implements ControllerInterface {
         Command $commandFactory
     ) {
         $this->repository          = $repository;
+        $this->tagRepository       = $tagRepository;
+        $this->reviewRepository    = $reviewRepository;
         $this->warningRepository   = $warningRepository;
         $this->gateRepository      = $gateRepository;
         $this->attributeRepository = $attributeRepository;
@@ -104,8 +124,22 @@ class Profiles implements ControllerInterface {
         $profiles = $this->repository->findByCompanyId($company->id);
 
         foreach ($profiles as $profile) {
+            $tags = $this->tagRepository->getAllByUserId($profile->id);
+            $reviews = $this->reviewRepository->getAllByUserId($profile->id);
             $warnings = $this->warningRepository->findByUserId($profile->id);
             $gates    = $this->gateRepository->findByUserId($profile->id);
+
+            foreach ($warnings as $warning) {
+                $warningReview = null;
+                foreach ($reviews as $review) {
+                    if ($review->warningId === $warning->id) {
+                        $warningReview = $review;
+                        break;
+                    }
+                }
+
+                $warning->review = $warningReview;
+            }
 
             $firstNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'firstname']);
             $firstNamesArray = [];
@@ -127,6 +161,7 @@ class Profiles implements ControllerInterface {
 
             $data[] = array_merge(
                 $profile->toArray(),
+                ['tags'        => $tags->toArray()],
                 ['warnings'    => $warnings->toArray()],
                 ['gates'       => $gates->toArray()],
                 ['firstnames'  => $firstNamesArray],
