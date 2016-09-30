@@ -31,7 +31,6 @@ class Hooks implements RouteInterface {
         return [
             'hooks:listAll',
             'hooks:createNew',
-            'hooks:deleteAll',
             'hooks:getOne',
             'hooks:updateOne',
             'hooks:deleteOne'
@@ -57,7 +56,6 @@ class Hooks implements RouteInterface {
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
@@ -178,45 +176,6 @@ class Hooks implements RouteInterface {
             )
             ->add($auth(Auth::IDENTITY))
             ->setName('hooks:updateOne');
-    }
-
-    /**
-     * Delete all Hooks.
-     *
-     * Deletes all hooks that belong to the requesting company.
-     *
-     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/hooks
-     * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/management/hooks/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Hooks::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/companies/{companySlug}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks',
-                'App\Controller\Hooks:deleteAll'
-            )
-            ->add(
-                $permission(
-                EndpointPermission::SELF_ACTION,
-                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-                )
-            )
-            ->add($auth(Auth::IDENTITY))
-            ->setName('hooks:deleteAll');
     }
 
     /**
