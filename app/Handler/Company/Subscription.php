@@ -120,9 +120,13 @@ class Subscription implements HandlerInterface {
             );
         }
 
+        if ($command->warningId && $command->gateId) {
+            throw new Create\Company\SubscriptionException("Subscription can't be assigned to both 'warning' and 'gate'. One must be null");    
+        }
+
         $subscription = $this->repository->create(
             [
-                'identity_id'       => $command->identity->id,
+                'identity_id'          => $command->identity->id,
                 'gate_id'       => $command->gateId,
                 'warning_id'       => $command->warningId,
                 'credential_id'       => $command->credential->id,

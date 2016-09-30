@@ -13,6 +13,13 @@ class S40SubscriptionsSeed extends AbstractSeed {
         $data = [
             [
                 'gate_id' => 1,
+                'warning_id' => null,
+                'credential_id' => 1,
+                'identity_id' => 1,
+                'created_at' => $now
+            ],
+            [
+                'gate_id' => null,
                 'warning_id' => 1,
                 'credential_id' => 1,
                 'identity_id' => 1,
