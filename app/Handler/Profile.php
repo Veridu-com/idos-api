@@ -113,10 +113,6 @@ class Profile implements HandlerInterface {
 
         $entities = $this->repository->findByCompanyId($command->company->id);
 
-        foreach ($entities as $entity) {
-            $entity->reviews = $this->reviewRepository->getAllByUserId($entity->id);
-        }
-
         return $entities;
     }
 }
