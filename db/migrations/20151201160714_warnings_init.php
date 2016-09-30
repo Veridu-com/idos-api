@@ -19,7 +19,7 @@ class WarningsInit extends AbstractMigration {
             ->addColumn('warning_id', 'integer', ['null' => false])
             ->addColumn('positive', 'boolean', ['null' => false])
             ->addTimestamps()
-            ->addIndex(['identity_id', 'user_id', 'warning_id'], ['unique' => true])
+            ->addIndex(['user_id', 'warning_id'], ['unique' => true])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('warning_id', 'warnings', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
