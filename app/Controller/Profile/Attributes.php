@@ -173,7 +173,6 @@ class Attributes implements ControllerInterface {
     /**
      * Retrieves a attribute data from the given source.
      *
-     * @apiEndpointParam query string attributeName firstName
      * @apiEndpointResponse 200 schema/attribute/attributeEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -246,7 +245,6 @@ class Attributes implements ControllerInterface {
     /**
      * Deletes a attribute data from a given source.
      *
-     * @apiEndpointParam query string attributeName firstName
      * @apiEndpointResponse 200 schema/attribute/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

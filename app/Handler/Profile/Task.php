@@ -98,13 +98,13 @@ class Task implements HandlerInterface {
      *
      * @param App\Command\Profile\Task\CreateNew $command
      *
-     * @throws App\Exception\Validate\TaskException
-     * @throws App\Exception\Create\TaskException
+     * @throws App\Exception\Validate\Profile\TaskException
+     * @throws App\Exception\Create\Profile\TaskException
      *
-     * @see App\Repository\DBTask::create
-     * @see App\Repository\DBTask::save
+     * @see App\Repository\Profile\DBTask::create
+     * @see App\Repository\Profile\DBTask::save
      *
-     * @return App\Entity\Task
+     * @return App\Entity\Profile\Task
      */
     public function handleCreateNew(CreateNew $command) : TaskEntity {
         try {
@@ -151,13 +151,13 @@ class Task implements HandlerInterface {
      *
      * @param App\Command\Profile\Task\UpdateOne $command
      *
-     * @see App\Repository\DBTask::find
-     * @see App\Repository\DBTask::save
+     * @see App\Repository\Profile\DBTask::find
+     * @see App\Repository\Profile\DBTask::save
      *
-     * @throws App\Exception\Validate\TaskException
-     * @throws App\Exception\Update\TaskException
+     * @throws App\Exception\Validate\Profile\TaskException
+     * @throws App\Exception\Update\Profile\TaskException
      *
-     * @return App\Entity\Task
+     * @return App\Entity\Profile\Task
      */
     public function handleUpdateOne(UpdateOne $command) : TaskEntity {
         try {

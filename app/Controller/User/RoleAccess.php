@@ -123,9 +123,9 @@ class RoleAccess implements ControllerInterface {
     /**
      * Creates a new RoleAccess for the acting User.
      *
-     * @apiEndpointRequiredParam body       string role             The role.
-     * @apiEndpointRequiredParam body       string resource         The resource.
-     * @apiEndpointRequiredParam body       int access              The access.
+     * @apiEndpointRequiredParam body       string role  owner
+     * @apiEndpointRequiredParam body       string resource resource
+     * @apiEndpointRequiredParam body       int access 3124
      *
      * @apiEndpointResponse 201 schema/access/roles/createNew.json
      *

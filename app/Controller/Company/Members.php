@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /management/members.
+ * Handles requests to /companies/{company-slug}/members.
  */
 class Members implements ControllerInterface {
     /**
@@ -103,7 +103,7 @@ class Members implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string role company:owner Role type
      * @apiEndpointRequiredParam body string userName jhondoe UserName
-     * @apiEndpointResponse 201 schema/member/memberEntity.json
+     * @apiEndpointResponse 201 schema/member/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

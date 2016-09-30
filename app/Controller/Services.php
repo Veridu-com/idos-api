@@ -61,7 +61,7 @@ class Services implements ControllerInterface {
     /**
      * Lists all Services that are visible to the acting Company.
      *
-     * @apiEndpointResponse 200 schema/services/listAll.json
+     * @apiEndpointResponse 200 schema/service/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -91,7 +91,7 @@ class Services implements ControllerInterface {
     /**
      * Retrieves one Service.
      *
-     * @apiEndpointResponse 200 schema/services/getOne.json
+     * @apiEndpointResponse 200 schema/service/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -120,16 +120,16 @@ class Services implements ControllerInterface {
     /**
      * Creates a new Service for the acting Company.
      *
-     * @apiEndpointRequiredParam    body    string      name             Service's name.
-     * @apiEndpointRequiredParam    body    string      url              Service's url.
-     * @apiEndpointParam            body    int         access           Service's access.
-     * @apiEndpointParam            body    bool        enabled          Service's enabled.
-     * @apiEndpointParam            body    array       listens          Service's listens.
-     * @apiEndpointParam            body    array       triggers         Service's triggers.
-     * @apiEndpointRequiredParam    body    string      auth_username    Service's authUsername.
-     * @apiEndpointRequiredParam    body    string      auth_password    Service's authPassword.
+     * @apiEndpointRequiredParam    body    string    name  name             Service's name.
+     * @apiEndpointRequiredParam    body    string     url  http://service-url.com             Service's url.
+     * @apiEndpointParam            body    int        access 1           Service's access.
+     * @apiEndpointParam            body    bool       enabled  true         Service's enabled.
+     * @apiEndpointParam            body    array       listens 'source.add.facebook'         Service's listens.
+     * @apiEndpointParam            body    array       triggers 'source.scraper.facebook.finished'       Service's triggers.
+     * @apiEndpointRequiredParam    body    string      auth_username idos   Service's authUsername.
+     * @apiEndpointRequiredParam    body    string      auth_password  secret   Service's authPassword.
      *
-     * @apiEndpointResponse 201 schema/services/createNew.json
+     * @apiEndpointResponse 201 schema/service/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -166,7 +166,7 @@ class Services implements ControllerInterface {
     /**
      * Deletes all Services that belongs to the acting Company.
      *
-     * @apiEndpointResponse 200 schema/services/deleteAll.json
+     * @apiEndpointResponse 200 schema/service/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -195,7 +195,7 @@ class Services implements ControllerInterface {
     /**
      * Deletes one Service of the acting Company based on path paramaters service id.
      *
-     * @apiEndpointResponse 200 schema/services/deleteOne.json
+     * @apiEndpointResponse 200 schema/service/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -228,16 +228,15 @@ class Services implements ControllerInterface {
     /**
      * Updates one Service of the acting Company based on path paramaters service id.
      *
-     * @apiEndpointParam    body    string      name             Service's name.
-     * @apiEndpointParam    body    string      url              Service's url.
-     * @apiEndpointParam    body    int         access           Service's access. in (0x00, 0x01, 0x02)
-     * @apiEndpointParam    body    bool        enabled          Service's enabled.
-     * @apiEndpointParam    body    array       listens          Service's listens.
-     * @apiEndpointParam    body    array       triggers         Service's triggers.
-     * @apiEndpointParam    body    string      auth_username    Service's authUsername.
-     * @apiEndpointParam    body    string      auth_password    Service's authPassword.
-     *
-     * @apiEndpointResponse 200 schema/services/updateOne.json
+     * @apiEndpointRequiredParam    body    string    name  name             Service's name.
+     * @apiEndpointRequiredParam    body    string     url  http
+     * @apiEndpointParam            body    int        access 1           Service's access.
+     * @apiEndpointParam            body    bool       enabled  true         Service's enabled.
+     * @apiEndpointParam            body    array       listens 'source.add.facebook'         Service's listens.
+     * @apiEndpointParam            body    array       triggers 'source.scraper.facebook.finished'       Service's triggers.
+     * @apiEndpointRequiredParam    body    string      auth_username idos   Service's authUsername.
+     * @apiEndpointRequiredParam    body    string      auth_password  secret   Service's authPassword.
+     * @apiEndpointResponse 200 schema/service/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

@@ -168,7 +168,7 @@ class Tasks implements RouteInterface {
      * Retrieve a complete list of all tasks that belong to the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/processes/{processId}/tasks
-     * @apiGroup Profile tasks
+     * @apiGroup Profile Tasks
      * @apiAuth header key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -183,7 +183,7 @@ class Tasks implements RouteInterface {
      * @link docs/profile/tasks/listAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\tasks::listAll
+     * @see App\Controller\Profile\Tasks::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app

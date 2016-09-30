@@ -14,7 +14,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Score routing definitions.
+ * Tokens
  *
  * @link docs/token/overview.md
  * @see App\Controller\Tokens
@@ -57,8 +57,6 @@ class Tokens implements RouteInterface {
      * @apiGroup Token
      * @apiAuth header token User wqxehuwqwsthwosjbxwwsqwsdi User's Token
      * @apiAuth query token user wqxehuwqwsthwosjbxwwsqwsdi User's Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName firstName
      *
      * @param \Slim\App $app
      * @param \callable $auth
