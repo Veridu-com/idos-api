@@ -15,6 +15,7 @@ use App\Repository\Profile\GateInterface;
 use App\Repository\Profile\ReviewInterface;
 use App\Repository\Profile\WarningInterface;
 use App\Repository\Profile\TagInterface;
+use App\Repository\Profile\SourceInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -30,6 +31,12 @@ class Profiles implements ControllerInterface {
      * @var App\Repository\UserInterface
      */
     private $repository;
+    /**
+     * SourceRepository instance.
+     *
+     * @var App\Repository\SourceInterface
+     */
+    private $sourceRepository;
     /**
      * TagRepository instance.
      *
@@ -77,6 +84,7 @@ class Profiles implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\UserInterface      $repository
+     * @param App\Repository\SourceInterface    $sourceRepository
      * @param App\Repository\TagInterface       $tagRepository
      * @param App\Repository\ReviewInterface    $reviewRepository
      * @param App\Repository\WarningInterface   $warningRepository
@@ -89,6 +97,7 @@ class Profiles implements ControllerInterface {
      */
     public function __construct(
         UserInterface $repository,
+        SourceInterface $sourceRepository,
         TagInterface $tagRepository,
         ReviewInterface $reviewRepository,
         WarningInterface $warningRepository,
@@ -98,6 +107,7 @@ class Profiles implements ControllerInterface {
         Command $commandFactory
     ) {
         $this->repository          = $repository;
+        $this->sourceRepository    = $sourceRepository;
         $this->tagRepository       = $tagRepository;
         $this->reviewRepository    = $reviewRepository;
         $this->warningRepository   = $warningRepository;
@@ -124,6 +134,7 @@ class Profiles implements ControllerInterface {
         $profiles = $this->repository->findByCompanyId($company->id);
 
         foreach ($profiles as $profile) {
+            $sources = $this->sourceRepository->getAllByUserId($profile->id);
             $tags = $this->tagRepository->getAllByUserId($profile->id);
             $reviews = $this->reviewRepository->getAllByUserId($profile->id);
             $warnings = $this->warningRepository->findByUserId($profile->id);
@@ -139,6 +150,13 @@ class Profiles implements ControllerInterface {
                 }
 
                 $warning->review = $warningReview;
+            }
+
+            $profileSources = [];
+            foreach ($sources as $source) {
+                if (! in_array($source->name, $profileSources)) {
+                    $profileSources[] = $source->name;
+                }
             }
 
             $firstNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'firstname']);
@@ -161,6 +179,7 @@ class Profiles implements ControllerInterface {
 
             $data[] = array_merge(
                 $profile->toArray(),
+                ['sources'     => $profileSources],
                 ['tags'        => $tags->toArray()],
                 ['warnings'    => $warnings->toArray()],
                 ['gates'       => $gates->toArray()],
