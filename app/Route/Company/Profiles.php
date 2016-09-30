@@ -42,6 +42,8 @@ class Profiles implements RouteInterface {
         $app->getContainer()[\App\Controller\Company\Profiles::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Profiles(
                 $container->get('repositoryFactory')->create('User'),
+                $container->get('repositoryFactory')->create('Profile\Tag'),
+                $container->get('repositoryFactory')->create('Profile\Review'),
                 $container->get('repositoryFactory')->create('Profile\Warning'),
                 $container->get('repositoryFactory')->create('Profile\Gate'),
                 $container->get('repositoryFactory')->create('Profile\Attribute'),

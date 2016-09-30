@@ -13,6 +13,7 @@ class S11CredentialsSeed extends AbstractSeed {
                 'company_id' => 1,
                 'name'       => 'My Test Key',
                 'slug'       => 'my-test-key',
+                'special'    => true,
                 'public'     => md5('public'),      // 4c9184f37cff01bcdc32dc486ec36961
                 'private'    => md5('private'),     // 2c17c6393771ee3048ae34d6b380c5ec
                 'production' => 0,

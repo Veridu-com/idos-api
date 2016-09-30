@@ -84,8 +84,8 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
             $company = $identity->company();
             $member  = $identity->member();
             $role    = $identity->role();
-
-            if ((! empty($company['id'])) && (! in_array($company['id'], $companies['ids']))) {
+            
+            if ((! empty($company['id'])) && (! in_array($company, $companies['ids']))) {
                 $company = $this->entityFactory->create(
                     'Company',
                     $company
@@ -95,7 +95,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
                 array_push($companies['entities'], $company);
             }
 
-            if ((! empty($member['id'])) && (! in_array($member['id'], $members['ids']))) {
+            if ((! empty($member['id'])) && (! in_array($member, $members['ids']))) {
                 $member = $this->entityFactory->create(
                     'Company\Member',
                     $member
@@ -104,7 +104,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
                 array_push($members['entities'], $member);
             }
 
-            if ((! empty($role['name'])) && (! in_array($role['name'], $roles['ids']))) {
+            if ((! empty($role['name'])) && (! in_array($role, $roles['ids']))) {
                 $role = $this->entityFactory->create(
                     'Role',
                     $role

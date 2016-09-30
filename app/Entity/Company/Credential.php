@@ -32,7 +32,7 @@ class Credential extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'slug', 'public', 'production', 'created_at', 'updated_at'];
+    protected $visible = ['name', 'slug', 'public', 'production', 'private', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
