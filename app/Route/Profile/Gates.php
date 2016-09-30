@@ -15,7 +15,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile Gates
+ * Profile Gates.
  *
  * A Profile Gate is a criterion set by a Company who requires a polar yes-no answer for a specific, vital feature of a Profile. For example if a Company requires Users to be over the age of 18, a Gate is used to filter out any User not fulfilling this criterion. Multiple Gates can be used to create more specific criteria if needed. For example if a Company requires Users to be over the age of 18 and living and in the USA, it would require 3 Gates, one for the age, one for employment and one for residency.
  *

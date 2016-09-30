@@ -15,7 +15,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile Processes
+ * Profile Processes.
  *
  * The Profile Process is literally the process the API uses in order to extract information from the raw data provided by the User. This Process is broken up by the Services that perform Tasks.
  *

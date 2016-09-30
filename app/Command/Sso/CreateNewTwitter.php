@@ -39,17 +39,17 @@ class CreateNewTwitter extends AbstractCommand {
      */
     public $credentialPubKey;
     /**
-     * Credential public key.
+     * Application key.
      *
      * @var string
      */
-    public $key;
+    public $appKey;
     /**
-     * Provider secret.
+     * Application secret.
      *
      * @var string
      */
-    public $secret;
+    public $appSecret;
     /**
      * User ip address.
      *
@@ -67,12 +67,12 @@ class CreateNewTwitter extends AbstractCommand {
             $this->apiVersion = $parameters['apiVersion'];
         }
 
-        if (isset($parameters['key'])) {
-            $this->key = $parameters['key'];
+        if (isset($parameters['appKey'])) {
+            $this->appKey = $parameters['appKey'];
         }
 
-        if (isset($parameters['secret'])) {
-            $this->secret = $parameters['secret'];
+        if (isset($parameters['appSecret'])) {
+            $this->appSecret = $parameters['appSecret'];
         }
 
         if (isset($parameters['ipAddress'])) {

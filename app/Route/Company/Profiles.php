@@ -16,7 +16,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Company Profile
+ * Company Profile.
  *
  * A Company Profile where a Company will access the collection of data on a specific User. This is where the Company can review in detail the raw data, attributes, features, warnings, and score gathered from all sources provided by a specific User
  *

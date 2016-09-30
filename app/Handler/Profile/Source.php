@@ -179,12 +179,14 @@ class Source implements HandlerInterface {
         );
 
         try {
-            $processEntity = $this->processRepository->create([
+            $processEntity = $this->processRepository->create(
+                [
                 'name'      => 'idos:verification',
                 'user_id'   => $command->user->id,
                 'source_id' => $source->id,
                 'event'     => (string) $event,
-            ]);
+                ]
+            );
             $processEntity = $this->processRepository->save($processEntity);
         } catch (\Exception $e) {
             throw new Create\Profile\SourceException('Error while trying to create a process for the Source', 500, $e);
