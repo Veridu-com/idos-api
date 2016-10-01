@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Event\Company\Subscription;
 
 use App\Entity\Company\Subscription;
-use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**

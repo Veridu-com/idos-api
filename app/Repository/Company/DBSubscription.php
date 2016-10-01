@@ -30,7 +30,7 @@ class DBSubscription extends AbstractSQLDBRepository implements SubscriptionInte
     protected $entityName = 'Company\Subscription';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getAllByCredentialId(int $credentialId) : Collection {
         return $this->findBy(

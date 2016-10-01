@@ -84,7 +84,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
             $company = $identity->company();
             $member  = $identity->member();
             $role    = $identity->role();
-            
+
             if ((! empty($company['id'])) && (! in_array($company, $companies['ids']))) {
                 $company = $this->entityFactory->create(
                     'Company',

@@ -9,9 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Category;
-use App\Exception\NotFound;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Collection;
 
 /**
  * Database-based Category Repository Implementation.

@@ -10,17 +10,14 @@ namespace App\Handler\Company;
 
 use App\Command\Company\Subscription\CreateNew;
 use App\Command\Company\Subscription\DeleteOne;
-use App\Command\Company\Subscription\UpdateOne;
 use App\Entity\Company\Subscription as SubscriptionEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
-use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Company\SubscriptionInterface;
 use App\Validator\Company\Subscription as SubscriptionValidator;
-use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
@@ -79,8 +76,8 @@ class Subscription implements HandlerInterface {
      *
      * @param App\Repository\SubscriptionInterface $repository
      * @param App\Validator\Subscription           $validator
-     * @param App\Factory\Event                  $eventFactory
-     * @param \League\Event\Emitter              $emitter
+     * @param App\Factory\Event                    $eventFactory
+     * @param \League\Event\Emitter                $emitter
      *
      * @return void
      */
@@ -122,17 +119,17 @@ class Subscription implements HandlerInterface {
 
         $subscription = $this->repository->create(
             [
-                'identity_id'       => $command->identity->id,
-                'gate_id'       => $command->gateId,
-                'warning_id'       => $command->warningId,
+                'identity_id'         => $command->identity->id,
+                'gate_id'             => $command->gateId,
+                'warning_id'          => $command->warningId,
                 'credential_id'       => $command->credential->id,
-                'created_at' => time()
+                'created_at'          => time()
             ]
         );
 
         try {
             $subscription = $this->repository->save($subscription);
-            $event      = $this->eventFactory->create('Company\\Subscription\\Created', $subscription);
+            $event        = $this->eventFactory->create('Company\\Subscription\\Created', $subscription);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\SubscriptionException('Error while trying to create a subscription', 500, $e);

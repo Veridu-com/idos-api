@@ -15,7 +15,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile References
+ * Profile References.
  *
  * A Profile Reference is the information a User initially provides as true information, which the API can use as a reference during processing the Raw data of the Users Profile in order to authenticate its legitimacy.
  *

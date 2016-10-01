@@ -51,9 +51,11 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
      * {@inheritdoc}
      */
     public function findByCompanyId(int $companyId) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'credential.company_id' => $companyId
-        ]);
+            ]
+        );
     }
 
     /**
