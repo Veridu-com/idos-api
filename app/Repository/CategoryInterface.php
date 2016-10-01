@@ -14,5 +14,4 @@ use App\Entity\Category;
  * Category Repository Interface.
  */
 interface CategoryInterface extends RepositoryInterface {
-
 }

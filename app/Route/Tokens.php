@@ -25,7 +25,7 @@ class Tokens implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'token:exchange'
+            // 'token:exchange'
         ];
     }
 

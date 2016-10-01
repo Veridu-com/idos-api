@@ -101,12 +101,15 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
                 'error'  => [
                     'id'      => $container->get('logUidProcessor')->getUid(),
                     'code'    => $exception->getCode(),
-                    'type'    => 'EXCEPTION_TYPE', // $exception->getType(),
-                    'link'    => 'https://docs.idos.io/errors/EXCEPTION_TYPE', // $exception->getLink(),
+                    'type'    => 'APPLICATION_EXCEPTION', // $exception->getType(),
+                    'link'    => null, // $exception->getLink(),
                     'message' => $exception->getMessage(),
-                    'trace'   => $exception->getTrace()
                 ]
             ];
+
+            if ($settings['debug']) {
+                $body['error']['trace'] = $exception->getTrace();
+            }
 
             $command = $container
                 ->get('commandFactory')
