@@ -19,6 +19,12 @@ use Slim\Router;
  */
 class Main implements ControllerInterface {
     /**
+     * Route list.
+     *
+     * @var array
+     */
+    private $routes;
+    /**
      * Router instance.
      *
      * @var \Slim\Router
@@ -40,6 +46,7 @@ class Main implements ControllerInterface {
     /**
      * Class constructor.
      *
+     * @param array                        $routes
      * @param \Slim\Router                 $router
      * @param \League\Tactician\CommandBus $commandBus
      * @param App\Factory\Command          $commandFactory
@@ -47,10 +54,12 @@ class Main implements ControllerInterface {
      * @return void
      */
     public function __construct(
+        array $routes,
         Router $router,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
+        $this->routes         = $routes;
         $this->router         = $router;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
@@ -67,17 +76,21 @@ class Main implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $files = glob(__DIR__ . '/../Route/*.php');
-
+        sort($this->routes);
         $classList = array_map(
             function ($filename) {
-                return basename($filename, '.php');
-            }, array_filter(
-                $files, function ($filename) {
-                    $add = true;
-                    $add &= strpos($filename, 'Interface') === false;
+                $filename = substr($filename, 0, -4);
+                $pos = strpos($filename, '/Route/');
+                if ($pos === false) {
+                    return $filename;
+                }
 
-                    return $add;
+                return substr($filename, $pos + 7);
+            },
+            array_filter(
+                $this->routes,
+                function ($filename) {
+                    return strpos($filename, 'Interface') === false;
                 }
             )
         );
@@ -94,7 +107,10 @@ class Main implements ControllerInterface {
         }
 
         foreach ($classList as $className) {
-            $routeClass = sprintf('\\App\\Route\\%s', $className);
+            $routeClass = sprintf(
+                '\\App\\Route\\%s',
+                str_replace('/', '\\', $className)
+            );
             foreach ($routeClass::getPublicNames() as $routeName) {
                 $publicRoutes[] = $routeList[$routeName];
             }

@@ -19,9 +19,9 @@ interface SubscriptionInterface extends RepositoryInterface {
     /**
      * Gets all subscriptions the by credential identifier.
      *
-     * @param      integer  $credentialId  The credential identifier
+     * @param int $credentialId The credential identifier
      *
-     * @return     \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllByCredentialId(int $credentialId) : Collection;
 }

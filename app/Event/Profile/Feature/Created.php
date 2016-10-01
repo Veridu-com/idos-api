@@ -72,7 +72,6 @@ class Created extends AbstractServiceQueueEvent {
     public function getServiceHandlerPayload(array $merge = []) : array {
         return array_merge(
             [
-            'providerName' => $this->source ? $this->source->name : null,
             'sourceId'     => $this->source ? $this->source->getEncodedId() : null,
             'publicKey'    => $this->credential->public,
             'processId'    => $this->process->getEncodedId(),

@@ -1,15 +1,15 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "POST /sso",
+    "title": "GET /sso",
     "type": "object",
     "properties": {
         "status": {
             "description": "Response status flag",
             "type": "boolean"
         },
-        "data": {
-            "description": "Sso response payload",
-            "type": "string"
+        "user_token": {
+            "description": "The user token",
+            "type": "array"
         }
     },
     "required": [
@@ -17,4 +17,3 @@
         "data"
     ]
 }
-

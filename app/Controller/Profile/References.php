@@ -102,7 +102,7 @@ class References implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Reference::handleCreateNew
+     * @see App\Handler\Profile\Reference::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -139,7 +139,7 @@ class References implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Handler\Reference::handleUpdateOne
+     * @see App\Handler\Profile\Reference::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -205,7 +205,7 @@ class References implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Reference::handleDeleteAll
+     * @see App\Handler\Profile\Reference::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -235,7 +235,7 @@ class References implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Reference::handleDeleteOne
+     * @see App\Handler\Profile\Reference::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

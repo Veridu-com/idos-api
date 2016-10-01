@@ -24,7 +24,6 @@ use App\Entity\AbstractEntity;
  * @property int    $updated_at
  */
 class Subscription extends AbstractEntity {
-
     /**
      * {@inheritdoc}
      */

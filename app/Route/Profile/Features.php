@@ -17,7 +17,9 @@ use Slim\App;
 /**
  * Profile Feature.
  *
- * A Profile Feature is a specific question the API can answer using data extracted from the Profile. An example feature could be “quantity of uploaded photos” and the API will give a quantitative answer. Another example feature could be “User’s Facebook and Twitter name matches” and the API will give a polar yes-no answer.
+ * A Profile Feature is a specific question the API can answer using data extracted from the Profile.
+ * An example feature could be "quantity of uploaded photos" and the API will give a quantitative answer.
+ * Another example feature could be "User's Facebook and Twitter name matches" and the API will give a polar yes-no answer.
  *
  * @link docs/profile/features/overview.md
  * @see App\Controller\Profile\Features
@@ -105,7 +107,7 @@ class Features implements RouteInterface {
      *
      * Create a new feature for the given user.
      *
-     * @apiEndpoint POST profiles/{userName}/features
+     * @apiEndpoint POST /profiles/{userName}/features
      * @apiGroup Profile Features
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -273,7 +275,7 @@ class Features implements RouteInterface {
      *
      * Create or update a feature for the given user.
      *
-     * @apiEndpoint PUT profiles/{userName}/features
+     * @apiEndpoint PUT /profiles/{userName}/features
      * @apiGroup Profile Features
      * @apiAuth header token  CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token  credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -281,6 +283,7 @@ class Features implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -305,7 +308,7 @@ class Features implements RouteInterface {
      *
      * Create or update features for the given user.
      *
-     * @apiEndpoint PUT profiles/{userName}/features/bulk
+     * @apiEndpoint PUT /profiles/{userName}/features/bulk
      * @apiGroup Profile Features
      * @apiAuth header token  CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token  credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -313,6 +316,7 @@ class Features implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

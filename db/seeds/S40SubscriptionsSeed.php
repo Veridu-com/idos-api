@@ -22,8 +22,8 @@ class S40SubscriptionsSeed extends AbstractSeed {
                 'gate_id' => null,
                 'warning_id' => 1,
                 'credential_id' => 1,
-                'identity_id' => 1,
-                'created_at' => $now
+                'identity_id'   => 1,
+                'created_at'    => $now
             ]
         ];
 

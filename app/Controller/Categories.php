@@ -43,8 +43,8 @@ class Categories implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\CategoryInterface $repository
-     * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param \League\Tactician\CommandBus     $commandBus
+     * @param App\Factory\Command              $commandFactory
      *
      * @return void
      */

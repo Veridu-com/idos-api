@@ -136,38 +136,6 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * Delete all Companies.
-     *
-     * Deletes all child companies that belong to the requesting company.
-     *
-     * @apiEndpoint DELETE /companies
-     * @apiGroup Company
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/companies/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/companies',
-                'App\Controller\Companies:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::COMPANY))
-            ->setName('companies:deleteAll');
-    }
-
-    /**
      * Retrieve a single Company.
      *
      * Retrieves all public information from a single Company.
@@ -222,7 +190,7 @@ class Companies implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}',
                 'App\Controller\Companies:updateOne'
             )

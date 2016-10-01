@@ -14,7 +14,6 @@ use App\Command\AbstractCommand;
  * Subscription "Create New" Command.
  */
 class CreateNew extends AbstractCommand {
-
     /**
      * Subscription gate id.
      *

@@ -29,10 +29,10 @@ class Permissions implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'permissions:listAll',
-            'permissions:createNew',
-            'permissions:getOne',
-            'permissions:deleteOne'
+            // 'permissions:listAll',
+            // 'permissions:createNew',
+            // 'permissions:getOne',
+            // 'permissions:deleteOne'
         ];
     }
 
@@ -64,6 +64,7 @@ class Permissions implements RouteInterface {
      * Retrieves a complete list of all permissions that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions
+     * @apiGroup Company Permissions
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -100,6 +101,7 @@ class Permissions implements RouteInterface {
      * Creates a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/permissions
+     * @apiGroup Company Permissions
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -131,42 +133,12 @@ class Permissions implements RouteInterface {
     }
 
     /**
-     * Deletes all permissions.
-     *
-     * Deletes all permissions that belongs to the requesting company.
-     *
-     * @apiEndpoint DELETE /companies/{companySlug}/permissions
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     *
-     * @return void
-     *
-     * @link docs/companies/permissions/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Permissions::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/companies/{companySlug:[a-z0-9_-]+}/permissions',
-                'App\Controller\Permissions:deleteAll'
-            )
-            ->add($permission(EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION))
-            ->add($auth(Auth::COMPANY))
-            ->setName('permissions:deleteAll');
-    }
-
-    /**
      * Retrieve a single Permission.
      *
      * Retrieves all public information from a Permission.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions/{routeName}
+     * @apiGroup Company Permissions
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -205,6 +177,7 @@ class Permissions implements RouteInterface {
      * Deletes a single Permission that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/permissions/{routeName}
+     * @apiGroup Company Permissions
      *
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token

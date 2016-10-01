@@ -103,7 +103,7 @@ class Sso implements ControllerInterface {
     }
 
     /**
-     * Returns the status of a given gate.
+     * Returns the status of a given provider.
      *
      * @apiEndpointResponse 200 schema/sso/getOne.json
      *

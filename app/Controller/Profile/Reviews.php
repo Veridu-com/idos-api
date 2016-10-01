@@ -70,11 +70,12 @@ class Reviews implements ControllerInterface {
     /**
      * Retrieve a complete list of reviews, given an user and an warning.
      *
-     * @apiEndpointParam query string warnings WRONG FORMAT HERE FIXME
      * @apiEndpointResponse 200 schema/review/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
+     *
+     * @see App\Repository\Profile\DBReview::getAllByUserIdAndWarningIdsAndIdentity
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -108,10 +109,12 @@ class Reviews implements ControllerInterface {
     /**
      * Created a new review data for a given source.
      *
-     * @apiEndpointResponse 201 schema/review/reviewEntity.json
+     * @apiEndpointResponse 201 schema/review/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Profile\Review::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -145,7 +148,7 @@ class Reviews implements ControllerInterface {
     /**
      * Updates a review data from the given source.
      *
-     * @apiEndpointRequiredParam body string value WRONG FORMAT HERE FIXME
+     * @apiEndpointRequiredParam body boolean positive false
      * @apiEndpointResponse 200 schema/review/updateOne.json
      *
      * @param \Psr\ServerRequestInterface $request
@@ -183,8 +186,7 @@ class Reviews implements ControllerInterface {
     /**
      * Retrieves a review data from the given source.
      *
-     * @apiEndpointParam query string reviewId 12345
-     * @apiEndpointResponse 200 schema/review/reviewEntity.json
+     * @apiEndpointResponse 200 schema/review/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

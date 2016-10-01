@@ -71,9 +71,9 @@ class Scores implements ControllerInterface {
      * Retrieve a complete list of the score by a given attribute.
      *
      * @apiEndpointParam       query  string   names firstName,lastName
-     * @apiEndpointResponse    200    schema/score/listAll.json
+     * @apiEndpointResponse 200 schema/score/listAll.json
      *
-     * @see App\Repository\DBScore::findBy
+     * @see App\Repository\Profile\DBScore::findBy
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -106,10 +106,10 @@ class Scores implements ControllerInterface {
      * Created a new score for a given attribute.
      *
      * @apiEndpointRequiredParam body   string     name  overall
-     * @apiEndpointRequiredParam body   float     value 0.2
+     * @apiEndpointRequiredParam body   float      value 0.2
      * @apiEndpointResponse 201 schema/score/scoreEntity.json
      *
-     * @see App\Handler\Score::handleCreateNew
+     * @see App\Handler\Profile\Score::handleCreateNew
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -148,9 +148,9 @@ class Scores implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body   string     name  overall attribute name
      * @apiEndpointRequiredParam body   float     value 0.2 Score value
-     * @apiEndpointResponse      200    schema/score/updateOne.json
+     * @apiEndpointResponse 200 schema/score/updateOne.json
      *
-     * @see App\Handler\Score::handleUpdateOne
+     * @see App\Handler\Profile\Score::handleUpdateOne
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
@@ -190,7 +190,7 @@ class Scores implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body   string     name  overall attribute name
      * @apiEndpointRequiredParam body   float     value 0.2 score value
-     * @apiEndpointResponse 201 schema/score/scoreEntity.json
+     * @apiEndpointResponse 201 schema/score/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -227,10 +227,9 @@ class Scores implements ControllerInterface {
     /**
      * Retrieves a score from the given attribute.
      *
-     * @apiEndpointParam       query  string   scoreName overall Score name
-     * @apiEndpointResponse 200 schema/score/scoreEntity.json
+     * @apiEndpointResponse 200 schema/score/getOne.json
      *
-     * @see App\Repository\DBScore::findOneByName
+     * @see App\Repository\Profile\DBScore::findOneByName
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -265,7 +264,7 @@ class Scores implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Score::handleDeleteAll
+     * @see App\Handler\Profile\Score::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -300,7 +299,7 @@ class Scores implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Score::handleDeleteOne
+     * @see App\Handler\Profile\Score::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

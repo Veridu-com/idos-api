@@ -15,10 +15,12 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
+ * Profile References.
+ *
  * A Profile Reference is the information a User initially provides as true information, which the API can use as a reference during processing the Raw data of the Users Profile in order to authenticate its legitimacy.
  *
  * @link docs/profiles/reference/overview.md
- * @see App\Controller\Profile\Reference
+ * @see App\Controller\Profile\References
  */
 class References implements RouteInterface {
     /**
@@ -65,7 +67,7 @@ class References implements RouteInterface {
      * Retrieve a complete list of the references by a given user.
      *
      * @apiEndpoint GET /profiles/{userName}/references
-     * @apiGroup Sources Reference
+     * @apiGroup Profile References
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -79,7 +81,7 @@ class References implements RouteInterface {
      * @link docs/sources/reference/listAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Reference::listAll
+     * @see App\Controller\Profile\References::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -97,7 +99,7 @@ class References implements RouteInterface {
      * Creates a new reference for the given user.
      *
      * @apiEndpoint POST /profiles/{userName}/references
-     * @apiGroup Sources Reference
+     * @apiGroup Profile References
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -111,7 +113,7 @@ class References implements RouteInterface {
      * @link docs/sources/reference/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Reference::createNew
+     * @see App\Controller\Profile\References::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -130,7 +132,7 @@ class References implements RouteInterface {
      * Deletes all references from the given user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/references
-     * @apiGroup Sources Reference
+     * @apiGroup Profile References
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -144,7 +146,7 @@ class References implements RouteInterface {
      * @link docs/sources/reference/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Reference::deleteAll
+     * @see App\Controller\Profile\References::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
@@ -158,12 +160,12 @@ class References implements RouteInterface {
     }
 
     /**
-     * Retrieves an reference.
+     * Retrieves a reference.
      *
-     * Retrieves an reference from the given user.
+     * Retrieves a reference from the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/references/{referenceName}
-     * @apiGroup Sources Reference
+     * @apiGroup Profile References
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -178,7 +180,7 @@ class References implements RouteInterface {
      * @link docs/sources/reference/getOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Reference::getOne
+     * @see App\Controller\Profile\References::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -192,9 +194,9 @@ class References implements RouteInterface {
     }
 
     /**
-     * Update an reference.
+     * Update a reference.
      *
-     * Updates an reference for the given user.
+     * Updates a reference for the given user.
      *
      * @apiEndpoint PUT /profiles/{userName}/references/{referenceName}
      * @apiGroup Profile References
@@ -212,7 +214,7 @@ class References implements RouteInterface {
      * @link docs/management/members/updateOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Members::updateOne
+     * @see App\Controller\Profile\References::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -226,12 +228,12 @@ class References implements RouteInterface {
     }
 
     /**
-     * Deletes an reference.
+     * Deletes a reference.
      *
-     * Deletes an reference from the given user.
+     * Deletes a reference from the given user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/references/{referenceName}
-     * @apiGroup Sources Reference
+     * @apiGroup Profile References
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -246,7 +248,7 @@ class References implements RouteInterface {
      * @link docs/sources/reference/deleteOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Reference::deleteOne
+     * @see App\Controller\Profile\References::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

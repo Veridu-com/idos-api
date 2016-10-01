@@ -29,12 +29,12 @@ class RoleAccess implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'roleAccess:listAll',
-            'roleAccess:deleteAll',
-            'roleAccess:createNew',
-            'roleAccess:getOne',
-            'roleAccess:updateOne',
-            'roleAccess:deleteOne'
+            // 'roleAccess:listAll',
+            // 'roleAccess:deleteAll',
+            // 'roleAccess:createNew',
+            // 'roleAccess:getOne',
+            // 'roleAccess:updateOne',
+            // 'roleAccess:deleteOne'
         ];
     }
 

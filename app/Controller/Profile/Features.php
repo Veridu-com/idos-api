@@ -204,7 +204,7 @@ class Features implements ControllerInterface {
     /**
      * Deletes all Features that belongs to the User.
      *
-     * @apiEndpointResponse 200 schema/setting/deleteAll.json
+     * @apiEndpointResponse 200 schema/feature/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

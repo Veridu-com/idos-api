@@ -102,7 +102,7 @@ class Gates implements RouteInterface {
      *
      * Create a new gate for the given user.
      *
-     * @apiEndpoint POST profiles/{userName}/gates
+     * @apiEndpoint POST /profiles/{userName}/gates
      * @apiGroup Profile Gates
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
