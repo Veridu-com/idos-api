@@ -13,9 +13,9 @@ use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\GateInterface;
 use App\Repository\Profile\ReviewInterface;
-use App\Repository\Profile\WarningInterface;
-use App\Repository\Profile\TagInterface;
 use App\Repository\Profile\SourceInterface;
+use App\Repository\Profile\TagInterface;
+use App\Repository\Profile\WarningInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -134,9 +134,9 @@ class Profiles implements ControllerInterface {
         $profiles = $this->repository->findByCompanyId($company->id);
 
         foreach ($profiles as $profile) {
-            $sources = $this->sourceRepository->getAllByUserId($profile->id);
-            $tags = $this->tagRepository->getAllByUserId($profile->id);
-            $reviews = $this->reviewRepository->getAllByUserId($profile->id);
+            $sources  = $this->sourceRepository->getAllByUserId($profile->id);
+            $tags     = $this->tagRepository->getAllByUserId($profile->id);
+            $reviews  = $this->reviewRepository->getAllByUserId($profile->id);
             $warnings = $this->warningRepository->findByUserId($profile->id);
             $gates    = $this->gateRepository->findByUserId($profile->id);
 

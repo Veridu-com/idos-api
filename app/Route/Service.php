@@ -234,7 +234,6 @@ class Service implements RouteInterface {
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment int serviceId 1234
      *
-     *
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission

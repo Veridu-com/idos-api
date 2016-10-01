@@ -170,6 +170,7 @@ class Members implements RouteInterface {
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int memberId 1243
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission
@@ -203,6 +204,7 @@ class Members implements RouteInterface {
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int memberId 1243
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission

@@ -35,7 +35,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            'gate_id' => '1321189817',
+            'gate_id'    => '1321189817',
             'warning_id' => '1321189817'
         ];
 
@@ -70,7 +70,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            'gate_id' => '654',
+            'gate_id'    => '654',
             'warning_id' => '1321189817'
         ];
 
@@ -106,7 +106,7 @@ class CreateNewTest extends AbstractFunctional {
 
         $data = [
             'warning_id' => '654',
-            'gate_id' => '1321189817'
+            'gate_id'    => '1321189817'
         ];
 
         $request = $this->createRequest(

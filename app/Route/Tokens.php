@@ -14,7 +14,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Tokens
+ * Tokens.
  *
  * @link docs/token/overview.md
  * @see App\Controller\Tokens

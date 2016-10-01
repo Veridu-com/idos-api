@@ -44,6 +44,6 @@ class Warning extends AbstractEntity {
      */
     public $relationships = [
         'creator' => 'Service',
-        'review' => 'Review'
+        'review'  => 'Review'
     ];
 }

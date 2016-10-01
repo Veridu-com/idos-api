@@ -14,9 +14,10 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile SSO
+ * Profile SSO.
  *
- * Profile SSO is the “Single Sign-On” service that a User can use to easily authenticate themselves across multiple platforms using the Veridu service, without having to use/create new login credentials for each platform.
+ * Profile SSO is the "Single Sign-On" service that a User can use to easily authenticate themselves
+ * across multiple platforms using the Veridu service, without having to use/create new login credentials for each platform.
  *
  * @link docs/sso/overview.md
  * @see App\Controller\Sso
