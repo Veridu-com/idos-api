@@ -57,6 +57,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
         ResponseInterface $response,
         \Exception $exception
     ) use ($container) {
+        $settings = $container->get('settings');
         $response = $container
             ->get('httpCache')
             ->denyCache($response);
@@ -123,7 +124,6 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
             return $container->get('commandBus')->handle($command);
         }
 
-        $settings = $container->get('settings');
         if ($settings['debug']) {
             $prettyPageHandler = new PrettyPageHandler();
             // Add more information to the PrettyPageHandler
