@@ -28,6 +28,7 @@ class Category extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $visible = [
+        'id',
         'name',
         'slug',
         'type',

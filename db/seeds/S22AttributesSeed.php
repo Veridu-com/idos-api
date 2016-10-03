@@ -21,6 +21,15 @@ class S22AttributesSeed extends AbstractSeed {
             [
                 'user_id'    => 1,
                 'creator'    => 1,
+                'name'       => 'first-name',
+                'value'      => 'Johnny',
+                'support'    => 1.0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'user_id'    => 1,
+                'creator'    => 1,
                 'name'       => 'middle-name',
                 'value'      => 'Ross',
                 'support'    => 1.3,

@@ -11,6 +11,7 @@ namespace App\Controller\Company;
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\Company\CredentialInterface;
+use App\Repository\Company\SubscriptionInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -25,6 +26,12 @@ class Credentials implements ControllerInterface {
      * @var App\Repository\Company\CredentialInterface
      */
     private $repository;
+    /**
+     * Credential Repository instance.
+     *
+     * @var App\Repository\Company\SubscriptionInterface
+     */
+    private $subscriptionRepository;
     /**
      * Command Bus instance.
      *
@@ -49,10 +56,12 @@ class Credentials implements ControllerInterface {
      */
     public function __construct(
         CredentialInterface $repository,
+        SubscriptionInterface $subscriptionRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->repository     = $repository;
+        $this->subscriptionRepository     = $subscriptionRepository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }

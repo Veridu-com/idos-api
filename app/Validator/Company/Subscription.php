@@ -17,5 +17,6 @@ use App\Validator\ValidatorInterface;
 class Subscription implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertIdOrNull,
+        Traits\AssertSlug,
         Traits\AssertEntity;
 }

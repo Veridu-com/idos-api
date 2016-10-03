@@ -15,18 +15,11 @@ use App\Command\AbstractCommand;
  */
 class CreateNew extends AbstractCommand {
     /**
-     * Subscription gate id.
+     * Subscription category slug.
      *
-     * @var int
+     * @var string
      */
-    public $gateId;
-
-    /**
-     * Subscription warning id.
-     *
-     * @var int
-     */
-    public $warningId;
+    public $categorySlug;
 
     /**
      * Acting Identity.
@@ -55,12 +48,8 @@ class CreateNew extends AbstractCommand {
      * @return App\Command\Company\Subscription\CreateNew
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['decoded_gate_id'])) {
-            $this->gateId = $parameters['decoded_gate_id'];
-        }
-
-        if (isset($parameters['decoded_warning_id'])) {
-            $this->warningId = $parameters['decoded_warning_id'];
+        if (isset($parameters['category_slug'])) {
+            $this->categorySlug = $parameters['category_slug'];
         }
 
         if (isset($parameters['identity'])) {

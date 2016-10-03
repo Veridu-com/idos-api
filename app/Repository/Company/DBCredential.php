@@ -29,6 +29,7 @@ class DBCredential extends AbstractSQLDBRepository implements CredentialInterfac
      */
     protected $entityName = 'Company\Credential';
 
+
     /**
      * {@inheritdoc}
      */
@@ -40,7 +41,18 @@ class DBCredential extends AbstractSQLDBRepository implements CredentialInterfac
      * {@inheritdoc}
      */
     public function getAllByCompanyId(int $companyId) : Collection {
-        return $this->findBy(['company_id' => $companyId]);
+        $collection = $this->findBy([
+            'company_id' => $companyId
+        ]);
+
+        $subscriptionRepository = $this->repositoryFactory->create('Company\Subscription');
+
+        return $collection->map(function ($credential) use ($subscriptionRepository) {
+            $cred = $credential->toArray();
+            $cred['subscriptions'] = $subscriptionRepository->getAllByCredentialId($credential->id);
+
+            return $cred;
+        });
     }
 
     /**

@@ -755,7 +755,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                 return [];
             }
         }
-
+        
         foreach ($columns[$relation] as $column) {
             $getColumns[] = $relationTable . '.' . $column . ' as ' . $relation . '.' . $column;
         }

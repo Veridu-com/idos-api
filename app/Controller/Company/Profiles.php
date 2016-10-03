@@ -159,23 +159,20 @@ class Profiles implements ControllerInterface {
                 }
             }
 
-            $firstNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'firstname']);
-            $firstNamesArray = [];
-            foreach ($firstNames as $firstName) {
-                $firstNamesArray[] = $firstName->value;
+            $attributes      = $this->attributeRepository->findByUserId($profile->id);
+            $mappedAttributes = [];
+
+            foreach ($attributes as $attribute) {
+                $mappedAttributes[$attribute->name][] = $attribute->toArray();
             }
 
-            $middleNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'middlename']);
-            $middleNamesArray = [];
-            foreach ($middleNames as $middleName) {
-                $middleNamesArray[] = $middleName->value;
-            }
-
-            $lastNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'lastname']);
-            $lastNamesArray = [];
-            foreach ($lastNames as $lastName) {
-                $lastNamesArray[] = $lastName->value;
-            }
+            $mappedAttributes = array_map(function ($candidates) {
+                // sorting by support DESC
+                usort($candidates, function($a, $b) {
+                    return ($a['support'] <=> $b['support']) * -1;
+                });
+                return $candidates;
+            }, $mappedAttributes);
 
             $data[] = array_merge(
                 $profile->toArray(),
@@ -183,9 +180,7 @@ class Profiles implements ControllerInterface {
                 ['tags'        => $tags->toArray()],
                 ['warnings'    => $warnings->toArray()],
                 ['gates'       => $gates->toArray()],
-                ['firstnames'  => $firstNamesArray],
-                ['middlenames' => $middleNamesArray],
-                ['lastnames'   => $lastNamesArray]
+                ['attributes'  => $mappedAttributes]
             );
         }
 
@@ -220,41 +215,61 @@ class Profiles implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $userId = $request->getAttribute('decodedUserId');
 
+        $data     = [];
+
         $profile = $this->repository->find($userId);
 
+        $sources = $this->sourceRepository->getAllByUserId($profile->id);
+        $tags = $this->tagRepository->getAllByUserId($profile->id);
+        $reviews = $this->reviewRepository->getAllByUserId($profile->id);
         $warnings = $this->warningRepository->findByUserId($profile->id);
         $gates    = $this->gateRepository->findByUserId($profile->id);
 
-        $firstNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'firstname']);
-        $firstNamesArray = [];
-        foreach ($firstNames as $firstName) {
-            $firstNamesArray[] = $firstName->value;
+        foreach ($warnings as $warning) {
+            $warningReview = null;
+            foreach ($reviews as $review) {
+                if ($review->warningId === $warning->id) {
+                    $warningReview = $review->toArray();
+                    break;
+                }
+            }
+
+            $warning->review = $warningReview;
         }
 
-        $middleNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'middlename']);
-        $middleNamesArray = [];
-        foreach ($middleNames as $middleName) {
-            $middleNamesArray[] = $middleName->value;
+        $profileSources = [];
+        foreach ($sources as $source) {
+            if (! in_array($source->name, $profileSources)) {
+                $profileSources[] = $source->name;
+            }
         }
 
-        $lastNames      = $this->attributeRepository->getAllByUserIdAndNames($profile->id, ['name' => 'lastname']);
-        $lastNamesArray = [];
-        foreach ($lastNames as $lastName) {
-            $lastNamesArray[] = $lastName->value;
+        $attributes      = $this->attributeRepository->findByUserId($profile->id);
+        $mappedAttributes = [];
+
+        foreach ($attributes as $attribute) {
+            $mappedAttributes[$attribute->name][] = $attribute->toArray();
         }
+
+        $mappedAttributes = array_map(function ($candidates) {
+            // sorting by support DESC
+            usort($candidates, function($a, $b) {
+                return ($a['support'] <=> $b['support']) * -1;
+            });
+            return $candidates;
+        }, $mappedAttributes);
 
         $data = array_merge(
             $profile->toArray(),
+            ['sources'     => $profileSources],
+            ['tags'        => $tags->toArray()],
             ['warnings'    => $warnings->toArray()],
             ['gates'       => $gates->toArray()],
-            ['firstnames'  => $firstNamesArray],
-            ['middlenames' => $middleNamesArray],
-            ['lastnames'   => $lastNamesArray]
+            ['attributes'  => $mappedAttributes]
         );
 
         $body = [
-            'data'    => $data,
-            'updated' => $profile->updatedAt
+            'data'    => $data
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -264,6 +279,7 @@ class Profiles implements ControllerInterface {
             ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
+
     }
 
     /**

@@ -17,7 +17,7 @@ use App\Entity\AbstractEntity;
  *
  * @property int    $id
  * @property int    $gate_id
- * @property int    $warning_id
+ * @property string $category_slug
  * @property int    $credential_id
  * @property int    $identity_id
  * @property int    $created_at
@@ -27,13 +27,17 @@ class Subscription extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'gate_id', 'warning_id', 'credential_id', 'identity_id', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'category_slug', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+    
     /**
      * {@inheritdoc}
      */
-    protected $obfuscated = ['id', 'gate_id', 'warning_id', 'credential_id', 'identity_id'];
+    public $relationships = [
+        'category' => 'Category'
+    ];
+
 }

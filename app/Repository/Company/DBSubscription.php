@@ -29,26 +29,9 @@ class DBSubscription extends AbstractSQLDBRepository implements SubscriptionInte
      */
     protected $entityName = 'Company\Subscription';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAllByCredentialId(int $credentialId) : Collection {
-        $gateRepository = $this->repositoryFactory->create('Profile\Gate');
-        $warningRepository = $this->repositoryFactory->create('Profile\Warning');
-        
-        $collection = $this->findBy(
-            [
-                'credential_id' => $credentialId
-            ]
-        );
-        var_dump($collection->toArray());
-
-        return $collection->map(function ($credential) {
-
-            if ($credetial->gate) {
-                # code...
-            }
-
-        });
+        return $this->findBy([
+            'credential_id' => $credentialId
+        ]);
     }
 }
