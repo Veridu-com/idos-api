@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Review;
-use App\Exception\NotFound;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 
@@ -40,11 +39,10 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndWarningIdsAndIdentity(int $userId, array $warningIds, int $identityId) : Collection {
+    public function getAllByUserIdAndWarningIds(int $userId, array $warningIds) : Collection {
         $result = $this->query()
             ->selectRaw('reviews.*')
-            ->where('user_id', '=', $userId)
-            ->where('identity_id', '=', $identityId);
+            ->where('user_id', '=', $userId);
 
         if (! empty($warningIds)) {
             $warningIds = array_map([$this->optimus, 'decode'], $warningIds);
@@ -56,22 +54,4 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
         return new Collection($result);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByUserIdAndIdAndIdentityId(int $userId, int $id, int $identityId) : Review {
-        $result = $this->findBy(
-            [
-            'user_id'     => $userId,
-            'identity_id' => $identityId,
-            'id'          => $id
-            ]
-        );
-
-        if ($result->isEmpty()) {
-            throw new NotFound();
-        }
-
-        return $result->first();
-    }
 }

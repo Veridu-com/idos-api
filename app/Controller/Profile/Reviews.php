@@ -88,7 +88,7 @@ class Reviews implements ControllerInterface {
             $warningIds = explode(',', $warningIds);
         }
 
-        $reviews = $this->repository->getAllByUserIdAndWarningIdsAndIdentity($user->id, $warningIds, $identity->id);
+        $reviews = $this->repository->getAllByUserIdAndWarningIds($user->id, $warningIds, $identity->id);
 
         $body = [
             'data'    => $reviews->toArray(),
