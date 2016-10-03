@@ -32,7 +32,7 @@ interface CredentialInterface extends RepositoryInterface {
      *
      * @param int $companyId
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllByCompanyId(int $companyId) : Collection;
 

@@ -60,10 +60,10 @@ class Credentials implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository     = $repository;
+        $this->repository                 = $repository;
         $this->subscriptionRepository     = $subscriptionRepository;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
+        $this->commandBus                 = $commandBus;
+        $this->commandFactory             = $commandFactory;
     }
 
     /**

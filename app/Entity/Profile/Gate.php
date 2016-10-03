@@ -54,5 +54,4 @@ class Gate extends AbstractEntity {
         'creator' => 'Service'
     ];
 
-
 }

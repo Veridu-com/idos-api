@@ -159,7 +159,7 @@ class Profiles implements ControllerInterface {
                 }
             }
 
-            $attributes      = $this->attributeRepository->findByUserId($profile->id);
+            $attributes       = $this->attributeRepository->findByUserId($profile->id);
             $mappedAttributes = [];
 
             foreach ($attributes as $attribute) {
@@ -168,9 +168,10 @@ class Profiles implements ControllerInterface {
 
             $mappedAttributes = array_map(function ($candidates) {
                 // sorting by support DESC
-                usort($candidates, function($a, $b) {
+                usort($candidates, function ($a, $b) {
                     return ($a['support'] <=> $b['support']) * -1;
                 });
+
                 return $candidates;
             }, $mappedAttributes);
 
@@ -219,9 +220,9 @@ class Profiles implements ControllerInterface {
 
         $profile = $this->repository->find($userId);
 
-        $sources = $this->sourceRepository->getAllByUserId($profile->id);
-        $tags = $this->tagRepository->getAllByUserId($profile->id);
-        $reviews = $this->reviewRepository->getAllByUserId($profile->id);
+        $sources  = $this->sourceRepository->getAllByUserId($profile->id);
+        $tags     = $this->tagRepository->getAllByUserId($profile->id);
+        $reviews  = $this->reviewRepository->getAllByUserId($profile->id);
         $warnings = $this->warningRepository->findByUserId($profile->id);
         $gates    = $this->gateRepository->findByUserId($profile->id);
 
@@ -244,7 +245,7 @@ class Profiles implements ControllerInterface {
             }
         }
 
-        $attributes      = $this->attributeRepository->findByUserId($profile->id);
+        $attributes       = $this->attributeRepository->findByUserId($profile->id);
         $mappedAttributes = [];
 
         foreach ($attributes as $attribute) {
@@ -253,9 +254,10 @@ class Profiles implements ControllerInterface {
 
         $mappedAttributes = array_map(function ($candidates) {
             // sorting by support DESC
-            usort($candidates, function($a, $b) {
+            usort($candidates, function ($a, $b) {
                 return ($a['support'] <=> $b['support']) * -1;
             });
+
             return $candidates;
         }, $mappedAttributes);
 

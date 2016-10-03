@@ -115,7 +115,6 @@ class Subscription implements HandlerInterface {
             );
         }
 
-
         $subscription = $this->repository->create(
             [
                 'identity_id'      => $command->identity->id,

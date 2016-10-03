@@ -29,7 +29,6 @@ class DBCredential extends AbstractSQLDBRepository implements CredentialInterfac
      */
     protected $entityName = 'Company\Credential';
 
-
     /**
      * {@inheritdoc}
      */

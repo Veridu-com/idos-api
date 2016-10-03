@@ -18,7 +18,7 @@ class S21UsersSeed extends AbstractSeed {
             [
                 'credential_id' => 1,
                 'username'      => md5('JohnDoe2'), // fd1fde2f31535a266ea7f70fdf224079
-                'created_at' => date('Y-m-d H:i:s', strtotime('now + 2 days')),
+                'created_at'    => date('Y-m-d H:i:s', strtotime('now + 2 days')),
             ],
             [
                 'credential_id' => 1,

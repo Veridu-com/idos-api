@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Review;
-use App\Exception\NotFound;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 
@@ -54,5 +53,5 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
 
         return new Collection($result);
     }
-    
+
 }
