@@ -135,6 +135,7 @@ class Attribute implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
+            $entity = $this->repository->hydrateRelations($entity);
             $event  = $this->eventFactory->create('Profile\\Attribute\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
