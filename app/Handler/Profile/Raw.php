@@ -132,8 +132,8 @@ class Raw implements HandlerInterface {
         // We must assert thet there is no raw data with the given source and collection
         try {
             $entity = $this->repository->findOne($command->source, $command->collection);
-        } catch (NotFound $e) {
             throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
+        } catch (NotFound $e) {
         }
 
         $raw = $this->repository->create(
@@ -148,7 +148,7 @@ class Raw implements HandlerInterface {
         try {
             $raw = $this->repository->save($raw);
 
-            $process = $this->processRepository->findBySourceId($command->source->id);
+            $process = $this->processRepository->findOneBySourceId($command->source->id);
 
             $event = $this->eventFactory->create(
                 'Profile\\Raw\\Created',
@@ -263,6 +263,7 @@ class Raw implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
+
             if ($inserting) {
                 $event = $this->eventFactory->create(
                     'Profile\\Raw\\Created',
