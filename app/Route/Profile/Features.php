@@ -17,7 +17,9 @@ use Slim\App;
 /**
  * Profile Feature.
  *
- * A Profile Feature is a specific question the API can answer using data extracted from the Profile. An example feature could be “quantity of uploaded photos” and the API will give a quantitative answer. Another example feature could be “User’s Facebook and Twitter name matches” and the API will give a polar yes-no answer.
+ * A Profile Feature is a specific question the API can answer using data extracted from the Profile.
+ * An example feature could be "quantity of uploaded photos" and the API will give a quantitative answer.
+ * Another example feature could be "User's Facebook and Twitter name matches" and the API will give a polar yes-no answer.
  *
  * @link docs/profile/features/overview.md
  * @see App\Controller\Profile\Features

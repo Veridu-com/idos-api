@@ -12,16 +12,19 @@ class S21UsersSeed extends AbstractSeed {
             [
                 'credential_id' => 1,
                 'username'      => md5('JohnDoe1'), // f67b96dcf96b49d713a520ce9f54053c
-                'role'          => 'company.member'
+                'role'          => 'company.member',
+                'created_at'    => date('Y-m-d H:i:s', strtotime('now - 3 days')),
             ],
             [
                 'credential_id' => 1,
-                'username'      => md5('JohnDoe2') // fd1fde2f31535a266ea7f70fdf224079
+                'username'      => md5('JohnDoe2'), // fd1fde2f31535a266ea7f70fdf224079
+                'created_at'    => date('Y-m-d H:i:s', strtotime('now + 2 days')),
             ],
             [
                 'credential_id' => 1,
                 'username'      => md5('JohnDoeAdmin'), // 9faf3b682ab323456268b464c9569c0b
-                'role'          => 'company.admin'
+                'role'          => 'company.admin',
+                'created_at'    => date('Y-m-d H:i:s', strtotime('now - 2 days')),
             ],
             [
                 'credential_id' => 1,

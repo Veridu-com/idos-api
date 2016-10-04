@@ -18,7 +18,7 @@ use Slim\App;
 /**
  * Profile Sources.
  *
- * A Profile Sources is the online platform from which the API is accessing a user’s information (eg. Facebook, Twitter, LinkedIn etc.)
+ * A Profile Sources is the online platform from which the API is accessing a user's information (eg. Facebook, Twitter, LinkedIn etc.)
  *
  * @link docs/profiles/sources/overview.md
  * @see App\Controller\Profile\Sources

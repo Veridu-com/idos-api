@@ -15,7 +15,7 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile Reviews
+ * Profile Reviews.
  *
  * A Profile Reviews allows a Company to provide feedback on any Attributes the API has extracted that they feel is inaccurate or incorrect. For example if the API has failed a Profile at an 18+ Gate, and later the User provides evidence proving their age is 18+, the Company should use a Profile Reviews to flag this information as inaccurate in order for Veridu to improve the accuracy of the API.
  *

@@ -29,10 +29,10 @@ class Permissions implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'permissions:listAll',
-            'permissions:createNew',
-            'permissions:getOne',
-            'permissions:deleteOne'
+            // 'permissions:listAll',
+            // 'permissions:createNew',
+            // 'permissions:getOne',
+            // 'permissions:deleteOne'
         ];
     }
 

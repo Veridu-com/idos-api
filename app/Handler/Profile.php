@@ -10,8 +10,8 @@ namespace App\Handler;
 
 use App\Command\Profile\ListAll;
 use App\Factory\Event;
-use App\Repository\UserInterface;
 use App\Repository\Profile\ReviewInterface;
+use App\Repository\UserInterface;
 use App\Validator\Profile as ProfileValidator;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;

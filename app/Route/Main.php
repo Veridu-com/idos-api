@@ -32,6 +32,7 @@ class Main implements RouteInterface {
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Main::class] = function (ContainerInterface $container) {
             return new \App\Controller\Main(
+                $container->get('globFiles')['routes'],
                 $container->get('router'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
