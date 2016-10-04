@@ -136,12 +136,12 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
     /**
      * {@inheritdoc}
      */
-    public function findBySourceNameAndProfileId(
+    public function findOneBySourceNameAndProfileId(
         string $sourceName,
         string $profileId,
         string $appKey
-    ) : Collection {
-        return $this->findBy(
+    ) : Identity {
+        return $this->findOneBy(
             [
                 'reference' => $this->getReference(
                     $sourceName,
