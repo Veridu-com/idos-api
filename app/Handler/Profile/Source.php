@@ -120,6 +120,11 @@ class Source implements HandlerInterface {
             $this->validator->assertCredential($command->credential);
             $this->validator->assertId($command->user->id);
             $this->validator->assertIpAddr($command->ipaddr);
+
+            $this->validator->assertArray($command->tags);
+            foreach ($command->tags as $key => $value) {
+                $this->validator->assertString($key);
+            }
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),
@@ -239,7 +244,11 @@ class Source implements HandlerInterface {
             $this->validator->assertSource($command->source);
             $this->validator->assertId($command->source->id);
             $this->validator->assertIpAddr($command->ipaddr);
+            
             $this->validator->assertArray($command->tags);
+            foreach ($command->tags as $key => $value) {
+                $this->validator->assertString($key);
+            }
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),

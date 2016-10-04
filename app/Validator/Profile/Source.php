@@ -20,6 +20,7 @@ class Source implements ValidatorInterface {
         Traits\AssertId,
         Traits\AssertIpAddr,
         Traits\AssertName,
+        Traits\AssertString,
         Traits\AssertOTPCode,
         Traits\ValidateFlag;
 }
