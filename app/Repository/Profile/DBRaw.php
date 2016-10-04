@@ -180,9 +180,14 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
             $entity->id = $entity->source->id;
         }
 
+        $source = $entity->source;
         unset($entity->source);
 
-        return parent::save($entity);
+        $entity = parent::save($entity);
+        //@FIXME do this through castHydrateEntity
+        $entity->source = $source->toArray();
+
+        return $entity;
     }
 
     /**
