@@ -32,7 +32,7 @@ interface IdentityInterface extends RepositoryInterface {
      * @param string $sourceName
      * @param string $profileId
      *
-     * @return \Illuminate\Support\Collection
+     * @return App\Entity\Identity
      */
-    public function findBySourceNameAndProfileId(string $sourceName, string $profileId, string $applicationId) : Collection;
+    public function findOneBySourceNameAndProfileId(string $sourceName, string $profileId, string $applicationId) : Identity;
 }

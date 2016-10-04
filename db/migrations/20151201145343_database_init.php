@@ -19,6 +19,7 @@ class DatabaseInit extends AbstractMigration {
             // private_key should be binary
             ->addColumn('private_key', 'binary', ['null' => false])
             ->addTimestamps()
+            ->addIndex('reference', ['unique' => true])
             ->addIndex('public_key')
             ->create();
 
