@@ -185,7 +185,7 @@ class References implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Profile\References:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -219,7 +219,7 @@ class References implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->patch(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Profile\References:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -253,7 +253,7 @@ class References implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Profile\References:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
