@@ -30,6 +30,22 @@ trait AssertString {
     }
 
     /**
+     * Asserts a valid string.
+     *
+     * @param mixed $string
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertNullableString($string) {
+        Validator::oneOf(
+            Validator::stringType(),
+            Validator::nullType()
+        )->assert($string);
+    }
+
+    /**
      * Asserts a valid short (1-50 chars long) string.
      *
      * @param mixed $string

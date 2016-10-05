@@ -18,5 +18,6 @@ class Task implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertName,
         Traits\AssertEntity,
-        Traits\AssertBooleanOrNull;
+        Traits\AssertBoolean,
+        Traits\AssertString;
 }

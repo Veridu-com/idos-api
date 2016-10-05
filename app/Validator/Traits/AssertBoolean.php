@@ -17,7 +17,7 @@ trait AssertBoolean {
     /**
      * Asserts a valid boolean.
      *
-     * @param mixed $bolean
+     * @param mixed $boolean
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
@@ -26,5 +26,21 @@ trait AssertBoolean {
     public function assertBoolean($boolean) {
         Validator::boolType()
             ->assert($boolean);
+    }
+
+    /**
+     * Asserts a valid boolean.
+     *
+     * @param mixed $boolean
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertNullableBoolean($boolean) {
+        Validator::oneOf(
+            Validator::boolType(),
+            Validator::nullType()
+        )->assert($boolean);
     }
 }
