@@ -11,7 +11,8 @@ namespace App\Repository;
 use App\Entity\Company;
 use App\Entity\User;
 use App\Exception\AppException;
-use App\Exception\NotFound;
+use App\Exception\Create\IdentityException;
+use App\Exception\NotFound\UserException;
 use Illuminate\Support\Collection;
 
 /**
@@ -51,9 +52,11 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
      * {@inheritdoc}
      */
     public function findByCompanyId(int $companyId) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'credential.company_id' => $companyId
-        ]);
+            ]
+        );
     }
 
     /**
@@ -67,7 +70,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->first(['users.*']);
 
         if (empty($result)) {
-            throw new NotFound();
+            throw new UserException();
         }
 
         return $result;
@@ -118,7 +121,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->first();
 
         if (empty($result)) {
-            throw new NotFound('User not found.');
+            throw new UserException('User not found.');
         }
 
         return $result;
@@ -139,7 +142,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->get(['users.*', 'credentials.public']);
 
         if ($result->isEmpty()) {
-            throw new NotFound('No users related to given company found');
+            throw new UserException('No users related to given company found');
         }
 
         return $result;
@@ -148,19 +151,23 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
     /**
      * {@inheritdoc}
      */
-    public function getUserNameByProfileIdAndProviderNameAndCredentialId(
+    public function findOneByProfileIdAndProviderNameAndCredentialId(
         string $profileId,
         string $providerName,
         int $credentialId
-    ) : string {
-        $result = $this->query()
+    ) : User {
+        $user = $this->query()
             ->join('sources', 'sources.user_id', '=', 'users.id')
             ->where('sources.tags->profile_id', '=', md5($profileId))
             ->where('sources.name', '=', $providerName)
             ->where('users.credential_id', '=', $credentialId)
-            ->get(['users.username']);
+            ->first(['users.*']);
+        
+        if (empty($user)) {
+            throw new UserException();
+        }
 
-        return $result->first() ? $result->first()->username : '';
+        return $user;
     }
 
     /**
@@ -173,7 +180,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->get(['users.*']);
 
         if ($result->isEmpty()) {
-            throw new NotFound('No users related to given identity');
+            throw new UserException('No users related to given identity');
         }
 
         return $result;
@@ -191,9 +198,41 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->get(['users.*']);
 
         if ($result->isEmpty()) {
-            throw new NotFound('User not found', 404);
+            throw new UserException('User not found', 404);
         }
 
         return $result->first();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentityIdAndCredentialId(int $identityId, int $credentialId) : User {
+        $user = $this->query()
+            ->join('user_identities', 'user_identities.user_id', 'users.id')
+            ->where('user_identities.identity_id', $identityId)
+            ->where('users.credential_id', $credentialId)
+            ->first(['users.*']);
+
+        if (empty($user)) {
+            throw new UserException('User not found', 404);
+        }
+
+        return $user;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function assignIdentityToUser(int $userId, int $identityId) {
+        $query = 'INSERT INTO user_identities (identity_id, user_id) VALUES (:identityId, :userId)';
+        $bindings = [
+            'userId' => $userId,
+            'identityId' => $identityId
+        ];
+        
+        if (! $this->runRaw($query, $bindings)) {
+            throw new IdentityException();
+        }
     }
 }

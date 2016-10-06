@@ -21,7 +21,7 @@ use Slim\App;
  * A Profile Attribute is a piece of information within a Profile that has been extracted by the API. This information can be simple like a full name, or more detailed like a Users hometown or employment. If the API has extracted multiple results for one Attribute, they will all be listed with an Attribute Score.
  *
  * @link docs/profiles/attribute/overview.md
- * @see App\Controller\Profile\Attribute
+ * @see App\Controller\Profile\Attributes
  */
 class Attributes implements RouteInterface {
     /**
@@ -66,7 +66,7 @@ class Attributes implements RouteInterface {
      * Retrieve a complete list of the attributes by a given user.
      *
      * @apiEndpoint GET /profiles/{userName}/attributes
-     * @apiGroup Profiles Attribute
+     * @apiGroup Profile Attributes
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -80,7 +80,7 @@ class Attributes implements RouteInterface {
      * @link docs/sources/attribute/listAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attribute::listAll
+     * @see App\Controller\Profile\Attributes::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -98,7 +98,7 @@ class Attributes implements RouteInterface {
      * Creates a new attribute for the given user.
      *
      * @apiEndpoint POST /profiles/{userName}/attributes
-     * @apiGroup Profiles Attribute
+     * @apiGroup Profile Attributes
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -112,7 +112,7 @@ class Attributes implements RouteInterface {
      * @link docs/sources/attribute/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attribute::createNew
+     * @see App\Controller\Profile\Attributes::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -131,7 +131,7 @@ class Attributes implements RouteInterface {
      * Retrieves an attribute from the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}
-     * @apiGroup Profiles Attribute
+     * @apiGroup Profile Attributes
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -146,12 +146,12 @@ class Attributes implements RouteInterface {
      * @link docs/sources/attribute/getOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attribute::getOne
+     * @see App\Controller\Profile\Attributes::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Profile\Attributes:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -165,7 +165,7 @@ class Attributes implements RouteInterface {
      * Deletes all attributes from the given user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/attributes
-     * @apiGroup Profiles Attribute
+     * @apiGroup Profile Attributes
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -179,7 +179,7 @@ class Attributes implements RouteInterface {
      * @link docs/sources/attribute/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attribute::deleteAll
+     * @see App\Controller\Profile\Attributes::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
@@ -198,7 +198,7 @@ class Attributes implements RouteInterface {
      * Deletes an attribute from the given user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/attributes/{attributeName}
-     * @apiGroup Profiles Attribute
+     * @apiGroup Profile Attributes
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -213,12 +213,12 @@ class Attributes implements RouteInterface {
      * @link docs/sources/attribute/deleteOne.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attribute::deleteOne
+     * @see App\Controller\Profile\Attributes::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Profile\Attributes:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

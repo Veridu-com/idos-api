@@ -166,7 +166,7 @@ class ScrapeEventListener extends AbstractListener {
         if (! $valid) {
             return $this->dispatchUnhandleEvent($event);
         }
-        
+
         $credential                            = $this->credentialRepository->find($event->user->credentialId);
         list($appKey, $appSecret, $apiVersion) = $this->loadSettings($credential, $event->source->name);
 

@@ -27,12 +27,12 @@ class ServiceHandler implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'service-handlers:listAll',
-            'service-handlers:deleteAll',
-            'service-handlers:createNew',
-            'service-handlers:getOne',
-            'service-handlers:updateOne',
-            'service-handlers:deleteOne'
+            // 'service-handlers:listAll',
+            // 'service-handlers:deleteAll',
+            // 'service-handlers:createNew',
+            // 'service-handlers:getOne',
+            // 'service-handlers:updateOne',
+            // 'service-handlers:deleteOne'
         ];
     }
 
@@ -72,6 +72,7 @@ class ServiceHandler implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -103,6 +104,7 @@ class ServiceHandler implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -134,6 +136,7 @@ class ServiceHandler implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -167,6 +170,7 @@ class ServiceHandler implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -199,6 +203,7 @@ class ServiceHandler implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -231,6 +236,7 @@ class ServiceHandler implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

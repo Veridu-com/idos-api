@@ -47,6 +47,13 @@ class S12CategoriesSeed extends AbstractSeed {
                 'service_id'  => 1
             ],
             [
+                'name'        => 'Birth year',
+                'slug'        => 'birth-year',
+                'type'        => 'attribute',
+                'description' => 'Birth year of a user.',
+                'service_id'  => 1
+            ],
+            [
                 'name'        => 'City name',
                 'slug'        => 'city-name',
                 'type'        => 'attribute',

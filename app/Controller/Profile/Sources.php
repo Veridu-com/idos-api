@@ -63,7 +63,7 @@ class Sources implements ControllerInterface {
      * @apiEndpointParam query string after 2016-01-01|1070-01-01 Initial Company creation date (lower bound)
      * @apiEndpointParam query string before 2016-01-31|2016-12-31 Final Company creation date (upper bound)
      * @apiEndpointParam query int page 10|1 Current page
-     * @apiEndpointResponse 200 schema/sources/listAll.json
+     * @apiEndpointResponse 200 schema/source/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -98,7 +98,7 @@ class Sources implements ControllerInterface {
     /**
      * Retrieves one Source.
      *
-     * @apiEndpointResponse 200 schema/sources/getOne.json
+     * @apiEndpointResponse 200 schema/source/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -137,7 +137,7 @@ class Sources implements ControllerInterface {
      *  - Submitted can carry as many fields as wanted.
      *
      * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
-     * @apiEndpointResponse 201 schema/sources/createNew.json
+     * @apiEndpointResponse 201 schema/source/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -175,7 +175,7 @@ class Sources implements ControllerInterface {
     /**
      * Deletes all Sources that belongs to the acting User.
      *
-     * @apiEndpointResponse 200 schema/services/deleteAll.json
+     * @apiEndpointResponse 200 schema/service/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -208,7 +208,7 @@ class Sources implements ControllerInterface {
     /**
      * Deletes one Source of the acting User based on path parameter source id.
      *
-     * @apiEndpointResponse 200 schema/sources/deleteOne.json
+     * @apiEndpointResponse 200 schema/source/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -253,6 +253,7 @@ class Sources implements ControllerInterface {
      *
      * @apiEndpointParam body string otpCode OTP Code check for One Time Password Verifications
      * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
+     * @apiEndpointResponse 200 schema/source/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

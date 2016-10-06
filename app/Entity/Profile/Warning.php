@@ -42,8 +42,12 @@ class Warning extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
+    protected $obfuscated = ['id', 'creator'];
+    /**
+     * {@inheritdoc}
+     */
     public $relationships = [
         'creator' => 'Service',
-        'review' => 'Review'
+        'review'  => 'Review'
     ];
 }

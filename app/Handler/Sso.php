@@ -19,6 +19,8 @@ use App\Entity\Company\Credential;
 use App\Entity\Profile\Source as SourceEntity;
 use App\Entity\User;
 use App\Exception\Create;
+use App\Exception\NotFound;
+use App\Exception\NotFound\UserException;
 use App\Factory\Command;
 use App\Factory\Event;
 use App\Helper\Token;
@@ -251,23 +253,34 @@ class Sso implements HandlerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        $username = $this->userRepository->getUsernameByProfileIdAndProviderNameAndCredentialId(
-            $decodedResponse[$decodedResponseParam],
-            $sourceName,
-            $credential->id
-        );
 
-        if ($username) {
-            $user = $this->userRepository->findByUserName($username, $credential->id);
-        } else {
-            $user     = $this->createNewUser($credential, 'user', bin2hex(openssl_random_pseudo_bytes(10)));
-            $username = $user->username;
+        try {
+            $identity = $this->identityRepository->findOneBySourceNameAndProfileId(
+                $sourceName,
+                $decodedResponse[$decodedResponseParam],
+                $command->appKey ?: 'Veridu'
+            );
+        } catch (NotFound $e) {
+            $identityCommand = $this->commandFactory->create('Identity\\CreateNew');
+            $identityCommand
+                ->setParameter('sourceName', $sourceName)
+                ->setParameter('profileId', $decodedResponse[$decodedResponseParam])
+                ->setParameter('appKey', $identityCommand->appKey ?: 'Veridu');
+
+            $identity = $this->commandBus->handle($identityCommand);
+        }
+
+        try {
+            $user = $this->userRepository->findOneByIdentityIdAndCredentialId($identity->id, $credential->id);
+        } catch (NotFound $e) {
+            $user = $this->createNewUser($credential, 'user', bin2hex(openssl_random_pseudo_bytes(10)));
+            $this->userRepository->assignIdentityToUser($user->id, $identity->id);
         }
 
         $array = [
-                'profile_id'   => $decodedResponse[$decodedResponseParam],
-                'access_token' => $command->accessToken,
-                'sso'          => true
+            'profile_id'   => $decodedResponse[$decodedResponseParam],
+            'access_token' => $command->accessToken,
+            'sso'          => true
         ];
 
         if (isset($command->tokenSecret)) {
@@ -282,32 +295,14 @@ class Sso implements HandlerInterface {
             $command->ipAddress
         );
 
-        $event = $this->eventFactory->create($eventClass, $username);
+        $event = $this->eventFactory->create($eventClass, $user->username);
         $this->emitter->emit($event);
 
         $tokens = [
-            'user_token' => Token::generateUserToken($username, $command->credentialPubKey, $credential->private)
+            'user_token' => Token::generateUserToken($user->username, $command->credentialPubKey, $credential->private)
         ];
 
         if ($credential->special) {
-            $identities = $this->identityRepository->findBySourceNameAndProfileId(
-                $sourceName,
-                $decodedResponse[$decodedResponseParam],
-                $command->appKey ?: 'Veridu'
-            );
-
-            if ($identities->isEmpty()) {
-                $command = $this->commandFactory->create('Identity\\CreateNew');
-                $command
-                    ->setParameter('sourceName', $sourceName)
-                    ->setParameter('profileId', $decodedResponse[$decodedResponseParam])
-                    ->setParameter('appKey', $command->appKey ?: 'Veridu');
-
-                $identity = $this->commandBus->handle($command);
-            } else {
-                $identity = $identities->first();
-            }
-
             $tokens['identity_token'] = Token::generateIdentityToken($identity->publicKey, $identity->privateKey);
         }
 

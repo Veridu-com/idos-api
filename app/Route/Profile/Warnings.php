@@ -94,11 +94,11 @@ class Warnings implements RouteInterface {
     }
 
     /**
-     * Create new Feature.
+     * Create new Warning.
      *
-     * Create a new feature for the given user.
+     * Create a new warning for the given user.
      *
-     * @apiEndpoint POST profiles/{userName}/warnings
+     * @apiEndpoint POST /profiles/{userName}/warnings
      * @apiGroup Profile Warnings
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -127,16 +127,16 @@ class Warnings implements RouteInterface {
     }
 
     /**
-     * Deletes a single Feature.
+     * Deletes a single Warning.
      *
-     * Deletes a single Feature that belongs to the given user
+     * Deletes a single Warning that belongs to the given user
      *
      * @apiEndpoint DELETE /profiles/{userName}/warnings/{warningSlug}
      * @apiGroup Profile Warnings
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
-     * @apiEndpointURIFragment string wariningSlug warning-test
+     * @apiEndpointURIFragment string warningSlug warning-test
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -194,9 +194,9 @@ class Warnings implements RouteInterface {
     }
 
     /**
-     * Retrieve a single Feature.
+     * Retrieve a single Warning.
      *
-     * Retrieves all public information from a Feature.
+     * Retrieves all public information from a Warning.
      *
      * @apiEndpoint GET /profiles/{userName}/warnings/{warningSlug}
      * @apiGroup Profile Warnings

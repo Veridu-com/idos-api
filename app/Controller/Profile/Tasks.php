@@ -75,7 +75,7 @@ class Tasks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBTask::find
+     * @see App\Repository\Profile\DBTask::find
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -111,7 +111,7 @@ class Tasks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Task::handleCreateNew
+     * @see App\Handler\Profile\Task::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -144,17 +144,17 @@ class Tasks implements ControllerInterface {
     /**
      * Updates a Task.
      *
-     * @apiEndpointRequiredParam body string name XYZ Task name
-     * @apiEndpointRequiredParam body string event ZYX Task event
-     * @apiEndpointRequiredParam body boolean running ZYX Task running flag
-     * @apiEndpointRequiredParam body boolean success ZYX Task success flag
-     * @apiEndpointRequiredParam body string message ZYX Task message
+     * @apiEndpointRequiredParam body string name task Task name
+     * @apiEndpointRequiredParam body string event user:created Task event
+     * @apiEndpointRequiredParam body boolean running false Task running flag
+     * @apiEndpointRequiredParam body boolean success true Task success flag
+     * @apiEndpointRequiredParam body string message xyz Task message
      * @apiEndpointResponse 200 schema/task/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Task::handleUpdateOne
+     * @see App\Handler\Profile\Task::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -187,7 +187,7 @@ class Tasks implements ControllerInterface {
     }
 
     /**
-     * Lists all Features that belongs to the given process.
+     * Lists all Tasks that belongs to the given process.
      *
      * @apiEndpointParam query int page 10|1 Current page
      * @apiEndpointResponse 200 schema/task/listAll.json
@@ -196,7 +196,7 @@ class Tasks implements ControllerInterface {
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see App\Repository\DBProcess::find
-     * @see App\Repository\DBTask::getAllByProcessId
+     * @see App\Repository\Profile\DBTask::getAllByProcessId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

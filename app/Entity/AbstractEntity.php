@@ -31,6 +31,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $visible = [];
     /**
+     * Entity attribute cast to types.
+     *
+     * @var array
+     */
+    protected $cast = [];
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
@@ -247,6 +253,23 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = json_decode($value);
             if ($value === null) {
                 $value = [];
+            }
+        }
+
+        if ((isset($this->cast[$key])) && ($value !== null)) {
+            switch ($this->cast[$key]) {
+                case 'int':
+                    $value = (int) $value;
+                    break;
+                case 'float':
+                    $value = (float) $value;
+                    break;
+                case 'bool':
+                    $value = (bool) $value;
+                    break;
+                case 'string':
+                    $value = (string) $value;
+                    break;
             }
         }
 

@@ -27,12 +27,12 @@ class Service implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'service:listAll',
-            'service:deleteAll',
-            'service:createNew',
-            'service:getOne',
-            'service:updateOne',
-            'service:deleteOne'
+            // 'service:listAll',
+            // 'service:deleteAll',
+            // 'service:createNew',
+            // 'service:getOne',
+            // 'service:updateOne',
+            // 'service:deleteOne'
         ];
     }
 
@@ -72,6 +72,7 @@ class Service implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -103,6 +104,7 @@ class Service implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -134,6 +136,7 @@ class Service implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -163,10 +166,11 @@ class Service implements RouteInterface {
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment  int  serviceId 12345
+     * @apiEndpointURIFragment  int  serviceId 1234
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -195,10 +199,11 @@ class Service implements RouteInterface {
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment int serviceId 1
+     * @apiEndpointURIFragment int serviceId 1234
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -227,10 +232,11 @@ class Service implements RouteInterface {
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment int serviceId 1
+     * @apiEndpointURIFragment int serviceId 1234
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

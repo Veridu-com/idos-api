@@ -84,7 +84,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
             $company = $identity->company();
             $member  = $identity->member();
             $role    = $identity->role();
-            
+
             if ((! empty($company['id'])) && (! in_array($company, $companies['ids']))) {
                 $company = $this->entityFactory->create(
                     'Company',
@@ -136,12 +136,12 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
     /**
      * {@inheritdoc}
      */
-    public function findBySourceNameAndProfileId(
+    public function findOneBySourceNameAndProfileId(
         string $sourceName,
         string $profileId,
         string $appKey
-    ) : Collection {
-        return $this->findBy(
+    ) : Identity {
+        return $this->findOneBy(
             [
                 'reference' => $this->getReference(
                     $sourceName,

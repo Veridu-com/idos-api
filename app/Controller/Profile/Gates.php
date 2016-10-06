@@ -139,7 +139,7 @@ class Gates implements ControllerInterface {
      * Creates a new Feture for the given user.
      *
      * @apiEndpointRequiredParam body string name 18+ Gate name
-     * @apiEndpointRequiredParam body boolean pass t Gate pass
+     * @apiEndpointRequiredParam body boolean pass true Gate pass
      * @apiEndpointResponse 201 schema/gate/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -179,7 +179,7 @@ class Gates implements ControllerInterface {
     /**
      * Deletes all Gates that belongs to the User.
      *
-     * @apiEndpointResponse 200 schema/setting/deleteAll.json
+     * @apiEndpointResponse 200 schema/gate/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -251,13 +251,13 @@ class Gates implements ControllerInterface {
      * Updates one Gate of the User.
      *
      * @apiEndpointRequiredParam body string name 18+ Gate name
-     * @apiEndpointRequiredParam body boolean pass f Gate pass
+     * @apiEndpointRequiredParam body boolean pass false Gate pass
      * @apiEndpointResponse 200 schema/gate/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Gate::handleUpdateOne
+     * @see App\Handler\Profile\Gate::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -292,8 +292,8 @@ class Gates implements ControllerInterface {
     /**
      * Creates a new Gate for the given user.
      *
-     * @apiEndpointRequiredParam body string name XYZ Gate name
-     * @apiEndpointRequiredParam body boolean pass ZYX Gate pass
+     * @apiEndpointRequiredParam body string name 18+ Gate name
+     * @apiEndpointRequiredParam body boolean pass true Gate pass
      * @apiEndpointResponse 201 schema/gate/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

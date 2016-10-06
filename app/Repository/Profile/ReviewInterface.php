@@ -29,21 +29,8 @@ interface ReviewInterface extends RepositoryInterface {
      *
      * @param int   $userId
      * @param array $warningIds
-     * @param int   $identityId
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdAndWarningIdsAndIdentity(int $userId, array $warningIds, int $identityId) : Collection;
-    /**
-     * Find a Review entity based on its user_id and id.
-     *
-     * @param int $userId
-     * @param int $id
-     * @param int $identityId
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Profile\Review
-     */
-    public function findOneByUserIdAndIdAndIdentityId(int $userId, int $id, int $identityId) : Review;
+    public function getAllByUserIdAndWarningIds(int $userId, array $warningIds) : Collection;
 }

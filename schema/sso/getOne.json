@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /sso",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "user_token": {
+            "description": "The user token",
+            "type": "array"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

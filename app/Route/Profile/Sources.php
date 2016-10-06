@@ -16,9 +16,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile Source.
+ * Profile Sources.
  *
- * A Profile Source is the online platform from which the API is accessing a user’s information (eg. Facebook, Twitter, LinkedIn etc.)
+ * A Profile Sources is the online platform from which the API is accessing a user's information (eg. Facebook, Twitter, LinkedIn etc.)
  *
  * @link docs/profiles/sources/overview.md
  * @see App\Controller\Profile\Sources
@@ -68,7 +68,7 @@ class Sources implements RouteInterface {
      * Retrieves a complete list of all sources that belong to the requesting user.
      *
      * @apiEndpoint GET /profiles/{userName}/sources
-     * @apiGroup Profile Source
+     * @apiGroup Profile Sources
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -101,7 +101,7 @@ class Sources implements RouteInterface {
      * Creates a new source for the requesting user.
      *
      * @apiEndpoint POST /profiles/{userName}/sources
-     * @apiGroup Profile Source
+     * @apiGroup Profile Sources
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -134,7 +134,7 @@ class Sources implements RouteInterface {
      * Delete all sources that belong to the target user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/sources
-     * @apiGroup Profile Source
+     * @apiGroup Profile Sources
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -166,8 +166,8 @@ class Sources implements RouteInterface {
      *
      * Retrieves all information from a Source.
      *
-     * @apiEndpoint GET /profiles/{userName/sources/{sourceId}
-     * @apiGroup Profile Source
+     * @apiEndpoint GET /profiles/{userName}/sources/{sourceId}
+     * @apiGroup Profile Sources
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -201,7 +201,7 @@ class Sources implements RouteInterface {
      * Updates a Source's specific information.
      *
      * @apiEndpoint PUT /profiles/{userName}/sources/{sourceId}
-     * @apiGroup Profile Source
+     * @apiGroup Profile Sources
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -235,7 +235,7 @@ class Sources implements RouteInterface {
      * Deletes a source from the target user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/sources/{sourceId}
-     * @apiGroup Profile Source
+     * @apiGroup Profile Sources
      * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2

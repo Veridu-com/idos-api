@@ -61,7 +61,7 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Lists all Service handlers that belongs to the acting Company.
      *
-     * @apiEndpointResponse 200 schema/service-handlers/listAll.json
+     * @apiEndpointResponse 200 schema/serviceHandlers/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -93,7 +93,7 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Retrieves one Service handler of the acting Company.
      *
-     * @apiEndpointResponse 200 schema/services-handlers/getOne.json
+     * @apiEndpointResponse 200 schema/serviceHandler/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -124,10 +124,10 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Creates a new ServiceHandler for the acting Company.
      *
-     * @apiEndpointRequiredParam    body    int     service_id      Service's id.
-     * @apiEndpointRequiredParam    body    array   listens         Service handler's listens property.
+     * @apiEndpointRequiredParam    body    int     service_id   1325   Service's id.
+     * @apiEndpointRequiredParam    body    array   listens     ['source.add.facebook']   Service handler's listens property.
      *
-     * @apiEndpointResponse 201 schema/services-handlers/createNew.json
+     * @apiEndpointResponse 201 schema/serviceHandler/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -164,7 +164,7 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Deletes all Service handlers that belongs to the acting Company.
      *
-     * @apiEndpointResponse 200 schema/services-handlers/deleteAll.json
+     * @apiEndpointResponse 200 schema/serviceHandler/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -195,7 +195,7 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Deletes one Service handler of the acting Company.
      *
-     * @apiEndpointResponse 200 schema/services-handlers/deleteOne.json
+     * @apiEndpointResponse 200 schema/serviceHandler/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -230,10 +230,10 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Updates one Service handler of the acting Company.
      *
-     * @apiEndpointParam    body    string      name            Service handler's name.
+     * @apiEndpointParam    body    int     service_id   1325   Service's id.
      * @apiEndpointParam    body    array      listens          Service handler's listens.
      *
-     * @apiEndpointResponse 200 schema/services-handlers/updateOne.json
+     * @apiEndpointResponse 200 schema/serviceHandler/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

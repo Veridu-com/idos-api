@@ -27,4 +27,20 @@ trait AssertId {
         Validator::digit()
             ->assert($id);
     }
+
+    /**
+     * Asserts a valid id or null.
+     *
+     * @param mixed $id
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertNullableId($id) {
+        Validator::oneOf(
+            Validator::digit(),
+            Validator::nullType()
+        )->assert($id);
+    }
 }

@@ -135,45 +135,8 @@ class Attributes implements ControllerInterface {
     }
 
     /**
-     * Updates a attribute data from the given source.
-     *
-     * @apiEndpointRequiredParam body string value Jhon Attribute Value
-     * @apiEndpointResponse 200 schema/attribute/updateOne.json
-     *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
-     *
-     * @see App\Handler\Attribute::handleUpdateOne
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Attribute\\UpdateOne');
-        $command
-            ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('name', $request->getAttribute('attributeName'));
-
-        $attribute = $this->commandBus->handle($command);
-
-        $body = [
-            'data'    => $attribute->toArray(),
-            'updated' => $attribute->updatedAt
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Retrieves a attribute data from the given source.
      *
-     * @apiEndpointParam query string attributeName firstName
      * @apiEndpointResponse 200 schema/attribute/attributeEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -246,7 +209,6 @@ class Attributes implements ControllerInterface {
     /**
      * Deletes a attribute data from a given source.
      *
-     * @apiEndpointParam query string attributeName firstName
      * @apiEndpointResponse 200 schema/attribute/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

@@ -54,19 +54,21 @@ interface UserInterface extends RepositoryInterface {
     public function findAllRelatedToCompany(User $user, Company $company) : Collection;
 
     /**
-     * Gets a username by profile id, provider name and credential id.
+     * Gets a user by profile id, provider name and credential id.
      *
      * @param string $profileId    The profile id
      * @param string $providerName The provider name
      * @param int    $credentialId The credential id
+     * 
+     * @throws App\Exception\NotFound\UserException
      *
-     * @return string A username by profile identifier, provider name and credential id.
+     * @return App\Entity\User A user entity
      */
-    public function getUserNameByProfileIdAndProviderNameAndCredentialId(
+    public function findOneByProfileIdAndProviderNameAndCredentialId(
         string $profileId,
         string $providerName,
         int $credentialId
-    ) : string;
+    ) : User;
 
     /**
      * Finds all users that belongs to an $identityId.
@@ -90,4 +92,18 @@ interface UserInterface extends RepositoryInterface {
      * @return App\Entity\User
      */
     public function findOneByIdentityIdAndCompanyId(int $identityId, int $companyId) : User;
+
+
+    /**
+     * Assigns an identity to a user.
+     *
+     * @param integer  $userId      The user identifier
+     * @param integer  $identityId  The identity identifier
+     * 
+     * @throws \Illuminate\Database\QueryException
+     *
+     * @return void
+     */
+    public function assignIdentityToUser(int $userId, int $identityId);
+
 }
