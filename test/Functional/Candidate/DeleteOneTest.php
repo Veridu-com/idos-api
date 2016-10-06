@@ -44,7 +44,7 @@ class DeleteOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/deleteOne.json',
+                'candidate/deleteOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -73,7 +73,7 @@ class DeleteOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/deleteOne.json',
+                'candidate/deleteOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

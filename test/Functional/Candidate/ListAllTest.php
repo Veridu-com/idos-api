@@ -44,7 +44,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/listAll.json',
+                'candidate/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -79,7 +79,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/listAll.json',
+                'candidate/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -114,7 +114,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/listAll.json',
+                'candidate/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -149,7 +149,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/listAll.json',
+                'candidate/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -184,7 +184,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/listAll.json',
+                'candidate/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -245,7 +245,7 @@ class ListAllTest extends AbstractFunctional {
                  */
                 $this->assertTrue(
                     $this->validateSchema(
-                        'attribute/listAll.json',
+                        'candidate/listAll.json',
                         json_decode((string) $response->getBody())
                     ),
                     $this->schemaErrors

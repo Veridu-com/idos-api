@@ -103,7 +103,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
                     'id'      => $container->get('logUidProcessor')->getUid(),
                     'code'    => $exception->getCode(),
                     'type'    => 'APPLICATION_EXCEPTION', // $exception->getType(),
-                    'link'    => null, // $exception->getLink(),
+                    'link'    => 'https://docs.idos.io/errors/APPLICATION_EXCEPTION', // $exception->getLink(),
                     'message' => $exception->getMessage(),
                 ]
             ];

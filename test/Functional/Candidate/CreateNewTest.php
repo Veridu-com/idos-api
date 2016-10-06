@@ -37,7 +37,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'    => 'attribute-test',
+                    'name'    => 'candidate-test',
                     'value'   => 'value-test',
                     'support' => 1.2
                 ]
@@ -50,7 +50,7 @@ class CreateNewTest extends AbstractFunctional {
 
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('attribute-test', $body['data']['name']);
+        $this->assertSame('candidate-test', $body['data']['name']);
         $this->assertSame('value-test', $body['data']['value']);
         $this->assertSame(1.2, $body['data']['support']);
         /*
@@ -58,7 +58,7 @@ class CreateNewTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/createNew.json',
+                'candidate/createNew.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -115,7 +115,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'    => 'Attribute name',
+                    'name'    => 'Candidate name',
                     'value'   => '',
                     'support' => 1.2
                 ]
@@ -153,7 +153,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'    => 'Attribute name',
+                    'name'    => 'Candidate name',
                     'value'   => 'value-test',
                     'support' => ''
                 ]

@@ -11,7 +11,7 @@ namespace Test\Functional\Attribute;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
-class GetOneTest extends AbstractFunctional {
+class DeleteAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
@@ -20,61 +20,64 @@ class GetOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/user1Attribute1';
+        $this->httpMethod = 'DELETE';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
 
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
-
         $this->assertNotEmpty($body);
-        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
+        $this->assertSame(2, $body['deleted']);
 
         /*
-         * Validates Response using the Json Schema.
+         * Validates Json Schema with Json Response
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/getOne.json',
+                'candidate/deleteAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
 
-    public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes/user2Attribute1';
-        $request   = $this->createRequest(
-            $this->createEnvironment(
-                [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-                ]
-            )
+    public function testDeleteFilter() {
+        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes?name=first*';
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
         );
+
+        $request = $this->createRequest($environment);
+
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertEmpty($body['data']);
+        $this->assertSame(1, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'attribute/getOne.json',
+                'candidate/deleteAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
