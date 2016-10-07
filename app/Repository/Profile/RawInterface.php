@@ -18,60 +18,65 @@ use Illuminate\Support\Collection;
  * Raw Repository Interface.
  */
 interface RawInterface extends RepositoryInterface {
-    public function findByUserId(int $userId, array $queryParams = []) : Collection;
-    public function findOne(Source $source, string $collection) : Raw;
+    /**
+     * Returns a raw data based on its source and collection.
+     *
+     * @param string $collection The service id
+     * @param Source $source The source entity
+     *
+     * @return Raw
+     */
+    public function findOne(string $collection, Source $source) : Raw;
+
+    /**
+     * Find a Raw entity based on its source and name.
+     *
+     * @param string $collection
+     * @param Source|App\Entity\Profile\Source $source
+     * @return Raw|App\Entity\Profile\Raw
+     * @internal param string $name
+     *
+     */
+    public function findOneBySourceAndCollection(string $collection, Source $source) : Raw;
+
+    /**
+     * Return raw data based on their user id.
+     *
+     * @param int   $userId
+     * @param array $queryParams
+     *
+     * @return Collection
+     */
+    public function getByUserId(int $userId, array $queryParams = []) : Collection;
+
+    /**
+     * Update a raw data based on its source and name.
+     *
+     * @param string $collection
+     * @param Source|App\Entity\Profile\Source $source
+     * @param string $data
+     *
+     * @return Raw|App\Entity\Profile\Raw
+     */
+    public function updateOneBySourceAndCollection(string $collection, Source $source, string $data) : Raw;
+
+    /**
+     * Deletes a raw data based on their source and collection.
+     *
+     * @param string $collection
+     * @param Source|App\Entity\Profile\Source $source
+     * @return int
+     * @internal param string $name
+     *
+     */
+    public function deleteOneBySourceAndCollection(string $collection, Source $source) : int;
+
     /*
-     * Deletes all Raw entities based on source.
+     * Delete raw data based on source.
      *
      * @param App\Entity\Profile\Source $source
      *
      * @return int
      */
     public function deleteBySource(Source $source) : int;
-
-    /**
-     * Creates a new Raw entity.
-     *
-     * @param array $attributes
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Profile\Raw
-     */
-    public function create(array $attributes) : EntityInterface;
-
-    /**
-     * Find a Raw entity based on its source and name.
-     *
-     * @param App\Entity\Profile\Source $source
-     * @param string                    $name
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Profile\Raw
-     */
-    public function findOneBySourceAndCollection(Source $source, string $collection) : Raw;
-
-    /**
-     * Update a Raw entity based on its source and name.
-     *
-     * @param App\Entity\Profile\Source $source
-     * @param string                    $name
-     * @param string                    $data
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Profile\Raw
-     */
-    public function updateOneBySourceAndCollection(Source $source, string $collection, string $data) : Raw;
-
-    /**
-     * Deletes a Raw entity based on their source and name.
-     *
-     * @param App\Entity\Profile\Source $source
-     * @param string                    $name
-     *
-     * @return int
-     */
-    public function deleteOneBySourceAndCollection(Source $source, string $collection) : int;
 }
