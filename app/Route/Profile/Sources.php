@@ -21,7 +21,7 @@ use Slim\App;
  * A Profile Sources is the online platform from which the API is accessing a user's information (eg. Facebook, Twitter, LinkedIn etc.)
  *
  * @link docs/profiles/sources/overview.md
- * @see App\Controller\Profile\Sources
+ * @see \App\Controller\Profile\Sources
  */
 class Sources implements RouteInterface {
     /**
@@ -30,8 +30,8 @@ class Sources implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'sources:listAll',
-            'sources:createNew',
             'sources:getOne',
+            'sources:createNew',
             'sources:updateOne',
             'sources:deleteOne',
             'sources:deleteAll'
@@ -55,8 +55,8 @@ class Sources implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
@@ -80,9 +80,9 @@ class Sources implements RouteInterface {
      * @return void
      *
      * @link docs/profiles/sources/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Sources::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Sources::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -93,72 +93,6 @@ class Sources implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL | Auth::USER))
             ->setName('sources:listAll');
-    }
-
-    /**
-     * Create new Source.
-     *
-     * Creates a new source for the requesting user.
-     *
-     * @apiEndpoint POST /profiles/{userName}/sources
-     * @apiGroup Profile Sources
-     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
-     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profiles/sources/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Sources::createNew
-     */
-    private static function createNew(App $app, callable $auth, callable $permission) {
-        $app
-            ->post(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources',
-                'App\Controller\Profile\Sources:createNew'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL | Auth::USER))
-            ->setName('sources:createNew');
-    }
-
-    /**
-     * Deletes all Sources.
-     *
-     * Delete all sources that belong to the target user.
-     *
-     * @apiEndpoint DELETE /profiles/{userName}/sources
-     * @apiGroup Profile Sources
-     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
-     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profiles/sources/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Sources::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources',
-                'App\Controller\Profile\Sources:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL | Auth::USER))
-            ->setName('sources:deleteAll');
     }
 
     /**
@@ -180,9 +114,9 @@ class Sources implements RouteInterface {
      * @return void
      *
      * @link docs/profiles/sources/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Sources::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Sources::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -193,6 +127,39 @@ class Sources implements RouteInterface {
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL | Auth::USER))
             ->setName('sources:getOne');
+    }
+
+    /**
+     * Create new Source.
+     *
+     * Creates a new source for the requesting user.
+     *
+     * @apiEndpoint POST /profiles/{userName}/sources
+     * @apiGroup Profile Sources
+     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profiles/sources/createNew.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Sources::createNew
+     */
+    private static function createNew(App $app, callable $auth, callable $permission) {
+        $app
+            ->post(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources',
+                'App\Controller\Profile\Sources:createNew'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL | Auth::USER))
+            ->setName('sources:createNew');
     }
 
     /**
@@ -214,9 +181,9 @@ class Sources implements RouteInterface {
      * @return void
      *
      * @link docs/profiles/sources/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Sources::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Sources::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -248,9 +215,9 @@ class Sources implements RouteInterface {
      * @return void
      *
      * @link docs/profiles/sources/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Sources::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Sources::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
@@ -261,5 +228,38 @@ class Sources implements RouteInterface {
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL | Auth::USER))
             ->setName('sources:deleteOne');
+    }
+
+    /**
+     * Deletes all Sources.
+     *
+     * Delete all sources that belong to the target user.
+     *
+     * @apiEndpoint DELETE /profiles/{userName}/sources
+     * @apiGroup Profile Sources
+     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profiles/sources/deleteAll.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Sources::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/sources',
+                'App\Controller\Profile\Sources:deleteAll'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL | Auth::USER))
+            ->setName('sources:deleteAll');
     }
 }

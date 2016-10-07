@@ -28,7 +28,6 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
      * @var string
      */
     protected $entityName = 'Profile\Source';
-
     /**
      * {@inheritdoc}
      */
@@ -37,7 +36,6 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
         'name'       => 'string',
         'created_at' => 'date'
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -57,12 +55,6 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
                 'user_id' => $userId
             ]
         );
-
-        if($result->isEmpty()) {
-            throw new NotFound();
-        }
-
-        return $result->first();
     }
 
     /**
@@ -75,18 +67,12 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
                 'user_id' => $userId
             ]
         );
-
-        if($result->isEmpty()) {
-            throw new NotFound();
-        }
-
-        return $result->first();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId) : Collection {
+    public function getByUserId(int $userId) : Collection {
         return $this->findBy(['user_id' => $userId]);
     }
 

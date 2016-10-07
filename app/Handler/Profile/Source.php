@@ -16,6 +16,7 @@ use App\Entity\Profile\Source as SourceEntity;
 use App\Exception\AppException;
 use App\Exception\Create;
 use App\Exception\NotAllowed;
+use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
@@ -23,7 +24,7 @@ use App\Handler\HandlerInterface;
 use App\Repository\Profile\ProcessInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Validator\Profile\Source as SourceValidator;
-use Interop\Container\ContainerINterface;
+use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
 
@@ -34,19 +35,19 @@ class Source implements HandlerInterface {
     /**
      * Source Repository instance.
      *
-     * @var App\Repository\Profile\SourceInterface
+     * @var \App\Repository\Profile\SourceInterface
      */
     private $repository;
     /**
      * Source Validator instance.
      *
-     * @var App\Validator\Profile\Source
+     * @var \App\Validator\Profile\Source
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -82,10 +83,10 @@ class Source implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\SourceInterface $repository
-     * @param App\Validator\Source           $validator
-     * @param App\Factory\Event              $eventFactory
-     * @param \League\Event\Emitter          $emitter
+     * @param \App\Repository\Profile\SourceInterface $repository
+     * @param \App\Validator\Profile\Source           $validator
+     * @param \App\Factory\Event                      $eventFactory
+     * @param \League\Event\Emitter                   $emitter
      *
      * @return void
      */
@@ -106,12 +107,12 @@ class Source implements HandlerInterface {
     /**
      * Creates a new source to a user ($command->userId).
      *
-     * @param App\Command\Profile\Source\CreateNew $command
+     * @param \App\Command\Profile\Source\CreateNew $command
      *
-     * @throws App\Exception\Validate\SourceException
-     * @throws App\Exception\Create\SourceException
+     * @throws \App\Exception\Validate\Profile\SourceException
+     * @throws \App\Exception\Create\Profile\SourceException
      *
-     * @return App\Entity\Source
+     * @return \App\Entity\Profile\Source
      */
     public function handleCreateNew(CreateNew $command) : SourceEntity {
         try {
@@ -228,14 +229,14 @@ class Source implements HandlerInterface {
     /**
      * Updates a source.
      *
-     * @param App\Command\Profile\Source\UpdateOne $command
+     * @param \App\Command\Profile\Source\UpdateOne $command
      *
-     * @throws App\Exception\Validate\SourceException
-     * @throws App\Exception\NotAllowed\SourceException
-     * @throws App\Exception\AppException
-     * @throws App\Exception\Update\SourceException
+     * @throws \App\Exception\Validate\Profile\SourceException
+     * @throws \App\Exception\NotAllowed\Profile\SourceException
+     * @throws \App\Exception\AppException
+     * @throws \App\Exception\Update\Profile\SourceException
      *
-     * @return App\Entity\Source
+     * @return \App\Entity\Profile\Source
      */
     public function handleUpdateOne(UpdateOne $command) : SourceEntity {
         try {
@@ -342,12 +343,12 @@ class Source implements HandlerInterface {
     /**
      * Deletes a source ($command->sourceId) from a user.
      *
-     * @param App\Command\Profile\Source\DeleteOne $command
+     * @param \App\Command\Profile\Source\DeleteOne $command
      *
-     * @throws App\Exception\Validate\SourceException
-     * @throws App\Exception\NotFound\SourceException
+     * @throws \App\Exception\Validate\Profile\SourceException
+     * @throws \App\Exception\NotFound\Profile\SourceException
      *
-     * @see App\Repository\DBSource::delete
+     * @see \App\Repository\DBSource::delete
      *
      * @return void
      */
@@ -385,12 +386,12 @@ class Source implements HandlerInterface {
     /**
      * Deletes all sources from a user ($command->userId).
      *
-     * @param App\Command\Profile\Source\DeleteAll $command
+     * @param \App\Command\Profile\Source\DeleteAll $command
      *
-     * @throws App\Exception\Validate\SourceException
+     * @throws \App\Exception\Validate\Profile\SourceException
      *
-     * @see App\Repository\DBSource::getAllByUserId
-     * @see App\Repository\DBSource::deleteByUserId
+     * @see \App\Repository\DBSource::getAllByUserId
+     * @see \App\Repository\DBSource::deleteByUserId
      *
      * @return int
      */
@@ -407,7 +408,7 @@ class Source implements HandlerInterface {
             );
         }
 
-        $sources = $this->repository->getAllByUserId($command->user->id);
+        $sources = $this->repository->getByUserId($command->user->id);
         $deleted = $this->repository->deleteByUserId($command->user->id);
 
         $this->emitter->emit(

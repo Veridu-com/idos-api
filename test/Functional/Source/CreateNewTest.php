@@ -111,7 +111,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            'name' => 'name too long to pass this validation',
+            'name' => 'this name is too long and shall not pass this validation',
             'tags' => [
                 'otp_check' => 'email'
             ]
