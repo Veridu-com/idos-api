@@ -39,21 +39,25 @@ class DBReference extends AbstractSQLDBRepository implements ReferenceInterface 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId) : Collection {
-        return $this->findBy(['user_id' => $userId]);
+    public function findOne(string $name, int $userId) : Reference {
+        return $this->findOneBy([
+            'user_id' => $userId,
+            'name' => $name
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndNames(int $userId, array $queryParams = []) : Collection {
-        $result = $this->query()
-            ->selectRaw('"references".*')
-            ->where('user_id', '=', $userId);
+    public function getAllByUserId(int $userId, array $queryParams = []) : Collection {
+        return $this->findBy(['user_id' => $userId], $queryParams);
+    }
 
-        $result = $this->filter($result, $queryParams);
-
-        return $result->get();
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteOne(string $name, int $userId) : int {
+        return $this->deleteBy(['user_id' => $userId, 'name' => $name]);
     }
 
     /**
@@ -61,25 +65,5 @@ class DBReference extends AbstractSQLDBRepository implements ReferenceInterface 
      */
     public function deleteByUserId(int $userId) : int {
         return $this->deleteBy(['user_id' => $userId]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByUserIdAndName(int $userId, string $name) : Reference {
-        $result = $this->findBy(['user_id' => $userId, 'name' => $name]);
-
-        if ($result->isEmpty()) {
-            throw new NotFound();
-        }
-
-        return $result->first();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteOneByUserIdAndName(int $userId, string $name) : int {
-        return $this->deleteBy(['user_id' => $userId, 'name' => $name]);
     }
 }

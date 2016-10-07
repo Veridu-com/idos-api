@@ -74,13 +74,44 @@ class References implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
 
-        $references = $this->repository->getAllByUserIdAndNames($user->id, $request->getQueryParams());
+        $references = $this->repository->getAllByUserId($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $references->toArray(),
             'updated' => (
                 $references->isEmpty() ? time() : max($references->max('updatedAt'), $references->max('createdAt'))
             )
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Retrieves a reference data from the given source.
+     *
+     * @apiEndpointResponse 200 schema/reference/referenceEntity.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Repository\DBReference::findOneByUserIdAndName
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user = $request->getAttribute('targetUser');
+        $name = $request->getAttribute('referenceName');
+
+        $reference = $this->repository->findOne($name, $user->id);
+
+        $body = [
+            'data' => $reference->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -167,25 +198,26 @@ class References implements ControllerInterface {
     }
 
     /**
-     * Retrieves a reference data from the given source.
+     * Deletes a reference data from a given source.
      *
-     * @apiEndpointResponse 200 schema/reference/referenceEntity.json
+     * @apiEndpointResponse 200 schema/reference/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBReference::findOneByUserIdAndName
+     * @see App\Handler\Profile\Reference::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
-        $name = $request->getAttribute('referenceName');
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $command = $this->commandFactory->create('Profile\\Reference\\DeleteOne');
+        $command
+            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('name', $request->getAttribute('referenceName'));
 
-        $reference = $this->repository->findOneByUserIdAndName($user->id, $name);
-
+        $this->commandBus->handle($command);
         $body = [
-            'data' => $reference->toArray()
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -216,38 +248,6 @@ class References implements ControllerInterface {
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes a reference data from a given source.
-     *
-     * @apiEndpointResponse 200 schema/reference/deleteOne.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see App\Handler\Profile\Reference::handleDeleteOne
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Reference\\DeleteOne');
-        $command
-            ->setParameter('user', $request->getAttribute('targetUser'))
-            ->setParameter('name', $request->getAttribute('referenceName'));
-
-        $this->commandBus->handle($command);
-        $body = [
-            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

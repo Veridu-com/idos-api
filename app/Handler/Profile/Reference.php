@@ -31,19 +31,19 @@ class Reference implements HandlerInterface {
     /**
      * Reference Repository instance.
      *
-     * @var App\Repository\Profile\ReferenceInterface
+     * @var \App\Repository\Profile\ReferenceInterface
      */
     private $repository;
     /**
      * Reference Validator instance.
      *
-     * @var App\Validator\Profile\Reference
+     * @var \App\Validator\Profile\Reference
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -76,9 +76,9 @@ class Reference implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\ReferenceInterface $repository
-     * @param App\Validator\Reference           $validator
-     * @param App\Factory\Event                 $eventFactory
+     * @param \App\Repository\Profile\ReferenceInterface $repository
+     * @param \App\Validator\Profile\Reference           $validator
+     * @param \App\Factory\Event                 $eventFactory
      * @param \League\Event\Emitter             $emitter
      *
      * @return void
@@ -98,15 +98,15 @@ class Reference implements HandlerInterface {
     /**
      * Creates a new reference data in the given user.
      *
-     * @param App\Command\Profile\Reference\CreateNew $command
+     * @param \App\Command\Profile\Reference\CreateNew $command
      *
-     * @see App\Repository\DBReference::create
-     * @see App\Repository\DBReference::save
+     * @see \App\Repository\DBReference::create
+     * @see \App\Repository\DBReference::save
      *
-     * @throws App\Exception\Validate\ReferenceException
-     * @throws App\Exception\Create\ReferenceException
+     * @throws \App\Exception\Validate\Profile\ReferenceException
+     * @throws \App\Exception\Create\Profile\ReferenceException
      *
-     * @return App\Entity\Reference
+     * @return \App\Entity\Profile\Reference
      */
     public function handleCreateNew(CreateNew $command) : ReferenceEntity {
         try {
@@ -131,7 +131,8 @@ class Reference implements HandlerInterface {
 
         try {
             $reference = $this->repository->save($reference);
-            $event     = $this->eventFactory->create('Profile\\Reference\\Created', $reference);
+
+            $event = $this->eventFactory->create('Profile\\Reference\\Created', $reference);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ReferenceException('Error while trying to create a reference', 500, $e);
@@ -143,15 +144,15 @@ class Reference implements HandlerInterface {
     /**
      * Updates a reference data from a given user.
      *
-     * @param App\Command\Profile\Reference\UpdateOne $command
+     * @param \App\Command\Profile\Reference\UpdateOne $command
      *
-     * @see App\Repository\DBReference::findOneByUserIdAndName
-     * @see App\Repository\DBReference::save
+     * @see \App\Repository\DBReference::findOneByUserIdAndName
+     * @see \App\Repository\DBReference::save
      *
-     * @throws App\Exception\Validate\ReferenceException
-     * @throws App\Exception\Update\ReferenceException
+     * @throws \App\Exception\Validate\Profile\ReferenceException
+     * @throws \App\Exception\Update\Profile\ReferenceException
      *
-     * @return App\Entity\Reference
+     * @return \App\Entity\Profile\Reference
      */
     public function handleUpdateOne(UpdateOne $command) : ReferenceEntity {
         try {
@@ -164,12 +165,13 @@ class Reference implements HandlerInterface {
             );
         }
 
-        $reference        = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
+        $reference        = $this->repository->findOne($command->name, $command->user->id);
         $reference->value = $command->value;
 
         try {
             $reference = $this->repository->save($reference);
-            $event     = $this->eventFactory->create('Profile\\Reference\\Updated', $reference);
+
+            $event = $this->eventFactory->create('Profile\\Reference\\Updated', $reference);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ReferenceException('Error while trying to update a feature', 500, $e);
@@ -181,13 +183,13 @@ class Reference implements HandlerInterface {
     /**
      * Deletes a reference data from a given user.
      *
-     * @param App\Command\Profile\Reference\DeleteOne $command
+     * @param \App\Command\Profile\Reference\DeleteOne $command
      *
-     * @see App\Repository\DBReference::findOneByUserIdAndName
-     * @see App\Repository\DBReference::deleteOneByUserIdAndName
+     * @see \App\Repository\DBReference::findOneByUserIdAndName
+     * @see \App\Repository\DBReference::deleteOneByUserIdAndName
      *
-     * @throws App\Exception\Validate\RerefenceException
-     * @throws App\Exception\NotFound\RerefenceException
+     * @throws \App\Exception\Validate\Profile\ReferenceException
+     * @throws \App\Exception\NotFound\Profile\ReferenceException
      *
      * @return void
      */
@@ -202,10 +204,9 @@ class Reference implements HandlerInterface {
             );
         }
 
-        $reference = $this->repository->findOneByUserIdAndName($command->user->id, $command->name);
+        $reference = $this->repository->findOne($command->name, $command->user->id);
 
-        $affectedRows = $this->repository->deleteOneByUserIdAndName($command->user->id, $command->name);
-
+        $affectedRows = $this->repository->deleteOne($command->name, $command->user->id);
         if (! $affectedRows) {
             throw new NotFound\Profile\ReferenceException('No references found for deletion', 404);
         }
@@ -217,18 +218,18 @@ class Reference implements HandlerInterface {
     /**
      * Deletes all reference data from a given user.
      *
-     * @param App\Command\Profile\Reference\DeleteAll $command
+     * @param \App\Command\Profile\Reference\DeleteAll $command
      *
-     * @see App\Repository\DBReference::getAllByUserId
-     * @see App\Repository\DBReference::deleteByUserId
+     * @see \App\Repository\DBReference::getAllByUserId
+     * @see \App\Repository\DBReference::deleteByUserId
      *
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $references = $this->repository->getAllByUserId($command->user->id);
-
         $affectedRows = $this->repository->deleteByUserId($command->user->id);
-        $event        = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references);
+
+        $event = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references);
         $this->emitter->emit($event);
 
         return $affectedRows;
