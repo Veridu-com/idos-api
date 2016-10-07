@@ -84,7 +84,7 @@ class Gates implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $entities = $this->repository->findBy(['user_id' => $user->id], $request->getQueryParams());
+        $entities = $this->repository->findByUserId($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),
@@ -119,11 +119,11 @@ class Gates implements ControllerInterface {
         $service = $request->getAttribute('service');
         $slug    = $request->getAttribute('gateSlug');
 
-        $gate = $this->repository->findOneBySlug($user->id, $service->id, $slug);
+        $entity = $this->repository->findOne($slug, $service->id, $user->id);
 
         $body = [
-            'data'    => $gate->toArray(),
-            'updated' => $gate->updated_at
+            'data'    => $entity->toArray(),
+            'updated' => $entity->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -159,11 +159,11 @@ class Gates implements ControllerInterface {
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
-        $gate = $this->commandBus->handle($command);
+        $entity = $this->commandBus->handle($command);
 
         $body = [
             'status' => true,
-            'data'   => $gate->toArray()
+            'data'   => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -177,33 +177,79 @@ class Gates implements ControllerInterface {
     }
 
     /**
-     * Deletes all Gates that belongs to the User.
+     * Updates one Gate of the User.
      *
-     * @apiEndpointResponse 200 schema/gate/deleteAll.json
+     * @apiEndpointRequiredParam body string name 18+ Gate name
+     * @apiEndpointRequiredParam body boolean pass false Gate pass
+     * @apiEndpointResponse 200 schema/gate/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Gate::handleDeleteAll
+     * @see App\Handler\Profile\Gate::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
+        $slug    = $request->getAttribute('gateSlug');
 
-        $command = $this->commandFactory->create('Profile\\Gate\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\\Gate\\UpdateOne');
         $command
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service)
-            ->setParameter('queryParams', $request->getQueryParams());
+            ->setParameter('slug', $slug);
+
+        $entity = $this->commandBus->handle($command);
 
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'data'    => $entity->toArray(),
+            'updated' => $entity->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Creates a new Gate for the given user.
+     *
+     * @apiEndpointRequiredParam body string name 18+ Gate name
+     * @apiEndpointRequiredParam body boolean pass true Gate pass
+     * @apiEndpointResponse 201 schema/gate/createNew.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+
+        $command = $this->commandFactory->create('Profile\\Gate\\Upsert');
+        $command
+            ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('user', $user)
+            ->setParameter('service', $service);
+
+        $entity = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => true,
+            'data'   => $entity->toArray()
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('statusCode', isset($entity->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -248,79 +294,33 @@ class Gates implements ControllerInterface {
     }
 
     /**
-     * Updates one Gate of the User.
+     * Deletes all Gates that belongs to the User.
      *
-     * @apiEndpointRequiredParam body string name 18+ Gate name
-     * @apiEndpointRequiredParam body boolean pass false Gate pass
-     * @apiEndpointResponse 200 schema/gate/updateOne.json
+     * @apiEndpointResponse 200 schema/gate/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Profile\Gate::handleUpdateOne
+     * @see App\Handler\Gate::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
-        $slug    = $request->getAttribute('gateSlug');
 
-        $command = $this->commandFactory->create('Profile\\Gate\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\\Gate\\DeleteAll');
         $command
-            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service)
-            ->setParameter('slug', $slug);
-
-        $gate = $this->commandBus->handle($command);
+            ->setParameter('queryParams', $request->getQueryParams());
 
         $body = [
-            'data'    => $gate->toArray(),
-            'updated' => $gate->updated_at
+            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Creates a new Gate for the given user.
-     *
-     * @apiEndpointRequiredParam body string name 18+ Gate name
-     * @apiEndpointRequiredParam body boolean pass true Gate pass
-     * @apiEndpointResponse 201 schema/gate/createNew.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-
-        $command = $this->commandFactory->create('Profile\\Gate\\Upsert');
-        $command
-            ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('user', $user)
-            ->setParameter('service', $service);
-
-        $entity = $this->commandBus->handle($command);
-
-        $body = [
-            'status' => true,
-            'data'   => $entity->toArray()
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('statusCode', isset($entity->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

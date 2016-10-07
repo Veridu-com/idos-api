@@ -17,31 +17,54 @@ use Illuminate\Support\Collection;
  */
 interface GateInterface extends RepositoryInterface {
     /**
-     * Gets all Gates based on their user id.
+     * Returns a gate based on its user id, source id, service id (creator) and slug.
      *
-     * @param int $userId
+     * @param string      $slug       The gate slug
+     * @param int         $serviceId  The service id
+     * @param int         $userId     The user id
      *
-     * @return Illuminate\Database\Collection
+     * @return Gate
+     */
+    public function findOne(string $slug, int $serviceId, int $userId) : Gate;
+
+    /**
+     * Returns a gate based on its user id, source id, service id (creator) and name.
+     *
+     * @param string      $name       The gate name
+     * @param int         $serviceId  The service id
+     * @param int         $userId     The user id
+     *
+     * @return Gate
+     */
+    public function findOneByName(string $name, int $serviceId, int $userId) : Gate;
+
+    /**
+     * Return gates based on their user id and service id (creator).
+     *
+     * @param int   $serviceId
+     * @param int   $userId
+     * @param array $queryParams
+     *
+     * @return Collection
+     */
+    public function findByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
+
+    /**
+     * Return gates based on their user id.
+     *
+     * @param int   $userId
+     * @param array $queryParams
+     *
+     * @return Collection
      */
     public function findByUserId(int $userId, array $queryParams = []) : Collection;
 
-    public function findOneBySlug(int $userId, int $serviceId, string $slug) : Gate;
-    public function findOneByName(int $userId, int $serviceId, string $name) : Gate;
-
     /**
-     * Deletes all gates based on their user id.
+     * Delete gates based on their user id.
      *
      * @param int $userId
      *
      * @return int
      */
     public function deleteByUserId(int $userId) : int;
-
-    /**
-     * Returns a Gate based on the user id and the slug.
-     *
-     * @param int    $userId   The user identifier
-     * @param string $gateSlug The gate slug
-     */
-    public function findByUserIdAndSlug(int $userId, string $gateSlug) : Gate;
 }

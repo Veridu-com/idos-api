@@ -21,7 +21,7 @@ interface FeatureInterface extends RepositoryInterface {
      *
      * @param int         $id         The feature id
      * @param int         $serviceId  The service id
-     * @param int         $userId     The user    id
+     * @param int         $userId     The user id
      *
      * @return Feature
      */
@@ -33,14 +33,14 @@ interface FeatureInterface extends RepositoryInterface {
      * @param string      $name       The feature name
      * @param int         $serviceId  The service id
      * @param string|null $sourceName The source name
-     * @param int         $userId     The user    id
+     * @param int         $userId     The user id
      *
      * @return Feature
      */
     public function findOneByName(string $name, int $serviceId, $sourceName, int $userId) : Feature;
 
     /**
-     * Returns all features based on their user id and service id (creator).
+     * Return features based on their user id and service id (creator).
      *
      * @param int   $serviceId
      * @param int   $userId
@@ -51,7 +51,7 @@ interface FeatureInterface extends RepositoryInterface {
     public function findByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
 
     /**
-     * Returns all features based on their user id.
+     * Return features based on their user id.
      *
      * @param int   $userId
      * @param array $queryParams
@@ -72,7 +72,7 @@ interface FeatureInterface extends RepositoryInterface {
     public function upsertBulk(int $serviceId, int $userId, array $features) : bool;
 
     /**
-     * Deletes all features based on their user id.
+     * Delete features based on their user id.
      *
      * @param int   $userId
      * @param array $queryParams

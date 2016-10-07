@@ -173,7 +173,7 @@ class Gate implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->findOneBySlug($command->user->id, $command->service->id, $command->slug);
+        $entity = $this->repository->findOne($command->slug, $command->service->id, $command->user->id);
 
         $entity->pass      = $this->validator->validateFlag($command->pass);
         $entity->updatedAt = time();
@@ -207,7 +207,7 @@ class Gate implements HandlerInterface {
         $entity    = null;
         $inserting = false;
         try {
-            $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
+            $entity = $this->repository->findOneByName($command->name, $command->service->id, $command->user->id);
 
             $entity->pass      = $this->validator->validateFlag($command->pass);
             $entity->updatedAt = time();
@@ -244,53 +244,6 @@ class Gate implements HandlerInterface {
     }
 
     /**
-     * Deletes all gates ($command->userId).
-     *
-     * @param App\Command\Profile\Gate\DeleteAll $command
-     *
-     * @see App\Repository\DBGate::findByUserId
-     * @see App\Repository\DBGate::deleteByUserId
-     *
-     * @throws App\Exception\Validate\GateException
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
-        } catch (ValidationException $e) {
-            throw new Validate\Profile\GateException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $entities = $this->repository->findBy(
-            [
-            'user_id' => $command->user->id,
-            'creator' => $command->service->id
-            ], $command->queryParams
-        );
-
-        $affectedRows = 0;
-
-        try {
-            foreach ($entities as $entity) {
-                $affectedRows += $this->repository->delete($entity->id);
-            }
-
-            $event = $this->eventFactory->create('Profile\\Gate\\DeletedMulti', $entities);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Profile\GateException('Error while trying to delete all gates', 500, $e);
-        }
-
-        return $affectedRows;
-    }
-
-    /**
      * Deletes a Gate.
      *
      * @param App\Command\Profile\Gate\DeleteOne $command
@@ -317,14 +270,54 @@ class Gate implements HandlerInterface {
         }
 
         try {
-            $entity = $this->repository->findOneBySlug($command->user->id, $command->service->id, $command->slug);
-
+            $entity = $this->repository->findOne($command->slug, $command->service->id, $command->user->id);
             $affectedRows = $this->repository->delete($entity->id);
 
             $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\Profile\GateException('No gates found for deletion', 404);
+        }
+
+        return $affectedRows;
+    }
+
+    /**
+     * Deletes all gates ($command->userId).
+     *
+     * @param App\Command\Profile\Gate\DeleteAll $command
+     *
+     * @see App\Repository\DBGate::findByUserId
+     * @see App\Repository\DBGate::deleteByUserId
+     *
+     * @throws App\Exception\Validate\GateException
+     *
+     * @return int
+     */
+    public function handleDeleteAll(DeleteAll $command) : int {
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\GateException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $entities = $this->repository->findByServiceIdAndUserId($command->service->id, $command->user->id, $command->queryParams);
+
+        $affectedRows = 0;
+        try {
+            foreach ($entities as $entity) {
+                $affectedRows += $this->repository->delete($entity->id);
+            }
+
+            $event = $this->eventFactory->create('Profile\\Gate\\DeletedMulti', $entities);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new Update\Profile\GateException('Error while trying to delete all gates', 500, $e);
         }
 
         return $affectedRows;
