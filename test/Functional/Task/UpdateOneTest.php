@@ -23,7 +23,7 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
+        $this->httpMethod = 'PATCH';
         $this->populate(
             '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/processes',
             'GET',
@@ -58,7 +58,17 @@ class UpdateOneTest extends AbstractFunctional {
         );
 
         $newName = 'new name';
-        $request = $this->createRequest($environment, json_encode(['name' => $newName]));
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'event'   => 'event',
+                    'running' => true,
+                    'success' => false,
+                    'message' => 'message'
+                ]
+            )
+        );
 
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
@@ -67,7 +77,8 @@ class UpdateOneTest extends AbstractFunctional {
 
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame($newName, $body['data']['name']);
+        $this->assertTrue($body['data']['running']);
+        $this->assertFalse($body['data']['success']);
 
         /*
          * Validates Response using the Json Schema.
