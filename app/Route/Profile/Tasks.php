@@ -153,7 +153,7 @@ class Tasks implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}/tasks/{taskId:[0-9]+}',
                 'App\Controller\Profile\Tasks:updateOne'
             )

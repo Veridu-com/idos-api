@@ -6,82 +6,31 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Source;
+namespace Test\Functional\Raw;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
-use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
-class UpdateOneTest extends AbstractFunctional {
+class UpdateOneTest extends AbstractRawFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresUserToken,
         Traits\RequiresCredentialToken,
+        Traits\RejectsUserToken,
         Traits\RejectsIdentityToken;
 
     protected function setUp() {
         parent::setUp();
+        $this->populateDb();
 
         $this->httpMethod = 'PUT';
-        $this->uri        = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/%s', 1321189817);
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
     }
 
     public function testSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->userTokenHeader()
-            ]
-        );
-
-        $request  = $this->createRequest(
-            $environment,
-            json_encode(
-                [
-                    'name' => 'test',
-                    'tags' => [
-                        'tagTest' => 123456
-                    ]
-                ]
-            )
-        );
-        $response = $this->process($request);
-        $status   = $response->getStatusCode();
-        $this->assertSame(200, $status);
-
-        $body = json_decode((string) $response->getBody(), true);
-
-        $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-        $this->assertSame('facebook', $body['data']['name']);
-
-        /*
-         * Validates Response using the Json Schema.
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'source/updateOne.json',
-                json_decode((string) $response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testOTPAttempts() {
-        $status1 = ($this->proccessDefaultRequest())->getStatusCode();
-        $status2 = ($this->proccessDefaultRequest())->getStatusCode();
-        $status3 = ($this->proccessDefaultRequest())->getStatusCode();
-
-        $this->assertSame(200, $status1);
-        $this->assertSame(200, $status2);
-        $this->assertSame(403, $status3);
-    }
-
-    private function proccessDefaultRequest() {
-        $environment = $this->createEnvironment(
-            [
-                'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->userTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
 
@@ -89,35 +38,97 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'test',
-                    'tags' => [
-                        'tagTest' => 123456
-                    ]
+                    'source_id'  => 1321189817,
+                    'collection' => 'raw-1',
+                    'data'       => ['test' => 'data2']
                 ]
             )
         );
 
-        return $this->process($request);
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame('raw-1', $body['data']['collection']);
+        $this->assertSame(['test' => 'data2'], $body['data']['data']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'raw/upsert.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/232983';
-
+        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->userTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
 
-        $request  = $this->createRequest($environment, json_encode(['name' => 'twitter']));
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'source_id'  => 00000,
+                    'collection' => 'raw-1',
+                    'data'       => ['test' => 'data']
+                ]
+            )
+        );
+
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
 
+    public function testEmptyCollection() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'source_id'  => 1321189817,
+                    'collection' => '',
+                    'data'       => ['test' => 'data']
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
         /*
          * Validates Response using the Json Schema.
          */

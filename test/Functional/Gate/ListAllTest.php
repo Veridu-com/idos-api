@@ -53,26 +53,26 @@ class ListAllTest extends AbstractFunctional {
         );
     }
 
-    /*public function testFilters() {
-        $key = 'slug';
+    public function testFilters() {
+        $key            = 'slug';
         $filterableKeys = [
             'creator.name' => [
                 [
-                    'value' => 'id*',
+                    'value'   => 'id*',
                     'results' => ['gate-one', 'gate-two']
                 ],
             ],
-            
+
             'name' => [
                 [
-                    'value' => '*one',
+                    'value'   => '*one',
                     'results' => ['gate-one']
                 ],
             ],
-            
+
             'slug' => [
                 [
-                    'value' => '*one',
+                    'value'   => '*one',
                     'results' => ['gate-one']
                 ],
             ],
@@ -126,7 +126,7 @@ class ListAllTest extends AbstractFunctional {
                 );
             });
         }
-    }*/
+    }
 
     public function testNameFilter() {
         $request = $this->createRequest(

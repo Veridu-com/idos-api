@@ -70,8 +70,8 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
 
+        $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('Special Chårs', $body['data']['name']);
         $this->assertSame('special-chars', $body['data']['slug']);
