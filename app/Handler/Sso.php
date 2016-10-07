@@ -20,7 +20,6 @@ use App\Entity\Profile\Source as SourceEntity;
 use App\Entity\User;
 use App\Exception\Create;
 use App\Exception\NotFound;
-use App\Exception\NotFound\UserException;
 use App\Factory\Command;
 use App\Factory\Event;
 use App\Helper\Token;
@@ -252,7 +251,6 @@ class Sso implements HandlerInterface {
         }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
-
 
         try {
             $identity = $this->identityRepository->findOneBySourceNameAndProfileId(

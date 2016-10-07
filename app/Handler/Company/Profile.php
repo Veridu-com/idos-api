@@ -61,6 +61,8 @@ class Profile implements HandlerInterface {
                     ->get('validatorFactory')
                     ->create('user'),
                 $container
+                    ->get('eventFactory'),
+                $container
                     ->get('eventEmitter')
             );
         };

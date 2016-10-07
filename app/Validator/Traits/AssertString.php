@@ -24,7 +24,7 @@ trait AssertString {
      * @return void
      */
     public function assertString($string) {
-        Validator::prnt()
+        Validator::stringType()
             ->length(1, null)
             ->assert($string);
     }
@@ -55,7 +55,7 @@ trait AssertString {
      * @return void
      */
     public function assertShortString($string) {
-        Validator::prnt()
+        Validator::stringType()
             ->length(1, 50)
             ->assert($string);
     }
@@ -70,7 +70,7 @@ trait AssertString {
      * @return void
      */
     public function assertMediumString($string) {
-        Validator::prnt()
+        Validator::stringType()
             ->length(1, 100)
             ->assert($string);
     }
@@ -85,7 +85,7 @@ trait AssertString {
      * @return void
      */
     public function assertLongString($string) {
-        Validator::prnt()
+        Validator::stringType()
             ->length(1, 255)
             ->assert($string);
     }

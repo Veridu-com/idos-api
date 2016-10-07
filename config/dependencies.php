@@ -103,7 +103,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
                     'id'      => $container->get('logUidProcessor')->getUid(),
                     'code'    => $exception->getCode(),
                     'type'    => 'APPLICATION_EXCEPTION', // $exception->getType(),
-                    'link'    => "test", // $exception->getLink(),
+                    'link'    => 'test', // $exception->getLink(),
                     'message' => $exception->getMessage(),
                 ]
             ];

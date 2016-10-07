@@ -152,7 +152,7 @@ class Company implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
         try {
             $this->validator->assertId($command->company->id);
-            $this->validator->assertMediumLatinName($command->name);
+            $this->validator->assertMediumString($command->name);
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),
