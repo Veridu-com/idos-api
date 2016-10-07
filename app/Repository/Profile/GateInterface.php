@@ -47,7 +47,7 @@ interface GateInterface extends RepositoryInterface {
      *
      * @return Collection
      */
-    public function findByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
+    public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
 
     /**
      * Return gates based on their user id.
@@ -57,7 +57,7 @@ interface GateInterface extends RepositoryInterface {
      *
      * @return Collection
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection;
+    public function getByUserId(int $userId, array $queryParams = []) : Collection;
 
     /**
      * Delete gates based on their user id.

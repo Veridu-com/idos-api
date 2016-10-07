@@ -84,7 +84,7 @@ class Gates implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $entities = $this->repository->findByUserId($user->id, $request->getQueryParams());
+        $entities = $this->repository->getByUserId($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),

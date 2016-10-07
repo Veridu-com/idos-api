@@ -58,5 +58,5 @@ interface ProcessInterface extends RepositoryInterface {
      *
      * @return Collection
      */
-    public function findByUserId(int $userId, array $queryParams = []) : array;
+    public function getByUserId(int $userId, array $queryParams = []) : array;
 }

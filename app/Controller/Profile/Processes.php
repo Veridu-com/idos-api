@@ -72,7 +72,7 @@ class Processes implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user   = $request->getAttribute('targetUser');
-        $result = $this->repository->findByUserId($user->id, $request->getQueryParams());
+        $result = $this->repository->getByUserId($user->id, $request->getQueryParams());
 
         $entities = $result['collection'];
 

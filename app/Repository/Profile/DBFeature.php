@@ -106,7 +106,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection {
+    public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
                 'creator' => $serviceId,
@@ -118,7 +118,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection {
+    public function getByUserId(int $userId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
             'user_id' => $userId

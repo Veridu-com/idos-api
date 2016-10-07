@@ -306,7 +306,7 @@ class Gate implements HandlerInterface {
             );
         }
 
-        $entities = $this->repository->findByServiceIdAndUserId($command->service->id, $command->user->id, $command->queryParams);
+        $entities = $this->repository->getByServiceIdAndUserId($command->service->id, $command->user->id, $command->queryParams);
 
         $affectedRows = 0;
         try {

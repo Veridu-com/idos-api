@@ -469,7 +469,7 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $deletedFeatures = $this->repository->findByServiceIdAndUserId($command->service->id, $command->user->id, $command->queryParams);
+        $deletedFeatures = $this->repository->getByServiceIdAndUserId($command->service->id, $command->user->id, $command->queryParams);
 
         $affectedRows = 0;
         foreach ($deletedFeatures as $deletedFeature) {

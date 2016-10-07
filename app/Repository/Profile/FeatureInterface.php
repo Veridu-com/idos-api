@@ -48,7 +48,7 @@ interface FeatureInterface extends RepositoryInterface {
      *
      * @return Collection
      */
-    public function findByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
+    public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
 
     /**
      * Return features based on their user id.
@@ -58,7 +58,7 @@ interface FeatureInterface extends RepositoryInterface {
      *
      * @return Collection
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection;
+    public function getByUserId(int $userId, array $queryParams = []) : Collection;
 
     /**
      * Upsert a bulk of features.

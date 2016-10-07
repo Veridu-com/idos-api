@@ -89,7 +89,7 @@ class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByUserId(int $userId, array $queryParams = []) : array {
+    public function getByUserId(int $userId, array $queryParams = []) : array {
         $dbQuery = $this->query()->where('user_id', $userId);
 
         return $this->paginate(
