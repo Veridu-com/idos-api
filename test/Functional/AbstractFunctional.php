@@ -437,7 +437,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
 
         for ($i = $start; $i <= count($list) - $end; $i++) {
             if (in_array($list[$i], $combinations)) {
-                continue;
+            	continue;
             }
 
             $combinations[] = $list[$i];

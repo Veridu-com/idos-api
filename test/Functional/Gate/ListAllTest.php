@@ -53,7 +53,7 @@ class ListAllTest extends AbstractFunctional {
         );
     }
 
-    /*public function testFilters() {
+    public function testFilters() {
         $key = 'slug';
         $filterableKeys = [
             'creator.name' => [
@@ -62,14 +62,14 @@ class ListAllTest extends AbstractFunctional {
                     'results' => ['gate-one', 'gate-two']
                 ],
             ],
-            
+
             'name' => [
                 [
                     'value' => '*one',
                     'results' => ['gate-one']
                 ],
             ],
-            
+
             'slug' => [
                 [
                     'value' => '*one',
@@ -126,7 +126,7 @@ class ListAllTest extends AbstractFunctional {
                 );
             });
         }
-    }*/
+    }
 
     public function testNameFilter() {
         $request = $this->createRequest(
@@ -203,7 +203,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'creator:name=idOS FB Scraper'
+                    'QUERY_STRING'       => 'creator:name=idOS Scraper'
                 ]
             )
         );
