@@ -38,7 +38,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id' => 1321189817,
+                    'source_id'  => 1321189817,
                     'collection' => 'raw-1',
                     'data'       => ['test' => 'data2']
                 ]
@@ -79,7 +79,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id' => 00000,
+                    'source_id'  => 00000,
                     'collection' => 'raw-1',
                     'data'       => ['test' => 'data']
                 ]
@@ -116,7 +116,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id' => 1321189817,
+                    'source_id'  => 1321189817,
                     'collection' => '',
                     'data'       => ['test' => 'data']
                 ]

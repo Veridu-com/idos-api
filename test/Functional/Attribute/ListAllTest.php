@@ -73,7 +73,6 @@ class ListAllTest extends AbstractFunctional {
         $this->assertContains($body['data'][1]['name'], ['first-name']);
         $this->assertContains($body['data'][1]['value'], ['Johnny']);
 
-
         /*
          * Validates Response using the Json Schema.
          */

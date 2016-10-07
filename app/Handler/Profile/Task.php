@@ -172,19 +172,19 @@ class Task implements HandlerInterface {
             if ($command->running !== null) {
                 $this->validator->assertBoolean($command->running);
                 $task->running = $command->running;
-                $updated = true;
+                $updated       = true;
             }
 
             if ($command->success !== null) {
                 $this->validator->assertBoolean($command->success);
                 $task->success = $command->success;
-                $updated = true;
+                $updated       = true;
             }
 
             if ($command->message !== null) {
                 $this->validator->assertString($command->message);
                 $task->message = $command->message;
-                $updated = true;
+                $updated       = true;
             }
 
             if (! $updated) {
