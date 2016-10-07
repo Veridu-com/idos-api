@@ -137,7 +137,7 @@ class Feature implements HandlerInterface {
                 return $this->processRepository->findOneBySourceId($sourceId);
             }
 
-            return $this->processRepository->findLastByUserIdSourceIdAndEvent($userId, $sourceId, $event);
+            return $this->processRepository->findLastByUserIdSourceIdAndEvent($event, $sourceId, $userId);
         } catch (NotFound $e) {
             $entity = $this->processRepository->create(
                 [

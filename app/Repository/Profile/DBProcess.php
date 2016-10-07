@@ -11,6 +11,7 @@ namespace App\Repository\Profile;
 use App\Entity\Profile\Process;
 use App\Exception\NotFound;
 use App\Repository\AbstractSQLDBRepository;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Process Repository Implementation.
@@ -22,14 +23,12 @@ class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
      * @var string
      */
     protected $tableName = 'processes';
-
     /**
      * The entity associated with the repository.
      *
      * @var string
      */
     protected $entityName = 'Profile\Process';
-
     /**
      * {@inheritdoc}
      */
@@ -42,6 +41,18 @@ class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
     /**
      * {@inheritdoc}
      */
+    public function findOne(int $id, int $userId) : Process {
+        return $this->findOneBy(
+            [
+                'id'      => $id,
+                'user_id' => $userId
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOneBySourceId(int $sourceId) : Process {
         return $this->findOneBy(['source_id' => $sourceId]);
     }
@@ -49,19 +60,7 @@ class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : array {
-        $dbQuery = $this->query()->where('user_id', $userId);
-
-        return $this->paginate(
-            $this->filter($dbQuery, $queryParams),
-            $queryParams
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findLastByUserIdSourceIdAndEvent(int $userId, $sourceId, $event) : Process {
+    public function findLastByUserIdSourceIdAndEvent($event, $sourceId, int $userId) : Process {
         $query = $this->query()
             ->where('user_id', $userId)
             ->orderBy('id', 'desc');
@@ -85,5 +84,17 @@ class DBProcess extends AbstractSQLDBRepository implements ProcessInterface {
         }
 
         return $process;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByUserId(int $userId, array $queryParams = []) : array {
+        $dbQuery = $this->query()->where('user_id', $userId);
+
+        return $this->paginate(
+            $this->filter($dbQuery, $queryParams),
+            $queryParams
+        );
     }
 }

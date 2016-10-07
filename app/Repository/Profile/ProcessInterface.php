@@ -10,39 +10,53 @@ namespace App\Repository\Profile;
 
 use App\Entity\Profile\Process;
 use App\Repository\RepositoryInterface;
+use Illuminate\Support\Collection;
 
 /**
  * Process Repository Interface.
  */
 interface ProcessInterface extends RepositoryInterface {
     /**
-     * Gets all Processes based on their user id.
+     * Returns a process based on its user id and id.
      *
-     * @param int $userId
+     * @param int         $id         The process id
+     * @param int         $userId     The user id
      *
-     * @return array
+     * @return Process
      */
-    public function getAllByUserId(int $userId, array $queryParams = []) : array;
+    public function findOne(int $id, int $userId) : Process;
 
     /**
-     * Finds one by source id.
+     * Returns a process based on its source id.
      *
-     * @param int $sourceId The source identifier
+     * @param int         $id         The feature id
+     * @param int         $serviceId  The service id
+     * @param int         $userId     The user id
      *
-     * @return App\Entity\Profile\Process
+     * @return Process
      */
     public function findOneBySourceId(int $sourceId) : Process;
 
     /**
-     * Finds the last process of the user with nullable source and events.
+     * Returns the last process of the user given its source id and event.
      *
-     * @param int         $userId The user identifier
      * @param int|null    $source The source
      * @param string|null $event  The event
+     * @param int         $userId The user identifier
      *
      * @throws App\Exception\NotFound
      *
-     * @return App\Entity\Profile\Process
+     * @return Process
      */
-    public function findLastByUserIdSourceIdAndEvent(int $userId, $sourceId, $event) : Process;
+    public function findLastByUserIdSourceIdAndEvent($sourceId, $event, int $userId) : Process;
+
+    /**
+     * Return processes based on their user id.
+     *
+     * @param int   $userId
+     * @param array $queryParams
+     *
+     * @return Collection
+     */
+    public function findByUserId(int $userId, array $queryParams = []) : array;
 }
