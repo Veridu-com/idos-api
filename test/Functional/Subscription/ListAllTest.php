@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Source;
+namespace Test\Functional\Subscription;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;

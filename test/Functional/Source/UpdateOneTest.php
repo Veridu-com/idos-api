@@ -34,7 +34,17 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request  = $this->createRequest($environment, json_encode(['name' => 'linkedin']));
+        $request  = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'name' => 'test',
+                    'tags' => [
+                        'tagTest' => 123456
+                    ]
+                ]
+            )
+        );
         $response = $this->process($request);
         $status   = $response->getStatusCode();
         $this->assertSame(200, $status);
@@ -75,7 +85,17 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode(['name' => 'linkedin']));
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'name' => 'test',
+                    'tags' => [
+                        'tagTest' => 123456
+                    ]
+                ]
+            )
+        );
 
         return $this->process($request);
     }

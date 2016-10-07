@@ -67,12 +67,11 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(1, $body['data']);
-
-        foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['firstname']);
-            $this->assertContains($attribute['value'], ['John']);
-        }
+        $this->assertCount(2, $body['data']);
+        $this->assertContains($body['data'][0]['name'], ['first-name']);
+        $this->assertContains($body['data'][0]['value'], ['John']);
+        $this->assertContains($body['data'][1]['name'], ['first-name']);
+        $this->assertContains($body['data'][1]['value'], ['Johnny']);
 
         /*
          * Validates Response using the Json Schema.
@@ -102,12 +101,10 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(6, $body['data']);
 
-        foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['firstname', 'lastname']);
-            $this->assertContains($attribute['value'], ['John', 'Doe']);
-        }
+        $this->assertContains($body['data'][0]['name'], ['first-name', 'last-name']);
+        $this->assertContains($body['data'][0]['value'], ['John', 'Doe']);
 
         /*
          * Validates Response using the Json Schema.
@@ -126,7 +123,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'creator:name=idOS FB Scraper'
+                    'QUERY_STRING'       => 'creator:name=idOS Scraper'
                 ]
             )
         );
@@ -137,12 +134,11 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
-
-        foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['firstname', 'lastname']);
-            $this->assertContains($attribute['value'], ['John', 'Doe']);
-        }
+        $this->assertCount(11, $body['data']);
+        $this->assertContains($body['data'][0]['name'], ['first-name', 'last-name']);
+        $this->assertContains($body['data'][0]['value'], ['John', 'Doe']);
+        $this->assertContains($body['data'][1]['name'], ['first-name']);
+        $this->assertContains($body['data'][1]['value'], ['Johnny']);
 
         /*
          * Validates Response using the Json Schema.
@@ -172,11 +168,11 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(11, $body['data']);
 
         foreach ($body['data'] as $attribute) {
-            $this->assertContains($attribute['name'], ['firstname', 'lastname']);
-            $this->assertContains($attribute['value'], ['John', 'Doe']);
+            $this->assertArrayHasKey('name', $attribute);
+            $this->assertArrayHasKey('value', $attribute);
         }
 
         /*
@@ -216,7 +212,7 @@ class ListAllTest extends AbstractFunctional {
                 $body = json_decode((string) $response->getBody(), true);
                 $this->assertNotEmpty($body);
                 $this->assertTrue($body['status']);
-                $this->assertCount(2, $body['data']);
+                $this->assertCount(11, $body['data']);
 
                 $keys = [];
 

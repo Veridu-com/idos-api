@@ -117,7 +117,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'section'  => 'section with a very looong name',
+                    'section'  => 'section with a very looooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong name',
                     'property' => 'bicxuito',
                     'value'    => 'biscuit'
                 ]
@@ -194,7 +194,7 @@ class CreateNewTest extends AbstractFunctional {
             json_encode(
                 [
                     'section'  => 'section',
-                    'property' => 'property  with a very looong name',
+                    'property' => 'property  with a very loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong name',
                     'value'    => 'biscuit'
                 ]
             )
