@@ -136,7 +136,7 @@ class Profiles implements ControllerInterface {
         foreach ($profiles as $profile) {
             $sources  = $this->sourceRepository->getAllByUserId($profile->id);
             $tags     = $this->tagRepository->getAllByUserId($profile->id);
-            $reviews  = $this->reviewRepository->getAllByUserId($profile->id);
+            $reviews  = $this->reviewRepository->getByUserId($profile->id);
             $warnings = $this->warningRepository->findByUserId($profile->id);
             $gates    = $this->gateRepository->getByUserId($profile->id);
 
@@ -222,7 +222,7 @@ class Profiles implements ControllerInterface {
 
         $sources  = $this->sourceRepository->getAllByUserId($profile->id);
         $tags     = $this->tagRepository->getAllByUserId($profile->id);
-        $reviews  = $this->reviewRepository->getAllByUserId($profile->id);
+        $reviews  = $this->reviewRepository->getByUserId($profile->id);
         $warnings = $this->warningRepository->findByUserId($profile->id);
         $gates    = $this->gateRepository->getByUserId($profile->id);
 

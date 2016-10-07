@@ -24,13 +24,13 @@ class Reviews implements ControllerInterface {
     /**
      * Review Repository instance.
      *
-     * @var App\Repository\Profile\ReviewInterface
+     * @var \App\Repository\Profile\ReviewInterface
      */
     private $repository;
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
@@ -42,16 +42,16 @@ class Reviews implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\ReviewInterface $repository
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param App\Factory\Command                    $commandFactory
+     * @param \App\Repository\Profile\ReviewInterface $repository
+     * @param \League\Tactician\CommandBus            $commandBus
+     * @param \App\Factory\Command                    $commandFactory
      *
      * @return void
      */
@@ -75,26 +75,51 @@ class Reviews implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\Profile\DBReview::getAllByUserIdAndWarningIdsAndIdentity
+     * @see \App\Repository\Profile\DBReview::getAllByUserIdAndWarningIdsAndIdentity
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $this->userRepository->find($request->getAttribute('decodedUserId'));
         $identity   = $request->getAttribute('identity');
-        $warningIds = $request->getQueryParam('warnings', []);
 
-        if ($warningIds) {
-            $warningIds = explode(',', $warningIds);
-        }
-
-        $reviews = $this->repository->getAllByUserIdAndWarningIds($user->id, $warningIds, $identity->id);
+        $reviews = $this->repository->getByUserIdAndIdentityId($identity->id, $user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $reviews->toArray(),
             'updated' => (
                 $reviews->isEmpty() ? time() : max($reviews->max('updatedAt'), $reviews->max('createdAt'))
             )
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Retrieves a review data from the given source.
+     *
+     * @apiEndpointResponse 200 schema/review/getOne.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $identity = $request->getAttribute('identity');
+        $reviewId = (int) $request->getAttribute('decodedReviewId');
+
+        $review = $this->repository->findOne($reviewId, $identity->id, $user->id);
+
+        $body = [
+            'data' => $review->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -114,7 +139,7 @@ class Reviews implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Profile\Review::handleCreateNew
+     * @see \App\Handler\Profile\Review::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -172,36 +197,6 @@ class Reviews implements ControllerInterface {
         $body = [
             'data'    => $review->toArray(),
             'updated' => $review->updatedAt
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Retrieves a review data from the given source.
-     *
-     * @apiEndpointResponse 200 schema/review/getOne.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
-        $identity = $request->getAttribute('identity');
-        $reviewId = (int) $request->getAttribute('decodedReviewId');
-
-        $review = $this->repository->findOneByUserIdAndIdAndIdentityId($user->id, $reviewId, $identity->id);
-
-        $body = [
-            'data' => $review->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
