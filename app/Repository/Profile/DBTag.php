@@ -38,21 +38,18 @@ class DBTag extends AbstractSQLDBRepository implements TagInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId) : Collection {
-        return $this->findBy(['user_id' => $userId]);
+    public function findOne(string $slug, int $userId) : Tag {
+        return $this->findOneBy([
+            'user_id' => $userId,
+            'slug' => $slug
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndTagSlugs(int $userId, array $queryParams = []) : Collection {
-        $result = $this->query()
-            ->selectRaw('tags.*')
-            ->where('user_id', '=', $userId);
-
-        $result = $this->filter($result, $queryParams);
-
-        return $result->get();
+    public function getByUserId(int $userId, array $queryParams = []) : Collection {
+        return $this->findBy(['user_id' => $userId], $queryParams);
     }
 
     /**
@@ -60,13 +57,6 @@ class DBTag extends AbstractSQLDBRepository implements TagInterface {
      */
     public function deleteByUserId(int $userId) : int {
         return $this->deleteBy(['user_id' => $userId]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByUserIdAndSlug(int $userId, string $slug) : Tag {
-        return $this->findOneBy(['user_id' => $userId, 'slug' => $slug]);
     }
 
     /**

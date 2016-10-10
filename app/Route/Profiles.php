@@ -65,9 +65,9 @@ class Profiles implements RouteInterface {
      * @return void
      *
      * @link docs/profiles/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profiles::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profiles::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app

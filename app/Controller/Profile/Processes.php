@@ -72,7 +72,7 @@ class Processes implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user   = $request->getAttribute('targetUser');
-        $result = $this->repository->getAllByUserId($user->id, $request->getQueryParams());
+        $result = $this->repository->getByUserId($user->id, $request->getQueryParams());
 
         $entities = $result['collection'];
 
@@ -106,9 +106,10 @@ class Processes implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user      = $request->getAttribute('targetUser');
         $processId = $request->getAttribute('decodedProcessId');
 
-        $process = $this->repository->find($processId);
+        $process = $this->repository->findOne($processId, $user->id);
 
         $body = [
             'data'    => $process->toArray(),

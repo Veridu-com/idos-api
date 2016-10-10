@@ -17,11 +17,11 @@ use Illuminate\Support\Collection;
  */
 interface SubscriptionInterface extends RepositoryInterface {
     /**
-     * Gets all subscriptions the by credential identifier.
+     * Return subscriptions based on their credential id.
      *
      * @param int $credentialId The credential identifier
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getAllByCredentialId(int $credentialId) : Collection;
+    public function getByCredentialId(int $credentialId) : Collection;
 }

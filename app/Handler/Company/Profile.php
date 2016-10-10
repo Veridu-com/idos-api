@@ -26,19 +26,19 @@ class Profile implements HandlerInterface {
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $repository;
     /**
      * User Validator instance.
      *
-     * @var App\Validator\User
+     * @var \App\Validator\User
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -71,9 +71,9 @@ class Profile implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\UserInterface $repository
-     * @param App\Validator\User           $validator
-     * @param App\Factory\Event            $eventFactory
+     * @param \App\Repository\UserInterface $repository
+     * @param \App\Validator\User           $validator
+     * @param \App\Factory\Event            $eventFactory
      * @param \League\Event\Emitter        $emitter
      *
      * @return void
@@ -93,7 +93,7 @@ class Profile implements HandlerInterface {
     /**
      * Deletes a Company Profile.
      *
-     * @param App\Command\Company\Profile\DeleteOne $command
+     * @param \App\Command\Company\Profile\DeleteOne $command
      *
      * @return int
      */

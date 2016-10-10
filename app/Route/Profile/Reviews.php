@@ -20,7 +20,7 @@ use Slim\App;
  * A Profile Reviews allows a Company to provide feedback on any Attributes the API has extracted that they feel is inaccurate or incorrect. For example if the API has failed a Profile at an 18+ Gate, and later the User provides evidence proving their age is 18+, the Company should use a Profile Reviews to flag this information as inaccurate in order for Veridu to improve the accuracy of the API.
  *
  * @link docs/profiles/review/overview.md
- * @see App\Controller\Profile\Reviews
+ * @see \App\Controller\Profile\Reviews
  */
 class Reviews implements RouteInterface {
     /**
@@ -29,8 +29,8 @@ class Reviews implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'review:listAll',
-            'review:createNew',
             'review:getOne',
+            'review:createNew',
             'review:updateOne'
         ];
     }
@@ -53,8 +53,8 @@ class Reviews implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -76,9 +76,9 @@ class Reviews implements RouteInterface {
      *
      * @return void
      *
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Reviews::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Reviews::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -90,6 +90,40 @@ class Reviews implements RouteInterface {
             ->add($auth(Auth::IDENTITY))
             ->setName('review:listAll');
     }
+    /**
+     * Retrieves a review.
+     *
+     * Retrieves a review from the given user.
+     *
+     * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
+     * @apiGroup Profile Reviews
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int userId 1827452
+     * @apiEndpointURIFragment int reviewId 21494
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Reviews::getOne
+     */
+    private static function getOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
+                'App\Controller\Profile\Reviews:getOne'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::IDENTITY))
+            ->setName('review:getOne');
+    }
+
     /**
      * Creates a new review.
      *
@@ -109,9 +143,9 @@ class Reviews implements RouteInterface {
      * @return void
      *
      * @link docs/sources/review/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Reviews::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Reviews::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -144,9 +178,9 @@ class Reviews implements RouteInterface {
      * @return void
      *
      * @link docs/management/members/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Reviews::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Reviews::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -157,39 +191,5 @@ class Reviews implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('review:updateOne');
-    }
-
-    /**
-     * Retrieves a review.
-     *
-     * Retrieves a review from the given user.
-     *
-     * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
-     * @apiGroup Profile Reviews
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment int userId 1827452
-     * @apiEndpointURIFragment int reviewId 21494
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Reviews::getOne
-     */
-    private static function getOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->get(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
-                'App\Controller\Profile\Reviews:getOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::IDENTITY))
-            ->setName('review:getOne');
     }
 }

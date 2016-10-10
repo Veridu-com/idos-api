@@ -21,7 +21,7 @@ class ListAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/service-handlers';
+        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers';
     }
 
     public function testSuccess() {

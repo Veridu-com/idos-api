@@ -32,25 +32,25 @@ class Credential implements HandlerInterface {
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $repository;
     /**
      * Credential Validator instance.
      *
-     * @var App\Validator\Company\Credential
+     * @var \App\Validator\Company\Credential
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -77,9 +77,9 @@ class Credential implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CredentialInterface $repository
-     * @param App\Validator\Credential           $validator
-     * @param App\Factory\Event                  $eventFactory
+     * @param \App\Repository\Company\CredentialInterface $repository
+     * @param \App\Validator\Company\Credential           $validator
+     * @param \App\Factory\Event                  $eventFactory
      * @param \League\Event\Emitter              $emitter
      *
      * @return void
@@ -99,12 +99,12 @@ class Credential implements HandlerInterface {
     /**
      * Creates a new child Credential ($command->companyId).
      *
-     * @param App\Command\Company\Credential\CreateNew $command
+     * @param \App\Command\Company\Credential\CreateNew $command
      *
-     * @throws App\Exception\Validate\CredentialException
-     * @throws App\Exception\Create\CredentialException
+     * @throws \App\Exception\Validate\Company\CredentialException
+     * @throws \App\Exception\Create\Company\CredentialException
      *
-     * @return App\Entity\Credential
+     * @return \App\Entity\Company\Credential
      */
     public function handleCreateNew(CreateNew $command) : CredentialEntity {
         try {
@@ -145,12 +145,12 @@ class Credential implements HandlerInterface {
     /**
      * Updates a Credential.
      *
-     * @param App\Command\Company\Credential\UpdateOne $command
+     * @param \App\Command\Company\Credential\UpdateOne $command
      *
-     * @throws App\Exeption\Validate\CredentialException
-     * @throws App\Exception\Update\CredentialException
+     * @throws \App\Exception\Validate\Company\CredentialException
+     * @throws \App\Exception\Update\Company\CredentialException
      *
-     * @return App\Entity\Credential
+     * @return \App\Entity\Company\Credential
      */
     public function handleUpdateOne(UpdateOne $command) : CredentialEntity {
         try {
@@ -182,10 +182,10 @@ class Credential implements HandlerInterface {
     /**
      * Deletes a Credential.
      *
-     * @param App\Command\Company\Credential\DeleteOne $command
+     * @param \App\Command\Company\Credential\DeleteOne $command
      *
-     * @throws App\Exception\Validate\CredentialException
-     * @throws App\Exception\NotFound\CredentialException
+     * @throws \App\Exception\Validate\Company\CredentialException
+     * @throws \App\Exception\NotFound\Company\CredentialException
      *
      * @return void
      */

@@ -29,12 +29,12 @@ class Gates implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'gates:listAll',
-            'gates:deleteAll',
-            'gates:createNew',
             'gates:getOne',
+            'gates:createNew',
             'gates:updateOne',
             'gates:upsert',
-            'gates:deleteOne'
+            'gates:deleteOne',
+            'gates:deleteAll'
         ];
     }
 
@@ -56,12 +56,12 @@ class Gates implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::upsert($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -98,106 +98,6 @@ class Gates implements RouteInterface {
     }
 
     /**
-     * Create new Gate.
-     *
-     * Create a new gate for the given user.
-     *
-     * @apiEndpoint POST /profiles/{userName}/gates
-     * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profile/gates/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Gates::createNew
-     */
-    private static function createNew(App $app, callable $auth, callable $permission) {
-        $app
-            ->post(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/gates',
-                'App\Controller\Profile\Gates:createNew'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('gates:createNew');
-    }
-
-    /**
-     * Deletes a single Gate.
-     *
-     * Deletes a single Gate that belongs to the given user
-     *
-     * @apiEndpoint DELETE /profiles/{userName}/gates/{gateSlug}
-     * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string gateSlug data-name
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profile/gates/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Gates::deleteOne
-     */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/gates/{gateSlug:[a-z0-9_-]+}',
-                'App\Controller\Profile\Gates:deleteOne'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('gates:deleteOne');
-    }
-
-    /**
-     * Deletes all gates.
-     *
-     * Deletes all gates that belongs to the given user
-     *
-     * @apiEndpoint DELETE /profiles/{userName}/gates
-     * @apiGroup Profile Gates
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profile/gates/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Gates::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/gates',
-                'App\Controller\Profile\Gates:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('gates:deleteAll');
-    }
-
-    /**
      * Retrieve a single Gate.
      *
      * Retrieves all public information from a Gate.
@@ -229,6 +129,39 @@ class Gates implements RouteInterface {
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('gates:getOne');
+    }
+
+    /**
+     * Create new Gate.
+     *
+     * Create a new gate for the given user.
+     *
+     * @apiEndpoint POST /profiles/{userName}/gates
+     * @apiGroup Profile Gates
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profile/gates/createNew.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Profile\Gates::createNew
+     */
+    private static function createNew(App $app, callable $auth, callable $permission) {
+        $app
+            ->post(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/gates',
+                'App\Controller\Profile\Gates:createNew'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('gates:createNew');
     }
 
     /**
@@ -296,5 +229,72 @@ class Gates implements RouteInterface {
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('gates:upsert');
+    }
+
+    /**
+     * Deletes a single Gate.
+     *
+     * Deletes a single Gate that belongs to the given user
+     *
+     * @apiEndpoint DELETE /profiles/{userName}/gates/{gateSlug}
+     * @apiGroup Profile Gates
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string gateSlug data-name
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profile/gates/deleteOne.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Profile\Gates::deleteOne
+     */
+    private static function deleteOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/gates/{gateSlug:[a-z0-9_-]+}',
+                'App\Controller\Profile\Gates:deleteOne'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('gates:deleteOne');
+    }
+
+    /**
+     * Deletes all gates.
+     *
+     * Deletes all gates that belongs to the given user
+     *
+     * @apiEndpoint DELETE /profiles/{userName}/gates
+     * @apiGroup Profile Gates
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profile/gates/deleteAll.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Profile\Gates::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/gates',
+                'App\Controller\Profile\Gates:deleteAll'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('gates:deleteAll');
     }
 }

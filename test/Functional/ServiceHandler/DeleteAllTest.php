@@ -21,7 +21,7 @@ class DeleteAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/service-handlers';
+        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers';
     }
 
     public function testSuccess() {

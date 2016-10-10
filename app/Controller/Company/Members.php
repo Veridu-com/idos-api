@@ -24,13 +24,13 @@ class Members implements ControllerInterface {
     /**
      * Member Repository instance.
      *
-     * @var App\Repository\Company\MemberInterface
+     * @var \App\Repository\Company\MemberInterface
      */
     private $repository;
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
@@ -42,17 +42,17 @@ class Members implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\MemberInterface $repository
-     * @param App\Repository\UserInterface           $userRepository
+     * @param \App\Repository\Company\MemberInterface $repository
+     * @param \App\Repository\UserInterface           $userRepository
      * @param \League\Tactician\CommandBus           $commandBus
-     * @param App\Factory\Command                    $commandFactory
+     * @param \App\Factory\Command                    $commandFactory
      *
      * @return void
      */
@@ -99,6 +99,34 @@ class Members implements ControllerInterface {
     }
 
     /**
+     * Retrieves one Member of the Target Company based on the userName.
+     *
+     * @apiEndpointResponse 200 schema/member/memberEntity.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Repository\DBMember::findOne
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $member = $this->repository->findOne($request->getAttribute('decodedMemberId'));
+
+        $body = [
+            'data' => $member->toArray()
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
      * Creates a new Member for the Target Company.
      *
      * @apiEndpointRequiredParam body string role company:owner Role type
@@ -108,7 +136,7 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Member::handleCreateNew
+     * @see \App\Handler\Member::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -146,7 +174,7 @@ class Members implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Handler\Handler::handleUpdateOne
+     * @see \App\Handler\Handler::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -173,22 +201,24 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Retrieves one Member of the Target Company based on the userName.
+     * Deletes one Member of the Target Company based on the userId.
      *
-     * @apiEndpointResponse 200 schema/member/memberEntity.json
+     * @apiEndpointResponse 200 schema/member/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBMember::findOne
+     * @see \App\Handler\Member::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $member = $this->repository->findOne($request->getAttribute('decodedMemberId'));
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $command = $this->commandFactory->create('Company\\Member\\DeleteOne');
+        $command->setParameter('memberId', $request->getAttribute('decodedMemberId'));
 
+        $this->commandBus->handle($command);
         $body = [
-            'data' => $member->toArray()
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -208,7 +238,7 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Member::handleDeleteAll
+     * @see \App\Handler\Member::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -220,36 +250,6 @@ class Members implements ControllerInterface {
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes one Member of the Target Company based on the userId.
-     *
-     * @apiEndpointResponse 200 schema/member/deleteOne.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see App\Handler\Member::handleDeleteOne
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Company\\Member\\DeleteOne');
-        $command->setParameter('memberId', $request->getAttribute('decodedMemberId'));
-
-        $this->commandBus->handle($command);
-        $body = [
-            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

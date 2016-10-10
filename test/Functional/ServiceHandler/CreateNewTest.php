@@ -23,7 +23,7 @@ class CreateNewTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/service-handlers';
+        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers';
     }
 
     public function testSuccess() {
@@ -38,7 +38,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'service_id' => 1860914067,
+                    'service_id' => 1321189817,
                     'listens'    => [
                         'source.add.facebook'
                     ]
