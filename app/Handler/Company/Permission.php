@@ -30,25 +30,25 @@ class Permission implements HandlerInterface {
     /**
      * Permission Repository instance.
      *
-     * @var App\Repository\Company\PermissionInterface
+     * @var \App\Repository\Company\PermissionInterface
      */
     private $repository;
     /**
      * Permission Validator instance.
      *
-     * @var App\Validator\Company\Permission
+     * @var \App\Validator\Company\Permission
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -75,9 +75,9 @@ class Permission implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\PermissionInterface $repository
-     * @param App\Validator\Permission           $validator
-     * @param App\Factory\Event                  $eventFactory
+     * @param \App\Repository\Company\PermissionInterface $repository
+     * @param \App\Validator\Company\Permission           $validator
+     * @param \App\Factory\Event                  $eventFactory
      * @param \League\Event\Emitter              $emitter
      *
      * @return void
@@ -97,12 +97,12 @@ class Permission implements HandlerInterface {
     /**
      * Creates a new Permission.
      *
-     * @param App\Command\Company\Permission\CreateNew $command
+     * @param \App\Command\Company\Permission\CreateNew $command
      *
-     * @throws App\Exception\Validate\PermissionException
-     * @throws App\Exception\Create\PermissionException
+     * @throws \App\Exception\Validate\Company\PermissionException
+     * @throws \App\Exception\Create\Company\PermissionException
      *
-     * @return App\Entity\Permission
+     * @return \App\Entity\Company\Permission
      */
     public function handleCreateNew(CreateNew $command) : PermissionEntity {
         try {
@@ -136,48 +136,15 @@ class Permission implements HandlerInterface {
     }
 
     /**
-     * Deletes all permissions ($command->companyId).
-     *
-     * @param App\Command\Company\Permission\DeleteAll $command
-     *
-     * @see App\Repository\DBPermission::getAllByComanyId
-     * @see App\Repository\DBPermission::deleteByCompanyId
-     *
-     * @throws App\Exception\Validate\PermissionException
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertId($command->companyId);
-        } catch (ValidationException $e) {
-            throw new Validate\Company\PermissionException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $permissions = $this->repository->getAllByCompanyId($command->companyId);
-
-        $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
-
-        $event = $this->eventFactory->create('Company\\Permission\\DeletedMulti', $permissions);
-        $this->emitter->emit($event);
-
-        return $affectedRows;
-    }
-
-    /**
      * Deletes a Permission.
      *
-     * @param App\Command\Company\Permission\DeleteOne $command
+     * @param \App\Command\Company\Permission\DeleteOne $command
      *
-     * @throws App\Exception\Validate\PermissionException
-     * @throws App\Exception\NotFound\PermissionException
+     * @throws \App\Exception\Validate\PermissionException
+     * @throws \App\Exception\NotFound\PermissionException
      *
-     * @see App\Repository\DBPermission::findOne
-     * @see App\Repository\DBPermission::deleteOne
+     * @see \App\Repository\DBPermission::findOne
+     * @see \App\Repository\DBPermission::deleteOne
      *
      * @return void
      */
@@ -203,5 +170,38 @@ class Permission implements HandlerInterface {
 
         $event = $this->eventFactory->create('Company\\Permission\\Deleted', $permission);
         $this->emitter->emit($event);
+    }
+
+    /**
+     * Deletes all permissions ($command->companyId).
+     *
+     * @param \App\Command\Company\Permission\DeleteAll $command
+     *
+     * @see \App\Repository\DBPermission::getAllByComanyId
+     * @see \App\Repository\DBPermission::deleteByCompanyId
+     *
+     * @throws \App\Exception\Validate\Company\PermissionException
+     *
+     * @return int
+     */
+    public function handleDeleteAll(DeleteAll $command) : int {
+        try {
+            $this->validator->assertId($command->companyId);
+        } catch (ValidationException $e) {
+            throw new Validate\Company\PermissionException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $permissions = $this->repository->getByCompanyId($command->companyId);
+
+        $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
+
+        $event = $this->eventFactory->create('Company\\Permission\\DeletedMulti', $permissions);
+        $this->emitter->emit($event);
+
+        return $affectedRows;
     }
 }

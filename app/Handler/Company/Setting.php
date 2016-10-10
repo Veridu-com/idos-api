@@ -33,25 +33,25 @@ class Setting implements HandlerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\Company\SettingInterface
+     * @var \App\Repository\Company\SettingInterface
      */
     private $repository;
     /**
      * Setting Validator instance.
      *
-     * @var App\Validator\Company\Setting
+     * @var \App\Validator\Company\Setting
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -78,9 +78,9 @@ class Setting implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\SettingInterface $repository
-     * @param App\Validator\Setting           $validator
-     * @param App\Factory\Event               $eventFactory
+     * @param \App\Repository\Company\SettingInterface $repository
+     * @param \App\Validator\Company\Setting           $validator
+     * @param \App\Factory\Event               $eventFactory
      * @param \League\Event\Emitter           $emitter
      *
      * @return void
@@ -100,10 +100,10 @@ class Setting implements HandlerInterface {
     /**
      * List all Settings.
      *
-     * @param App\Command\Company\Setting\ListAll $command
+     * @param \App\Command\Company\Setting\ListAll $command
      *
-     * @see App\Repository\DBSetting::getAllByCompanyId
-     * @see App\Repository\DBSetting::getAllPublicByCompanyId
+     * @see \App\Repository\DBSetting::getAllByCompanyId
+     * @see \App\Repository\DBSetting::getAllPublicByCompanyId
      *
      * @return \Illuminate\Support\Collection
      */
@@ -113,21 +113,21 @@ class Setting implements HandlerInterface {
         $this->validator->assertArray($command->queryParams);
 
         if ($command->hasParentAccess) {
-            return $this->repository->getAllByCompanyId($command->company->id, $command->queryParams);
+            return $this->repository->getByCompanyId($command->company->id, $command->queryParams);
         }
 
         // returns filtering by "protected" = false
-        return $this->repository->getAllPublicByCompanyId($command->company->id, $command->queryParams);
+        return $this->repository->getPublicByCompanyId($command->company->id, $command->queryParams);
     }
 
     /**
      * Gets one Setting.
      *
-     * @param App\Command\Company\Setting\GetOne $command
+     * @param \App\Command\Company\Setting\GetOne $command
      *
-     * @see App\Repository\DBSetting::findOneByCompanyAndId
+     * @see \App\Repository\DBSetting::findOneByCompanyAndId
      *
-     * @throws App\Exception\NotAllowed
+     * @throws \App\Exception\NotAllowed
      *
      * @return \Illuminate\Support\Collection
      */
@@ -148,12 +148,12 @@ class Setting implements HandlerInterface {
     /**
      * Creates a new child Setting.
      *
-     * @param App\Command\Company\Setting\CreateNew $command
+     * @param \App\Command\Company\Setting\CreateNew $command
      *
-     * @throws App\Exception\Validate\SettingException
-     * @throws App\Exception\Create\SettingException
+     * @throws \App\Exception\Validate\Company\SettingException
+     * @throws \App\Exception\Create\Company\SettingException
      *
-     * @return App\Entity\Setting
+     * @return \App\Entity\Company\Setting
      */
     public function handleCreateNew(CreateNew $command) : SettingEntity {
         try {
@@ -193,15 +193,15 @@ class Setting implements HandlerInterface {
     /**
      * Updates a Setting.
      *
-     * @param App\Command\Company\Setting\UpdateOne $command
+     * @param \App\Command\Company\Setting\UpdateOne $command
      *
-     * @throws App\Exception\Validate\SettingException
-     * @throws App\Exception\Update\SettingException
+     * @throws \App\Exception\Validate\Company\SettingException
+     * @throws \App\Exception\Update\Company\SettingException
      *
-     * @see App\Repository\DBSetting::find
-     * @see App\Repository\DBSetting::save
+     * @see \App\Repository\DBSetting::find
+     * @see \App\Repository\DBSetting::save
      *
-     * @return App\Entity\Setting
+     * @return \App\Entity\Company\Setting
      */
     public function handleUpdateOne(UpdateOne $command) : SettingEntity {
         try {
@@ -231,42 +231,12 @@ class Setting implements HandlerInterface {
     }
 
     /**
-     * Deletes all settings ($command->companyId).
-     *
-     * @param App\Command\Company\Setting\DeleteAll $command
-     *
-     * @throws App\Exception\Validate\SettingException
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertId($command->companyId);
-        } catch (ValidationException $e) {
-            throw new Validate\Company\SettingException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $settings = $this->repository->findByCompanyId($command->companyId);
-
-        $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
-
-        $event = $this->eventFactory->create('Company\\Setting\\DeletedMulti', $settings);
-        $this->emitter->emit($event);
-
-        return $rowsAffected;
-    }
-
-    /**
      * Deletes a Setting.
      *
-     * @param App\Command\Company\Setting\DeleteOne $command
+     * @param \App\Command\Company\Setting\DeleteOne $command
      *
-     * @throws App\Exception\Validate\SettingException
-     * @throws App\Exception\NotFound\SettingException
+     * @throws \App\Exception\Validate\Company\SettingException
+     * @throws \App\Exception\NotFound\Company\SettingException
      *
      * @return void
      */
@@ -291,5 +261,35 @@ class Setting implements HandlerInterface {
 
         $event = $this->eventFactory->create('Company\\Setting\\Deleted', $setting);
         $this->emitter->emit($event);
+    }
+
+    /**
+     * Deletes all settings ($command->companyId).
+     *
+     * @param \App\Command\Company\Setting\DeleteAll $command
+     *
+     * @throws \App\Exception\Validate\Company\SettingException
+     *
+     * @return int
+     */
+    public function handleDeleteAll(DeleteAll $command) : int {
+        try {
+            $this->validator->assertId($command->companyId);
+        } catch (ValidationException $e) {
+            throw new Validate\Company\SettingException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $settings = $this->repository->findByCompanyId($command->companyId);
+
+        $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
+
+        $event = $this->eventFactory->create('Company\\Setting\\DeletedMulti', $settings);
+        $this->emitter->emit($event);
+
+        return $rowsAffected;
     }
 }

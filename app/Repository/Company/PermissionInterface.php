@@ -17,44 +17,6 @@ use Illuminate\Support\Collection;
  */
 interface PermissionInterface extends RepositoryInterface {
     /**
-     * Gets all Permissions based on their Company Id.
-     *
-     * @param int $companyId
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAllByCompanyId(int $companyId) : Collection;
-
-    /**
-     * Deletes all Permissions based on their Company Id.
-     *
-     * @param int $companyId
-     *
-     * @return int
-     */
-    public function deleteByCompanyId(int $companyId) : int;
-
-    /**
-     * Find one permission based on their companyId, routeName.
-     *
-     * @param int    $companyId
-     * @param string $routeName
-     *
-     * @return App\Entity\Company\Permission
-     */
-    public function findOne(int $companyId, string $routeName) : Permission;
-
-    /**
-     * Deletes one permission based on their companyId, routeName.
-     *
-     * @param int    $companyId
-     * @param string $routeName
-     *
-     * @return App\Entity\Company\Permission
-     */
-    public function deleteOne(int $companyId, string $routeName) : int;
-
-    /**
      * Checks if a $companyId is allowed to access a $routeName.
      *
      * @param int    $companyId
@@ -63,4 +25,42 @@ interface PermissionInterface extends RepositoryInterface {
      * @return bool
      */
     public function isAllowed(int $companyId, string $routeName) : bool;
+
+    /**
+     * Return a permission based on its route name and company id.
+     *
+     * @param int    $companyId
+     * @param string $routeName
+     *
+     * @return \App\Entity\Company\Permission
+     */
+    public function findOne(int $companyId, string $routeName) : Permission;
+
+    /**
+     * Return permissions based on their company id.
+     *
+     * @param int $companyId
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getByCompanyId(int $companyId) : Collection;
+
+    /**
+     * Delete a permission based on its route name and company id.
+     *
+     * @param int    $companyId
+     * @param string $routeName
+     *
+     * @return \App\Entity\Company\Permission
+     */
+    public function deleteOne(int $companyId, string $routeName) : int;
+
+    /**
+     * Delete permissions based on their company id.
+     *
+     * @param int $companyId
+     *
+     * @return int
+     */
+    public function deleteByCompanyId(int $companyId) : int;
 }
