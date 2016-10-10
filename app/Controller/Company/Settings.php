@@ -22,7 +22,7 @@ class Settings implements ControllerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\Company\SettingInterface
+     * @var \App\Repository\Company\SettingInterface
      */
     private $repository;
     /**
@@ -34,16 +34,16 @@ class Settings implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\SettingInterface $repository
+     * @param \App\Repository\Company\SettingInterface $repository
      * @param \League\Tactician\CommandBus            $commandBus
-     * @param App\Factory\Command                     $commandFactory
+     * @param \App\Factory\Command                     $commandFactory
      *
      * @return void
      */
@@ -148,7 +148,7 @@ class Settings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Settings::handleCreateNew
+     * @see \App\Handler\Settings::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -178,25 +178,31 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Deletes all Settings that belongs to the Target Company.
+     * Updates one Setting of the Target Company based on path paramaters section and property.
      *
-     * @apiEndpointResponse 200 schema/setting/deleteAll.json
+     * @apiEndpointRequiredParam body string value \x492361674b Property value
+     * @apiEndpointResponse 200 schema/setting/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Settings::handleDeleteAll
+     * @see \App\Handler\Setting::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $settingId = $request->getAttribute('decodedSettingId');
 
-        $command = $this->commandFactory->create('Company\\Setting\\DeleteAll');
-        $command->setParameter('companyId', $company->id);
+        $command = $this->commandFactory->create('Company\\Setting\\UpdateOne');
+        $command
+            ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('settingId', $settingId);
+
+        $setting = $this->commandBus->handle($command);
 
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'data'    => $setting->toArray(),
+            'updated' => $setting->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -216,7 +222,7 @@ class Settings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Setting::handleDeleteOne
+     * @see \App\Handler\Setting::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -241,31 +247,25 @@ class Settings implements ControllerInterface {
     }
 
     /**
-     * Updates one Setting of the Target Company based on path paramaters section and property.
+     * Deletes all Settings that belongs to the Target Company.
      *
-     * @apiEndpointRequiredParam body string value \x492361674b Property value
-     * @apiEndpointResponse 200 schema/setting/updateOne.json
+     * @apiEndpointResponse 200 schema/setting/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Setting::handleUpdateOne
+     * @see \App\Handler\Settings::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId = $request->getAttribute('decodedSettingId');
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $company = $request->getAttribute('company');
 
-        $command = $this->commandFactory->create('Company\\Setting\\UpdateOne');
-        $command
-            ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('settingId', $settingId);
-
-        $setting = $this->commandBus->handle($command);
+        $command = $this->commandFactory->create('Company\\Setting\\DeleteAll');
+        $command->setParameter('companyId', $company->id);
 
         $body = [
-            'data'    => $setting->toArray(),
-            'updated' => $setting->updated_at
+            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

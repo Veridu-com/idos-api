@@ -39,18 +39,16 @@ interface MemberInterface extends RepositoryInterface {
      *
      * @param int $memberId
      *
-     * @return App\Entity\Company\Member
+     * @return \App\Entity\Company\Member
      */
     public function findOne(int $memberId);
 
     /**
-     * Deletes one member from company.
+     * Saves a member.
      *
-     * @param int    $companyId member's company_id
-     * @param string $userId    member's username
+     * @param \App\Entity\Company\Member $member The member
      *
-     * @return int
+     * @return \App\Entity\Company\Member
      */
-    public function deleteOne(int $companyId, int $userId) : int;
-
+    public function saveOne(Member $member) : Member;
 }

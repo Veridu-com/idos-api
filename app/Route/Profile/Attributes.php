@@ -151,7 +151,7 @@ class Attributes implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Profile\Attributes:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -218,7 +218,7 @@ class Attributes implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Profile\Attributes:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

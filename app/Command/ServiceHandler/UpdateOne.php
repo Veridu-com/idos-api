@@ -17,14 +17,14 @@ class UpdateOne extends AbstractCommand {
     /**
      * ServiceHandler's id.
      *
-     * @var string
+     * @var int
      */
     public $serviceHandlerId;
 
     /**
      * ServiceHandler's company's id.
      *
-     * @var string
+     * @var int
      */
     public $companyId;
 
@@ -38,7 +38,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\ServiceHandler\UpdateOne
+     * @return \App\Command\ServiceHandler\UpdateOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['listens'])) {

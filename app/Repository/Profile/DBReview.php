@@ -32,26 +32,29 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserId(int $userId) : Collection {
-        return $this->findBy(['user_id' => $userId]);
+    public function findOne(int $id, int $identityId, int $userId) : Review {
+        return $this->findOneBy([
+            'id'          => $id,
+            'user_id'     => $userId,
+            'identity_id' => $identityId
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndWarningIds(int $userId, array $warningIds) : Collection {
-        $result = $this->query()
-            ->selectRaw('reviews.*')
-            ->where('user_id', '=', $userId);
+    public function getByUserIdAndIdentityId(int $identityId, int $userId, array $queryParams = []) : Collection {
+        return $this->findBy([
+            'user_id'     => $userId,
+            'identity_id' => $identityId
+        ], $queryParams);
+    }
 
-        if (! empty($warningIds)) {
-            $warningIds = array_map([$this->optimus, 'decode'], $warningIds);
-            $result     = $result->whereIn('reviews.warning_id', $warningIds);
-        }
-
-        $result = $result->get();
-
-        return new Collection($result);
+    /**
+     * {@inheritdoc}
+     */
+    public function getByUserId(int $userId) : Collection {
+        return $this->findBy(['user_id' => $userId]);
     }
 
 }

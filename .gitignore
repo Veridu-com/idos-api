@@ -5,6 +5,7 @@
 *.sublime-project
 *.sublime-workspace
 .php_cs
+.idea
 composer.lock
 config/settings.php
 config/testing.php

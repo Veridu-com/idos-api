@@ -29,19 +29,19 @@ class Review implements HandlerInterface {
     /**
      * Review Repository instance.
      *
-     * @var App\Repository\Profile\ReviewInterface
+     * @var \App\Repository\Profile\ReviewInterface
      */
     private $repository;
     /**
      * Review Validator instance.
      *
-     * @var App\Validator\Profile\Review
+     * @var \App\Validator\Profile\Review
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -96,15 +96,15 @@ class Review implements HandlerInterface {
     /**
      * Creates a new review data in the given user.
      *
-     * @param App\Command\Profile\Review\CreateNew $command
+     * @param \App\Command\Profile\Review\CreateNew $command
      *
-     * @see App\Repository\Profile\DBReview::create
-     * @see App\Repository\Profile\DBReview::save
+     * @see \App\Repository\Profile\DBReview::create
+     * @see \App\Repository\Profile\DBReview::save
      *
-     * @throws App\Exception\Validate\ReviewException
-     * @throws App\Exception\Create\ReviewException
+     * @throws \App\Exception\Validate\Profile\ReviewException
+     * @throws \App\Exception\Create\Profile\ReviewException
      *
-     * @return App\Entity\Review
+     * @return \App\Entity\Profile\Review
      */
     public function handleCreateNew(CreateNew $command) : ReviewEntity {
         try {
@@ -120,7 +120,7 @@ class Review implements HandlerInterface {
             );
         }
 
-        $review = $this->repository->create(
+        $entity = $this->repository->create(
             [
                 'user_id'     => $command->user->id,
                 'identity_id' => $command->identity->id,
@@ -131,28 +131,29 @@ class Review implements HandlerInterface {
         );
 
         try {
-            $review = $this->repository->save($review);
-            $event  = $this->eventFactory->create('Profile\\Review\\Created', $review, $command->identity);
+            $entity = $this->repository->save($entity);
+
+            $event = $this->eventFactory->create('Profile\\Review\\Created', $entity, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ReviewException('Error while trying to create a review', 500, $e);
         }
 
-        return $review;
+        return $entity;
     }
 
     /**
      * Updates a review data from a given user.
      *
-     * @param App\Command\Profile\Review\UpdateOne $command
+     * @param \App\Command\Profile\Review\UpdateOne $command
      *
-     * @see App\Repository\DBReview::findOneByUserIdAndId
-     * @see App\Repository\DBReview::save
+     * @see \App\Repository\DBReview::findOneByUserIdAndId
+     * @see \App\Repository\DBReview::save
      *
-     * @throws App\Exception\Validate\ReviewException
-     * @throws App\Exception\Update\ReviewException
+     * @throws \App\Exception\Validate\Profile\ReviewException
+     * @throws \App\Exception\Update\Profile\ReviewException
      *
-     * @return App\Entity\Review
+     * @return \App\Entity\Profile\Review
      */
     public function handleUpdateOne(UpdateOne $command) : ReviewEntity {
         try {
@@ -168,7 +169,7 @@ class Review implements HandlerInterface {
             );
         }
 
-        $review           = $this->repository->find($command->id);
+        $review           = $this->repository->findOne($command->id, $command->identity->id, $command->user->id);
         $review->positive = $command->positive;
 
         try {

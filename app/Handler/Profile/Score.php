@@ -33,19 +33,19 @@ class Score implements HandlerInterface {
     /**
      * Score Repository instance.
      *
-     * @var App\Repository\Profile\ScoreInterface
+     * @var \App\Repository\Profile\ScoreInterface
      */
     private $repository;
     /**
      * Score Validator instance.
      *
-     * @var App\Validator\Profile\Score
+     * @var \App\Validator\Profile\Score
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -78,10 +78,10 @@ class Score implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\ScoreInterface $repository
-     * @param App\Validator\Score           $validator
-     * @param App\Factory\Event             $eventFactory
-     * @param \League\Event\Emitter         $emitter
+     * @param \App\Repository\Profile\ScoreInterface $repository
+     * @param \App\Validator\Profile\Score           $validator
+     * @param \App\Factory\Event                     $eventFactory
+     * @param \League\Event\Emitter                  $emitter
      *
      * @return void
      */
@@ -100,16 +100,16 @@ class Score implements HandlerInterface {
     /**
      * Creates a new score for the given attribute.
      *
-     * @param App\Command\Profile\Score\CreateNew $command
+     * @param \App\Command\Profile\Score\CreateNew $command
      *
-     * @see App\Repository\DBScore::create
-     * @see App\Repository\DBScore::save
-     * @see App\Repository\DBScore::hydrateRelations
+     * @see \App\Repository\DBScore::create
+     * @see \App\Repository\DBScore::save
+     * @see \App\Repository\DBScore::hydrateRelations
      *
-     * @throws App\Exception\Validate\Profile\ScoreException
-     * @throws App\Exception\Create\Profile\ScoreException
+     * @throws \App\Exception\Validate\Profile\ScoreException
+     * @throws \App\Exception\Create\Profile\ScoreException
      *
-     * @return App\Entity\Score
+     * @return \App\Entity\Profile\Score
      */
     public function handleCreateNew(CreateNew $command) : ScoreEntity {
         try {
@@ -153,16 +153,16 @@ class Score implements HandlerInterface {
     /**
      * Updates a score for a given attribute.
      *
-     * @param App\Command\Profile\Score\UpdateOne $command
+     * @param \App\Command\Profile\Score\UpdateOne $command
      *
-     * @see App\Repository\DBScore::findOneByName
-     * @see App\Repository\DBScore::save
-     * @see App\Repository\DBScore::hydrate
+     * @see \App\Repository\DBScore::findOne
+     * @see \App\Repository\DBScore::save
+     * @see \App\Repository\DBScore::hydrate
      *
-     * @throws App\Exception\Validate\Profile\ScoreException
-     * @throws App\Exception\Update\Profile\ScoreException
+     * @throws \App\Exception\Validate\Profile\ScoreException
+     * @throws \App\Exception\Update\Profile\ScoreException
      *
-     * @return App\Entity\Score
+     * @return \App\Entity\Profile\Score
      */
     public function handleUpdateOne(UpdateOne $command) : ScoreEntity {
         try {
@@ -179,7 +179,7 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
+        $entity = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
 
         $entity->attribute = $command->attribute;
         $entity->value     = $command->value;
@@ -201,17 +201,17 @@ class Score implements HandlerInterface {
     /**
      * Updates a score for a given attribute.
      *
-     * @param App\Command\Score\Upsert $command
+     * @param \App\Command\Profile\Score\Upsert $command
      *
-     * @see App\Repository\DBScore::findOneByName
-     * @see App\Repository\DBScore::create
-     * @see App\Repository\DBScore::save
-     * @see App\Repository\DBScore::hydrateRelations
+     * @see \App\Repository\DBScore::findOne
+     * @see \App\Repository\DBScore::create
+     * @see \App\Repository\DBScore::save
+     * @see \App\Repository\DBScore::hydrateRelations
      *
-     * @throws App\Exception\NotFound\ScoreException
-     * @throws App\Exception\Update\Profile\ScoreException
+     * @throws \App\Exception\NotFound\Profile\ScoreException
+     * @throws \App\Exception\Update\Profile\ScoreException
      *
-     * @return App\Entity\Score
+     * @return \App\Entity\Profile\Score
      */
     public function handleUpsert(Upsert $command) : ScoreEntity {
         try {
@@ -231,7 +231,7 @@ class Score implements HandlerInterface {
         $entity    = null;
         $inserting = false;
         try {
-            $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
+            $entity = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
 
             $entity->attribute = $command->attribute;
             $entity->value     = $command->value;
@@ -272,13 +272,13 @@ class Score implements HandlerInterface {
     /**
      * Deletes a score from a given attribute.
      *
-     * @param App\Command\Profile\Score\DeleteOne $command
+     * @param \App\Command\Profile\Score\DeleteOne $command
      *
-     * @see App\Repository\DBScore::findOneByName
-     * @see App\Repository\DBScore::delete
+     * @see \App\Repository\DBScore::findOne
+     * @see \App\Repository\DBScore::delete
      *
-     * @throws App\Exception\Validate\Profile\ScoreException
-     * @throws App\Exception\NotFound\ScoreException
+     * @throws \App\Exception\Validate\Profile\ScoreException
+     * @throws \App\Exception\NotFound\Profile\ScoreException
      *
      * @return void
      */
@@ -295,7 +295,7 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->findOneByName($command->user->id, $command->service->id, $command->name);
+        $entity = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
 
         try {
             $affectedRows = $this->repository->delete($entity->id);
@@ -312,13 +312,13 @@ class Score implements HandlerInterface {
     /**
      * Deletes all score from a given attribute.
      *
-     * @param App\Command\Profile\Score\DeleteAll $command
+     * @param \App\Command\Profile\Score\DeleteAll $command
      *
-     * @see App\Repository\DBScore::findBy
-     * @see App\Repository\DBScore::delete
+     * @see \App\Repository\DBScore::getByUserIdAndServiceId
+     * @see \App\Repository\DBScore::delete
      *
-     * @throws App\Exception\Validate\Profile\ScoreException
-     * @throws App\Exception\AppException
+     * @throws \App\Exception\Validate\Profile\ScoreException
+     * @throws \App\Exception\AppException
      *
      * @return int
      */
@@ -334,15 +334,9 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entities = $this->repository->findBy(
-            [
-            'user_id' => $command->user->id,
-            'creator' => $command->service->id
-            ], $command->queryParams
-        );
+        $entities = $this->repository->getByUserIdAndServiceId($command->service->id, $command->user->id, $command->queryParams);
 
         $affectedRows = 0;
-
         try {
             foreach ($entities as $entity) {
                 $affectedRows += $this->repository->delete($entity->id);

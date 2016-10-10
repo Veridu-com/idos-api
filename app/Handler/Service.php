@@ -16,6 +16,8 @@ use App\Entity\Service as ServiceEntity;
 use App\Exception\Create;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Exception\NotAllowed;
+use App\Exception\NotFound;
 use App\Factory\Event;
 use App\Repository\ServiceInterface;
 use App\Validator\Service as ServiceValidator;
@@ -30,25 +32,25 @@ class Service implements HandlerInterface {
     /**
      * Service Repository instance.
      *
-     * @var App\Repository\ServiceInterface
+     * @var \App\Repository\ServiceInterface
      */
     private $repository;
     /**
      * Service Validator instance.
      *
-     * @var App\Validator\Service
+     * @var \App\Validator\Service
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -75,9 +77,9 @@ class Service implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\ServiceInterface $repository
-     * @param App\Validator\Service           $validator
-     * @param App\Factory\Event               $eventFactory
+     * @param \App\Repository\ServiceInterface $repository
+     * @param \App\Validator\Service           $validator
+     * @param \App\Factory\Event               $eventFactory
      * @param \League\Event\Emitter           $emitter
      *
      * @return void
@@ -97,9 +99,9 @@ class Service implements HandlerInterface {
     /**
      * Creates a new Service.
      *
-     * @param App\Command\Service\CreateNew $command
+     * @param \App\Command\Service\CreateNew $command
      *
-     * @return App\Entity\Service
+     * @return \App\Entity\Service
      */
     public function handleCreateNew(CreateNew $command) : ServiceEntity {
         try {
@@ -151,9 +153,9 @@ class Service implements HandlerInterface {
     /**
      * Updates a Service.
      *
-     * @param App\Command\Service\UpdateOne $command
+     * @param \App\Command\Service\UpdateOne $command
      *
-     * @return App\Entity\Service
+     * @return \App\Entity\Service
      */
     public function handleUpdateOne(UpdateOne $command) : ServiceEntity {
         try {
@@ -236,39 +238,11 @@ class Service implements HandlerInterface {
     }
 
     /**
-     * Deletes all service handlers ($command->companyId).
-     *
-     * @param App\Command\Service\DeleteAll $command
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertCompany($command->company);
-        } catch (ValidationException $e) {
-            throw new Validate\ServiceException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $services = $this->repository->getAllByCompanyId($command->company->id);
-
-        $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
-
-        $event = $this->eventFactory->create('Service\\DeletedMulti', $services);
-        $this->emitter->emit($event);
-
-        return $affectedRows;
-    }
-
-    /**
      * Deletes a Service.
      *
-     * @param App\Command\Service\DeleteOne $command
+     * @param \App\Command\Service\DeleteOne $command
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
      * @return void
      */
@@ -294,5 +268,33 @@ class Service implements HandlerInterface {
 
         $event = $this->eventFactory->create('Service\\Deleted', $service);
         $this->emitter->emit($event);
+    }
+
+    /**
+     * Deletes all service handlers ($command->companyId).
+     *
+     * @param \App\Command\Service\DeleteAll $command
+     *
+     * @return int
+     */
+    public function handleDeleteAll(DeleteAll $command) : int {
+        try {
+            $this->validator->assertCompany($command->company);
+        } catch (ValidationException $e) {
+            throw new Validate\ServiceException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $services = $this->repository->getByCompany($command->company);
+
+        $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
+
+        $event = $this->eventFactory->create('Service\\DeletedMulti', $services);
+        $this->emitter->emit($event);
+
+        return $affectedRows;
     }
 }

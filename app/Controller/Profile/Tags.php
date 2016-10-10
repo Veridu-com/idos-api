@@ -24,13 +24,13 @@ class Tags implements ControllerInterface {
     /**
      * Tag Repository instance.
      *
-     * @var App\Repository\Profile\TagInterface
+     * @var \App\Repository\Profile\TagInterface
      */
     private $repository;
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
@@ -42,17 +42,17 @@ class Tags implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\TagInterface $repository
-     * @param App\Repository\UserInterface        $userRepository
-     * @param \League\Tactician\CommandBus        $commandBus
-     * @param App\Factory\Command                 $commandFactory
+     * @param \App\Repository\Profile\TagInterface $repository
+     * @param \App\Repository\UserInterface        $userRepository
+     * @param \League\Tactician\CommandBus         $commandBus
+     * @param \App\Factory\Command                 $commandFactory
      *
      * @return void
      */
@@ -76,20 +76,51 @@ class Tags implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBTag::getAllByUserIdAndTagSlugs
+     * @see \App\Repository\DBTag::getAllByUserIdAndTagSlugs
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
-        $tags = $this->repository->getAllByUserIdAndTagSlugs($user->id, $request->getQueryParams());
+        $tags = $this->repository->getByUserId($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $tags->toArray(),
             'updated' => (
                 $tags->isEmpty() ? time() : max($tags->max('updatedAt'), $tags->max('createdAt'))
             )
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Retrieves one Tags of the Target User based on the userName.
+     *
+     * @apiEndpointResponse 200 schema/tag/tagEntity.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\repository\DBTag::findOne
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $tagSlug = $request->getAttribute('tagSlug');
+
+        $tag = $this->repository->findOne($tagSlug, $user->id);
+
+        $body = [
+            'data' => $tag->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -111,7 +142,7 @@ class Tags implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Tag::handleCreateNew
+     * @see \App\Handler\Tag::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -144,25 +175,27 @@ class Tags implements ControllerInterface {
     }
 
     /**
-     * Retrieves one Tags of the Target User based on the userName.
+     * Deletes one Tag of the Target User based on the userId.
      *
-     * @apiEndpointResponse 200 schema/tag/tagEntity.json
+     * @apiEndpointResponse 200 schema/tag/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\repository\DBTag::findOneByUserIdAndSlug
+     * @see \App\Handler\Tag::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $command = $this->commandFactory->create('Profile\\Tag\\DeleteOne');
         $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
-        $tagSlug = $request->getAttribute('tagSlug');
+        $command
+            ->setParameter('user', $user)
+            ->setParameter('slug', $request->getAttribute('tagSlug'));
 
-        $tag = $this->repository->findOneByUserIdAndSlug($user->id, $tagSlug);
-
+        $this->commandBus->handle($command);
         $body = [
-            'data' => $tag->toArray()
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -182,7 +215,7 @@ class Tags implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Tag::handleDeleteAll
+     * @see \App\Handler\Tag::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -193,39 +226,6 @@ class Tags implements ControllerInterface {
 
         $body = [
             'deleted' => $this->commandBus->handle($command)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes one Tag of the Target User based on the userId.
-     *
-     * @apiEndpointResponse 200 schema/tag/deleteOne.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see App\Handler\Tag::handleDeleteOne
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Tag\\DeleteOne');
-        $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
-        $command
-            ->setParameter('user', $user)
-            ->setParameter('slug', $request->getAttribute('tagSlug'));
-
-        $this->commandBus->handle($command);
-        $body = [
-            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

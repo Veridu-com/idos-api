@@ -17,36 +17,36 @@ use Illuminate\Support\Collection;
  */
 interface SourceInterface extends RepositoryInterface {
     /**
-     * Finds one Source based on its Id and User Id.
+     * Returns a source based on its id and user id.
      *
      * @param int $id
      * @param int $userId
      *
-     * @return App\Entity\Profile\Source
+     * @return \App\Entity\Profile\Source
      */
     public function findOne(int $id, int $userId) : Source;
 
     /**
-     * Finds one Source based on its Name and User Id.
+     * Return a source based on its name and user id.
      *
      * @param string $name
      * @param int    $userId
      *
-     * @return App\Entity\Source
+     * @return \App\Entity\Profile\Source
      */
     public function findOneByName(string $name, int $userId) : Source;
 
     /**
-     * Gets all Sources based on the User Id.
+     * Return sources based on their user id.
      *
      * @param int $userId
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserId(int $userId) : Collection;
+    public function getByUserId(int $userId) : Collection;
 
     /**
-     * Deletes Sources based on the User Id.
+     * Deletes sources based on the user id.
      *
      * @param int $userId
      *

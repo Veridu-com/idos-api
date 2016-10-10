@@ -21,7 +21,7 @@ use Slim\App;
  * A Company is a profile within the API available for a customer who requires a sophisticated level of control over employees with different levels of Permission.
  *
  * @link docs/companies/overview.md
- * @see App\Controller\Companies
+ * @see \App\Controller\Companies
  */
 class Companies implements RouteInterface {
     /**
@@ -77,9 +77,9 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Companies::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -95,6 +95,37 @@ class Companies implements RouteInterface {
             )
             ->add($auth(Auth::IDENTITY))
             ->setName('companies:listAll');
+    }
+
+    /**
+     * Retrieve a single Company.
+     *
+     * Retrieves all public information from a single Company.
+     *
+     * @apiEndpoint GET /companies/{companySlug}
+     * @apiGroup Company
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/companies/getOne.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Companies::getOne
+     */
+    private static function getOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/companies/{companySlug:[a-z0-9_-]+}',
+                'App\Controller\Companies:getOne'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::NONE))
+            ->setName('companies:getOne');
     }
 
     /**
@@ -115,9 +146,9 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Companies::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -133,37 +164,6 @@ class Companies implements RouteInterface {
             )
             ->add($auth(Auth::IDENTITY))
             ->setName('companies:createNew');
-    }
-
-    /**
-     * Retrieve a single Company.
-     *
-     * Retrieves all public information from a single Company.
-     *
-     * @apiEndpoint GET /companies/{companySlug}
-     * @apiGroup Company
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/companies/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::getOne
-     */
-    private static function getOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->get(
-                '/companies/{companySlug:[a-z0-9_-]+}',
-                'App\Controller\Companies:getOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::NONE))
-            ->setName('companies:getOne');
     }
 
     /**
@@ -184,9 +184,9 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Companies::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -222,9 +222,9 @@ class Companies implements RouteInterface {
      * @return void
      *
      * @link docs/companies/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Companies::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Companies::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

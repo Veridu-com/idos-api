@@ -16,42 +16,42 @@ use Illuminate\Support\Collection;
  */
 interface ServiceHandlerInterface extends RepositoryInterface {
     /**
-     * Gets all ServiceHandlers based on their Company Id.
+     * Returns a service handler based on its id and company id.
+     *
+     * @param int $serviceHandlerId
      *
      * @param int $companyId
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return ServiceHandler
      */
-    public function getAllByCompanyId(int $companyId) : Collection;
+    public function findOne(int $serviceHandlerId, int $companyId) : ServiceHandler;
 
     /**
-     * Gets all ServiceHandlers based on their Company Id and service's slug.
+     * Return service handlers based on its slug and company id.
      *
      * @param int    $companyId
      * @param string $serviceSlug
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function findAllFromService(int $companyId, string $serviceSlug) : Collection;
+    public function getByService(int $companyId, string $serviceSlug) : Collection;
 
     /**
-     * Deletes all ServiceHandlers based on their Company Id.
+     * Return service handlers based on their company id.
+     *
+     * @param int $companyId The company identifier
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByCompanyId(int $companyId) : Collection;
+
+    /**
+     * Gets all ServiceHandlers based on their Company Id.
      *
      * @param int $companyId
      *
-     * @return int
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function deleteByCompanyId(int $companyId) : int;
-
-    /**
-     * Find one setting based on their companyId, serviceSlug and own slug.
-     *
-     * @param int $companyId
-     * @param int $serviceHandlerId
-     *
-     * @return App\Entity\ServiceHandler
-     */
-    public function findOne(int $companyId, int $serviceHandlerId) : ServiceHandler;
+    public function getByServiceCompanyId(int $companyId) : Collection;
 
     /**
      * Deletes one setting based on their companyId, own slug and serviceSlug.
@@ -64,11 +64,11 @@ interface ServiceHandlerInterface extends RepositoryInterface {
     public function deleteOne(int $companyId, int $serviceHandlerId) : int;
 
     /**
-     * Returns a set of service handles based on thei company_id.
+     * Deletes all ServiceHandlers based on their Company Id.
      *
-     * @param int $companyId The company identifier
+     * @param int $companyId
      *
-     * @return \Illuminate\Support\Collection
+     * @return int
      */
-    public function findByCompanyId(int $companyId) : Collection;
+    public function deleteByCompanyId(int $companyId) : int;
 }

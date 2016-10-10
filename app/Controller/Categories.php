@@ -21,7 +21,7 @@ class Categories implements ControllerInterface {
     /**
      * Category Repository instance.
      *
-     * @var App\Repository\CategoryInterface
+     * @var \App\Repository\CategoryInterface
      */
     private $repository;
 
@@ -35,16 +35,16 @@ class Categories implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\CategoryInterface $repository
+     * @param \App\Repository\CategoryInterface $repository
      * @param \League\Tactician\CommandBus     $commandBus
-     * @param App\Factory\Command              $commandFactory
+     * @param \App\Factory\Command              $commandFactory
      *
      * @return void
      */
@@ -69,7 +69,7 @@ class Categories implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $entities = $this->repository->findBy([], $request->getQueryParams());
+        $entities = $this->repository->getAll($request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),

@@ -50,7 +50,32 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         ]
     ];
 
-    public function findByUserId(int $userId, array $queryParams = []) : Collection {
+    /**
+     * {@inheritdoc}
+     */
+    public function findOne(string $collection, Source $source) : Raw {
+        $this->selectDatabase($source->name);
+        $this->selectCollection($collection);
+
+        $entity = $this->find($source->id);
+
+        return $entity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneBySourceAndCollection(string $collection, Source $source) : Raw {
+        $this->selectDatabase($source->name);
+        $this->selectCollection($collection);
+
+        return $this->find($source->id);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByUserId(int $userId, array $queryParams = []) : Collection {
         $rawFilters    = [];
         $sourceFilters = [];
         foreach ($queryParams as $param => $value) {
@@ -156,17 +181,13 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     /**
      * {@inheritdoc}
      */
-    public function deleteBySource(Source $source) : int {
-        $this->selectDatabase($source->name);
+    public function updateOneBySourceAndCollection(string $collection, Source $source, string $data) : Raw {
+        $entity = $this->findOneBySourceAndCollection($collection, $source);
 
-        $collections  = $this->listCollections();
-        $affectedRows = 0;
+        $entity->source = $source;
+        $entity->data   = $data;
 
-        foreach($collections as $collection) {
-            $affectedRows += $this->deleteOneBySourceAndCollection($source, $collection->getName());
-        }
-
-        return $affectedRows;
+        return $this->save($entity);
     }
 
     /**
@@ -180,19 +201,12 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
             $entity->id = $entity->source->id;
         }
 
+        $source = $entity->source;
         unset($entity->source);
 
-        return parent::save($entity);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOne(Source $source, string $collection) : Raw {
-        $this->selectDatabase($source->name);
-        $this->selectCollection($collection);
-
-        $entity = $this->find($source->id);
+        $entity = parent::save($entity);
+        //@FIXME do this through castHydrateEntity
+        $entity->source = $source->toArray();
 
         return $entity;
     }
@@ -200,33 +214,27 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneBySourceAndCollection(Source $source, string $collection) : Raw {
-        $this->selectDatabase($source->name);
-        $this->selectCollection($collection);
-
-        return $this->find($source->id);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateOneBySourceAndCollection(Source $source, string $collection, string $data) : Raw {
-        $entity = $this->findOneBySourceAndCollection($source, $collection);
-
-        $entity->source = $source;
-        $entity->data   = $data;
-
-        return $this->save($entity);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteOneBySourceAndCollection(Source $source, string $collection) : int {
+    public function deleteOneBySourceAndCollection(string $collection, Source $source) : int {
         $this->selectDatabase($source->name);
         $this->selectCollection($collection);
 
         $affectedRows = (int) $this->delete($source->id);
+
+        return $affectedRows;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteBySource(Source $source) : int {
+        $this->selectDatabase($source->name);
+
+        $collections  = $this->listCollections();
+        $affectedRows = 0;
+
+        foreach($collections as $collection) {
+            $affectedRows += $this->deleteOneBySourceAndCollection($collection->getName(), $source);
+        }
 
         return $affectedRows;
     }

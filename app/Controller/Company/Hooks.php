@@ -24,13 +24,13 @@ class Hooks implements ControllerInterface {
     /**
      * Hook Repository instance.
      *
-     * @var App\Repository\Company\HookInterface
+     * @var \App\Repository\Company\HookInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
@@ -42,17 +42,17 @@ class Hooks implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\HookInterface       $repository
-     * @param App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \App\Repository\Company\HookInterface       $repository
+     * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \League\Tactician\CommandBus               $commandBus
-     * @param App\Factory\Command                        $commandFactory
+     * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -76,7 +76,7 @@ class Hooks implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBHook::getAllByCredentialPubKey
+     * @see \App\Repository\DBHook::getAllByCredentialPubKey
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -109,6 +109,42 @@ class Hooks implements ControllerInterface {
     }
 
     /**
+     * Retrieves a hook from the given credential.
+     *
+     * @apiEndpointResponse 200 schema/hook/hookEntity.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $company          = $request->getAttribute('targetCompany');
+        $hookId           = (int) $request->getAttribute('decodedHookId');
+        $credentialPubKey = $request->getAttribute('pubKey');
+
+        $command = $this->commandFactory->create('Company\\Hook\\GetOne');
+        $command
+            ->setParameter('companyId', $company->id)
+            ->setParameter('hookId', $hookId)
+            ->setParameter('credentialPubKey', $credentialPubKey);
+
+        $hook = $this->commandBus->handle($command);
+
+        $body = [
+            'data' => $hook->toArray()
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
      * Creates a new hook for the given credential.
      *
      * @apiEndpointRequiredParam body string trigger company.create Trigger
@@ -119,7 +155,7 @@ class Hooks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Hook::handleCreateNew
+     * @see \App\Handler\Hook::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -161,7 +197,7 @@ class Hooks implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Handler\Hook::handleUpdateOne
+     * @see \App\Handler\Hook::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -182,42 +218,6 @@ class Hooks implements ControllerInterface {
         $body = [
             'data'    => $hook->toArray(),
             'updated' => $hook->updated_at
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Retrieves a hook from the given credential.
-     *
-     * @apiEndpointResponse 200 schema/hook/hookEntity.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company          = $request->getAttribute('targetCompany');
-        $hookId           = (int) $request->getAttribute('decodedHookId');
-        $credentialPubKey = $request->getAttribute('pubKey');
-
-        $command = $this->commandFactory->create('Company\\Hook\\GetOne');
-        $command
-            ->setParameter('companyId', $company->id)
-            ->setParameter('hookId', $hookId)
-            ->setParameter('credentialPubKey', $credentialPubKey);
-
-        $hook = $this->commandBus->handle($command);
-
-        $body = [
-            'data' => $hook->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

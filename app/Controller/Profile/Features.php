@@ -93,7 +93,7 @@ class Features implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $entities = $this->repository->findByUserId($user->id, $request->getQueryParams());
+        $entities = $this->repository->getByUserId($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),
@@ -126,12 +126,7 @@ class Features implements ControllerInterface {
         $service   = $request->getAttribute('service');
         $featureId = $request->getAttribute('decodedFeatureId');
 
-        $feature = $this->repository->findOneBy(
-            [
-            'user_id' => $user->id,
-            'id'      => $featureId
-            ]
-        );
+        $feature = $this->repository->findOne($featureId, $service->id, $user->id);
 
         if ($feature->source !== null) {
             $this->sourceRepository->findOneByName($feature->source, $user->id);
@@ -194,76 +189,6 @@ class Features implements ControllerInterface {
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('statusCode', 201)
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes all Features that belongs to the User.
-     *
-     * @apiEndpointResponse 200 schema/feature/deleteAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see App\Handler\Feature::handleDeleteAll
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-
-        $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');
-        $command->setParameter('user', $user)
-            ->setParameter('service', $service)
-            ->setParameter('queryParams', $request->getQueryParams());
-
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes one Feature of the User.
-     *
-     * @apiEndpointResponse 200 schema/feature/deleteOne.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see App\Handler\Feature::handleDeleteOne
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user      = $request->getAttribute('targetUser');
-        $service   = $request->getAttribute('service');
-        $featureId = $request->getAttribute('decodedFeatureId');
-
-        $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
-        $command->setParameter('user', $user)
-            ->setParameter('service', $service)
-            ->setParameter('featureId', $featureId);
-
-        $this->commandBus->handle($command);
-        $body = [
-            'status' => true
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -396,6 +321,76 @@ class Features implements ControllerInterface {
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('statusCode', isset($feature->updatedAt) ? 200 : 201)
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Deletes one Feature of the User.
+     *
+     * @apiEndpointResponse 200 schema/feature/deleteOne.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Feature::handleDeleteOne
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user      = $request->getAttribute('targetUser');
+        $service   = $request->getAttribute('service');
+        $featureId = $request->getAttribute('decodedFeatureId');
+
+        $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
+        $command->setParameter('user', $user)
+            ->setParameter('service', $service)
+            ->setParameter('featureId', $featureId);
+
+        $this->commandBus->handle($command);
+        $body = [
+            'status' => true
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Deletes all Features that belongs to the User.
+     *
+     * @apiEndpointResponse 200 schema/feature/deleteAll.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see App\Handler\Feature::handleDeleteAll
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+
+        $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');
+        $command->setParameter('user', $user)
+            ->setParameter('service', $service)
+            ->setParameter('queryParams', $request->getQueryParams());
+
+        $body = [
+            'deleted' => $this->commandBus->handle($command)
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

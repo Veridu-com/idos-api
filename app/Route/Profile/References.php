@@ -29,11 +29,11 @@ class References implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'reference:listAll',
-            'reference:createNew',
-            'reference:deleteAll',
             'reference:getOne',
+            'reference:createNew',
             'reference:updateOne',
-            'reference:deleteOne'
+            'reference:deleteOne',
+            'reference:deleteAll'
         ];
     }
 
@@ -54,11 +54,11 @@ class References implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -94,6 +94,40 @@ class References implements RouteInterface {
             ->setName('reference:listAll');
     }
     /**
+     * Retrieves a reference.
+     *
+     * Retrieves a reference from the given user.
+     *
+     * @apiEndpoint GET /profiles/{userName}/references/{referenceName}
+     * @apiGroup Profile References
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string referenceName data-name
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/sources/reference/getOne.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Profile\References::getOne
+     */
+    private static function getOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9_-]+}',
+                'App\Controller\Profile\References:getOne'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('reference:getOne');
+    }
+
+    /**
      * Creates a new reference.
      *
      * Creates a new reference for the given user.
@@ -127,73 +161,6 @@ class References implements RouteInterface {
     }
 
     /**
-     * Deletes all references.
-     *
-     * Deletes all references from the given user.
-     *
-     * @apiEndpoint DELETE /profiles/{userName}/references
-     * @apiGroup Profile References
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/sources/reference/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\References::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/references',
-                'App\Controller\Profile\References:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('reference:deleteAll');
-    }
-
-    /**
-     * Retrieves a reference.
-     *
-     * Retrieves a reference from the given user.
-     *
-     * @apiEndpoint GET /profiles/{userName}/references/{referenceName}
-     * @apiGroup Profile References
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string referenceName data-name
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/sources/reference/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\References::getOne
-     */
-    private static function getOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
-                'App\Controller\Profile\References:getOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('reference:getOne');
-    }
-
-    /**
      * Update a reference.
      *
      * Updates a reference for the given user.
@@ -219,7 +186,7 @@ class References implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->patch(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Profile\References:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -253,11 +220,44 @@ class References implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9]+}',
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/references/{referenceName:[a-zA-Z0-9_-]+}',
                 'App\Controller\Profile\References:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('reference:deleteOne');
+    }
+
+    /**
+     * Deletes all references.
+     *
+     * Deletes all references from the given user.
+     *
+     * @apiEndpoint DELETE /profiles/{userName}/references
+     * @apiGroup Profile References
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/sources/reference/deleteAll.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Profile\References::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/references',
+                'App\Controller\Profile\References:deleteAll'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('reference:deleteAll');
     }
 }

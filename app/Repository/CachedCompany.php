@@ -38,7 +38,7 @@ class CachedCompany extends AbstractCachedRepository implements CompanyInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllByParentId(string $parentId) : Collection {
+    public function getByParentId(string $parentId) : Collection {
         return $this->findBy(['parent_id' => $parentId]);
     }
 

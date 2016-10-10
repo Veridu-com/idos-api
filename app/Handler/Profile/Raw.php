@@ -131,9 +131,9 @@ class Raw implements HandlerInterface {
 
         // We must assert thet there is no raw data with the given source and collection
         try {
-            $entity = $this->repository->findOne($command->source, $command->collection);
-        } catch (NotFound $e) {
+            $entity = $this->repository->findOne($command->collection, $command->source);
             throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
+        } catch (NotFound $e) {
         }
 
         $raw = $this->repository->create(
@@ -148,7 +148,7 @@ class Raw implements HandlerInterface {
         try {
             $raw = $this->repository->save($raw);
 
-            $process = $this->processRepository->findBySourceId($command->source->id);
+            $process = $this->processRepository->findOneBySourceId($command->source->id);
 
             $event = $this->eventFactory->create(
                 'Profile\\Raw\\Created',
@@ -165,47 +165,6 @@ class Raw implements HandlerInterface {
         }
 
         return $raw;
-    }
-
-    /**
-     * Updates a raw data from a given source.
-     *
-     * @param App\Command\Profile\Raw\UpdateOne $command
-     *
-     * @see App\Repository\DBRaw::findOne
-     * @see App\Repository\DBRaw::save
-     *
-     * @throws App\Exception\Validate\Profile\RawException
-     * @throws App\Exception\Update\RawException
-     *
-     * @return App\Entity\Raw
-     */
-    public function handleUpdateOne(UpdateOne $command) : RawEntity {
-        try {
-            $this->validator->assertSource($command->source);
-            $this->validator->assertName($command->collection);
-        } catch (ValidationException $e) {
-            throw new Validate\Profile\RawException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $entity         = $this->repository->findOne($command->source, $command->collection);
-        $entity->source = $command->source;
-        $entity->data   = $command->data;
-
-        try {
-            $entity = $this->repository->save($entity);
-
-            $event = $this->eventFactory->create('Profile\\Raw\\Updated', $entity);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\RawException('Error while trying to update raw', 500, $e);
-        }
-
-        return $entity;
     }
 
     /**
@@ -238,7 +197,7 @@ class Raw implements HandlerInterface {
         $inserting = false;
 
         try {
-            $entity = $this->repository->findOne($command->source, $command->collection);
+            $entity = $this->repository->findOne($command->collection, $command->source);
 
             $entity->source     = $command->source;
             $entity->data       = $command->data;
@@ -263,6 +222,7 @@ class Raw implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
+
             if ($inserting) {
                 $event = $this->eventFactory->create(
                     'Profile\\Raw\\Created',

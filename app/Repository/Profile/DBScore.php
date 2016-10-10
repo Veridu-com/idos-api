@@ -37,7 +37,6 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
         'attribute'    => 'string',
         'name'         => 'string'
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -46,7 +45,6 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
         'name',
         'created_at'
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -77,77 +75,36 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection {
-        $entities = $this->findBy(
+    public function findOne(string $name, int $serviceId, int $userId) : Score {
+        return $this->findOneBy(
+            [
+                'user_id' => $userId,
+                'creator' => $serviceId,
+                'name'    => $name
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByUserIdAndServiceId(int $serviceId, int $userId, array $queryParams = []) : Collection {
+        return $this->findBy(
+            [
+                'user_id' => $userId,
+                'creator' => $serviceId
+            ], $queryParams
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByUserId(int $userId, array $queryParams = []) : Collection {
+        return $this->findBy(
             [
             'user_id' => $userId
             ], $queryParams
         );
-
-        return $entities;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByName(int $userId, int $serviceId, string $name) : Score {
-        $entity = $this->findOneBy(
-            [
-            'user_id' => $userId,
-            'creator' => $serviceId,
-            'name'    => $name
-            ]
-        );
-
-        return $entity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllByUserIdAttributeNameAndNames(int $userId, string $attributeName, array $queryParams = []) : Collection {
-        $result = $this->query()
-            ->join('attributes', 'attributes.id', '=', 'scores.attribute_id')
-            ->where('attributes.user_id', '=', $userId)
-            ->where('attributes.name', '=', $attributeName);
-
-        $result = $this->filter($result, $queryParams);
-
-        return $result->get(['scores.*']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteByAttributeId(int $attributeId) : int {
-        return $this->deleteBy(['attribute_id' => $attributeId]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByUserIdAttributeNameAndName(int $userId, string $attributeName, string $name) : Score {
-        $result = new Collection();
-        $result = $result->merge(
-            $this->query()
-                ->join('attributes', 'attributes.id', '=', 'scores.attribute_id')
-                ->where('attributes.user_id', '=', $userId)
-                ->where('attributes.name', '=', $attributeName)
-                ->where('scores.name', '=', $name)
-                ->get(['scores.*'])
-        );
-
-        if ($result->isEmpty()) {
-            throw new NotFound();
-        }
-
-        return $result->first();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteOneByAttributeIdAndName(int $attributeId, string $name) : int {
-        return $this->deleteBy(['attribute_id' => $attributeId, 'name' => $name]);
     }
 }

@@ -11,7 +11,6 @@ namespace App\Handler\Company;
 use App\Command\Company\Member\CreateNew;
 use App\Command\Company\Member\CreateNewInvitation;
 use App\Command\Company\Member\DeleteInvitation;
-use App\Entity\Company\Invitation as InvitationEntity;
 use App\Entity\Company\Member as MemberEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -34,37 +33,37 @@ class Member implements HandlerInterface {
     /**
      * Member Repository instance.
      *
-     * @var App\Repository\Company\MemberInterface
+     * @var \App\Repository\Company\MemberInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
      * Member Validator instance.
      *
-     * @var App\Validator\Company\Member
+     * @var \App\Validator\Company\Member
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -130,12 +129,12 @@ class Member implements HandlerInterface {
     /**
      * Creates a new child Member ($command->companyId).
      *
-     * @param App\Command\Company\Member\CreateNew $command
+     * @param \App\Command\Company\Member\CreateNew $command
      *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\Create\MemberException
+     * @throws \App\Exception\Validate\Company\MemberException
+     * @throws \App\Exception\Create\Company\MemberException
      *
-     * @return App\Entity\Member
+     * @return \App\Entity\Company\Member
      */
     public function handleCreateNew(CreateNew $command) : MemberEntity {
         try {
@@ -166,105 +165,5 @@ class Member implements HandlerInterface {
         }
 
         return $member;
-    }
-
-    /**
-     * Creates a new invitation for a future member.
-     *
-     * @param App\Command\Company\Member\CreateNewInvitation $command
-     *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\Create\MemberException
-     *
-     * @return App\Entity\Member
-     */
-    public function handleCreateNewInvitation(CreateNewInvitation $command) : InvitationEntity {
-        try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->identity);
-            $this->validator->assertName($command->credentialPubKey);
-            $this->validator->assertEmail($command->email);
-            if ($command->expires) {
-                $this->validator->assertDate($command->expires);
-            }
-        } catch (ValidationException $e) {
-            throw new Validate\Company\MemberException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $credential      = $this->credentialRepository->findByPubKey($command->credentialPubKey);
-        $expires         = strftime('%Y-%m-%d', strtotime($command->expires));
-        $now             = time();
-        $expiresDateTime = new \DateTime($expires);
-        $today           = new \DateTime(strftime('%Y-%m-%d', $now));
-        $diff            = $today->diff($expiresDateTime);
-
-        if ($diff->days < 1 || $diff->days > 7) {
-            throw new Validate\Company\MemberException('Invalid expiration date. Min: 1 day, Max: 7 days from today');
-        }
-
-        $invitation = $this->invitationRepository->create(
-            [
-                'credential_id' => $credential->id,
-                'company_id'    => $command->company->id,
-                'creator_id'    => $command->identity->id,
-                'role'          => $command->role,
-                'email'         => $command->email,
-                'hash'          => md5($command->email . $command->company->id . microtime()),
-                'expires'       => $command->expires ? $expires : strftime('%Y-%m-%d', strtotime('now + 1 days')),
-                'created_at'    => $now
-            ]
-        );
-
-        try {
-            $invitation = $this->invitationRepository->save($invitation);
-            $event      = $this->eventFactory->create('Company\\Member\\InvitationCreated', $invitation);
-            $a          = $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Company\MemberException('Error while trying to create an invitation', 500, $e);
-        }
-
-        return $invitation;
-    }
-
-    /**
-     * Deletes a Member.
-     *
-     * @param App\Command\Company\Member\DeleteInvitation $command
-     *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\NotFound\MemberException
-     *
-     * @return void
-     */
-    public function handleDeleteInvitation(DeleteInvitation $command) {
-        try {
-            $this->validator->assertId($command->invitationId);
-        } catch (ValidationException $e) {
-            throw new Validate\Company\MemberException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $invitation       = $this->invitationRepository->find($command->invitationId);
-
-        if ($invitation->memberId) {
-            // cascades to invitations table
-            $rowsAffected = $this->repository->delete($invitation->memberId);
-        } else {
-            $rowsAffected = $this->invitationRepository->delete($command->invitationId);
-        }
-
-        if (! $rowsAffected) {
-            throw new NotFound\Company\MemberException('No invitations found for deletion', 404);
-        }
-
-        $event = $this->eventFactory->create('Company\\Member\\DeletedInvitation', $invitation);
-        $this->emitter->emit($event);
     }
 }

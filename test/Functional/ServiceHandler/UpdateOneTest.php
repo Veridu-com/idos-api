@@ -22,8 +22,8 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/service-handlers/1321189817';
+        $this->httpMethod = 'PATCH';
+        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers/1321189817';
     }
 
     public function testSuccess() {
@@ -67,7 +67,7 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/service-handlers/13211898171';
+        $this->uri = '/1.0/companies/veridu-ltd/service-handlers/000000';
 
         $environment = $this->createEnvironment(
             [

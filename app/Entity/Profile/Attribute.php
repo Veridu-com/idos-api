@@ -30,6 +30,11 @@ class Attribute extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
+    protected $cast = ['support' => 'float'];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $dates = ['created_at'];
 
     /**

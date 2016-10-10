@@ -31,19 +31,19 @@ class Company implements HandlerInterface {
     /**
      * Company Repository instance.
      *
-     * @var App\Repository\CompanyInterface
+     * @var \App\Repository\CompanyInterface
      */
     private $repository;
     /**
      * Company Validator instance.
      *
-     * @var App\Validator\Company
+     * @var \App\Validator\Company
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -76,9 +76,9 @@ class Company implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CompanyInterface $repository
-     * @param App\Validator\Company           $validator
-     * @param App\Factory\Event               $eventFactory
+     * @param \App\Repository\CompanyInterface $repository
+     * @param \App\Validator\Company           $validator
+     * @param \App\Factory\Event               $eventFactory
      * @param \League\Event\Emitter           $emitter
      *
      * @return void
@@ -98,12 +98,12 @@ class Company implements HandlerInterface {
     /**
      * Creates a new child Company ($command->parentId).
      *
-     * @param App\Command\Company\CreateNew $command
+     * @param \App\Command\Company\CreateNew $command
      *
-     * @throws App\Exception\Validate\CompanyException
-     * @throws App\Exception\Create\CompanyException
+     * @throws \App\Exception\Validate\CompanyException
+     * @throws \App\Exception\Create\CompanyException
      *
-     * @return App\Entity\Company
+     * @return \App\Entity\Company
      */
     public function handleCreateNew(CreateNew $command) : CompanyEntity {
         try {
@@ -142,17 +142,17 @@ class Company implements HandlerInterface {
     /**
      * Updates a Company.
      *
-     * @param App\Command\Company\UpdateOne $command
+     * @param \App\Command\Company\UpdateOne $command
      *
-     * @throws App\Exception\Validate\CompanyException
-     * @throws App\Exception\Update\CompanyException
+     * @throws \App\Exception\Validate\CompanyException
+     * @throws \App\Exception\Update\CompanyException
      *
-     * @return App\Entity\Company
+     * @return \App\Entity\Company
      */
     public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
         try {
             $this->validator->assertId($command->company->id);
-            $this->validator->assertMediumLatinName($command->name);
+            $this->validator->assertMediumString($command->name);
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),
@@ -179,10 +179,10 @@ class Company implements HandlerInterface {
     /**
      * Deletes a Company.
      *
-     * @param App\Command\Company\DeleteOne $command
+     * @param \App\Command\Company\DeleteOne $command
      *
-     * @throws App\Exception\Validate\CompanyException
-     * @throws App\Exception\NotFound\CompanyException
+     * @throws \App\Exception\Validate\CompanyException
+     * @throws \App\Exception\NotFound\CompanyException
      *
      * @return void
      */
