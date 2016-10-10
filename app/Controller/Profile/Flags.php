@@ -10,20 +10,20 @@ namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Profile\WarningInterface;
+use App\Repository\Profile\FlagInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to companies/{companySlug}/profiles/{userId}/warnings.
+ * Handles requests to companies/{companySlug}/profiles/{userId}/flags.
  */
-class Warnings implements ControllerInterface {
+class Flags implements ControllerInterface {
     /**
-     * Warning Repository instance.
+     * Flag Repository instance.
      *
-     * @var \App\Repository\Profile\WarningInterface
+     * @var \App\Repository\Profile\FlagInterface
      */
     private $repository;
     /**
@@ -48,7 +48,7 @@ class Warnings implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\WarningInterface $repository
+     * @param \App\Repository\Profile\FlagInterface $repository
      * @param \App\Repository\UserInterface            $userRepository
      * @param \League\Tactician\CommandBus             $commandBus
      * @param \App\Factory\Command                     $commandFactory
@@ -56,7 +56,7 @@ class Warnings implements ControllerInterface {
      * @return void
      */
     public function __construct(
-        WarningInterface $repository,
+        FlagInterface $repository,
         UserInterface $userRepository,
         CommandBus $commandBus,
         Command $commandFactory
@@ -68,15 +68,15 @@ class Warnings implements ControllerInterface {
     }
 
     /**
-     * Retrieves a list of warnings that belongs to the user.
+     * Retrieves a list of flags that belongs to the user.
      *
      * @apiEndpointParam query int page 10|1 Current page
-     * @apiEndpointResponse 200 schema/warning/listAll.json
+     * @apiEndpointResponse 200 schema/flag/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\DBWarning::findBy
+     * @see \App\Repository\DBFlag::findBy
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -102,21 +102,21 @@ class Warnings implements ControllerInterface {
     }
 
     /**
-     * Retrieves a warning from the user.
+     * Retrieves a flag from the user.
      *
-     * @apiEndpointResponse 200 schema/warning/getOne.json
+     * @apiEndpointResponse 200 schema/flag/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\DBWarning::findOne
+     * @see \App\Repository\DBFlag::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
-        $slug    = $request->getAttribute('warningSlug');
+        $slug    = $request->getAttribute('flagSlug');
 
         $entity = $this->repository->findOne($slug, $service->id, $user->id);
 
@@ -135,16 +135,16 @@ class Warnings implements ControllerInterface {
     }
 
     /**
-     * Creates a new warning for the user.
+     * Creates a new flag for the user.
      *
-     * @apiEndpointRequiredParam body string name warning test Warning name
-     * @apiEndpointRequiredParam body string reference firstName Warning reference
-     * @apiEndpointResponse 201 schema/warning/createNew.json
+     * @apiEndpointRequiredParam body string name flag test Flag name
+     * @apiEndpointRequiredParam body string reference firstName Flag reference
+     * @apiEndpointResponse 201 schema/flag/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\Warning::handleCreateNew
+     * @see \App\Handler\Flag::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -152,17 +152,17 @@ class Warnings implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $command = $this->commandFactory->create('Profile\\Warning\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Flag\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
-        $warning = $this->commandBus->handle($command);
+        $flag = $this->commandBus->handle($command);
 
         $body = [
             'status' => true,
-            'data'   => $warning->toArray()
+            'data'   => $flag->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -176,23 +176,23 @@ class Warnings implements ControllerInterface {
     }
 
     /**
-     * Deletes one Warning of the User.
+     * Deletes one Flag of the User.
      *
-     * @apiEndpointResponse 200 schema/warning/deleteOne.json
+     * @apiEndpointResponse 200 schema/flag/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\Warning::handleDeleteOne
+     * @see \App\Handler\Flag::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
-        $slug    = $request->getAttribute('warningSlug');
+        $slug    = $request->getAttribute('flagSlug');
 
-        $command = $this->commandFactory->create('Profile\\Warning\\DeleteOne');
+        $command = $this->commandFactory->create('Profile\\Flag\\DeleteOne');
         $command
             ->setParameter('user', $user)
             ->setParameter('service', $service)
@@ -213,14 +213,14 @@ class Warnings implements ControllerInterface {
     }
 
     /**
-     * Deletes all Warnings that belongs to the User.
+     * Deletes all Flags that belongs to the User.
      *
-     * @apiEndpointResponse 200 schema/warning/deleteAll.json
+     * @apiEndpointResponse 200 schema/flag/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\Warning::handleDeleteAll
+     * @see \App\Handler\Flag::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -228,7 +228,7 @@ class Warnings implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $command = $this->commandFactory->create('Profile\\Warning\\DeleteAll');
+        $command = $this->commandFactory->create('Profile\\Flag\\DeleteAll');
         $command
             ->setParameter('user', $user)
             ->setParameter('service', $service)

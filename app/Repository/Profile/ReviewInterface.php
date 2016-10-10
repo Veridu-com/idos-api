@@ -28,7 +28,7 @@ interface ReviewInterface extends RepositoryInterface {
     public function findOne(int $id, int $identityId, int $userId) : Review;
 
     /**
-     * Gets all Review entities based on their user_id, filtering them by warning_id.
+     * Gets all Review entities based on their user_id, filtering them by flag_id.
      *
      * @param int $identityId
      * @param int $userId

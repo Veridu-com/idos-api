@@ -8,20 +8,20 @@ declare(strict_types = 1);
 
 namespace App\Listener\Profile;
 
-use App\Event\Warning;
+use App\Event\Flag;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 
-class WarningProvider extends Listener\AbstractListenerProvider {
+class FlagProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Warning\Created::class => [
+            Flag\Created::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
-            Warning\Deleted::class => [
+            Flag\Deleted::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
-            Warning\DeletedMulti::class => [
+            Flag\DeletedMulti::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ]
         ];

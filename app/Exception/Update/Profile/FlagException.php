@@ -11,9 +11,9 @@ namespace App\Exception\Update\Profile;
 use App\Exception\AppException;
 
 /**
- * Warning update exception.
+ * Flag update exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class WarningException extends AppException {
+class FlagException extends AppException {
 }

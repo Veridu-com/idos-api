@@ -8,26 +8,26 @@ declare(strict_types = 1);
 
 namespace App\Repository\Profile;
 
-use App\Entity\Profile\Warning;
+use App\Entity\Profile\Flag;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 
 /**
- * Database-based Warning Repository Implementation.
+ * Database-based Flag Repository Implementation.
  */
-class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
+class DBFlag extends AbstractSQLDBRepository implements FlagInterface {
     /**
      * The table associated with the repository.
      *
      * @var string
      */
-    protected $tableName = 'warnings';
+    protected $tableName = 'flags';
     /**
      * The entity associated with the repository.
      *
      * @var string
      */
-    protected $entityName = 'Profile\Warning';
+    protected $entityName = 'Profile\Flag';
     /**
      * {@inheritdoc}
      */
@@ -74,7 +74,7 @@ class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne(string $slug, int $serviceId, int $userId) : Warning {
+    public function findOne(string $slug, int $serviceId, int $userId) : Flag {
         return $this->findOneBy(
             [
                 'user_id' => $userId,

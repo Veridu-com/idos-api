@@ -11,9 +11,9 @@ namespace App\Entity\Profile;
 use App\Entity\AbstractEntity;
 
 /**
- * Warnings Entity.
+ * Flags Entity.
  *
- * @apiEntity schema/warning/warningEntity.json
+ * @apiEntity schema/flag/flagEntity.json
  *
  * @property int    $id
  * @property string $slug
@@ -21,7 +21,7 @@ use App\Entity\AbstractEntity;
  * @property int    $created_at
  * @property int    $updated_at
  */
-class Warning extends AbstractEntity {
+class Flag extends AbstractEntity {
     /**
      * {@inheritdoc}
      */

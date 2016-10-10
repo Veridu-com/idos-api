@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Warning;
+namespace Test\Functional\Flag;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
@@ -21,7 +21,7 @@ class CreateNewTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/flags';
     }
 
     public function testSuccess() {
@@ -54,7 +54,7 @@ class CreateNewTest extends AbstractFunctional {
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
-            $this->validateSchema('warning/createNew.json', json_decode((string) $response->getBody())),
+            $this->validateSchema('flag/createNew.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
     }
