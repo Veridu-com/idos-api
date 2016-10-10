@@ -23,7 +23,7 @@ class Tokens implements ControllerInterface {
     /**
      * Company Repository instance.
      *
-     * @var App\Repository\CompanyInterface
+     * @var \App\Repository\CompanyInterface
      */
     private $companyRepository;
     /**
@@ -35,16 +35,16 @@ class Tokens implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\CompanyInterface $companyRepository
+     * @param \App\Repository\CompanyInterface $companyRepository
      * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param \App\Factory\Command             $commandFactory
      *
      * @return void
      */
@@ -67,7 +67,7 @@ class Tokens implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBCompany::findBySlug
+     * @see \App\Repository\DBCompany::findBySlug
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

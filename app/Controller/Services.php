@@ -21,7 +21,7 @@ class Services implements ControllerInterface {
     /**
      * Service Repository instance.
      *
-     * @var App\Repository\ServiceInterface
+     * @var \App\Repository\ServiceInterface
      */
     private $repository;
 
@@ -35,16 +35,16 @@ class Services implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\ServiceInterface $repository
+     * @param \App\Repository\ServiceInterface $repository
      * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param \App\Factory\Command             $commandFactory
      *
      * @return void
      */
@@ -70,7 +70,7 @@ class Services implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
-        $entities = $this->repository->getAllByCompany($company, $request->getQueryParams());
+        $entities = $this->repository->getByCompany($company, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),
@@ -134,7 +134,7 @@ class Services implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Entity\Service
+     * @see \App\Entity\Service
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -164,23 +164,38 @@ class Services implements ControllerInterface {
     }
 
     /**
-     * Deletes all Services that belongs to the acting Company.
+     * Updates one Service of the acting Company based on path paramaters service id.
      *
-     * @apiEndpointResponse 200 schema/service/deleteAll.json
+     * @apiEndpointRequiredParam    body    string    name  name             Service's name.
+     * @apiEndpointRequiredParam    body    string     url  http
+     * @apiEndpointParam            body    int        access 1           Service's access.
+     * @apiEndpointParam            body    bool       enabled  true         Service's enabled.
+     * @apiEndpointParam            body    array       listens 'source.add.facebook'         Service's listens.
+     * @apiEndpointParam            body    array       triggers 'source.scraper.facebook.finished'       Service's triggers.
+     * @apiEndpointRequiredParam    body    string      auth_username idos   Service's authUsername.
+     * @apiEndpointRequiredParam    body    string      auth_password  secret   Service's authPassword.
+     * @apiEndpointResponse 200 schema/service/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $company   = $request->getAttribute('targetCompany');
+        $serviceId = $request->getAttribute('decodedServiceId');
 
-        $command = $this->commandFactory->create('Service\\DeleteAll');
-        $command->setParameter('company', $company);
+        $command = $this->commandFactory->create('Service\\UpdateOne');
+        $command
+            ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('serviceId', $serviceId)
+            ->setParameter('company', $company);
+
+        $entity = $this->commandBus->handle($command);
 
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'data'    => $entity->toArray(),
+            'updated' => $entity->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -226,38 +241,23 @@ class Services implements ControllerInterface {
     }
 
     /**
-     * Updates one Service of the acting Company based on path paramaters service id.
+     * Deletes all Services that belongs to the acting Company.
      *
-     * @apiEndpointRequiredParam    body    string    name  name             Service's name.
-     * @apiEndpointRequiredParam    body    string     url  http
-     * @apiEndpointParam            body    int        access 1           Service's access.
-     * @apiEndpointParam            body    bool       enabled  true         Service's enabled.
-     * @apiEndpointParam            body    array       listens 'source.add.facebook'         Service's listens.
-     * @apiEndpointParam            body    array       triggers 'source.scraper.facebook.finished'       Service's triggers.
-     * @apiEndpointRequiredParam    body    string      auth_username idos   Service's authUsername.
-     * @apiEndpointRequiredParam    body    string      auth_password  secret   Service's authPassword.
-     * @apiEndpointResponse 200 schema/service/updateOne.json
+     * @apiEndpointResponse 200 schema/service/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company   = $request->getAttribute('targetCompany');
-        $serviceId = $request->getAttribute('decodedServiceId');
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $company = $request->getAttribute('targetCompany');
 
-        $command = $this->commandFactory->create('Service\\UpdateOne');
-        $command
-            ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('serviceId', $serviceId)
-            ->setParameter('company', $company);
-
-        $entity = $this->commandBus->handle($command);
+        $command = $this->commandFactory->create('Service\\DeleteAll');
+        $command->setParameter('company', $company);
 
         $body = [
-            'data'    => $entity->toArray(),
-            'updated' => $entity->updatedAt
+            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

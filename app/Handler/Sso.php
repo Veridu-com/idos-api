@@ -37,31 +37,31 @@ class Sso implements HandlerInterface {
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
      * Identity Repository instance.
      *
-     * @var App\Repository\IdentityInterface
+     * @var \App\Repository\IdentityInterface
      */
     private $identityRepository;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
     /**
@@ -79,7 +79,7 @@ class Sso implements HandlerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
@@ -116,14 +116,14 @@ class Sso implements HandlerInterface {
      * Class constructor.
      *
      * @param App\Factory\Command
-     * @param App\Repository\UserInterface       $userRepository
-     * @param App\Repository\CredentialInterface $credentialRepository
-     * @param App\Repository\IdentityInterface   $identityRepository
-     * @param App\Factory\Event                  $eventFactory
+     * @param \App\Repository\UserInterface       $userRepository
+     * @param \App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \App\Repository\IdentityInterface   $identityRepository
+     * @param \App\Factory\Event                  $eventFactory
      * @param \League\Event\Emitter              $emitter
      * @param callable                           $service
      * @param \League\Tactician\CommandBus       $commandBus
-     * @param App\Factory\Command                $commandFactory
+     * @param \App\Factory\Command                $commandFactory
      *
      * @return void
      */
@@ -150,11 +150,11 @@ class Sso implements HandlerInterface {
     /**
      * Creates a new user.
      *
-     * @param App\Entity\Credential $credential The credential
+     * @param \App\Entity\Credential $credential The credential
      * @param string                $role       The role
      * @param string                $username   The username
      *
-     * @return App\Entity\User The created user
+     * @return \App\Entity\User The created user
      */
     private function createNewUser(Credential $credential, string $role, string $username) : User {
         $command = $this->commandFactory->create('User\\CreateNew');
@@ -177,7 +177,7 @@ class Sso implements HandlerInterface {
      * @param array            $tags       The tags
      * @param string           $ipAddr     The ip address
      *
-     * @return App\Entity\Profile\Source The created source
+     * @return \App\Entity\Profile\Source The created source
      */
     private function createNewSource(
         string $sourceName,
@@ -206,17 +206,17 @@ class Sso implements HandlerInterface {
      *
      * @param string          $sourceName           The provider
      * @param AbstractCommand $command              The CreateNew command for the provider
-     * @param Function|string $tokenClass           The oauth token class
+     * @param callable|string $tokenClass           The oauth token class
      * @param string          $serviceRequestUrl    The provider url that will be used to get the user id
      * @param string          $decodedResponseParam The response parameter that holds the user's id
-     * @param Function|string $eventClass           The createNew event class name to be emitted
+     * @param callable|string $eventClass           The createNew event class name to be emitted
      *
-     * @throws App\Exception\AppException        Exception thrown in case of error contacting the provider
-     * @throws App\Exception\Create\SsoException
+     * @throws \App\Exception\AppException        Exception thrown in case of error contacting the provider
+     * @throws \App\Exception\Create\SsoException
      *
-     * @see App\Repository\DBCredential::findByPubKey
-     * @see App\Repository\DBUser::getUsernameByProfileIdAndProviderNameAndCredentialId
-     * @see App\Repository\DBUser::findByUsername
+     * @see \App\Repository\DBCredential::findByPubKey
+     * @see \App\Repository\DBUser::getUsernameByProfileIdAndProviderNameAndCredentialId
+     * @see \App\Repository\DBUser::findByUsername
      *
      * @return array An array of generated tokens (userToken and optionally identityToken)
      */
@@ -310,7 +310,7 @@ class Sso implements HandlerInterface {
     /**
      * Creates a token with the amazon provider.
      *
-     * @param App\Command\Sso\CreateNewAmazon $command
+     * @param \App\Command\Sso\CreateNewAmazon $command
      *
      * @return string
      */
@@ -328,7 +328,7 @@ class Sso implements HandlerInterface {
     /**
      * Creates a token with the facebook provider.
      *
-     * @param App\Command\Sso\CreateNewFacebook $command
+     * @param \App\Command\Sso\CreateNewFacebook $command
      *
      * @return string
      */
@@ -346,7 +346,7 @@ class Sso implements HandlerInterface {
     /**
      * Creates a token with the google provider.
      *
-     * @param App\Command\Sso\CreateNewGoogle $command
+     * @param \App\Command\Sso\CreateNewGoogle $command
      *
      * @return string
      */
@@ -364,7 +364,7 @@ class Sso implements HandlerInterface {
     /**
      * Creates a token with the linkedin provider.
      *
-     * @param App\Command\Sso\CreateNewLinkedin $command
+     * @param \App\Command\Sso\CreateNewLinkedin $command
      *
      * @return string
      */
@@ -382,7 +382,7 @@ class Sso implements HandlerInterface {
     /**
      * Creates a token with the paypal provider.
      *
-     * @param App\Command\Sso\CreateNewPaypal $command
+     * @param \App\Command\Sso\CreateNewPaypal $command
      *
      * @return string
      */
@@ -400,7 +400,7 @@ class Sso implements HandlerInterface {
     /**
      * Creates a token with the twitter provider.
      *
-     * @param App\Command\Sso\CreateNewTwitter $command
+     * @param \App\Command\Sso\CreateNewTwitter $command
      *
      * @return string
      */

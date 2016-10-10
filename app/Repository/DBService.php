@@ -41,7 +41,7 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompany(Company $company, array $queryParams = []) : Collection {
+    public function getByCompany(Company $company, array $queryParams = []) : Collection {
         $query = $this->query();
         $query = $this->scopeQuery($query, $company);
         $query = $this->filter($query, $queryParams);

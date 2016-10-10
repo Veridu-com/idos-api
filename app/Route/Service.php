@@ -77,9 +77,9 @@ class Service implements RouteInterface {
      * @return void
      *
      * @link docs/services/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Services::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Services::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -90,71 +90,6 @@ class Service implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('service:listAll');
-    }
-
-    /**
-     * Create new Service.
-     *
-     * Create a new service for the requesting company.
-     *
-     * @apiEndpoint POST /services
-     * @apiGroup Company Service
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/services/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Services::createNew
-     */
-    private static function createNew(App $app, callable $auth, callable $permission) {
-        $app
-            ->post(
-                '/companies/{companySlug:[a-z0-9_-]+}/services',
-                'App\Controller\Services:createNew'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::IDENTITY))
-            ->setName('service:createNew');
-    }
-
-    /**
-     * Deletes all service.
-     *
-     * Deletes all services that belongs to the requesting company.
-     *
-     * @apiEndpoint DELETE /services
-     * @apiGroup Company Service
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/services/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Services::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        // FIXME This should be removed!
-        $app
-            ->delete(
-                '/companies/{companySlug:[a-z0-9_-]+}/services',
-                'App\Controller\Services:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::IDENTITY))
-            ->setName('service:deleteAll');
     }
 
     /**
@@ -175,9 +110,9 @@ class Service implements RouteInterface {
      * @return void
      *
      * @link docs/services/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Services::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Services::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -188,6 +123,38 @@ class Service implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('service:getOne');
+    }
+
+    /**
+     * Create new Service.
+     *
+     * Create a new service for the requesting company.
+     *
+     * @apiEndpoint POST /services
+     * @apiGroup Company Service
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/services/createNew.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Services::createNew
+     */
+    private static function createNew(App $app, callable $auth, callable $permission) {
+        $app
+            ->post(
+                '/companies/{companySlug:[a-z0-9_-]+}/services',
+                'App\Controller\Services:createNew'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::IDENTITY))
+            ->setName('service:createNew');
     }
 
     /**
@@ -208,9 +175,9 @@ class Service implements RouteInterface {
      * @return void
      *
      * @link docs/services/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Services::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Services::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -241,9 +208,9 @@ class Service implements RouteInterface {
      * @return void
      *
      * @link docs/services/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Services::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Services::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
@@ -254,5 +221,38 @@ class Service implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('service:deleteOne');
+    }
+
+    /**
+     * Deletes all service.
+     *
+     * Deletes all services that belongs to the requesting company.
+     *
+     * @apiEndpoint DELETE /services
+     * @apiGroup Company Service
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/services/deleteAll.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Services::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
+        // FIXME This should be removed!
+        $app
+            ->delete(
+                '/companies/{companySlug:[a-z0-9_-]+}/services',
+                'App\Controller\Services:deleteAll'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::IDENTITY))
+            ->setName('service:deleteAll');
     }
 }
