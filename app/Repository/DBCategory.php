@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Category;
+use Illuminate\Support\Collection;
 
 /**
  * Database-based Category Repository Implementation.
@@ -33,4 +34,11 @@ class DBCategory extends AbstractSQLDBRepository implements CategoryInterface {
     protected $filterableKeys = [
         'type' => 'string'
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAll(array $queryParams = []) : Collection {
+        return $this->findBy([], $queryParams);
+    }
 }
