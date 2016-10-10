@@ -15,7 +15,7 @@
             "description": "List of valid HTTP Methods for this Endpoint",
             "type": "array",
             "items": {
-                "enum": ["GET", "POST", "DELETE", "PUT"]
+                "enum": ["GET", "POST", "DELETE", "PUT", "PATCH"]
             },
             "minItems": 1,
             "uniqueItems": true

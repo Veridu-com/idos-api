@@ -39,7 +39,7 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(1, $body['data']);
+        $this->assertCount(2, $body['data']);
 
         /*
          * Validates Response using the Json Schema.

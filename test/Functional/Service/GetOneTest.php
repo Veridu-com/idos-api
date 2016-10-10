@@ -21,7 +21,7 @@ class GetOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/services/1321189817';
+        $this->uri        = '/1.0/companies/veridu-ltd/services/1321189817';
     }
 
     public function testSuccess() {
@@ -53,7 +53,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/services/13211898171';
+        $this->uri = '/1.0/companies/veridu-ltd/services/13211898171';
 
         $request = $this->createRequest(
             $this->createEnvironment(

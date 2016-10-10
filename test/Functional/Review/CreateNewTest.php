@@ -21,7 +21,7 @@ class CreateNewTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/reviews';
+        $this->uri        = '/1.0/companies/veridu-ltd/profiles/517015180/reviews';
     }
 
     public function testSuccess() {
