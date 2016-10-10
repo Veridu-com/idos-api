@@ -84,7 +84,7 @@ class Service implements RouteInterface {
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/services',
+                '/companies/{companySlug:[a-z0-9_-]+}/services',
                 'App\Controller\Services:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -116,7 +116,7 @@ class Service implements RouteInterface {
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/services',
+                '/companies/{companySlug:[a-z0-9_-]+}/services',
                 'App\Controller\Services:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -149,7 +149,7 @@ class Service implements RouteInterface {
         // FIXME This should be removed!
         $app
             ->delete(
-                '/services',
+                '/companies/{companySlug:[a-z0-9_-]+}/services',
                 'App\Controller\Services:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -182,7 +182,7 @@ class Service implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/services/{serviceId:[0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceId:[0-9]+}',
                 'App\Controller\Services:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -215,7 +215,7 @@ class Service implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/services/{serviceId:[0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceId:[0-9]+}',
                 'App\Controller\Services:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
@@ -248,7 +248,7 @@ class Service implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/services/{serviceId:[0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceId:[0-9]+}',
                 'App\Controller\Services:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))

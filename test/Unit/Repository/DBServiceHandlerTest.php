@@ -114,7 +114,7 @@ class DBServiceHandlerTest extends AbstractUnit {
             $connectionMock
         );
         $this->setExpectedException(NotFound::class);
-        $dbServiceHandler->findOne(0, 1);
+        $dbServiceHandler->findOne(1, 0);
     }
 
     public function testFindOne() {
@@ -191,11 +191,11 @@ class DBServiceHandlerTest extends AbstractUnit {
             $connectionMock
         );
 
-        $this->assertInstanceOf(Collection::class, $dbServiceHandler->findAllFromService(1, 'service'));
+        $this->assertInstanceOf(Collection::class, $dbServiceHandler->getByService(1, 'service'));
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals(
             $this->getToArray(),
-            $dbServiceHandler->getAllByCompanyId(1)
+            $dbServiceHandler->getByServiceCompanyId(1)
                 ->first()
                 ->toArray()
         );

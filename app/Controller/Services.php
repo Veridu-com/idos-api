@@ -69,7 +69,7 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company  = $request->getAttribute('company');
+        $company  = $request->getAttribute('targetCompany');
         $entities = $this->repository->getAllByCompany($company, $request->getQueryParams());
 
         $body = [
@@ -99,7 +99,7 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company   = $request->getAttribute('company');
+        $company   = $request->getAttribute('targetCompany');
         $serviceId = (int) $request->getAttribute('decodedServiceId');
 
         $entity = $this->repository->findOne($serviceId, $company);
@@ -139,7 +139,7 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Service\\CreateNew');
         $command
@@ -174,7 +174,7 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Service\\DeleteAll');
         $command->setParameter('company', $company);
@@ -203,7 +203,7 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company   = $request->getAttribute('company');
+        $company   = $request->getAttribute('targetCompany');
         $serviceId = $request->getAttribute('decodedServiceId');
 
         $command = $this->commandFactory->create('Service\\DeleteOne');
@@ -244,7 +244,7 @@ class Services implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company   = $request->getAttribute('company');
+        $company   = $request->getAttribute('targetCompany');
         $serviceId = $request->getAttribute('decodedServiceId');
 
         $command = $this->commandFactory->create('Service\\UpdateOne');
