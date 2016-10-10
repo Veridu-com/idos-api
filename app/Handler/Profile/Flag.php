@@ -8,34 +8,34 @@ declare(strict_types = 1);
 
 namespace App\Handler\Profile;
 
-use App\Command\Profile\Warning\CreateNew;
-use App\Command\Profile\Warning\DeleteAll;
-use App\Command\Profile\Warning\DeleteOne;
-use App\Entity\Profile\Warning as WarningEntity;
+use App\Command\Profile\Flag\CreateNew;
+use App\Command\Profile\Flag\DeleteAll;
+use App\Command\Profile\Flag\DeleteOne;
+use App\Entity\Profile\Flag as FlagEntity;
 use App\Exception\Create;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\WarningInterface;
-use App\Validator\Profile\Warning as WarningValidator;
+use App\Repository\Profile\FlagInterface;
+use App\Validator\Profile\Flag as FlagValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
 
 /**
- * Handles Warning commands.
+ * Handles Flag commands.
  */
-class Warning implements HandlerInterface {
+class Flag implements HandlerInterface {
     /**
-     * Warning Repository instance.
+     * Flag Repository instance.
      *
-     * @var \App\Repository\Profile\WarningInterface
+     * @var \App\Repository\Profile\FlagInterface
      */
     private $repository;
     /**
-     * Warning Validator instance.
+     * Flag Validator instance.
      *
-     * @var \App\Validator\Profile\Warning
+     * @var \App\Validator\Profile\Flag
      */
     private $validator;
     /**
@@ -56,13 +56,13 @@ class Warning implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) {
         $container[self::class] = function (ContainerInterface $container) {
-            return new \App\Handler\Profile\Warning(
+            return new \App\Handler\Profile\Flag(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Profile\Warning'),
+                    ->create('Profile\Flag'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Profile\Warning'),
+                    ->create('Profile\Flag'),
                 $container
                     ->get('eventFactory'),
                 $container
@@ -74,16 +74,16 @@ class Warning implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\WarningInterface $repository
-     * @param \App\Validator\Profile\Warning           $validator
+     * @param \App\Repository\Profile\FlagInterface $repository
+     * @param \App\Validator\Profile\Flag           $validator
      * @param \App\Factory\Event               $eventFactory
      * @param \League\Event\Emitter           $emitter
      *
      * @return void
      */
     public function __construct(
-        WarningInterface $repository,
-        WarningValidator $validator,
+        FlagInterface $repository,
+        FlagValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
@@ -94,19 +94,19 @@ class Warning implements HandlerInterface {
     }
 
     /**
-     * Creates a warning.
+     * Creates a flag.
      *
-     * @param \App\Command\Profile\Warning\CreateNew $command
+     * @param \App\Command\Profile\Flag\CreateNew $command
      *
-     * @throws \App\Exception\Validate\Profile\WarningException
-     * @throws \App\Exception\Create\Profile\WarningException
+     * @throws \App\Exception\Validate\Profile\FlagException
+     * @throws \App\Exception\Create\Profile\FlagException
      *
-     * @see \App\Repository\DBWarning::save
-     * @see \App\Repository\DBWarning::hydrateRelations
+     * @see \App\Repository\DBFlag::save
+     * @see \App\Repository\DBFlag::hydrateRelations
      *
-     * @return \App\Entity\Profile\Warning
+     * @return \App\Entity\Profile\Flag
      */
-    public function handleCreateNew(CreateNew $command) : WarningEntity {
+    public function handleCreateNew(CreateNew $command) : FlagEntity {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
@@ -116,7 +116,7 @@ class Warning implements HandlerInterface {
                 $this->validator->assertSlug($command->attribute);
             }
         } catch (ValidationException $e) {
-            throw new Validate\Profile\WarningException(
+            throw new Validate\Profile\FlagException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -137,25 +137,25 @@ class Warning implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Warning\\Created', $entity);
+            $event = $this->eventFactory->create('Profile\\Flag\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            throw new Create\Profile\WarningException('Error while trying to create a warning', 500, $e);
+            throw new Create\Profile\FlagException('Error while trying to create a flag', 500, $e);
         }
 
         return $entity;
     }
 
     /**
-     * Deletes a Warning.
+     * Deletes a Flag.
      *
-     * @param \App\Command\Profile\Warning\DeleteOne $command
+     * @param \App\Command\Profile\Flag\DeleteOne $command
      *
-     * @throws \App\Exception\Validate\WarningException
+     * @throws \App\Exception\Validate\FlagException
      * @throws \App\Exception\AppException
      *
-     * @see \App\Repository\DBWarning::findOneBySlug
-     * @see \App\Repository\DBWarning::delete
+     * @see \App\Repository\DBFlag::findOneBySlug
+     * @see \App\Repository\DBFlag::delete
      *
      * @return void
      */
@@ -165,7 +165,7 @@ class Warning implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertSlug($command->slug);
         } catch (ValidationException $e) {
-            throw new Validate\Profile\WarningException(
+            throw new Validate\Profile\FlagException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -177,10 +177,10 @@ class Warning implements HandlerInterface {
         try {
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = $this->eventFactory->create('Profile\\Warning\\Deleted', $entity);
+            $event = $this->eventFactory->create('Profile\\Flag\\Deleted', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while deleting warning');
+            throw new AppException('Error while deleting flag');
         }
 
         return $affectedRows;
@@ -189,13 +189,13 @@ class Warning implements HandlerInterface {
     /**
      * Deletes all settings ($command->userId).
      *
-     * @param \App\Command\Profile\Warning\DeleteAll $command
+     * @param \App\Command\Profile\Flag\DeleteAll $command
      *
-     * @throws \App\Exception\Validate\Profile\WarningException
+     * @throws \App\Exception\Validate\Profile\FlagException
      * @throws \App\Exception\AppException
      *
-     * @see \App\Repository\DBWarning::findBy
-     * @see \App\Repository\DBWarning::delete
+     * @see \App\Repository\DBFlag::findBy
+     * @see \App\Repository\DBFlag::delete
      *
      * @return int
      */
@@ -204,7 +204,7 @@ class Warning implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
         } catch (ValidationException $e) {
-            throw new Validate\Profile\WarningException(
+            throw new Validate\Profile\FlagException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -219,10 +219,10 @@ class Warning implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = $this->eventFactory->create('Profile\\Warning\\DeletedMulti', $entities);
+            $event = $this->eventFactory->create('Profile\\Flag\\DeletedMulti', $entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new AppException('Error while deleting warnings');
+            throw new AppException('Error while deleting flags');
         }
 
         return $affectedRows;

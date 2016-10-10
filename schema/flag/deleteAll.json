@@ -1,6 +1,6 @@
 {
     "$schema" : "http://json-schema.org/draft-04/schema#",
-    "title": "DELETE /profiles/{userName}/warnings",
+    "title": "DELETE /profiles/{userName}/flags",
     "type": "object",
     "properties": {
         "status": {
@@ -8,7 +8,7 @@
             "type": "boolean"
         },
         "deleted": {
-            "description": "Number of sucessfully deleted warnings",
+            "description": "Number of sucessfully deleted flags",
             "type": "integer",
             "minimum": 0
         }

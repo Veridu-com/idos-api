@@ -15,24 +15,24 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile Warnings.
+ * Profile Flags.
  *
- * A Profile Warning is used to flag a Profile with a specific Feature or Gate response. If a Company wants Users over the age of 18, they could have a Profile Warning showing that a Profile has failed an 18+ Gate. If a Company wants to easily see if a Profile contains inconsistent names, a Profile Warning could be used in conjunction with the specific Feature.
+ * A Profile Flag is used to flag a Profile with a specific Feature or Gate response. If a Company wants Users over the age of 18, they could have a Profile Flag showing that a Profile has failed an 18+ Gate. If a Company wants to easily see if a Profile contains inconsistent names, a Profile Flag could be used in conjunction with the specific Feature.
  *
- * @link docs/profile/warnings/overview.md
- * @see \App\Controller\Profile\Warnings
+ * @link docs/profile/flags/overview.md
+ * @see \App\Controller\Profile\Flags
  */
-class Warnings implements RouteInterface {
+class Flags implements RouteInterface {
     /**
      * {@inheritdoc}
      */
     public static function getPublicNames() : array {
         return [
-            'warnings:listAll',
-            'warnings:getOne',
-            'warnings:createNew',
-            'warnings:deleteOne',
-            'warnings:deleteAll'
+            'flags:listAll',
+            'flags:getOne',
+            'flags:createNew',
+            'flags:deleteOne',
+            'flags:deleteAll'
         ];
     }
 
@@ -40,9 +40,9 @@ class Warnings implements RouteInterface {
      * {@inheritdoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profile\Warnings::class] = function (ContainerInterface $container) {
-            return new \App\Controller\Profile\Warnings(
-                $container->get('repositoryFactory')->create('Profile\Warning'),
+        $app->getContainer()[\App\Controller\Profile\Flags::class] = function (ContainerInterface $container) {
+            return new \App\Controller\Profile\Flags(
+                $container->get('repositoryFactory')->create('Profile\Flag'),
                 $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
@@ -61,12 +61,12 @@ class Warnings implements RouteInterface {
     }
 
     /**
-     * List all Warnings.
+     * List all Flags.
      *
-     * Retrieve a complete list of all warnings that belong to the given user.
+     * Retrieve a complete list of all flags that belong to the given user.
      *
-     * @apiEndpoint GET /profiles/{userName}/warnings
-     * @apiGroup Profile Warnings
+     * @apiEndpoint GET /profiles/{userName}/flags
+     * @apiGroup Profile Flags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -77,33 +77,33 @@ class Warnings implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profile/warnings/listAll.md
+     * @link docs/profile/flags/listAll.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profile\Warnings::listAll
+     * @see \App\Controller\Profile\Flags::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings',
-                'App\Controller\Profile\Warnings:listAll'
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/flags',
+                'App\Controller\Profile\Flags:listAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('warnings:listAll');
+            ->setName('flags:listAll');
     }
 
     /**
-     * Retrieve a single Warning.
+     * Retrieve a single Flag.
      *
-     * Retrieves all public information from a Warning.
+     * Retrieves all public information from a Flag.
      *
-     * @apiEndpoint GET /profiles/{userName}/warnings/{warningSlug}
-     * @apiGroup Profile Warnings
+     * @apiEndpoint GET /profiles/{userName}/flags/{flagSlug}
+     * @apiGroup Profile Flags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
-     * @apiEndpointURIFragment string warningSlug warning-test
+     * @apiEndpointURIFragment string flagSlug flag-test
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -111,29 +111,29 @@ class Warnings implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profile/warnings/getOne.md
+     * @link docs/profile/flags/getOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profile\Warnings::getOne
+     * @see \App\Controller\Profile\Flags::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings/{warningSlug:[a-z0-9_-]+}',
-                'App\Controller\Profile\Warnings:getOne'
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/flags/{flagSlug:[a-z0-9_-]+}',
+                'App\Controller\Profile\Flags:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('warnings:getOne');
+            ->setName('flags:getOne');
     }
 
     /**
-     * Create new Warning.
+     * Create new Flag.
      *
-     * Create a new warning for the given user.
+     * Create a new flag for the given user.
      *
-     * @apiEndpoint POST /profiles/{userName}/warnings
-     * @apiGroup Profile Warnings
+     * @apiEndpoint POST /profiles/{userName}/flags
+     * @apiGroup Profile Flags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -144,33 +144,33 @@ class Warnings implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profile/warnings/createNew.md
+     * @link docs/profile/flags/createNew.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profile\Warnings::createNew
+     * @see \App\Controller\Profile\Flags::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings',
-                'App\Controller\Profile\Warnings:createNew'
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/flags',
+                'App\Controller\Profile\Flags:createNew'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('warnings:createNew');
+            ->setName('flags:createNew');
     }
 
     /**
-     * Deletes a single Warning.
+     * Deletes a single Flag.
      *
-     * Deletes a single Warning that belongs to the given user
+     * Deletes a single Flag that belongs to the given user
      *
-     * @apiEndpoint DELETE /profiles/{userName}/warnings/{warningSlug}
-     * @apiGroup Profile Warnings
+     * @apiEndpoint DELETE /profiles/{userName}/flags/{flagSlug}
+     * @apiGroup Profile Flags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
-     * @apiEndpointURIFragment string warningSlug warning-test
+     * @apiEndpointURIFragment string flagSlug flag-test
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -178,29 +178,29 @@ class Warnings implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profile/warnings/deleteOne.md
+     * @link docs/profile/flags/deleteOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profile\Warnings::deleteOne
+     * @see \App\Controller\Profile\Flags::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings/{warningSlug:[a-z0-9_-]+}',
-                'App\Controller\Profile\Warnings:deleteOne'
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/flags/{flagSlug:[a-z0-9_-]+}',
+                'App\Controller\Profile\Flags:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('warnings:deleteOne');
+            ->setName('flags:deleteOne');
     }
 
     /**
-     * Deletes all warnings.
+     * Deletes all flags.
      *
-     * Deletes all warnings that belongs to the given user
+     * Deletes all flags that belongs to the given user
      *
-     * @apiEndpoint DELETE /profiles/{userName}/warnings
-     * @apiGroup Profile Warnings
+     * @apiEndpoint DELETE /profiles/{userName}/flags
+     * @apiGroup Profile Flags
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -211,19 +211,19 @@ class Warnings implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profile/warnings/deleteAll.md
+     * @link docs/profile/flags/deleteAll.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profile\Warnings::deleteAll
+     * @see \App\Controller\Profile\Flags::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/warnings',
-                'App\Controller\Profile\Warnings:deleteAll'
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/flags',
+                'App\Controller\Profile\Flags:deleteAll'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('warnings:deleteAll');
+            ->setName('flags:deleteAll');
     }
 }

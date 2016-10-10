@@ -6,9 +6,9 @@
 
 declare(strict_types = 1);
 
-namespace App\Event\Profile\Warning;
+namespace App\Event\Profile\Flag;
 
-use App\Entity\Profile\Warning;
+use App\Entity\Profile\Flag;
 use App\Event\AbstractEvent;
 
 /**
@@ -16,20 +16,20 @@ use App\Event\AbstractEvent;
  */
 class Deleted extends AbstractEvent {
     /**
-     * Event related Warning.
+     * Event related Flag.
      *
-     * @var App\Entity\Profile\Warning
+     * @var App\Entity\Profile\Flag
      */
-    public $warning;
+    public $flag;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Warning $warning
+     * @param App\Entity\Profile\Flag $flag
      *
      * @return void
      */
-    public function __construct(Warning $warning) {
-        $this->warning = $warning;
+    public function __construct(Flag $flag) {
+        $this->flag = $flag;
     }
 }

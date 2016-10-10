@@ -109,7 +109,7 @@ class Review implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : ReviewEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertId($command->warningId);
+            $this->validator->assertId($command->flagId);
             $this->validator->assertFlag($command->positive);
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
@@ -124,7 +124,7 @@ class Review implements HandlerInterface {
             [
                 'user_id'     => $command->user->id,
                 'identity_id' => $command->identity->id,
-                'warning_id'  => $command->warningId,
+                'flag_id'  => $command->flagId,
                 'positive'    => $this->validator->validateFlag($command->positive),
                 'created_at'  => time()
             ]

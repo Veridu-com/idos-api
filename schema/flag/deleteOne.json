@@ -1,6 +1,6 @@
     {
     "$schema" : "http://json-schema.org/draft-04/schema#",
-    "title": "DELETE /profiles/{userName}/warnings/{warningSlug}",
+    "title": "DELETE /profiles/{userName}/flags/{flagSlug}",
     "type": "object",
     "properties": {
         "status": {

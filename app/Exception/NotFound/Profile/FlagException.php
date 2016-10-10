@@ -11,9 +11,9 @@ namespace App\Exception\NotFound\Profile;
 use App\Exception\NotFound;
 
 /**
- * Warning not found exception.
+ * Flag not found exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class WarningException extends NotFound {
+class FlagException extends NotFound {
 }
