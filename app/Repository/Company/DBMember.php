@@ -77,7 +77,7 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
     public function findMembership(int $identityId, int $companyId) : Member {
         return $this->findOneBy([
             'identity_id' => $identityId,
-            'company_id' => $companyId
+            'company_id'  => $companyId
         ]);
     }
 
@@ -86,6 +86,7 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
      */
     public function getAllByCompanyId(int $companyId, array $queryParams = []) : Collection {
         $members = $this->findBy(['company_id' => $companyId], $queryParams);
+
         return $this->castHydrate($members);
     }
 

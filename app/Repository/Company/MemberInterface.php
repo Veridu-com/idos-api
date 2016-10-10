@@ -10,20 +10,18 @@ namespace App\Repository\Company;
 
 use App\Entity\Company\Member;
 use App\Repository\RepositoryInterface;
-use Illuminate\Support\Collection;
 
 /**
  * Member Repository Interface.
  */
 interface MemberInterface extends RepositoryInterface {
-
     /**
      * Finds one membership by identity and company ids.
      *
-     * @param      integer  $identityId  The identity identifier
-     * @param      integer  $companyId   The company identifier
+     * @param int $identityId The identity identifier
+     * @param int $companyId  The company identifier
      *
-     * @return     App\Entity\Company\Member
+     * @return App\Entity\Company\Member
      */
     public function findMembership(int $identityId, int $companyId) : Member;
 

@@ -162,7 +162,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->where('sources.name', '=', $providerName)
             ->where('users.credential_id', '=', $credentialId)
             ->first(['users.*']);
-        
+
         if (empty($user)) {
             throw new UserException();
         }
@@ -225,12 +225,12 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
      * {@inheritdoc}
      */
     public function assignIdentityToUser(int $userId, int $identityId) {
-        $query = 'INSERT INTO user_identities (identity_id, user_id) VALUES (:identityId, :userId)';
+        $query    = 'INSERT INTO user_identities (identity_id, user_id) VALUES (:identityId, :userId)';
         $bindings = [
-            'userId' => $userId,
+            'userId'     => $userId,
             'identityId' => $identityId
         ];
-        
+
         if (! $this->runRaw($query, $bindings)) {
             throw new IdentityException();
         }

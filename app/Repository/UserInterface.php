@@ -93,12 +93,11 @@ interface UserInterface extends RepositoryInterface {
      */
     public function findOneByIdentityIdAndCompanyId(int $identityId, int $companyId) : User;
 
-
     /**
      * Assigns an identity to a user.
      *
-     * @param integer  $userId      The user identifier
-     * @param integer  $identityId  The identity identifier
+     * @param int $userId     The user identifier
+     * @param int $identityId The identity identifier
      * 
      * @throws \Illuminate\Database\QueryException
      *

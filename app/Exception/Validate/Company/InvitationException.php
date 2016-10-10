@@ -16,7 +16,6 @@ use App\Exception\AppException;
  * @apiEndpointResponse 400 schema/error.json
  */
 class InvitationException extends AppException {
-
     /**
      * {@inheritdoc}
      */

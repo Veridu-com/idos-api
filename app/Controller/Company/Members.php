@@ -11,8 +11,8 @@ namespace App\Controller\Company;
 use App\Controller\ControllerInterface;
 use App\Entity\User;
 use App\Factory\Command;
-use App\Repository\Company\MemberInterface;
 use App\Repository\Company\InvitationInterface;
+use App\Repository\Company\MemberInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -52,7 +52,7 @@ class Members implements ControllerInterface {
      *
      * @param App\Repository\Company\MemberInterface $repository
      * @param App\Repository\UserInterface           $userRepository
-     * @param App\Repository\InvitationInterface         $invitationRepository
+     * @param App\Repository\InvitationInterface     $invitationRepository
      * @param \League\Tactician\CommandBus           $commandBus
      * @param App\Factory\Command                    $commandFactory
      *
@@ -65,11 +65,11 @@ class Members implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository     = $repository;
+        $this->repository           = $repository;
         $this->invitationRepository = $invitationRepository;
-        $this->userRepository = $userRepository;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
+        $this->userRepository       = $userRepository;
+        $this->commandBus           = $commandBus;
+        $this->commandFactory       = $commandFactory;
     }
 
     /**
@@ -113,7 +113,7 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getMembership(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
+        $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
         $member = $this->repository->findMembership($identity->id, $company->id);
@@ -142,7 +142,7 @@ class Members implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getInvitations(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
+        $company     = $request->getAttribute('targetCompany');
         $invitations = $this->invitationRepository->getAllByCompanyId($company->id, $request->getQueryParams());
 
         $body = [
@@ -177,7 +177,7 @@ class Members implements ControllerInterface {
      */
     public function createNewInvitation(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $identity = $request->getAttribute('identity');
+        $identity      = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Member\\CreateNewInvitation');
         $command

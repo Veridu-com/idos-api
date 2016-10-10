@@ -8,7 +8,7 @@ use Phinx\Migration\AbstractMigration;
 
 /**
  * Invitations RELATED TABLES.
- * This table holds the invitations to the dashboard
+ * This table holds the invitations to the dashboard.
  */
 class Invitations extends AbstractMigration {
     public function change() {

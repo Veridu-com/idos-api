@@ -9,9 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository\Company;
 
 use App\Entity\Company\Invitation;
-use App\Exception\AppException;
 use App\Repository\AbstractSQLDBRepository;
-use App\Repository\Company\InvitationInterface;
 use Illuminate\Support\Collection;
 
 /**
@@ -42,7 +40,7 @@ class DBInvitation extends AbstractSQLDBRepository implements InvitationInterfac
     public function findOneByHash(string $hash) : Invitation {
         return $this->findOneBy([
             'hash' => $hash
-        ]);        
+        ]);
     }
 
     /**
@@ -51,6 +49,6 @@ class DBInvitation extends AbstractSQLDBRepository implements InvitationInterfac
     public function getAllByCompanyId(int $companyId) : Collection {
         return $this->findBy([
             'company_id' => $companyId
-        ]);        
+        ]);
     }
 }

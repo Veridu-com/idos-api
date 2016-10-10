@@ -21,17 +21,15 @@ use App\Entity\Company\Member as MemberEntity;
 use App\Entity\Profile\Source as SourceEntity;
 use App\Entity\User;
 use App\Exception\Create;
-use App\Exception\Create\Company\MemberException;
 use App\Exception\NotFound;
-use App\Exception\NotFound\UserException;
 use App\Exception\Validate\Company\InvitationException;
 use App\Factory\Command;
 use App\Factory\Event;
 use App\Helper\Token;
-use App\Repository\CompanyInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\InvitationInterface;
 use App\Repository\Company\MemberInterface;
+use App\Repository\CompanyInterface;
 use App\Repository\IdentityInterface;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
@@ -133,17 +131,17 @@ class Sso implements HandlerInterface {
      * Class constructor.
      *
      * @param App\Factory\Command
-     * @param App\Repository\UserInterface           $userRepository
-     * @param App\Repository\Company\CredentialInterface     $credentialRepository
+     * @param App\Repository\UserInterface               $userRepository
+     * @param App\Repository\Company\CredentialInterface $credentialRepository
      * @param App\Repository\Company\MemberInterface     $credentialRepository
-     * @param App\Repository\Company                 $credentialRepository
+     * @param App\Repository\Company                     $credentialRepository
      * @param App\Repository\Company\InvitationInterface $credentialRepository
-     * @param App\Repository\IdentityInterface       $identityRepository
-     * @param App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                  $emitter
-     * @param callable                               $service
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param App\Factory\Command                    $commandFactory
+     * @param App\Repository\IdentityInterface           $identityRepository
+     * @param App\Factory\Event                          $eventFactory
+     * @param \League\Event\Emitter                      $emitter
+     * @param callable                                   $service
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -160,17 +158,17 @@ class Sso implements HandlerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->userRepository       = $userRepository;
-        $this->credentialRepository = $credentialRepository;
-        $this->memberRepository = $memberRepository;
-        $this->companyRepository = $companyRepository;
+        $this->userRepository           = $userRepository;
+        $this->credentialRepository     = $credentialRepository;
+        $this->memberRepository         = $memberRepository;
+        $this->companyRepository        = $companyRepository;
         $this->invitationRepository     = $invitationRepository;
-        $this->identityRepository   = $identityRepository;
-        $this->eventFactory         = $eventFactory;
-        $this->emitter              = $emitter;
-        $this->service              = $service;
-        $this->commandBus           = $commandBus;
-        $this->commandFactory       = $commandFactory;
+        $this->identityRepository       = $identityRepository;
+        $this->eventFactory             = $eventFactory;
+        $this->emitter                  = $emitter;
+        $this->service                  = $service;
+        $this->commandBus               = $commandBus;
+        $this->commandFactory           = $commandFactory;
     }
 
     /**
@@ -240,7 +238,7 @@ class Sso implements HandlerInterface {
         $command->setParameters(
             [
                 'identity_id' => $identityId,
-                'role'       => $role
+                'role'        => $role
             ]
         );
 
@@ -251,7 +249,7 @@ class Sso implements HandlerInterface {
      * Creates a new sso source and a new user token.
      *
      * @param string          $sourceName           The provider
-     * @param CreateNew $command              The CreateNew command for the provider
+     * @param CreateNew       $command              The CreateNew command for the provider
      * @param Function|string $tokenClass           The oauth token class
      * @param string          $serviceRequestUrl    The provider url that will be used to get the user id
      * @param string          $decodedResponseParam The response parameter that holds the user's id
@@ -352,7 +350,7 @@ class Sso implements HandlerInterface {
             // if it is a signup on a Dashboard
             if (! empty($command->signupHash)) {
                 try {
-                    $invitation = $this->invitationRepository->findOneByHash($command->signupHash);                    
+                    $invitation = $this->invitationRepository->findOneByHash($command->signupHash);
 
                     if ($invitation->expires < time()) {
                         throw new InvitationException('Expired invitation.');
@@ -360,7 +358,6 @@ class Sso implements HandlerInterface {
                     if ($invitation->voided) {
                         throw new InvitationException('Invitation already used.');
                     }
-
 
                     $company = $this->companyRepository->find($invitation->companyId);
 
@@ -372,13 +369,13 @@ class Sso implements HandlerInterface {
                             $member = $this->memberRepository->findMembership($identity->id, $company->id);
                         } catch (NotFound $e) {
                             // if can't find membership, creates
-                            $member = $this->createNewMembership($company, $identity->id, $invitation->role, $command->ipAddress);
+                            $member               = $this->createNewMembership($company, $identity->id, $invitation->role, $command->ipAddress);
                             $invitation->memberId = $member->id;
-                            $invitation->voided = true;
+                            $invitation->voided   = true;
                             // saves modified invitation
                             $this->invitationRepository->save($invitation);
                         }
-                        
+
                     }
                 } catch (NotFound $e) {
                     throw new InvitationException('Invalid invitation code.');

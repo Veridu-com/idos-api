@@ -37,7 +37,7 @@ class Member extends AbstractEntity {
      */
     public $relationships = [
         'identity' => 'Identity',
-        'role' => 'Role',
-        'company' => 'Company'
+        'role'     => 'Role',
+        'company'  => 'Company'
     ];
 }

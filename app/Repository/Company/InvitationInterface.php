@@ -19,18 +19,18 @@ interface InvitationInterface extends RepositoryInterface {
     /**
      * Finds one by hash property.
      *
-     * @param      string  $hash   The hash
+     * @param string $hash The hash
      *
-     * @return     App\Entity\Company\Invitation
+     * @return App\Entity\Company\Invitation
      */
     public function findOneByHash(string $hash) : Invitation;
 
     /**
      * Gets all by company identifier.
      *
-     * @param      integer  $companyId  The company identifier
+     * @param int $companyId The company identifier
      *
-     * @return     Illuminate\Support\Collection
+     * @return Illuminate\Support\Collection
      */
     public function getAllByCompanyId(int $companyId) : Collection;
 }

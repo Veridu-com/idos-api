@@ -10,10 +10,9 @@ namespace App\Handler\Company;
 
 use App\Command\Company\Member\CreateNew;
 use App\Command\Company\Member\CreateNewInvitation;
-use App\Command\Company\Member\DeleteAll;
 use App\Command\Company\Member\DeleteInvitation;
-use App\Entity\Company\Member as MemberEntity;
 use App\Entity\Company\Invitation as InvitationEntity;
+use App\Entity\Company\Member as MemberEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Validate;
@@ -104,9 +103,9 @@ class Member implements HandlerInterface {
      * @param App\Repository\Company\MemberInterface     $repository
      * @param App\Repository\Company\CredentialInterface $repository
      * @param App\Repository\Company\InvitationInterface $repository
-     * @param App\Validator\Member               $validator
-     * @param App\Factory\Event                  $eventFactory
-     * @param \League\Event\Emitter              $emitter
+     * @param App\Validator\Member                       $validator
+     * @param App\Factory\Event                          $eventFactory
+     * @param \League\Event\Emitter                      $emitter
      *
      * @return void
      */
@@ -196,12 +195,12 @@ class Member implements HandlerInterface {
             );
         }
 
-        $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
-        $expires = strftime('%Y-%m-%d', strtotime($command->expires));
-        $now = time();
+        $credential      = $this->credentialRepository->findByPubKey($command->credentialPubKey);
+        $expires         = strftime('%Y-%m-%d', strtotime($command->expires));
+        $now             = time();
         $expiresDateTime = new \DateTime($expires);
-        $today = new \DateTime(strftime('%Y-%m-%d', $now));
-        $diff = $today->diff($expiresDateTime);
+        $today           = new \DateTime(strftime('%Y-%m-%d', $now));
+        $diff            = $today->diff($expiresDateTime);
 
         if ($diff->days < 1 || $diff->days > 7) {
             throw new Validate\Company\MemberException('Invalid expiration date. Min: 1 day, Max: 7 days from today');
@@ -210,20 +209,20 @@ class Member implements HandlerInterface {
         $invitation = $this->invitationRepository->create(
             [
                 'credential_id' => $credential->id,
-                'company_id'  => $command->company->id,
-                'creator_id'  => $command->identity->id,
-                'role'        => $command->role,
-                'email'       => $command->email,
-                'hash'        => md5($command->email . $command->company->id . microtime()),
-                'expires'     => $command->expires ? $expires : strftime('%Y-%m-%d', strtotime('now + 1 days')),
-                'created_at'  => $now
+                'company_id'    => $command->company->id,
+                'creator_id'    => $command->identity->id,
+                'role'          => $command->role,
+                'email'         => $command->email,
+                'hash'          => md5($command->email . $command->company->id . microtime()),
+                'expires'       => $command->expires ? $expires : strftime('%Y-%m-%d', strtotime('now + 1 days')),
+                'created_at'    => $now
             ]
         );
 
         try {
             $invitation = $this->invitationRepository->save($invitation);
-            $event  = $this->eventFactory->create('Company\\Member\\InvitationCreated', $invitation);
-            $a = $this->emitter->emit($event);
+            $event      = $this->eventFactory->create('Company\\Member\\InvitationCreated', $invitation);
+            $a          = $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\MemberException('Error while trying to create an invitation', 500, $e);
         }

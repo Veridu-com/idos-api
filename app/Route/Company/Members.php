@@ -169,7 +169,7 @@ class Members implements RouteInterface {
             ->add($auth(Auth::IDENTITY))
             ->setName('members:createNewInvitation');
     }
-    
+
     /**
      * Retrieve a single Member.
      *
