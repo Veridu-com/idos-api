@@ -12,9 +12,9 @@ use App\Validator\Traits;
 use App\Validator\ValidatorInterface;
 
 /**
- * Warning Validation Rules.
+ * Flag Validation Rules.
  */
-class Warning implements ValidatorInterface {
+class Flag implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertEntity,
         Traits\AssertName,

@@ -6,7 +6,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class S25WarningsSeed extends AbstractSeed {
+class S25FlagsSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
@@ -35,8 +35,8 @@ class S25WarningsSeed extends AbstractSeed {
             ],
         ];
 
-        $warnings = $this->table('warnings');
-        $warnings
+        $flags = $this->table('flags');
+        $flags
             ->insert($data)
             ->save();
     }

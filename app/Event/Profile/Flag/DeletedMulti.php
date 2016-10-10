@@ -6,30 +6,30 @@
 
 declare(strict_types = 1);
 
-namespace App\Event\Profile\Warning;
+namespace App\Event\Profile\Flag;
 
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 
 /**
- * Deleted event for multiple warnings.
+ * Deleted event for multiple flags.
  */
 class DeletedMulti extends AbstractEvent {
     /**
-     * Event related Warnings.
+     * Event related Flags.
      *
      * @var \Illuminate\Support\Collection
      */
-    public $warnings;
+    public $flags;
 
     /**
      * Class constructor.
      *
-     * @param \Illuminate\Support\Collection $warnings
+     * @param \Illuminate\Support\Collection $flags
      *
      * @return void
      */
-    public function __construct(Collection $warnings) {
-        $this->warnings = $warnings;
+    public function __construct(Collection $flags) {
+        $this->flags = $flags;
     }
 }

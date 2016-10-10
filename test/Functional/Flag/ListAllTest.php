@@ -4,7 +4,7 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Warning;
+namespace Test\Functional\Flag;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
@@ -19,7 +19,7 @@ class ListAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/flags';
     }
 
     public function testSuccess() {
@@ -43,7 +43,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'warning/listAll.json',
+                'flag/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -68,9 +68,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
 
-        foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['slug'], ['first-name-mismatch', 'last-name-mismatch']);
-            $this->assertContains($warning['attribute'], ['first-name', 'last-name']);
+        foreach ($body['data'] as $flag) {
+            $this->assertContains($flag['slug'], ['first-name-mismatch', 'last-name-mismatch']);
+            $this->assertContains($flag['attribute'], ['first-name', 'last-name']);
         }
 
         /*
@@ -78,7 +78,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'warning/listAll.json',
+                'flag/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -103,9 +103,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
 
-        foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['slug'], ['first-name-mismatch', 'last-name-mismatch']);
-            $this->assertContains($warning['attribute'], ['first-name', 'last-name']);
+        foreach ($body['data'] as $flag) {
+            $this->assertContains($flag['slug'], ['first-name-mismatch', 'last-name-mismatch']);
+            $this->assertContains($flag['attribute'], ['first-name', 'last-name']);
         }
 
         /*
@@ -113,7 +113,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'warning/listAll.json',
+                'flag/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -138,9 +138,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertCount(1, $body['data']);
 
-        foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['slug'], ['first-name-mismatch']);
-            $this->assertContains($warning['attribute'], ['first-name']);
+        foreach ($body['data'] as $flag) {
+            $this->assertContains($flag['slug'], ['first-name-mismatch']);
+            $this->assertContains($flag['attribute'], ['first-name']);
         }
 
         /*
@@ -148,7 +148,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'warning/listAll.json',
+                'flag/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -173,9 +173,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
 
-        foreach ($body['data'] as $warning) {
-            $this->assertContains($warning['slug'], ['first-name-mismatch', 'last-name-mismatch']);
-            $this->assertContains($warning['attribute'], ['first-name', 'last-name']);
+        foreach ($body['data'] as $flag) {
+            $this->assertContains($flag['slug'], ['first-name-mismatch', 'last-name-mismatch']);
+            $this->assertContains($flag['attribute'], ['first-name', 'last-name']);
         }
 
         /*
@@ -183,7 +183,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'warning/listAll.json',
+                'flag/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -245,7 +245,7 @@ class ListAllTest extends AbstractFunctional {
                  */
                 $this->assertTrue(
                     $this->validateSchema(
-                        'warning/listAll.json',
+                        'flag/listAll.json',
                         json_decode((string) $response->getBody())
                     ),
                     $this->schemaErrors

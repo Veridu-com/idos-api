@@ -79,8 +79,8 @@ class UserInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        $warnings = $this->table('warnings');
-        $warnings
+        $flags = $this->table('flags');
+        $flags
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])

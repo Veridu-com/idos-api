@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "https://api.veridu.com/1.0/schema/user/warningEntity.json",
+    "id": "https://api.veridu.com/1.0/schema/user/flagEntity.json",
     "title": "Warning",
     "type": "object",
     "properties": {

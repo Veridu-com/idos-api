@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "GET /profiles/{userName}/warnings",
+    "title": "GET /profiles/{userName}/flags",
     "type": "object",
     "properties": {
         "status": {
@@ -11,7 +11,7 @@
             "description": "Warnings response payload",
             "type": "array",
             "items": {
-                "$ref": "warningEntity.json"
+                "$ref": "flagEntity.json"
             },
             "minItems": 0,
             "uniqueItems": true

@@ -6,12 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Exception\NotAllowed\Profile;
+namespace App\Exception\Create\Profile;
+
+use App\Exception\AppException;
 
 /**
- * Warning not allowed exception.
+ * Flag create exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class WarningException extends NotAllowed {
+class FlagException extends AppException {
 }

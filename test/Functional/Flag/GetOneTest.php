@@ -4,12 +4,12 @@
  * All rights reserved.
  */
 
-namespace Test\Functional\Warning;
+namespace Test\Functional\Flag;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
-class DeleteOneTest extends AbstractFunctional {
+class GetOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresCredentialToken,
         Traits\RejectsUserToken,
@@ -18,8 +18,8 @@ class DeleteOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings/first-name-mismatch';
+        $this->httpMethod = 'GET';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/flags/first-name-mismatch';
     }
 
     public function testSuccess() {
@@ -30,12 +30,11 @@ class DeleteOneTest extends AbstractFunctional {
                 ]
             )
         );
-
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $body     = json_decode((string) $response->getBody(), true);
 
-        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
+        $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);
 
         /*
@@ -43,16 +42,19 @@ class DeleteOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'warning/deleteOne.json',
-                json_decode((string) $response->getBody())
+                'flag/getOne.json',
+                json_decode(
+                    $response->getBody()
+                )
             ),
             $this->schemaErrors
         );
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/warnings/dummy-ltd';
-        $request   = $this->createRequest(
+        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/flags/dummy-ltd';
+
+        $request = $this->createRequest(
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
@@ -60,10 +62,11 @@ class DeleteOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $this->assertSame(404, $response->getStatusCode());
+        $body     = json_decode((string) $response->getBody(), true);
 
-        $body = json_decode((string) $response->getBody(), true);
+        // assertions
         $this->assertNotEmpty($body);
+        $this->assertSame(404, $response->getStatusCode());
         $this->assertFalse($body['status']);
 
         /*

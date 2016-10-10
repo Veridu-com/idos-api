@@ -6,14 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Exception\Create\Profile;
+namespace App\Exception\Validate\Profile;
 
 use App\Exception\AppException;
 
 /**
- * Warning create exception.
+ * Flag validate exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class WarningException extends AppException {
+class FlagException extends AppException {
 }

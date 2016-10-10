@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "POST /profiles/{userName}/warnings",
+    "title": "POST /profiles/{userName}/flags",
     "type": "object",
     "properties": {
         "status": {
@@ -10,7 +10,7 @@
         "data": {
             "description": "Warning response payload",
             "type": "object",
-            "$ref": "warningEntity.json"
+            "$ref": "flagEntity.json"
         }
     },
     "required": [

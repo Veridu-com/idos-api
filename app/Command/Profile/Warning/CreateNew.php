@@ -6,12 +6,12 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Profile\Warning;
+namespace App\Command\Profile\Flag;
 
 use App\Command\AbstractCommand;
 
 /**
- * Warning "Create New" Command.
+ * Flag "Create New" Command.
  */
 class CreateNew extends AbstractCommand {
     /**
@@ -29,14 +29,14 @@ class CreateNew extends AbstractCommand {
     public $service;
 
     /**
-     * Warning's slug (user input).
+     * Flag's slug (user input).
      *
      * @var string
      */
     public $slug;
 
     /**
-     * Warning's attribute (user input).
+     * Flag's attribute (user input).
      *
      * @var string
      */
@@ -45,7 +45,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Warning\CreateNew
+     * @return App\Command\Profile\Flag\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
