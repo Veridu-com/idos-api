@@ -22,7 +22,7 @@ class Sources implements ControllerInterface {
     /**
      * Company Repository instance.
      *
-     * @var App\Repository\Profile\SourceInterface
+     * @var \App\Repository\Profile\SourceInterface
      */
     private $repository;
     /**
@@ -34,16 +34,16 @@ class Sources implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\SourceInterface $repository
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param App\Factory\Command                    $commandFactory
+     * @param \App\Repository\Profile\SourceInterface $repository
+     * @param \League\Tactician\CommandBus            $commandBus
+     * @param \App\Factory\Command                    $commandFactory
      *
      * @return void
      */
@@ -68,13 +68,13 @@ class Sources implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::getAllByUserId
+     * @see \App\Repository\DBSource::getAllByUserId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
-        $sources = $this->repository->getAllByUserId($user->id);
+        $sources = $this->repository->getByUserId($user->id);
 
         // @FIXME ACCESS MANAGEMENT REQUIRED!!
         //  How can an user access another's sources?
@@ -103,7 +103,7 @@ class Sources implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::findOne
+     * @see \App\Repository\DBSource::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -142,7 +142,7 @@ class Sources implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Source::handleCreateNew
+     * @see \App\Handler\Source::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -156,8 +156,8 @@ class Sources implements ControllerInterface {
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
-        $source = $this->commandBus->handle($command);
 
+        $source = $this->commandBus->handle($command);
         $body = [
             'data' => $source->toArray()
         ];
@@ -173,27 +173,42 @@ class Sources implements ControllerInterface {
     }
 
     /**
-     * Deletes all Sources that belongs to the acting User.
+     * Updates one Source of the acting User based on path paremeter source id.
      *
-     * @apiEndpointResponse 200 schema/service/deleteAll.json
+     * All source related data is packed on TAGS payload field.
+     *  - E-mail can carry a otp_check for OTP verification.
+     *  - SMS can carry a otp_check for OTP verification.
+     *
+     * @apiEndpointParam body string otpCode OTP Code check for One Time Password Verifications
+     * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
+     * @apiEndpointResponse 200 schema/source/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Source::handleDeleteAll
+     * @see \App\Repository\DBSource::findOne
+     * @see \App\Handler\Source::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user     = $request->getAttribute('targetUser');
+        $sourceId = (int) $request->getAttribute('decodedSourceId');
 
-        $command = $this->commandFactory->create('Profile\\Source\\DeleteAll');
+        $source = $this->repository->findOne($sourceId, $user->id);
+
+        $command = $this->commandFactory->create('Profile\\Source\\UpdateOne');
         $command
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
+            ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
+        $source = $this->commandBus->handle($command);
+
         $body = [
-            'deleted' => $this->commandBus->handle($command)
+            'data'    => $source->toArray(),
+            'updated' => $source->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -213,8 +228,8 @@ class Sources implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::findOne
-     * @see App\Handler\Source::handleDeleteOne
+     * @see \App\Repository\DBSource::findOne
+     * @see \App\Handler\Source::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -245,42 +260,27 @@ class Sources implements ControllerInterface {
     }
 
     /**
-     * Updates one Source of the acting User based on path paremeter source id.
+     * Deletes all Sources that belongs to the acting User.
      *
-     * All source related data is packed on TAGS payload field.
-     *  - E-mail can carry a otp_check for OTP verification.
-     *  - SMS can carry a otp_check for OTP verification.
-     *
-     * @apiEndpointParam body string otpCode OTP Code check for One Time Password Verifications
-     * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
-     * @apiEndpointResponse 200 schema/source/updateOne.json
+     * @apiEndpointResponse 200 schema/service/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::findOne
-     * @see App\Handler\Source::handleUpdateOne
+     * @see \App\Handler\Source::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
-        $sourceId = (int) $request->getAttribute('decodedSourceId');
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user = $request->getAttribute('targetUser');
 
-        $source = $this->repository->findOne($sourceId, $user->id);
-
-        $command = $this->commandFactory->create('Profile\\Source\\UpdateOne');
+        $command = $this->commandFactory->create('Profile\\Source\\DeleteAll');
         $command
-            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
-        $source = $this->commandBus->handle($command);
-
         $body = [
-            'data'    => $source->toArray(),
-            'updated' => $source->updatedAt
+            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

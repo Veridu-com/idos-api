@@ -100,7 +100,7 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $companyId, int $serviceHandlerId) : ServiceHandler {
+    public function findOne(int $serviceHandlerId, int $companyId) : ServiceHandler {
         return $this->findOneBy(
             [
             'id'         => $serviceHandlerId,
@@ -112,7 +112,7 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
     /**
      * {@inheritdoc}
      */
-    public function findAllFromService(int $companyId, string $serviceSlug) : Collection {
+    public function getByService(int $companyId, string $serviceSlug) : Collection {
         return $this->findBy(
             [
                 'company_id'   => $companyId,
@@ -124,7 +124,7 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
     /**
      * {@inheritdoc}
      */
-    public function findByCompanyId(int $companyId) : Collection {
+    public function getByCompanyId(int $companyId) : Collection {
         return $this->findBy(
             [
                 'company_id' => $companyId
@@ -135,19 +135,8 @@ class DBServiceHandler extends AbstractSQLDBRepository implements ServiceHandler
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId) : Collection {
-        return $this->findBy(
-            [
-            'service.company_id' => $companyId
-            ]
-        );
-
-        /*$array = $query
-            ->join('services', 'services.id', '=', 'service_handlers.service_id')
-            ->where('services.company_id', '=', $companyId)
-            ->get($this->queryAttributes);
-
-        return $this->castHydrate($array);*/
+    public function getByServiceCompanyId(int $companyId) : Collection {
+        return $this->findBy(['service.company_id' => $companyId]);
     }
 
     /**

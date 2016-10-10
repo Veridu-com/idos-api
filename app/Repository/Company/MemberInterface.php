@@ -31,7 +31,7 @@ interface MemberInterface extends RepositoryInterface {
      * @param int    companyId member's company_id
      * @param string role  member's role
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllByCompanyIdAndRole(int $companyId, array $role) : Collection;
 
@@ -49,9 +49,18 @@ interface MemberInterface extends RepositoryInterface {
      *
      * @param int $memberId
      *
-     * @return App\Entity\Company\Member
+     * @return \App\Entity\Company\Member
      */
     public function findOne(int $memberId);
+
+    /**
+     * Saves a member.
+     *
+     * @param \App\Entity\Company\Member $member The member
+     *
+     * @return \App\Entity\Company\Member
+     */
+    public function saveOne(Member $member) : Member;
 
     /**
      * Deletes one member from company.
@@ -62,13 +71,4 @@ interface MemberInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteOne(int $companyId, int $userId) : int;
-
-    /**
-     * Saves a member.
-     *
-     * @param \App\Entity\Company\Member $member The member
-     *
-     * @return \App\Entity\Company\Member
-     */
-    public function saveOne(Member $member) : Member;
 }

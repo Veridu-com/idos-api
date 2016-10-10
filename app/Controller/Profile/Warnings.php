@@ -23,13 +23,13 @@ class Warnings implements ControllerInterface {
     /**
      * Warning Repository instance.
      *
-     * @var App\Repository\Profile\WarningInterface
+     * @var \App\Repository\Profile\WarningInterface
      */
     private $repository;
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
@@ -41,17 +41,17 @@ class Warnings implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\WarningInterface $repository
-     * @param App\Repository\UserInterface            $userRepository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param App\Factory\Command                     $commandFactory
+     * @param \App\Repository\Profile\WarningInterface $repository
+     * @param \App\Repository\UserInterface            $userRepository
+     * @param \League\Tactician\CommandBus             $commandBus
+     * @param \App\Factory\Command                     $commandFactory
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class Warnings implements ControllerInterface {
     }
 
     /**
-     * Lists all Warnings that belongs to the given user.
+     * Retrieves a list of warnings that belongs to the user.
      *
      * @apiEndpointParam query int page 10|1 Current page
      * @apiEndpointResponse 200 schema/warning/listAll.json
@@ -76,15 +76,14 @@ class Warnings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBWarning::findBy
+     * @see \App\Repository\DBWarning::findBy
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
 
-        $entities = $this->repository->findBy(['user_id' => $user->id], $request->getQueryParams());
+        $entities = $this->repository->getByUserId($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),
@@ -103,14 +102,14 @@ class Warnings implements ControllerInterface {
     }
 
     /**
-     * Retrieves one Warning of the User.
+     * Retrieves a warning from the user.
      *
      * @apiEndpointResponse 200 schema/warning/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBWarning::findOneBySlug
+     * @see \App\Repository\DBWarning::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -119,7 +118,7 @@ class Warnings implements ControllerInterface {
         $service = $request->getAttribute('service');
         $slug    = $request->getAttribute('warningSlug');
 
-        $entity = $this->repository->findOneBySlug($user->id, $service->id, $slug);
+        $entity = $this->repository->findOne($slug, $service->id, $user->id);
 
         $body = [
             'data'    => $entity->toArray(),
@@ -136,7 +135,7 @@ class Warnings implements ControllerInterface {
     }
 
     /**
-     * Creates a new Feture for the given user.
+     * Creates a new warning for the user.
      *
      * @apiEndpointRequiredParam body string name warning test Warning name
      * @apiEndpointRequiredParam body string reference firstName Warning reference
@@ -145,7 +144,7 @@ class Warnings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Warning::handleCreateNew
+     * @see \App\Handler\Warning::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -177,41 +176,6 @@ class Warnings implements ControllerInterface {
     }
 
     /**
-     * Deletes all Warnings that belongs to the User.
-     *
-     * @apiEndpointResponse 200 schema/warning/deleteAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see App\Handler\Warning::handleDeleteAll
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-
-        $command = $this->commandFactory->create('Profile\\Warning\\DeleteAll');
-        $command
-            ->setParameter('user', $user)
-            ->setParameter('service', $service)
-            ->setParameter('queryParams', $request->getQueryParams());
-
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Deletes one Warning of the User.
      *
      * @apiEndpointResponse 200 schema/warning/deleteOne.json
@@ -219,7 +183,7 @@ class Warnings implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Warning::handleDeleteOne
+     * @see \App\Handler\Warning::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -237,6 +201,41 @@ class Warnings implements ControllerInterface {
         $this->commandBus->handle($command);
         $body = [
             'status' => true
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Deletes all Warnings that belongs to the User.
+     *
+     * @apiEndpointResponse 200 schema/warning/deleteAll.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Handler\Warning::handleDeleteAll
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user    = $request->getAttribute('targetUser');
+        $service = $request->getAttribute('service');
+
+        $command = $this->commandFactory->create('Profile\\Warning\\DeleteAll');
+        $command
+            ->setParameter('user', $user)
+            ->setParameter('service', $service)
+            ->setParameter('queryParams', $request->getQueryParams());
+
+        $body = [
+            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

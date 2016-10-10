@@ -17,17 +17,62 @@ use Illuminate\Support\Collection;
  */
 interface FeatureInterface extends RepositoryInterface {
     /**
-     * Returns all features based on their user id.
+     * Returns a feature based on its user id, service id (creator) and id.
+     *
+     * @param int         $id         The feature id
+     * @param int         $serviceId  The service id
+     * @param int         $userId     The user id
+     *
+     * @return Feature
+     */
+    public function findOne(int $id, int $serviceId, int $userId) : Feature;
+
+    /**
+     * Returns a feature based on its user id, source id, service id (creator) and name.
+     *
+     * @param string      $name       The feature name
+     * @param int         $serviceId  The service id
+     * @param string|null $sourceName The source name
+     * @param int         $userId     The user id
+     *
+     * @return Feature
+     */
+    public function findOneByName(string $name, int $serviceId, $sourceName, int $userId) : Feature;
+
+    /**
+     * Return features based on their user id and service id (creator).
+     *
+     * @param int   $serviceId
+     * @param int   $userId
+     * @param array $queryParams
+     *
+     * @return Collection
+     */
+    public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
+
+    /**
+     * Return features based on their user id.
      *
      * @param int   $userId
      * @param array $queryParams
      *
      * @return Collection
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection;
+    public function getByUserId(int $userId, array $queryParams = []) : Collection;
 
     /**
-     * Deletes all features based on their user id.
+     * Upsert a bulk of features.
+     *
+     * @param int   $serviceId The service identifier
+     * @param int   $userId    The user identifier
+     * @param array $features  The features
+     *
+     * @return bool Success of the transaction.
+     */
+    public function upsertBulk(int $serviceId, int $userId, array $features) : bool;
+
+    /**
+     * Delete features based on their user id.
      *
      * @param int   $userId
      * @param array $queryParams
@@ -35,24 +80,4 @@ interface FeatureInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByUserId(int $userId, array $queryParams = []) : int;
-
-    /**
-     * Returns a feature based on its user id, source id, service id (creator) and id.
-     *
-     * @param int         $userId     The user    id
-     * @param string|null $sourceName The source  name
-     * @param int         $serviceId  The service id
-     * @param int         $id         The feature id
-     */
-    public function findOneById(int $userId, $sourceName, int $serviceId, int $id) : Feature;
-
-    /**
-     * Returns a feature based on its user id, source id, service id (creator) and name.
-     *
-     * @param int         $userId     The user    id
-     * @param string|null $sourceName The source  name
-     * @param int         $serviceId  The service id
-     * @param string      $name       The feature name
-     */
-    public function findOneByName(int $userId, $sourceName, int $serviceId, string $name) : Feature;
 }

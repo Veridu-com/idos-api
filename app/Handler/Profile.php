@@ -24,31 +24,31 @@ class Profile implements HandlerInterface {
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $repository;
     /**
      * Review Repository instance.
      *
-     * @var App\Repository\ReviewInterface
+     * @var \App\Repository\ReviewInterface
      */
     private $reviewRepository;
     /**
      * Profile Validator instance.
      *
-     * @var App\Validator\Profile
+     * @var \App\Validator\Profile
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -78,9 +78,9 @@ class Profile implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\UserInterface $repository
-     * @param App\Validator\Profile        $validator
-     * @param App\Factory\Event            $eventFactory
+     * @param \App\Repository\UserInterface $repository
+     * @param \App\Validator\Profile        $validator
+     * @param \App\Factory\Event            $eventFactory
      * @param \League\Event\Emitter        $emitter
      *
      * @return void
@@ -102,11 +102,11 @@ class Profile implements HandlerInterface {
     /**
      * Creates a new Profile.
      *
-     * @param App\Command\Profile\ListAll $command
+     * @param \App\Command\Profile\ListAll $command
      *
-     * @see App\Repository\DBProfile::findByCompanyId
+     * @see \App\Repository\DBProfile::findByCompanyId
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function handleListAll(ListAll $command) : Collection {
         $this->validator->assertCompany($command->company);

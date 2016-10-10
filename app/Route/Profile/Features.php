@@ -31,13 +31,13 @@ class Features implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'features:listAll',
-            'features:deleteAll',
-            'features:createNew',
             'features:getOne',
+            'features:createNew',
             'features:updateOne',
             'features:upsert',
             'features:upsertBulk',
-            'features:deleteOne'
+            'features:deleteOne',
+            'features:deleteAll'
         ];
     }
 
@@ -60,13 +60,13 @@ class Features implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::upsert($app, $authMiddleware, $permissionMiddleware);
         self::upsertBulk($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -103,106 +103,6 @@ class Features implements RouteInterface {
     }
 
     /**
-     * Create new Feature.
-     *
-     * Create a new feature for the given user.
-     *
-     * @apiEndpoint POST /profiles/{userName}/features
-     * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profile/features/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::createNew
-     */
-    private static function createNew(App $app, callable $auth, callable $permission) {
-        $app
-            ->post(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
-                'App\Controller\Profile\Features:createNew'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('features:createNew');
-    }
-
-    /**
-     * Deletes a single Feature.
-     *
-     * Deletes a single Feature that belongs to the given user
-     *
-     * @apiEndpoint DELETE /profiles/{userName}/features/{featureId}
-     * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment int featureId 3214
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profile/features/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::deleteOne
-     */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureId:[0-9]+}',
-                'App\Controller\Profile\Features:deleteOne'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('features:deleteOne');
-    }
-
-    /**
-     * Deletes all features.
-     *
-     * Deletes all features that belongs to the given user
-     *
-     * @apiEndpoint DELETE /profiles/{userName}/features
-     * @apiGroup Profile Features
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profile/features/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
-                'App\Controller\Profile\Features:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('features:deleteAll');
-    }
-
-    /**
      * Retrieve a single Feature.
      *
      * Retrieves all public information from a Feature.
@@ -234,6 +134,39 @@ class Features implements RouteInterface {
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('features:getOne');
+    }
+
+    /**
+     * Create new Feature.
+     *
+     * Create a new feature for the given user.
+     *
+     * @apiEndpoint POST /profiles/{userName}/features
+     * @apiGroup Profile Features
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profile/features/createNew.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Profile\Features::createNew
+     */
+    private static function createNew(App $app, callable $auth, callable $permission) {
+        $app
+            ->post(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
+                'App\Controller\Profile\Features:createNew'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('features:createNew');
     }
 
     /**
@@ -334,5 +267,72 @@ class Features implements RouteInterface {
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('features:upsertBulk');
+    }
+
+    /**
+     * Deletes a single Feature.
+     *
+     * Deletes a single Feature that belongs to the given user
+     *
+     * @apiEndpoint DELETE /profiles/{userName}/features/{featureId}
+     * @apiGroup Profile Features
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment int featureId 3214
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profile/features/deleteOne.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Profile\Features::deleteOne
+     */
+    private static function deleteOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureId:[0-9]+}',
+                'App\Controller\Profile\Features:deleteOne'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('features:deleteOne');
+    }
+
+    /**
+     * Deletes all features.
+     *
+     * Deletes all features that belongs to the given user
+     *
+     * @apiEndpoint DELETE /profiles/{userName}/features
+     * @apiGroup Profile Features
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profile/features/deleteAll.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Profile\Features::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
+                'App\Controller\Profile\Features:deleteAll'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('features:deleteAll');
     }
 }

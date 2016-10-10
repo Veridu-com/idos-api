@@ -45,7 +45,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * Feature's id (user input).
      *
-     * @var string
+     * @var int
      */
     public $featureId;
 

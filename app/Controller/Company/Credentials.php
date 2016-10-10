@@ -23,13 +23,13 @@ class Credentials implements ControllerInterface {
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\SubscriptionInterface
+     * @var \App\Repository\Company\SubscriptionInterface
      */
     private $subscriptionRepository;
     /**
@@ -41,16 +41,16 @@ class Credentials implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\CredentialInterface $repository
+     * @param \App\Repository\Company\CredentialInterface $repository
      * @param \League\Tactician\CommandBus               $commandBus
-     * @param App\Factory\Command                        $commandFactory
+     * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -79,7 +79,7 @@ class Credentials implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('targetCompany');
 
-        $credentials = $this->repository->getAllByCompanyId($company->id);
+        $credentials = $this->repository->getByCompanyId($company->id);
 
         $body = [
             'status'  => true,
@@ -87,6 +87,37 @@ class Credentials implements ControllerInterface {
             'updated' => (
                 $credentials->isEmpty() ? time() : max($credentials->max('updated_at'), $credentials->max('created_at'))
             )
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Retrieves one Credential of the Target Company based on the Credential's Public Key.
+     *
+     * @apiEndpointResponse 200 schema/credential/getOne.json
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @see \App\Repository\DBCredential::findByPubKey
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $company = $request->getAttribute('targetCompany');
+
+        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
+
+        $body = [
+            'data'    => $credential->toArray(),
+            'updated' => $credential->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -108,7 +139,7 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Handler\Credential::handleCreateNew
+     * @see \App\Handler\Credential::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -139,37 +170,6 @@ class Credentials implements ControllerInterface {
     }
 
     /**
-     * Retrieves one Credential of the Target Company based on the Credential's Public Key.
-     *
-     * @apiEndpointResponse 200 schema/credential/getOne.json
-     *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
-     *
-     * @see App\Repository\DBCredential::findByPubKey
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
-
-        $credential = $this->repository->findByPubKey($request->getAttribute('pubKey'));
-
-        $body = [
-            'data'    => $credential->toArray(),
-            'updated' => $credential->updated_at
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Updates one Credential of the Target Company based on the Credential's Public Key.
      *
      * @apiEndpointRequiredParam body string name New-Name New Credential name
@@ -178,8 +178,8 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBCredential::findByPubKey
-     * @see App\Handler\Credential::handleUpdateOne
+     * @see \App\Repository\DBCredential::findByPubKey
+     * @see \App\Handler\Credential::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -217,8 +217,8 @@ class Credentials implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBCredential::findByPubKey
-     * @see App\Handler\Credential::handleDeleteOne
+     * @see \App\Repository\DBCredential::findByPubKey
+     * @see \App\Handler\Credential::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

@@ -17,48 +17,43 @@ use Illuminate\Support\Collection;
  */
 interface ReferenceInterface extends RepositoryInterface {
     /**
-     * Gets all Reference entities based on their user_id.
+     * Returns a reference based on its user id and name.
+     *
+     * @param string $name
+     * @param int    $userId
      *
      * @param int $userId
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Reference
      */
-    public function getAllByUserId(int $userId) : Collection;
+    public function findOne(string $name, int $userId) : Reference;
+
     /**
-     * Gets all Reference entities based on their user_id, filtering them by name.
+     * Return references based on their user id.
      *
      * @param int   $userId
      * @param array $queryParams
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdAndNames(int $userId, array $queryParams = []) : Collection;
+    public function getAllByUserId(int $userId, array $queryParams = []) : Collection;
+
+    /**
+     * Deletes a reference based on its user id and name.
+     *
+     * @param string $name
+     * @param int    $userId
+     *
+     * @param int $userId
+     * @return int
+     */
+    public function deleteOne(string $name, int $userId) : int;
+
     /*
-     * Deletes all Reference entities based on user_id.
+     * Deletes references based on their user id.
      *
      * @param int $userId
      *
      * @return int
      */
     public function deleteByUserId(int $userId) : int;
-    /**
-     * Find a Reference entity based on its user_id and name.
-     *
-     * @param int    $userId
-     * @param string $name
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Profile\Reference
-     */
-    public function findOneByUserIdAndName(int $userId, string $name) : Reference;
-    /**
-     * Deletes a Reference entity based on their user_id and name.
-     *
-     * @param int    $userId
-     * @param string $name
-     *
-     * @return int
-     */
-    public function deleteOneByUserIdAndName(int $userId, string $name) : int;
 }

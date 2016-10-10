@@ -17,35 +17,35 @@ use Illuminate\Support\Collection;
  */
 interface ServiceInterface extends RepositoryInterface {
     /**
-     * Gets all by company.
-     *
-     * @param App\Entity\Company $company     The company
-     * @param array              $queryParams The query parameters
-     *
-     * @return Illuminate\Support\Collection
-     */
-    public function getAllByCompany(Company $company, array $queryParams = []) : Collection;
-
-    /**
      * Find one Service.
      *
      * @param int                $serviceId The service identifier
-     * @param App\Entity\Company $company   The company
+     * @param \App\Entity\Company $company   The company
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return App\Entity\Service
+     * @return \App\Entity\Service
      */
     public function findOne(int $serviceId, Company $company) : Service;
+
+    /**
+     * Return services based on their company.
+     *
+     * @param \App\Entity\Company $company     The company
+     * @param array              $queryParams The query parameters
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByCompany(Company $company, array $queryParams = []) : Collection;
 
     /**
      * Finds a Service based on its Public Key.
      *
      * @param string $pubKey
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return App\Entity\Service
+     * @return \App\Entity\Service
      */
     public function findByPubKey(string $pubKey) : Service;
 
@@ -55,7 +55,7 @@ interface ServiceInterface extends RepositoryInterface {
      * @param int                 $serviceId The service identifier
      * @param \App\Entity\Company $company   The company
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
      * @return int
      */
