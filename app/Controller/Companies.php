@@ -21,7 +21,7 @@ class Companies implements ControllerInterface {
     /**
      * Company Repository instance.
      *
-     * @var App\Repository\CompanyInterface
+     * @var \App\Repository\CompanyInterface
      */
     private $repository;
     /**
@@ -33,16 +33,16 @@ class Companies implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\CompanyInterface $repository
+     * @param \App\Repository\CompanyInterface $repository
      * @param \League\Tactician\CommandBus    $commandBus
-     * @param App\Factory\Command             $commandFactory
+     * @param \App\Factory\Command             $commandFactory
      *
      * @return void
      */
@@ -125,7 +125,7 @@ class Companies implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Company::handleCreateNew
+     * @see \App\Handler\Company::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -156,40 +156,6 @@ class Companies implements ControllerInterface {
     }
 
     /**
-     * Deletes the Target Company, a child of the Acting Company.
-     *
-     * @apiEndpointResponse 200 schema/company/deleteOne.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see App\Handler\Company::handleDeleteOne
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $identity      = $request->getAttribute('identity');
-
-        $command = $this->commandFactory->create('Company\\DeleteOne');
-        $command->setParameter('company', $targetCompany);
-        $command->setParameter('identity', $identity);
-
-        $this->commandBus->handle($command);
-        $body = [
-            'status' => true
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Updates the Target Company, a child of the Acting Company.
      *
      * @apiEndpointRequiredParam body string name NewName New Company name
@@ -198,7 +164,7 @@ class Companies implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Company::handleUpdateOne
+     * @see \App\Handler\Company::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -216,6 +182,40 @@ class Companies implements ControllerInterface {
         $body = [
             'data'    => $targetCompany->toArray(),
             'updated' => time()
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Deletes the Target Company, a child of the Acting Company.
+     *
+     * @apiEndpointResponse 200 schema/company/deleteOne.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Handler\Company::handleDeleteOne
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $targetCompany = $request->getAttribute('targetCompany');
+        $identity      = $request->getAttribute('identity');
+
+        $command = $this->commandFactory->create('Company\\DeleteOne');
+        $command->setParameter('company', $targetCompany);
+        $command->setParameter('identity', $identity);
+
+        $this->commandBus->handle($command);
+        $body = [
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
