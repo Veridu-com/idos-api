@@ -122,6 +122,37 @@ class Feature implements HandlerInterface {
     }
 
     /**
+     * Gets the process.
+     *
+     * @param CommandInterface $command The command
+     *
+     * @return App\Entity\Profile\Process
+     */
+    private function getRelatedProcess(int $userId, $source = null) : Process {
+        $event    = sprintf('idos:feature.%s.created', $source ? $source->name : 'profile');
+        $sourceId = $source ? $source->id : null;
+
+        try {
+            if ($source) {
+                return $this->processRepository->findOneBySourceId($sourceId);
+            }
+
+            return $this->processRepository->findLastByUserIdSourceIdAndEvent($event, $sourceId, $userId);
+        } catch (NotFound $e) {
+            $entity = $this->processRepository->create(
+                [
+                    'name'      => 'idos:verification',
+                    'user_id'   => $userId,
+                    'source_id' => $sourceId,
+                    'event'     => $event
+                ]
+            );
+
+            return $this->processRepository->save($entity);
+        }
+    }
+
+    /**
      * Creates a feature.
      *
      * @param App\Command\Profile\Feature\CreateNew $command
@@ -214,13 +245,7 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOneBy(
-            [
-                'user_id' => $command->user->id,
-                'creator' => $command->service->id,
-                'id'      => $command->featureId
-            ]
-        );
+        $feature = $this->repository->findOne($command->featureId, $command->service->id, $command->user->id);
 
         if (is_array($command->value)) {
             $command->value = json_encode($command->value);
@@ -242,97 +267,6 @@ class Feature implements HandlerInterface {
         }
 
         return $feature;
-    }
-
-    /**
-     * Deletes all settings ($command->userId).
-     *
-     * @param App\Command\Profile\Feature\DeleteAll $command
-     *
-     * @see App\Repository\DBFeature::findByUserId
-     * @see App\Repository\DBFeature::deleteByUserId
-     *
-     * @throws App\Exception\Validate\Profile\FeatureException
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
-            $this->validator->assertArray($command->queryParams);
-        } catch (ValidationException $e) {
-            throw new Validate\Profile\FeatureException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $deletedFeatures = $this->repository->findBy(
-            [
-                'user_id' => $command->user->id,
-                'creator' => $command->service->id
-            ],
-            $command->queryParams
-        );
-
-        $affectedRows = 0;
-
-        foreach ($deletedFeatures as $deletedFeature) {
-            $affectedRows += $this->repository->delete($deletedFeature->id);
-        }
-
-        $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures);
-        $this->emitter->emit($event);
-
-        return $affectedRows;
-    }
-
-    /**
-     * Deletes a Feature.
-     *
-     * @param App\Command\Profile\Feature\DeleteOne $command
-     *
-     * @see App\Repository\DBFeature::findByUserIdAndSlug
-     * @see App\Repository\DBFeature::delete
-     *
-     * @throws App\Exception\Validate\Profile\FeatureException
-     * @throws App\Exception\NotFound\Profile\FeatureException
-     *
-     * @return void
-     */
-    public function handleDeleteOne(DeleteOne $command) : int {
-        try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
-            $this->validator->assertId($command->featureId);
-        } catch (ValidationException $e) {
-            throw new Validate\Profile\FeatureException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $feature = $this->repository->findOneBy(
-            [
-            'user_id' => $command->user->id,
-            'creator' => $command->service->id,
-            'id'      => $command->featureId
-            ]
-        );
-
-        $affectedRows = $this->repository->delete($feature->id);
-
-        if (! $affectedRows) {
-            throw new NotFound\Profile\FeatureException('No features found for deletion', 404);
-        }
-
-        $event = $this->eventFactory->create('Profile\\Feature\\Deleted', $feature);
-        $this->emitter->emit($event);
-
-        return $affectedRows;
     }
 
     /**
@@ -370,12 +304,7 @@ class Feature implements HandlerInterface {
         $feature   = null;
         $inserting = false;
         try {
-            $feature = $this->repository->findOneByName(
-                $command->user->id,
-                $sourceName,
-                $command->service->id,
-                $command->name
-            );
+            $feature = $this->repository->findOneByName($command->name, $command->service->id, $sourceName, $command->user->id);
 
             $feature->type      = $command->type;
             $feature->value     = $command->value;
@@ -414,6 +343,7 @@ class Feature implements HandlerInterface {
 
         return $feature;
     }
+
     /**
      * Creates or update a feature.
      *
@@ -460,12 +390,7 @@ class Feature implements HandlerInterface {
             }
         }
 
-        $success = $this->repository->upsertBulk(
-            $command->user->id,
-            $command->service->id,
-            $features
-        );
-
+        $success = $this->repository->upsertBulk($command->service->id, $command->user->id, $features);
         if ($success) {
             // creates 1 event per source
             // sourceId will be 0 to null sources
@@ -480,35 +405,80 @@ class Feature implements HandlerInterface {
 
         return $success;
     }
+    /**
+     * Deletes a Feature.
+     *
+     * @param App\Command\Profile\Feature\DeleteOne $command
+     *
+     * @see App\Repository\DBFeature::findByUserIdAndSlug
+     * @see App\Repository\DBFeature::delete
+     *
+     * @throws App\Exception\Validate\Profile\FeatureException
+     * @throws App\Exception\NotFound\Profile\FeatureException
+     *
+     * @return void
+     */
+    public function handleDeleteOne(DeleteOne $command) : int {
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertId($command->featureId);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $feature = $this->repository->findOne($command->featureId, $command->service->id, $command->user->id);
+
+        $affectedRows = $this->repository->delete($feature->id);
+        if (! $affectedRows) {
+            throw new NotFound\Profile\FeatureException('No features found for deletion', 404);
+        }
+
+        $event = $this->eventFactory->create('Profile\\Feature\\Deleted', $feature);
+        $this->emitter->emit($event);
+
+        return $affectedRows;
+    }
 
     /**
-     * Gets the process.
+     * Deletes all settings ($command->userId).
      *
-     * @param CommandInterface $command The command
+     * @param App\Command\Profile\Feature\DeleteAll $command
      *
-     * @return App\Entity\Profile\Process
+     * @see App\Repository\DBFeature::findByUserId
+     * @see App\Repository\DBFeature::deleteByUserId
+     *
+     * @throws App\Exception\Validate\Profile\FeatureException
+     *
+     * @return int
      */
-    private function getRelatedProcess(int $userId, $source = null) : Process {
-        $event    = sprintf('idos:feature.%s.created', $source ? $source->name : 'profile');
-        $sourceId = $source ? $source->id : null;
-
+    public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            if ($source) {
-                return $this->processRepository->findOneBySourceId($sourceId);
-            }
-
-            return $this->processRepository->findLastByUserIdSourceIdAndEvent($userId, $sourceId, $event);
-        } catch (NotFound $e) {
-            $entity = $this->processRepository->create(
-                [
-                'name'      => 'idos:verification',
-                'user_id'   => $userId,
-                'source_id' => $sourceId,
-                'event'     => $event
-                ]
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertArray($command->queryParams);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\FeatureException(
+                $e->getFullMessage(),
+                400,
+                $e
             );
-
-            return $this->processRepository->save($entity);
         }
+
+        $deletedFeatures = $this->repository->getByServiceIdAndUserId($command->service->id, $command->user->id, $command->queryParams);
+
+        $affectedRows = 0;
+        foreach ($deletedFeatures as $deletedFeature) {
+            $affectedRows += $this->repository->delete($deletedFeature->id);
+        }
+
+        $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures);
+        $this->emitter->emit($event);
+
+        return $affectedRows;
     }
 }

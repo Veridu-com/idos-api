@@ -29,25 +29,25 @@ class Subscription implements HandlerInterface {
     /**
      * Subscription Repository instance.
      *
-     * @var App\Repository\Company\SubscriptionInterface
+     * @var \App\Repository\Company\SubscriptionInterface
      */
     private $repository;
     /**
      * Subscription Validator instance.
      *
-     * @var App\Validator\Company\Subscription
+     * @var \App\Validator\Company\Subscription
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -74,9 +74,9 @@ class Subscription implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\SubscriptionInterface $repository
-     * @param App\Validator\Subscription           $validator
-     * @param App\Factory\Event                    $eventFactory
+     * @param \App\Repository\Company\SubscriptionInterface $repository
+     * @param \App\Validator\Company\Subscription           $validator
+     * @param \App\Factory\Event                    $eventFactory
      * @param \League\Event\Emitter                $emitter
      *
      * @return void
@@ -96,12 +96,12 @@ class Subscription implements HandlerInterface {
     /**
      * Creates a new Subscription.
      *
-     * @param App\Command\Company\Subscription\CreateNew $command
+     * @param \App\Command\Company\Subscription\CreateNew $command
      *
-     * @throws App\Exception\Validate\SubscriptionException
-     * @throws App\Exception\Create\SubscriptionException
+     * @throws \App\Exception\Validate\Company\SubscriptionException
+     * @throws \App\Exception\Create\Company\SubscriptionException
      *
-     * @return App\Entity\Subscription
+     * @return \App\Entity\Company\Subscription
      */
     public function handleCreateNew(CreateNew $command) : SubscriptionEntity {
         try {
@@ -138,10 +138,10 @@ class Subscription implements HandlerInterface {
     /**
      * Deletes a Subscription.
      *
-     * @param App\Command\Company\Subscription\DeleteOne $command
+     * @param \App\Command\Company\Subscription\DeleteOne $command
      *
-     * @throws App\Exception\Validate\SubscriptionException
-     * @throws App\Exception\NotFound\SubscriptionException
+     * @throws \App\Exception\Validate\Company\SubscriptionException
+     * @throws \App\Exception\NotFound\Company\SubscriptionException
      *
      * @return void
      */

@@ -29,7 +29,6 @@ class Raw implements RouteInterface {
         return [
             'raw:listAll',
             'raw:createNew',
-            'raw:updateOne',
             'raw:upsert'
         ];
     }
@@ -53,7 +52,6 @@ class Raw implements RouteInterface {
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::upsert($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -121,40 +119,6 @@ class Raw implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('raw:createNew');
-    }
-
-    /**
-     * Update a raw data.
-     *
-     * Updates a raw data in the given source.
-     *
-     * @apiEndpoint PUT /profiles/{userName}/raw/{sourceId}
-     * @apiGroup Profile Raw
-     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
-     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment int sourceId 12345
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/management/members/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Members::updateOne
-     */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->patch(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/raw/{sourceId:[0-9]+}',
-                'App\Controller\Profile\Raw:updateOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('raw:updateOne');
     }
 
     /**

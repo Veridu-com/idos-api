@@ -20,7 +20,7 @@ use Slim\App;
  * across multiple platforms using the Veridu service, without having to use/create new login credentials for each platform.
  *
  * @link docs/sso/overview.md
- * @see App\Controller\Sso
+ * @see \App\Controller\Sso
  */
 class Sso implements RouteInterface {
     /**
@@ -72,9 +72,9 @@ class Sso implements RouteInterface {
      * @return void
      *
      * @link docs/sso/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Sso::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Sso::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -85,6 +85,35 @@ class Sso implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::NONE))
             ->setName('sso:listAll');
+    }
+
+    /**
+     * Retrieves the status of a sso provider.
+     *
+     * @apiEndpoint GET /sso/{providerName}
+     * @apiGroup Profile Sso
+     * @apiEndpointURIFragment string providerName facebook
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/sso/getOne.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Sso::getOne
+     */
+    private static function getOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/sso/{providerName:[a-zA-Z0-9]+}',
+                'App\Controller\Sso:getOne'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::NONE))
+            ->setName('sso:getOne');
     }
 
     /**
@@ -104,9 +133,9 @@ class Sso implements RouteInterface {
      * @return void
      *
      * @link docs/profile/features/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Sso::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Sso::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -117,34 +146,5 @@ class Sso implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::NONE))
             ->setName('sso:createNew');
-    }
-
-    /**
-     * Retrieves the status of a sso provider.
-     *
-     * @apiEndpoint GET /sso/{providerName}
-     * @apiGroup Profile Sso
-     * @apiEndpointURIFragment string providerName facebook
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/sso/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Sso::getOne
-     */
-    private static function getOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->get(
-                '/sso/{providerName:[a-zA-Z0-9]+}',
-                'App\Controller\Sso:getOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::NONE))
-            ->setName('sso:getOne');
     }
 }

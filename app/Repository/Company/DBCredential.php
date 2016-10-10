@@ -39,7 +39,7 @@ class DBCredential extends AbstractSQLDBRepository implements CredentialInterfac
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId) : Collection {
+    public function getByCompanyId(int $companyId) : Collection {
         $collection = $this->findBy([
             'company_id' => $companyId
         ]);

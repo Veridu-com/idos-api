@@ -17,39 +17,15 @@ use Illuminate\Support\Collection;
  */
 interface SettingInterface extends RepositoryInterface {
     /**
-     * Gets all Settings based on their Company Id.
+     * Retrieves a setting by its section and property.
      *
-     * @param int $companyId
-     *
-     * @return array
-     */
-    public function getAllByCompanyId(int $companyId) : array;
-
-    /**
-     * Deletes all Settings based on their Company Id.
-     *
-     * @param int $companyId
-     *
-     * @return int
-     */
-    public function deleteByCompanyId(int $companyId) : int;
-
-    /**
-     * Gets all public by company identifier, filters by $queryParams.
-     *
-     * @param int   $companyId   The company identifier
-     * @param array $queryParams The query parameters to filter the collection
-     */
-    public function getAllPublicByCompanyId(int $companyId, array $queryParams = []) : array;
-
-    /**
-     * Returns a collection of settings based on their compani_id.
-     *
-     * @param int $companyId The company identifier
+     * @param int    $companyId  The company identification
+     * @param string $section    The section
+     * @param array  $properties The properties
      *
      * @return \Illuminate\Support\Collection
      */
-    public function findByCompanyId(int $companyId) : Collection;
+    public function findByCompanyIdSectionAndProperties(int $companyId, string $section, array $properties) : Collection;
 
     /**
      * Finds one setting by Company and Setting Id.
@@ -61,13 +37,37 @@ interface SettingInterface extends RepositoryInterface {
     public function findOneByCompanyAndId(int $companyId, int $settingId) : Setting;
 
     /**
-     * Retrieves a setting by its section and property.
+     * Return settings based on their company id.
      *
-     * @param int    $companyId  The company identification
-     * @param string $section    The section
-     * @param array  $properties The properties
+     * @param int $companyId
+     *
+     * @return array
+     */
+    public function getByCompanyId(int $companyId) : array;
+
+    /**
+     * Return settings based on their company id.
+     *
+     * @param int   $companyId   The company identifier
+     * @param array $queryParams The query parameters to filter the collection
+     */
+    public function getPublicByCompanyId(int $companyId, array $queryParams = []) : array;
+
+    /**
+     * Returns a collection of settings based on their compani_id.
+     *
+     * @param int $companyId The company identifier
      *
      * @return \Illuminate\Support\Collection
      */
-    public function findByCompanyIdSectionAndProperties(int $companyId, string $section, array $properties) : Collection;
+    public function findByCompanyId(int $companyId) : Collection;
+
+    /**
+     * Delete settings based on their company id.
+     *
+     * @param int $companyId
+     *
+     * @return int
+     */
+    public function deleteByCompanyId(int $companyId) : int;
 }

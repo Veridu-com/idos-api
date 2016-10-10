@@ -17,13 +17,32 @@ use Illuminate\Support\Collection;
  */
 interface WarningInterface extends RepositoryInterface {
     /**
-     * Gets all Warnings based on their user id.
+     * Return a warning based on its slug, service id and user id.
+     *
+     * @param string $slug
+     * @param int    $serviceId
+     * @param int    $userId
+     *
+     * @return Warning
+     */
+    public function findOne(string $slug, int $serviceId, int $userId) : Warning;
+
+    /**
+     * Returns warnings based on their service id and user id.
+     *
+     * @param int $serviceId
+     * @param int $userId
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByUserIdAndServiceId(int $serviceId, int $userId, array $queryParams = []) : Collection;
+
+    /**
+     * Returns warnings based on their user id.
      *
      * @param int $userId
      *
-     * @return Illuminate\Database\Collection
+     * @return \Illuminate\Support\Collection
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection;
-    public function findOneBySlug(int $userId, int $serviceId, string $slug) : Warning;
-    public function findOneByName(int $userId, int $serviceId, string $name) : Warning;
+    public function getByUserId(int $userId, array $queryParams = []) : Collection;
 }

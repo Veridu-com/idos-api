@@ -21,7 +21,7 @@ class Profiles implements ControllerInterface {
     /**
      * Profile Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $repository;
 
@@ -35,16 +35,16 @@ class Profiles implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\UserInterface $repository
+     * @param \App\Repository\UserInterface $repository
      * @param \League\Tactician\CommandBus $commandBus
-     * @param App\Factory\Command          $commandFactory
+     * @param \App\Factory\Command          $commandFactory
      *
      * @return void
      */

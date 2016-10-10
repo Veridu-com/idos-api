@@ -24,25 +24,25 @@ class User implements HandlerInterface {
     /**
      * User repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $repository;
     /**
      * User Validator instance.
      *
-     * @var App\Validator\User
+     * @var \App\Validator\User
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -69,9 +69,9 @@ class User implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\UserInterface $repository
-     * @param App\Validator\User           $validator
-     * @param App\Factory\Event            $eventFactory
+     * @param \App\Repository\UserInterface $repository
+     * @param \App\Validator\User           $validator
+     * @param \App\Factory\Event            $eventFactory
      * @param \League\Event\Emitter        $emitter
      *
      * @return void
@@ -91,12 +91,12 @@ class User implements HandlerInterface {
     /**
      * Creates a user.
      *
-     * @param App\Command\User\CreateNew $command
+     * @param \App\Command\User\CreateNew $command
      *
-     * @throws App\Exception\Validate\UserException
-     * @throws App\Exception\Create\UserException
+     * @throws \App\Exception\Validate\UserException
+     * @throws \App\Exception\Create\UserException
      *
-     * @return App\Entity\User
+     * @return \App\Entity\User
      */
     public function handleCreateNew(CreateNew $command) : UserEntity {
         try {

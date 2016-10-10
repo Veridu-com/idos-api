@@ -24,13 +24,13 @@ class Sso implements ControllerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\Company\SettingInterface
+     * @var \App\Repository\Company\SettingInterface
      */
     private $settingRepository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
@@ -42,7 +42,7 @@ class Sso implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
     /**
@@ -55,11 +55,11 @@ class Sso implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\SettingInterface    $settingRepository
-     * @param App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \App\Repository\Company\SettingInterface    $settingRepository
+     * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \Slim\Collection                           $settings
      * @param \League\Tactician\CommandBus               $commandBus
-     * @param App\Factory\Command                        $commandFactory
+     * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -143,9 +143,9 @@ class Sso implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBCredental::findByPubKey
-     * @see App\Repository\DBSetting::findByCompanyIdSectionAndProperties
-     * @see App\Handler\Sso::handleCreateNew
+     * @see \App\Repository\DBCredental::findByPubKey
+     * @see \App\Repository\DBSetting::findByCompanyIdSectionAndProperties
+     * @see \App\Handler\Sso::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

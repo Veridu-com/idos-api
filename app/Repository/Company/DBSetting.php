@@ -43,7 +43,7 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId, array $queryParams = []) : array {
+    public function getByCompanyId(int $companyId, array $queryParams = []) : array {
         $dbQuery = $this->query()->where('company_id', $companyId);
 
         return $this->paginate(
@@ -55,7 +55,7 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllPublicByCompanyId(int $companyId, array $queryParams = []) : array {
+    public function getPublicByCompanyId(int $companyId, array $queryParams = []) : array {
         $dbQuery = $this->query()
             ->where('company_id', $companyId)
             ->where('protected', false);

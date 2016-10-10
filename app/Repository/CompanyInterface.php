@@ -18,55 +18,6 @@ use Illuminate\Support\Collection;
  */
 interface CompanyInterface extends RepositoryInterface {
     /**
-     * Finds a Company based on its Public Key.
-     *
-     * @param string $pubKey
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Company
-     */
-    public function findByPubKey(string $pubKey) : Company;
-
-    /**
-     * Finds a Company based on its Slug.
-     *
-     * @param string $slug
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Company
-     */
-    public function findBySlug(string $slug) : Company;
-
-    /**
-     * Creats a new member for the company.
-     *
-     * @param \App\Entity\Company  $company  The company
-     * @param \App\Entity\Identity $identity The identity
-     * @param string               $role     The role
-     */
-    public function newMember(Company $company, Identity $identity, string $role) : Member;
-
-    /**
-     * Gets all Companies based on their Parent Id.
-     *
-     * @param int $parentId
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAllByParentId(int $parentId) : Collection;
-
-    /**
-     * Deletes all Companies based on their Parent Id.
-     *
-     * @param int $parentId
-     *
-     * @return int
-     */
-    public function deleteByParentId(int $parentId) : int;
-
-    /**
      * Determines if a company is related to another.
      *
      * @param \App\Entity\Company $parent The parent
@@ -75,4 +26,53 @@ interface CompanyInterface extends RepositoryInterface {
      * @return bool
      */
     public function isParent(Company $parent, Company $child) : bool;
+
+    /**
+     * Returns a company based on its public key.
+     *
+     * @param string $pubKey
+     *
+     * @throws \App\Exception\NotFound
+     *
+     * @return \App\Entity\Company
+     */
+    public function findByPubKey(string $pubKey) : Company;
+
+    /**
+     * Returns a company based on its slug.
+     *
+     * @param string $slug
+     *
+     * @throws \App\Exception\NotFound
+     *
+     * @return \App\Entity\Company
+     */
+    public function findBySlug(string $slug) : Company;
+
+    /**
+     * Return companies based on its parent id.
+     *
+     * @param int $parentId
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getByParentId(int $parentId) : Collection;
+
+    /**
+     * Creates a new member for a company.
+     *
+     * @param \App\Entity\Company  $company  The company
+     * @param \App\Entity\Identity $identity The identity
+     * @param string               $role     The role
+     */
+    public function createNewMember(Company $company, Identity $identity, string $role) : Member;
+
+    /**
+     * Delete companies based on its parent id.
+     *
+     * @param int $parentId
+     *
+     * @return int
+     */
+    public function deleteByParentId(int $parentId) : int;
 }

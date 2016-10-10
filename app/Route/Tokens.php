@@ -17,7 +17,7 @@ use Slim\App;
  * Tokens.
  *
  * @link docs/token/overview.md
- * @see App\Controller\Tokens
+ * @see \App\Controller\Tokens
  */
 class Tokens implements RouteInterface {
     /**
@@ -65,9 +65,9 @@ class Tokens implements RouteInterface {
      * @return void
      *
      * @link docs/attributes/token/exchange.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Tokens::exchange
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Tokens::exchange
      */
     private static function exchange(App $app, callable $auth, callable $permission) {
         $app

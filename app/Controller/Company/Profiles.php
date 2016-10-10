@@ -28,43 +28,43 @@ class Profiles implements ControllerInterface {
     /**
      * UserRepository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $repository;
     /**
      * SourceRepository instance.
      *
-     * @var App\Repository\SourceInterface
+     * @var \App\Repository\SourceInterface
      */
     private $sourceRepository;
     /**
      * TagRepository instance.
      *
-     * @var App\Repository\TagInterface
+     * @var \App\Repository\TagInterface
      */
     private $tagRepository;
     /**
      * ReviewRepository instance.
      *
-     * @var App\Repository\ReviewInterface
+     * @var \App\Repository\ReviewInterface
      */
     private $reviewRepository;
     /**
      * WarningRepository instance.
      *
-     * @var App\Repository\WarningInterface
+     * @var \App\Repository\WarningInterface
      */
     private $warningRepository;
     /**
      * GateRepository instance.
      *
-     * @var App\Repository\GateInterface
+     * @var \App\Repository\GateInterface
      */
     private $gateRepository;
     /**
      * AttributeRepository instance.
      *
-     * @var App\Repository\AttributeInterface
+     * @var \App\Repository\AttributeInterface
      */
     private $attributeRepository;
     /**
@@ -76,22 +76,22 @@ class Profiles implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\UserInterface      $repository
-     * @param App\Repository\SourceInterface    $sourceRepository
-     * @param App\Repository\TagInterface       $tagRepository
-     * @param App\Repository\ReviewInterface    $reviewRepository
-     * @param App\Repository\WarningInterface   $warningRepository
-     * @param App\Repository\GateInterface      $gateRepository
-     * @param App\Repository\AttributeInterface $attributeRepository
+     * @param \App\Repository\UserInterface      $repository
+     * @param \App\Repository\SourceInterface    $sourceRepository
+     * @param \App\Repository\TagInterface       $tagRepository
+     * @param \App\Repository\ReviewInterface    $reviewRepository
+     * @param \App\Repository\WarningInterface   $warningRepository
+     * @param \App\Repository\GateInterface      $gateRepository
+     * @param \App\Repository\AttributeInterface $attributeRepository
      * @param \League\Tactician\CommandBus      $commandBus
-     * @param App\Factory\Command               $commandFactory
+     * @param \App\Factory\Command               $commandFactory
      *
      * @return void
      */
@@ -134,11 +134,11 @@ class Profiles implements ControllerInterface {
         $profiles = $this->repository->findByCompanyId($company->id);
 
         foreach ($profiles as $profile) {
-            $sources  = $this->sourceRepository->getAllByUserId($profile->id);
-            $tags     = $this->tagRepository->getAllByUserId($profile->id);
-            $reviews  = $this->reviewRepository->getAllByUserId($profile->id);
+            $sources  = $this->sourceRepository->getByUserId($profile->id);
+            $tags     = $this->tagRepository->getByUserId($profile->id);
+            $reviews  = $this->reviewRepository->getByUserId($profile->id);
             $warnings = $this->warningRepository->findByUserId($profile->id);
-            $gates    = $this->gateRepository->findByUserId($profile->id);
+            $gates    = $this->gateRepository->getByUserId($profile->id);
 
             foreach ($warnings as $warning) {
                 $warningReview = null;
@@ -209,7 +209,7 @@ class Profiles implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound\CompanyProfileException
+     * @throws \App\Exception\NotFound\CompanyProfileException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -220,11 +220,11 @@ class Profiles implements ControllerInterface {
 
         $profile = $this->repository->find($userId);
 
-        $sources  = $this->sourceRepository->getAllByUserId($profile->id);
-        $tags     = $this->tagRepository->getAllByUserId($profile->id);
-        $reviews  = $this->reviewRepository->getAllByUserId($profile->id);
+        $sources  = $this->sourceRepository->getByUserId($profile->id);
+        $tags     = $this->tagRepository->getByUserId($profile->id);
+        $reviews  = $this->reviewRepository->getByUserId($profile->id);
         $warnings = $this->warningRepository->findByUserId($profile->id);
-        $gates    = $this->gateRepository->findByUserId($profile->id);
+        $gates    = $this->gateRepository->getByUserId($profile->id);
 
         foreach ($warnings as $warning) {
             $warningReview = null;
@@ -292,7 +292,7 @@ class Profiles implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws App\Exception\NotFound\CompanyProfileException
+     * @throws \App\Exception\NotFound\CompanyProfileException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

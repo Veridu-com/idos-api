@@ -26,25 +26,25 @@ class Token implements HandlerInterface {
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
      * Token Validator instance.
      *
-     * @var App\Validator\Token
+     * @var \App\Validator\Token
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -71,9 +71,9 @@ class Token implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\UserInterface $userRepository
-     * @param App\Validator\Token          $validator
-     * @param App\Factory\Event            $eventFactory
+     * @param \App\Repository\UserInterface $userRepository
+     * @param \App\Validator\Token          $validator
+     * @param \App\Factory\Event            $eventFactory
      * @param \League\Event\Emitter        $emitter
      *
      * @return void
@@ -93,12 +93,12 @@ class Token implements HandlerInterface {
     /**
      * Creates a new attribute data in the given user.
      *
-     * @param App\Command\Token\Exchange $command
+     * @param \App\Command\Token\Exchange $command
      *
-     * @throws App\Exception\Validate\TokenException
-     * @throws App\Exception\Create\TokenException
+     * @throws \App\Exception\Validate\TokenException
+     * @throws \App\Exception\Create\TokenException
      *
-     * @see App\Repository\DBToken::findAllRelatedToCompany
+     * @see \App\Repository\DBToken::findAllRelatedToCompany
      *
      * @return string
      */

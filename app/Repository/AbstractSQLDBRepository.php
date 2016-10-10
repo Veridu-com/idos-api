@@ -28,28 +28,24 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @var string
      */
     protected $tableName = null;
-
     /**
      * Entity Name.
      *
      * @var string
      */
     protected $entityName = null;
-
     /**
      * DB Connection.
      *
      * @var \Illuminate\Database\ConnectionInterface
      */
     protected $dbConnection;
-
     /**
      * Filterable keys of the repository.
      *
      * @var array
      */
     protected $filterableKeys = [];
-
     /**
      * Orderable keys of the repository.
      *
