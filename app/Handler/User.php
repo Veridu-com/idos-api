@@ -72,7 +72,7 @@ class User implements HandlerInterface {
      * @param \App\Repository\UserInterface $repository
      * @param \App\Validator\User           $validator
      * @param \App\Factory\Event            $eventFactory
-     * @param \League\Event\Emitter        $emitter
+     * @param \League\Event\Emitter         $emitter
      *
      * @return void
      */

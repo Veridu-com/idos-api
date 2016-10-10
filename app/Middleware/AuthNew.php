@@ -31,28 +31,28 @@ class Auth implements MiddlewareInterface {
     /**
      * Credential Repository.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
 
     /**
      * User Repository.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
 
     /**
      * Company Repository.
      *
-     * @var App\Repository\CompanyInterface
+     * @var \App\Repository\CompanyInterface
      */
     private $companyRepository;
 
     /**
      * Service Repository.
      *
-     * @var App\Repository\ServiceInterface
+     * @var \App\Repository\ServiceInterface
      */
     private $serviceRepository;
 
@@ -458,13 +458,13 @@ class Auth implements MiddlewareInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\CredentialInterface $credentialRepository
-     * @param App\Repository\UserInterface               $userRepository
-     * @param App\Repository\CompanyInterface            $companyRepository
-     * @param \Lcobucci\JWT\Parser                       $jwtParser
-     * @param \Lcobucci\JWT\ValidationData               $jwtValidation
-     * @param \Lcobucci\JWT\Signer\Hmac\Sha256           $jwtSigner
-     * @param int                                        $authorizationRequirement
+     * @param \App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \App\Repository\UserInterface               $userRepository
+     * @param \App\Repository\CompanyInterface            $companyRepository
+     * @param \Lcobucci\JWT\Parser                        $jwtParser
+     * @param \Lcobucci\JWT\ValidationData                $jwtValidation
+     * @param \Lcobucci\JWT\Signer\Hmac\Sha256            $jwtSigner
+     * @param int                                         $authorizationRequirement
      */
     public function __construct(
         CredentialInterface $credentialRepository,
@@ -502,7 +502,7 @@ class Auth implements MiddlewareInterface {
      * @param \Psr\Http\Message\ResponseInterface      $response
      * @param callable                                 $next
      *
-     * @throws App\Exception\AppException
+     * @throws \App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

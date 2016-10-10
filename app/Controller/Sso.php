@@ -57,8 +57,8 @@ class Sso implements ControllerInterface {
      *
      * @param \App\Repository\Company\SettingInterface    $settingRepository
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \Slim\Collection                           $settings
-     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \Slim\Collection                            $settings
+     * @param \League\Tactician\CommandBus                $commandBus
      * @param \App\Factory\Command                        $commandFactory
      *
      * @return void

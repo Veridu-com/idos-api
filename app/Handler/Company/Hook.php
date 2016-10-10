@@ -90,8 +90,8 @@ class Hook implements HandlerInterface {
      * @param \App\Repository\Company\HookInterface       $repository
      * @param \App\Repository\Company\CredentialInterface $repository
      * @param \App\Validator\Company\Hook                 $validator
-     * @param \App\Factory\Event                  $eventFactory
-     * @param \League\Event\Emitter              $emitter
+     * @param \App\Factory\Event                          $eventFactory
+     * @param \League\Event\Emitter                       $emitter
      *
      * @return void
      */

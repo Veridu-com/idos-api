@@ -23,15 +23,15 @@ interface ReviewInterface extends RepositoryInterface {
      * @param int $identityId
      * @param int $userId
      *
-     * @return Review
+     * @return \App\Entity\Profile\Review
      */
     public function findOne(int $id, int $identityId, int $userId) : Review;
 
     /**
      * Gets all Review entities based on their user_id, filtering them by flag_id.
      *
-     * @param int $identityId
-     * @param int $userId
+     * @param int   $identityId
+     * @param int   $userId
      * @param array $queryParams
      *
      * @return \Illuminate\Database\Eloquent\Collection|Collection

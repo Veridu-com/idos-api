@@ -18,14 +18,14 @@ class Created extends AbstractEvent {
     /**
      * Event related Identity.
      *
-     * @var App\Entity\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Identity $identity
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */

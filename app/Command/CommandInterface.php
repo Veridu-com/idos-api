@@ -15,7 +15,7 @@ interface CommandInterface {
     /**
      * Sets multiple command parameters.
      *
-     * @return App\Command\CommandInterface
+     * @return \App\Command\CommandInterface
      */
     public function setParameters(array $parameters);
     /**
@@ -26,7 +26,7 @@ interface CommandInterface {
      *
      * @throws \RuntimeException
      *
-     * @return App\Command\CommandInterface
+     * @return \App\Command\CommandInterface
      */
     public function setParameter(string $name, $value);
 }

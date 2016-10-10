@@ -15,16 +15,16 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Warning's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
-     * Attribute's creator.
+     * Warning's creator.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
@@ -38,7 +38,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Flag\DeleteOne
+     * @return \App\Command\Profile\Flag\DeleteOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {

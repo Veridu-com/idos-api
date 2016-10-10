@@ -43,7 +43,7 @@ class Services implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\ServiceInterface $repository
-     * @param \League\Tactician\CommandBus    $commandBus
+     * @param \League\Tactician\CommandBus     $commandBus
      * @param \App\Factory\Command             $commandFactory
      *
      * @return void

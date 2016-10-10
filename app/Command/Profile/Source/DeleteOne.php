@@ -24,20 +24,20 @@ class DeleteOne extends AbstractCommand {
     /**
      * Source to be deleted.
      *
-     * @var App\Entity\Profile\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
     /**
      * Source owner User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Source\DeleteOne
+     * @return \App\Command\Profile\Source\DeleteOne
      */
     public function setParameters(array $parameters) : self {
 

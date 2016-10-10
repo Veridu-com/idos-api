@@ -36,21 +36,21 @@ class CreateNew extends AbstractCommand {
     /**
      * Source's User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * Target Credential.
      *
-     * @var App\Entity\Company\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Source\CreateNew
+     * @return \App\Command\Profile\Source\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {

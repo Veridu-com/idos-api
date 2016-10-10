@@ -19,7 +19,7 @@ use Slim\App;
  * A ServiceHandler allows a specific Company to have access to a certain Service. This allows control over and monetisation to the way they utilise the API, tailoring access for their own specific requirements.
  *
  * @link docs/service-handlers/overview.md
- * @see App\Controller\ServiceHandlers
+ * @see \App\Controller\ServiceHandlers
  */
 class ServiceHandler implements RouteInterface {
     /**

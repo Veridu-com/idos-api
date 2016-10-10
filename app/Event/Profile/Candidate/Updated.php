@@ -18,14 +18,14 @@ class Updated extends AbstractEvent {
     /**
      * Event related Candidate.
      *
-     * @var App\Entity\Profile\Candidate
+     * @var \App\Entity\Profile\Candidate
      */
     public $candidate;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Candidate $candidate
+     * @param \App\Entity\Profile\Candidate $candidate
      *
      * @return void
      */

@@ -43,7 +43,7 @@ class ServiceHandlers implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\ServiceHandlerInterface $repository
-     * @param \League\Tactician\CommandBus           $commandBus
+     * @param \League\Tactician\CommandBus            $commandBus
      * @param \App\Factory\Command                    $commandFactory
      *
      * @return void

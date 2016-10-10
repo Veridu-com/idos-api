@@ -17,21 +17,21 @@ class UpdateOne extends AbstractCommand {
     /**
      * Raw's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * Raw's Service.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
     /**
      * Raw's Source.
      *
-     * @var App\Entity\Profile\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
 

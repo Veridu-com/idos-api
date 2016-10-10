@@ -29,25 +29,25 @@ class Task implements HandlerInterface {
     /**
      * Task Repository instance.
      *
-     * @var App\Repository\Profile\TaskInterface
+     * @var \App\Repository\Profile\TaskInterface
      */
     private $repository;
     /**
      * Task Validator instance.
      *
-     * @var App\Validator\Profile\Task
+     * @var \App\Validator\Profile\Task
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -74,10 +74,10 @@ class Task implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\TaskInterface $repository
-     * @param App\Validator\Task           $validator
-     * @param App\Factory\Event            $eventFactory
-     * @param \League\Event\Emitter        $emitter
+     * @param \App\Repository\TaskInterface $repository
+     * @param \App\Validator\Task           $validator
+     * @param \App\Factory\Event            $eventFactory
+     * @param \League\Event\Emitter         $emitter
      *
      * @return void
      */
@@ -96,15 +96,15 @@ class Task implements HandlerInterface {
     /**
      * Creates a task.
      *
-     * @param App\Command\Profile\Task\CreateNew $command
+     * @param \App\Command\Profile\Task\CreateNew $command
      *
-     * @throws App\Exception\Validate\Profile\TaskException
-     * @throws App\Exception\Create\Profile\TaskException
+     * @throws \App\Exception\Validate\Profile\TaskException
+     * @throws \App\Exception\Create\Profile\TaskException
      *
-     * @see App\Repository\Profile\DBTask::create
-     * @see App\Repository\Profile\DBTask::save
+     * @see \App\Repository\Profile\DBTask::create
+     * @see \App\Repository\Profile\DBTask::save
      *
-     * @return App\Entity\Profile\Task
+     * @return \App\Entity\Profile\Task
      */
     public function handleCreateNew(CreateNew $command) : TaskEntity {
         try {
@@ -150,15 +150,15 @@ class Task implements HandlerInterface {
     /**
      * Updates a Task.
      *
-     * @param App\Command\Profile\Task\UpdateOne $command
+     * @param \App\Command\Profile\Task\UpdateOne $command
      *
-     * @see App\Repository\Profile\DBTask::find
-     * @see App\Repository\Profile\DBTask::save
+     * @see \App\Repository\Profile\DBTask::find
+     * @see \App\Repository\Profile\DBTask::save
      *
-     * @throws App\Exception\Validate\Profile\TaskException
-     * @throws App\Exception\Update\Profile\TaskException
+     * @throws \App\Exception\Validate\Profile\TaskException
+     * @throws \App\Exception\Update\Profile\TaskException
      *
-     * @return App\Entity\Profile\Task
+     * @return \App\Entity\Profile\Task
      */
     public function handleUpdateOne(UpdateOne $command) : TaskEntity {
         try {

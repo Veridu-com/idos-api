@@ -17,13 +17,13 @@ class CreateNew extends AbstractCommand {
     /**
      * User reviewed.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
      * Reviewer.
      *
-     * @var App\Entity\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
     /**

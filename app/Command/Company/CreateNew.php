@@ -31,14 +31,14 @@ class CreateNew extends AbstractCommand {
     /**
      * Identity creating the company.
      *
-     * @var App\Entity\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\CreateNew
+     * @return \App\Command\Company\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {

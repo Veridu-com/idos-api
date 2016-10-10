@@ -21,7 +21,7 @@ use Slim\App;
  * A Company Profile where a Company will access the collection of data on a specific User. This is where the Company can review in detail the raw data, attributes, features, flags, and score gathered from all sources provided by a specific User
  *
  * @link docs/company/profiles/overview.md
- * @see App\Controller\Company\Profiles
+ * @see \App\Controller\Company\Profiles
  */
 class Profiles implements RouteInterface {
     /**
@@ -80,9 +80,9 @@ class Profiles implements RouteInterface {
      * @return void
      *
      * @link docs/companyProfiles/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Profiles::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Profiles::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -112,7 +112,7 @@ class Profiles implements RouteInterface {
      * @return void
      *
      * @link docs/companyProfiles/getOne.md
-     * @see App\Controller\Company\Profiles::getOne
+     * @see \App\Controller\Company\Profiles::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -144,9 +144,9 @@ class Profiles implements RouteInterface {
      * @return void
      *
      * @link docs/company/profiles/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Profiles::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Profiles::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

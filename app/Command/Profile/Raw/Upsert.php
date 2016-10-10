@@ -17,28 +17,28 @@ class Upsert extends AbstractCommand {
     /**
      * Raw's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * Raw's Service.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
     /**
      * Raw's Source.
      *
-     * @var App\Entity\Source
+     * @var \App\Entity\Source
      */
     public $source;
 
     /**
      * Target Credential.
      *
-     * @var App\Entity\Company\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
 

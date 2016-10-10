@@ -30,8 +30,10 @@ class DBSubscription extends AbstractSQLDBRepository implements SubscriptionInte
     protected $entityName = 'Company\Subscription';
 
     public function getByCredentialId(int $credentialId) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'credential_id' => $credentialId
-        ]);
+            ]
+        );
     }
 }

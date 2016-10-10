@@ -23,7 +23,7 @@ class References implements ControllerInterface {
     /**
      * Reference Repository instance.
      *
-     * @var App\Repository\Profile\ReferenceInterface
+     * @var \App\Repository\Profile\ReferenceInterface
      */
     private $repository;
     /**
@@ -35,16 +35,16 @@ class References implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\ReferenceInterface $repository
-     * @param \League\Tactician\CommandBus              $commandBus
-     * @param App\Factory\Command                       $commandFactory
+     * @param \App\Repository\Profile\ReferenceInterface $repository
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \App\Factory\Command                       $commandFactory
      *
      * @return void
      */
@@ -67,7 +67,7 @@ class References implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBReference::getAllByUserIdAndNames
+     * @see \App\Repository\DBReference::getAllByUserIdAndNames
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -100,7 +100,7 @@ class References implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBReference::findOneByUserIdAndName
+     * @see \App\Repository\DBReference::findOneByUserIdAndName
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -133,7 +133,7 @@ class References implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Profile\Reference::handleCreateNew
+     * @see \App\Handler\Profile\Reference::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -170,7 +170,7 @@ class References implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Handler\Profile\Reference::handleUpdateOne
+     * @see \App\Handler\Profile\Reference::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -205,7 +205,7 @@ class References implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Profile\Reference::handleDeleteOne
+     * @see \App\Handler\Profile\Reference::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -237,7 +237,7 @@ class References implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Profile\Reference::handleDeleteAll
+     * @see \App\Handler\Profile\Reference::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

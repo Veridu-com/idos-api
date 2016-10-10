@@ -18,14 +18,14 @@ class Created extends AbstractEvent {
     /**
      * Event related Candidate.
      *
-     * @var App\Entity\Profile\Candidate
+     * @var \App\Entity\Profile\Candidate
      */
     public $candidate;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Attribute $candidate
+     * @param \App\Entity\Profile\Attribute $candidate
      *
      * @return void
      */

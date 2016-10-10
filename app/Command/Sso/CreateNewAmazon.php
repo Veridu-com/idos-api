@@ -54,7 +54,7 @@ class CreateNewAmazon extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Sso\CreateNewAmazon
+     * @return \App\Command\Sso\CreateNewAmazon
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['apiVersion'])) {

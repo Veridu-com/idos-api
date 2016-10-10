@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Handler\Profile;
 
-use App\Command\CommandInterface;
 use App\Command\Profile\Feature\CreateNew;
 use App\Command\Profile\Feature\DeleteAll;
 use App\Command\Profile\Feature\DeleteOne;
@@ -38,34 +37,34 @@ class Feature implements HandlerInterface {
     /**
      * Feature Repository instance.
      *
-     * @var App\Repository\Profile\FeatureInterface
+     * @var \App\Repository\Profile\FeatureInterface
      */
     private $repository;
 
     /**
      * Source Repository instance.
      *
-     * @var App\Repository\SourceInterface
+     * @var \App\Repository\SourceInterface
      */
     private $sourceRepository;
 
     /**
      * Feature Validator instance.
      *
-     * @var App\Validator\Profile\Feature
+     * @var \App\Validator\Profile\Feature
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
 
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -98,10 +97,10 @@ class Feature implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\FeatureInterface $repository
-     * @param App\Validator\Feature           $validator
-     * @param App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter           $emitter
+     * @param \App\Repository\FeatureInterface $repository
+     * @param \App\Validator\Feature           $validator
+     * @param \App\Factory\Event               $eventFactory
+     * @param \League\Event\Emitter            $emitter
      *
      * @return void
      */
@@ -124,9 +123,9 @@ class Feature implements HandlerInterface {
     /**
      * Gets the process.
      *
-     * @param CommandInterface $command The command
+     * @param \App\Command\CommandInterface $command The command
      *
-     * @return App\Entity\Profile\Process
+     * @return \App\Entity\Profile\Process
      */
     private function getRelatedProcess(int $userId, $source = null) : Process {
         $event    = sprintf('idos:feature.%s.created', $source ? $source->name : 'profile');
@@ -155,14 +154,14 @@ class Feature implements HandlerInterface {
     /**
      * Creates a feature.
      *
-     * @param App\Command\Profile\Feature\CreateNew $command
+     * @param \App\Command\Profile\Feature\CreateNew $command
      *
-     * @see App\Repository\DBFeature::save
+     * @see \App\Repository\DBFeature::save
      *
-     * @throws App\Exception\Validate\Profile\FeatureException
-     * @throws App\Exception\Create\Profile\FeatureException
+     * @throws \App\Exception\Validate\Profile\FeatureException
+     * @throws \App\Exception\Create\Profile\FeatureException
      *
-     * @return App\Entity\Feature
+     * @return \App\Entity\Feature
      */
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
         try {
@@ -220,15 +219,15 @@ class Feature implements HandlerInterface {
     /**
      * Updates a Feature.
      *
-     * @param App\Command\Profile\Feature\UpdateOne $command
+     * @param \App\Command\Profile\Feature\UpdateOne $command
      *
-     * @see App\Repository\DBFeature::findByUserIdAndSlug
-     * @see App\Repository\DBFeature::save
+     * @see \App\Repository\DBFeature::findByUserIdAndSlug
+     * @see \App\Repository\DBFeature::save
      *
-     * @throws App\Exception\Validate\Profile\FeatureException
-     * @throws App\Exception\Update\Profile\FeatureException
+     * @throws \App\Exception\Validate\Profile\FeatureException
+     * @throws \App\Exception\Update\Profile\FeatureException
      *
-     * @return App\Entity\Feature
+     * @return \App\Entity\Feature
      */
     public function handleUpdateOne(UpdateOne $command) : FeatureEntity {
         try {
@@ -272,9 +271,9 @@ class Feature implements HandlerInterface {
     /**
      * Creates or update a feature.
      *
-     * @param App\Command\Profile\Feature\Upsert $command
+     * @param \App\Command\Profile\Feature\Upsert $command
      *
-     * @return App\Entity\Profile\Feature
+     * @return \App\Entity\Profile\Feature
      */
     public function handleUpsert(Upsert $command) : FeatureEntity {
         try {
@@ -347,7 +346,7 @@ class Feature implements HandlerInterface {
     /**
      * Creates or update a feature.
      *
-     * @param App\Command\Profile\Feature\Upsert $command
+     * @param \App\Command\Profile\Feature\Upsert $command
      *
      * @return bool
      */
@@ -408,13 +407,13 @@ class Feature implements HandlerInterface {
     /**
      * Deletes a Feature.
      *
-     * @param App\Command\Profile\Feature\DeleteOne $command
+     * @param \App\Command\Profile\Feature\DeleteOne $command
      *
-     * @see App\Repository\DBFeature::findByUserIdAndSlug
-     * @see App\Repository\DBFeature::delete
+     * @see \App\Repository\DBFeature::findByUserIdAndSlug
+     * @see \App\Repository\DBFeature::delete
      *
-     * @throws App\Exception\Validate\Profile\FeatureException
-     * @throws App\Exception\NotFound\Profile\FeatureException
+     * @throws \App\Exception\Validate\Profile\FeatureException
+     * @throws \App\Exception\NotFound\Profile\FeatureException
      *
      * @return void
      */
@@ -447,12 +446,12 @@ class Feature implements HandlerInterface {
     /**
      * Deletes all settings ($command->userId).
      *
-     * @param App\Command\Profile\Feature\DeleteAll $command
+     * @param \App\Command\Profile\Feature\DeleteAll $command
      *
-     * @see App\Repository\DBFeature::findByUserId
-     * @see App\Repository\DBFeature::deleteByUserId
+     * @see \App\Repository\DBFeature::findByUserId
+     * @see \App\Repository\DBFeature::deleteByUserId
      *
-     * @throws App\Exception\Validate\Profile\FeatureException
+     * @throws \App\Exception\Validate\Profile\FeatureException
      *
      * @return int
      */

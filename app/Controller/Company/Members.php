@@ -51,7 +51,7 @@ class Members implements ControllerInterface {
      *
      * @param \App\Repository\Company\MemberInterface $repository
      * @param \App\Repository\UserInterface           $userRepository
-     * @param \League\Tactician\CommandBus           $commandBus
+     * @param \League\Tactician\CommandBus            $commandBus
      * @param \App\Factory\Command                    $commandFactory
      *
      * @return void

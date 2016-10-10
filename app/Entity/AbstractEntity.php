@@ -170,7 +170,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @throws \RuntimeException
      *
-     * @return App\Entity\EntityInterface
+     * @return \App\Entity\EntityInterface
      */
     protected function setAttribute(string $key, $value) : EntityInterface {
         $key = $this->toSnakeCase($key);

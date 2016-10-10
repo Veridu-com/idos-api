@@ -20,7 +20,7 @@ trait SlugMutator {
      *
      * @param string $value
      *
-     * @return App\Entity\EntityInterface
+     * @return \App\Entity\EntityInterface
      */
     public function setNameAttribute(string $value) : self {
         $this->attributes['name'] = $value;

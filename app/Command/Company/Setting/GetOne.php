@@ -45,7 +45,7 @@ class GetOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\Setting\GetOne
+     * @return \App\Command\Company\Setting\GetOne
      */
     public function setParameters(array $parameters) : self {
 

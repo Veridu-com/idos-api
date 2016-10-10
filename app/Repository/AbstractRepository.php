@@ -22,14 +22,14 @@ abstract class AbstractRepository implements RepositoryInterface {
     /**
      * Entity Factory.
      *
-     * @var App\Factory\Entity
+     * @var \App\Factory\Entity
      */
     protected $entityFactory;
 
     /**
      * Repository Factory.
      *
-     * @var App\Factory\Repository
+     * @var \App\Factory\Repository
      */
     protected $repositoryFactory;
 
@@ -57,8 +57,8 @@ abstract class AbstractRepository implements RepositoryInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity          $entityFactory
-     * @param App\Factory\Repository      $repositoryFactory
+     * @param \App\Factory\Entity         $entityFactory
+     * @param \App\Factory\Repository     $repositoryFactory
      * @param \Jenssegers\Optimus\Optimus $optimus
      *
      * @return void

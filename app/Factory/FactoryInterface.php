@@ -18,7 +18,7 @@ interface FactoryInterface {
      * @param string $name
      * @param string $class
      *
-     * @return App\Factory\FactoryInterface
+     * @return \App\Factory\FactoryInterface
      */
     public function register(string $name, string $class) : FactoryInterface;
     /**

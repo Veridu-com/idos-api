@@ -13,8 +13,8 @@ use App\Command\Profile\Tag\DeleteAll;
 use App\Command\Profile\Tag\DeleteOne;
 use App\Entity\Profile\Tag as TagEntity;
 use App\Exception\Create;
-use App\Exception\Validate;
 use App\Exception\NotFound;
+use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\TagInterface;
@@ -202,7 +202,7 @@ class Tag implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $tags = $this->repository->getByUserId($command->user->id);
+        $tags         = $this->repository->getByUserId($command->user->id);
         $rowsAffected = $this->repository->deleteByUserId($command->user->id);
 
         $event = $this->eventFactory->create('Profile\\Tag\\DeletedMulti', $tags);

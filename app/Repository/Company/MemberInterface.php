@@ -35,7 +35,7 @@ interface MemberInterface extends RepositoryInterface {
      */
     public function getAllByCompanyIdAndRole(int $companyId, array $role) : Collection;
 
-    /*
+    /**
      * Deletes all Members based on their Company Id.
      *
      * @param int $companyId

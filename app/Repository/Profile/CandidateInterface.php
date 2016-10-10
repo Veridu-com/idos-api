@@ -22,7 +22,7 @@ interface CandidateInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $filters
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function findByUserId(int $userId, array $filters = []) : Collection;
 
@@ -35,7 +35,8 @@ interface CandidateInterface extends RepositoryInterface {
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection;
-    /*
+
+    /**
      * Deletes all Candidate entities based on user_id.
      *
      * @param int $userId
@@ -43,17 +44,19 @@ interface CandidateInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteByUserId(int $userId, array $filters = []) : int;
+
     /**
      * Find a Candidate entity based on its user_id and attribute name.
      *
      * @param int    $userId
      * @param string $attributeName
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return App\Entity\Profile\Candidate
+     * @return \App\Entity\Profile\Candidate
      */
     public function findOneByUserIdAndAttributeName(int $userId, string $attributeName) : Candidate;
+
     /**
      * Deletes a Candidate entity based on their user_id and name.
      *

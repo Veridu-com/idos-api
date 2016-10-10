@@ -18,14 +18,14 @@ class Updated extends AbstractEvent {
     /**
      * Event related Process.
      *
-     * @var App\Entity\Profile\Process
+     * @var \App\Entity\Profile\Process
      */
     public $process;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Process $process
+     * @param \App\Entity\Profile\Process $process
      *
      * @return void
      */

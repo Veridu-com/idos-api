@@ -51,7 +51,7 @@ class Hooks implements ControllerInterface {
      *
      * @param \App\Repository\Company\HookInterface       $repository
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \League\Tactician\CommandBus                $commandBus
      * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
@@ -237,7 +237,7 @@ class Hooks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Hook::handleDeleteOne
+     * @see \App\Handler\Hook::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

@@ -24,13 +24,13 @@ class Raw implements ControllerInterface {
     /**
      * Raw Repository instance.
      *
-     * @var App\Repository\Profile\RawInterface
+     * @var \App\Repository\Profile\RawInterface
      */
     private $repository;
     /**
      * Source Repository instance.
      *
-     * @var App\Repository\Profile\SourceInterface
+     * @var \App\Repository\Profile\SourceInterface
      */
     private $sourceRepository;
     /**
@@ -42,17 +42,17 @@ class Raw implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\RawInterface    $repository
-     * @param App\Repository\Profile\SourceInterface $sourceRepository
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param App\Factory\Command                    $commandFactory
+     * @param \App\Repository\Profile\RawInterface    $repository
+     * @param \App\Repository\Profile\SourceInterface $sourceRepository
+     * @param \League\Tactician\CommandBus            $commandBus
+     * @param \App\Factory\Command                    $commandFactory
      *
      * @return void
      */
@@ -77,10 +77,10 @@ class Raw implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::findOne
-     * @see App\Repository\DBService::getAllBySourceAndCollections
+     * @see \App\Repository\DBSource::findOne
+     * @see \App\Repository\DBService::getAllBySourceAndCollections
      *
-     * @throws App\Exception\AppException
+     * @throws \App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -116,8 +116,8 @@ class Raw implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::findOne
-     * @see App\Exception\AppException
+     * @see \App\Repository\DBSource::findOne
+     * @see \App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -154,10 +154,10 @@ class Raw implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::findOne
-     * @see App\Handler\Raw::handleCreateNew
+     * @see \App\Repository\DBSource::findOne
+     * @see \App\Handler\Raw::handleCreateNew
      *
-     * @throws App\Exception\AppException
+     * @throws \App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -205,10 +205,10 @@ class Raw implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::findOne
-     * @see App\Handler\Raw::handleCreateNew
+     * @see \App\Repository\DBSource::findOne
+     * @see \App\Handler\Raw::handleCreateNew
      *
-     * @throws App\Exception\AppException
+     * @throws \App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -253,10 +253,10 @@ class Raw implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::findOne
-     * @see App\Handler\Raw::handleDeleteOne
+     * @see \App\Repository\DBSource::findOne
+     * @see \App\Handler\Raw::handleDeleteOne
      *
-     * @throws App\Exception\AppException
+     * @throws \App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -297,9 +297,9 @@ class Raw implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBSource::findOne
-     * @see App\Handler\Raw::handlerDeleteAll
-     * @see App\Exception\AppException
+     * @see \App\Repository\DBSource::findOne
+     * @see \App\Handler\Raw::handlerDeleteAll
+     * @see \App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

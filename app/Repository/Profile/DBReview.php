@@ -33,21 +33,25 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
      * {@inheritdoc}
      */
     public function findOne(int $id, int $identityId, int $userId) : Review {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'id'          => $id,
             'user_id'     => $userId,
             'identity_id' => $identityId
-        ]);
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function getByUserIdAndIdentityId(int $identityId, int $userId, array $queryParams = []) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'user_id'     => $userId,
             'identity_id' => $identityId
-        ], $queryParams);
+            ], $queryParams
+        );
     }
 
     /**
@@ -56,5 +60,4 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
     public function getByUserId(int $userId) : Collection {
         return $this->findBy(['user_id' => $userId]);
     }
-
 }

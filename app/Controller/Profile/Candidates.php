@@ -23,7 +23,7 @@ class Candidates implements ControllerInterface {
     /**
      * Candidate Repository instance.
      *
-     * @var App\Repository\Profile\CandidateInterface
+     * @var \App\Repository\Profile\CandidateInterface
      */
     private $repository;
     /**
@@ -35,16 +35,16 @@ class Candidates implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\CandidateInterface $repository
-     * @param \League\Tactician\CommandBus              $commandBus
-     * @param App\Factory\Command                       $commandFactory
+     * @param \App\Repository\Profile\CandidateInterface $repository
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \App\Factory\Command                       $commandFactory
      *
      * @return void
      */
@@ -67,7 +67,7 @@ class Candidates implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBCandidate::getAllByUserIdAndNames
+     * @see \App\Repository\DBCandidate::getAllByUserIdAndNames
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -103,7 +103,7 @@ class Candidates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Candidate::handleCreateNew
+     * @see \App\Handler\Candidate::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -142,7 +142,7 @@ class Candidates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Candidate::handleDeleteAll
+     * @see \App\Handler\Candidate::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

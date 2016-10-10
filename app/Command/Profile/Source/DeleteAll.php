@@ -18,7 +18,7 @@ class DeleteAll extends AbstractCommand {
     /**
      * All sources of this User will be deleted.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
@@ -31,7 +31,7 @@ class DeleteAll extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Source\DeleteAll
+     * @return \App\Command\Profile\Source\DeleteAll
      */
     public function setParameters(array $parameters) : self {
 

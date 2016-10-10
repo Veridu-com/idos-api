@@ -29,19 +29,19 @@ class Candidate implements HandlerInterface {
     /**
      * Candidate Repository instance.
      *
-     * @var App\Repository\Profile\CandidateInterface
+     * @var \App\Repository\Profile\CandidateInterface
      */
     private $repository;
     /**
      * Candidate Validator instance.
      *
-     * @var App\Validator\Profile\Candidate
+     * @var \App\Validator\Profile\Candidate
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -74,10 +74,10 @@ class Candidate implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CandidateInterface $repository
-     * @param App\Validator\Candidate           $validator
-     * @param App\Factory\Event                 $eventFactory
-     * @param \League\Event\Emitter             $emitter
+     * @param \App\Repository\CandidateInterface $repository
+     * @param \App\Validator\Candidate           $validator
+     * @param \App\Factory\Event                 $eventFactory
+     * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */
@@ -96,14 +96,14 @@ class Candidate implements HandlerInterface {
     /**
      * Creates a new candidate data in the given user.
      *
-     * @param App\Command\Profile\Candidate\CreateNew $command
+     * @param \App\Command\Profile\Candidate\CreateNew $command
      *
-     * @see App\Repository\DBCandidate::save
+     * @see \App\Repository\DBCandidate::save
      *
-     * @throws App\Exception\Validade\CandidateExceptions
-     * @throws App\Exception\Create\CandidateExceptions
+     * @throws \App\Exception\Validade\CandidateExceptions
+     * @throws \App\Exception\Create\CandidateExceptions
      *
-     * @return App\Entity\Candidate
+     * @return \App\Entity\Candidate
      */
     public function handleCreateNew(CreateNew $command) : CandidateEntity {
         try {
@@ -146,10 +146,10 @@ class Candidate implements HandlerInterface {
     /**
      * Deletes all candidate data from a given user.
      *
-     * @param App\Command\Profile\Candidate\DeleteAll $command
+     * @param \App\Command\Profile\Candidate\DeleteAll $command
      *
-     * @see App\Repository\DBCandidate::getAllByUserIdAndNames
-     * @see App\Repository\DBCandidate::deleteByUserId
+     * @see \App\Repository\DBCandidate::getAllByUserIdAndNames
+     * @see \App\Repository\DBCandidate::deleteByUserId
      *
      * @return int
      */

@@ -30,7 +30,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\Permission\DeleteOne
+     * @return \App\Command\Company\Permission\DeleteOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['routeName'])) {

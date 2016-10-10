@@ -22,42 +22,42 @@ class Created extends AbstractServiceQueueEvent {
     /**
      * Event related Raw.
      *
-     * @var App\Entity\Profile\Raw
+     * @var \App\Entity\Profile\Raw
      */
     public $raw;
 
     /**
      * Event related User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * Event related Source.
      *
-     * @var App\Entity\Profile\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
 
     /**
      * Event related Credential.
      *
-     * @var App\Entity\Company\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
 
     /**
      * Event related Process.
      *
-     * @var App\Entity\Profile\Process
+     * @var \App\Entity\Profile\Process
      */
     public $process;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Raw $raw
+     * @param \App\Entity\Profile\Raw $raw
      *
      * @return void
      */

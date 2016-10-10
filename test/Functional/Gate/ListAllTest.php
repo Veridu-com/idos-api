@@ -79,52 +79,54 @@ class ListAllTest extends AbstractFunctional {
         ];
 
         for ($i = 1; $i < count($filterableKeys); $i++) {
-            $this->combinatorics(array_keys($filterableKeys), 0, $i,
-            function (array $filters) use ($key, $filterableKeys) {
-                $queryString = [];
-                $possibleResults = [];
-                foreach ($filters as $filter) {
-                    $possibleValues = $filterableKeys[$filter];
+            $this->combinatorics(
+                array_keys($filterableKeys), 0, $i,
+                function (array $filters) use ($key, $filterableKeys) {
+                    $queryString = [];
+                    $possibleResults = [];
+                    foreach ($filters as $filter) {
+                        $possibleValues = $filterableKeys[$filter];
 
-                    foreach ($possibleValues as $possibleValue) {
-                        if (count($possibleResults) > 0) {
-                            $possibleResults = array_intersect($possibleResults, $possibleValue['results']);
-                        } else {
-                            $possibleResults = array_merge($possibleResults, $possibleValue['results']);
+                        foreach ($possibleValues as $possibleValue) {
+                            if (count($possibleResults) > 0) {
+                                $possibleResults = array_intersect($possibleResults, $possibleValue['results']);
+                            } else {
+                                $possibleResults = array_merge($possibleResults, $possibleValue['results']);
+                            }
+
+                            $queryString[] = $filter . '=' . $possibleValue['value'];
                         }
-
-                        $queryString[] = $filter . '=' . $possibleValue['value'];
                     }
-                }
 
-                $request = $this->createRequest(
-                    $this->createEnvironment(
-                        [
+                    $request = $this->createRequest(
+                        $this->createEnvironment(
+                            [
                             'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
                             'QUERY_STRING'       => implode('&', $queryString)
-                        ]
-                    )
-                );
+                            ]
+                        )
+                    );
 
-                $response = $this->process($request);
-                $this->assertSame(200, $response->getStatusCode());
+                    $response = $this->process($request);
+                    $this->assertSame(200, $response->getStatusCode());
 
-                $body = json_decode((string) $response->getBody(), true);
-                $this->assertNotEmpty($body);
-                $this->assertTrue($body['status']);
+                    $body = json_decode((string) $response->getBody(), true);
+                    $this->assertNotEmpty($body);
+                    $this->assertTrue($body['status']);
 
-                foreach ($body['data'] as $entity) {
-                    $this->assertContains($entity[$key], $possibleResults);
+                    foreach ($body['data'] as $entity) {
+                        $this->assertContains($entity[$key], $possibleResults);
+                    }
+
+                    $this->assertTrue(
+                        $this->validateSchema(
+                            'gate/listAll.json',
+                            json_decode((string) $response->getBody())
+                        ),
+                        $this->schemaErrors
+                    );
                 }
-
-                $this->assertTrue(
-                    $this->validateSchema(
-                        'gate/listAll.json',
-                        json_decode((string) $response->getBody())
-                    ),
-                    $this->schemaErrors
-                );
-            });
+            );
         }
     }
 

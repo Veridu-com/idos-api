@@ -127,7 +127,7 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
      * @param \Illuminate\Database\Query\Builder $query   The query
      * @param \App\Entity\Company                $company The company
      *
-     * @return Illuminate\Database\Query\Builder The mutated $query
+     * @return \Illuminate\Database\Query\Builder The mutated $query
      */
     private function scopeQuery(Builder $query, Company $company) : Builder {
         return $query->where(

@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional;
 
-use Test\Functional\AbstractFunctional;
-
 class MainTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();

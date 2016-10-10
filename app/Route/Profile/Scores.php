@@ -22,7 +22,7 @@ use Slim\App;
  * sources, then the API will provide each name with a score representing it's likelihood of being true.
  *
  * @link docs/profiles/attributes/score/overview.md
- * @see App\Controller\Profile\Scores
+ * @see \App\Controller\Profile\Scores
  */
 class Scores implements RouteInterface {
     /**

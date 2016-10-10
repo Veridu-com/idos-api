@@ -10,7 +10,6 @@ namespace App\Repository\Profile;
 
 use App\Entity\Profile\Process;
 use App\Repository\RepositoryInterface;
-use Illuminate\Support\Collection;
 
 /**
  * Process Repository Interface.
@@ -19,21 +18,21 @@ interface ProcessInterface extends RepositoryInterface {
     /**
      * Returns a process based on its user id and id.
      *
-     * @param int         $id         The process id
-     * @param int         $userId     The user id
+     * @param int $id     The process id
+     * @param int $userId The user id
      *
-     * @return Process
+     * @return \App\Entity\Profile\Process
      */
     public function findOne(int $id, int $userId) : Process;
 
     /**
      * Returns a process based on its source id.
      *
-     * @param int         $id         The feature id
-     * @param int         $serviceId  The service id
-     * @param int         $userId     The user id
+     * @param int $id        The feature id
+     * @param int $serviceId The service id
+     * @param int $userId    The user id
      *
-     * @return Process
+     * @return \App\Entity\Profile\Process
      */
     public function findOneBySourceId(int $sourceId) : Process;
 
@@ -44,9 +43,9 @@ interface ProcessInterface extends RepositoryInterface {
      * @param string|null $event  The event
      * @param int         $userId The user identifier
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return Process
+     * @return \App\Entity\Profile\Process
      */
     public function findLastByUserIdSourceIdAndEvent($sourceId, $event, int $userId) : Process;
 
@@ -56,7 +55,7 @@ interface ProcessInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserId(int $userId, array $queryParams = []) : array;
 }

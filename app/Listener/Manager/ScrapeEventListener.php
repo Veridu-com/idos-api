@@ -28,25 +28,25 @@ class ScrapeEventListener extends AbstractListener {
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\CredentialInterface
+     * @var \App\Repository\CredentialInterface
      */
     private $credentialRepository;
     /**
      * Service Handler Repository instance.
      *
-     * @var App\Repository\ServiceHandlerInterface
+     * @var \App\Repository\ServiceHandlerInterface
      */
     private $serviceHandlerRepository;
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\SettingInterface
+     * @var \App\Repository\SettingInterface
      */
     private $settingRepository;
     /**
      * Event Factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -128,12 +128,12 @@ class ScrapeEventListener extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CredentialInterface     $credentialRepository
-     * @param App\Repository\ServiceHandlerInterface $serviceHandlerRepository
-     * @param App\Repository\SettingInterface        $settingRepository
-     * @param App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                  $emitter
-     * @param \GearmanClient                         $gearmanClient
+     * @param \App\Repository\CredentialInterface     $credentialRepository
+     * @param \App\Repository\ServiceHandlerInterface $serviceHandlerRepository
+     * @param \App\Repository\SettingInterface        $settingRepository
+     * @param \App\Factory\Event                      $eventFactory
+     * @param \League\Event\Emitter                   $emitter
+     * @param \GearmanClient                          $gearmanClient
      *
      * @return void
      */
@@ -156,7 +156,7 @@ class ScrapeEventListener extends AbstractListener {
     /**
      * Handles events that trigger data scraping.
      *
-     * @param EventInterface $event
+     * @param \League\Event\EventInterface $event
      *
      * @return void
      */
@@ -182,7 +182,7 @@ class ScrapeEventListener extends AbstractListener {
     /**
      * Dispatches an unhandle event.
      *
-     * @param EventInterface $event
+     * @param \League\Event\EventInterface $event
      *
      * @return void
      */

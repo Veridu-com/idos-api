@@ -17,14 +17,14 @@ class UpsertBulk extends AbstractCommand {
     /**
      * Feature's User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * Target Credential.
      *
-     * @var App\Entity\Company\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
 
@@ -38,14 +38,14 @@ class UpsertBulk extends AbstractCommand {
     /**
      * Feature's Service (creator).
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Feature\UpsertBulk
+     * @return \App\Command\Profile\Feature\UpsertBulk
      */
     public function setParameters(array $parameters) : self {
 

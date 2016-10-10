@@ -22,7 +22,7 @@ use Slim\App;
  * A Profile Candidate is a piece of information within a Profile that has been extracted by the API. This information can be simple like a full name, or more detailed like a Users hometown or employment. If the API has extracted multiple results for one Candidate, they will all be listed with an Candidate Score.
  *
  * @link docs/profiles/candidate/overview.md
- * @see App\Controller\Profile\Candidates
+ * @see \App\Controller\Profile\Candidates
  */
 class Candidates implements RouteInterface {
     /**
@@ -75,9 +75,9 @@ class Candidates implements RouteInterface {
      * @return void
      *
      * @link docs/sources/candidate/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Candidates::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Candidates::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -107,9 +107,9 @@ class Candidates implements RouteInterface {
      * @return void
      *
      * @link docs/sources/candidate/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Candidates::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Candidates::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -140,9 +140,9 @@ class Candidates implements RouteInterface {
      * @return void
      *
      * @link docs/sources/candidate/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Candidates::deleteAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Candidates::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app

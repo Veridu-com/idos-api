@@ -23,13 +23,13 @@ class UpdateOne extends AbstractCommand {
     /**
      * Target User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
      * Target Credential.
      *
-     * @var App\Entity\Company\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
     /**
@@ -66,7 +66,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Task\UpdateOne
+     * @return \App\Command\Profile\Task\UpdateOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {

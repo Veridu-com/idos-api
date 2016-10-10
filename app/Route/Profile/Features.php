@@ -22,7 +22,7 @@ use Slim\App;
  * Another example feature could be "User's Facebook and Twitter name matches" and the API will give a polar yes-no answer.
  *
  * @link docs/profile/features/overview.md
- * @see App\Controller\Profile\Features
+ * @see \App\Controller\Profile\Features
  */
 class Features implements RouteInterface {
     /**
@@ -87,9 +87,9 @@ class Features implements RouteInterface {
      * @return void
      *
      * @link docs/profile/features/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Features::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -121,9 +121,9 @@ class Features implements RouteInterface {
      * @return void
      *
      * @link docs/profile/features/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Features::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -154,9 +154,9 @@ class Features implements RouteInterface {
      * @return void
      *
      * @link docs/profile/features/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Features::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -188,9 +188,9 @@ class Features implements RouteInterface {
      * @return void
      *
      * @link docs/profile/features/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Features::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -221,9 +221,9 @@ class Features implements RouteInterface {
      * @return void
      *
      * @link docs/profile/features/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Features::createNew
      */
     private static function upsert(App $app, callable $auth, callable $permission) {
         $app
@@ -254,9 +254,9 @@ class Features implements RouteInterface {
      * @return void
      *
      * @link docs/profile/features/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Features::createNew
      */
     private static function upsertBulk(App $app, callable $auth, callable $permission) {
         $app
@@ -288,9 +288,9 @@ class Features implements RouteInterface {
      * @return void
      *
      * @link docs/profile/features/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Features::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
@@ -321,9 +321,9 @@ class Features implements RouteInterface {
      * @return void
      *
      * @link docs/profile/features/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Features::deleteAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Features::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
