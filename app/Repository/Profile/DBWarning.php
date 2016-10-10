@@ -22,14 +22,12 @@ class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
      * @var string
      */
     protected $tableName = 'warnings';
-
     /**
      * The entity associated with the repository.
      *
      * @var string
      */
     protected $entityName = 'Profile\Warning';
-
     /**
      * {@inheritdoc}
      */
@@ -37,7 +35,6 @@ class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
         'creator.name' => 'string',
         'slug'         => 'string'
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -47,7 +44,6 @@ class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
         'created_at',
         'updated_at'
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -78,43 +74,36 @@ class DBWarning extends AbstractSQLDBRepository implements WarningInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection {
-        $entities = $this->findBy(
+    public function findOne(string $slug, int $serviceId, int $userId) : Warning {
+        return $this->findOneBy(
+            [
+                'user_id' => $userId,
+                'creator' => $serviceId,
+                'slug'    => $slug
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByUserIdAndServiceId(int $serviceId, int $userId, array $queryParams = []) : Collection {
+        return $this->findBy(
+            [
+                'user_id' => $userId,
+                'creator' => $serviceId
+            ], $queryParams
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByUserId(int $userId, array $queryParams = []) : Collection {
+        return $this->findBy(
             [
             'user_id' => $userId
             ], $queryParams
         );
-
-        return $entities;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneBySlug(int $userId, int $serviceId, string $slug) : Warning {
-        $entity = $this->findOneBy(
-            [
-            'user_id' => $userId,
-            'creator' => $serviceId,
-            'slug'    => $slug
-            ]
-        );
-
-        return $entity;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneByName(int $userId, int $serviceId, string $name) : Warning {
-        $entity = $this->findOneBy(
-            [
-            'user_id' => $userId,
-            'creator' => $serviceId,
-            'name'    => $name
-            ]
-        );
-
-        return $entity;
     }
 }

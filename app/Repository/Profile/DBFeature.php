@@ -22,14 +22,12 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
      * @var string
      */
     protected $tableName = 'features';
-
     /**
      * The entity associated with the repository.
      *
      * @var string
      */
     protected $entityName = 'Profile\Feature';
-
     /**
      * {@inheritdoc}
      */
@@ -41,7 +39,6 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
         'source'       => 'string',
         'created_at'   => 'date'
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -52,7 +49,6 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
         'created_at',
         'updated_at'
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -83,47 +79,57 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection {
-        $result = $this->findBy(
-            [
-            'user_id' => $userId
-            ], $queryParams
-        );
-
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteByUserId(int $userId, array $queryParams = []) : int {
-        return $this->deleteByKey('user_id', $userId);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneById(int $userId, $sourceName, int $serviceId, int $id) : Feature {
+    public function findOne(int $id, int $serviceId, int $userId) : Feature {
         return $this->findOneBy(
             [
-            'user_id' => $userId,
-            'source'  => $sourceName,
-            'creator' => $serviceId,
-            'id'      => $id
+                'id'      => $id,
+                'creator' => $serviceId,
+                'user_id' => $userId
             ]
         );
     }
 
     /**
-     * Upsert a bulk of features.
-     *
-     * @param int   $userId    The user identifier
-     * @param int   $serviceId The service identifier
-     * @param array $features  The features
-     *
-     * @return bool Success of the transaction.
+     * {@inheritdoc}
      */
-    public function upsertBulk(int $userId, int $serviceId, array $features) {
+    public function findOneByName(string $name, int $serviceId, $sourceName, int $userId) : Feature {
+        return $this->findOneBy(
+            [
+                'name'    => $name,
+                'creator' => $serviceId,
+                'source'  => $sourceName,
+                'user_id' => $userId
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection {
+        return $this->findBy(
+            [
+                'creator' => $serviceId,
+                'user_id' => $userId
+            ], $queryParams
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByUserId(int $userId, array $queryParams = []) : Collection {
+        return $this->findBy(
+            [
+            'user_id' => $userId
+            ], $queryParams
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function upsertBulk(int $serviceId, int $userId, array $features) : bool {
         $this->beginTransaction();
         $success = true;
 
@@ -134,18 +140,18 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
 
             // user_id, source, name, creator(service_id), type, value
             $success = $success && $this->runRaw(
-                'INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
+                    'INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
                 ON CONFLICT (user_id, source, creator, name)
                 DO UPDATE set value = :value, type = :type, updated_at = NOW()',
-                [
-                    'user_id' => $userId,
-                    'source'  => $feature['source'],
-                    'name'    => $feature['name'],
-                    'creator' => $serviceId,
-                    'type'    => $feature['type'],
-                    'value'   => $feature['value']
-                ]
-            );
+                    [
+                        'user_id' => $userId,
+                        'source'  => $feature['source'],
+                        'name'    => $feature['name'],
+                        'creator' => $serviceId,
+                        'type'    => $feature['type'],
+                        'value'   => $feature['value']
+                    ]
+                );
         }
 
         if ($success) {
@@ -160,14 +166,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByName(int $userId, $sourceName, int $serviceId, string $name) : Feature {
-        return $this->findOneBy(
-            [
-            'user_id' => $userId,
-            'source'  => $sourceName,
-            'creator' => $serviceId,
-            'name'    => $name
-            ]
-        );
+    public function deleteByUserId(int $userId, array $queryParams = []) : int {
+        return $this->deleteByKey('user_id', $userId);
     }
 }

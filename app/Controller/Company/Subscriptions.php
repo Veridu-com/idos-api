@@ -23,13 +23,13 @@ class Subscriptions implements ControllerInterface {
     /**
      * Subscription Repository instance.
      *
-     * @var App\Repository\Company\SubscriptionInterface
+     * @var \App\Repository\Company\SubscriptionInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
@@ -41,17 +41,17 @@ class Subscriptions implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\SubscriptionInterface $repository
-     * @param App\Repository\Company\CredentialInterface   $credentialRepository
+     * @param \App\Repository\Company\SubscriptionInterface $repository
+     * @param \App\Repository\Company\CredentialInterface   $credentialRepository
      * @param \League\Tactician\CommandBus                 $commandBus
-     * @param App\Factory\Command                          $commandFactory
+     * @param \App\Factory\Command                          $commandFactory
      *
      * @return void
      */
@@ -80,7 +80,7 @@ class Subscriptions implements ControllerInterface {
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity = $request->getAttribute('identity');
 
-        $subscriptions = $this->repository->getAllByCredentialId($identity->id);
+        $subscriptions = $this->repository->getByCredentialId($identity->id);
 
         $body = [
             'status'  => true,
@@ -109,7 +109,7 @@ class Subscriptions implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Handler\Subscription::handleCreateNew
+     * @see \App\Handler\Subscription::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -149,8 +149,8 @@ class Subscriptions implements ControllerInterface {
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see App\Repository\DBSubscription::findByPubKey
-     * @see App\Handler\Subscription::handleDeleteOne
+     * @see \App\Repository\DBSubscription::findByPubKey
+     * @see \App\Handler\Subscription::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

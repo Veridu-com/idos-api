@@ -62,18 +62,17 @@ class Updated extends AbstractServiceQueueEvent {
      * @return void
      */
     public function __construct(Raw $raw, User $user, Credential $credential, Source $source, Process $process) {
-        $this->raw         = $raw;
-        $this->user        = $user;
-        $this->credential  = $credential;
-        $this->source      = $source;
-        $this->process     = $process;
+        $this->raw        = $raw;
+        $this->user       = $user;
+        $this->credential = $credential;
+        $this->process    = $process;
+        $this->source     = $source;
     }
 
     /**
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-
         return array_merge(
             [
             'providerName' => $this->source->name,

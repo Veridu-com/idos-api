@@ -17,13 +17,23 @@ use Illuminate\Support\Collection;
  */
 interface CredentialInterface extends RepositoryInterface {
     /**
+     * Finds one credential with the given company id and public key.
+     *
+     * @param int    $companyId The company identifier
+     * @param string $key       The key
+     *
+     * @return \App\Entity\Company\Credential
+     */
+    public function findOneByCompanyIdAndPubKey(int $companyId, string $key) : Credential;
+
+    /**
      * Finds a Credential based on its Public Key.
      *
      * @param string $pubKey
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return App\Entity\Company\Credential
+     * @return \App\Entity\Company\Credential
      */
     public function findByPubKey(string $pubKey) : Credential;
 
@@ -34,7 +44,7 @@ interface CredentialInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getAllByCompanyId(int $companyId) : Collection;
+    public function getByCompanyId(int $companyId) : Collection;
 
     /**
      * Deletes all Credentials based on their Company Id.
@@ -53,14 +63,4 @@ interface CredentialInterface extends RepositoryInterface {
      * @return int the amount of deleted credentials
      */
     public function deleteByPubKey(string $key) : int;
-
-    /**
-     * Finds one credential with the given company id and public key.
-     *
-     * @param int    $companyId The company identifier
-     * @param string $key       The key
-     *
-     * @return App/Entity/Credential
-     */
-    public function findOneByCompanyIdAndPubKey(int $companyId, string $key) : Credential;
 }

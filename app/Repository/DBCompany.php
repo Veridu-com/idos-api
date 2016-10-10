@@ -35,8 +35,19 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
     /**
      * {@inheritdoc}
      */
-    public function findBySlug(string $slug) : Company {
-        return $this->findOneBy(['slug' => $slug]);
+    public function isParent(Company $parent, Company $child) : bool {
+        if ($child->parentId === null) {
+            return false;
+        }
+
+        if ($child->parentId === $parent->id) {
+            return true;
+        }
+
+        return $this->isParent(
+            $this->find($child->parentId),
+            $child
+        );
     }
 
     /**
@@ -49,22 +60,15 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByParentId(int $parentId) : Collection {
+    public function findBySlug(string $slug) : Company {
+        return $this->findOneBy(['slug' => $slug]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByParentId(int $parentId) : Collection {
         return $this->findBy(['parent_id' => $parentId]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteByParentId(int $parentId) : int {
-        return $this->deleteBy(['parent_id' => $parentId]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete(int $id, string $key = 'id') : int {
-        return $this->deleteBy([$key => $id]);
     }
 
     /**
@@ -72,7 +76,7 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
      */
     public function saveNewCompany(Company $company, Identity $owner) : Company {
         $company = parent::save($company);
-        $member  = $this->newMember($company, $owner, Role::COMPANY_OWNER);
+        $this->createNewMember($company, $owner, Role::COMPANY_OWNER);
 
         return $company;
     }
@@ -80,7 +84,7 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
     /**
      * {@inheritdoc}
      */
-    public function newMember(Company $company, Identity $identity, string $role) : Member {
+    public function createNewMember(Company $company, Identity $identity, string $role) : Member {
         $query = $this->query('members', Member::class);
         $id    = $query->insertGetId(
             [
@@ -110,18 +114,14 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
     /**
      * {@inheritdoc}
      */
-    public function isParent(Company $parent, Company $child) : bool {
-        if ($child->parentId === null) {
-            return false;
-        }
+    public function delete(int $id, string $key = 'id') : int {
+        return $this->deleteBy([$key => $id]);
+    }
 
-        if ($child->parentId === $parent->id) {
-            return true;
-        }
-
-        return $this->isParent(
-            $this->find($child->parentId),
-            $child
-        );
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteByParentId(int $parentId) : int {
+        return $this->deleteBy(['parent_id' => $parentId]);
     }
 }

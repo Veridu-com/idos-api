@@ -22,7 +22,7 @@ class Permissions implements ControllerInterface {
     /**
      * Permission Repository instance.
      *
-     * @var App\Repository\Company\PermissionInterface
+     * @var \App\Repository\Company\PermissionInterface
      */
     private $repository;
     /**
@@ -34,16 +34,16 @@ class Permissions implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\PermissionInterface $repository
+     * @param \App\Repository\Company\PermissionInterface $repository
      * @param \League\Tactician\CommandBus               $commandBus
-     * @param App\Factory\Command                        $commandFactory
+     * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -66,13 +66,13 @@ class Permissions implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBPermission::getAllByCompanyId
+     * @see \App\Repository\DBPermission::getAllByCompanyId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $permissions   = $this->repository->getAllByCompanyId($targetCompany->id);
+        $permissions   = $this->repository->getByCompanyId($targetCompany->id);
 
         $body = [
             'data'    => $permissions->toArray(),
@@ -134,7 +134,7 @@ class Permissions implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBPermission::findOne
+     * @see \App\Repository\DBPermission::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -165,7 +165,7 @@ class Permissions implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Permission::handleCreateNew
+     * @see \App\Handler\Permission::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -204,7 +204,7 @@ class Permissions implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Permission::handleDeleteOne
+     * @see \App\Handler\Permission::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

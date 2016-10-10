@@ -19,9 +19,9 @@ use Slim\App;
  * Company Categories are what allows a company to add tailored functionality to the API in order to assess specific information. If a company wants to support a specific Profile Source, access a certain data point within a Profile, or change the way the API interprets data, Categories are a simple and direct way of doing this.
  *
  * @link docs/categories/overview.md
- * @see App\Controller\Categories
+ * @see \App\Controller\Categories
  */
-class Category implements RouteInterface {
+class Categories implements RouteInterface {
     /**
      * {@inheritdoc}
      */
@@ -66,9 +66,9 @@ class Category implements RouteInterface {
      * @return void
      *
      * @link docs/categories/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Categories::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Categories::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app

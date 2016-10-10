@@ -17,43 +17,27 @@ use Illuminate\Support\Collection;
  */
 interface TagInterface extends RepositoryInterface {
     /**
-     * Gets all Tags based on their User Id.
+     * Returns a tag based on their user id and name.
      *
+     * @param string $slug
      * @param int $userId
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Tag
      */
-    public function getAllByUserId(int $userId) : Collection;
+    public function findOne(string $slug, int $userId) : Tag;
+
     /**
-     * Gets all Tags based on their User Id.
+     * Return tags based on their user id.
      *
      * @param int   $userId
      * @param array $queryParams
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdAndTagSlugs(int $userId, array $queryParams = []) : Collection;
-    /*
-     * Deletes all Tags based on their User Id.
-     *
-     * @param int $userId
-     *
-     * @return int
-     */
-    public function deleteByUserId(int $userId) : int;
+    public function getByUserId(int $userId, array $queryParams = []) : Collection;
+
     /**
-     * Find a tag based on their userId and name.
-     *
-     * @param int    $userId
-     * @param string $name
-     *
-     * @throws App\Exception\NotFound
-     *
-     * @return App\Entity\Profile\Tag
-     */
-    public function findOneByUserIdAndSlug(int $userId, string $name) : Tag;
-    /**
-     * Deletes a tag based on their userId and name.
+     * Deletes a tag based on their user id and name.
      *
      * @param int    $userId User id
      * @param string $name   Tag name
@@ -61,4 +45,13 @@ interface TagInterface extends RepositoryInterface {
      * @return int
      */
     public function deleteOneByUserIdAndSlug(int $userId, string $name) : int;
+
+    /*
+     * Delete tags based on their user id.
+     *
+     * @param int $userId
+     *
+     * @return int
+     */
+    public function deleteByUserId(int $userId) : int;
 }

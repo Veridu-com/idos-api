@@ -14,6 +14,7 @@ use App\Command\Profile\Tag\DeleteOne;
 use App\Entity\Profile\Tag as TagEntity;
 use App\Exception\Create;
 use App\Exception\Validate;
+use App\Exception\NotFound;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\TagInterface;
@@ -30,31 +31,31 @@ class Tag implements HandlerInterface {
     /**
      * Tag Repository instance.
      *
-     * @var App\Repository\Profile\TagInterface
+     * @var \App\Repository\Profile\TagInterface
      */
     private $repository;
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
      * Tag Validator instance.
      *
-     * @var App\Validator\Profile\Tag
+     * @var \App\Validator\Profile\Tag
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -84,11 +85,11 @@ class Tag implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\TagInterface        $repository
-     * @param App\Repository\CredentialInterface $repository
-     * @param App\Validator\Tag                  $validator
-     * @param App\Factory\Event                  $eventFactory
-     * @param \League\Event\Emitter              $emitter
+     * @param \App\Repository\Profile\TagInterface $repository
+     * @param \App\Repository\UserInterface        $userRepository
+     * @param \App\Validator\Profile\Tag           $validator
+     * @param \App\Factory\Event                   $eventFactory
+     * @param \League\Event\Emitter                $emitter
      *
      * @return void
      */
@@ -109,15 +110,15 @@ class Tag implements HandlerInterface {
     /**
      * Creates a new Tag.
      *
-     * @param App\Command\Profile\Tag\CreateNew $command
+     * @param \App\Command\Profile\Tag\CreateNew $command
      *
-     * @throws App\Exception\Validate\TagException
-     * @throws App\Exception\Create\TagException
+     * @throws \App\Exception\Validate\Profile\TagException
+     * @throws \App\Exception\Create\Profile\TagException
      *
-     * @see App\Repository\DBTag::create
-     * @see App\Repository\DBTag::save
+     * @see \App\Repository\DBTag::create
+     * @see \App\Repository\DBTag::save
      *
-     * @return App\Entity\Tag
+     * @return \App\Entity\Profile\Tag
      */
     public function handleCreateNew(CreateNew $command) : TagEntity {
         try {
@@ -144,7 +145,8 @@ class Tag implements HandlerInterface {
         );
 
         try {
-            $tag   = $this->repository->save($tag);
+            $tag = $this->repository->save($tag);
+
             $event = $this->eventFactory->create('Profile\\Tag\\Created', $tag);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -157,13 +159,13 @@ class Tag implements HandlerInterface {
     /**
      * Deletes a Tag.
      *
-     * @param App\Command\Profile\Tag\DeleteOne $command
+     * @param \App\Command\Profile\Tag\DeleteOne $command
      *
-     * @throws App\Exception\Validate\TagException
-     * @throws App\Exception\NotFound\TagException
+     * @throws \App\Exception\Validate\Profile\TagException
+     * @throws \App\Exception\NotFound\Profile\TagException
      *
-     * @see App\Repository\DBTag::findOneByUserIdAndSlug
-     * @see App\Repository\DBTag::deleteOneByUserIdAndSlug
+     * @see \App\Repository\DBTag::findOne
+     * @see \App\Repository\DBTag::deleteOneByUserIdAndSlug
      *
      * @return void
      */
@@ -178,10 +180,9 @@ class Tag implements HandlerInterface {
             );
         }
 
-        $tag = $this->repository->findOneByUserIdAndSlug($command->user->id, $command->slug);
+        $tag = $this->repository->findOne($command->slug, $command->user->id);
 
-        $rowsAffected = $this->repository->deleteOneByUserIdAndSlug($command->user->id, $command->slug);
-
+        $rowsAffected = $this->repository->delete($tag->id);
         if (! $rowsAffected) {
             throw new NotFound\Profile\TagException('No tags found for deletion', 404);
         }
@@ -193,16 +194,15 @@ class Tag implements HandlerInterface {
     /**
      * Deletes all tags ($command->companyId).
      *
-     * @param App\Command\Profile\Tag\DeleteAll $command
+     * @param \App\Command\Profile\Tag\DeleteAll $command
      *
-     * @see App\Repository\DBTag::getAllByUserId
-     * @see App\Repository\DBTag::deleteByUserId
+     * @see \App\Repository\DBTag::getByUserId
+     * @see \App\Repository\DBTag::deleteByUserId
      *
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $tags = $this->repository->getAllByUserId($command->user->id);
-
+        $tags = $this->repository->getByUserId($command->user->id);
         $rowsAffected = $this->repository->deleteByUserId($command->user->id);
 
         $event = $this->eventFactory->create('Profile\\Tag\\DeletedMulti', $tags);

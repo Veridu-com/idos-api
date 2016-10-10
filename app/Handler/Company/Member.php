@@ -34,37 +34,37 @@ class Member implements HandlerInterface {
     /**
      * Member Repository instance.
      *
-     * @var App\Repository\Company\MemberInterface
+     * @var \App\Repository\Company\MemberInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
      * Member Validator instance.
      *
-     * @var App\Validator\Company\Member
+     * @var \App\Validator\Company\Member
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -97,10 +97,10 @@ class Member implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\MemberInterface     $repository
-     * @param App\Repository\CredentialInterface $repository
-     * @param App\Validator\Member               $validator
-     * @param App\Factory\Event                  $eventFactory
+     * @param \App\Repository\Company\MemberInterface     $repository
+     * @param \App\Repository\Company\CredentialInterface $repository
+     * @param \App\Validator\Company\Member               $validator
+     * @param \App\Factory\Event                  $eventFactory
      * @param \League\Event\Emitter              $emitter
      *
      * @return void
@@ -124,12 +124,12 @@ class Member implements HandlerInterface {
     /**
      * Creates a new child Member ($command->companyId).
      *
-     * @param App\Command\Company\Member\CreateNew $command
+     * @param \App\Command\Company\Member\CreateNew $command
      *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\Create\MemberException
+     * @throws \App\Exception\Validate\Company\MemberException
+     * @throws \App\Exception\Create\Company\MemberException
      *
-     * @return App\Entity\Member
+     * @return \App\Entity\Company\Member
      */
     public function handleCreateNew(CreateNew $command) : MemberEntity {
         try {
@@ -177,12 +177,12 @@ class Member implements HandlerInterface {
     /**
      * Updates a Member.
      *
-     * @param App\Command\Company\Member\UpdateOne $command
+     * @param \App\Command\Company\Member\UpdateOne $command
      *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\Update\MemberException
+     * @throws \App\Exception\Validate\Company\MemberException
+     * @throws \App\Exception\Update\Company\MemberException
      *
-     * @return App\Entity\Member
+     * @return \App\Entity\Company\Member
      */
     public function handleUpdateOne(UpdateOne $command) : MemberEntity {
         try {
@@ -214,10 +214,10 @@ class Member implements HandlerInterface {
     /**
      * Deletes a Member.
      *
-     * @param App\Command\Company\Member\DeleteOne $command
+     * @param \App\Command\Company\Member\DeleteOne $command
      *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\NotFound\MemberException
+     * @throws \App\Exception\Validate\Company\MemberException
+     * @throws \App\Exception\NotFound\Company\MemberException
      *
      * @return void
      */
@@ -246,9 +246,9 @@ class Member implements HandlerInterface {
     /**
      * Deletes all members ($command->companyId).
      *
-     * @param App\Command\Company\Member\DeleteAll $command
+     * @param \App\Command\Company\Member\DeleteAll $command
      *
-     * @see App\Repository\DBMember::deleteByCompanyId
+     * @see \App\Repository\DBMember::deleteByCompanyId
      *
      * @return int
      */

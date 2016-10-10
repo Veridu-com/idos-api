@@ -31,12 +31,12 @@ class Scores implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'score:listAll',
-            'score:createNew',
-            'score:deleteAll',
             'score:getOne',
+            'score:createNew',
             'score:updateOne',
             'score:upsert',
-            'score:deleteOne'
+            'score:deleteOne',
+            'score:deleteAll'
         ];
     }
 
@@ -58,12 +58,12 @@ class Scores implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::upsert($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -84,9 +84,9 @@ class Scores implements RouteInterface {
      * @return void
      *
      * @link docs/attributes/score/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Scores::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Scores::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -98,6 +98,40 @@ class Scores implements RouteInterface {
             ->add($auth(Auth::CREDENTIAL))
             ->setName('score:listAll');
     }
+    /**
+     * Retrieves a score.
+     *
+     * Retrieves a score from a given attribute.
+     *
+     * @apiEndpoint GET /profiles/{userName}/scores/{scoreName}
+     * @apiGroup Profile Scores
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string scoreName overall
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/attributes/score/getOne.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Scores::getOne
+     */
+    private static function getOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9_-]+}',
+                'App\Controller\Profile\Scores:getOne'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('score:getOne');
+    }
+
     /**
      * Creates a new score.
      *
@@ -116,9 +150,9 @@ class Scores implements RouteInterface {
      * @return void
      *
      * @link docs/attributes/score/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Scores::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Scores::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -150,9 +184,9 @@ class Scores implements RouteInterface {
      * @return void
      *
      * @link docs/attributes/score/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Scores::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Scores::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -183,9 +217,9 @@ class Scores implements RouteInterface {
      * @return void
      *
      * @link docs/attributes/score/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Scores::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Scores::updateOne
      */
     private static function upsert(App $app, callable $auth, callable $permission) {
         $app
@@ -196,73 +230,6 @@ class Scores implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('score:upsert');
-    }
-
-    /**
-     * Retrieves a score.
-     *
-     * Retrieves a score from a given attribute.
-     *
-     * @apiEndpoint GET /profiles/{userName}/scores/{scoreName}
-     * @apiGroup Profile Scores
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string scoreName overall
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/attributes/score/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Scores::getOne
-     */
-    private static function getOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9_-]+}',
-                'App\Controller\Profile\Scores:getOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('score:getOne');
-    }
-
-    /**
-     * Deletes all scores.
-     *
-     * Deletes all scores of a given attribute.
-     *
-     * @apiEndpoint DELETE /profiles/{userName}/scores
-     * @apiGroup Profile Scores
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/attributes/score/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Scores::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
-                'App\Controller\Profile\Scores:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('score:deleteAll');
     }
 
     /**
@@ -284,9 +251,9 @@ class Scores implements RouteInterface {
      * @return void
      *
      * @link docs/attributes/score/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Scores::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Scores::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
@@ -297,5 +264,38 @@ class Scores implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('score:deleteOne');
+    }
+
+    /**
+     * Deletes all scores.
+     *
+     * Deletes all scores of a given attribute.
+     *
+     * @apiEndpoint DELETE /profiles/{userName}/scores
+     * @apiGroup Profile Scores
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/attributes/score/deleteAll.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Scores::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
+                'App\Controller\Profile\Scores:deleteAll'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('score:deleteAll');
     }
 }

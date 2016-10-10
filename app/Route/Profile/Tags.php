@@ -29,10 +29,10 @@ class Tags implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'tags:listAll',
-            'tags:createNew',
-            'tags:deleteAll',
             'tags:getOne',
-            'tags:deleteOne'
+            'tags:createNew',
+            'tags:deleteOne',
+            'tags:deleteAll'
         ];
     }
 
@@ -54,10 +54,10 @@ class Tags implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
+        self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -79,9 +79,9 @@ class Tags implements RouteInterface {
      * @return void
      *
      * @link docs/profiles/tags/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Tags::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Tags::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -92,73 +92,6 @@ class Tags implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('tags:listAll');
-    }
-    /**
-     * Creates new Tag.
-     *
-     * Creates a new tag for the requesting user.
-     *
-     * @apiEndpoint POST /companies/{companySlug}/profiles/{userId}/tags
-     * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment int userId 1827452
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profiles/tags/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Tags::createNew
-     */
-    private static function createNew(App $app, callable $auth, callable $permission) {
-        $app
-            ->post(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
-                'App\Controller\Profile\Tags:createNew'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::IDENTITY))
-            ->setName('tags:createNew');
-    }
-
-    /**
-     * Delete All Tags.
-     *
-     * Delete all tags that belong to the requesting user.
-     *
-     * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}/tags
-     * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment int userId 1827452
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profiles/tags/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Tags::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
-                'App\Controller\Profile\Tags:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::IDENTITY))
-            ->setName('tags:deleteAll');
     }
 
     /**
@@ -181,9 +114,9 @@ class Tags implements RouteInterface {
      * @return void
      *
      * @link docs/profiles/tags/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Tags::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Tags::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -194,6 +127,40 @@ class Tags implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('tags:getOne');
+    }
+
+    /**
+     * Creates new Tag.
+     *
+     * Creates a new tag for the requesting user.
+     *
+     * @apiEndpoint POST /companies/{companySlug}/profiles/{userId}/tags
+     * @apiGroup Profile Tags
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int userId 1827452
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profiles/tags/createNew.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Tags::createNew
+     */
+    private static function createNew(App $app, callable $auth, callable $permission) {
+        $app
+            ->post(
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
+                'App\Controller\Profile\Tags:createNew'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::IDENTITY))
+            ->setName('tags:createNew');
     }
 
     /**
@@ -216,9 +183,9 @@ class Tags implements RouteInterface {
      * @return void
      *
      * @link docs/profiles/tags/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Tags::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Tags::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
@@ -229,5 +196,39 @@ class Tags implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('tags:deleteOne');
+    }
+
+    /**
+     * Delete All Tags.
+     *
+     * Delete all tags that belong to the requesting user.
+     *
+     * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}/tags
+     * @apiGroup Profile Tags
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int userId 1827452
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profiles/tags/deleteAll.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Tags::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
+                'App\Controller\Profile\Tags:deleteAll'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::IDENTITY))
+            ->setName('tags:deleteAll');
     }
 }
