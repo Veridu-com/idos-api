@@ -18,14 +18,14 @@ class Updated extends AbstractEvent {
     /**
      * Event related Task.
      *
-     * @var App\Entity\Profile\Task
+     * @var \App\Entity\Profile\Task
      */
     public $task;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Task $task
+     * @param \App\Entity\Profile\Task $task
      *
      * @return void
      */

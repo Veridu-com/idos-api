@@ -62,7 +62,7 @@ abstract class AbstractFactory implements FactoryInterface {
      *
      * @throws \RuntimeException
      *
-     * @return App\Factory\FactoryInterface
+     * @return \App\Factory\FactoryInterface
      */
     public function register(string $name, string $class) : FactoryInterface {
         if (! class_exists($class)) {

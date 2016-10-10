@@ -24,19 +24,19 @@ class Features implements ControllerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\Profile\FeatureInterface
+     * @var \App\Repository\Profile\FeatureInterface
      */
     private $repository;
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
      * Source Repository instance.
      *
-     * @var App\Repository\SourceInterface
+     * @var \App\Repository\SourceInterface
      */
     private $sourceRepository;
     /**
@@ -48,17 +48,17 @@ class Features implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\FeatureInterface $repository
-     * @param App\Repository\UserInterface            $userRepository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param App\Factory\Command                     $commandFactory
+     * @param \App\Repository\Profile\FeatureInterface $repository
+     * @param \App\Repository\UserInterface            $userRepository
+     * @param \League\Tactician\CommandBus             $commandBus
+     * @param \App\Factory\Command                     $commandFactory
      *
      * @return void
      */
@@ -85,7 +85,7 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBFeature::getAllByUserId
+     * @see \App\Repository\DBFeature::getAllByUserId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -117,7 +117,7 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBFeature::findByUserIdAndSlug
+     * @see \App\Repository\DBFeature::findByUserIdAndSlug
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -156,7 +156,7 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Feature::handleCreateNew
+     * @see \App\Handler\Feature::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -206,7 +206,7 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Feature::handleUpdateOne
+     * @see \App\Handler\Feature::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -336,7 +336,7 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Feature::handleDeleteOne
+     * @see \App\Handler\Feature::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -372,7 +372,7 @@ class Features implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Feature::handleDeleteAll
+     * @see \App\Handler\Feature::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

@@ -18,7 +18,7 @@ class CRA extends AbstractEvent {
     /**
      * Event related Source.
      *
-     * @var App\Entity\Profile\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
     /**
@@ -31,8 +31,8 @@ class CRA extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Source $source
-     * @param string                    $ipAddr
+     * @param \App\Entity\Profile\Source $source
+     * @param string                     $ipAddr
      *
      * @return void
      */

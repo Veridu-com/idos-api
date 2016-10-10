@@ -17,14 +17,14 @@ class DeleteOne extends AbstractCommand {
     /**
      * Score's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * Score's Creator.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 

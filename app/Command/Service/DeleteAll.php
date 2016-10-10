@@ -17,14 +17,14 @@ class DeleteAll extends AbstractCommand {
     /**
      * Service's company.
      *
-     * @var App\Entity\Company
+     * @var \App\Entity\Company
      */
     public $company;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Service\DeleteAll
+     * @return \App\Command\Service\DeleteAll
      */
     public function setParameters(array $parameters) : self {
 

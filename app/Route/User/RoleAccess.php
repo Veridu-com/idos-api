@@ -21,7 +21,7 @@ use Slim\App;
  * Access Roles are the level of permissions a User has that are accessible from specific sources. It is used to limit what sensitive information (eg. last name, phone number etc) is available to specific Members or Users.
  *
  * @link docs/access/roles/overview.md
- * @see App\Controller\User\RoleAccess
+ * @see \App\Controller\User\RoleAccess
  */
 class RoleAccess implements RouteInterface {
     /**
@@ -79,9 +79,9 @@ class RoleAccess implements RouteInterface {
      * @return void
      *
      * @link docs/access/roles/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\UserPermission::__invoke
-     * @see App\Controller\User\RoleAccess::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\UserPermission::__invoke
+     * @see \App\Controller\User\RoleAccess::listAll
      */
     private static function listAll(App $app, callable $auth, callable $userPermission) {
         $app
@@ -111,9 +111,9 @@ class RoleAccess implements RouteInterface {
      * @return void
      *
      * @link docs/access/roles/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\UserPermission::__invoke
-     * @see App\Controller\User\RoleAccess::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\UserPermission::__invoke
+     * @see \App\Controller\User\RoleAccess::createNew
      */
     private static function createNew(App $app, callable $auth, callable $userPermission) {
         $app
@@ -143,9 +143,9 @@ class RoleAccess implements RouteInterface {
      * @return void
      *
      * @link docs/access/roles/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\UserPermission::__invoke
-     * @see App\Controller\User\RoleAccess::deleteAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\UserPermission::__invoke
+     * @see \App\Controller\User\RoleAccess::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $userPermission) {
         $app
@@ -176,9 +176,9 @@ class RoleAccess implements RouteInterface {
      * @return void
      *
      * @link docs/access/roles/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\UserPermission::__invoke
-     * @see App\Controller\User\RoleAccess::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\UserPermission::__invoke
+     * @see \App\Controller\User\RoleAccess::getOne
      */
     private static function getOne(App $app, callable $auth, callable $userPermission) {
         $app
@@ -209,9 +209,9 @@ class RoleAccess implements RouteInterface {
      * @return void
      *
      * @link docs/access/roles/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\UserPermission::__invoke
-     * @see App\Controller\User\RoleAccess::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\UserPermission::__invoke
+     * @see \App\Controller\User\RoleAccess::getOne
      */
     private static function updateOne(App $app, callable $auth, callable $userPermission) {
         $app
@@ -242,9 +242,9 @@ class RoleAccess implements RouteInterface {
      * @return void
      *
      * @link docs/access/roles/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\UserPermission::__invoke
-     * @see App\Controller\User\RoleAccess::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\UserPermission::__invoke
+     * @see \App\Controller\User\RoleAccess::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $userPermission) {
         $app

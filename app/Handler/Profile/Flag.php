@@ -76,8 +76,8 @@ class Flag implements HandlerInterface {
      *
      * @param \App\Repository\Profile\FlagInterface $repository
      * @param \App\Validator\Profile\Flag           $validator
-     * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter           $emitter
+     * @param \App\Factory\Event                    $eventFactory
+     * @param \League\Event\Emitter                 $emitter
      *
      * @return void
      */
@@ -211,7 +211,11 @@ class Flag implements HandlerInterface {
             );
         }
 
-        $entities = $this->repository->getByUserIdAndServiceId($command->service->id, $command->user->id, $command->queryParams);
+        $entities = $this->repository->getByUserIdAndServiceId(
+            $command->service->id,
+            $command->user->id,
+            $command->queryParams
+        );
 
         $affectedRows = 0;
         try {

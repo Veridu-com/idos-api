@@ -18,7 +18,7 @@ class CachedStrategy implements RepositoryStrategyInterface {
     /**
      * Repository Factory.
      *
-     * @var App\Factory\Repository
+     * @var \App\Factory\Repository
      */
     private $repositoryFactory;
     /**
@@ -31,7 +31,7 @@ class CachedStrategy implements RepositoryStrategyInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Repository            $repositoryFactory
+     * @param \App\Factory\Repository           $repositoryFactory
      * @param \Apix\Cache\PsrCache\TaggablePool $cache
      *
      * @return void

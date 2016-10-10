@@ -20,7 +20,7 @@ use Slim\App;
  * A Profile Reference is the information a User initially provides as true information, which the API can use as a reference during processing the Raw data of the Users Profile in order to authenticate its legitimacy.
  *
  * @link docs/profiles/reference/overview.md
- * @see App\Controller\Profile\References
+ * @see \App\Controller\Profile\References
  */
 class References implements RouteInterface {
     /**
@@ -79,9 +79,9 @@ class References implements RouteInterface {
      * @return void
      *
      * @link docs/sources/reference/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\References::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\References::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -112,9 +112,9 @@ class References implements RouteInterface {
      * @return void
      *
      * @link docs/sources/reference/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\References::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\References::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -145,9 +145,9 @@ class References implements RouteInterface {
      * @return void
      *
      * @link docs/sources/reference/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\References::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\References::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -179,9 +179,9 @@ class References implements RouteInterface {
      * @return void
      *
      * @link docs/management/members/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\References::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\References::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -213,9 +213,9 @@ class References implements RouteInterface {
      * @return void
      *
      * @link docs/sources/reference/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\References::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\References::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
@@ -246,9 +246,9 @@ class References implements RouteInterface {
      * @return void
      *
      * @link docs/sources/reference/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\References::deleteAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\References::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app

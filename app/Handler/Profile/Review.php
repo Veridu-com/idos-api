@@ -74,10 +74,10 @@ class Review implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\ReviewInterface $repository
-     * @param App\Validator\Review           $validator
-     * @param App\Factory\Event              $eventFactory
-     * @param \League\Event\Emitter          $emitter
+     * @param \App\Repository\ReviewInterface $repository
+     * @param \App\Validator\Review           $validator
+     * @param \App\Factory\Event              $eventFactory
+     * @param \League\Event\Emitter           $emitter
      *
      * @return void
      */
@@ -124,7 +124,7 @@ class Review implements HandlerInterface {
             [
                 'user_id'     => $command->user->id,
                 'identity_id' => $command->identity->id,
-                'flag_id'  => $command->flagId,
+                'flag_id'     => $command->flagId,
                 'positive'    => $this->validator->validateFlag($command->positive),
                 'created_at'  => time()
             ]

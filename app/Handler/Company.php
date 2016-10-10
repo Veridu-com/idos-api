@@ -79,7 +79,7 @@ class Company implements HandlerInterface {
      * @param \App\Repository\CompanyInterface $repository
      * @param \App\Validator\Company           $validator
      * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter           $emitter
+     * @param \League\Event\Emitter            $emitter
      *
      * @return void
      */

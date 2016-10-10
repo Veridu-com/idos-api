@@ -11,11 +11,11 @@ namespace App\Controller\Company;
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
+use App\Repository\Profile\FlagInterface;
 use App\Repository\Profile\GateInterface;
 use App\Repository\Profile\ReviewInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Repository\Profile\TagInterface;
-use App\Repository\Profile\FlagInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -110,7 +110,7 @@ class Profiles implements ControllerInterface {
         $this->sourceRepository    = $sourceRepository;
         $this->tagRepository       = $tagRepository;
         $this->reviewRepository    = $reviewRepository;
-        $this->flagRepository   = $flagRepository;
+        $this->flagRepository      = $flagRepository;
         $this->gateRepository      = $gateRepository;
         $this->attributeRepository = $attributeRepository;
         $this->commandBus          = $commandBus;
@@ -137,7 +137,7 @@ class Profiles implements ControllerInterface {
             $sources  = $this->sourceRepository->getByUserId($profile->id);
             $tags     = $this->tagRepository->getByUserId($profile->id);
             $reviews  = $this->reviewRepository->getByUserId($profile->id);
-            $flags = $this->flagRepository->findByUserId($profile->id);
+            $flags    = $this->flagRepository->findByUserId($profile->id);
             $gates    = $this->gateRepository->getByUserId($profile->id);
 
             foreach ($flags as $flag) {
@@ -166,20 +166,24 @@ class Profiles implements ControllerInterface {
                 $mappedAttributes[$attribute->name][] = $attribute->toArray();
             }
 
-            $mappedAttributes = array_map(function ($candidates) {
+            $mappedAttributes = array_map(
+                function ($candidates) {
                 // sorting by support DESC
-                usort($candidates, function ($a, $b) {
-                    return ($a['support'] <=> $b['support']) * -1;
-                });
+                    usort(
+                        $candidates, function ($a, $b) {
+                            return ($a['support'] <=> $b['support']) * -1;
+                        }
+                    );
 
-                return $candidates;
-            }, $mappedAttributes);
+                    return $candidates;
+                }, $mappedAttributes
+            );
 
             $data[] = array_merge(
                 $profile->toArray(),
                 ['sources'     => $profileSources],
                 ['tags'        => $tags->toArray()],
-                ['flags'    => $flags->toArray()],
+                ['flags'       => $flags->toArray()],
                 ['gates'       => $gates->toArray()],
                 ['attributes'  => $mappedAttributes]
             );
@@ -216,14 +220,14 @@ class Profiles implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $userId = $request->getAttribute('decodedUserId');
 
-        $data     = [];
+        $data = [];
 
         $profile = $this->repository->find($userId);
 
         $sources  = $this->sourceRepository->getByUserId($profile->id);
         $tags     = $this->tagRepository->getByUserId($profile->id);
         $reviews  = $this->reviewRepository->getByUserId($profile->id);
-        $flags = $this->flagRepository->findByUserId($profile->id);
+        $flags    = $this->flagRepository->findByUserId($profile->id);
         $gates    = $this->gateRepository->getByUserId($profile->id);
 
         foreach ($flags as $flag) {
@@ -252,20 +256,24 @@ class Profiles implements ControllerInterface {
             $mappedAttributes[$attribute->name][] = $attribute->toArray();
         }
 
-        $mappedAttributes = array_map(function ($candidates) {
+        $mappedAttributes = array_map(
+            function ($candidates) {
             // sorting by support DESC
-            usort($candidates, function ($a, $b) {
-                return ($a['support'] <=> $b['support']) * -1;
-            });
+                usort(
+                    $candidates, function ($a, $b) {
+                        return ($a['support'] <=> $b['support']) * -1;
+                    }
+                );
 
-            return $candidates;
-        }, $mappedAttributes);
+                return $candidates;
+            }, $mappedAttributes
+        );
 
         $data = array_merge(
             $profile->toArray(),
             ['sources'     => $profileSources],
             ['tags'        => $tags->toArray()],
-            ['flags'    => $flags->toArray()],
+            ['flags'       => $flags->toArray()],
             ['gates'       => $gates->toArray()],
             ['attributes'  => $mappedAttributes]
         );

@@ -38,7 +38,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\ServiceHandler\CreateNew
+     * @return \App\Command\ServiceHandler\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['decoded_service_id'])) {

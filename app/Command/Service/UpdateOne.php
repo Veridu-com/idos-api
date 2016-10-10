@@ -24,7 +24,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * Service's company's instance.
      *
-     * @var App\Entity\Company
+     * @var \App\Entity\Company
      */
     public $company;
 
@@ -87,7 +87,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Service\UpdateOne
+     * @return \App\Command\Service\UpdateOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {

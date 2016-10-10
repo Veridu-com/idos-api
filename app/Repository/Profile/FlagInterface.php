@@ -23,7 +23,7 @@ interface FlagInterface extends RepositoryInterface {
      * @param int    $serviceId
      * @param int    $userId
      *
-     * @return Flag
+     * @return \App\Entity\Profile\Flag
      */
     public function findOne(string $slug, int $serviceId, int $userId) : Flag;
 

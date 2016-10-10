@@ -45,7 +45,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\Subscription\CreateNew
+     * @return \App\Command\Company\Subscription\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['category_slug'])) {

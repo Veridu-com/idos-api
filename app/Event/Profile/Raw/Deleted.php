@@ -18,14 +18,14 @@ class Deleted extends AbstractEvent {
     /**
      * Event related Raw.
      *
-     * @var App\Entity\Profile\Raw
+     * @var \App\Entity\Profile\Raw
      */
     public $raw;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Raw $raw
+     * @param \App\Entity\Profile\Raw $raw
      *
      * @return void
      */

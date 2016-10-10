@@ -45,7 +45,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\Credential\CreateNew
+     * @return \App\Command\Company\Credential\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {

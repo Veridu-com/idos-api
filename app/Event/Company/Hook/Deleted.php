@@ -18,14 +18,14 @@ class Deleted extends AbstractEvent {
     /**
      * Event related Hook.
      *
-     * @var App\Entity\Company\Hook
+     * @var \App\Entity\Company\Hook
      */
     public $hook;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Company\Hook $hook
+     * @param \App\Entity\Company\Hook $hook
      *
      * @return void
      */

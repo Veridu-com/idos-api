@@ -23,13 +23,13 @@ class Tasks implements ControllerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\Profile\TaskInterface
+     * @var \App\Repository\Profile\TaskInterface
      */
     private $repository;
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\Profile\ProcessInterface
+     * @var \App\Repository\Profile\ProcessInterface
      */
     private $processRepository;
     /**
@@ -41,17 +41,17 @@ class Tasks implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\TaskInterface    $repository
-     * @param App\Repository\Profile\ProcessInterface $processRepository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param App\Factory\Command                     $commandFactory
+     * @param \App\Repository\Profile\TaskInterface    $repository
+     * @param \App\Repository\Profile\ProcessInterface $processRepository
+     * @param \League\Tactician\CommandBus             $commandBus
+     * @param \App\Factory\Command                     $commandFactory
      *
      * @return void
      */
@@ -75,7 +75,7 @@ class Tasks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\Profile\DBTask::find
+     * @see \App\Repository\Profile\DBTask::find
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -111,7 +111,7 @@ class Tasks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Profile\Task::handleCreateNew
+     * @see \App\Handler\Profile\Task::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -154,7 +154,7 @@ class Tasks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Profile\Task::handleUpdateOne
+     * @see \App\Handler\Profile\Task::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -195,8 +195,8 @@ class Tasks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBProcess::find
-     * @see App\Repository\Profile\DBTask::getAllByProcessId
+     * @see \App\Repository\DBProcess::find
+     * @see \App\Repository\Profile\DBTask::getAllByProcessId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

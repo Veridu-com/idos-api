@@ -54,7 +54,7 @@ class CreateNewGoogle extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Sso\CreateNewGoogle
+     * @return \App\Command\Sso\CreateNewGoogle
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['apiVersion'])) {

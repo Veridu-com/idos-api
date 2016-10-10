@@ -32,25 +32,25 @@ class RoleAccess implements HandlerInterface {
     /**
      * RoleAccess Repository instance.
      *
-     * @var App\Repository\User\RoleAccessInterface
+     * @var \App\Repository\User\RoleAccessInterface
      */
     private $repository;
     /**
      * RoleAccess Validator instance.
      *
-     * @var App\Validator\User\RoleAccess
+     * @var \App\Validator\User\RoleAccess
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -77,10 +77,10 @@ class RoleAccess implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\RoleAccessInterface $repository
-     * @param App\Validator\RoleAccess           $validator
-     * @param App\Factory\Event                  $eventFactory
-     * @param \League\Event\Emitter              $emitter
+     * @param \App\Repository\RoleAccessInterface $repository
+     * @param \App\Validator\RoleAccess           $validator
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
      *
      * @return void
      */
@@ -99,12 +99,12 @@ class RoleAccess implements HandlerInterface {
     /**
      * Creates a new child RoleAccess.
      *
-     * @param App\Command\User\RoleAccess\CreateNew $command
+     * @param \App\Command\User\RoleAccess\CreateNew $command
      *
-     * @throws App\Exception\Validate\RoleAccessException
-     * @throws App\Exception\Create\RoleAccessException
+     * @throws \App\Exception\Validate\RoleAccessException
+     * @throws \App\Exception\Create\RoleAccessException
      *
-     * @return App\Entity\RoleAccess
+     * @return \App\Entity\RoleAccess
      */
     public function handleCreateNew(CreateNew $command) : RoleAccessEntity {
         try {
@@ -147,9 +147,9 @@ class RoleAccess implements HandlerInterface {
     /**
      * Deletes all RoleAccess of the identity.
      *
-     * @param App\Command\User\RoleAccess\DeleteAll $command
+     * @param \App\Command\User\RoleAccess\DeleteAll $command
      *
-     * @throws App\Exception\Validate\RoleAccessException
+     * @throws \App\Exception\Validate\RoleAccessException
      *
      * @return int number of affected rows
      */
@@ -177,12 +177,12 @@ class RoleAccess implements HandlerInterface {
     /**
      * Updates a RoleAccess.
      *
-     * @param App\Command\User\RoleAccess\UpdateOne $command
+     * @param \App\Command\User\RoleAccess\UpdateOne $command
      *
-     * @throws App\Exception\Validate\RoleAccessException
-     * @throws App\Exception\Update\RoleAccessException
+     * @throws \App\Exception\Validate\RoleAccessException
+     * @throws \App\Exception\Update\RoleAccessException
      *
-     * @return App\Entity\RoleAccess
+     * @return \App\Entity\RoleAccess
      */
     public function handleUpdateOne(UpdateOne $command) : RoleAccessEntity {
         try {
@@ -217,10 +217,10 @@ class RoleAccess implements HandlerInterface {
     /**
      * Deletes a RoleAccess.
      *
-     * @param App\Command\User\RoleAccess\DeleteOne $command
+     * @param \App\Command\User\RoleAccess\DeleteOne $command
      *
-     * @throws App\Exception\Validate\RoleAccessException
-     * @throws App\Exception\NotFound\RoleAccessException
+     * @throws \App\Exception\Validate\RoleAccessException
+     * @throws \App\Exception\NotFound\RoleAccessException
      *
      * @return void
      */

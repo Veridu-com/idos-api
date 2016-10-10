@@ -49,7 +49,7 @@ class Credentials implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Company\CredentialInterface $repository
-     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \League\Tactician\CommandBus                $commandBus
      * @param \App\Factory\Command                        $commandFactory
      *
      * @return void

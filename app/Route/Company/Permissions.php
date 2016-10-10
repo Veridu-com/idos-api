@@ -21,7 +21,7 @@ use Slim\App;
  * Permissions are levels of access a Company has to specific features or information within the API. This is used to control or monetise access to features for customers and their users.
  *
  * @link docs/companies/permissions/overview.md
- * @see App\Controller\Company\Permissions
+ * @see \App\Controller\Company\Permissions
  */
 class Permissions implements RouteInterface {
     /**
@@ -75,9 +75,9 @@ class Permissions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/permissions/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Permissions::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Permissions::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -112,9 +112,9 @@ class Permissions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/permissions/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Permissions::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Permissions::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -150,9 +150,9 @@ class Permissions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/permissions/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Permissions::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Permissions::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -190,9 +190,9 @@ class Permissions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/permissions/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Permissions::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Permissions::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

@@ -49,9 +49,9 @@ class Flags implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Profile\FlagInterface $repository
-     * @param \App\Repository\UserInterface            $userRepository
-     * @param \League\Tactician\CommandBus             $commandBus
-     * @param \App\Factory\Command                     $commandFactory
+     * @param \App\Repository\UserInterface         $userRepository
+     * @param \League\Tactician\CommandBus          $commandBus
+     * @param \App\Factory\Command                  $commandFactory
      *
      * @return void
      */
@@ -81,7 +81,7 @@ class Flags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
+        $user = $request->getAttribute('targetUser');
 
         $entities = $this->repository->getByUserId($user->id, $request->getQueryParams());
 

@@ -19,7 +19,7 @@ class Secure {
     /**
      * Key instance used to encrypt/decrypt.
      *
-     * @var Defuse\Crypto\Key
+     * @var \Defuse\Crypto\Key
      */
     private $key;
 

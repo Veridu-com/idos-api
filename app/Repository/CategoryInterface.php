@@ -20,7 +20,7 @@ interface CategoryInterface extends RepositoryInterface {
      *
      * @param array $queryParams
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAll(array $queryParams = []) : Collection;
 }

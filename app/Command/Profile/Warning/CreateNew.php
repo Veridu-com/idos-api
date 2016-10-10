@@ -15,16 +15,16 @@ use App\Command\AbstractCommand;
  */
 class CreateNew extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Warning's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
-     * Attribute's creator.
+     * Warning's creator.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
@@ -45,7 +45,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Flag\CreateNew
+     * @return \App\Command\Profile\Flag\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {

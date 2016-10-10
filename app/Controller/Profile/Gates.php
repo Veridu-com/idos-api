@@ -23,13 +23,13 @@ class Gates implements ControllerInterface {
     /**
      * Setting Repository instance.
      *
-     * @var App\Repository\Profile\GateInterface
+     * @var \App\Repository\Profile\GateInterface
      */
     private $repository;
     /**
      * User Repository instance.
      *
-     * @var App\Repository\UserInterface
+     * @var \App\Repository\UserInterface
      */
     private $userRepository;
     /**
@@ -41,17 +41,17 @@ class Gates implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\GateInterface $repository
-     * @param App\Repository\UserInterface         $userRepository
-     * @param \League\Tactician\CommandBus         $commandBus
-     * @param App\Factory\Command                  $commandFactory
+     * @param \App\Repository\Profile\GateInterface $repository
+     * @param \App\Repository\UserInterface         $userRepository
+     * @param \League\Tactician\CommandBus          $commandBus
+     * @param \App\Factory\Command                  $commandFactory
      *
      * @return void
      */
@@ -76,7 +76,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBGate::getAllByUserId
+     * @see \App\Repository\DBGate::getAllByUserId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -110,7 +110,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBGate::findByUserIdAndSlug
+     * @see \App\Repository\DBGate::findByUserIdAndSlug
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -145,7 +145,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Gate::handleCreateNew
+     * @see \App\Handler\Gate::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -186,7 +186,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Profile\Gate::handleUpdateOne
+     * @see \App\Handler\Profile\Gate::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -265,7 +265,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Gate::handleDeleteOne
+     * @see \App\Handler\Gate::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -301,7 +301,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Gate::handleDeleteAll
+     * @see \App\Handler\Gate::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

@@ -19,7 +19,7 @@ use Slim\App;
  * Profile Raw is the raw data extracted from a Profile. This is what the API reads and extracts information in order to process more complex requests.
  *
  * @link docs/profiles/sources/raw/overview.md
- * @see App\Controller\Profile\Raw
+ * @see \App\Controller\Profile\Raw
  */
 class Raw implements RouteInterface {
     /**
@@ -73,9 +73,9 @@ class Raw implements RouteInterface {
      * @return void
      *
      * @link docs/sources/raw/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Raw::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Raw::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -106,9 +106,9 @@ class Raw implements RouteInterface {
      * @return void
      *
      * @link docs/sources/raw/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Raw::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Raw::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -139,9 +139,9 @@ class Raw implements RouteInterface {
      * @return void
      *
      * @link docs/sources/raw/upsert.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Raw::upsert
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Raw::upsert
      */
     private static function upsert(App $app, callable $auth, callable $permission) {
         $app

@@ -37,7 +37,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\UpdateOne
+     * @return \App\Command\Company\UpdateOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {

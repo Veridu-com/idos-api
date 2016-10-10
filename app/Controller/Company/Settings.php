@@ -42,7 +42,7 @@ class Settings implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Company\SettingInterface $repository
-     * @param \League\Tactician\CommandBus            $commandBus
+     * @param \League\Tactician\CommandBus             $commandBus
      * @param \App\Factory\Command                     $commandFactory
      *
      * @return void
@@ -142,7 +142,7 @@ class Settings implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string section AppTokens Section name
      * @apiEndpointRequiredParam body string property  1abc7jdoxsaz.facebook.key  Property name
-     * @apiEndpointRequiredParam body string value \x492361674b Property value
+     * @apiEndpointRequiredParam body string value 492361674b Property value
      * @apiEndpointResponse 201 schema/setting/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -180,7 +180,7 @@ class Settings implements ControllerInterface {
     /**
      * Updates one Setting of the Target Company based on path paramaters section and property.
      *
-     * @apiEndpointRequiredParam body string value \x492361674b Property value
+     * @apiEndpointRequiredParam body string value 492361674b Property value
      * @apiEndpointResponse 200 schema/setting/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

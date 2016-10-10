@@ -16,23 +16,23 @@ use App\Entity\Profile\Attribute;
  */
 class UpdateOne extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Score's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
-     * Attribute's creator.
+     * Score's creator.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
     /**
      * Score's Attribute.
      *
-     * @var App\Entity\Profile\Attribute
+     * @var \App\Entity\Profile\Attribute
      */
     public $attribute;
 

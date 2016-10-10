@@ -17,7 +17,7 @@ class Repository extends AbstractFactory {
     /**
      * Repository Strategy.
      *
-     * @var App\Repository\RepositoryStrategyInterface;
+     * @var \App\Repository\RepositoryStrategyInterface;
      */
     protected $strategy;
 
@@ -38,7 +38,7 @@ class Repository extends AbstractFactory {
     /**
      * Class constructor.
      *
-     * @param App\Repository\RepositoryStrategy $strategy
+     * @param \App\Repository\RepositoryStrategy $strategy
      *
      * @return void
      */

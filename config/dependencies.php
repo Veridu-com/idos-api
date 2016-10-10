@@ -103,7 +103,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
                     'id'      => $container->get('logUidProcessor')->getUid(),
                     'code'    => $exception->getCode(),
                     'type'    => 'APPLICATION_EXCEPTION', // $exception->getType(),
-                    'link'    => 'test', // $exception->getLink(),
+                    'link'    => 'https://docs.idos.io/errors/APPLICATION_EXCEPTION', // $exception->getLink(),
                     'message' => $exception->getMessage(),
                 ]
             ];
@@ -498,21 +498,26 @@ $container['ssoAuth'] = function (ContainerInterface $container) : callable {
 
 // Gearman Client
 $container['gearmanClient'] = function (ContainerInterface $container) : GearmanClient {
-    $settings = $container->get('settings');
-    $gearman  = new \GearmanClient();
-    if (isset($settings['gearman']['timeout'])) {
-        $gearman->setTimeout($settings['gearman']['timeout']);
-    }
-
-    foreach ($settings['gearman']['servers'] as $server) {
-        if (is_array($server)) {
-            $gearman->addServer($server[0], $server[1]);
-        } else {
-            $gearman->addServer($server);
+    try {
+        return new \GearmanClient();
+        $settings = $container->get('settings');
+        $gearman  = new \GearmanClient();
+        if (isset($settings['gearman']['timeout'])) {
+            $gearman->setTimeout($settings['gearman']['timeout']);
         }
-    }
 
-    return $gearman;
+        foreach ($settings['gearman']['servers'] as $server) {
+            if (is_array($server)) {
+                $gearman->addServer($server[0], $server[1]);
+            } else {
+                $gearman->addServer($server);
+            }
+        }
+
+        return $gearman;
+    } catch (\GearmanException $exception) {
+        throw new AppException('Could not connect to Gearman Job Server');
+    }
 };
 
 // Registering Event Emitter

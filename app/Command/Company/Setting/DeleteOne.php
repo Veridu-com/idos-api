@@ -24,7 +24,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\Setting\DeleteOne
+     * @return \App\Command\Company\Setting\DeleteOne
      */
     public function setParameters(array $parameters) : self {
 

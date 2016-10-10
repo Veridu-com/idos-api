@@ -22,7 +22,7 @@ class Processes implements ControllerInterface {
     /**
      * Process Repository instance.
      *
-     * @var App\Repository\Profile\ProcessInterface
+     * @var \App\Repository\Profile\ProcessInterface
      */
     private $repository;
     /**
@@ -34,16 +34,16 @@ class Processes implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Profile\ProcessInterface $repository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param App\Factory\Command                     $commandFactory
+     * @param \App\Repository\Profile\ProcessInterface $repository
+     * @param \League\Tactician\CommandBus             $commandBus
+     * @param \App\Factory\Command                     $commandFactory
      *
      * @return void
      */
@@ -66,7 +66,7 @@ class Processes implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBProccess::getAllByUserId
+     * @see \App\Repository\DBProccess::getAllByUserId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -101,7 +101,7 @@ class Processes implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBProccess::find
+     * @see \App\Repository\DBProccess::find
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

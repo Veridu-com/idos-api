@@ -23,7 +23,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Task's creator.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
     /**
@@ -60,7 +60,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Task\CreateNew
+     * @return \App\Command\Profile\Task\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {

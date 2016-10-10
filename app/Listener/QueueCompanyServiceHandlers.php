@@ -15,9 +15,9 @@ trait QueueCompanyServiceHandlers {
     /**
      * Queues Service Handlers' tasks for the given event and company.
      *
-     * @param int                                  $companyId    Company identifier
-     * @param App\Event\ServiceQueueEventInterface $event        Event identifier
-     * @param array                                $mergePayload Payload that will be merged into "handler" property
+     * @param int                                   $companyId    Company identifier
+     * @param \App\Event\ServiceQueueEventInterface $event        Event identifier
+     * @param array                                 $mergePayload Payload that will be merged into "handler" property
      *
      * @return bool
      */
@@ -79,7 +79,7 @@ trait QueueCompanyServiceHandlers {
     /**
      * Dispatches an unhandled event.
      *
-     * @param EventInterface $event
+     * @param \League\Event\EventInterface $event
      *
      * @return void
      */

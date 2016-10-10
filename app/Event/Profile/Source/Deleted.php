@@ -19,13 +19,13 @@ class Deleted extends AbstractEvent {
     /**
      * Event related User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
      * Event related Source.
      *
-     * @var App\Entity\Profile\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
     /**
@@ -38,9 +38,9 @@ class Deleted extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\User   $user
-     * @param App\Entity\Source $source
-     * @param string            $ipAddr
+     * @param \App\Entity\User   $user
+     * @param \App\Entity\Source $source
+     * @param string             $ipAddr
      *
      * @return void
      */

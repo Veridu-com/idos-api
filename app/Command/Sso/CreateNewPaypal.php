@@ -54,7 +54,7 @@ class CreateNewPaypal extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Sso\CreateNewPaypal
+     * @return \App\Command\Sso\CreateNewPaypal
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['apiVersion'])) {

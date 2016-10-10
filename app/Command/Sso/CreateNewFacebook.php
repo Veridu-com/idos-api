@@ -54,7 +54,7 @@ class CreateNewFacebook extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Sso\CreateNewFacebook
+     * @return \App\Command\Sso\CreateNewFacebook
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['apiVersion'])) {

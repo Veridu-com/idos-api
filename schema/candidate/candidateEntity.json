@@ -1,0 +1,31 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/candidate/candidateEntity.json",
+    "title": "Candidate",
+    "type": "object",
+    "properties": {
+        "attribute": {
+            "description": "Attribute name",
+            "type": "string",
+            "pattern": ""
+        },
+        "value": {
+            "description": "Candidate value",
+            "type": "string",
+            "pattern": ""
+        },
+        "created_at": {
+            "description": "Candidate's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Candidate's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "attribute",
+        "value",
+        "created_at"
+    ]
+}

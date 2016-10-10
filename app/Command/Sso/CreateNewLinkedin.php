@@ -54,7 +54,7 @@ class CreateNewLinkedin extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Sso\CreateNewLinkedin
+     * @return \App\Command\Sso\CreateNewLinkedin
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['apiVersion'])) {

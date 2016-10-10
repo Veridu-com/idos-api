@@ -19,7 +19,7 @@ class DeletedMulti extends AbstractEvent {
     /**
      * Event related User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
@@ -38,7 +38,7 @@ class DeletedMulti extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\User                $user
+     * @param \App\Entity\User               $user
      * @param \Illuminate\Support\Collection $sources
      * @param string                         $ipAddr
      *

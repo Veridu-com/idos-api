@@ -19,7 +19,7 @@ class GetOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri    = '/1.0/companies/veridu-ltd/profiles/1321189817/reviews/517015180';
+        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/reviews/517015180';
     }
 
     public function testSuccess() {
