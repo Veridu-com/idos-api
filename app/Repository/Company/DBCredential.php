@@ -47,10 +47,9 @@ class DBCredential extends AbstractSQLDBRepository implements CredentialInterfac
         $subscriptionRepository = $this->repositoryFactory->create('Company\Subscription');
 
         return $collection->map(function ($credential) use ($subscriptionRepository) {
-            $cred = $credential->toArray();
-            $cred['subscriptions'] = $subscriptionRepository->getAllByCredentialId($credential->id);
+            $credential->subscriptions = $subscriptionRepository->getByCredentialId($credential->id);
 
-            return $cred;
+            return $credential;
         });
     }
 

@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Hook;
+namespace Test\Functional;
 
 use Test\Functional\AbstractFunctional;
 

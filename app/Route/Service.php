@@ -27,12 +27,12 @@ class Service implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            // 'service:listAll',
-            // 'service:deleteAll',
-            // 'service:createNew',
-            // 'service:getOne',
-            // 'service:updateOne',
-            // 'service:deleteOne'
+            'service:listAll',
+            'service:deleteAll',
+            'service:createNew',
+            'service:getOne',
+            'service:updateOne',
+            'service:deleteOne'
         ];
     }
 
