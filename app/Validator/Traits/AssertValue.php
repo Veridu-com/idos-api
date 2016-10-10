@@ -27,8 +27,7 @@ trait AssertValue {
         Validator::oneOf(
             Validator::floatVal(),
             Validator::intVal(),
-            Validator::stringType()->length(1, null),
-            Validator::boolVal()
+            Validator::stringType()->length(1, null)
         )->assert($value);
     }
     /**

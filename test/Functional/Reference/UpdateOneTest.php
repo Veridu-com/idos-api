@@ -20,7 +20,7 @@ class UpdateOneTest extends AbstractFunctional {
         Traits\RejectsIdentityToken;
 
     protected function setUp() {
-        $this->httpMethod = 'PUT';
+        $this->httpMethod = 'PATCH';
         $this->uri        = '/1.0/profiles/fd1fde2f31535a266ea7f70fdf224079/references/user2Reference1';
     }
 

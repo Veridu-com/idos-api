@@ -85,7 +85,7 @@ class Credentials implements ControllerInterface {
             'status'  => true,
             'data'    => $credentials->toArray(),
             'updated' => (
-                $credentials->isEmpty() ? time() : max($credentials->max('updatedAt'), $credentials->max('createdAt'))
+                $credentials->isEmpty() ? time() : max($credentials->max('updated_at'), $credentials->max('created_at'))
             )
         ];
 
