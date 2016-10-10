@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Company;
 
+use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use App\Route\RouteInterface;
@@ -29,10 +30,9 @@ class Members implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'members:listAll',
-            'members:createNew',
+            'members:createNewInvitation',
             'members:getOne',
-            'members:updateOne',
-            'members:deleteOne'
+            'members:deleteInvitation'
         ];
     }
 
@@ -43,6 +43,7 @@ class Members implements RouteInterface {
         $app->getContainer()[\App\Controller\Company\Members::class] = function (ContainerInterface $container) {
             return new \App\Controller\Company\Members(
                 $container->get('repositoryFactory')->create('Company\Member'),
+                $container->get('repositoryFactory')->create('Company\Invitation'),
                 $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
@@ -54,10 +55,11 @@ class Members implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::createNew($app, $authMiddleware, $permissionMiddleware);
+        self::getMembership($app, $authMiddleware, $permissionMiddleware);
+        self::getInvitations($app, $authMiddleware, $permissionMiddleware);
+        self::createNewInvitation($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
-        self::updateOne($app, $authMiddleware, $permissionMiddleware);
-        self::deleteOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteInvitation($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -88,10 +90,50 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/members',
                 'App\Controller\Company\Members:listAll'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($permission(
+                EndpointPermission::PRIVATE_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
             ->add($auth(Auth::IDENTITY))
             ->setName('members:listAll');
     }
+
+    /**
+     * Get the membership related to the requesting Identity.
+     *
+     * Retrieve a member entity related to that company and identity.
+     *
+     * @apiEndpoint GET /companies/{companySlug}/membership
+     * @apiGroup Company Members
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/companies/members/getMembership.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Company\Members::getMembership
+     */
+    private static function getMembership(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/companies/{companySlug:[a-z0-9_-]+}/membership',
+                'App\Controller\Company\Members:getMembership'
+            )
+            ->add($permission(
+                EndpointPermission::PRIVATE_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT | Role::COMPANY_REVIEWER_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
+            ->setName('members:getMembership');
+    }
+
     /**
      * Creates new Member.
      *
@@ -109,56 +151,25 @@ class Members implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/members/createNew.md
+     * @link docs/companies/members/createNewInvitation.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Members::createNew
+     * @see App\Controller\Company\Members::createNewInvitation
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNewInvitation(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies/{companySlug:[a-z0-9_-]+}/members',
-                'App\Controller\Company\Members:createNew'
+                '/companies/{companySlug:[a-z0-9_-]+}/members/invitations',
+                'App\Controller\Company\Members:createNewInvitation'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($permission(
+                EndpointPermission::PRIVATE_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
             ->add($auth(Auth::IDENTITY))
-            ->setName('members:createNew');
+            ->setName('members:createNewInvitation');
     }
-
-    /**
-     * Update a single Member.
-     *
-     * Updates the role for a single Member.
-     *
-     * @apiEndpoint PUT /companies/{companySlug}/members/{memberId}
-     * @apiGroup Company Members
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment int memberId 1243
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/companies/members/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Members::updateOne
-     */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->put(
-                '/companies/{companySlug:[a-z0-9_-]+}/members/{memberId:[0-9]+}',
-                'App\Controller\Company\Members:updateOne'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::IDENTITY))
-            ->setName('members:updateOne');
-    }
-
+    
     /**
      * Retrieve a single Member.
      *
@@ -188,22 +199,24 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/members/{memberId:[0-9]+}',
                 'App\Controller\Company\Members:getOne'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($permission(
+                EndpointPermission::PRIVATE_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
             ->add($auth(Auth::IDENTITY))
             ->setName('members:getOne');
     }
 
     /**
-     * Deletes a single Member.
+     * Retrieve a list of invitations for this company.
      *
-     * Deletes a single Member that belongs to the requesting company.
+     * Retrieves all public information from Invitations
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/members/{memberId}
+     * @apiEndpoint GET /companies/{companySlug}/members/invitations
      * @apiGroup Company Members
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment int memberId 1243
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -211,19 +224,59 @@ class Members implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/members/deleteOne.md
+     * @link docs/companies/members/getInvitations.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Members::deleteOne
+     * @see App\Controller\Company\Members::getInvitations
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function getInvitations(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/companies/{companySlug:[a-z0-9_-]+}/members/invitations',
+                'App\Controller\Company\Members:getInvitations'
+            )
+            ->add($permission(
+                EndpointPermission::PRIVATE_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
+            ->add($auth(Auth::IDENTITY))
+            ->setName('members:getInvitations');
+    }
+
+    /**
+     * Deletes a single Invitation.
+     *
+     * Deletes a single Invitation that belongs to the requesting company.
+     *
+     * @apiEndpoint DELETE /companies/{companySlug}/members/invitation/{invitationId}
+     * @apiGroup Company Members
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int invitationId 1243
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/companies/members/deleteInvitation.md
+     * @see App\Middleware\Auth::__invoke
+     * @see App\Middleware\Permission::__invoke
+     * @see App\Controller\Company\Members::deleteInvitation
+     */
+    private static function deleteInvitation(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-z0-9_-]+}/members/{memberId:[0-9]+}',
-                'App\Controller\Company\Members:deleteOne'
+                '/companies/{companySlug:[a-z0-9_-]+}/members/invitations/{invitationId:[0-9]+}',
+                'App\Controller\Company\Members:deleteInvitation'
             )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($permission(
+                EndpointPermission::PRIVATE_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
             ->add($auth(Auth::IDENTITY))
-            ->setName('members:deleteOne');
+            ->setName('members:deleteInvitation');
     }
 }

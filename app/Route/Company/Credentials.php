@@ -92,7 +92,7 @@ class Credentials implements RouteInterface {
             ->add(
                 $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
-                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT | Role::COMPANY_REVIEWER_BIT
                 )
             )
             ->add($auth(Auth::IDENTITY))

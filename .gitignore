@@ -20,3 +20,4 @@ server/docker/
 sftp-config.json
 vendor/
 VeriduRuleset.xml
+.idea/

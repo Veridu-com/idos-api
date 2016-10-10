@@ -16,6 +16,9 @@ use App\Validator\ValidatorInterface;
  */
 class Member implements ValidatorInterface {
     use Traits\AssertId,
+        Traits\AssertDate,
+        Traits\AssertEmail,
         Traits\AssertName,
+        Traits\AssertEntity,
         Traits\AssertUserName;
 }

@@ -71,7 +71,7 @@ class UserPermission implements MiddlewareInterface {
             Role::COMPANY        => RoleAccess::ACCESS_READ | RoleAccess::ACCESS_WRITE | RoleAccess::ACCESS_EXECUTE,
             Role::COMPANY_ADMIN  => RoleAccess::ACCESS_READ,
             Role::COMPANY_OWNER  => RoleAccess::ACCESS_READ,
-            Role::COMPANY_MEMBER => RoleAccess::ACCESS_READ,
+            Role::COMPANY_REVIEWER => RoleAccess::ACCESS_READ,
             Role::USER           => RoleAccess::ACCESS_READ,
             Role::GUEST          => RoleAccess::ACCESS_READ
         ];

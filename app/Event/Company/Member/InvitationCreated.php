@@ -8,19 +8,19 @@ declare(strict_types = 1);
 
 namespace App\Event\Company\Member;
 
-use App\Entity\Company\Member;
+use App\Entity\Company\Invitation;
 use App\Event\AbstractEvent;
 
 /**
- * Deleted event.
+ * InvitationCreated event.
  */
-class Deleted extends AbstractEvent {
+class InvitationCreated extends AbstractEvent {
     /**
      * Event related Member.
      *
-     * @var App\Entity\Company\Member
+     * @var App\Entity\Company\Invitation
      */
-    public $member;
+    public $invitation;
 
     /**
      * Class constructor.
@@ -29,7 +29,7 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Member $member) {
-        $this->member = $member;
+    public function __construct(Invitation $invitation) {
+        $this->invitation = $invitation;
     }
 }

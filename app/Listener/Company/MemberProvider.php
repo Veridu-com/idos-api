@@ -18,13 +18,10 @@ class MemberProvider extends Listener\AbstractListenerProvider {
             Member\Created::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
-            Member\Updated::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
-            ],
             Member\Deleted::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
-            Member\DeletedMulti::class => [
+            MemberEvent\InvitationCreated::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ]
         ];

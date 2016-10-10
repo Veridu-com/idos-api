@@ -16,24 +16,16 @@ use Illuminate\Support\Collection;
  * Member Repository Interface.
  */
 interface MemberInterface extends RepositoryInterface {
-    /**
-     * Gets all Members based on their Company Id.
-     *
-     * @param int $companyId
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAllByCompanyId(int $companyId, array $queryParams = []) : Collection;
 
     /**
-     * Gets all Members basedon their Company Id and role.
+     * Finds one membership by identity and company ids.
      *
-     * @param int    companyId member's company_id
-     * @param string role  member's role
+     * @param      integer  $identityId  The identity identifier
+     * @param      integer  $companyId   The company identifier
      *
-     * @return Illuminate\Support\Collection
+     * @return     App\Entity\Company\Member
      */
-    public function getAllByCompanyIdAndRole(int $companyId, array $role) : Collection;
+    public function findMembership(int $identityId, int $companyId) : Member;
 
     /*
      * Deletes all Members based on their Company Id.
@@ -63,12 +55,4 @@ interface MemberInterface extends RepositoryInterface {
      */
     public function deleteOne(int $companyId, int $userId) : int;
 
-    /**
-     * Saves a member.
-     *
-     * @param \App\Entity\Company\Member $member The member
-     *
-     * @return \App\Entity\Company\Member
-     */
-    public function saveOne(Member $member) : Member;
 }

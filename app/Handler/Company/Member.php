@@ -9,17 +9,18 @@ declare(strict_types = 1);
 namespace App\Handler\Company;
 
 use App\Command\Company\Member\CreateNew;
+use App\Command\Company\Member\CreateNewInvitation;
 use App\Command\Company\Member\DeleteAll;
-use App\Command\Company\Member\DeleteOne;
-use App\Command\Company\Member\UpdateOne;
+use App\Command\Company\Member\DeleteInvitation;
 use App\Entity\Company\Member as MemberEntity;
+use App\Entity\Company\Invitation as InvitationEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
-use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
+use App\Repository\Company\InvitationInterface;
 use App\Repository\Company\MemberInterface;
 use App\Repository\UserInterface;
 use App\Validator\Company\Member as MemberValidator;
@@ -82,6 +83,9 @@ class Member implements HandlerInterface {
                     ->create('Company\Credential'),
                 $container
                     ->get('repositoryFactory')
+                    ->create('Company\Invitation'),
+                $container
+                    ->get('repositoryFactory')
                     ->create('User'),
                 $container
                     ->get('validatorFactory')
@@ -97,8 +101,9 @@ class Member implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\MemberInterface     $repository
-     * @param App\Repository\CredentialInterface $repository
+     * @param App\Repository\Company\MemberInterface     $repository
+     * @param App\Repository\Company\CredentialInterface $repository
+     * @param App\Repository\Company\InvitationInterface $repository
      * @param App\Validator\Member               $validator
      * @param App\Factory\Event                  $eventFactory
      * @param \League\Event\Emitter              $emitter
@@ -108,6 +113,7 @@ class Member implements HandlerInterface {
     public function __construct(
         MemberInterface $repository,
         CredentialInterface $credentialRepository,
+        InvitationInterface $invitationRepository,
         UserInterface $userRepository,
         MemberValidator $validator,
         Event $eventFactory,
@@ -115,6 +121,7 @@ class Member implements HandlerInterface {
     ) {
         $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
+        $this->invitationRepository = $invitationRepository;
         $this->userRepository       = $userRepository;
         $this->validator            = $validator;
         $this->eventFactory         = $eventFactory;
@@ -133,8 +140,8 @@ class Member implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : MemberEntity {
         try {
-            $this->validator->assertUserName($command->userName);
-            $this->validator->assertName($command->role);
+            $this->validator->assertCompany($command->company);
+            $this->validator->assertShortName($command->role);
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -143,21 +150,11 @@ class Member implements HandlerInterface {
             );
         }
 
-        $credential = $this->credentialRepository->findByPubKey($command->credential);
-
-        $user = $this->userRepository->findOneBy(
-            [
-                'username'      => $command->userName,
-                'credential_id' => $credential->id
-            ]
-        );
-
         $member = $this->repository->create(
             [
-                'user_id'    => $user->id,
-                'role'       => $command->role,
-                'company_id' => $credential->companyId,
-                'created_at' => time()
+                'identity_id' => $command->identityId,
+                'role'        => $command->role,
+                'company_id'  => $command->company->id
             ]
         );
 
@@ -169,25 +166,28 @@ class Member implements HandlerInterface {
             throw new Create\Company\MemberException('Error while trying to create a member', 500, $e);
         }
 
-        $member->relations['user'] = $user;
-
         return $member;
     }
 
     /**
-     * Updates a Member.
+     * Creates a new invitation for a future member.
      *
-     * @param App\Command\Company\Member\UpdateOne $command
+     * @param App\Command\Company\Member\CreateNewInvitation $command
      *
      * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\Update\MemberException
+     * @throws App\Exception\Create\MemberException
      *
      * @return App\Entity\Member
      */
-    public function handleUpdateOne(UpdateOne $command) : MemberEntity {
+    public function handleCreateNewInvitation(CreateNewInvitation $command) : InvitationEntity {
         try {
-            $this->validator->assertId($command->memberId);
-            $this->validator->assertName($command->role);
+            $this->validator->assertCompany($command->company);
+            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertName($command->credentialPubKey);
+            $this->validator->assertEmail($command->email);
+            if ($command->expires) {
+                $this->validator->assertDate($command->expires);
+            }
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -196,34 +196,54 @@ class Member implements HandlerInterface {
             );
         }
 
-        $member            = $this->repository->findOne($command->memberId);
-        $member->role      = $command->role;
-        $member->updatedAt = time();
+        $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
+        $expires = strftime('%Y-%m-%d', strtotime($command->expires));
+        $now = time();
+        $expiresDateTime = new \DateTime($expires);
+        $today = new \DateTime(strftime('%Y-%m-%d', $now));
+        $diff = $today->diff($expiresDateTime);
 
-        try {
-            $member = $this->repository->saveOne($member);
-            $event  = $this->eventFactory->create('Company\\Member\\Updated', $member);
-            $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Company\MemberException('Error while trying to update a member', 500, $e);
+        if ($diff->days < 1 || $diff->days > 7) {
+            throw new Validate\Company\MemberException('Invalid expiration date. Min: 1 day, Max: 7 days from today');
         }
 
-        return $member;
+        $invitation = $this->invitationRepository->create(
+            [
+                'credential_id' => $credential->id,
+                'company_id'  => $command->company->id,
+                'creator_id'  => $command->identity->id,
+                'role'        => $command->role,
+                'email'       => $command->email,
+                'hash'        => md5($command->email . $command->company->id . microtime()),
+                'expires'     => $command->expires ? $expires : strftime('%Y-%m-%d', strtotime('now + 1 days')),
+                'created_at'  => $now
+            ]
+        );
+
+        try {
+            $invitation = $this->invitationRepository->save($invitation);
+            $event  = $this->eventFactory->create('Company\\Member\\InvitationCreated', $invitation);
+            $a = $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new Create\Company\MemberException('Error while trying to create an invitation', 500, $e);
+        }
+
+        return $invitation;
     }
 
     /**
      * Deletes a Member.
      *
-     * @param App\Command\Company\Member\DeleteOne $command
+     * @param App\Command\Company\Member\DeleteInvitation $command
      *
      * @throws App\Exception\Validate\MemberException
      * @throws App\Exception\NotFound\MemberException
      *
      * @return void
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteInvitation(DeleteInvitation $command) {
         try {
-            $this->validator->assertId($command->memberId);
+            $this->validator->assertId($command->invitationId);
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -232,34 +252,20 @@ class Member implements HandlerInterface {
             );
         }
 
-        $member       = $this->repository->findOne($command->memberId);
-        $rowsAffected = $this->repository->delete($command->memberId);
+        $invitation       = $this->invitationRepository->find($command->invitationId);
 
-        if (! $rowsAffected) {
-            throw new NotFound\Company\MemberException('No members found for deletion', 404);
+        if ($invitation->memberId) {
+            // cascades to invitations table
+            $rowsAffected = $this->repository->delete($invitation->memberId);
+        } else {
+            $rowsAffected = $this->invitationRepository->delete($command->invitationId);
         }
 
-        $event = $this->eventFactory->create('Company\\Member\\Deleted', $member);
+        if (! $rowsAffected) {
+            throw new NotFound\Company\MemberException('No invitations found for deletion', 404);
+        }
+
+        $event = $this->eventFactory->create('Company\\Member\\DeletedInvitation', $invitation);
         $this->emitter->emit($event);
-    }
-
-    /**
-     * Deletes all members ($command->companyId).
-     *
-     * @param App\Command\Company\Member\DeleteAll $command
-     *
-     * @see App\Repository\DBMember::deleteByCompanyId
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        $members = $this->repository->getAllByCompanyId($command->companyId);
-
-        $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
-
-        $event = $this->eventFactory->create('Company\\Member\\DeletedMulti', $members);
-        $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

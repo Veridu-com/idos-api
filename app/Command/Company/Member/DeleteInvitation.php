@@ -11,23 +11,20 @@ namespace App\Command\Company\Member;
 use App\Command\AbstractCommand;
 
 /**
- * Member "Delete One" Command.
+ * Member "Delete Invitation" Command.
  */
-class DeleteOne extends AbstractCommand {
+class DeleteInvitation extends AbstractCommand {
     /**
-     * Member id.
+     * Invitation id.
      *
      * @var int
      */
-    public $memberId;
+    public $invitationId;
 
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['memberId'])) {
-            $this->memberId = $parameters['memberId'];
-        }
 
         return $this;
     }
