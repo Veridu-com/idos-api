@@ -11,9 +11,9 @@ namespace App\Exception\NotFound\Profile;
 use App\Exception\NotFound;
 
 /**
- * Attribute not found exception.
+ * Candidate not found exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class AttributeException extends NotFound {
+class CandidateException extends NotFound {
 }

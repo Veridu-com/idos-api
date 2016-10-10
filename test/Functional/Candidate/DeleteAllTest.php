@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Attribute;
+namespace Test\Functional\Candidate;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
@@ -21,7 +21,7 @@ class DeleteAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/candidates';
     }
 
     public function testSuccess() {
@@ -54,7 +54,7 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testDeleteFilter() {
-        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes?name=first*';
+        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/candidates?attribute=first*';
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -62,10 +62,9 @@ class DeleteAllTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment);
-
+        $request  = $this->createRequest($environment);
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode(), (string) $response->getBody());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

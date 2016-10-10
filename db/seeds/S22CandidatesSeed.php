@@ -6,146 +6,211 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class S22AttributesSeed extends AbstractSeed {
+class S22CandidatesSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
                 'user_id'    => 1,
-                'name'       => 'first-name',
+                'creator'    => 1,
+                'attribute'  => 'first-name',
                 'value'      => 'John',
+                'support'    => 1.2,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'last-name',
+                'creator'    => 1,
+                'attribute'  => 'first-name',
+                'value'      => 'Johnny',
+                'support'    => 1.0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'user_id'    => 1,
+                'creator'    => 1,
+                'attribute'  => 'middle-name',
+                'value'      => 'Ross',
+                'support'    => 1.3,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'user_id'    => 1,
+                'creator'    => 1,
+                'attribute'  => 'last-name',
                 'value'      => 'Doe',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'city-name',
+                'creator'    => 1,
+                'attribute'  => 'city-name',
                 'value'      => 'Seattle',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'country-name',
+                'creator'    => 1,
+                'attribute'  => 'country-name',
                 'value'      => 'United States',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'email',
+                'creator'    => 1,
+                'attribute'  => 'email',
                 'value'      => 'john.doe@myserver.com',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'birth-day',
+                'creator'    => 1,
+                'attribute'  => 'birth-day',
                 'value'      => '13',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'birth-month',
+                'creator'    => 1,
+                'attribute'  => 'birth-month',
                 'value'      => '10',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'birth-year',
+                'creator'    => 1,
+                'attribute'  => 'birth-year',
                 'value'      => '1985',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'phone',
+                'creator'    => 1,
+                'attribute'  => 'phone',
                 'value'      => '7345551212',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'first-name',
+                'creator'    => 1,
+                'attribute'  => 'first-name',
                 'value'      => 'Janis',
+                'support'    => 1.4,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'middle-name',
+                'creator'    => 1,
+                'attribute'  => 'middle-name',
                 'value'      => 'Lyn',
+                'support'    => 1.4,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'last-name',
+                'creator'    => 1,
+                'attribute'  => 'last-name',
                 'value'      => 'Joplin',
+                'support'    => 1.5,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'city-name',
+                'creator'    => 1,
+                'attribute'  => 'city-name',
                 'value'      => 'Port Arthur',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'country-name',
+                'creator'    => 1,
+                'attribute'  => 'country-name',
                 'value'      => 'United States',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'email',
+                'creator'    => 1,
+                'attribute'  => 'email',
                 'value'      => 'janis.joplin@myserver.com',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'birth-day',
+                'creator'    => 1,
+                'attribute'  => 'birth-day',
                 'value'      => '19',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'birth-month',
+                'creator'    => 1,
+                'attribute'  => 'birth-month',
                 'value'      => '1',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'birth-year',
+                'creator'    => 1,
+                'attribute'  => 'birth-year',
                 'value'      => '1943',
+                'support'    => 1.3,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'phone',
+                'creator'    => 1,
+                'attribute'  => 'phone',
                 'value'      => '(734) 5551212',
+                'support'    => 1.3,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'user_id'    => 2,
+                'creator'    => 2,
+                'attribute'  => 'first-name',
+                'value'      => 'Cássio',
+                'support'    => 1.6,
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]
         ];
 
-        $attributes = $this->table('attributes');
-        $attributes
+        $candidates = $this->table('candidates');
+        $candidates
             ->insert($data)
             ->save();
     }

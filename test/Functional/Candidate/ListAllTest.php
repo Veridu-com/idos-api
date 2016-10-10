@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Attribute;
+namespace Test\Functional\Candidate;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
@@ -21,7 +21,7 @@ class ListAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/candidates';
     }
 
     public function testSuccess() {
@@ -56,7 +56,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=first*'
+                    'QUERY_STRING'       => 'attribute=first*'
                 ]
             )
         );
@@ -68,10 +68,12 @@ class ListAllTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
-        $this->assertContains($body['data'][0]['name'], ['first-name']);
-        $this->assertContains($body['data'][0]['value'], ['John']);
-        $this->assertContains($body['data'][1]['name'], ['first-name']);
-        $this->assertContains($body['data'][1]['value'], ['Johnny']);
+
+        $this->assertSame('first-name', $body['data'][0]['attribute']);
+        $this->assertSame('John', $body['data'][0]['value']);
+
+        $this->assertSame('first-name', $body['data'][1]['attribute']);
+        $this->assertSame('Johnny', $body['data'][1]['value']);
 
         /*
          * Validates Response using the Json Schema.
@@ -90,7 +92,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=*name'
+                    'QUERY_STRING'       => 'attribute=*name'
                 ]
             )
         );
@@ -103,7 +105,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertCount(6, $body['data']);
 
-        $this->assertContains($body['data'][0]['name'], ['first-name', 'last-name']);
+        $this->assertContains($body['data'][0]['attribute'], ['first-name', 'last-name']);
         $this->assertContains($body['data'][0]['value'], ['John', 'Doe']);
 
         /*
@@ -135,9 +137,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(11, $body['data']);
-        $this->assertContains($body['data'][0]['name'], ['first-name', 'last-name']);
+        $this->assertContains($body['data'][0]['attribute'], ['first-name', 'last-name']);
         $this->assertContains($body['data'][0]['value'], ['John', 'Doe']);
-        $this->assertContains($body['data'][1]['name'], ['first-name']);
+        $this->assertContains($body['data'][1]['attribute'], ['first-name']);
         $this->assertContains($body['data'][1]['value'], ['Johnny']);
 
         /*
@@ -171,7 +173,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(11, $body['data']);
 
         foreach ($body['data'] as $attribute) {
-            $this->assertArrayHasKey('name', $attribute);
+            $this->assertArrayHasKey('attribute', $attribute);
             $this->assertArrayHasKey('value', $attribute);
         }
 

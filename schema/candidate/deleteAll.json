@@ -1,6 +1,6 @@
 {
     "$schema" : "http://json-schema.org/draft-04/schema#",
-    "title": "DELETE /profiles/{userName}/attribute",
+    "title": "DELETE /profiles/{userName}/candidate",
     "type": "object",
     "properties": {
         "status": {
@@ -8,7 +8,7 @@
             "type": "boolean"
         },
         "deleted": {
-            "description": "Number of sucessfully deleted attribute",
+            "description": "Number of sucessfully deleted candidates",
             "type": "integer",
             "minimum": 0
         }

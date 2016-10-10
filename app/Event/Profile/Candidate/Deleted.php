@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Event\Profile\Attribute;
+namespace App\Event\Profile\Candidate;
 
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
@@ -20,16 +20,16 @@ class Deleted extends AbstractEvent {
      *
      * @var \Illuminate\Support\Collection
      */
-    public $attributes;
+    public $candidates;
 
     /**
      * Class constructor.
      *
-     * @param \Illuminate\Support\Collection $attributes
+     * @param \Illuminate\Support\Collection $candidates
      *
      * @return void
      */
-    public function __construct(Collection $attributes) {
-        $this->attributes = $attributes;
+    public function __construct(Collection $candidates) {
+        $this->candidates = $candidates;
     }
 }

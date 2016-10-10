@@ -8,26 +8,26 @@ declare(strict_types = 1);
 
 namespace App\Repository\Profile;
 
-use App\Entity\Profile\Attribute;
+use App\Entity\Profile\Candidate;
 use App\Repository\RepositoryInterface;
 use Illuminate\Support\Collection;
 
 /**
- * Attribute Repository Interface.
+ * Candidate Repository Interface.
  */
-interface AttributeInterface extends RepositoryInterface {
+interface CandidateInterface extends RepositoryInterface {
     /**
      * Returns all features based on their user id.
      *
      * @param int   $userId
-     * @param array $queryParams
+     * @param array $filters
      *
      * @return Collection
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection;
+    public function findByUserId(int $userId, array $filters = []) : Collection;
 
     /**
-     * Gets all Attribute entities based on their user_id, filtering them by name.
+     * Gets all Candidate entities based on their user_id, filtering them by name.
      *
      * @param int   $userId
      * @param array $filters
@@ -36,7 +36,7 @@ interface AttributeInterface extends RepositoryInterface {
      */
     public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection;
     /*
-     * Deletes all Attribute entities based on user_id.
+     * Deletes all Candidate entities based on user_id.
      *
      * @param int $userId
      *
@@ -44,18 +44,18 @@ interface AttributeInterface extends RepositoryInterface {
      */
     public function deleteByUserId(int $userId, array $filters = []) : int;
     /**
-     * Find a Attribute entity based on its user_id and name.
+     * Find a Candidate entity based on its user_id and attribute name.
      *
      * @param int    $userId
-     * @param string $name
+     * @param string $attributeName
      *
      * @throws App\Exception\NotFound
      *
-     * @return App\Entity\Profile\Attribute
+     * @return App\Entity\Profile\Candidate
      */
-    public function findOneByUserIdAndName(int $userId, string $name) : Attribute;
+    public function findOneByUserIdAndAttributeName(int $userId, string $attributeName) : Candidate;
     /**
-     * Deletes a Attribute entity based on their user_id and name.
+     * Deletes a Candidate entity based on their user_id and name.
      *
      * @param int    $userId
      * @param string $name

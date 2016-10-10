@@ -11,21 +11,22 @@ namespace App\Entity\Profile;
 use App\Entity\AbstractEntity;
 
 /**
- * Attribute Entity.
+ * Candidate Entity.
  *
- * @apiEntity schema/attribute/attributeEntity.json
+ * @apiEntity schema/candidate/candidateEntity.json
  *
  * @property int    $id
- * @property string $name
+ * @property string $attribute
  * @property string $value
+ * @property float  $support
  * @property int    $created_at
  * @property int    $updated_at
  */
-class Attribute extends AbstractEntity {
+class Candidate extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['creator', 'name', 'value', 'support', 'created_at'];
+    protected $visible = ['creator', 'attribute', 'value', 'support', 'created_at'];
 
     /**
      * {@inheritdoc}

@@ -11,9 +11,9 @@ namespace App\Exception\Create\Profile;
 use App\Exception\AppException;
 
 /**
- * Attribute create exception.
+ * Candidate create exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class AttributeException extends AppException {
+class CandidateException extends AppException {
 }

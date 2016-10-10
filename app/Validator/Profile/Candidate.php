@@ -12,9 +12,9 @@ use App\Validator\Traits;
 use App\Validator\ValidatorInterface;
 
 /**
- * Attribute Validation Rules.
+ * Candidate Validation Rules.
  */
-class Attribute implements ValidatorInterface {
+class Candidate implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertEntity,
         Traits\AssertName,

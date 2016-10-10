@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "POST /profiles/{userName}/attributes",
+    "title": "POST /profiles/{userName}/candidates",
     "type": "object",
     "properties": {
         "status": {
@@ -8,9 +8,9 @@
           "type": "boolean"
         },
         "data": {
-            "description": "Attribute response payload",
+            "description": "Candidate response payload",
             "type": "object",
-            "$ref": "attributeEntity.json"
+            "$ref": "candidateEntity.json"
         }
     },
     "required": [

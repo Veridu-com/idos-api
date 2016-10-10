@@ -6,23 +6,23 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Profile\Attribute;
+namespace App\Command\Profile\Candidate;
 
 use App\Command\AbstractCommand;
 
 /**
- * Attribute "Create New" Command.
+ * Candidate "Create New" Command.
  */
 class CreateNew extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Candidate's user.
      *
      * @var App\Entity\User
      */
     public $user;
 
     /**
-     * Attribute's creator.
+     * Candidate's creator.
      *
      * @var App\Entity\Service
      */
@@ -33,17 +33,17 @@ class CreateNew extends AbstractCommand {
      *
      * @var string
      */
-    public $name;
+    public $attribute;
 
     /**
-     * Attribute value.
+     * Candidate value.
      *
      * @var string
      */
     public $value;
 
     /**
-     * Attribute support.
+     * Candidate support.
      *
      * @var float
      */
@@ -61,8 +61,8 @@ class CreateNew extends AbstractCommand {
             $this->service = $parameters['service'];
         }
 
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
+        if (isset($parameters['attribute'])) {
+            $this->attribute = $parameters['attribute'];
         }
 
         if (isset($parameters['value'])) {

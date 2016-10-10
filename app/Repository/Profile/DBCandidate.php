@@ -8,40 +8,40 @@ declare(strict_types = 1);
 
 namespace App\Repository\Profile;
 
-use App\Entity\Profile\Attribute;
+use App\Entity\Profile\Candidate;
 use App\Exception\NotFound;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 
 /**
- * Database-based Attribute Repository Implementation.
+ * Database-based Candidate Repository Implementation.
  */
-class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface {
+class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface {
     /**
      * The table associated with the repository.
      *
      * @var string
      */
-    protected $tableName = 'attributes';
+    protected $tableName = 'candidates';
     /**
      * The entity associated with the repository.
      *
      * @var string
      */
-    protected $entityName = 'Profile\Attribute';
+    protected $entityName = 'Profile\Candidate';
     /**
      * {@inheritdoc}
      */
     protected $filterableKeys = [
         'creator.name' => 'string',
-        'name'         => 'string'
+        'attribute'    => 'string'
     ];
 
     /**
      * {@inheritdoc}
      */
     protected $orderableKeys = [
-        'name',
+        'attribute',
         'support',
         'created_at',
         'updated_at'
@@ -77,11 +77,11 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
     /**
      * {@inheritdoc}
      */
-    public function findByUserId(int $userId, array $queryParams = []) : Collection {
+    public function findByUserId(int $userId, array $filters = []) : Collection {
         $result = $this->findBy(
             [
             'user_id' => $userId
-            ], $queryParams
+            ], $filters
         );
 
         return $result;
@@ -92,7 +92,7 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
      */
     public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection {
         $result = $this->query()
-            ->selectRaw('attributes.*')
+            ->selectRaw('candidates.*')
             ->where('user_id', '=', $userId);
 
         $result = $this->filter($result, $filters);
@@ -105,7 +105,7 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
      */
     public function deleteByUserId(int $userId, array $filters = []) : int {
         $result = $this->query()
-            ->selectRaw('attributes.*')
+            ->selectRaw('candidates.*')
             ->where('user_id', '=', $userId);
 
         if ($filters) {
@@ -118,8 +118,8 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
     /**
      * {@inheritdoc}
      */
-    public function findOneByUserIdAndName(int $userId, string $name) : Attribute {
-        $result = $this->findBy(['user_id' => $userId, 'name' => $name]);
+    public function findOneByUserIdAndAttributeName(int $userId, string $attributeName) : Candidate {
+        $result = $this->findBy(['user_id' => $userId, 'attribute' => $attributeName]);
 
         if ($result->isEmpty()) {
             throw new NotFound();

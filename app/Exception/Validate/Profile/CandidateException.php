@@ -11,9 +11,9 @@ namespace App\Exception\Validate\Profile;
 use App\Exception\AppException;
 
 /**
- * Attribute validate exception.
+ * Candidate validate exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class AttributeException extends AppException {
+class CandidateException extends AppException {
 }

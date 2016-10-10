@@ -6,23 +6,23 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Profile\Attribute;
+namespace App\Command\Profile\Candidate;
 
 use App\Command\AbstractCommand;
 
 /**
- * Attribute "Delete All" Command.
+ * Candidate "Delete All" Command.
  */
 class DeleteAll extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Candidate's user.
      *
      * @var App\Entity\User
      */
     public $user;
 
     /**
-     * Attribute's service.
+     * Candidate's service.
      *
      * @var App\Entity\Service
      */

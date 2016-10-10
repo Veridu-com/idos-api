@@ -11,9 +11,9 @@ namespace App\Exception\Update\Profile;
 use App\Exception\AppException;
 
 /**
- * Attribute update exception.
+ * Candidate update exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class AttributeException extends AppException {
+class CandidateException extends AppException {
 }

@@ -8,23 +8,23 @@ declare(strict_types = 1);
 
 namespace App\Listener\Profile;
 
-use App\Event\Attribute;
+use App\Event\Candidate;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 
-class AttributeProvider extends Listener\AbstractListenerProvider {
+class CandidateProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Attribute\Created::class => [
+            Candidate\Created::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
-            Attribute\Updated::class => [
+            Candidate\Updated::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
-            Attribute\Deleted::class => [
+            Candidate\Deleted::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ],
-            Attribute\DeletedMulti::class => [
+            Candidate\DeletedMulti::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
             ]
         ];

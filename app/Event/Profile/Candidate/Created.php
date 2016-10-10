@@ -6,9 +6,9 @@
 
 declare(strict_types = 1);
 
-namespace App\Event\Profile\Attribute;
+namespace App\Event\Profile\Candidate;
 
-use App\Entity\Profile\Attribute;
+use App\Entity\Profile\Candidate;
 use App\Event\AbstractEvent;
 
 /**
@@ -16,20 +16,20 @@ use App\Event\AbstractEvent;
  */
 class Created extends AbstractEvent {
     /**
-     * Event related Attribute.
+     * Event related Candidate.
      *
-     * @var App\Entity\Profile\Attribute
+     * @var App\Entity\Profile\Candidate
      */
-    public $attribute;
+    public $candidate;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Attribute $attribute
+     * @param App\Entity\Profile\Attribute $candidate
      *
      * @return void
      */
-    public function __construct(Attribute $attribute) {
-        $this->attribute = $attribute;
+    public function __construct(Candidate $candidate) {
+        $this->candidate = $candidate;
     }
 }

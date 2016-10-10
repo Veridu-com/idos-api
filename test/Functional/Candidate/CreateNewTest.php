@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Attribute;
+namespace Test\Functional\Candidate;
 
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
@@ -22,7 +22,7 @@ class CreateNewTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'POST';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/attributes';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/candidates';
     }
 
     public function testSuccess() {
@@ -37,9 +37,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'    => 'candidate-test',
-                    'value'   => 'value-test',
-                    'support' => 1.2
+                    'attribute' => 'candidate-test',
+                    'value'     => 'value-test',
+                    'support'   => 1.2
                 ]
             )
         );
@@ -50,7 +50,7 @@ class CreateNewTest extends AbstractFunctional {
 
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('candidate-test', $body['data']['name']);
+        $this->assertSame('candidate-test', $body['data']['attribute']);
         $this->assertSame('value-test', $body['data']['value']);
         $this->assertSame(1.2, $body['data']['support']);
         /*
@@ -65,7 +65,7 @@ class CreateNewTest extends AbstractFunctional {
         );
     }
 
-    public function testInvalidName() {
+    public function testInvalidAttributeName() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -77,9 +77,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'    => '',
-                    'value'   => 'value-test',
-                    'support' => 1.2
+                    'attribute' => '',
+                    'value'     => 'value-test',
+                    'support'   => 1.2
                 ]
             )
         );
@@ -115,9 +115,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'    => 'Candidate name',
-                    'value'   => '',
-                    'support' => 1.2
+                    'attribute' => 'Candidate name',
+                    'value'     => '',
+                    'support'   => 1.2
                 ]
             )
         );
@@ -153,9 +153,9 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'    => 'Candidate name',
-                    'value'   => 'value-test',
-                    'support' => ''
+                    'attribute' => 'Candidate name',
+                    'value'     => 'value-test',
+                    'support'   => ''
                 ]
             )
         );

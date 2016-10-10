@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "GET /profiles/{userName}/attribute",
+    "title": "GET /profiles/{userName}/candidate",
     "type": "object",
     "properties": {
         "status": {
@@ -8,10 +8,10 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Attribute response payload",
+            "description": "Candidate response payload",
             "type": "array",
             "items": {
-                "$ref": "attributeEntity.json"
+                "$ref": "candidateEntity.json"
             },
             "minItems": 0,
             "uniqueItems": true

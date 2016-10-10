@@ -16,24 +16,23 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile Attribute.
+ * Profile Candidate.
  *
- * A Profile Attribute is a piece of information within a Profile that has been extracted by the API. This information can be simple like a full name, or more detailed like a Users hometown or employment. If the API has extracted multiple results for one Attribute, they will all be listed with an Attribute Score.
+ * FIXME: make it more clear what is a candidate and what is an attribute
+ * A Profile Candidate is a piece of information within a Profile that has been extracted by the API. This information can be simple like a full name, or more detailed like a Users hometown or employment. If the API has extracted multiple results for one Candidate, they will all be listed with an Candidate Score.
  *
- * @link docs/profiles/attribute/overview.md
- * @see App\Controller\Profile\Attributes
+ * @link docs/profiles/candidate/overview.md
+ * @see App\Controller\Profile\Candidates
  */
-class Attributes implements RouteInterface {
+class Candidates implements RouteInterface {
     /**
      * {@inheritdoc}
      */
     public static function getPublicNames() : array {
         return [
-            'attribute:listAll',
-            'attribute:createNew',
-            'attribute:deleteAll',
-            'attribute:getOne',
-            'attribute:deleteOne'
+            'candidate:listAll',
+            'candidate:createNew',
+            'candidate:deleteAll'
         ];
     }
 
@@ -41,9 +40,9 @@ class Attributes implements RouteInterface {
      * {@inheritdoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profile\Attributes::class] = function (ContainerInterface $container) : ControllerInterface {
-            return new \App\Controller\Profile\Attributes(
-                $container->get('repositoryFactory')->create('Profile\Attribute'),
+        $app->getContainer()[\App\Controller\Profile\Candidates::class] = function (ContainerInterface $container) : ControllerInterface {
+            return new \App\Controller\Profile\Candidates(
+                $container->get('repositoryFactory')->create('Profile\Candidate'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );
@@ -56,17 +55,15 @@ class Attributes implements RouteInterface {
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::deleteAll($app, $authMiddleware, $permissionMiddleware);
-        self::getOne($app, $authMiddleware, $permissionMiddleware);
-        self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
-     * List all attribute data.
+     * List all candidate data.
      *
-     * Retrieve a complete list of the attributes by a given user.
+     * Retrieve a complete list of the candidates by a given user.
      *
-     * @apiEndpoint GET /profiles/{userName}/attributes
-     * @apiGroup Profile Attributes
+     * @apiEndpoint GET /profiles/{userName}/candidates
+     * @apiGroup Profile Candidates
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -77,28 +74,28 @@ class Attributes implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/sources/attribute/listAll.md
+     * @link docs/sources/candidate/listAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attributes::listAll
+     * @see App\Controller\Profile\Candidates::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes',
-                'App\Controller\Profile\Attributes:listAll'
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/candidates',
+                'App\Controller\Profile\Candidates:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('attribute:listAll');
+            ->setName('candidate:listAll');
     }
     /**
-     * Creates a new attribute.
+     * Creates a new candidate.
      *
-     * Creates a new attribute for the given user.
+     * Creates a new candidate for the given user.
      *
-     * @apiEndpoint POST /profiles/{userName}/attributes
-     * @apiGroup Profile Attributes
+     * @apiEndpoint POST /profiles/{userName}/candidates
+     * @apiGroup Profile Candidates
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -109,63 +106,29 @@ class Attributes implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/sources/attribute/createNew.md
+     * @link docs/sources/candidate/createNew.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attributes::createNew
+     * @see App\Controller\Profile\Candidates::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes',
-                'App\Controller\Profile\Attributes:createNew'
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/candidates',
+                'App\Controller\Profile\Candidates:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('attribute:createNew');
+            ->setName('candidate:createNew');
     }
 
     /**
-     * Retrieves an attribute.
+     * Deletes all candidates.
      *
-     * Retrieves an attribute from the given user.
+     * Deletes all candidates for the given user.
      *
-     * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}
-     * @apiGroup Profile Attributes
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName data-name
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/sources/attribute/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attributes::getOne
-     */
-    private static function getOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->get(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9_-]+}',
-                'App\Controller\Profile\Attributes:getOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('attribute:getOne');
-    }
-
-    /**
-     * Deletes all attributes.
-     *
-     * Deletes all attributes from the given user.
-     *
-     * @apiEndpoint DELETE /profiles/{userName}/attributes
-     * @apiGroup Profile Attributes
+     * @apiEndpoint DELETE /profiles/{userName}/candidates
+     * @apiGroup Profile Candidates
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -176,53 +139,19 @@ class Attributes implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/sources/attribute/deleteAll.md
+     * @link docs/sources/candidate/deleteAll.md
      * @see App\Middleware\Auth::__invoke
      * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attributes::deleteAll
+     * @see App\Controller\Profile\Candidates::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes',
-                'App\Controller\Profile\Attributes:deleteAll'
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/candidates',
+                'App\Controller\Profile\Candidates:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
-            ->setName('attribute:deleteAll');
-    }
-
-    /**
-     * Deletes an attribute.
-     *
-     * Deletes an attribute from the given user.
-     *
-     * @apiEndpoint DELETE /profiles/{userName}/attributes/{attributeName}
-     * @apiGroup Profile Attributes
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string attributeName data-name
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/sources/attribute/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Attributes::deleteOne
-     */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
-        $app
-            ->delete(
-                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[a-zA-Z0-9_-]+}',
-                'App\Controller\Profile\Attributes:deleteOne'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('attribute:deleteOne');
+            ->setName('candidate:deleteAll');
     }
 }
