@@ -22,8 +22,8 @@ class UpdateOneTest extends AbstractRawFunctional {
         parent::setUp();
         $this->populateDb();
 
-        $this->httpMethod = 'PATCH';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw/1321189817';
+        $this->httpMethod = 'PUT';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
     }
 
     public function testSuccess() {
@@ -38,6 +38,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
+                    'source_id'  => 1321189817,
                     'collection' => 'raw-1',
                     'data'       => ['test' => 'data2']
                 ]
@@ -66,7 +67,7 @@ class UpdateOneTest extends AbstractRawFunctional {
     }
 
     public function testNotFound() {
-        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw/000000';
+        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -78,6 +79,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
+                    'source_id'  => 00000,
                     'collection' => 'raw-1',
                     'data'       => ['test' => 'data']
                 ]
@@ -114,6 +116,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
+                    'source_id'  => 1321189817,
                     'collection' => '',
                     'data'       => ['test' => 'data']
                 ]
