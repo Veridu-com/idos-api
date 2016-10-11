@@ -142,7 +142,8 @@ class References implements ControllerInterface {
 
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('user', $request->getAttribute('targetUser'));
+            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
         $reference = $this->commandBus->handle($command);
 
