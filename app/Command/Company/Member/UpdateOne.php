@@ -21,6 +21,24 @@ class UpdateOne extends AbstractCommand {
      */
     public $role;
     /**
+     * Acting identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
+    /**
+     * Target company.
+     *
+     * @var \App\Entity\Company
+     */
+    public $company;
+    /**
+     * Ip address.
+     *
+     * @var string
+     */
+    public $ipaddr;
+    /**
      * Member Id.
      *
      * @var int
@@ -30,10 +48,6 @@ class UpdateOne extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['memberId'])) {
-            $this->memberId = $parameters['memberId'];
-        }
-
         if (isset($parameters['role'])) {
             $this->role = $parameters['role'];
         }

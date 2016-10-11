@@ -8,22 +8,28 @@ declare(strict_types = 1);
 
 namespace App\Handler;
 
-use App\Command\AbstractCommand;
+use App\Command\Sso\CreateNew;
 use App\Command\Sso\CreateNewAmazon;
 use App\Command\Sso\CreateNewFacebook;
 use App\Command\Sso\CreateNewGoogle;
 use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
 use App\Command\Sso\CreateNewTwitter;
+use App\Entity\Company as CompanyEntity;
 use App\Entity\Company\Credential;
+use App\Entity\Company\Member as MemberEntity;
 use App\Entity\Profile\Source as SourceEntity;
 use App\Entity\User;
 use App\Exception\Create;
 use App\Exception\NotFound;
+use App\Exception\Validate\Company\InvitationException;
 use App\Factory\Command;
 use App\Factory\Event;
 use App\Helper\Token;
 use App\Repository\Company\CredentialInterface;
+use App\Repository\Company\InvitationInterface;
+use App\Repository\Company\MemberInterface;
+use App\Repository\CompanyInterface;
 use App\Repository\IdentityInterface;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
@@ -97,6 +103,15 @@ class Sso implements HandlerInterface {
                     ->create('Company\Credential'),
                 $container
                     ->get('repositoryFactory')
+                    ->create('Company\Member'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company\Invitation'),
+                $container
+                    ->get('repositoryFactory')
                     ->create('Identity'),
                 $container
                     ->get('eventFactory'),
@@ -118,6 +133,9 @@ class Sso implements HandlerInterface {
      * @param \App\Factory\Command
      * @param \App\Repository\UserInterface               $userRepository
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \App\Repository\Company\MemberInterface     $memberRepository
+     * @param \App\Repository\Company                     $companyRepository
+     * @param \App\Repository\Company\InvitationInterface $invitationRepository
      * @param \App\Repository\IdentityInterface           $identityRepository
      * @param \App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                       $emitter
@@ -130,6 +148,9 @@ class Sso implements HandlerInterface {
     public function __construct(
         UserInterface $userRepository,
         CredentialInterface $credentialRepository,
+        MemberInterface $memberRepository,
+        CompanyInterface $companyRepository,
+        InvitationInterface $invitationRepository,
         IdentityInterface $identityRepository,
         Event $eventFactory,
         Emitter $emitter,
@@ -137,14 +158,17 @@ class Sso implements HandlerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->userRepository       = $userRepository;
-        $this->credentialRepository = $credentialRepository;
-        $this->identityRepository   = $identityRepository;
-        $this->eventFactory         = $eventFactory;
-        $this->emitter              = $emitter;
-        $this->service              = $service;
-        $this->commandBus           = $commandBus;
-        $this->commandFactory       = $commandFactory;
+        $this->userRepository           = $userRepository;
+        $this->credentialRepository     = $credentialRepository;
+        $this->memberRepository         = $memberRepository;
+        $this->companyRepository        = $companyRepository;
+        $this->invitationRepository     = $invitationRepository;
+        $this->identityRepository       = $identityRepository;
+        $this->eventFactory             = $eventFactory;
+        $this->emitter                  = $emitter;
+        $this->service                  = $service;
+        $this->commandBus               = $commandBus;
+        $this->commandFactory           = $commandFactory;
     }
 
     /**
@@ -201,6 +225,26 @@ class Sso implements HandlerInterface {
         return $this->commandBus->handle($command);
     }
 
+    private function createNewMembership(
+        CompanyEntity $company,
+        int $identityId,
+        string $role,
+        string $ipaddr
+    ) : MemberEntity {
+        $command = $this->commandFactory->create('Company\\Member\\CreateNew');
+
+        $command->setParameter('company', $company);
+        $command->setParameter('ipaddr', $ipaddr);
+        $command->setParameters(
+            [
+                'identity_id' => $identityId,
+                'role'        => $role
+            ]
+        );
+
+        return $this->commandBus->handle($command);
+    }
+
     /**
      * Creates a new sso source and a new user token.
      *
@@ -222,7 +266,7 @@ class Sso implements HandlerInterface {
      */
     private function createNew(
         string $sourceName,
-        AbstractCommand $command,
+        CreateNew $command,
         string $tokenClass,
         string $serviceRequestUrl,
         string $decodedResponseParam,
@@ -306,6 +350,41 @@ class Sso implements HandlerInterface {
 
         if ($credential->special) {
             $tokens['identity_token'] = Token::generateIdentityToken($identity->publicKey, $identity->privateKey);
+
+            // if it is a signup on a Dashboard
+            if (! empty($command->signupHash)) {
+                try {
+                    $invitation = $this->invitationRepository->findOneByHash($command->signupHash);
+
+                    if ($invitation->expires < strftime('%Y-%m-%d', time())) {
+                        throw new InvitationException('Expired invitation.');
+                    }
+                    if ($invitation->voided) {
+                        throw new InvitationException('Invitation already used.');
+                    }
+
+                    $company = $this->companyRepository->find($invitation->companyId);
+
+                    // if memberId is null and invitation is not expired
+                    // a member should be created for this identity
+                    if (is_null($invitation->memberId)) {
+                        try {
+                            $member = $this->memberRepository->findMembership($identity->id, $company->id);
+                        } catch (NotFound $e) {
+                            // if can't find membership, creates
+                            $member               = $this->createNewMembership($company, $identity->id, $invitation->role, $command->ipAddress);
+                            $invitation->memberId = $member->id;
+                            $invitation->voided   = true;
+                            // saves modified invitation
+                            $this->invitationRepository->save($invitation);
+                        }
+
+                    }
+                } catch (NotFound $e) {
+                    throw new InvitationException('Invalid invitation code.');
+                }
+
+            }
         }
 
         return $tokens;

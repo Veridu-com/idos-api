@@ -499,7 +499,6 @@ $container['ssoAuth'] = function (ContainerInterface $container) : callable {
 // Gearman Client
 $container['gearmanClient'] = function (ContainerInterface $container) : GearmanClient {
     try {
-        return new \GearmanClient();
         $settings = $container->get('settings');
         $gearman  = new \GearmanClient();
         if (isset($settings['gearman']['timeout'])) {

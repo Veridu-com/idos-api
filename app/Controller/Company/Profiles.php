@@ -10,7 +10,7 @@ namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Profile\AttributeInterface;
+use App\Repository\Profile\CandidateInterface;
 use App\Repository\Profile\FlagInterface;
 use App\Repository\Profile\GateInterface;
 use App\Repository\Profile\ReviewInterface;
@@ -62,9 +62,9 @@ class Profiles implements ControllerInterface {
      */
     private $gateRepository;
     /**
-     * AttributeRepository instance.
+     * CandidateRepository instance.
      *
-     * @var \App\Repository\AttributeInterface
+     * @var \App\Repository\CandidateInterface
      */
     private $attributeRepository;
     /**
@@ -89,7 +89,7 @@ class Profiles implements ControllerInterface {
      * @param \App\Repository\ReviewInterface    $reviewRepository
      * @param \App\Repository\FlagInterface      $flagRepository
      * @param \App\Repository\GateInterface      $gateRepository
-     * @param \App\Repository\AttributeInterface $attributeRepository
+     * @param \App\Repository\CandidateInterface $attributeRepository
      * @param \League\Tactician\CommandBus       $commandBus
      * @param \App\Factory\Command               $commandFactory
      *
@@ -102,7 +102,7 @@ class Profiles implements ControllerInterface {
         ReviewInterface $reviewRepository,
         FlagInterface $flagRepository,
         GateInterface $gateRepository,
-        AttributeInterface $attributeRepository,
+        CandidateInterface $attributeRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
@@ -137,7 +137,7 @@ class Profiles implements ControllerInterface {
             $sources  = $this->sourceRepository->getByUserId($profile->id);
             $tags     = $this->tagRepository->getByUserId($profile->id);
             $reviews  = $this->reviewRepository->getByUserId($profile->id);
-            $flags    = $this->flagRepository->findByUserId($profile->id);
+            $flags    = $this->flagRepository->getByUserId($profile->id);
             $gates    = $this->gateRepository->getByUserId($profile->id);
 
             foreach ($flags as $flag) {
@@ -160,13 +160,13 @@ class Profiles implements ControllerInterface {
             }
 
             $attributes       = $this->attributeRepository->findByUserId($profile->id);
-            $mappedAttributes = [];
+            $mappedCandidates = [];
 
             foreach ($attributes as $attribute) {
-                $mappedAttributes[$attribute->name][] = $attribute->toArray();
+                $mappedCandidates[$attribute->name][] = $attribute->toArray();
             }
 
-            $mappedAttributes = array_map(
+            $mappedCandidates = array_map(
                 function ($candidates) {
                 // sorting by support DESC
                     usort(
@@ -176,7 +176,7 @@ class Profiles implements ControllerInterface {
                     );
 
                     return $candidates;
-                }, $mappedAttributes
+                }, $mappedCandidates
             );
 
             $data[] = array_merge(
@@ -185,7 +185,7 @@ class Profiles implements ControllerInterface {
                 ['tags'        => $tags->toArray()],
                 ['flags'       => $flags->toArray()],
                 ['gates'       => $gates->toArray()],
-                ['attributes'  => $mappedAttributes]
+                ['attributes'  => $mappedCandidates]
             );
         }
 
@@ -250,13 +250,13 @@ class Profiles implements ControllerInterface {
         }
 
         $attributes       = $this->attributeRepository->findByUserId($profile->id);
-        $mappedAttributes = [];
+        $mappedCandidates = [];
 
         foreach ($attributes as $attribute) {
-            $mappedAttributes[$attribute->name][] = $attribute->toArray();
+            $mappedCandidates[$attribute->name][] = $attribute->toArray();
         }
 
-        $mappedAttributes = array_map(
+        $mappedCandidates = array_map(
             function ($candidates) {
             // sorting by support DESC
                 usort(
@@ -266,7 +266,7 @@ class Profiles implements ControllerInterface {
                 );
 
                 return $candidates;
-            }, $mappedAttributes
+            }, $mappedCandidates
         );
 
         $data = array_merge(
@@ -275,7 +275,7 @@ class Profiles implements ControllerInterface {
             ['tags'        => $tags->toArray()],
             ['flags'       => $flags->toArray()],
             ['gates'       => $gates->toArray()],
-            ['attributes'  => $mappedAttributes]
+            ['attributes'  => $mappedCandidates]
         );
 
         $body = [
