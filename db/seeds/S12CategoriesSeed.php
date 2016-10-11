@@ -110,151 +110,151 @@ class S12CategoriesSeed extends AbstractSeed {
                 'service_id'  => 1
             ],
 
-            // Warnings
+            // Flags
             [
                 'name'        => 'First name mismatch',
                 'slug'        => 'first-name-mismatch',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'First name mismatch of a user.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Last name mismatch',
                 'slug'        => 'last-name-mismatch',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Last name mismatch of a user.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Middle name mismatch',
                 'slug'        => 'middle-name-mismatch',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Middle name mismatch of a user.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Compromised email',
                 'slug'        => 'compromised-email',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Compromised email used in user account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Dropbox empty',
                 'slug'        => 'dropbox-empty',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Empty dropbox account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Facebook empty',
                 'slug'        => 'facebook-empty',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Empty facebook account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Google empty',
                 'slug'        => 'google-empty',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Empty google account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Linkedin empty',
                 'slug'        => 'linkedin-empty',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Empty linkedin account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Spotify empty',
                 'slug'        => 'spotify-empty',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Empty spotify account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Twitter empty',
                 'slug'        => 'twitter-empty',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Empty twitter account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Yahoo empty',
                 'slug'        => 'yahoo-empty',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Empty yahoo account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Empty account',
                 'slug'        => 'account-empty',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'One of the submitted accounts is empty.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'New account',
                 'slug'        => 'account-new',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'One of the submitted accounts is new.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'New facebook',
                 'slug'        => 'facebook-new',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'A new facebook account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'New google',
                 'slug'        => 'google-new',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'A new google account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'New paypal',
                 'slug'        => 'paypal-new',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'A new paypal account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'New twitter',
                 'slug'        => 'twitter-new',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'A new twitter account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'New yahoo',
                 'slug'        => 'yahoo-new',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'A new yahoo account.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Recent name changes',
                 'slug'        => 'recent-name-changes',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Recent name changes.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Recent facebook name changes',
                 'slug'        => 'recent-name-changes-facebook',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Recent facebook name changes.',
                 'service_id'  => 1
             ],
             [
                 'name'        => 'Recent google name changes',
                 'slug'        => 'recent-name-changes-google',
-                'type'        => 'warning',
+                'type'        => 'flag',
                 'description' => 'Recent google name changes.',
                 'service_id'  => 1
             ],

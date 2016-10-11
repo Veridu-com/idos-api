@@ -17,21 +17,21 @@ class DeleteOne extends AbstractCommand {
     /**
      * Company to be deleted.
      *
-     * @var App\Entity\Company
+     * @var \App\Entity\Company
      */
     public $company;
 
     /**
      * Acting Identity.
      *
-     * @var App\Entity\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\DeleteOne
+     * @return \App\Command\Company\DeleteOne
      */
     public function setParameters(array $parameters) : self {
 

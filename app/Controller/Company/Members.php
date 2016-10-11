@@ -29,12 +29,6 @@ class Members implements ControllerInterface {
      */
     private $repository;
     /**
-     * User Repository instance.
-     *
-     * @var \App\Repository\UserInterface
-     */
-    private $userRepository;
-    /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
@@ -51,8 +45,6 @@ class Members implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\Company\MemberInterface $repository
-     * @param App\Repository\UserInterface           $userRepository
-     * @param App\Repository\InvitationInterface     $invitationRepository
      * @param \League\Tactician\CommandBus           $commandBus
      * @param \App\Factory\Command                   $commandFactory
      *
@@ -60,14 +52,10 @@ class Members implements ControllerInterface {
      */
     public function __construct(
         MemberInterface $repository,
-        InvitationInterface $invitationRepository,
-        UserInterface $userRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->repository           = $repository;
-        $this->invitationRepository = $invitationRepository;
-        $this->userRepository       = $userRepository;
         $this->commandBus           = $commandBus;
         $this->commandFactory       = $commandFactory;
     }

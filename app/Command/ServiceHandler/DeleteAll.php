@@ -24,7 +24,7 @@ class DeleteAll extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\ServiceHandler\DeleteAll
+     * @return \App\Command\ServiceHandler\DeleteAll
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['companyId'])) {

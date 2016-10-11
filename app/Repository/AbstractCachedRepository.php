@@ -26,13 +26,13 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * Repository Instance.
      *
-     * @var App\Repository\RepositoryInterface
+     * @var \App\Repository\RepositoryInterface
      */
     protected $repository;
     /**
      * Cache Instance.
      *
-     * @var Apix\Cache\PsrCache\TaggablePool
+     * @var \Apix\Cache\PsrCache\TaggablePool
      */
     protected $cache;
 
@@ -51,7 +51,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      *
      * @param string $key
      *
-     * @return Apix\Cache\PsrCache\TaggablePool
+     * @return \Apix\Cache\PsrCache\TaggablePool
      */
     protected function invalidateCacheKey(string $key) : TaggablePool {
         return $this->cache->deleteItem($key);
@@ -62,7 +62,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      *
      * @param array $keys
      *
-     * @return Apix\Cache\PsrCache\TaggablePool
+     * @return \Apix\Cache\PsrCache\TaggablePool
      */
     protected function invalidateCacheKeys(array $keys) : TaggablePool {
         return $this->cache->deleteItems($keys);
@@ -176,8 +176,8 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * Class constructor.
      *
-     * @param App\Repository\RepositoryInterface $repository
-     * @param \Apix\Cache\PsrCache\TaggablePool  $cache
+     * @param \App\Repository\RepositoryInterface $repository
+     * @param \Apix\Cache\PsrCache\TaggablePool   $cache
      *
      * @return void
      */
@@ -291,7 +291,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      *
      * @param string $key
      *
-     * @return mixed | null
+     * @return mixed
      */
     public function load(string $key) {
         return $this->cache->getItem($key);

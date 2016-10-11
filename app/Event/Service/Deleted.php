@@ -18,14 +18,14 @@ class Deleted extends AbstractEvent {
     /**
      * Event related Service.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $services;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Service $services
+     * @param \App\Entity\Service $services
      *
      * @return void
      */

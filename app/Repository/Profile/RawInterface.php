@@ -20,20 +20,20 @@ interface RawInterface extends RepositoryInterface {
     /**
      * Returns a raw data based on its source and collection.
      *
-     * @param string $collection The service id
-     * @param Source $source     The source entity
+     * @param string                     $collection The service id
+     * @param \App\Entity\Profile\Source $source     The source entity
      *
-     * @return Raw
+     * @return \App\Entity\Profile\Raw
      */
     public function findOne(string $collection, Source $source) : Raw;
 
     /**
      * Find a Raw entity based on its source and name.
      *
-     * @param string                           $collection
-     * @param Source|App\Entity\Profile\Source $source
+     * @param string                     $collection
+     * @param \App\Entity\Profile\Source $source
      *
-     * @return Raw|App\Entity\Profile\Raw
+     * @return \App\Entity\Profile\Raw|\App\Entity\Profile\Raw
      *
      * @internal param string $name
      */
@@ -45,26 +45,26 @@ interface RawInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserId(int $userId, array $queryParams = []) : Collection;
 
     /**
      * Update a raw data based on its source and name.
      *
-     * @param string                           $collection
-     * @param Source|App\Entity\Profile\Source $source
-     * @param string                           $data
+     * @param string                     $collection
+     * @param \App\Entity\Profile\Source $source
+     * @param string                     $data
      *
-     * @return Raw|App\Entity\Profile\Raw
+     * @return \App\Entity\Profile\Raw|\App\Entity\Profile\Raw
      */
     public function updateOneBySourceAndCollection(string $collection, Source $source, string $data) : Raw;
 
     /**
      * Deletes a raw data based on their source and collection.
      *
-     * @param string                           $collection
-     * @param Source|App\Entity\Profile\Source $source
+     * @param string                     $collection
+     * @param \App\Entity\Profile\Source $source
      *
      * @return int
      *
@@ -72,10 +72,10 @@ interface RawInterface extends RepositoryInterface {
      */
     public function deleteOneBySourceAndCollection(string $collection, Source $source) : int;
 
-    /*
+    /**
      * Delete raw data based on source.
      *
-     * @param App\Entity\Profile\Source $source
+     * @param \App\Entity\Profile\Source $source
      *
      * @return int
      */

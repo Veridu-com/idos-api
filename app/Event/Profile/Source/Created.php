@@ -20,19 +20,19 @@ class Created extends AbstractServiceQueueEvent {
     /**
      * Event related User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
      * Event related Source.
      *
-     * @var App\Entity\Profile\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
     /**
      * Event related Process.
      *
-     * @var App\Entity\Profile\Process
+     * @var \App\Entity\Profile\Process
      */
     public $process;
     /**
@@ -45,9 +45,9 @@ class Created extends AbstractServiceQueueEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\User   $user
-     * @param App\Entity\Source $source
-     * @param string            $ipAddr
+     * @param \App\Entity\User   $user
+     * @param \App\Entity\Source $source
+     * @param string             $ipAddr
      *
      * @return void
      */

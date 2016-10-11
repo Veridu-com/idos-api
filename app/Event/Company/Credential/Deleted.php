@@ -19,22 +19,22 @@ class Deleted extends AbstractEvent {
     /**
      * Event related Credential.
      *
-     * @var App\Entity\Company\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
 
     /**
      * Event related Identity.
      *
-     * @var App\Entity\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Company\Credential $credential
-     * @param App\Entity\Identity           $identity
+     * @param \App\Entity\Company\Credential $credential
+     * @param \App\Entity\Identity           $identity
      *
      * @return void
      */

@@ -29,25 +29,25 @@ class Process implements HandlerInterface {
     /**
      * Process Repository instance.
      *
-     * @var App\Repository\Profile\ProcessInterface
+     * @var \App\Repository\Profile\ProcessInterface
      */
     private $repository;
     /**
      * Process Validator instance.
      *
-     * @var App\Validator\Profile\Process
+     * @var \App\Validator\Profile\Process
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -74,10 +74,10 @@ class Process implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\ProcessInterface $repository
-     * @param App\Validator\Process           $validator
-     * @param App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter           $emitter
+     * @param \App\Repository\ProcessInterface $repository
+     * @param \App\Validator\Process           $validator
+     * @param \App\Factory\Event               $eventFactory
+     * @param \League\Event\Emitter            $emitter
      *
      * @return void
      */
@@ -96,15 +96,15 @@ class Process implements HandlerInterface {
     /**
      * Creates a process.
      *
-     * @param App\Command\Profile\Process\CreateNew $command
+     * @param \App\Command\Profile\Process\CreateNew $command
      *
-     * @see App\Repository\DBProcess::create
-     * @see App\Repository\DBProcess::save
+     * @see \App\Repository\DBProcess::create
+     * @see \App\Repository\DBProcess::save
      *
-     * @throws App\Exception\Validate\ProcessException
-     * @throws App\Exception\Create\ProcessException
+     * @throws \App\Exception\Validate\ProcessException
+     * @throws \App\Exception\Create\ProcessException
      *
-     * @return App\Entity\Process
+     * @return \App\Entity\Process
      */
     public function handleCreateNew(CreateNew $command) : ProcessEntity {
         try {
@@ -142,15 +142,15 @@ class Process implements HandlerInterface {
     /**
      * Updates a Process.
      *
-     * @param App\Command\Profile\Process\UpdateOne $command
+     * @param \App\Command\Profile\Process\UpdateOne $command
      *
-     * @see App\Repository\DBProcess::find
-     * @see App\Repository\DBProcess::save
+     * @see \App\Repository\DBProcess::find
+     * @see \App\Repository\DBProcess::save
      *
-     * @throws App\Exception\Validate\ProcessException
-     * @throws App\Exception\Update\ProcessException
+     * @throws \App\Exception\Validate\ProcessException
+     * @throws \App\Exception\Update\ProcessException
      *
-     * @return App\Entity\Process
+     * @return \App\Entity\Process
      */
     public function handleUpdateOne(UpdateOne $command) : ProcessEntity {
         try {

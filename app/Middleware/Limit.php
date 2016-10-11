@@ -19,8 +19,6 @@ use Stash\Item;
  *
  * Scope: Route.
  * Enforces request limits and adds usage details to response headers.
- *
- * FIXME This needs to be updated as Stash has been removed..
  */
 class Limit implements MiddlewareInterface {
     /**
@@ -94,7 +92,7 @@ class Limit implements MiddlewareInterface {
      * @param \Psr\Http\Message\ResponseInterface      $response
      * @param callable                                 $next
      *
-     * @throws App\Exception\AppException
+     * @throws \App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

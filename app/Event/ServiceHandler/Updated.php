@@ -18,14 +18,14 @@ class Updated extends AbstractEvent {
     /**
      * Event related ServiceHandler.
      *
-     * @var App\Entity\ServiceHandler
+     * @var \App\Entity\ServiceHandler
      */
     public $serviceHandler;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\ServiceHandler $serviceHandler
+     * @param \App\Entity\ServiceHandler $serviceHandler
      *
      * @return void
      */

@@ -20,7 +20,7 @@ use Slim\App;
  * The Profile Process is literally the process the API uses in order to extract information from the raw data provided by the User. This Process is broken up by the Services that perform Tasks.
  *
  * @link docs/profile/processes/overview.md
- * @see App\Controller\Profile\Processes
+ * @see \App\Controller\Profile\Processes
  */
 class Processes implements RouteInterface {
     /**
@@ -71,9 +71,9 @@ class Processes implements RouteInterface {
      * @return void
      *
      * @link docs/profile/processes/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Processes::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Processes::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -105,9 +105,9 @@ class Processes implements RouteInterface {
      * @return void
      *
      * @link docs/profile/processes/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Processes::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Processes::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app

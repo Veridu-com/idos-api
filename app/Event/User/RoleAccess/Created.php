@@ -18,14 +18,14 @@ class Created extends AbstractEvent {
     /**
      * Event related RoleAccess.
      *
-     * @var App\Entity\User\RoleAccess
+     * @var \App\Entity\User\RoleAccess
      */
     public $roleAccess;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\User\RoleAccess $roleAccess
+     * @param \App\Entity\User\RoleAccess $roleAccess
      *
      * @return void
      */

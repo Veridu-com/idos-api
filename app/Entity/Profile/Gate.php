@@ -53,5 +53,4 @@ class Gate extends AbstractEntity {
     public $relationships = [
         'creator' => 'Service'
     ];
-
 }

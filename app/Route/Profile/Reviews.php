@@ -61,7 +61,7 @@ class Reviews implements RouteInterface {
     /**
      * List all reviews.
      *
-     * Retrieve all reviews from a given user, matching one or more warnings.
+     * Retrieve all reviews from a given user, matching one or more flags.
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/reviews
      * @apiGroup Profile Reviews

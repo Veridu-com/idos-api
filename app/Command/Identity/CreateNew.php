@@ -36,7 +36,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Identity\CreateNew
+     * @return \App\Command\Identity\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['profileId'])) {

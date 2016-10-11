@@ -24,7 +24,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\Subscription\DeleteOne
+     * @return \App\Command\Company\Subscription\DeleteOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['subscriptionId'])) {

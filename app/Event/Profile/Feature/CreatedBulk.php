@@ -22,39 +22,39 @@ class CreatedBulk extends AbstractServiceQueueEvent {
     /**
      * Event related Feature.
      *
-     * @var App\Entity\Profile\Feature
+     * @var \App\Entity\Profile\Feature
      */
     public $features;
 
     /**
      * Event related Source.
      *
-     * @var App\Entity\Profile\Source | null
+     * @var \App\Entity\Profile\Source
      */
     public $source;
 
     /**
      * Event related User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * Event related User.
      *
-     * @var App\Entity\Profile\Process
+     * @var \App\Entity\Profile\Process
      */
     public $process;
 
     /**
      * Class constructor.
      *
-     * @param array                          $features
-     * @param App\Entity\User                $user
-     * @param App\Entity\Company\Credential  $credential
-     * @param App\Entity\Profile\Process     $process
-     * @param App\Entity\Profile\Source|null $source
+     * @param array                           $features
+     * @param \App\Entity\User                $user
+     * @param \App\Entity\Company\Credential  $credential
+     * @param \App\Entity\Profile\Process     $process
+     * @param \App\Entity\Profile\Source|null $source
      *
      * @return void
      */

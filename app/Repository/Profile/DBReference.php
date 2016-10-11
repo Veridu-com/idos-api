@@ -39,10 +39,12 @@ class DBReference extends AbstractSQLDBRepository implements ReferenceInterface 
      * {@inheritdoc}
      */
     public function findOne(string $name, int $userId) : Reference {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'user_id' => $userId,
             'name'    => $name
-        ]);
+            ]
+        );
     }
 
     /**

@@ -21,7 +21,7 @@ use Slim\App;
  * A Company Member is a user profile for an employee of a Company with an adjustable level of permissions and access to specific information. (eg. for distinguishing a low level employee with read-only permissions from an administrator)
  *
  * @link docs/companies/members/overview.md
- * @see App\Controller\Companies
+ * @see \App\Controller\Companies
  */
 class Members implements RouteInterface {
     /**
@@ -81,9 +81,9 @@ class Members implements RouteInterface {
      * @return void
      *
      * @link docs/companies/members/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Members::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Members::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -116,10 +116,10 @@ class Members implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/companies/members/getMembership.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Members::getMembership
+     * @link docs/companies/members/createNew.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Members::createNew
      */
     private static function getMembership(App $app, callable $auth, callable $permission) {
         $app
@@ -154,9 +154,9 @@ class Members implements RouteInterface {
      * @return void
      *
      * @link docs/companies/members/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Members::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Members::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -191,9 +191,9 @@ class Members implements RouteInterface {
      * @return void
      *
      * @link docs/companies/members/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Members::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Members::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -228,9 +228,9 @@ class Members implements RouteInterface {
      * @return void
      *
      * @link docs/companies/members/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Members::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Members::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

@@ -18,14 +18,14 @@ class Created extends AbstractEvent {
     /**
      * Event related Subscription.
      *
-     * @var App\Entity\Company\Subscription
+     * @var \App\Entity\Company\Subscription
      */
     public $subscription;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Company\Subscription $subscription
+     * @param \App\Entity\Company\Subscription $subscription
      *
      * @return void
      */

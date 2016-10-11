@@ -24,7 +24,8 @@ interface HookInterface extends RepositoryInterface {
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllByCredentialId(int $credentialId) : Collection;
-    /*
+
+    /**
      * Deletes all Hooks based on their Credential Id.
      *
      * @param int $credentialId

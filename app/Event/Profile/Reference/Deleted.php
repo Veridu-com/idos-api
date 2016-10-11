@@ -18,14 +18,14 @@ class Deleted extends AbstractEvent {
     /**
      * Event related Reference.
      *
-     * @var App\Entity\Profile\Reference
+     * @var \App\Entity\Profile\Reference
      */
     public $reference;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Reference $reference
+     * @param \App\Entity\Profile\Reference $reference
      *
      * @return void
      */

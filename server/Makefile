@@ -5,6 +5,7 @@ QUEUESRV=srv-queue
 WORKERSRV=srv-worker
 REDISSRV=srv-redis
 NOSQLSRV=srv-nosql
+SKYNETSRV=srv-skynet
 
 rename: clean
 	cat Makefile |
@@ -65,6 +66,12 @@ db-bash:
 
 db-log:
 	docker logs ${DBSRV}
+
+skynet-bash:
+	docker exec --interactive --tty --user root ${SKYNETSRV} bash
+
+stats:
+	docker stats
 
 logs:
 	docker-compose logs --follow

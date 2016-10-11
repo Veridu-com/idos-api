@@ -23,7 +23,15 @@ class UpdateOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/reviews/1321189817';
+        $this->populate(
+            '/1.0/companies/veridu-ltd/profiles/517015180/reviews',
+            'GET',
+            [
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+            ]
+        );
+        $this->entity = $this->getRandomEntity();
+        $this->uri    = sprintf('/1.0/companies/veridu-ltd/profiles/517015180/reviews/%s', $this->entity['id']);
     }
 
     public function testSuccess() {

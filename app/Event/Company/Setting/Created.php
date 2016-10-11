@@ -19,14 +19,14 @@ class Created extends AbstractEvent {
     /**
      * Event related Setting.
      *
-     * @var App\Entity\Company\Setting
+     * @var \App\Entity\Company\Setting
      */
     public $setting;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Company\Setting $setting
+     * @param \App\Entity\Company\Setting $setting
      *
      * @return void
      */

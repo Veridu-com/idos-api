@@ -24,19 +24,32 @@ class UserInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        // Profile attributes values
-        $attributes = $this->table('attributes');
-        $attributes
+        // Profile attribute candidates
+        $candidates = $this->table('candidates');
+        $candidates
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('creator', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('attribute', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])
             ->addColumn('support', 'float', ['null' => false, 'default' => 0.0])
             ->addTimestamps()
             ->addIndex('user_id')
             ->addIndex('creator')
+            ->addIndex('attribute')
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        // Profile attributes values
+        $attributes = $this->table('attributes');
+        $attributes
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('value', 'binary', ['null' => true])
+            ->addTimestamps()
+            ->addIndex('user_id')
+            ->addIndex(['user_id', 'name'], ['unique' => true])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             // ->addForeignKey('name', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
             ->create();
 
@@ -46,6 +59,7 @@ class UserInit extends AbstractMigration {
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])
+            ->addColumn('ipaddr', 'text', ['null' => false])
             ->addTimestamps()
             ->addIndex('user_id')
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
@@ -78,8 +92,8 @@ class UserInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        $warnings = $this->table('warnings');
-        $warnings
+        $flags = $this->table('flags');
+        $flags
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])

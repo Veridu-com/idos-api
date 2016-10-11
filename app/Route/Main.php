@@ -16,7 +16,7 @@ use Slim\App;
  * Root routing definitions.
  *
  * @link docs/overview.md
- * @see App\Controller\Main
+ * @see \App\Controller\Main
  */
 class Main implements RouteInterface {
     /**
@@ -58,7 +58,7 @@ class Main implements RouteInterface {
      * @return void
      *
      * @link docs/listAll.md
-     * @see App\Controller\Main::listAll
+     * @see \App\Controller\Main::listAll
      */
     private static function listAll(App $app, callable $permission) {
         $app

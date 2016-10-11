@@ -22,7 +22,7 @@ class RoleAccess implements ControllerInterface {
     /**
      * RoleAccess Repository instance.
      *
-     * @var App\Repository\User\RoleAccessInterface
+     * @var \App\Repository\User\RoleAccessInterface
      */
     private $repository;
     /**
@@ -34,16 +34,16 @@ class RoleAccess implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\User\RoleAccessInterface $repository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param App\Factory\Command                     $commandFactory
+     * @param \App\Repository\User\RoleAccessInterface $repository
+     * @param \League\Tactician\CommandBus             $commandBus
+     * @param \App\Factory\Command                     $commandFactory
      *
      * @return void
      */
@@ -97,7 +97,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Repository\DBRoleAccess::findOne
+     * @see \App\Repository\DBRoleAccess::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -132,7 +132,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\RoleAccess::handleCreateNew
+     * @see \App\Handler\RoleAccess::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -169,7 +169,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\RoleAccess::handleDeleteAll
+     * @see \App\Handler\RoleAccess::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -202,7 +202,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\RoleAccess::handleDeleteOne
+     * @see \App\Handler\RoleAccess::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -238,7 +238,7 @@ class RoleAccess implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\RoleAccess::handleUpdateOne
+     * @see \App\Handler\RoleAccess::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

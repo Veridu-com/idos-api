@@ -26,10 +26,10 @@ interface RepositoryStrategyInterface {
     /**
      * Builds a new repository.
      *
-     * @param App\Factory\Repository $repositoryFactory
-     * @param string                 $className
+     * @param \App\Factory\Repository $repositoryFactory
+     * @param string                  $className
      *
-     * @return App\Repository\RepositoryInterface
+     * @return \App\Repository\RepositoryInterface
      */
     public function build(Repository $repositoryFactory, string $className) : RepositoryInterface;
 }

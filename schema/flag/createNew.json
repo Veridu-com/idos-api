@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /profiles/{userName}/flags",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Warning response payload",
+            "type": "object",
+            "$ref": "flagEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

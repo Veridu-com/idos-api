@@ -20,13 +20,13 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * Entity Factory.
      *
-     * @var App\Factory\Entity
+     * @var \App\Factory\Entity
      */
     public $entityFactory;
     /**
      * SQL Database Connection.
      *
-     * @var Illuminate\Database\Connection
+     * @var \Illuminate\Database\Connection
      */
     protected $sqlConnection;
     /**
@@ -46,10 +46,10 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity             $entityFactory
-     * @param \Jenssegers\Optimus\Optimus    $optimus
-     * @param Illuminate\Database\Connection $sqlConnection
-     * @param callable                       $noSqlConnector
+     * @param \App\Factory\Entity             $entityFactory
+     * @param \Jenssegers\Optimus\Optimus     $optimus
+     * @param \Illuminate\Database\Connection $sqlConnection
+     * @param callable                        $noSqlConnector
      *
      * @return void
      */

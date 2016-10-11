@@ -17,7 +17,7 @@ interface EntityInterface {
      *
      * @param array $attributes
      *
-     * @return App\Entity\EntityInterface
+     * @return \App\Entity\EntityInterface
      */
     public function hydrate(array $attributes = []) : self;
 

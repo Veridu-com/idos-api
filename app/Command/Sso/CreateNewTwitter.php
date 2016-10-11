@@ -22,7 +22,7 @@ class CreateNewTwitter extends CreateNew {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Sso\CreateNewTwitter
+     * @return \App\Command\Sso\CreateNewTwitter
      */
     public function setParameters(array $parameters) : self {
         parent::setParameters($parameters);

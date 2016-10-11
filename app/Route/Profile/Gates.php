@@ -20,7 +20,7 @@ use Slim\App;
  * A Profile Gate is a criterion set by a Company who requires a polar yes-no answer for a specific, vital feature of a Profile. For example if a Company requires Users to be over the age of 18, a Gate is used to filter out any User not fulfilling this criterion. Multiple Gates can be used to create more specific criteria if needed. For example if a Company requires Users to be over the age of 18 and living and in the USA, it would require 3 Gates, one for the age, one for employment and one for residency.
  *
  * @link docs/profile/gates/overview.md
- * @see App\Controller\Profile\Gates
+ * @see \App\Controller\Profile\Gates
  */
 class Gates implements RouteInterface {
     /**
@@ -82,9 +82,9 @@ class Gates implements RouteInterface {
      * @return void
      *
      * @link docs/profile/gates/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Gates::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Gates::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -116,9 +116,9 @@ class Gates implements RouteInterface {
      * @return void
      *
      * @link docs/profile/gates/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Gates::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Gates::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -149,9 +149,9 @@ class Gates implements RouteInterface {
      * @return void
      *
      * @link docs/profile/gates/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Gates::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Gates::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -183,9 +183,9 @@ class Gates implements RouteInterface {
      * @return void
      *
      * @link docs/profile/gates/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Gates::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Gates::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -216,9 +216,9 @@ class Gates implements RouteInterface {
      * @return void
      *
      * @link docs/profile/gates/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Gates::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Gates::updateOne
      */
     private static function upsert(App $app, callable $auth, callable $permission) {
         $app
@@ -250,9 +250,9 @@ class Gates implements RouteInterface {
      * @return void
      *
      * @link docs/profile/gates/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Gates::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Gates::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
@@ -283,9 +283,9 @@ class Gates implements RouteInterface {
      * @return void
      *
      * @link docs/profile/gates/deleteAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Gates::deleteAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Gates::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         $app

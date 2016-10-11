@@ -16,6 +16,7 @@ phinx.yml
 phpdox.xml
 phpunit.xml
 resources/secure.key
+server/conf.d/skynet-web.war
 server/docker-compose.yml
 server/docker/
 sftp-config.json

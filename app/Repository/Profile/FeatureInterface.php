@@ -23,7 +23,7 @@ interface FeatureInterface extends RepositoryInterface {
      * @param int $serviceId The service id
      * @param int $userId    The user id
      *
-     * @return Feature
+     * @return \App\Entity\Profile\Feature
      */
     public function findOne(int $id, int $serviceId, int $userId) : Feature;
 
@@ -35,7 +35,7 @@ interface FeatureInterface extends RepositoryInterface {
      * @param string|null $sourceName The source name
      * @param int         $userId     The user id
      *
-     * @return Feature
+     * @return \App\Entity\Profile\Feature
      */
     public function findOneByName(string $name, int $serviceId, $sourceName, int $userId) : Feature;
 
@@ -46,7 +46,7 @@ interface FeatureInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
 
@@ -56,7 +56,7 @@ interface FeatureInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserId(int $userId, array $queryParams = []) : Collection;
 

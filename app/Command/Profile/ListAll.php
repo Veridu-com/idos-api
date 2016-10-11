@@ -17,14 +17,14 @@ class ListAll extends AbstractCommand {
     /**
      * Profile's company's instance.
      *
-     * @var App\Entity\Company
+     * @var \App\Entity\Company
      */
     public $company;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\ListAll
+     * @return \App\Command\Profile\ListAll
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['company'])) {

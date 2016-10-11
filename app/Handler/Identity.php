@@ -25,19 +25,19 @@ class Identity implements HandlerInterface {
     /**
      * Identity Repository instance.
      *
-     * @var App\Repository\IdentityInterface
+     * @var \App\Repository\IdentityInterface
      */
     private $repository;
     /**
      * Identity Validator instance.
      *
-     * @var App\Validator\Identity
+     * @var \App\Validator\Identity
      */
     private $validator;
     /**
      * Event Factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -70,10 +70,10 @@ class Identity implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\IdentityInterface $repository
-     * @param App\Validator\Identity           $validator
-     * @param App\Factory\Event                $eventFactory
-     * @param \League\Event\Emitter            $emitter
+     * @param \App\Repository\IdentityInterface $repository
+     * @param \App\Validator\Identity           $validator
+     * @param \App\Factory\Event                $eventFactory
+     * @param \League\Event\Emitter             $emitter
      *
      * @return void
      */
@@ -92,12 +92,12 @@ class Identity implements HandlerInterface {
     /**
      * Creates an identity.
      *
-     * @param App\Command\Identity\CreateNew $command
+     * @param \App\Command\Identity\CreateNew $command
      *
-     * @throws App\Exception\Validate\IdentityException
-     * @throws App\Exception\Create\IdentityException
+     * @throws \App\Exception\Validate\IdentityException
+     * @throws \App\Exception\Create\IdentityException
      *
-     * @return App\Entity\Identity
+     * @return \App\Entity\Identity
      */
     public function handleCreateNew(CreateNew $command) : IdentityEntity {
         try {

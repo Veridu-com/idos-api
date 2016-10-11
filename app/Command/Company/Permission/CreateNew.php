@@ -30,7 +30,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\Permission\CreateNew
+     * @return \App\Command\Company\Permission\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['routeName'])) {

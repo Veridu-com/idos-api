@@ -130,18 +130,18 @@ class Sso implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Command
-     * @param App\Repository\UserInterface               $userRepository
-     * @param App\Repository\Company\CredentialInterface $credentialRepository
-     * @param App\Repository\Company\MemberInterface     $memberRepository
-     * @param App\Repository\Company                     $companyRepository
-     * @param App\Repository\Company\InvitationInterface $invitationRepository
-     * @param App\Repository\IdentityInterface           $identityRepository
-     * @param App\Factory\Event                          $eventFactory
+     * @param \App\Factory\Command
+     * @param \App\Repository\UserInterface               $userRepository
+     * @param \App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \App\Repository\Company\MemberInterface     $memberRepository
+     * @param \App\Repository\Company                     $companyRepository
+     * @param \App\Repository\Company\InvitationInterface $invitationRepository
+     * @param \App\Repository\IdentityInterface           $identityRepository
+     * @param \App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                      $emitter
      * @param callable                                   $service
      * @param \League\Tactician\CommandBus               $commandBus
-     * @param App\Factory\Command                        $commandFactory
+     * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -248,12 +248,12 @@ class Sso implements HandlerInterface {
     /**
      * Creates a new sso source and a new user token.
      *
-     * @param string          $sourceName           The provider
-     * @param CreateNew       $command              The CreateNew command for the provider
-     * @param Function|string $tokenClass           The oauth token class
-     * @param string          $serviceRequestUrl    The provider url that will be used to get the user id
-     * @param string          $decodedResponseParam The response parameter that holds the user's id
-     * @param callable|string $eventClass           The createNew event class name to be emitted
+     * @param string                       $sourceName           The provider
+     * @param \App\Command\AbstractCommand $command              The CreateNew command for the provider
+     * @param callable|string              $tokenClass           The oauth token class
+     * @param string                       $serviceRequestUrl    The provider url that will be used to get the user id
+     * @param string                       $decodedResponseParam The response parameter that holds the user's id
+     * @param callable|string              $eventClass           The createNew event class name to be emitted
      *
      * @throws \App\Exception\AppException        Exception thrown in case of error contacting the provider
      * @throws \App\Exception\Create\SsoException
@@ -341,7 +341,11 @@ class Sso implements HandlerInterface {
         $this->emitter->emit($event);
 
         $tokens = [
-            'user_token' => Token::generateUserToken($user->username, $command->credentialPubKey, $credential->private)
+            'user_token' => Token::generateUserToken(
+                $user->username,
+                $command->credentialPubKey,
+                $credential->private
+            )
         ];
 
         if ($credential->special) {

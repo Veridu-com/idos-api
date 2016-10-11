@@ -37,7 +37,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     /**
      * NoSQL DB Connection.
      *
-     * @var Jenssegers\Mongodb\Connection
+     * @var \Jenssegers\Mongodb\Connection
      */
     protected $dbConnection;
     /**
@@ -86,7 +86,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     /**
      * Check if a database is selected.
      *
-     * @throws AppException If no database was selected
+     * @throws \App\Exception\AppException If no database was selected
      */
     public function checkDatabaseSelected() {
         if (! $this->dbConnection) {
@@ -101,7 +101,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      * @param string $entityName The entity name
      * @param string $database   The database name
      *
-     * @return Jenssegers\Mongodb\Query\Builder The query builder
+     * @return \Jenssegers\Mongodb\Query\Builder The query builder
      */
     protected function query(string $collection = null, string $entityName = null, string $database = null) : QueryBuilder {
         if ($database !== null) {
@@ -118,7 +118,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     /**
      * List all databases.
      *
-     * @return MongoDB\Model\DatabaseInfoIterator A iterator for the databases
+     * @return \MongoDB\Model\DatabaseInfoIterator A iterator for the databases
      */
     protected function listDatabases() : DatabaseInfoIterator {
         return $this->dbConnection->getMongoClient()->listDatabases();
@@ -129,7 +129,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      *
      * @param string $database The database
      *
-     * @return MongoDB\Model\CollectionInfoIterator A iterator for the collections
+     * @return \MongoDB\Model\CollectionInfoIterator A iterator for the collections
      */
     protected function listCollections(string $database = null) : CollectionInfoIterator {
         if ($database !== null) {
@@ -167,8 +167,8 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     /**
      * Class constructor.
      *
-     * @param App\Factory\Entity                       $entityFactory
-     * @param App\Factory\Repository                   $repositoryFactory
+     * @param \App\Factory\Entity                      $entityFactory
+     * @param \App\Factory\Repository                  $repositoryFactory
      * @param \Jenssegers\Optimus\Optimus              $optimus
      * @param \Illuminate\Database\ConnectionInterface $dbConnection
      *

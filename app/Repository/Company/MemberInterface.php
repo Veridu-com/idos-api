@@ -21,7 +21,36 @@ interface MemberInterface extends RepositoryInterface {
      * @param int $identityId The identity identifier
      * @param int $companyId  The company identifier
      *
-     * @return App\Entity\Company\Member
+     * @return \App\Entity\Company\Member
      */
     public function findMembership(int $identityId, int $companyId) : Member;
+
+    /**
+     * Gets all by company identifier.
+     *
+     * @param      integer  $companyId    The company identifier
+     * @param      array    $queryParams  The query parameters
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAllByCompanyId(int $companyId, array $queryParams = []) : Collection;
+
+    /**
+     * Gets all Members basedon their Company Id and role.
+     *
+     * @param int    companyId member's company_id
+     * @param string role  member's role
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getAllByCompanyIdAndRole(int $companyId, array $role) : Collection;
+
+    /**
+     * Deletes all Members based on their Company Id.
+     *
+     * @param int $companyId
+     *
+     * @return int
+     */
+    public function deleteByCompanyId(int $companyId) : int;
 }

@@ -15,16 +15,16 @@ use App\Command\AbstractCommand;
  */
 class UpdateOne extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Gate's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
-     * Attribute's creator.
+     * Gate's creator.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
@@ -45,7 +45,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Gate\UpdateOne
+     * @return \App\Command\Profile\Gate\UpdateOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {

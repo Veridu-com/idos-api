@@ -237,7 +237,7 @@ class Hooks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Hook::handleDeleteOne
+     * @see \App\Handler\Hook::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

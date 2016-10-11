@@ -19,13 +19,13 @@ class Updated extends AbstractEvent {
     /**
      * Event related User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
      * Event related Source.
      *
-     * @var App\Entity\Profile\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
     /**
@@ -38,8 +38,8 @@ class Updated extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Source $source
-     * @param string                    $ipAddr
+     * @param \App\Entity\Profile\Source $source
+     * @param string                     $ipAddr
      *
      * @return void
      */

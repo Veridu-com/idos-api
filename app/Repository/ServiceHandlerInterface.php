@@ -21,7 +21,7 @@ interface ServiceHandlerInterface extends RepositoryInterface {
      * @param int $serviceHandlerId
      * @param int $companyId
      *
-     * @return ServiceHandler
+     * @return \App\Entity\ServiceHandler
      */
     public function findOne(int $serviceHandlerId, int $companyId) : ServiceHandler;
 

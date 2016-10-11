@@ -23,7 +23,7 @@ interface ReferenceInterface extends RepositoryInterface {
      * @param int    $userId
      * @param int    $userId
      *
-     * @return Reference
+     * @return \App\Entity\Profile\Reference
      */
     public function findOne(string $name, int $userId) : Reference;
 
@@ -48,7 +48,7 @@ interface ReferenceInterface extends RepositoryInterface {
      */
     public function deleteOne(string $name, int $userId) : int;
 
-    /*
+    /**
      * Deletes references based on their user id.
      *
      * @param int $userId

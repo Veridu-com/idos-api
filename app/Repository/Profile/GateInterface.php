@@ -23,7 +23,7 @@ interface GateInterface extends RepositoryInterface {
      * @param int    $serviceId The service id
      * @param int    $userId    The user id
      *
-     * @return Gate
+     * @return \App\Entity\Profile\Gate
      */
     public function findOne(string $slug, int $serviceId, int $userId) : Gate;
 
@@ -34,7 +34,7 @@ interface GateInterface extends RepositoryInterface {
      * @param int    $serviceId The service id
      * @param int    $userId    The user id
      *
-     * @return Gate
+     * @return \App\Entity\Profile\Gate
      */
     public function findOneByName(string $name, int $serviceId, int $userId) : Gate;
 
@@ -45,7 +45,7 @@ interface GateInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
 
@@ -55,7 +55,7 @@ interface GateInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserId(int $userId, array $queryParams = []) : Collection;
 

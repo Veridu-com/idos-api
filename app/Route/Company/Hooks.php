@@ -21,7 +21,7 @@ use Slim\App;
  * A Hook is a feature that allows a Company to receive updates or alerts when a User changes their data in a specific way. If a User deletes or updates a certain attribute, a Hook will update or alert the Company in realtime.
  *
  * @link docs/management/hooks/overview.md
- * @see App\Controller\Company\Hooks
+ * @see \App\Controller\Company\Hooks
  */
 class Hooks implements RouteInterface {
     /**
@@ -80,9 +80,9 @@ class Hooks implements RouteInterface {
      * @return void
      *
      * @link docs/management/hooks/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Hooks::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Hooks::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -118,9 +118,9 @@ class Hooks implements RouteInterface {
      * @return void
      *
      * @link docs/management/hooks/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Hooks::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Hooks::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -158,9 +158,9 @@ class Hooks implements RouteInterface {
      * @return void
      *
      * @link docs/management/hooks/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Hooks::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Hooks::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -198,9 +198,9 @@ class Hooks implements RouteInterface {
      * @return void
      *
      * @link docs/management/hooks/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Hooks::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Hooks::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -238,9 +238,9 @@ class Hooks implements RouteInterface {
      * @return void
      *
      * @link docs/management/hooks/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Hooks::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Hooks::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

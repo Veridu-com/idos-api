@@ -19,7 +19,7 @@ class GetOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/reviews/1321189817';
+        $this->uri        = '/1.0/companies/veridu-ltd/profiles/1321189817/reviews/517015180';
     }
 
     public function testSuccess() {
@@ -32,7 +32,6 @@ class GetOneTest extends AbstractFunctional {
         );
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
-
         $this->assertNotEmpty($body);
         $this->assertSame(200, $response->getStatusCode());
         $this->assertTrue($body['status']);

@@ -13,7 +13,7 @@ namespace App\Exception;
  *
  * @apiEndpointResponse 404 schema/error.json
  *
- * @see App\Exception\AppException
+ * @see \App\Exception\AppException
  */
 class NotFound extends AppException {
     /**

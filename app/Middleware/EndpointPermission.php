@@ -40,9 +40,9 @@ class EndpointPermission implements MiddlewareInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\PermissionInterface $permissionRepository
-     * @param App\Repository\CompanyInterface            $companyRepository
-     * @param int                                        $permissionType
+     * @param \App\Repository\Company\PermissionInterface $permissionRepository
+     * @param \App\Repository\CompanyInterface            $companyRepository
+     * @param int                                         $permissionType
      *
      * @return void
      */

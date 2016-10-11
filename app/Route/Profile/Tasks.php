@@ -20,7 +20,7 @@ use Slim\App;
  * A Profile Task is a request a Service makes to the API to extract and provide specific information from the Raw data.
  *
  * @link docs/profile/tasks/overview.md
- * @see App\Controller\Profile\Tasks
+ * @see \App\Controller\Profile\Tasks
  */
 class Tasks implements RouteInterface {
     /**
@@ -77,9 +77,9 @@ class Tasks implements RouteInterface {
      * @return void
      *
      * @link docs/profile/tasks/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Tasks::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Tasks::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -112,9 +112,9 @@ class Tasks implements RouteInterface {
      * @return void
      *
      * @link docs/profile/tasks/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Tasks::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Tasks::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -147,9 +147,9 @@ class Tasks implements RouteInterface {
      * @return void
      *
      * @link docs/profile/tasks/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Tasks::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Tasks::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -181,9 +181,9 @@ class Tasks implements RouteInterface {
      * @return void
      *
      * @link docs/profile/tasks/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Profile\Tasks::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Tasks::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app

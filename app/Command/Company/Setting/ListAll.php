@@ -45,7 +45,7 @@ class ListAll extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\Setting\ListAll
+     * @return \App\Command\Company\Setting\ListAll
      */
     public function setParameters(array $parameters) : self {
 

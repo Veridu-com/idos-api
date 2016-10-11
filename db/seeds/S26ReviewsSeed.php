@@ -11,7 +11,7 @@ class S26ReviewsSeed extends AbstractSeed {
         $data = [
             [
                 'user_id'     => 1,
-                'warning_id'  => 1,
+                'flag_id'     => 1,
                 'identity_id' => 1,
                 'positive'    => 'false',
                 'created_at'  => date('Y-m-d H:i:s'),
@@ -19,7 +19,7 @@ class S26ReviewsSeed extends AbstractSeed {
             ],
             [
                 'user_id'     => 1,
-                'warning_id'  => 2,
+                'flag_id'     => 2,
                 'identity_id' => 1,
                 'positive'    => 'false',
                 'created_at'  => date('Y-m-d H:i:s'),

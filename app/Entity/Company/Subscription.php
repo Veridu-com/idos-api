@@ -39,5 +39,4 @@ class Subscription extends AbstractEntity {
     public $relationships = [
         'category' => 'Category'
     ];
-
 }

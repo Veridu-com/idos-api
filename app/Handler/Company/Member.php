@@ -40,18 +40,6 @@ class Member implements HandlerInterface {
      */
     private $repository;
     /**
-     * Credential Repository instance.
-     *
-     * @var \App\Repository\Company\CredentialInterface
-     */
-    private $credentialRepository;
-    /**
-     * User Repository instance.
-     *
-     * @var \App\Repository\UserInterface
-     */
-    private $userRepository;
-    /**
      * Member Validator instance.
      *
      * @var \App\Validator\Company\Member
@@ -102,28 +90,20 @@ class Member implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\MemberInterface     $repository
-     * @param App\Repository\Company\CredentialInterface $repository
-     * @param App\Repository\Company\InvitationInterface $repository
-     * @param App\Validator\Member                       $validator
-     * @param App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                      $emitter
+     * @param \App\Repository\Company\MemberInterface $repository
+     * @param \App\Validator\Member                   $validator
+     * @param \App\Factory\Event                      $eventFactory
+     * @param \League\Event\Emitter                   $emitter
      *
      * @return void
      */
     public function __construct(
         MemberInterface $repository,
-        CredentialInterface $credentialRepository,
-        InvitationInterface $invitationRepository,
-        UserInterface $userRepository,
         MemberValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository           = $repository;
-        $this->credentialRepository = $credentialRepository;
-        $this->invitationRepository = $invitationRepository;
-        $this->userRepository       = $userRepository;
         $this->validator            = $validator;
         $this->eventFactory         = $eventFactory;
         $this->emitter              = $emitter;

@@ -19,14 +19,14 @@ class DeletedMulti extends AbstractEvent {
     /**
      * Event related Hook.
      *
-     * @var Illuminate\Support\Collection
+     * @var \Illuminate\Support\Collection
      */
     public $hooks;
 
     /**
      * Class constructor.
      *
-     * @param Illuminate\Support\Collection $hooks
+     * @param \Illuminate\Support\Collection $hooks
      *
      * @return void
      */
