@@ -143,7 +143,7 @@ class Member implements HandlerInterface {
      * @throws App\Exception\Validate\MemberException
      * @throws App\Exception\Create\MemberException
      *
-     * @return App\Entity\Member
+     * @return \App\Entity\Member
      */
     public function handleUpdateOne(UpdateOne $command) : MemberEntity {
         try {

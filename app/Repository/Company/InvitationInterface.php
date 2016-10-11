@@ -21,7 +21,7 @@ interface InvitationInterface extends RepositoryInterface {
      *
      * @param string $hash The hash
      *
-     * @return App\Entity\Company\Invitation
+     * @return \App\Entity\Company\Invitation
      */
     public function findOneByHash(string $hash) : Invitation;
 

@@ -128,7 +128,7 @@ class Invitation implements HandlerInterface {
      * @throws App\Exception\Validate\MemberException
      * @throws App\Exception\Create\MemberException
      *
-     * @return App\Entity\Member
+     * @return \App\Entity\Member
      */
     public function handleCreateNew(CreateNew $command) : InvitationEntity {
         try {
