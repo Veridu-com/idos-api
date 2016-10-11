@@ -152,7 +152,7 @@ class Sso implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $providerName     = $request->getParsedBodyParam('provider');
         $credentialPubKey = $request->getParsedBodyParam('credential');
-        $signupHash       = $request->getParsedBodyParam('signupHash');
+        $signupHash       = $request->getParsedBodyParam('signup_hash');
         $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
 
         $availableProviders = $this->settings['sso_providers'];

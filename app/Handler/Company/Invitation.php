@@ -135,7 +135,7 @@ class Invitation implements HandlerInterface {
             $this->validator->assertCompany($command->company);
             $this->validator->assertIdentity($command->identity);
             $this->validator->assertName($command->credentialPubKey);
-            $this->validator->assertName($command->name);
+            $this->validator->assertString($command->name);
             $this->validator->assertEmail($command->email);
             if ($command->expires) {
                 $this->validator->assertDate($command->expires);
