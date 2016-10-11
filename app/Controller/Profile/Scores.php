@@ -11,7 +11,7 @@ namespace App\Controller\Profile;
 use App\Controller\ControllerInterface;
 use App\Entity\User;
 use App\Factory\Command;
-use App\Repository\Profile\AttributeInterface;
+use App\Repository\Profile\CandidateInterface;
 use App\Repository\Profile\ScoreInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -32,7 +32,7 @@ class Scores implements ControllerInterface {
      *
      * @var \App\Repository\Profile\AttributeInterface
      */
-    private $attributeRepository;
+    private $candidateRepository;
     /**
      * Command Bus instance.
      *
@@ -57,12 +57,12 @@ class Scores implements ControllerInterface {
      */
     public function __construct(
         ScoreInterface $repository,
-        AttributeInterface $attributeRepository,
+        CandidateInterface $candidateRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->repository          = $repository;
-        $this->attributeRepository = $attributeRepository;
+        $this->candidateRepository = $candidateRepository;
         $this->commandBus          = $commandBus;
         $this->commandFactory      = $commandFactory;
     }

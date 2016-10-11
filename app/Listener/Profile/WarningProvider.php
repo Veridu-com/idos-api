@@ -12,7 +12,7 @@ use App\Event\Flag;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 
-class FlagProvider extends Listener\AbstractListenerProvider {
+class WarningProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
             Flag\Created::class => [
