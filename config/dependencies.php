@@ -504,7 +504,7 @@ $container['gearmanClient'] = function (ContainerInterface $container) : Gearman
         if (isset($settings['gearman']['timeout'])) {
             $gearman->setTimeout($settings['gearman']['timeout']);
         }
-        
+
         foreach ($settings['gearman']['servers'] as $server) {
             if (is_array($server)) {
                 $gearman->addServer($server[0], $server[1]);

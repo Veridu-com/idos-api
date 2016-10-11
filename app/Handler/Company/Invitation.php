@@ -16,10 +16,10 @@ use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\CompanyInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\InvitationInterface;
 use App\Repository\Company\SettingInterface;
+use App\Repository\CompanyInterface;
 use App\Validator\Company\Invitation as InvitationValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -94,8 +94,8 @@ class Invitation implements HandlerInterface {
      *
      * @param App\Repository\Company\InvitationInterface $repository
      * @param App\Repository\Company\CredentialInterface $credentialRepository
-     * @param App\Repository\CompanyInterface $companyRepository
-     * @param App\Repository\Company\SettingInterface $settingRepository
+     * @param App\Repository\CompanyInterface            $companyRepository
+     * @param App\Repository\Company\SettingInterface    $settingRepository
      * @param App\Validator\Invitation                   $validator
      * @param App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                      $emitter
@@ -113,8 +113,8 @@ class Invitation implements HandlerInterface {
     ) {
         $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
-        $this->companyRepository = $companyRepository;
-        $this->settingRepository = $settingRepository;
+        $this->companyRepository    = $companyRepository;
+        $this->settingRepository    = $settingRepository;
         $this->validator            = $validator;
         $this->eventFactory         = $eventFactory;
         $this->emitter              = $emitter;
@@ -157,18 +157,18 @@ class Invitation implements HandlerInterface {
             throw new Validate\Company\MemberException('Invalid expiration date. Min: 1 day, Max: 7 days from today');
         }
 
-        $credential      = $this->credentialRepository->findByPubKey($command->credentialPubKey);
+        $credential           = $this->credentialRepository->findByPubKey($command->credentialPubKey);
         $dashboardNameSetting = $this->settingRepository->findByCompanyIdSectionAndProperties($credential->companyId, 'company.dashboard', ['name'])->first();
 
         $dashboardName = (! $dashboardNameSetting) ? sprintf('%s idOS Dashboard', $company->name) : $dashboardNameSetting->value;
-        $signupHash = md5($command->email . $command->company->id . microtime());
+        $signupHash    = md5($command->email . $command->company->id . microtime());
 
         $invitation = $this->repository->create(
             [
                 'credential_id' => $credential->id,
                 'company_id'    => $command->company->id,
                 'creator_id'    => $command->identity->id,
-                'name'         => $command->name,
+                'name'          => $command->name,
                 'email'         => $command->email,
                 'role'          => $command->role,
                 'hash'          => $signupHash,

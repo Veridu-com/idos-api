@@ -12,7 +12,7 @@ class S41InvitationsSeed extends AbstractSeed {
 
         $data = [
             [
-                'name'         => 'Rafael',
+                'name'          => 'Rafael',
                 'email'         => 'rafael@veridu.com',
                 'company_id'    => 1,
                 'role'          => 'company.admin',

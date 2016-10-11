@@ -98,7 +98,7 @@ class Invitations implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Invitation::createNew
+     * @see \App\Handler\Invitation::createNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -138,7 +138,7 @@ class Invitations implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Invitation::handleDeleteOne
+     * @see \App\Handler\Invitation::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

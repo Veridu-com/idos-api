@@ -138,9 +138,9 @@ class Sso implements HandlerInterface {
      * @param \App\Repository\Company\InvitationInterface $invitationRepository
      * @param \App\Repository\IdentityInterface           $identityRepository
      * @param \App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                      $emitter
-     * @param callable                                   $service
-     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \League\Event\Emitter                       $emitter
+     * @param callable                                    $service
+     * @param \League\Tactician\CommandBus                $commandBus
      * @param \App\Factory\Command                        $commandFactory
      *
      * @return void

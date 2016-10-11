@@ -29,8 +29,8 @@ interface MemberInterface extends RepositoryInterface {
     /**
      * Gets by company identifier.
      *
-     * @param      integer  $companyId    The company identifier
-     * @param      array    $queryParams  The query parameters
+     * @param int   $companyId   The company identifier
+     * @param array $queryParams The query parameters
      * 
      * @return \Illuminate\Support\Collection
      */

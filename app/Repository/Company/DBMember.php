@@ -88,7 +88,7 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
         return $this->findBy(
             [
                 'company_id' => $companyId
-            ], 
+            ],
             $queryParams
         );
     }

@@ -11,9 +11,7 @@ namespace App\Controller\Company;
 use App\Controller\ControllerInterface;
 use App\Entity\User;
 use App\Factory\Command;
-use App\Repository\Company\InvitationInterface;
 use App\Repository\Company\MemberInterface;
-use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -44,9 +42,9 @@ class Members implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\MemberInterface $repository
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param \App\Factory\Command                   $commandFactory
+     * @param \App\Repository\Company\MemberInterface $repository
+     * @param \League\Tactician\CommandBus            $commandBus
+     * @param \App\Factory\Command                    $commandFactory
      *
      * @return void
      */
@@ -129,7 +127,7 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Member::updateOne
+     * @see \App\Handler\Member::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -171,7 +169,7 @@ class Members implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see App\Handler\Member::deleteOne
+     * @see \App\Handler\Member::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -204,7 +202,7 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Creates a new Member for the Target Company.
+     * Gets the membership of the requesting identity.
      *
      * @apiEndpointRequiredParam body string role company.owner Role type
      * @apiEndpointRequiredParam body string email jhondoe@idos.io User's email
@@ -212,8 +210,6 @@ class Members implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see App\Handler\Member::createNewInvitation
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response

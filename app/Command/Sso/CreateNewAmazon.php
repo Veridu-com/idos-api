@@ -12,5 +12,4 @@ namespace App\Command\Sso;
  * Sso "Create New" Command.
  */
 class CreateNewAmazon extends CreateNew {
-
 }

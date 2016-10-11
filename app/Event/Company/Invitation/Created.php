@@ -55,13 +55,12 @@ class Created extends AbstractServiceQueueEvent {
      * @return void
      */
     public function __construct(Invitation $invitation, Credential $credential, string $companyName, string $dashboardName, string $signupHash) {
-        $this->invitation = $invitation;
-        $this->credential = $credential;
-        $this->companyName = $companyName;
+        $this->invitation    = $invitation;
+        $this->credential    = $credential;
+        $this->companyName   = $companyName;
         $this->dashboardName = $dashboardName;
-        $this->signupHash = $signupHash;
+        $this->signupHash    = $signupHash;
     }
-
 
     /**
      * {inheritdoc}.
@@ -70,12 +69,12 @@ class Created extends AbstractServiceQueueEvent {
         return array_merge(
             [
                 'user' => [
-                    'name' => $this->invitation->name,
+                    'name'  => $this->invitation->name,
                     'email' => $this->invitation->email
-                ], 
+                ],
                 'dashboardName' => $this->dashboardName,
-                'companyName' => $this->companyName,
-                'signupHash' => $this->signupHash
+                'companyName'   => $this->companyName,
+                'signupHash'    => $this->signupHash
             ], $merge
         );
     }

@@ -19,7 +19,7 @@ use Slim\App;
  * Company Invitations.
  *
  * @link docs/companies/invitations/overview.md
- * @see App\Controller\Companies
+ * @see \App\Controller\Companies
  */
 class Invitations implements RouteInterface {
     /**
@@ -72,9 +72,9 @@ class Invitations implements RouteInterface {
      * @return void
      *
      * @link docs/companies/invitations/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Invitations::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Invitations::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -108,9 +108,9 @@ class Invitations implements RouteInterface {
      * @return void
      *
      * @link docs/companies/invitations/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Invitations::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Invitations::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -145,9 +145,9 @@ class Invitations implements RouteInterface {
      * @return void
      *
      * @link docs/companies/invitations/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Invitations::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Invitations::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

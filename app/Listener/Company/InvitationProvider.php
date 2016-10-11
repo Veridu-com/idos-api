@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Listener\Company;
 
 use App\Event\Company\Invitation as InvitationEvent;
-use App\Event\Company\Invitation\Created;
 use App\Listener;
 use App\Listener\Manager\QueueServiceTaskListener;
 use Interop\Container\ContainerInterface;
