@@ -16,9 +16,10 @@ use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
+use App\Repository\CompanyInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\InvitationInterface;
-use App\Repository\UserInterface;
+use App\Repository\Company\SettingInterface;
 use App\Validator\Company\Invitation as InvitationValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -72,6 +73,12 @@ class Invitation implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Company\Credential'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Company'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company\Setting'),
+                $container
                     ->get('validatorFactory')
                     ->create('Company\Invitation'),
                 $container
@@ -86,8 +93,10 @@ class Invitation implements HandlerInterface {
      * Class constructor.
      *
      * @param App\Repository\Company\InvitationInterface $repository
-     * @param App\Repository\Company\CredentialInterface $repository
-     * @param App\Validator\Invitation                       $validator
+     * @param App\Repository\Company\CredentialInterface $credentialRepository
+     * @param App\Repository\CompanyInterface $companyRepository
+     * @param App\Repository\Company\SettingInterface $settingRepository
+     * @param App\Validator\Invitation                   $validator
      * @param App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                      $emitter
      *
@@ -96,12 +105,16 @@ class Invitation implements HandlerInterface {
     public function __construct(
         InvitationInterface $repository,
         CredentialInterface $credentialRepository,
+        CompanyInterface $companyRepository,
+        SettingInterface $settingRepository,
         InvitationValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
+        $this->companyRepository = $companyRepository;
+        $this->settingRepository = $settingRepository;
         $this->validator            = $validator;
         $this->eventFactory         = $eventFactory;
         $this->emitter              = $emitter;
@@ -122,6 +135,7 @@ class Invitation implements HandlerInterface {
             $this->validator->assertCompany($command->company);
             $this->validator->assertIdentity($command->identity);
             $this->validator->assertName($command->credentialPubKey);
+            $this->validator->assertName($command->name);
             $this->validator->assertEmail($command->email);
             if ($command->expires) {
                 $this->validator->assertDate($command->expires);
@@ -133,8 +147,6 @@ class Invitation implements HandlerInterface {
                 $e
             );
         }
-
-        $credential      = $this->credentialRepository->findByPubKey($command->credentialPubKey);
         $expires         = strftime('%Y-%m-%d', strtotime($command->expires));
         $now             = time();
         $expiresDateTime = new \DateTime($expires);
@@ -145,14 +157,21 @@ class Invitation implements HandlerInterface {
             throw new Validate\Company\MemberException('Invalid expiration date. Min: 1 day, Max: 7 days from today');
         }
 
+        $credential      = $this->credentialRepository->findByPubKey($command->credentialPubKey);
+        $dashboardNameSetting = $this->settingRepository->findByCompanyIdSectionAndProperties($credential->companyId, 'company.dashboard', ['name'])->first();
+
+        $dashboardName = (! $dashboardNameSetting) ? sprintf('%s idOS Dashboard', $company->name) : $dashboardNameSetting->value;
+        $signupHash = md5($command->email . $command->company->id . microtime());
+
         $invitation = $this->repository->create(
             [
                 'credential_id' => $credential->id,
                 'company_id'    => $command->company->id,
                 'creator_id'    => $command->identity->id,
-                'role'          => $command->role,
+                'name'         => $command->name,
                 'email'         => $command->email,
-                'hash'          => md5($command->email . $command->company->id . microtime()),
+                'role'          => $command->role,
+                'hash'          => $signupHash,
                 'expires'       => $command->expires ? $expires : strftime('%Y-%m-%d', strtotime('now + 1 days')),
                 'created_at'    => $now
             ]
@@ -160,8 +179,8 @@ class Invitation implements HandlerInterface {
 
         try {
             $invitation = $this->repository->save($invitation);
-            $event      = $this->eventFactory->create('Company\\Member\\InvitationCreated', $invitation);
-            $a          = $this->emitter->emit($event);
+            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash);
+            $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\MemberException('Error while trying to create an invitation', 500, $e);
         }
@@ -203,7 +222,7 @@ class Invitation implements HandlerInterface {
             throw new NotFound\Company\MemberException('No invitations found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Member\\DeletedInvitation', $invitation);
+        $event = $this->eventFactory->create('Company\\Invitation\\Deleted', $invitation);
         $this->emitter->emit($event);
     }
 }

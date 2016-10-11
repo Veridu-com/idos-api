@@ -78,8 +78,8 @@ class Reference implements HandlerInterface {
      *
      * @param \App\Repository\Profile\ReferenceInterface $repository
      * @param \App\Validator\Profile\Reference           $validator
-     * @param \App\Factory\Event                 $eventFactory
-     * @param \League\Event\Emitter             $emitter
+     * @param \App\Factory\Event                         $eventFactory
+     * @param \League\Event\Emitter                      $emitter
      *
      * @return void
      */
@@ -226,7 +226,7 @@ class Reference implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $references = $this->repository->getAllByUserId($command->user->id);
+        $references   = $this->repository->getAllByUserId($command->user->id);
         $affectedRows = $this->repository->deleteByUserId($command->user->id);
 
         $event = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references);

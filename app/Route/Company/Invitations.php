@@ -90,7 +90,6 @@ class Invitations implements RouteInterface {
             ->setName('invitations:createNew');
     }
 
-
     /**
      * Retrieve a list of invitations for this company.
      *

@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Handler\Profile;
 
 use App\Command\Profile\Raw\CreateNew;
-use App\Command\Profile\Raw\UpdateOne;
 use App\Command\Profile\Raw\Upsert;
 use App\Entity\Profile\Raw as RawEntity;
 use App\Exception\Create;

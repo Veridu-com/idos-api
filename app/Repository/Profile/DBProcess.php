@@ -11,7 +11,6 @@ namespace App\Repository\Profile;
 use App\Entity\Profile\Process;
 use App\Exception\NotFound;
 use App\Repository\AbstractSQLDBRepository;
-use Illuminate\Support\Collection;
 
 /**
  * Database-based Process Repository Implementation.

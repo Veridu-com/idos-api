@@ -23,11 +23,16 @@ use League\Event\EventInterface;
  */
 class QueueServiceTaskListener extends AbstractListener {
     use QueueCompanyServiceHandlers;
-
+    /**
+     * Company id.
+     *
+     * @var int|null
+     */
+    private $companyId;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\CredentialInterface
+     * @var App\Repository\CredentialInterface|null
      */
     private $credentialRepository;
     /**

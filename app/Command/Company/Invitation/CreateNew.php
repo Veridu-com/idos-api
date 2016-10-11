@@ -27,6 +27,12 @@ class CreateNew extends AbstractCommand {
      */
     public $email;
     /**
+     * Member's name.
+     *
+     * @var string
+     */
+    public $name;
+    /**
      * Invitation's expiration date.
      *
      * @var string
@@ -65,6 +71,9 @@ class CreateNew extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['email'])) {
             $this->email = $parameters['email'];
+        }
+        if (isset($parameters['name'])) {
+            $this->name = $parameters['name'];
         }
 
         if(isset($parameters['role'])) {

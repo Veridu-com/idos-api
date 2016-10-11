@@ -74,7 +74,7 @@ class Token implements HandlerInterface {
      * @param \App\Repository\UserInterface $userRepository
      * @param \App\Validator\Token          $validator
      * @param \App\Factory\Event            $eventFactory
-     * @param \League\Event\Emitter        $emitter
+     * @param \League\Event\Emitter         $emitter
      *
      * @return void
      */

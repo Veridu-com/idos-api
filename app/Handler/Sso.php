@@ -175,8 +175,8 @@ class Sso implements HandlerInterface {
      * Creates a new user.
      *
      * @param \App\Entity\Credential $credential The credential
-     * @param string                $role       The role
-     * @param string                $username   The username
+     * @param string                 $role       The role
+     * @param string                 $username   The username
      *
      * @return \App\Entity\User The created user
      */
@@ -364,7 +364,6 @@ class Sso implements HandlerInterface {
                     // if memberId is null and invitation is not expired
                     // a member should be created for this identity
                     if (is_null($invitation->memberId)) {
-
                         try {
                             $member = $this->memberRepository->findMembership($identity->id, $company->id);
                         } catch (NotFound $e) {

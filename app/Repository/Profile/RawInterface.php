@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Repository\Profile;
 
-use App\Entity\EntityInterface;
 use App\Entity\Profile\Raw;
 use App\Entity\Profile\Source;
 use App\Repository\RepositoryInterface;
@@ -22,7 +21,7 @@ interface RawInterface extends RepositoryInterface {
      * Returns a raw data based on its source and collection.
      *
      * @param string $collection The service id
-     * @param Source $source The source entity
+     * @param Source $source     The source entity
      *
      * @return Raw
      */
@@ -31,11 +30,12 @@ interface RawInterface extends RepositoryInterface {
     /**
      * Find a Raw entity based on its source and name.
      *
-     * @param string $collection
+     * @param string                           $collection
      * @param Source|App\Entity\Profile\Source $source
-     * @return Raw|App\Entity\Profile\Raw
-     * @internal param string $name
      *
+     * @return Raw|App\Entity\Profile\Raw
+     *
+     * @internal param string $name
      */
     public function findOneBySourceAndCollection(string $collection, Source $source) : Raw;
 
@@ -52,9 +52,9 @@ interface RawInterface extends RepositoryInterface {
     /**
      * Update a raw data based on its source and name.
      *
-     * @param string $collection
+     * @param string                           $collection
      * @param Source|App\Entity\Profile\Source $source
-     * @param string $data
+     * @param string                           $data
      *
      * @return Raw|App\Entity\Profile\Raw
      */
@@ -63,11 +63,12 @@ interface RawInterface extends RepositoryInterface {
     /**
      * Deletes a raw data based on their source and collection.
      *
-     * @param string $collection
+     * @param string                           $collection
      * @param Source|App\Entity\Profile\Source $source
-     * @return int
-     * @internal param string $name
      *
+     * @return int
+     *
+     * @internal param string $name
      */
     public function deleteOneBySourceAndCollection(string $collection, Source $source) : int;
 

@@ -90,7 +90,7 @@ class Profiles implements ControllerInterface {
      * @param \App\Repository\WarningInterface   $warningRepository
      * @param \App\Repository\GateInterface      $gateRepository
      * @param \App\Repository\AttributeInterface $attributeRepository
-     * @param \League\Tactician\CommandBus      $commandBus
+     * @param \League\Tactician\CommandBus       $commandBus
      * @param \App\Factory\Command               $commandFactory
      *
      * @return void

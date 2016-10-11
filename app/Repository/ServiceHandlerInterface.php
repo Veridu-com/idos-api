@@ -19,8 +19,8 @@ interface ServiceHandlerInterface extends RepositoryInterface {
      * Returns a service handler based on its id and company id.
      *
      * @param int $serviceHandlerId
-     *
      * @param int $companyId
+     *
      * @return ServiceHandler
      */
     public function findOne(int $serviceHandlerId, int $companyId) : ServiceHandler;

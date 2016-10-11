@@ -12,7 +12,6 @@ use App\Controller\ControllerInterface;
 use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\Company\InvitationInterface;
-use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -44,8 +43,8 @@ class Invitations implements ControllerInterface {
      * Class constructor.
      *
      * @param App\Repository\Company\InvitationInterface $repository
-     * @param \League\Tactician\CommandBus           $commandBus
-     * @param App\Factory\Command                    $commandFactory
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -54,7 +53,7 @@ class Invitations implements ControllerInterface {
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository = $repository;
+        $this->repository           = $repository;
         $this->commandBus           = $commandBus;
         $this->commandFactory       = $commandFactory;
     }
@@ -106,7 +105,7 @@ class Invitations implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $identity      = $request->getAttribute('identity');
-        $command = $this->commandFactory->create('Company\\Invitation\\CreateNew');
+        $command       = $this->commandFactory->create('Company\\Invitation\\CreateNew');
 
         $command
             ->setParameter('company', $targetCompany)
@@ -148,7 +147,7 @@ class Invitations implements ControllerInterface {
         $command->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
 
         $this->commandBus->handle($command);
-        
+
         $body = [
             'status' => true
         ];

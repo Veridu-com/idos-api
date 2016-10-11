@@ -19,9 +19,9 @@ interface GateInterface extends RepositoryInterface {
     /**
      * Returns a gate based on its user id, source id, service id (creator) and slug.
      *
-     * @param string      $slug       The gate slug
-     * @param int         $serviceId  The service id
-     * @param int         $userId     The user id
+     * @param string $slug      The gate slug
+     * @param int    $serviceId The service id
+     * @param int    $userId    The user id
      *
      * @return Gate
      */
@@ -30,9 +30,9 @@ interface GateInterface extends RepositoryInterface {
     /**
      * Returns a gate based on its user id, source id, service id (creator) and name.
      *
-     * @param string      $name       The gate name
-     * @param int         $serviceId  The service id
-     * @param int         $userId     The user id
+     * @param string $name      The gate name
+     * @param int    $serviceId The service id
+     * @param int    $userId    The user id
      *
      * @return Gate
      */

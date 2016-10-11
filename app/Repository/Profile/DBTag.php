@@ -41,7 +41,7 @@ class DBTag extends AbstractSQLDBRepository implements TagInterface {
     public function findOne(string $slug, int $userId) : Tag {
         return $this->findOneBy([
             'user_id' => $userId,
-            'slug' => $slug
+            'slug'    => $slug
         ]);
     }
 

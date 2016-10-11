@@ -14,10 +14,10 @@ use App\Command\Service\DeleteOne;
 use App\Command\Service\UpdateOne;
 use App\Entity\Service as ServiceEntity;
 use App\Exception\Create;
-use App\Exception\Update;
-use App\Exception\Validate;
 use App\Exception\NotAllowed;
 use App\Exception\NotFound;
+use App\Exception\Update;
+use App\Exception\Validate;
 use App\Factory\Event;
 use App\Repository\ServiceInterface;
 use App\Validator\Service as ServiceValidator;
@@ -80,7 +80,7 @@ class Service implements HandlerInterface {
      * @param \App\Repository\ServiceInterface $repository
      * @param \App\Validator\Service           $validator
      * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter           $emitter
+     * @param \League\Event\Emitter            $emitter
      *
      * @return void
      */

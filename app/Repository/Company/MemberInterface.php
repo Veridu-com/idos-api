@@ -24,31 +24,4 @@ interface MemberInterface extends RepositoryInterface {
      * @return App\Entity\Company\Member
      */
     public function findMembership(int $identityId, int $companyId) : Member;
-
-    /*
-     * Deletes all Members based on their Company Id.
-     *
-     * @param int $companyId
-     *
-     * @return int
-     */
-    public function deleteByCompanyId(int $companyId) : int;
-
-    /**
-     * Find one member based on their companyId and username.
-     *
-     * @param int $memberId
-     *
-     * @return \App\Entity\Company\Member
-     */
-    public function findOne(int $memberId);
-
-    /**
-     * Saves a member.
-     *
-     * @param \App\Entity\Company\Member $member The member
-     *
-     * @return \App\Entity\Company\Member
-     */
-    public function saveOne(Member $member) : Member;
 }

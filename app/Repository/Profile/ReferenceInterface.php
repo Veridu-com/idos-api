@@ -21,8 +21,8 @@ interface ReferenceInterface extends RepositoryInterface {
      *
      * @param string $name
      * @param int    $userId
+     * @param int    $userId
      *
-     * @param int $userId
      * @return Reference
      */
     public function findOne(string $name, int $userId) : Reference;
@@ -42,8 +42,8 @@ interface ReferenceInterface extends RepositoryInterface {
      *
      * @param string $name
      * @param int    $userId
+     * @param int    $userId
      *
-     * @param int $userId
      * @return int
      */
     public function deleteOne(string $name, int $userId) : int;

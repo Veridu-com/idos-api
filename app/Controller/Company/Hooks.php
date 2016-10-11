@@ -51,7 +51,7 @@ class Hooks implements ControllerInterface {
      *
      * @param \App\Repository\Company\HookInterface       $repository
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \League\Tactician\CommandBus                $commandBus
      * @param \App\Factory\Command                        $commandFactory
      *
      * @return void

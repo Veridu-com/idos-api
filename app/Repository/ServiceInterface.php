@@ -19,7 +19,7 @@ interface ServiceInterface extends RepositoryInterface {
     /**
      * Find one Service.
      *
-     * @param int                $serviceId The service identifier
+     * @param int                 $serviceId The service identifier
      * @param \App\Entity\Company $company   The company
      *
      * @throws \App\Exception\NotFound
@@ -32,7 +32,7 @@ interface ServiceInterface extends RepositoryInterface {
      * Return services based on their company.
      *
      * @param \App\Entity\Company $company     The company
-     * @param array              $queryParams The query parameters
+     * @param array               $queryParams The query parameters
      *
      * @return \Illuminate\Support\Collection
      */

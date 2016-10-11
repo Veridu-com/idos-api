@@ -80,8 +80,8 @@ class Setting implements HandlerInterface {
      *
      * @param \App\Repository\Company\SettingInterface $repository
      * @param \App\Validator\Company\Setting           $validator
-     * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter           $emitter
+     * @param \App\Factory\Event                       $eventFactory
+     * @param \League\Event\Emitter                    $emitter
      *
      * @return void
      */

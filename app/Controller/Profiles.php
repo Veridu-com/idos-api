@@ -43,7 +43,7 @@ class Profiles implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\UserInterface $repository
-     * @param \League\Tactician\CommandBus $commandBus
+     * @param \League\Tactician\CommandBus  $commandBus
      * @param \App\Factory\Command          $commandFactory
      *
      * @return void

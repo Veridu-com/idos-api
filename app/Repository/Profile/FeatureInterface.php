@@ -19,9 +19,9 @@ interface FeatureInterface extends RepositoryInterface {
     /**
      * Returns a feature based on its user id, service id (creator) and id.
      *
-     * @param int         $id         The feature id
-     * @param int         $serviceId  The service id
-     * @param int         $userId     The user id
+     * @param int $id        The feature id
+     * @param int $serviceId The service id
+     * @param int $userId    The user id
      *
      * @return Feature
      */

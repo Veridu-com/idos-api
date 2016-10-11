@@ -20,7 +20,7 @@ interface TagInterface extends RepositoryInterface {
      * Returns a tag based on their user id and name.
      *
      * @param string $slug
-     * @param int $userId
+     * @param int    $userId
      *
      * @return Tag
      */

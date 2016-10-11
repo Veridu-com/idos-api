@@ -6,17 +6,17 @@
 
 declare(strict_types = 1);
 
-namespace App\Event\Company\Member;
+namespace App\Event\Company\Invitation;
 
 use App\Entity\Company\Invitation;
 use App\Event\AbstractEvent;
 
 /**
- * InvitationCreated event.
+ * Deleted event.
  */
-class InvitationCreated extends AbstractEvent {
+class Deleted extends AbstractEvent {
     /**
-     * Event related Member.
+     * Event related Invitation.
      *
      * @var App\Entity\Company\Invitation
      */
@@ -25,7 +25,7 @@ class InvitationCreated extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\Company\Member $member
+     * @param App\Entity\Company\Invitation $invitation
      *
      * @return void
      */

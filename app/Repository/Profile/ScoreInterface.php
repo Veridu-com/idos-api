@@ -20,10 +20,10 @@ interface ScoreInterface extends RepositoryInterface {
      * Returns a score based on its name, service id and user id.
      *
      * @param string $name
-     * @param int $serviceId
-     * @param int $userId
-     * @return Score
+     * @param int    $serviceId
+     * @param int    $userId
      *
+     * @return Score
      */
     public function findOne(string $name, int $serviceId, int $userId) : Score;
 

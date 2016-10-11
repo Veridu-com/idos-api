@@ -76,8 +76,8 @@ class Warning implements HandlerInterface {
      *
      * @param \App\Repository\Profile\WarningInterface $repository
      * @param \App\Validator\Profile\Warning           $validator
-     * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter           $emitter
+     * @param \App\Factory\Event                       $eventFactory
+     * @param \League\Event\Emitter                    $emitter
      *
      * @return void
      */

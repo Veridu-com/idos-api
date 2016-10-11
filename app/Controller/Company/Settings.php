@@ -42,7 +42,7 @@ class Settings implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Company\SettingInterface $repository
-     * @param \League\Tactician\CommandBus            $commandBus
+     * @param \League\Tactician\CommandBus             $commandBus
      * @param \App\Factory\Command                     $commandFactory
      *
      * @return void

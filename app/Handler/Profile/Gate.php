@@ -270,7 +270,7 @@ class Gate implements HandlerInterface {
         }
 
         try {
-            $entity = $this->repository->findOne($command->slug, $command->service->id, $command->user->id);
+            $entity       = $this->repository->findOne($command->slug, $command->service->id, $command->user->id);
             $affectedRows = $this->repository->delete($entity->id);
 
             $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity);

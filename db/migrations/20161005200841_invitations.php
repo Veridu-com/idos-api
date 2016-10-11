@@ -15,6 +15,7 @@ class Invitations extends AbstractMigration {
         // Invitations
         $invitations = $this->table('invitations');
         $invitations
+            ->addColumn('name', 'text', ['null' => false])
             ->addColumn('email', 'text', ['null' => false])
             ->addColumn('role', 'text', ['null' => false])
             ->addColumn('company_id', 'integer', ['null' => false])

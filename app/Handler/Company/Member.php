@@ -11,6 +11,9 @@ namespace App\Handler\Company;
 use App\Command\Company\Member\CreateNew;
 use App\Command\Company\Member\CreateNewInvitation;
 use App\Command\Company\Member\DeleteInvitation;
+use App\Command\Company\Member\DeleteOne;
+use App\Command\Company\Member\UpdateOne;
+use App\Entity\Company\Invitation as InvitationEntity;
 use App\Entity\Company\Member as MemberEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -165,5 +168,82 @@ class Member implements HandlerInterface {
         }
 
         return $member;
+    }
+
+    /**
+     * Updates a single Company Member.
+     *
+     * @param App\Command\Company\Member\UpdateOne $command
+     *
+     * @throws App\Exception\Validate\MemberException
+     * @throws App\Exception\Create\MemberException
+     *
+     * @return App\Entity\Member
+     */
+    public function handleUpdateOne(UpdateOne $command) : MemberEntity {
+        try {
+            $this->validator->assertCompany($command->company);
+            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertShortName($command->role);
+            $this->validator->assertId($command->memberId);
+        } catch (ValidationException $e) {
+            throw new Validate\Company\MemberException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $member = $this->repository->find($command->memberId);
+
+        // updates entity
+        $member->role = $command->role;
+
+        try {
+            // persists entity
+            $member = $this->repository->save($member);
+            $event  = $this->eventFactory->create('Company\\Member\\Updated', $member);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new Create\Company\MemberException('Error while trying to create a member', 500, $e);
+        }
+
+        return $member;
+    }
+
+    /**
+     * Deletes a Member.
+     *
+     * @param App\Command\Company\Member\DeleteOne $command
+     *
+     * @throws App\Exception\Validate\MemberException
+     * @throws App\Exception\NotFound\MemberException
+     *
+     * @return void
+     */
+    public function handleDeleteOne(DeleteOne $command) {
+        try {
+            $this->validator->assertCompany($command->company);
+            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->memberId);
+        } catch (ValidationException $e) {
+            throw new Validate\Company\MemberException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $member       = $this->repository->find($command->memberId);
+        $rowsAffected = $this->repository->delete($command->memberId);
+
+        if (! $rowsAffected) {
+            throw new NotFound\Company\MemberException('No invitations found for deletion', 404);
+        }
+
+        $event = $this->eventFactory->create('Company\\Member\\Deleted', $member);
+        $this->emitter->emit($event);
+
+        return $rowsAffected;
     }
 }

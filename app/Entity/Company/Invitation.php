@@ -19,7 +19,7 @@ class Invitation extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'email', 'role', 'expires', 'voided', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'name', 'email', 'role', 'expires', 'voided', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */

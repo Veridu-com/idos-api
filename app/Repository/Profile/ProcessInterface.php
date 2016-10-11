@@ -19,8 +19,8 @@ interface ProcessInterface extends RepositoryInterface {
     /**
      * Returns a process based on its user id and id.
      *
-     * @param int         $id         The process id
-     * @param int         $userId     The user id
+     * @param int $id     The process id
+     * @param int $userId The user id
      *
      * @return Process
      */
@@ -29,9 +29,9 @@ interface ProcessInterface extends RepositoryInterface {
     /**
      * Returns a process based on its source id.
      *
-     * @param int         $id         The feature id
-     * @param int         $serviceId  The service id
-     * @param int         $userId     The user id
+     * @param int $id        The feature id
+     * @param int $serviceId The service id
+     * @param int $userId    The user id
      *
      * @return Process
      */
