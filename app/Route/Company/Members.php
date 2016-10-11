@@ -45,8 +45,6 @@ class Members implements RouteInterface {
         $app->getContainer()[\App\Controller\Company\Members::class] = function (ContainerInterface $container) {
             return new \App\Controller\Company\Members(
                 $container->get('repositoryFactory')->create('Company\Member'),
-                $container->get('repositoryFactory')->create('Company\Invitation'),
-                $container->get('repositoryFactory')->create('User'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );

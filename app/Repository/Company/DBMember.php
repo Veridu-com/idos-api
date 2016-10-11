@@ -84,37 +84,12 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId, array $queryParams = []) : Collection {
-        $members = $this->findBy(['company_id' => $companyId], $queryParams);
-
-        return $this->castHydrate($members);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOne(int $memberId) : Member {
-        return $this->findOneBy(
+    public function getByCompanyId(int $companyId, array $queryParams = []) : Collection {
+        return $this->findBy(
             [
-            'id' => $memberId
-            ]
+                'company_id' => $companyId
+            ], 
+            $queryParams
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteOne(int $companyId, int $userId) : int {
-        return $this->query()
-            ->where('company_id', $companyId)
-            ->where('user_id', $userId)
-            ->delete();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteByCompanyId(int $companyId) : int {
-        return $this->deleteByKey('company_id', $companyId);
     }
 }

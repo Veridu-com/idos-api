@@ -72,7 +72,7 @@ class Members implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('targetCompany');
-        $members = $this->repository->getAllByCompanyId($company->id, $request->getQueryParams());
+        $members = $this->repository->getByCompanyId($company->id, $request->getQueryParams());
 
         $body = [
             'data'    => $members->toArray(),

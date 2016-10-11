@@ -68,15 +68,6 @@ class Member implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Company\Member'),
                 $container
-                    ->get('repositoryFactory')
-                    ->create('Company\Credential'),
-                $container
-                    ->get('repositoryFactory')
-                    ->create('Company\Invitation'),
-                $container
-                    ->get('repositoryFactory')
-                    ->create('User'),
-                $container
                     ->get('validatorFactory')
                     ->create('Company\Member'),
                 $container
