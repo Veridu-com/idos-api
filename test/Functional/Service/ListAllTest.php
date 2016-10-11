@@ -107,7 +107,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'service/listAll.json',w
+                'service/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
