@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /management/settings.
+ * Handles requests to /companies/{companySlug}/settings and /companies/{companySlug}/settings/{settingId}
  */
 class Settings implements ControllerInterface {
     /**
@@ -143,6 +143,7 @@ class Settings implements ControllerInterface {
      * @apiEndpointRequiredParam body string section AppTokens Section name
      * @apiEndpointRequiredParam body string property  1abc7jdoxsaz.facebook.key  Property name
      * @apiEndpointRequiredParam body string value 492361674b Property value
+     * @apiEndpointParam body boolean protected true Protected value
      * @apiEndpointResponse 201 schema/setting/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

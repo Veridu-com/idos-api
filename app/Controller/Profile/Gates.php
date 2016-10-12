@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/:userName/gates.
+ * Handles requests to /profiles/{userName}/gates and /profiles/{userName}/gates/{gateSlug}
  */
 class Gates implements ControllerInterface {
     /**
@@ -179,7 +179,6 @@ class Gates implements ControllerInterface {
     /**
      * Updates one Gate of the User.
      *
-     * @apiEndpointRequiredParam body string name 18+ Gate name
      * @apiEndpointRequiredParam body boolean pass false Gate pass
      * @apiEndpointResponse 200 schema/gate/updateOne.json
      *

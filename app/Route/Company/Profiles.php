@@ -68,9 +68,9 @@ class Profiles implements RouteInterface {
      * Retrieve a complete list of all users that belong to this company.
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles
-     * @apiGroup Company
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiGroup Company Profile
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
@@ -101,7 +101,9 @@ class Profiles implements RouteInterface {
      * Retrieves all public information from a company profile.
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}
-     * @apiGroup Company
+     * @apiGroup Company Profile
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 3215132
      *
@@ -131,9 +133,9 @@ class Profiles implements RouteInterface {
      * Deletes the requested company profile.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}
-     * @apiGroup Company
-     * @apiAuth header token CompanyToken XXX A valid Company Token
-     * @apiAuth query token CompanyToken XXX A valid Company Token
+     * @apiGroup Company Profile
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 3215132
      *

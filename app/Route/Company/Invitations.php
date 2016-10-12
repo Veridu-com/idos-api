@@ -95,7 +95,7 @@ class Invitations implements RouteInterface {
      *
      * Retrieves all public information from Invitations
      *
-     * @apiEndpoint GET /companies/{companySlug}/invitations/invitations
+     * @apiEndpoint GET /companies/{companySlug}/invitations
      * @apiGroup Company Invitations
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token

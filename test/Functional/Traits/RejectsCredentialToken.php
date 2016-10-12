@@ -20,7 +20,7 @@ trait RejectsCredentialToken {
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
 
-        // $this->assertSame(400, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
 

@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to companies/{companySlug}/profiles/{userId}/flags/{flagId}/reviews.
+ * Handles requests to /companies/{companySlug}/profiles/{userId}/reviews and /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
  */
 class Reviews implements ControllerInterface {
     /**
@@ -135,6 +135,8 @@ class Reviews implements ControllerInterface {
      * Created a new review data for a given source.
      *
      * @apiEndpointResponse 201 schema/review/createNew.json
+     * @apiEndpointRequiredParam body int flag_id 157896 Review flag_id
+     * @apiEndpointRequiredParam body boolean positive true Review positive
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/permissions.
+ * Handles requests to /companies/{companySlug}/permissions and /companies/{companySlug}/permissions/{routeName}
  */
 class Permissions implements ControllerInterface {
     /**

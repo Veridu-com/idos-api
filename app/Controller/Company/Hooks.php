@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /management/credentials/{pubKey}/hooks.
+ * Handles requests to /companies/{companySlug}/credentials/{pubKey}/hooks and /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
  */
 class Hooks implements ControllerInterface {
     /**

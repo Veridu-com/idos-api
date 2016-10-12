@@ -29,7 +29,7 @@ class CreateNew extends AbstractCommand {
     /**
      * If hook if subscribed (user input).
      *
-     * @var string
+     * @var boolean
      */
     public $subscribed;
     /**

@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions.
+ * Handles requests to /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions and /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions/{subscriptionId}
  */
 class Subscriptions implements ControllerInterface {
     /**
@@ -102,8 +102,7 @@ class Subscriptions implements ControllerInterface {
     /**
      * Creates a new Subscription for the credential.
      *
-     * @apiEndpointRequiredParam body string name My-Subscription Subscription name
-     * @apiEndpointRequiredParam body bool production false Production flag
+     * @apiEndpointRequiredParam body string categorySlug first-name Subscription categorySlug
      * @apiEndpointResponse 201 schema/credential/createNew.json
      *
      * @param \Psr\ServerRequestInterface $request

@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{company-slug}/members.
+ * Handles requests to /companies/{companySlug}/members and /companies/{companySlug}/members/{memberId}
  */
 class Members implements ControllerInterface {
     /**
@@ -118,7 +118,7 @@ class Members implements ControllerInterface {
 
     /**
      * Updates a company member.
-     * 
+     *
      * Gets the member for the Acting Identity on the Target company.
      *
      * @apiEndpointRequiredParam body string role company.owner Role type
@@ -213,7 +213,7 @@ class Members implements ControllerInterface {
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
-     * 
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getMembership(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
