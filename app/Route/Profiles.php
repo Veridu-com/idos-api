@@ -25,7 +25,8 @@ class Profiles implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'profile:listAll'
+            'profile:listAll',
+            'profile:getOne'
         ];
     }
 
@@ -36,6 +37,9 @@ class Profiles implements RouteInterface {
         $app->getContainer()[\App\Controller\Profiles::class] = function (ContainerInterface $container) {
             return new \App\Controller\Profiles(
                 $container->get('repositoryFactory')->create('User'),
+                $container->get('repositoryFactory')->create('Profile\Candidate'),
+                $container->get('repositoryFactory')->create('Profile\Score'),
+                $container->get('repositoryFactory')->create('Profile\Source'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );
@@ -46,6 +50,7 @@ class Profiles implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
+        self::getOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -78,5 +83,37 @@ class Profiles implements RouteInterface {
             ->add($permission(EndpointPermission::SELF_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('profile:listAll');
+    }
+
+    /**
+     * List all information of a single profile.
+     *
+     * Retrieve a complete list of profiles that are visible to the requesting company.
+     *
+     * @apiEndpoint GET /profiles
+     * @apiGroup Company Profile
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profiles/listAll.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profiles::listAll
+     */
+    private static function getOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}',
+                'App\Controller\Profiles:getOne'
+            )
+            ->add($permission(EndpointPermission::SELF_ACTION))
+            ->add($auth(Auth::USER))
+            ->setName('profile:getOne');
     }
 }
