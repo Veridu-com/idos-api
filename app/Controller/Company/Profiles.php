@@ -227,7 +227,7 @@ class Profiles implements ControllerInterface {
         $sources  = $this->sourceRepository->getByUserId($profile->id);
         $tags     = $this->tagRepository->getByUserId($profile->id);
         $reviews  = $this->reviewRepository->getByUserId($profile->id);
-        $flags    = $this->flagRepository->findByUserId($profile->id);
+        $flags    = $this->flagRepository->getByUserId($profile->id);
         $gates    = $this->gateRepository->getByUserId($profile->id);
 
         foreach ($flags as $flag) {
