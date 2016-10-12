@@ -167,6 +167,19 @@ class Hook implements HandlerInterface {
             throw new NotFound\Company\HookException('Company not found', 404);
         }
 
+        $client = new \GuzzleHttp\Client();
+        $validResponse = false;
+        try {
+            if ($client->request('GET', $command->url)->getStatusCode() === 204) {
+                $validResponse = true;
+            }
+        } catch (\Exception $e) {
+        }
+
+        if (! $validResponse) {
+            throw new Create\Company\HookException('Failed to perform hook handshake.', 500);
+        }
+
         $hook = $this->repository->create(
             [
                 'credential_id' => $credential->id,
