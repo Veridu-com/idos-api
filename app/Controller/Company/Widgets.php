@@ -9,21 +9,20 @@ declare(strict_types = 1);
 namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
-use App\Entity\User;
 use App\Factory\Command;
-use App\Repository\Company\MemberInterface;
+use App\Repository\Company\WidgetInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{company-slug}/members.
+ * Handles requests to /companies/{companySlug}/widgets.
  */
-class Members implements ControllerInterface {
+class Widgets implements ControllerInterface {
     /**
-     * Member Repository instance.
+     * Widget Repository instance.
      *
-     * @var \App\Repository\Company\MemberInterface
+     * @var \App\Repository\Company\WidgetInterface
      */
     private $repository;
     /**
@@ -42,14 +41,14 @@ class Members implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\MemberInterface $repository
+     * @param \App\Repository\Company\WidgetInterface $repository
      * @param \League\Tactician\CommandBus            $commandBus
      * @param \App\Factory\Command                    $commandFactory
      *
      * @return void
      */
     public function __construct(
-        MemberInterface $repository,
+        WidgetInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
@@ -59,23 +58,27 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Lists all Members that belongs to the Target Company.
+     * Lists all widgets of the target Company.
      *
-     * @apiEndpointResponse 200 schema/member/listAll.json
+     * @apiEndpointResponse 200 schema/widget/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
+     * @see \App\Repository\DBWidget::getAllByCredentialPubKey
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
-        $members = $this->repository->getByCompanyId($company->id, $request->getQueryParams());
+        $credentialPubKey = $request->getAttribute('pubKey');
+        $targetCompany    = $request->getAttribute('targetCompany');
+
+        $widgets = $this->repository->getByCompanyId($targetCompany->id);
 
         $body = [
-            'data'    => $members->toArray(),
+            'data'    => $widgets->toArray(),
             'updated' => (
-                $members->isEmpty() ? time() : max($members->max('updatedAt'), $members->max('createdAt'))
+                $widgets->isEmpty() ? time() : max($widgets->max('updatedAt'), $widgets->max('createdAt'))
             )
         ];
 
@@ -89,22 +92,23 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Retrieve the membership of the related company and identity.
+     * Retrieves a widget from the given credential.
      *
-     * @apiEndpointResponse 200 schema/member/memberEntity.json
+     * @apiEndpointResponse 200 schema/widget/widgetEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see \App\Repository\DBMember::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $member = $this->repository->find($request->getAttribute('decodedMemberId'));
+        $company          = $request->getAttribute('targetCompany');
+        $widgetHash       = $request->getAttribute('widgetHash');
+
+        $widget = $this->repository->findByHash($widgetHash);
 
         $body = [
-            'data' => $member->toArray()
+            'data' => $widget->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -117,43 +121,80 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Updates a company member.
-     * 
-     * Gets the member for the Acting Identity on the Target company.
+     * Creates a new widget for the given credential.
      *
-     * @apiEndpointRequiredParam body string role company.owner Role type
-     * @apiEndpointResponse 201 schema/member/updateOne.json
+     * @apiEndpointRequiredParam body string trigger company.create Trigger
+     * @apiEndpointRequiredParam body string url http://test.com/example.php Url
+     * @apiEndpointRequiredParam body boolean subscribed false Subscribed
+     * @apiEndpointResponse 201 schema/widget/widgetEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\Member::handleUpdateOne
+     * @see \App\Handler\Widget::handleCreateNew
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $company           = $request->getAttribute('targetCompany');
+        $identity          = $request->getAttribute('identity');
+
+        $command = $this->commandFactory->create('Company\\Widget\\CreateNew');
+        $command
+            ->setParameter('company', $company)
+            ->setParameter('creator', $identity)
+            ->setParameters($request->getParsedBody());
+
+        $widget = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => true,
+            'data'   => $widget->toArray()
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('statusCode', 201)
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Updates a widget from the given credential.
+     *
+     * @apiEndpointRequiredParam body string trigger company.create Trigger
+     * @apiEndpointRequiredParam body string url http://test.com/example.php Url
+     * @apiEndpointRequiredParam body boolean subscribed false Subscribed
+     * @apiEndpointResponse 200 schema/widget/updateOne.json
+     *
+     * @param \Psr\ServerRequestInterface $request
+     * @param \Psr\ResponseInterface      $response
+     *
+     * @see \App\Handler\Widget::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $identity      = $request->getAttribute('identity');
-        $memberId      = $request->getAttribute('decodedMemberId');
+        $company          = $request->getAttribute('targetCompany');
+        $widgetHash       = $request->getAttribute('widgetHash');
 
-        $command = $this->commandFactory->create('Company\\Member\\UpdateOne');
+        $command = $this->commandFactory->create('Company\\Widget\\UpdateOne');
         $command
-            ->setParameter('company', $targetCompany)
-            ->setParameter('identity', $identity)
-            ->setParameter('memberId', $memberId)
-            ->setParameter('ipaddr', $request->getAttribute('ip_address'))
-            ->setParameters($request->getParsedBody());
+            ->setParameter('hash', $widgetHash)
+            ->setParameters($request->getParsedBody() ?: []);
 
-        $member = $this->commandBus->handle($command);
+        $widget = $this->commandBus->handle($command);
 
         $body = [
-            'status' => true,
-            'data'   => $member->toArray()
+            'data'    => $widget->toArray(),
+            'updated' => $widget->updated_at
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -162,67 +203,29 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Deletes a company member.
+     * Deletes a widget from the given credential.
      *
-     * @apiEndpointResponse 201 schema/member/deleteOne.json
+     * @apiEndpointResponse 200 schema/widget/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\Member::handleDeleteOne
+     * @see \App\Handler\Widget::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $targetCompany = $request->getAttribute('targetCompany');
-        $identity      = $request->getAttribute('identity');
-        $memberId      = $request->getAttribute('decodedMemberId');
+        $widgetHash = $request->getAttribute('widgetHash');
+        $identity   = $request->getAttribute('identity');
 
-        $command = $this->commandFactory->create('Company\\Member\\DeleteOne');
+        $command = $this->commandFactory->create('Company\\Widget\\DeleteOne');
         $command
-            ->setParameter('company', $targetCompany)
-            ->setParameter('identity', $identity)
-            ->setParameter('memberId', $memberId)
-            ->setParameter('ipaddr', $request->getAttribute('ip_address'));
+            ->setParameter('hash', $widgetHash)
+            ->setParameter('actor', $identity);
 
-        $success = $this->commandBus->handle($command);
-
+        $this->commandBus->handle($command);
         $body = [
-            'status' => (bool) $success,
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('statusCode', 201)
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Gets the membership of the requesting identity.
-     *
-     * @apiEndpointRequiredParam body string role company.owner Role type
-     * @apiEndpointRequiredParam body string email jhondoe@idos.io User's email
-     * @apiEndpointResponse 201 schema/member/createNewInvitation.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     * @param \Psr\ServerRequestInterface              $request
-     * @param \Psr\ResponseInterface                   $response
-     * 
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function getMembership(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company  = $request->getAttribute('targetCompany');
-        $identity = $request->getAttribute('identity');
-
-        $member = $this->repository->findMembership($identity->id, $company->id);
-
-        $body = [
-            'data'    => $member->toArray()
+            'status' => true
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
