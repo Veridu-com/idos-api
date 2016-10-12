@@ -59,9 +59,9 @@ class Profiles implements RouteInterface {
      * Retrieve a complete list of profiles that are visible to the requesting company.
      *
      * @apiEndpoint GET /profiles
-     * @apiGroup Company Profile
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiGroup Profile
+     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth

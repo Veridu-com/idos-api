@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/candidate.
+ * Handles requests to /profiles/{userName}/candidates.
  */
 class Candidates implements ControllerInterface {
     /**
@@ -96,8 +96,9 @@ class Candidates implements ControllerInterface {
     /**
      * Created a new candidate data for a given user.
      *
-     * @apiEndpointRequiredParam body string candidate firstName Attribute Name
+     * @apiEndpointRequiredParam body string name firstName Attribute Name
      * @apiEndpointRequiredParam body string value Jhon Candidate Value
+     * @apiEndpointRequiredParam body float support 0.7 Candidate Support
      * @apiEndpointResponse 201 schema/candidate/candidateEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

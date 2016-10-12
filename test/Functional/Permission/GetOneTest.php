@@ -21,15 +21,7 @@ class GetOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->populate(
-            '/1.0/companies/veridu-ltd/permissions',
-            'GET',
-            [
-                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
-            ]
-        );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = sprintf('/1.0/companies/veridu-ltd/permissions/%s', $this->entity['route_name']);
+        $this->uri        = '/1.0/companies/veridu-ltd/permissions/companies:listAll';
     }
 
     public function testSuccess() {
@@ -46,8 +38,6 @@ class GetOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
-        $this->assertEquals($this->entity, $body['data']); // asserts it fetches the right entity
 
         /*
          * Validates Response using the Json Schema.

@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /service-handlers.
+ * Handles requests to /companies/{companySlug}/service-handlers and /companies/{companySlug}/service-handlers/{serviceHandlerId}.
  */
 class ServiceHandlers implements ControllerInterface {
     /**
@@ -164,8 +164,7 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Updates one Service handler of the acting Company.
      *
-     * @apiEndpointParam    body    int     service_id   1325   Service's id.
-     * @apiEndpointParam    body    array      listens          Service handler's listens.
+     * @apiEndpointRequiredParam    body    array      listens          Service handler's listens.
      *
      * @apiEndpointResponse 200 schema/serviceHandler/updateOne.json
      *

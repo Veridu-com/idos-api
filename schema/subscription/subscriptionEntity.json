@@ -4,21 +4,9 @@
     "title": "Subscription",
     "type": "object",
     "properties": {
-        "gate_id": {
-            "description": "Gate related to the subscription",
-            "type": "integer"
-        },
-        "warning_id": {
-            "description": "Warning related to the subscription",
-            "type": "integer"
-        },
-        "credential_id": {
-            "description": "Credential related to the subscription",
-            "type": "integer"
-        },
-        "identity_id": {
-            "description": "Identity related to the subscription",
-            "type": "integer"
+        "category_slug": {
+            "description": "The attribute related to the subscription",
+            "type": "string"
         },
         "created_at": {
             "description": "Credential's creation unixtimestamp",
@@ -30,8 +18,7 @@
         }
     },
     "required": [
-        "credential_id",
-        "identity_id",
+        "category_slug",
         "created_at"
     ]
 }

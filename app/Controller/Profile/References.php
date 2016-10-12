@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/reference.
+ * Handles requests to /profiles/{userName}/reference and /profiles/{userName}/references/{referenceName}.
  */
 class References implements ControllerInterface {
     /**
@@ -142,7 +142,8 @@ class References implements ControllerInterface {
 
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('user', $request->getAttribute('targetUser'));
+            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
         $reference = $this->commandBus->handle($command);
 

@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/sources/{sourceId}/raw.
+ * Handles requests to /profiles/{userName}/raw.
  */
 class Raw implements ControllerInterface {
     /**

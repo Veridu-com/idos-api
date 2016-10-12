@@ -65,7 +65,7 @@ class Service implements RouteInterface {
      *
      * Retrieves a complete list of all services.
      *
-     * @apiEndpoint GET /services
+     * @apiEndpoint GET /companies/{companySlug}/services
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -97,7 +97,7 @@ class Service implements RouteInterface {
      *
      * Retrieves all public information from a Service.
      *
-     * @apiEndpoint GET /services/{serviceId}
+     * @apiEndpoint GET /companies/{companySlug}/services/{serviceId}
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -130,7 +130,7 @@ class Service implements RouteInterface {
      *
      * Create a new service for the requesting company.
      *
-     * @apiEndpoint POST /services
+     * @apiEndpoint POST /companies/{companySlug}/services
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -162,7 +162,7 @@ class Service implements RouteInterface {
      *
      * Updates Service's specific information.
      *
-     * @apiEndpoint PUT /services/{serviceId}
+     * @apiEndpoint PUT /companies/{companySlug}/services/{serviceId}
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -195,7 +195,7 @@ class Service implements RouteInterface {
      *
      * Deletes a single Service that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /services/{serviceId}
+     * @apiEndpoint DELETE /companies/{companySlug}/services/{serviceId}
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -228,7 +228,7 @@ class Service implements RouteInterface {
      *
      * Deletes all services that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /services
+     * @apiEndpoint DELETE /companies/{companySlug}/services
      * @apiGroup Company Service
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
