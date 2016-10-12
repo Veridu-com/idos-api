@@ -10,7 +10,7 @@ namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Profile\CandidateInterface;
+use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\FlagInterface;
 use App\Repository\Profile\GateInterface;
 use App\Repository\Profile\ReviewInterface;
@@ -62,11 +62,11 @@ class Profiles implements ControllerInterface {
      */
     private $gateRepository;
     /**
-     * CandidateRepository instance.
+     * AttributeRepository instance.
      *
-     * @var \App\Repository\CandidateInterface
+     * @var \App\Repository\AttributeInterface
      */
-    private $candidateRepository;
+    private $attributeRepository;
     /**
      * Command Bus instance.
      *
@@ -89,7 +89,7 @@ class Profiles implements ControllerInterface {
      * @param \App\Repository\ReviewInterface    $reviewRepository
      * @param \App\Repository\FlagInterface      $flagRepository
      * @param \App\Repository\GateInterface      $gateRepository
-     * @param \App\Repository\CandidateInterface $candidateRepository
+     * @param \App\Repository\AttributeInterface $attributeRepository
      * @param \League\Tactician\CommandBus       $commandBus
      * @param \App\Factory\Command               $commandFactory
      *
@@ -102,7 +102,7 @@ class Profiles implements ControllerInterface {
         ReviewInterface $reviewRepository,
         FlagInterface $flagRepository,
         GateInterface $gateRepository,
-        CandidateInterface $candidateRepository,
+        AttributeInterface $attributeRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
@@ -112,7 +112,7 @@ class Profiles implements ControllerInterface {
         $this->reviewRepository    = $reviewRepository;
         $this->flagRepository      = $flagRepository;
         $this->gateRepository      = $gateRepository;
-        $this->candidateRepository = $candidateRepository;
+        $this->attributeRepository = $candidateRepository;
         $this->commandBus          = $commandBus;
         $this->commandFactory      = $commandFactory;
     }
@@ -159,8 +159,8 @@ class Profiles implements ControllerInterface {
                 }
             }
 
-            $attributes       = $this->candidateRepository->findByUserId($profile->id);
-            $mappedAttributes = [];
+            $attributes       = $this->attributeRepository->findByUserId($profile->id);
+            $mappedCandidates = [];
             foreach ($attributes as $attribute) {
                 $mappedCandidates[$attribute->name][] = $attribute->toArray();
             }
@@ -232,7 +232,7 @@ class Profiles implements ControllerInterface {
         foreach ($flags as $flag) {
             $flagReview = null;
             foreach ($reviews as $review) {
-                if ($review->flagId ===     $flag->id) {
+                if ($review->flagId === $flag->id) {
                     $flagReview = $review->toArray();
                     break;
                 }
@@ -248,8 +248,8 @@ class Profiles implements ControllerInterface {
             }
         }
 
-        $attributes       = $this->candidateRepository->findByUserId($profile->id);
-        $mappedAttributes = [];
+        $attributes       = $this->attributeRepository->findByUserId($profile->id);
+        $mappedCandidates = [];
 
         foreach ($attributes as $attribute) {
             $mappedCandidates[$attribute->name][] = $attribute->toArray();
