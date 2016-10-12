@@ -8,54 +8,16 @@ declare(strict_types = 1);
 
 namespace App\Command\Sso;
 
-use App\Command\AbstractCommand;
-
 /**
  * Sso "Create New" Command.
  */
-class CreateNewTwitter extends AbstractCommand {
-    /**
-     * API Version.
-     *
-     * @var string
-     */
-    public $apiVersion;
-    /**
-     * Provider access token.
-     *
-     * @var string
-     */
-    public $accessToken;
+class CreateNewTwitter extends CreateNew {
     /**
      * Provider token secret.
      *
      * @var string
      */
     public $tokenSecret;
-    /**
-     * Credential public key.
-     *
-     * @var string
-     */
-    public $credentialPubKey;
-    /**
-     * Application key.
-     *
-     * @var string
-     */
-    public $appKey;
-    /**
-     * Application secret.
-     *
-     * @var string
-     */
-    public $appSecret;
-    /**
-     * User ip address.
-     *
-     * @var string
-     */
-    public $ipAddress;
 
     /**
      * {@inheritdoc}
@@ -63,32 +25,10 @@ class CreateNewTwitter extends AbstractCommand {
      * @return \App\Command\Sso\CreateNewTwitter
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['apiVersion'])) {
-            $this->apiVersion = $parameters['apiVersion'];
-        }
-
-        if (isset($parameters['appKey'])) {
-            $this->appKey = $parameters['appKey'];
-        }
-
-        if (isset($parameters['appSecret'])) {
-            $this->appSecret = $parameters['appSecret'];
-        }
-
-        if (isset($parameters['ipAddress'])) {
-            $this->ipAddress = $parameters['ipAddress'];
-        }
-
-        if (isset($parameters['accessToken'])) {
-            $this->accessToken = $parameters['accessToken'];
-        }
+        parent::setParameters($parameters);
 
         if (isset($parameters['tokenSecret'])) {
             $this->accessToken = $parameters['tokenSecret'];
-        }
-
-        if (isset($parameters['credentialPubKey'])) {
-            $this->credentialPubKey = $parameters['credentialPubKey'];
         }
 
         return $this;

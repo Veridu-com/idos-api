@@ -21,32 +21,38 @@ class CreateNew extends AbstractCommand {
      */
     public $role;
     /**
-     * Member's username (user input).
+     * Member's identity id.
      *
      * @var string
      */
-    public $userName;
+    public $identityId;
     /**
-     * Credential public key.
+     * Target Company.
      *
      * @var string
      */
-    public $credential;
+    public $company;
+    /**
+     * Ip address.
+     *
+     * @var string
+     */
+    public $ipaddr;
 
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['userName'])) {
-            $this->userName = $parameters['userName'];
+        if (isset($parameters['identity_id'])) {
+            $this->identityId = $parameters['identity_id'];
         }
 
         if(isset($parameters['role'])) {
             $this->role = $parameters['role'];
         }
 
-        if(isset($parameters['credential'])) {
-            $this->credential = $parameters['credential'];
+        if(isset($parameters['ipaddr'])) {
+            $this->ipaddr = $parameters['ipaddr'];
         }
 
         return $this;

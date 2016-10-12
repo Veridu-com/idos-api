@@ -682,6 +682,22 @@ class S11ServicesSeed extends AbstractSeed {
                 ),
                 'triggers' => json_encode(['handler:gender-mlp.completed']),
                 'enabled'  => true
+            ],
+            [
+                'name'          => 'idOS E-mail Handler',
+                'url'           => 'http://email.idos.io:8002/index.php/1.0/user/invitation',
+                'company_id'    => 1,
+                'auth_username' => '***REMOVED***',
+                'auth_password' => '***REMOVED***',
+                'public'        => md5('public-29'), // aafc17b2c826b02b9bec9de6e37d5ea9
+                'private'       => md5('private-29'), // d9288a19a2abe8351e12ce90bd761c42
+                'listens'       => json_encode(
+                    [
+                        'idos:invitation.created'
+                    ]
+                ),
+                'triggers'      => json_encode([]),
+                'enabled'       => true,
             ]
         ];
 

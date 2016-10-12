@@ -161,12 +161,11 @@ class Profiles implements ControllerInterface {
 
             $attributes       = $this->candidateRepository->findByUserId($profile->id);
             $mappedAttributes = [];
-
             foreach ($attributes as $attribute) {
-                $mappedAttributes[$attribute->name][] = $attribute->toArray();
+                $mappedCandidates[$attribute->name][] = $attribute->toArray();
             }
 
-            $mappedAttributes = array_map(
+            $mappedCandidates = array_map(
                 function ($candidates) {
                 // sorting by support DESC
                     usort(
@@ -176,7 +175,7 @@ class Profiles implements ControllerInterface {
                     );
 
                     return $candidates;
-                }, $mappedAttributes
+                }, $mappedCandidates
             );
 
             $data[] = array_merge(
@@ -185,7 +184,7 @@ class Profiles implements ControllerInterface {
                 ['tags'        => $tags->toArray()],
                 ['flags'       => $flags->toArray()],
                 ['gates'       => $gates->toArray()],
-                ['attributes'  => $mappedAttributes]
+                ['attributes'  => $mappedCandidates]
             );
         }
 
@@ -253,10 +252,10 @@ class Profiles implements ControllerInterface {
         $mappedAttributes = [];
 
         foreach ($attributes as $attribute) {
-            $mappedAttributes[$attribute->name][] = $attribute->toArray();
+            $mappedCandidates[$attribute->name][] = $attribute->toArray();
         }
 
-        $mappedAttributes = array_map(
+        $mappedCandidates = array_map(
             function ($candidates) {
             // sorting by support DESC
                 usort(
@@ -266,7 +265,7 @@ class Profiles implements ControllerInterface {
                 );
 
                 return $candidates;
-            }, $mappedAttributes
+            }, $mappedCandidates
         );
 
         $data = array_merge(
@@ -275,7 +274,7 @@ class Profiles implements ControllerInterface {
             ['tags'        => $tags->toArray()],
             ['flags'       => $flags->toArray()],
             ['gates'       => $gates->toArray()],
-            ['attributes'  => $mappedAttributes]
+            ['attributes'  => $mappedCandidates]
         );
 
         $body = [

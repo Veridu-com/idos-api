@@ -12,13 +12,13 @@ use App\Validator\Traits;
 use App\Validator\ValidatorInterface;
 
 /**
- * Member Validation Rules.
+ * Invitation Validation Rules.
  */
-class Member implements ValidatorInterface {
+class Invitation implements ValidatorInterface {
     use Traits\AssertId,
-        Traits\AssertDate,
         Traits\AssertEmail,
+        Traits\AssertDate,
         Traits\AssertName,
-        Traits\AssertEntity,
-        Traits\AssertUserName;
+        Traits\AssertString,
+        Traits\AssertEntity;
 }

@@ -514,6 +514,16 @@ class S30ServiceHandlersSeed extends AbstractSeed {
                     ]
                 ),
                 'created_at' => $now
+            ],
+            [
+                'company_id'    => 1,
+                'service_id'    => 29, // idOS E-mail handler - Invitation e-mail
+                'listens'       => json_encode(
+                    [
+                        'idos:invitation.created'
+                    ]
+                ),
+                'created_at' => $now
             ]
         ];
 
