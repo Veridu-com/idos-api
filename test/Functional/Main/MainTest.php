@@ -6,9 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Hook;
-
-use Test\Functional\AbstractFunctional;
+namespace Test\Functional;
 
 class MainTest extends AbstractFunctional {
     protected function setUp() {

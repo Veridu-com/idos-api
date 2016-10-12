@@ -158,7 +158,7 @@ class Sources implements ControllerInterface {
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
         $source = $this->commandBus->handle($command);
-        $body = [
+        $body   = [
             'data' => $source->toArray()
         ];
 

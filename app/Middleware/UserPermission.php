@@ -61,6 +61,8 @@ class UserPermission implements MiddlewareInterface {
      * @param \App\Repository\User\RoleAccessInterface $roleAccessRepository The role access repository
      * @param string                                   $resource             The resource
      * @param int                                      $accessLevel          The access level
+     *
+     * @return void
      */
     public function __construct(RoleAccessInterface $roleAccessRepository, string $resource, int $accessLevel) {
         $this->roleAccessRepository = $roleAccessRepository;
@@ -68,12 +70,12 @@ class UserPermission implements MiddlewareInterface {
         $this->accessLevel          = $accessLevel;
 
         $this->defaultPermissions = [
-            Role::COMPANY        => RoleAccess::ACCESS_READ | RoleAccess::ACCESS_WRITE | RoleAccess::ACCESS_EXECUTE,
-            Role::COMPANY_ADMIN  => RoleAccess::ACCESS_READ,
-            Role::COMPANY_OWNER  => RoleAccess::ACCESS_READ,
-            Role::COMPANY_MEMBER => RoleAccess::ACCESS_READ,
-            Role::USER           => RoleAccess::ACCESS_READ,
-            Role::GUEST          => RoleAccess::ACCESS_READ
+            Role::COMPANY          => RoleAccess::ACCESS_READ | RoleAccess::ACCESS_WRITE | RoleAccess::ACCESS_EXECUTE,
+            Role::COMPANY_ADMIN    => RoleAccess::ACCESS_READ,
+            Role::COMPANY_OWNER    => RoleAccess::ACCESS_READ,
+            Role::COMPANY_REVIEWER => RoleAccess::ACCESS_READ,
+            Role::USER             => RoleAccess::ACCESS_READ,
+            Role::GUEST            => RoleAccess::ACCESS_READ
         ];
     }
 
@@ -82,11 +84,11 @@ class UserPermission implements MiddlewareInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request  The request
      * @param \Psr\Http\Message\ResponseInterface      $response The response
-     * @param Function|callable                        $next     The next callable object
+     * @param callable                                 $next     The next callable object
      *
      * @throws \App\Exception\NotAllowed Throws NotAllowed if the actor doesn't have access to the resource
      *
-     * @return Function Next callable function
+     * @return \Psr\Http\Message\ResponseInterface
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next) : ResponseInterface {
         $user       = $request->getAttribute('user');

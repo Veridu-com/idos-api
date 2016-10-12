@@ -18,14 +18,14 @@ class Updated extends AbstractEvent {
     /**
      * Event related Review.
      *
-     * @var App\Entity\Profile\Review
+     * @var \App\Entity\Profile\Review
      */
     public $review;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Review $review
+     * @param \App\Entity\Profile\Review $review
      *
      * @return void
      */

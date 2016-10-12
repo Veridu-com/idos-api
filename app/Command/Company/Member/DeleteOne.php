@@ -15,18 +15,41 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Member id.
+     * Member's role (user input).
+     *
+     * @var string
+     */
+    public $role;
+    /**
+     * Acting identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
+    /**
+     * Target company.
+     *
+     * @var \App\Entity\Company
+     */
+    public $company;
+    /**
+     * Ip address.
+     *
+     * @var string
+     */
+    public $ipaddr;
+    /**
+     * Member Id.
      *
      * @var int
      */
     public $memberId;
-
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['memberId'])) {
-            $this->memberId = $parameters['memberId'];
+        if (isset($parameters['role'])) {
+            $this->role = $parameters['role'];
         }
 
         return $this;

@@ -19,9 +19,9 @@ interface IdentityInterface extends RepositoryInterface {
      *
      * @param string $pubKey
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return App\Entity\Identity
+     * @return \App\Entity\Identity
      */
     public function findByPubKey(string $pubKey) : Identity;
 
@@ -31,7 +31,7 @@ interface IdentityInterface extends RepositoryInterface {
      * @param string $sourceName
      * @param string $profileId
      *
-     * @return App\Entity\Identity
+     * @return \App\Entity\Identity
      */
     public function findOneBySourceNameAndProfileId(string $sourceName, string $profileId, string $applicationId) : Identity;
 }

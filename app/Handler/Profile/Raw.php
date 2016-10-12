@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Handler\Profile;
 
 use App\Command\Profile\Raw\CreateNew;
-use App\Command\Profile\Raw\UpdateOne;
 use App\Command\Profile\Raw\Upsert;
 use App\Entity\Profile\Raw as RawEntity;
 use App\Exception\Create;
@@ -32,19 +31,19 @@ class Raw implements HandlerInterface {
     /**
      * Raw Repository instance.
      *
-     * @var App\Repository\Profile\RawInterface
+     * @var \App\Repository\Profile\RawInterface
      */
     private $repository;
     /**
      * Raw Validator instance.
      *
-     * @var App\Validator\Profile\Raw
+     * @var \App\Validator\Profile\Raw
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -80,10 +79,10 @@ class Raw implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\RawInterface $repository
-     * @param App\Validator\Raw           $validator
-     * @param App\Factory\Event           $eventFactory
-     * @param \League\Event\Emitter       $emitter
+     * @param \App\Repository\RawInterface $repository
+     * @param \App\Validator\Raw           $validator
+     * @param \App\Factory\Event           $eventFactory
+     * @param \League\Event\Emitter        $emitter
      *
      * @return void
      */
@@ -104,16 +103,16 @@ class Raw implements HandlerInterface {
     /**
      * Creates a new raw data in the given source.
      *
-     * @param App\Command\Profile\Raw\CreateNew $command
+     * @param \App\Command\Profile\Raw\CreateNew $command
      *
-     * @see App\Repository\DBRaw::findOne
-     * @see App\Repository\DBRaw::create
-     * @see App\Repository\DBRaw::save
+     * @see \App\Repository\DBRaw::findOne
+     * @see \App\Repository\DBRaw::create
+     * @see \App\Repository\DBRaw::save
      *
-     * @throws App\Exception\Validate\Profile\RawException
-     * @throws App\Exception\Create\Profile\RawException
+     * @throws \App\Exception\Validate\Profile\RawException
+     * @throws \App\Exception\Create\Profile\RawException
      *
-     * @return App\Entity\Raw
+     * @return \App\Entity\Raw
      */
     public function handleCreateNew(CreateNew $command) : RawEntity {
         try {
@@ -170,16 +169,16 @@ class Raw implements HandlerInterface {
     /**
      * Creates or updates a raw data in the given source.
      *
-     * @param App\Command\Raw\Upsert $command
+     * @param \App\Command\Raw\Upsert $command
      *
-     * @see App\Repository\DBRaw::findOne
-     * @see App\Repository\DBRaw::create
-     * @see App\Repository\DBRaw::save
+     * @see \App\Repository\DBRaw::findOne
+     * @see \App\Repository\DBRaw::create
+     * @see \App\Repository\DBRaw::save
      *
-     * @throws App\Exception\Validate\Profile\RawException
-     * @throws App\Exception\Create\Profile\RawException
+     * @throws \App\Exception\Validate\Profile\RawException
+     * @throws \App\Exception\Create\Profile\RawException
      *
-     * @return App\Entity\Raw
+     * @return \App\Entity\Raw
      */
     public function handleUpsert(Upsert $command) : RawEntity {
         try {

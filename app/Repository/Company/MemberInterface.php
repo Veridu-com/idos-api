@@ -17,58 +17,22 @@ use Illuminate\Support\Collection;
  */
 interface MemberInterface extends RepositoryInterface {
     /**
-     * Gets all Members based on their Company Id.
+     * Finds one membership by identity and company ids.
      *
-     * @param int $companyId
+     * @param int $identityId The identity identifier
+     * @param int $companyId  The company identifier
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \App\Entity\Company\Member
      */
-    public function getAllByCompanyId(int $companyId, array $queryParams = []) : Collection;
+    public function findMembership(int $identityId, int $companyId) : Member;
 
     /**
-     * Gets all Members basedon their Company Id and role.
+     * Gets by company identifier.
      *
-     * @param int    companyId member's company_id
-     * @param string role  member's role
-     *
+     * @param int   $companyId   The company identifier
+     * @param array $queryParams The query parameters
+     * 
      * @return \Illuminate\Support\Collection
      */
-    public function getAllByCompanyIdAndRole(int $companyId, array $role) : Collection;
-
-    /*
-     * Deletes all Members based on their Company Id.
-     *
-     * @param int $companyId
-     *
-     * @return int
-     */
-    public function deleteByCompanyId(int $companyId) : int;
-
-    /**
-     * Find one member based on their companyId and username.
-     *
-     * @param int $memberId
-     *
-     * @return \App\Entity\Company\Member
-     */
-    public function findOne(int $memberId);
-
-    /**
-     * Saves a member.
-     *
-     * @param \App\Entity\Company\Member $member The member
-     *
-     * @return \App\Entity\Company\Member
-     */
-    public function saveOne(Member $member) : Member;
-
-    /**
-     * Deletes one member from company.
-     *
-     * @param int    $companyId member's company_id
-     * @param string $userId    member's username
-     *
-     * @return int
-     */
-    public function deleteOne(int $companyId, int $userId) : int;
+    public function getByCompanyId(int $companyId, array $queryParams = []) : Collection;
 }

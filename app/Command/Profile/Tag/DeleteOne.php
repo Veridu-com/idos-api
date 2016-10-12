@@ -17,7 +17,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * Tag's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**

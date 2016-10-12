@@ -47,116 +47,49 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId, array $queryParams = []) : Collection {
-        $members = $this->query()
-            ->join('identities', 'identities.id', '=', 'members.identity_id')
-            ->join('roles', 'roles.name', '=', 'members.role')
-            ->join('companies', 'companies.id', '=', 'members.company_id')
-            ->where('members.company_id', '=', $companyId)
-            ->get($this->queryColumns);
-
-        return $this->castHydrate($members);
-    }
-    /*public function getAllByCompanyId(int $companyId) : Collection {
-        $items = new Collection();
-        $items = $items->merge(
-            $this->query()
-                ->join('users', 'users.id', '=', 'members.user_id')
-                ->where('members.company_id', '=', $companyId)
-                ->get(
-                    [
-                        'users.username as user.username',
-                        'users.created_at as user.created_at',
-                        'members.*'
-                    ]
-                )
-        );
-
-        return $this->castHydrate($members);
-    }*/
-
-    protected $filterableKeys = [
-        /*'source.id' => 'decoded',
-        'source.name' => 'string',
-        'creator' => 'string',
-        'name' => 'string',
-        'type' => 'string',
-        'created_at' => 'date'*/
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     protected $relationships = [
-        'user' => [
+        'identity' => [
             'type'       => 'MANY_TO_ONE',
-            'table'      => 'users',
-            'foreignKey' => 'user_id',
+            'table'      => 'identities',
+            'foreignKey' => 'identity_id',
             'key'        => 'id',
-            'entity'     => 'User',
+            'entity'     => 'Identity',
+            'nullable'   => false,
             'hydrate'    => [
-                'username',
-                'created_at'
+                'id',
+                'reference',
+                'public_key',
+                'created_at',
+                'updated_at'
             ]
-        ],
+        ]
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyIdAndRole(int $companyId, array $roles) : Collection {
-        $items = new Collection();
-        $items = $items->merge(
-            $this->query()
-                ->join('users', 'users.id', '=', 'members.user_id')
-                ->where('members.company_id', '=', $companyId)
-                ->whereIn('members.role', $roles)
-                ->get(
-                    ['users.username as user.username',
-                    'users.created_at as user.created_at',
-                    'members.*']
-                )
-        );
+    protected $filterableKeys = [
+    ];
 
-        return $this->castHydrate($items);
+    /**
+     * {@inheritdoc}
+     */
+    public function findMembership(int $identityId, int $companyId) : Member {
+        return $this->findOneBy([
+            'identity_id' => $identityId,
+            'company_id'  => $companyId
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $memberId) : Member {
-        return $this->findOneBy(
+    public function getByCompanyId(int $companyId, array $queryParams = []) : Collection {
+        return $this->findBy(
             [
-            'id' => $memberId
-            ]
+                'company_id' => $companyId
+            ],
+            $queryParams
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteOne(int $companyId, int $userId) : int {
-        return $this->query()
-            ->where('company_id', $companyId)
-            ->where('user_id', $userId)
-            ->delete();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteByCompanyId(int $companyId) : int {
-        return $this->deleteByKey('company_id', $companyId);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveOne(Member $member) : Member {
-        $user                      = $member->relations['user'];
-        $member                    = $this->save($member);
-        $member->relations['user'] = $user;
-
-        return $member;
     }
 }

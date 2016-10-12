@@ -23,23 +23,28 @@ use League\Event\EventInterface;
  */
 class QueueServiceTaskListener extends AbstractListener {
     use QueueCompanyServiceHandlers;
-
+    /**
+     * Company id.
+     *
+     * @var int|null
+     */
+    private $companyId;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\CredentialInterface
+     * @var \App\Repository\CredentialInterface
      */
     private $credentialRepository;
     /**
      * Service Handler Repository instance.
      *
-     * @var App\Repository\ServiceHandlerInterface
+     * @var \App\Repository\ServiceHandlerInterface
      */
     private $serviceHandlerRepository;
     /**
      * Event Factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -58,11 +63,11 @@ class QueueServiceTaskListener extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param App\Repository\CredentialInterface     $credentialRepository
-     * @param App\Repository\ServiceHandlerInterface $serviceHandlerRepository
-     * @param App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                  $emitter
-     * @param \GearmanClient                         $gearmanClient
+     * @param \App\Repository\CredentialInterface     $credentialRepository
+     * @param \App\Repository\ServiceHandlerInterface $serviceHandlerRepository
+     * @param \App\Factory\Event                      $eventFactory
+     * @param \League\Event\Emitter                   $emitter
+     * @param \GearmanClient                          $gearmanClient
      *
      * @return void
      */
@@ -83,7 +88,7 @@ class QueueServiceTaskListener extends AbstractListener {
     /**
      * Handles events that trigger data scraping.
      *
-     * @param EventInterface $event
+     * @param \League\Event\EventInterface $event
      *
      * @return void
      */

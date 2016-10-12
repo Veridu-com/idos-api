@@ -53,7 +53,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Company\Setting\CreateNew
+     * @return \App\Command\Company\Setting\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['section'])) {

@@ -17,28 +17,28 @@ class UpdateOne extends AbstractCommand {
     /**
      * Feature's User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * Target Credential.
      *
-     * @var App\Entity\Company\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
 
     /**
      * Feature's Source (user input).
      *
-     * @var App\Entity\Source
+     * @var \App\Entity\Source
      */
     public $source;
 
     /**
      * Feature's Service (creator).
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
@@ -66,7 +66,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Feature\UpdateOne
+     * @return \App\Command\Profile\Feature\UpdateOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {

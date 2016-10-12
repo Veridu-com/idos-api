@@ -39,7 +39,7 @@ class Main implements ControllerInterface {
     /**
      * Command Factory Instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
@@ -49,7 +49,7 @@ class Main implements ControllerInterface {
      * @param array                        $routes
      * @param \Slim\Router                 $router
      * @param \League\Tactician\CommandBus $commandBus
-     * @param App\Factory\Command          $commandFactory
+     * @param \App\Factory\Command         $commandFactory
      *
      * @return void
      */

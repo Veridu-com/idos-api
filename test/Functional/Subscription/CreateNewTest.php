@@ -36,7 +36,7 @@ class CreateNewTest extends AbstractFunctional {
 
         $data = [
             'gate_id'    => '1321189817',
-            'warning_id' => '1321189817'
+            'flag_id'    => '1321189817'
         ];
 
         $request = $this->createRequest(
@@ -71,7 +71,7 @@ class CreateNewTest extends AbstractFunctional {
 
         $data = [
             'gate_id'    => '654',
-            'warning_id' => '1321189817'
+            'flag_id'    => '1321189817'
         ];
 
         $request = $this->createRequest(
@@ -96,7 +96,7 @@ class CreateNewTest extends AbstractFunctional {
         );
     }
 
-    public function testInvalidWarningId() {
+    public function testInvalidFlagId() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -105,7 +105,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            'warning_id' => '654',
+            'flag_id'    => '654',
             'gate_id'    => '1321189817'
         ];
 

@@ -22,7 +22,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      * @param int    $identityId
      * @param string $role
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
@@ -33,7 +33,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      *
      * @param int $identityId
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */
@@ -45,7 +45,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      * @param int $roleAccessId
      * @param int $identityId
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
      * @return \Illuminate\Database\Eloquent\Model|0
      */
@@ -57,7 +57,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      * @param int $roleAccessId
      * @param int $identityId
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
      * @return int affected rows
      */
@@ -68,7 +68,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      *
      * @param int $identityId
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
      * @return \Illuminate\Database\Eloquent\Model|null
      */

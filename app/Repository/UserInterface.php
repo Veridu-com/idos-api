@@ -22,9 +22,9 @@ interface UserInterface extends RepositoryInterface {
      *
      * @param int $companyId
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function findByCompanyId(int $companyId) : Collection;
 
@@ -37,9 +37,9 @@ interface UserInterface extends RepositoryInterface {
  * @param string $userName
  * @param int    $credentialId
  *
- * @throws App\Exception\NotFound
+ * @throws \App\Exception\NotFound
  *
- * @return App\Entity\User
+ * @return \App\Entity\User
  */
     // FIXME Whoever coded me didn't put love in my documentation </3
     public function findByUserName(string $userName, int $credentialId) : User;
@@ -59,10 +59,10 @@ interface UserInterface extends RepositoryInterface {
      * @param string $profileId    The profile id
      * @param string $providerName The provider name
      * @param int    $credentialId The credential id
-     * 
-     * @throws App\Exception\NotFound\UserException
      *
-     * @return App\Entity\User A user entity
+     * @throws \App\Exception\NotFound\UserException
+     *
+     * @return \App\Entity\User A user entity
      */
     public function findOneByProfileIdAndProviderNameAndCredentialId(
         string $profileId,
@@ -75,7 +75,7 @@ interface UserInterface extends RepositoryInterface {
      *
      * @param int $identityId
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
      * @return \Illuminate\Support\Collection
      */
@@ -87,9 +87,9 @@ interface UserInterface extends RepositoryInterface {
      * @param int $identityId
      * @param int $companyId
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return App\Entity\User
+     * @return \App\Entity\User
      */
     public function findOneByIdentityIdAndCompanyId(int $identityId, int $companyId) : User;
 
@@ -98,11 +98,10 @@ interface UserInterface extends RepositoryInterface {
      *
      * @param int $userId     The user identifier
      * @param int $identityId The identity identifier
-     * 
+     *
      * @throws \Illuminate\Database\QueryException
      *
      * @return void
      */
     public function assignIdentityToUser(int $userId, int $identityId);
-
 }

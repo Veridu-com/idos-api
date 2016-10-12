@@ -19,21 +19,21 @@ class Created extends AbstractEvent {
     /**
      * Event related Review.
      *
-     * @var App\Entity\Profile\Review
+     * @var \App\Entity\Profile\Review
      */
     public $review;
     /**
      * Event related Identity.
      *
-     * @var App\Entity\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Review   $review
-     * @param App\Entity\Identity $identity
+     * @param \App\Entity\Review   $review
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */

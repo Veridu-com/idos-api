@@ -18,14 +18,14 @@ class Created extends AbstractEvent {
     /**
      * Event related Gate.
      *
-     * @var App\Entity\Profile\Gate
+     * @var \App\Entity\Profile\Gate
      */
     public $gate;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Profile\Gate $gate
+     * @param \App\Entity\Profile\Gate $gate
      *
      * @return void
      */

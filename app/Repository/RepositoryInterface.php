@@ -20,14 +20,14 @@ interface RepositoryInterface {
      *
      * @param array $attributes
      *
-     * @return App\Entity\EntityInterface
+     * @return \App\Entity\EntityInterface
      */
     public function create(array $attributes) : EntityInterface;
 
     /**
      * Saves a new entity.
      *
-     * @param App\Entity\EntityInterface $entity
+     * @param \App\Entity\EntityInterface $entity
      *
      * @return void
      */
@@ -38,9 +38,9 @@ interface RepositoryInterface {
      *
      * @param int $id
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return App\Entity\EntityInterface
+     * @return \App\Entity\EntityInterface
      */
     public function find(int $id) : EntityInterface;
 
@@ -49,9 +49,9 @@ interface RepositoryInterface {
      *
      * @param associative array $constraints ['key' => 'value']
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return App\Entity\EntityInterface
+     * @return \App\Entity\EntityInterface
      */
     public function findOneBy(array $constraints, array $queryParams, array $columns) : EntityInterface;
 
@@ -60,9 +60,9 @@ interface RepositoryInterface {
      *
      * @param associative array $constraints ['key' => 'value']
      *
-     * @throws App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function findBy(array $constraints, array $queryParams, array $columns) : Collection;
 

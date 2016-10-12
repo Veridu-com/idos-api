@@ -25,7 +25,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * Source Entity.
      *
-     * @var App\Entity\Profile\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
     /**
@@ -43,14 +43,14 @@ class UpdateOne extends AbstractCommand {
     /**
      * Source owner User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Source\UpdateOne
+     * @return \App\Command\Profile\Source\UpdateOne
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['tags'])) {

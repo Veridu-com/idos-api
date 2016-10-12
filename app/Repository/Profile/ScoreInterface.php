@@ -20,10 +20,10 @@ interface ScoreInterface extends RepositoryInterface {
      * Returns a score based on its name, service id and user id.
      *
      * @param string $name
-     * @param int $serviceId
-     * @param int $userId
-     * @return Score
+     * @param int    $serviceId
+     * @param int    $userId
      *
+     * @return \App\Entity\Profile\Score
      */
     public function findOne(string $name, int $serviceId, int $userId) : Score;
 
@@ -34,7 +34,7 @@ interface ScoreInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserIdAndServiceId(int $serviceId, int $userId, array $queryParams = []) : Collection;
 
@@ -44,7 +44,7 @@ interface ScoreInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserId(int $userId, array $queryParams = []) : Collection;
 }

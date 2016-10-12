@@ -17,21 +17,21 @@ class CreateNew extends AbstractCommand {
     /**
      * User reviewed.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
      * Reviewer.
      *
-     * @var App\Entity\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
     /**
-     * Review's warningId.
+     * Review's flagId.
      *
      * @var int
      */
-    public $warningId;
+    public $flagId;
     /**
      * New review positive.
      *
@@ -47,8 +47,8 @@ class CreateNew extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['decoded_warning_id'])) {
-            $this->warningId = $parameters['decoded_warning_id'];
+        if (isset($parameters['decoded_flag_id'])) {
+            $this->flagId = $parameters['decoded_flag_id'];
         }
 
         if (isset($parameters['positive'])) {

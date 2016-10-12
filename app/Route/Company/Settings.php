@@ -24,7 +24,7 @@ use Slim\App;
  * different environments suited to different purposes.
  *
  * @link docs/companies/settings/overview.md
- * @see App\Controller\Company\Settings
+ * @see \App\Controller\Company\Settings
  */
 class Settings implements RouteInterface {
     /**
@@ -81,9 +81,9 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Settings::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Settings::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -119,9 +119,9 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Settings::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Settings::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -157,9 +157,9 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Settings::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Settings::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -195,9 +195,9 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Settings::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Settings::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -233,9 +233,9 @@ class Settings implements RouteInterface {
      * @return void
      *
      * @link docs/settings/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Settings::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Settings::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

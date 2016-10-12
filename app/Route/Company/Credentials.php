@@ -21,7 +21,7 @@ use Slim\App;
  * Company Credential is a way of identifying a specific Company accessing the API from a specific origin (eg. using a plugin from website X, or from website Y).
  *
  * @link docs/companies/credentials/overview.md
- * @see App\Controller\Companies
+ * @see \App\Controller\Companies
  */
 class Credentials implements RouteInterface {
     /**
@@ -79,9 +79,9 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Credentials::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Credentials::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -92,7 +92,7 @@ class Credentials implements RouteInterface {
             ->add(
                 $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
-                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT | Role::COMPANY_REVIEWER_BIT
                 )
             )
             ->add($auth(Auth::IDENTITY))
@@ -117,9 +117,9 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Credentials::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Credentials::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -155,9 +155,9 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/getOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Credentials::getOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Credentials::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -193,9 +193,9 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/updateOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Credentials::updateOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Credentials::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
@@ -231,9 +231,9 @@ class Credentials implements RouteInterface {
      * @return void
      *
      * @link docs/companies/credentials/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Credentials::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Credentials::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

@@ -24,14 +24,14 @@ class DeleteOne extends AbstractCommand {
     /**
      * Acting company.
      *
-     * @var App\Entity\Company
+     * @var \App\Entity\Company
      */
     public $company;
 
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Service\DeleteOne
+     * @return \App\Command\Service\DeleteOne
      */
     public function setParameters(array $parameters) : self {
 

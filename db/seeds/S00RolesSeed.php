@@ -12,7 +12,7 @@ class S00RolesSeed extends AbstractSeed {
             ['name' => 'company', 'rank' => 0, 'bit' => 0x01],
             ['name' => 'company.owner', 'rank' => 1, 'bit' => 0x02],
             ['name' => 'company.admin', 'rank' => 2, 'bit' => 0x04],
-            ['name' => 'company.member', 'rank' => 3, 'bit' => 0x08],
+            ['name' => 'company.reviewer', 'rank' => 3, 'bit' => 0x08],
             ['name' => 'user', 'rank' => 4, 'bit' => 0x016],
             ['name' => 'guest', 'rank' => 5, 'bit' => 0x032]
         ];

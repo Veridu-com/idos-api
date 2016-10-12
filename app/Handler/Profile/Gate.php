@@ -33,25 +33,25 @@ class Gate implements HandlerInterface {
     /**
      * Gate Repository instance.
      *
-     * @var App\Repository\Profile\GateInterface
+     * @var \App\Repository\Profile\GateInterface
      */
     private $repository;
     /**
      * Gate Validator instance.
      *
-     * @var App\Validator\Profile\Gate
+     * @var \App\Validator\Profile\Gate
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -78,10 +78,10 @@ class Gate implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\GateInterface $repository
-     * @param App\Validator\Gate           $validator
-     * @param App\Factory\Event            $eventFactory
-     * @param \League\Event\Emitter        $emitter
+     * @param \App\Repository\GateInterface $repository
+     * @param \App\Validator\Gate           $validator
+     * @param \App\Factory\Event            $eventFactory
+     * @param \League\Event\Emitter         $emitter
      *
      * @return void
      */
@@ -100,14 +100,14 @@ class Gate implements HandlerInterface {
     /**
      * Creates a gate.
      *
-     * @param App\Command\Profile\Gate\CreateNew $command
+     * @param \App\Command\Profile\Gate\CreateNew $command
      *
-     * @see App\Repository\DBGate::save
+     * @see \App\Repository\DBGate::save
      *
-     * @throws App\Exception\Validate\GateException
-     * @throws App\Exception\Create\GateException
+     * @throws \App\Exception\Validate\GateException
+     * @throws \App\Exception\Create\GateException
      *
-     * @return App\Entity\Gate
+     * @return \App\Entity\Gate
      */
     public function handleCreateNew(CreateNew $command) : GateEntity {
         try {
@@ -149,15 +149,15 @@ class Gate implements HandlerInterface {
     /**
      * Updates a Gate.
      *
-     * @param App\Command\Profile\Gate\UpdateOne $command
+     * @param \App\Command\Profile\Gate\UpdateOne $command
      *
-     * @see App\Repository\DBGate::findByUserIdAndSlug
-     * @see App\Repository\DBGate::save
+     * @see \App\Repository\DBGate::findByUserIdAndSlug
+     * @see \App\Repository\DBGate::save
      *
-     * @throws App\Exception\Validate\GateException
-     * @throws App\Exception\Update\Profile\GateException
+     * @throws \App\Exception\Validate\GateException
+     * @throws \App\Exception\Update\Profile\GateException
      *
-     * @return App\Entity\Gate
+     * @return \App\Entity\Gate
      */
     public function handleUpdateOne(UpdateOne $command) : GateEntity {
         try {
@@ -194,9 +194,9 @@ class Gate implements HandlerInterface {
     /**
      * Updates a score for a given attribute.
      *
-     * @param App\Command\Score\Upsert $command
+     * @param \App\Command\Score\Upsert $command
      *
-     * @return App\Entity\Score
+     * @return \App\Entity\Score
      */
     public function handleUpsert(Upsert $command) : GateEntity {
         $this->validator->assertUser($command->user);
@@ -246,13 +246,13 @@ class Gate implements HandlerInterface {
     /**
      * Deletes a Gate.
      *
-     * @param App\Command\Profile\Gate\DeleteOne $command
+     * @param \App\Command\Profile\Gate\DeleteOne $command
      *
-     * @see App\Repository\DBGate::findByUserIdAndSlug
-     * @see App\Repository\DBGate::delete
+     * @see \App\Repository\DBGate::findByUserIdAndSlug
+     * @see \App\Repository\DBGate::delete
      *
-     * @throws App\Exception\Validate\GateException
-     * @throws App\Exception\NotFound\GateException
+     * @throws \App\Exception\Validate\GateException
+     * @throws \App\Exception\NotFound\GateException
      *
      * @return int
      */
@@ -270,7 +270,7 @@ class Gate implements HandlerInterface {
         }
 
         try {
-            $entity = $this->repository->findOne($command->slug, $command->service->id, $command->user->id);
+            $entity       = $this->repository->findOne($command->slug, $command->service->id, $command->user->id);
             $affectedRows = $this->repository->delete($entity->id);
 
             $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity);
@@ -285,12 +285,12 @@ class Gate implements HandlerInterface {
     /**
      * Deletes all gates ($command->userId).
      *
-     * @param App\Command\Profile\Gate\DeleteAll $command
+     * @param \App\Command\Profile\Gate\DeleteAll $command
      *
-     * @see App\Repository\DBGate::findByUserId
-     * @see App\Repository\DBGate::deleteByUserId
+     * @see \App\Repository\DBGate::findByUserId
+     * @see \App\Repository\DBGate::deleteByUserId
      *
-     * @throws App\Exception\Validate\GateException
+     * @throws \App\Exception\Validate\GateException
      *
      * @return int
      */
@@ -306,7 +306,11 @@ class Gate implements HandlerInterface {
             );
         }
 
-        $entities = $this->repository->getByServiceIdAndUserId($command->service->id, $command->user->id, $command->queryParams);
+        $entities = $this->repository->getByServiceIdAndUserId(
+            $command->service->id,
+            $command->user->id,
+            $command->queryParams
+        );
 
         $affectedRows = 0;
         try {

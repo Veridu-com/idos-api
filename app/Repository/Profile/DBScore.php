@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Score;
-use App\Exception\NotFound;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 

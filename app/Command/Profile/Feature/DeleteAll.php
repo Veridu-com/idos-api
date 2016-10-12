@@ -17,14 +17,14 @@ class DeleteAll extends AbstractCommand {
     /**
      * Feature's User.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
      * Feature's Service (creator).
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
@@ -38,7 +38,7 @@ class DeleteAll extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Feature\DeleteAll
+     * @return \App\Command\Profile\Feature\DeleteAll
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {

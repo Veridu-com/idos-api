@@ -17,13 +17,13 @@ class DeleteAll extends AbstractCommand {
     /**
      * Raw's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
      * Raw's Source.
      *
-     * @var App\Entity\Profile\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
 

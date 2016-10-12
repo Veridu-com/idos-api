@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to companies/{companySlug}/profiles/{userId}/warnings/{warningId}/reviews.
+ * Handles requests to companies/{companySlug}/profiles/{userId}/flags/{flagId}/reviews.
  */
 class Reviews implements ControllerInterface {
     /**
@@ -68,14 +68,14 @@ class Reviews implements ControllerInterface {
     }
 
     /**
-     * Retrieve a complete list of reviews, given an user and an warning.
+     * Retrieve a complete list of reviews, given an user and an flag.
      *
      * @apiEndpointResponse 200 schema/review/listAll.json
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
      *
-     * @see \App\Repository\Profile\DBReview::getAllByUserIdAndWarningIdsAndIdentity
+     * @see \App\Repository\Profile\DBReview::getAllByUserIdAndFlagIdsAndIdentity
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

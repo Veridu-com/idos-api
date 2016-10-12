@@ -61,13 +61,13 @@ class Role extends AbstractEntity {
      *
      * @var string
      */
-    const COMPANY_MEMBER = 'company.member';
+    const COMPANY_REVIEWER = 'company.reviewer';
     /**
      * Company member bit.
      *
      * @var int
      */
-    const COMPANY_MEMBER_BIT = 0x08;
+    const COMPANY_REVIEWER_BIT = 0x08;
     /**
      * User role.
      *

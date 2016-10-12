@@ -21,7 +21,7 @@ use Slim\App;
  * Company Subscription is a way of assigning a specific Company to a Gate.
  *
  * @link docs/companies/subscriptions/overview.md
- * @see App\Controller\Companies
+ * @see \App\Controller\Companies
  */
 class Subscriptions implements RouteInterface {
     /**
@@ -76,9 +76,9 @@ class Subscriptions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/subscriptions/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Subscriptions::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Subscriptions::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -115,9 +115,9 @@ class Subscriptions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/subscriptions/createNew.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Subscriptions::createNew
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Subscriptions::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
@@ -154,9 +154,9 @@ class Subscriptions implements RouteInterface {
      * @return void
      *
      * @link docs/companies/subscriptions/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Subscriptions::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Subscriptions::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

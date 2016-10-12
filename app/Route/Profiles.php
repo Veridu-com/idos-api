@@ -17,7 +17,7 @@ use Slim\App;
  * Profile routing definitions.
  *
  * @link docs/profiles/overview.md
- * @see App\Controller\Profiles
+ * @see \App\Controller\Profiles
  */
 class Profiles implements RouteInterface {
     /**

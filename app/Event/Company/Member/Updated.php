@@ -18,14 +18,14 @@ class Updated extends AbstractEvent {
     /**
      * Event related Member.
      *
-     * @var App\Entity\Company\Member
+     * @var \App\Entity\Company\Member
      */
     public $member;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Company\Member $member
+     * @param \App\Entity\Company\Member $member
      *
      * @return void
      */

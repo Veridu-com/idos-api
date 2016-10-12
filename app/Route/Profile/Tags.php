@@ -20,7 +20,7 @@ use Slim\App;
  * A Profile tag is used by a Company to categorise and organise certain Profiles for the purposes of improving management of large numbers of Users and data. A Company will use Profile Tags in order to create specific categories of Profiles for Members to easily assign or view.
  *
  * @link docs/profiles/tags/overview.md
- * @see App\Controller\Profile\Tags
+ * @see \App\Controller\Profile\Tags
  */
 class Tags implements RouteInterface {
     /**

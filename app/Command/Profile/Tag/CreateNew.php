@@ -17,13 +17,13 @@ class CreateNew extends AbstractCommand {
     /**
      * Tagged user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**
      * Tag creator.
      *
-     * @var App\Entity\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
     /**

@@ -18,14 +18,14 @@ class Deleted extends AbstractEvent {
     /**
      * Event related Permission.
      *
-     * @var App\Entity\Company\Permission
+     * @var \App\Entity\Company\Permission
      */
     public $permission;
 
     /**
      * Class constructor.
      *
-     * @param App\Entity\Company\Permission $permission
+     * @param \App\Entity\Company\Permission $permission
      *
      * @return void
      */

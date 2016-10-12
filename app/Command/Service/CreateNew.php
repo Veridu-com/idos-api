@@ -17,7 +17,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Service's company's instance.
      *
-     * @var App\Entity\Company
+     * @var \App\Entity\Company
      */
     public $company;
 
@@ -80,7 +80,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Service\CreateNew
+     * @return \App\Command\Service\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {

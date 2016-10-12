@@ -18,7 +18,8 @@ use Slim\App;
 /**
  * Company.
  *
- * A Company is a profile within the API available for a customer who requires a sophisticated level of control over employees with different levels of Permission.
+ * A Company is a profile within the API available for a customer who requires a
+ * sophisticated level of control over employees with different levels of Permission.
  *
  * @link docs/companies/overview.md
  * @see \App\Controller\Companies
@@ -52,6 +53,7 @@ class Companies implements RouteInterface {
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
+        // $limitMiddleware      = $container->
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -90,10 +92,11 @@ class Companies implements RouteInterface {
             ->add(
                 $permission(
                 EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
-                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT | Role::COMPANY_REVIEWER_BIT
                 )
             )
             ->add($auth(Auth::IDENTITY))
+            // ->add($limit(
             ->setName('companies:listAll');
     }
 

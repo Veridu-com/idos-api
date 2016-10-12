@@ -15,16 +15,16 @@ use App\Command\AbstractCommand;
  */
 class Upsert extends AbstractCommand {
     /**
-     * Attribute's user.
+     * Gate's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
 
     /**
-     * Attribute's creator.
+     * Gate's creator.
      *
-     * @var App\Entity\Service
+     * @var \App\Entity\Service
      */
     public $service;
 
@@ -45,7 +45,7 @@ class Upsert extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return App\Command\Profile\Gate\Upsert
+     * @return \App\Command\Profile\Gate\Upsert
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {

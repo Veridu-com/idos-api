@@ -18,10 +18,10 @@ use Slim\App;
 /**
  * Company Profile.
  *
- * A Company Profile where a Company will access the collection of data on a specific User. This is where the Company can review in detail the raw data, attributes, features, warnings, and score gathered from all sources provided by a specific User
+ * A Company Profile where a Company will access the collection of data on a specific User. This is where the Company can review in detail the raw data, attributes, features, flags, and score gathered from all sources provided by a specific User
  *
  * @link docs/company/profiles/overview.md
- * @see App\Controller\Company\Profiles
+ * @see \App\Controller\Company\Profiles
  */
 class Profiles implements RouteInterface {
     /**
@@ -45,9 +45,9 @@ class Profiles implements RouteInterface {
                 $container->get('repositoryFactory')->create('Profile\Source'),
                 $container->get('repositoryFactory')->create('Profile\Tag'),
                 $container->get('repositoryFactory')->create('Profile\Review'),
-                $container->get('repositoryFactory')->create('Profile\Warning'),
+                $container->get('repositoryFactory')->create('Profile\Flag'),
                 $container->get('repositoryFactory')->create('Profile\Gate'),
-                $container->get('repositoryFactory')->create('Profile\Attribute'),
+                $container->get('repositoryFactory')->create('Profile\Candidate'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );
@@ -80,9 +80,9 @@ class Profiles implements RouteInterface {
      * @return void
      *
      * @link docs/companyProfiles/listAll.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Profiles::listAll
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Profiles::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
@@ -112,7 +112,7 @@ class Profiles implements RouteInterface {
      * @return void
      *
      * @link docs/companyProfiles/getOne.md
-     * @see App\Controller\Company\Profiles::getOne
+     * @see \App\Controller\Company\Profiles::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
@@ -144,9 +144,9 @@ class Profiles implements RouteInterface {
      * @return void
      *
      * @link docs/company/profiles/deleteOne.md
-     * @see App\Middleware\Auth::__invoke
-     * @see App\Middleware\Permission::__invoke
-     * @see App\Controller\Company\Profiles::deleteOne
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Profiles::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app

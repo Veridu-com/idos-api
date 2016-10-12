@@ -17,7 +17,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * Reference's user.
      *
-     * @var App\Entity\User
+     * @var \App\Entity\User
      */
     public $user;
     /**

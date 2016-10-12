@@ -163,7 +163,7 @@ class Response implements HandlerInterface {
      *  - hideLinks: hides HATEOAS discovery/relation links
      *  - forceOutput: overrides HTTP's Accept header
      *
-     * @param App\Command\ResponseDispatch $command
+     * @param \App\Command\ResponseDispatch $command
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

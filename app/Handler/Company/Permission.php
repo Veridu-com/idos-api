@@ -77,8 +77,8 @@ class Permission implements HandlerInterface {
      *
      * @param \App\Repository\Company\PermissionInterface $repository
      * @param \App\Validator\Company\Permission           $validator
-     * @param \App\Factory\Event                  $eventFactory
-     * @param \League\Event\Emitter              $emitter
+     * @param \App\Factory\Event                          $eventFactory
+     * @param \League\Event\Emitter                       $emitter
      *
      * @return void
      */

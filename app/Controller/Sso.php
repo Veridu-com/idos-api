@@ -57,8 +57,8 @@ class Sso implements ControllerInterface {
      *
      * @param \App\Repository\Company\SettingInterface    $settingRepository
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \Slim\Collection                           $settings
-     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \Slim\Collection                            $settings
+     * @param \League\Tactician\CommandBus                $commandBus
      * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
@@ -152,6 +152,7 @@ class Sso implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $providerName     = $request->getParsedBodyParam('provider');
         $credentialPubKey = $request->getParsedBodyParam('credential');
+        $signupHash       = $request->getParsedBodyParam('signup_hash');
         $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
 
         $availableProviders = $this->settings['sso_providers'];
@@ -226,6 +227,7 @@ class Sso implements ControllerInterface {
         }
 
         $command
+            ->setParameter('signupHash', $signupHash)
             ->setParameter('ipAddress', $request->getAttribute('ip_address'))
             ->setParameter('accessToken', $request->getParsedBodyParam('access_token'))
             ->setParameter('credentialPubKey', $credentialPubKey);

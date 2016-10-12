@@ -20,9 +20,9 @@ interface TagInterface extends RepositoryInterface {
      * Returns a tag based on their user id and name.
      *
      * @param string $slug
-     * @param int $userId
+     * @param int    $userId
      *
-     * @return Tag
+     * @return \App\Entity\Profile\Tag
      */
     public function findOne(string $slug, int $userId) : Tag;
 
@@ -46,7 +46,7 @@ interface TagInterface extends RepositoryInterface {
      */
     public function deleteOneByUserIdAndSlug(int $userId, string $name) : int;
 
-    /*
+    /**
      * Delete tags based on their user id.
      *
      * @param int $userId
