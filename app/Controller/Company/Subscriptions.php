@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions and /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions/{subscriptionId}
+ * Handles requests to /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions and /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions/{subscriptionId}.
  */
 class Subscriptions implements ControllerInterface {
     /**

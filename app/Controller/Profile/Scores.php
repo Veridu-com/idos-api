@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/scores and /profiles/{userName}/scores/{scoreName}
+ * Handles requests to /profiles/{userName}/scores and /profiles/{userName}/scores/{scoreName}.
  */
 class Scores implements ControllerInterface {
     /**

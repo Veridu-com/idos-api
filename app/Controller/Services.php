@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /services.
+ * Handles requests to companies/{companySlug}/services and companies/{companySlug}/services/{serviceId}.
  */
 class Services implements ControllerInterface {
     /**
@@ -121,13 +121,12 @@ class Services implements ControllerInterface {
      * Creates a new Service for the acting Company.
      *
      * @apiEndpointRequiredParam    body    string    name  name             Service's name.
-     * @apiEndpointRequiredParam    body    string     url  http://service-url.com             Service's url.
-     * @apiEndpointParam            body    int        access 1           Service's access.
-     * @apiEndpointParam            body    bool       enabled  true         Service's enabled.
-     * @apiEndpointParam            body    array       listens 'source.add.facebook'         Service's listens.
-     * @apiEndpointParam            body    array       triggers 'source.scraper.facebook.finished'       Service's triggers.
-     * @apiEndpointRequiredParam    body    string      auth_username idos   Service's authUsername.
-     * @apiEndpointRequiredParam    body    string      auth_password  secret   Service's authPassword.
+     * @apiEndpointRequiredParam    body    string    url  http://service-url.com             Service's url.
+     * @apiEndpointRequiredParam    body    int       access 1           Service's access.
+     * @apiEndpointRequiredParam    body    array     listens 'source.add.facebook'         Service's listens.
+     * @apiEndpointParam            body    array     triggers 'source.scraper.facebook.finished'       Service's triggers.
+     * @apiEndpointRequiredParam    body    string    auth_username idos   Service's authUsername.
+     * @apiEndpointRequiredParam    body    string    auth_password  secret   Service's authPassword.
      *
      * @apiEndpointResponse 201 schema/service/createNew.json
      *
@@ -166,14 +165,13 @@ class Services implements ControllerInterface {
     /**
      * Updates one Service of the acting Company based on path paramaters service id.
      *
-     * @apiEndpointRequiredParam    body    string    name  name             Service's name.
      * @apiEndpointRequiredParam    body    string     url  http
      * @apiEndpointParam            body    int        access 1           Service's access.
      * @apiEndpointParam            body    bool       enabled  true         Service's enabled.
-     * @apiEndpointParam            body    array       listens 'source.add.facebook'         Service's listens.
-     * @apiEndpointParam            body    array       triggers 'source.scraper.facebook.finished'       Service's triggers.
-     * @apiEndpointRequiredParam    body    string      auth_username idos   Service's authUsername.
-     * @apiEndpointRequiredParam    body    string      auth_password  secret   Service's authPassword.
+     * @apiEndpointParam            body    array      listens 'source.add.facebook'         Service's listens.
+     * @apiEndpointParam            body    array      triggers 'source.scraper.facebook.finished'       Service's triggers.
+     * @apiEndpointRequiredParam    body    string     auth_username idos   Service's authUsername.
+     * @apiEndpointRequiredParam    body    string     auth_password  secret   Service's authPassword.
      * @apiEndpointResponse 200 schema/service/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

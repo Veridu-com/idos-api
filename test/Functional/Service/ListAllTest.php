@@ -48,15 +48,15 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['data'][0]['enabled']);
         $this->assertEquals(
             [
-                "idos:source.amazon.created",
-                "idos:source.dropbox.created",
-                "idos:source.facebook.created",
-                "idos:source.google.created",
-                "idos:source.linkedin.created",
-                "idos:source.paypal.created",
-                "idos:source.spotify.created",
-                "idos:source.twitter.created",
-                "idos:source.yahoo.created"
+                'idos:source.amazon.created',
+                'idos:source.dropbox.created',
+                'idos:source.facebook.created',
+                'idos:source.google.created',
+                'idos:source.linkedin.created',
+                'idos:source.paypal.created',
+                'idos:source.spotify.created',
+                'idos:source.twitter.created',
+                'idos:source.yahoo.created'
             ], $body['data'][0]['listens']);
         $this->assertEquals(['handler:scrape.completed'], $body['data'][0]['triggers']);
 
@@ -68,15 +68,15 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['data'][1]['enabled']);
         $this->assertEquals(
             [
-                "idos:raw.amazon.created",
-                "idos:raw.dropbox.created",
-                "idos:raw.facebook.created",
-                "idos:raw.google.created",
-                "idos:raw.linkedin.created",
-                "idos:raw.paypal.created",
-                "idos:raw.spotify.created",
-                "idos:raw.twitter.created",
-                "idos:raw.yahoo.created"
+                'idos:raw.amazon.created',
+                'idos:raw.dropbox.created',
+                'idos:raw.facebook.created',
+                'idos:raw.google.created',
+                'idos:raw.linkedin.created',
+                'idos:raw.paypal.created',
+                'idos:raw.spotify.created',
+                'idos:raw.twitter.created',
+                'idos:raw.yahoo.created'
               ], $body['data'][1]['listens']);
         $this->assertEquals(['handler:feature.completed'], $body['data'][1]['triggers']);
 
@@ -88,15 +88,15 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['data'][2]['enabled']);
         $this->assertEquals(
             [
-               "idos:feature.amazon.created",
-               "idos:feature.dropbox.created",
-               "idos:feature.facebook.created",
-               "idos:feature.google.created",
-               "idos:feature.linkedin.created",
-               "idos:feature.paypal.created",
-               "idos:feature.spotify.created",
-               "idos:feature.twitter.created",
-               "idos:feature.yahoo.created"
+               'idos:feature.amazon.created',
+               'idos:feature.dropbox.created',
+               'idos:feature.facebook.created',
+               'idos:feature.google.created',
+               'idos:feature.linkedin.created',
+               'idos:feature.paypal.created',
+               'idos:feature.spotify.created',
+               'idos:feature.twitter.created',
+               'idos:feature.yahoo.created'
             ],
             $body['data'][2]['listens']
         );

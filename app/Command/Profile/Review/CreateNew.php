@@ -35,7 +35,7 @@ class CreateNew extends AbstractCommand {
     /**
      * New review positive.
      *
-     * @var boolean
+     * @var bool
      */
     public $positive;
 

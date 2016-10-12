@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/sources and /profiles/{userName}/sources/{sourceId}
+ * Handles requests to /profiles/{userName}/sources and /profiles/{userName}/sources/{sourceId}.
  */
 class Sources implements ControllerInterface {
     /**

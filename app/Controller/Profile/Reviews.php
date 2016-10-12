@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/profiles/{userId}/reviews and /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
+ * Handles requests to /companies/{companySlug}/profiles/{userId}/reviews and /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}.
  */
 class Reviews implements ControllerInterface {
     /**

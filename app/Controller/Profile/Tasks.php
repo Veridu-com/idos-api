@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/processes/{processId}/tasks and /profiles/{userName}/processes/{processId}/tasks/{taskId}
+ * Handles requests to /profiles/{userName}/processes/{processId}/tasks and /profiles/{userName}/processes/{processId}/tasks/{taskId}.
  */
 class Tasks implements ControllerInterface {
     /**

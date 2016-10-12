@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/invitations and /companies/{companySlug}/invitations/{invitationId}
+ * Handles requests to /companies/{companySlug}/invitations and /companies/{companySlug}/invitations/{invitationId}.
  */
 class Invitations implements ControllerInterface {
     /**

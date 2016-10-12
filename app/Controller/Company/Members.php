@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/members and /companies/{companySlug}/members/{memberId}
+ * Handles requests to /companies/{companySlug}/members and /companies/{companySlug}/members/{memberId}.
  */
 class Members implements ControllerInterface {
     /**
@@ -210,9 +210,8 @@ class Members implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\ServerRequestInterface              $request
+     * @param \Psr\ResponseInterface                   $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

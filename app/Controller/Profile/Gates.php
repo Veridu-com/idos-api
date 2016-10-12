@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/gates and /profiles/{userName}/gates/{gateSlug}
+ * Handles requests to /profiles/{userName}/gates and /profiles/{userName}/gates/{gateSlug}.
  */
 class Gates implements ControllerInterface {
     /**

@@ -35,7 +35,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * If hook if subscribed (user input).
      *
-     * @var boolean
+     * @var bool
      */
     public $subscribed;
     /**

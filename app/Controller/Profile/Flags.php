@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/flags and /profiles/{userName}/flags/{flagSlug}
+ * Handles requests to /profiles/{userName}/flags and /profiles/{userName}/flags/{flagSlug}.
  */
 class Flags implements ControllerInterface {
     /**

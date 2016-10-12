@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/settings and /companies/{companySlug}/settings/{settingId}
+ * Handles requests to /companies/{companySlug}/settings and /companies/{companySlug}/settings/{settingId}.
  */
 class Settings implements ControllerInterface {
     /**

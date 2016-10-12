@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/profiles/{userId}/tags and /companies/{companySlug}/profiles/{userId}/tags/{tagSlug}
+ * Handles requests to /companies/{companySlug}/profiles/{userId}/tags and /companies/{companySlug}/profiles/{userId}/tags/{tagSlug}.
  */
 class Tags implements ControllerInterface {
     /**

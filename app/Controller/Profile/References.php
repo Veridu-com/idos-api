@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/reference and /profiles/{userName}/references/{referenceName}
+ * Handles requests to /profiles/{userName}/reference and /profiles/{userName}/references/{referenceName}.
  */
 class References implements ControllerInterface {
     /**
