@@ -43,6 +43,7 @@ use Slim\HttpCache\CacheProvider;
 use Stash\Driver\FileSystem;
 use Stash\Driver\Redis;
 use Whoops\Handler\PrettyPageHandler;
+use GuzzleHttp\Client as HttpClient;
 
 if (! isset($app)) {
     die('$app is not set!');
@@ -517,6 +518,11 @@ $container['gearmanClient'] = function (ContainerInterface $container) : Gearman
     } catch (\GearmanException $exception) {
         throw new AppException('Could not connect to Gearman Job Server');
     }
+};
+
+// HTTP Client
+$container['httpClient'] = function (ContainerInterface $container) : HttpClient {
+    return new HttpClient();
 };
 
 // Registering Event Emitter

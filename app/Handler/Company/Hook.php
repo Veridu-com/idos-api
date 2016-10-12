@@ -25,6 +25,7 @@ use App\Validator\Company\Hook as HookValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
+use \GuzzleHttp\Client as HttpClient;
 
 /**
  * Handles Hook commands.
@@ -60,6 +61,12 @@ class Hook implements HandlerInterface {
      * @var \League\Event\Emitter
      */
     private $emitter;
+    /**
+     * HTTP client instance.
+     *
+     * @var \GuzzleHttp\Client
+     */
+    private $httpClient;
 
     /**
      * {@inheritdoc}
@@ -79,7 +86,9 @@ class Hook implements HandlerInterface {
                 $container
                     ->get('eventFactory'),
                 $container
-                    ->get('eventEmitter')
+                    ->get('eventEmitter'),
+                $container
+                    ->get('httpClient')
             );
         };
     }
@@ -92,6 +101,7 @@ class Hook implements HandlerInterface {
      * @param \App\Validator\Company\Hook                 $validator
      * @param \App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                       $emitter
+     * @param \GuzzleHttp\Client                          $httpClient
      *
      * @return void
      */
@@ -100,13 +110,15 @@ class Hook implements HandlerInterface {
         CredentialInterface $credentialRepository,
         HookValidator $validator,
         Event $eventFactory,
-        Emitter $emitter
+        Emitter $emitter,
+        HttpClient $httpClient
     ) {
         $this->repository           = $repository;
         $this->credentialRepository = $credentialRepository;
         $this->validator            = $validator;
         $this->eventFactory         = $eventFactory;
         $this->emitter              = $emitter;
+        $this->httpClient           = $httpClient;
     }
 
     /**
@@ -165,6 +177,18 @@ class Hook implements HandlerInterface {
 
         if ($credential->companyId != $command->companyId) {
             throw new NotFound\Company\HookException('Company not found', 404);
+        }
+
+        $validResponse = false;
+        try {
+            if ($this->httpClient->request('GET', $command->url)->getStatusCode() === 204) {
+                $validResponse = true;
+            }
+        } catch (\Exception $e) {
+        }
+
+        if (! $validResponse) {
+            throw new Create\Company\HookException('Failed to perform hook handshake.', 500);
         }
 
         $hook = $this->repository->create(
