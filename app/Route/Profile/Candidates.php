@@ -89,6 +89,7 @@ class Candidates implements RouteInterface {
             ->add($auth(Auth::CREDENTIAL))
             ->setName('candidate:listAll');
     }
+
     /**
      * Creates a new candidate.
      *

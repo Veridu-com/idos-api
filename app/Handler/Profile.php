@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Handler;
 
-use App\Entity\User as UserEntity;
 use App\Command\Profile\ListAll;
 use App\Factory\Event;
 use App\Repository\UserInterface;

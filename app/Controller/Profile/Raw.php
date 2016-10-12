@@ -74,8 +74,8 @@ class Raw implements ControllerInterface {
      * @apiEndpointParam       query  string   collections  collection1,collection2
      * @apiEndpointResponse 200 schema/raw/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBSource::findOne
      * @see \App\Repository\DBService::getAllBySourceAndCollections

@@ -14,6 +14,7 @@ use App\Handler;
 use App\Middleware;
 use App\Middleware\Auth;
 use App\Repository;
+use GuzzleHttp\Client as HttpClient;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Connection;
 use Interop\Container\ContainerInterface;
@@ -43,7 +44,6 @@ use Slim\HttpCache\CacheProvider;
 use Stash\Driver\FileSystem;
 use Stash\Driver\Redis;
 use Whoops\Handler\PrettyPageHandler;
-use GuzzleHttp\Client as HttpClient;
 
 if (! isset($app)) {
     die('$app is not set!');

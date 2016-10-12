@@ -72,8 +72,8 @@ class Subscriptions implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/credential/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -105,8 +105,8 @@ class Subscriptions implements ControllerInterface {
      * @apiEndpointRequiredParam body string categorySlug first-name Subscription categorySlug
      * @apiEndpointResponse 201 schema/credential/createNew.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Handler\Subscription::handleCreateNew
      *
@@ -145,8 +145,8 @@ class Subscriptions implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/credential/deleteOne.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBSubscription::findByPubKey
      * @see \App\Handler\Subscription::handleDeleteOne

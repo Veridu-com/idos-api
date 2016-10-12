@@ -122,7 +122,7 @@ class Tasks implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('service', $request->getAttribute('service'))
-            ->setParameters(['processId' => $processId]);
+            ->setParameter('processId', $processId);
 
         $task = $this->commandBus->handle($command);
 

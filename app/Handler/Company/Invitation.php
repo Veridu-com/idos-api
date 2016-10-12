@@ -32,25 +32,25 @@ class Invitation implements HandlerInterface {
     /**
      * Invitation Repository instance.
      *
-     * @var App\Repository\Company\InvitationInterface
+     * @var \App\Repository\Company\InvitationInterface
      */
     private $repository;
     /**
      * Credential Repository instance.
      *
-     * @var App\Repository\Company\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
      * Invitation Validator instance.
      *
-     * @var App\Validator\Company\Invitation
+     * @var \App\Validator\Company\Invitation
      */
     private $validator;
     /**
      * Event factory instance.
      *
-     * @var App\Factory\Event
+     * @var \App\Factory\Event
      */
     private $eventFactory;
     /**
@@ -92,13 +92,13 @@ class Invitation implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\InvitationInterface $repository
-     * @param App\Repository\Company\CredentialInterface $credentialRepository
-     * @param App\Repository\CompanyInterface            $companyRepository
-     * @param App\Repository\Company\SettingInterface    $settingRepository
-     * @param App\Validator\Invitation                   $validator
-     * @param App\Factory\Event                          $eventFactory
-     * @param \League\Event\Emitter                      $emitter
+     * @param \App\Repository\Company\InvitationInterface $repository
+     * @param \App\Repository\Company\CredentialInterface $credentialRepository
+     * @param \App\Repository\CompanyInterface            $companyRepository
+     * @param \App\Repository\Company\SettingInterface    $settingRepository
+     * @param \App\Validator\Invitation                   $validator
+     * @param \App\Factory\Event                          $eventFactory
+     * @param \League\Event\Emitter                       $emitter
      *
      * @return void
      */
@@ -123,10 +123,10 @@ class Invitation implements HandlerInterface {
     /**
      * Creates a new invitation for a future member.
      *
-     * @param App\Command\Company\Member\CreateNew $command
+     * @param \App\Command\Company\Member\CreateNew $command
      *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\Create\MemberException
+     * @throws \App\Exception\Validate\MemberException
+     * @throws \App\Exception\Create\MemberException
      *
      * @return \App\Entity\Member
      */
@@ -147,6 +147,7 @@ class Invitation implements HandlerInterface {
                 $e
             );
         }
+
         $expires         = strftime('%Y-%m-%d', strtotime($command->expires));
         $now             = time();
         $expiresDateTime = new \DateTime($expires);
@@ -191,10 +192,10 @@ class Invitation implements HandlerInterface {
     /**
      * Deletes an Invitation.
      *
-     * @param App\Command\Company\Member\DeleteOne $command
+     * @param \App\Command\Company\Member\DeleteOne $command
      *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\NotFound\MemberException
+     * @throws \App\Exception\Validate\MemberException
+     * @throws \App\Exception\NotFound\MemberException
      *
      * @return void
      */
@@ -209,7 +210,7 @@ class Invitation implements HandlerInterface {
             );
         }
 
-        $invitation       = $this->repository->find($command->invitationId);
+        $invitation = $this->repository->find($command->invitationId);
 
         if ($invitation->memberId) {
             // cascades to invitations table

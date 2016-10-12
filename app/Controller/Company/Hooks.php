@@ -73,8 +73,8 @@ class Hooks implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/hook/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBHook::getAllByCredentialPubKey
      *
@@ -194,8 +194,8 @@ class Hooks implements ControllerInterface {
      * @apiEndpointRequiredParam body boolean subscribed false Subscribed
      * @apiEndpointResponse 200 schema/hook/updateOne.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Handler\Hook::handleUpdateOne
      *

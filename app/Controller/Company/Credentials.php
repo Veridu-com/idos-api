@@ -71,8 +71,8 @@ class Credentials implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/credential/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -103,8 +103,8 @@ class Credentials implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/credential/getOne.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBCredential::findByPubKey
      *
@@ -136,8 +136,8 @@ class Credentials implements ControllerInterface {
      * @apiEndpointRequiredParam body bool production false Production flag
      * @apiEndpointResponse 201 schema/credential/createNew.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Handler\Credential::handleCreateNew
      *
@@ -175,8 +175,8 @@ class Credentials implements ControllerInterface {
      * @apiEndpointRequiredParam body string name New-Name New Credential name
      * @apiEndpointResponse 200 schema/credential/updateOne.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBCredential::findByPubKey
      * @see \App\Handler\Credential::handleUpdateOne
@@ -214,8 +214,8 @@ class Credentials implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/credential/deleteOne.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBCredential::findByPubKey
      * @see \App\Handler\Credential::handleDeleteOne

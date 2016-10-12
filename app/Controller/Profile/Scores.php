@@ -75,8 +75,8 @@ class Scores implements ControllerInterface {
      *
      * @see \App\Repository\Profile\DBScore::findBy
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -185,8 +185,8 @@ class Scores implements ControllerInterface {
      *
      * @see \App\Handler\Profile\Score::handleUpdateOne
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

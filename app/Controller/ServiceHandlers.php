@@ -77,7 +77,7 @@ class ServiceHandlers implements ControllerInterface {
         $body = [
             'data'    => $entities->toArray(),
             'updated' => (
-                $entities->isEmpty() ? time() : max($entities->max('created_at'), $entities->max('updated_at'))
+                $entities->isEmpty() ? time() : max($entities->max('createdAt'), $entities->max('updatedAt'))
             )
         ];
 

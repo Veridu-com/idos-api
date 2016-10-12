@@ -73,8 +73,8 @@ class Tags implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/tag/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBTag::getAllByUserIdAndTagSlugs
      *

@@ -23,7 +23,7 @@ class Invitations implements ControllerInterface {
     /**
      * Invitation Repository instance.
      *
-     * @var App\Repository\Company\InvitationInterface
+     * @var \App\Repository\Company\InvitationInterface
      */
     private $repository;
     /**
@@ -35,16 +35,16 @@ class Invitations implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\InvitationInterface $repository
-     * @param \League\Tactician\CommandBus               $commandBus
-     * @param App\Factory\Command                        $commandFactory
+     * @param \App\Repository\Company\InvitationInterface $repository
+     * @param \League\Tactician\CommandBus                $commandBus
+     * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -63,8 +63,8 @@ class Invitations implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/member/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

@@ -31,7 +31,7 @@ interface MemberInterface extends RepositoryInterface {
      *
      * @param int   $companyId   The company identifier
      * @param array $queryParams The query parameters
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getByCompanyId(int $companyId, array $queryParams = []) : Collection;
