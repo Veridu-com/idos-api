@@ -59,8 +59,6 @@ class CreateNew extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Profile\Task\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {
@@ -81,10 +79,6 @@ class CreateNew extends AbstractCommand {
 
         if (isset($parameters['message'])) {
             $this->message = $parameters['message'];
-        }
-
-        if (isset($parameters['processId'])) {
-            $this->processId = $parameters['processId'];
         }
 
         return $this;

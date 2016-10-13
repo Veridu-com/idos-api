@@ -9,10 +9,10 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Factory\Command;
-use App\Repository\UserInterface;
 use App\Repository\Profile\CandidateInterface;
 use App\Repository\Profile\ScoreInterface;
 use App\Repository\Profile\SourceInterface;
+use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -104,7 +104,7 @@ class Profiles implements ControllerInterface {
         $body = [
             'data'    => $entities->toArray(),
             'updated' => (
-                $entities->isEmpty() ? time() : max($entities->max('updated_at'), $entities->max('created_at'))
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 
@@ -125,19 +125,38 @@ class Profiles implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see \App\Repository\CandidateInterface::getAllByUserIdAndAttributeNames
+     * @see \App\Repository\ScoreInterface::getByUserId
+     * @see \App\Repository\SourceInterface::getByUserId
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('user');
+        $user = $request->getAttribute('targetUser');
 
-        $data = $user->toArray();
-        $data['candidates'] = $this->candidateRepository->getAllByUserIdAndNames($user->id)->toArray();
-        $data['scores'] = $this->scoreRepository->getByUserId($user->id)->toArray();
-        $data['sources'] = $this->sourceRepository->getByUserId($user->id)->toArray();
+        $candidates = $this->candidateRepository->getAllByUserIdAndAttributeNames($user->id);
+        $scores     = $this->scoreRepository->getByUserId($user->id);
+        $sources    = $this->sourceRepository->getByUserId($user->id);
+
+        $data = [
+            'attributes' => [],
+            'candidates' => $candidates->toArray(),
+            'scores'     => $scores->toArray(),
+            'sources'    => $sources->toArray()
+        ];
 
         $body = [
             'data'    => $data,
-            'updated' => $user->updated_at ?: $user->created_at
+            'updated' => max(
+                $user->updatedAt,
+                $user->createdAt,
+                $candidates->max('updatedAt'),
+                $candidates->max('createdAt'),
+                $scores->max('updatedAt'),
+                $scores->max('createdAt'),
+                $sources->max('updatedAt'),
+                $sources->max('createdAt')
+            )
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -49,13 +49,13 @@ class CreateNew extends AbstractCommand {
      * Invitation's related company.
      * Target company that the member will have access to.
      *
-     * @var App\Entity\Company
+     * @var \App\Entity\Company
      */
     public $company;
     /**
      * Invitation's related identity, creator of the invitation.
      *
-     * @var App\Entity\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
     /**
@@ -72,6 +72,7 @@ class CreateNew extends AbstractCommand {
         if (isset($parameters['email'])) {
             $this->email = $parameters['email'];
         }
+
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }

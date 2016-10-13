@@ -60,7 +60,6 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
             'nullable'   => false,
             'hydrate'    => false
         ],
-
         'creator' => [
             'type'       => 'MANY_TO_ONE',
             'table'      => 'services',
@@ -71,7 +70,7 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
             'hydrate'    => [
                 'name'
             ]
-        ],
+        ]
     ];
 
     /**
@@ -80,8 +79,9 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
     public function findByUserId(int $userId, array $filters = []) : Collection {
         $result = $this->findBy(
             [
-            'user_id' => $userId
-            ], $filters
+                'user_id' => $userId
+            ],
+            $filters
         );
 
         return $result;
@@ -90,7 +90,7 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection {
+    public function getAllByUserIdAndAttributeNames(int $userId, array $filters = []) : Collection {
         $result = $this->query()
             ->selectRaw('candidates.*')
             ->where('user_id', '=', $userId);
@@ -119,7 +119,12 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
      * {@inheritdoc}
      */
     public function findOneByUserIdAndAttributeName(int $userId, string $attributeName) : Candidate {
-        $result = $this->findBy(['user_id' => $userId, 'attribute' => $attributeName]);
+        $result = $this->findBy(
+            [
+                'user_id'   => $userId,
+                'attribute' => $attributeName
+            ]
+        );
 
         if ($result->isEmpty()) {
             throw new NotFound();
@@ -131,7 +136,12 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
     /**
      * {@inheritdoc}
      */
-    public function deleteOneByUserIdAndName(int $userId, string $name) : int {
-        return $this->deleteBy(['user_id' => $userId, 'name' => $name]);
+    public function deleteOneByUserIdAndAttributeName(int $userId, string $attributeName) : int {
+        return $this->deleteBy(
+            [
+                'user_id'   => $userId,
+                'attribute' => $attributeName
+            ]
+        );
     }
 }

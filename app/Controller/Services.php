@@ -75,7 +75,7 @@ class Services implements ControllerInterface {
         $body = [
             'data'    => $entities->toArray(),
             'updated' => (
-                $entities->isEmpty() ? time() : max($entities->max('updated_at'), $entities->max('created_at'))
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 

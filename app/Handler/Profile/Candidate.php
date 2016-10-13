@@ -94,7 +94,7 @@ class Candidate implements HandlerInterface {
     }
 
     /**
-     * Creates a new candidate data in the given user.
+     * Creates a new candidate data for the given user.
      *
      * @param \App\Command\Profile\Candidate\CreateNew $command
      *

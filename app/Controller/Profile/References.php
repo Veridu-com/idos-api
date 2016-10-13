@@ -64,8 +64,8 @@ class References implements ControllerInterface {
      * @apiEndpointParam query string names firstName,middleName,lastName
      * @apiEndpointResponse 200 schema/reference/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBReference::getAllByUserIdAndNames
      *
@@ -168,8 +168,8 @@ class References implements ControllerInterface {
      * @apiEndpointRequiredParam body string value reference-value Reference value
      * @apiEndpointResponse 200 schema/reference/updateOne.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Handler\Profile\Reference::handleUpdateOne
      *

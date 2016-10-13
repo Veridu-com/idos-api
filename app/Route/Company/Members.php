@@ -89,10 +89,12 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/members',
                 'App\Controller\Company\Members:listAll'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::PRIVATE_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('members:listAll');
     }
@@ -125,10 +127,12 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/membership',
                 'App\Controller\Company\Members:getMembership'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::PRIVATE_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT | Role::COMPANY_REVIEWER_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('members:getMembership');
     }
@@ -162,10 +166,12 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/members/{memberId:[0-9]+}',
                 'App\Controller\Company\Members:getOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::PRIVATE_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('members:getOne');
     }
@@ -199,10 +205,12 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/members/{memberId:[0-9]+}',
                 'App\Controller\Company\Members:updateOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::PRIVATE_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('members:updateOne');
     }
@@ -236,10 +244,12 @@ class Members implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/members/{memberId:[0-9]+}',
                 'App\Controller\Company\Members:deleteOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::PRIVATE_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('members:deleteOne');
     }

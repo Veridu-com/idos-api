@@ -113,7 +113,7 @@ class Permissions implements ControllerInterface {
         $body = [
             'data'    => $permissions->toArray(),
             'updated' => (
-                $permissions->isEmpty() ? time() : $permissions->max('updated_at')
+                $permissions->isEmpty() ? time() : $permissions->max('updatedAt')
             )
         ];
 

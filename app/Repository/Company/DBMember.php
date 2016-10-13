@@ -75,10 +75,12 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
      * {@inheritdoc}
      */
     public function findMembership(int $identityId, int $companyId) : Member {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'identity_id' => $identityId,
             'company_id'  => $companyId
-        ]);
+            ]
+        );
     }
 
     /**

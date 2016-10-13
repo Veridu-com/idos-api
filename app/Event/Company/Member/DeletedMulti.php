@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
  */
 class DeletedMulti extends AbstractEvent {
     /**
-     * Event related Companies.
+     * Event related Members.
      *
      * @var \Illuminate\Support\Collection
      */

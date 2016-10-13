@@ -22,10 +22,10 @@ use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\HookInterface;
 use App\Validator\Company\Hook as HookValidator;
+use GuzzleHttp\Client as HttpClient;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
-use \GuzzleHttp\Client as HttpClient;
 
 /**
  * Handles Hook commands.

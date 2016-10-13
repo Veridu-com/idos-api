@@ -8,28 +8,28 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Candidate;
 
+use App\Entity\Profile\Candidate;
 use App\Event\AbstractEvent;
-use Illuminate\Support\Collection;
 
 /**
  * Deleted event.
  */
 class Deleted extends AbstractEvent {
     /**
-     * Event related Companies.
+     * Event related Candidate.
      *
-     * @var \Illuminate\Support\Collection
+     * @var \App\Entity\Profile\Candidate
      */
-    public $candidates;
+    public $candidate;
 
     /**
      * Class constructor.
      *
-     * @param \Illuminate\Support\Collection $candidates
+     * @param \App\Entity\Profile\Candidate $candidate
      *
      * @return void
      */
-    public function __construct(Collection $candidates) {
-        $this->candidates = $candidates;
+    public function __construct(Candidate $candidate) {
+        $this->candidate = $candidate;
     }
 }

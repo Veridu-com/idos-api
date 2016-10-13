@@ -72,8 +72,8 @@ class Reviews implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/review/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\Profile\DBReview::getAllByUserIdAndFlagIdsAndIdentity
      *
@@ -178,8 +178,8 @@ class Reviews implements ControllerInterface {
      * @apiEndpointRequiredParam body boolean positive false
      * @apiEndpointResponse 200 schema/review/updateOne.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

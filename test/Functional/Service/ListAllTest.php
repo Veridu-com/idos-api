@@ -57,7 +57,8 @@ class ListAllTest extends AbstractFunctional {
                 'idos:source.spotify.created',
                 'idos:source.twitter.created',
                 'idos:source.yahoo.created'
-            ], $body['data'][0]['listens']);
+            ], $body['data'][0]['listens']
+        );
         $this->assertEquals(['handler:scrape.completed'], $body['data'][0]['triggers']);
 
         $this->assertSame(517015180, $body['data'][1]['id']);
@@ -77,7 +78,8 @@ class ListAllTest extends AbstractFunctional {
                 'idos:raw.spotify.created',
                 'idos:raw.twitter.created',
                 'idos:raw.yahoo.created'
-              ], $body['data'][1]['listens']);
+            ], $body['data'][1]['listens']
+        );
         $this->assertEquals(['handler:feature.completed'], $body['data'][1]['triggers']);
 
         $this->assertSame(1860914067, $body['data'][2]['id']);

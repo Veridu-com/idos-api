@@ -63,8 +63,8 @@ class Members implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/member/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -162,7 +162,42 @@ class Members implements ControllerInterface {
     }
 
     /**
-     * Deletes a company member.
+     * Updates a Company Member.
+     *
+     * @apiEndpointRequiredParam body string role company:owner
+     * @apiEndpointResponse 200 schema/member/updateOne.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Handler\Handler::handleUpdateOne
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $command = $this->commandFactory->create('Company\\Member\\UpdateOne');
+        $command
+            ->setParameter('memberId', $request->getAttribute('decodedMemberId'))
+            ->setParameters($request->getParsedBody() ?: []);
+
+        $member = $this->commandBus->handle($command);
+
+        $body = [
+            'data'    => $member->toArray(),
+            'updated' => $member->updated_at
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Deletes a Company member.
      *
      * @apiEndpointResponse 201 schema/member/deleteOne.json
      *
@@ -210,8 +245,6 @@ class Members implements ControllerInterface {
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
-     * @param \Psr\ServerRequestInterface              $request
-     * @param \Psr\ResponseInterface                   $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
