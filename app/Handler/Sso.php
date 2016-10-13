@@ -340,7 +340,8 @@ class Sso implements HandlerInterface {
         $event = $this->eventFactory->create($eventClass, $user->username);
         $this->emitter->emit($event);
 
-        $tokens = [
+        $return = [
+            'username'   => $user->username,
             'user_token' => Token::generateUserToken(
                 $user->username,
                 $command->credentialPubKey,
@@ -349,7 +350,7 @@ class Sso implements HandlerInterface {
         ];
 
         if ($credential->special) {
-            $tokens['identity_token'] = Token::generateIdentityToken($identity->publicKey, $identity->privateKey);
+            $return['identity_token'] = Token::generateIdentityToken($identity->publicKey, $identity->privateKey);
 
             // if it is a signup on a Dashboard
             if (! empty($command->signupHash)) {
@@ -359,6 +360,7 @@ class Sso implements HandlerInterface {
                     if ($invitation->expires < strftime('%Y-%m-%d', time())) {
                         throw new InvitationException('Expired invitation.');
                     }
+
                     if ($invitation->voided) {
                         throw new InvitationException('Invitation already used.');
                     }
@@ -367,27 +369,30 @@ class Sso implements HandlerInterface {
 
                     // if memberId is null and invitation is not expired
                     // a member should be created for this identity
-                    if (is_null($invitation->memberId)) {
+                    if ($invitation->memberId === null) {
                         try {
                             $member = $this->memberRepository->findMembership($identity->id, $company->id);
                         } catch (NotFound $e) {
                             // if can't find membership, creates
-                            $member               = $this->createNewMembership($company, $identity->id, $invitation->role, $command->ipAddress);
+                            $member = $this->createNewMembership(
+                                $company,
+                                $identity->id,
+                                $invitation->role,
+                                $command->ipAddress
+                            );
                             $invitation->memberId = $member->id;
                             $invitation->voided   = true;
                             // saves modified invitation
                             $this->invitationRepository->save($invitation);
                         }
-
                     }
                 } catch (NotFound $e) {
                     throw new InvitationException('Invalid invitation code.');
                 }
-
             }
         }
 
-        return $tokens;
+        return $return;
     }
 
     /**

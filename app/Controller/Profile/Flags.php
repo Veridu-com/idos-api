@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to companies/{companySlug}/profiles/{userId}/flags.
+ * Handles requests to /profiles/{userName}/flags and /profiles/{userName}/flags/{flagSlug}.
  */
 class Flags implements ControllerInterface {
     /**
@@ -137,8 +137,8 @@ class Flags implements ControllerInterface {
     /**
      * Creates a new flag for the user.
      *
-     * @apiEndpointRequiredParam body string name flag test Flag name
-     * @apiEndpointRequiredParam body string reference firstName Flag reference
+     * @apiEndpointRequiredParam body string slug flag middle-name-mismatch Flag slug
+     * @apiEndpointRequiredParam body string attribute middle-name Flag attribute
      * @apiEndpointResponse 201 schema/flag/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

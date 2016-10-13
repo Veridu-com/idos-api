@@ -170,7 +170,7 @@ class References implements RouteInterface {
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
-     * @apiEndpointURIFragment string referenceName data-name
+     * @apiEndpointURIFragment string referenceName reference-name
      *
      * @param \Slim\App $app
      * @param \callable $auth

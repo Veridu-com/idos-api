@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
  */
 interface CandidateInterface extends RepositoryInterface {
     /**
-     * Returns all features based on their user id.
+     * Returns all Candidate entities based on the user id.
      *
      * @param int   $userId
      * @param array $filters
@@ -27,14 +27,14 @@ interface CandidateInterface extends RepositoryInterface {
     public function findByUserId(int $userId, array $filters = []) : Collection;
 
     /**
-     * Gets all Candidate entities based on their user_id, filtering them by name.
+     * Gets all Candidate entities based on the user_id, filtering them by attribute name.
      *
      * @param int   $userId
      * @param array $filters
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection;
+    public function getAllByUserIdAndAttributeNames(int $userId, array $filters = []) : Collection;
 
     /**
      * Deletes all Candidate entities based on user_id.
@@ -46,7 +46,7 @@ interface CandidateInterface extends RepositoryInterface {
     public function deleteByUserId(int $userId, array $filters = []) : int;
 
     /**
-     * Find a Candidate entity based on its user_id and attribute name.
+     * Find a Candidate entity based on the user_id and attribute name.
      *
      * @param int    $userId
      * @param string $attributeName
@@ -58,12 +58,12 @@ interface CandidateInterface extends RepositoryInterface {
     public function findOneByUserIdAndAttributeName(int $userId, string $attributeName) : Candidate;
 
     /**
-     * Deletes a Candidate entity based on their user_id and name.
+     * Deletes a Candidate entity based on the user_id and name.
      *
      * @param int    $userId
-     * @param string $name
+     * @param string $attributeName
      *
      * @return int
      */
-    public function deleteOneByUserIdAndName(int $userId, string $name) : int;
+    public function deleteOneByUserIdAndAttributeName(int $userId, string $attributeName) : int;
 }

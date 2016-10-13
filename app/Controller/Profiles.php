@@ -9,6 +9,9 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Factory\Command;
+use App\Repository\Profile\CandidateInterface;
+use App\Repository\Profile\ScoreInterface;
+use App\Repository\Profile\SourceInterface;
 use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -24,14 +27,30 @@ class Profiles implements ControllerInterface {
      * @var \App\Repository\UserInterface
      */
     private $repository;
-
+    /**
+     * Attribute Repository instance.
+     *
+     * @var \App\Repository\Profile\CandidateInterface
+     */
+    private $candidateRepository;
+    /**
+     * Score Repository instance.
+     *
+     * @var \App\Repository\Profile\ScoreInterface
+     */
+    private $scoreRepository;
+    /**
+     * Source Repository instance.
+     *
+     * @var \App\Repository\Profile\SourceInterface
+     */
+    private $sourceRepository;
     /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
      */
     private $commandBus;
-
     /**
      * Command Factory instance.
      *
@@ -50,12 +69,18 @@ class Profiles implements ControllerInterface {
      */
     public function __construct(
         UserInterface $repository,
+        CandidateInterface $candidateRepository,
+        ScoreInterface $scoreRepository,
+        SourceInterface $sourceRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository     = $repository;
-        $this->commandBus     = $commandBus;
-        $this->commandFactory = $commandFactory;
+        $this->repository          = $repository;
+        $this->candidateRepository = $candidateRepository;
+        $this->scoreRepository     = $scoreRepository;
+        $this->sourceRepository    = $sourceRepository;
+        $this->commandBus          = $commandBus;
+        $this->commandFactory      = $commandFactory;
     }
 
     /**
@@ -79,7 +104,58 @@ class Profiles implements ControllerInterface {
         $body = [
             'data'    => $entities->toArray(),
             'updated' => (
-                $entities->isEmpty() ? time() : max($entities->max('updated_at'), $entities->max('created_at'))
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
+            )
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Retrieves a single profile.
+     *
+     * @apiEndpointResponse 200 schema/profile/getOne.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Repository\CandidateInterface::getAllByUserIdAndAttributeNames
+     * @see \App\Repository\ScoreInterface::getByUserId
+     * @see \App\Repository\SourceInterface::getByUserId
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user = $request->getAttribute('targetUser');
+
+        $candidates = $this->candidateRepository->getAllByUserIdAndAttributeNames($user->id);
+        $scores     = $this->scoreRepository->getByUserId($user->id);
+        $sources    = $this->sourceRepository->getByUserId($user->id);
+
+        $data = [
+            'attributes' => [],
+            'candidates' => $candidates->toArray(),
+            'scores'     => $scores->toArray(),
+            'sources'    => $sources->toArray()
+        ];
+
+        $body = [
+            'data'    => $data,
+            'updated' => max(
+                $user->updatedAt,
+                $user->createdAt,
+                $candidates->max('updatedAt'),
+                $candidates->max('createdAt'),
+                $scores->max('updatedAt'),
+                $scores->max('createdAt'),
+                $sources->max('updatedAt'),
+                $sources->max('createdAt')
             )
         ];
 

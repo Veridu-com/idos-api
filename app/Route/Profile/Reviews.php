@@ -165,8 +165,8 @@ class Reviews implements RouteInterface {
      *
      * @apiEndpoint PUT /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
      * @apiGroup Profile Reviews
-     * @apiAuth header key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
-     * @apiAuth query key credentialToken 2f476be4f457ef606f3b9177b5bf19c9 Company's credential token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      * @apiEndpointURIFragment int reviewId 21494

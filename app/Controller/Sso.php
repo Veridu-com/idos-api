@@ -115,10 +115,12 @@ class Sso implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
 
         $body = [
-            'data' => in_array(
-                $request->getAttribute('providerName'),
-                $this->settings['sso_providers']
-            )
+            'data' => [
+                'enabled' => in_array(
+                    $request->getAttribute('providerName'),
+                    $this->settings['sso_providers']
+                )
+            ]
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -134,11 +136,11 @@ class Sso implements ControllerInterface {
      * Creates a token for the given user in the given provider.
      *
      * @apiEndpointResponse 201 schema/sso/createNew.json
-     * @apiEndpointParam body string key xyz Provider key
-     * @apiEndpointParam body string secret wzy Provider secret.
-     * @apiEndpointParam body string ipAddress 192.168.0.1 User ip address.
-     * @apiEndpointParam body string accessToken zxq Provider access token
-     * @apiEndpointParam body string credentialPubKey wxz Credential public key.
+     * @apiEndpointRequiredParam body string provider twitter Provider name (one of: amazon, facebook, google, linkedin, paypal, twitter)
+     * @apiEndpointRequiredParam body string access_token abc Provider access token (oAuth 1.x and 2.x)
+     * @apiEndpointRequiredParam body string credential wxz Credential public key.
+     * @apiEndpointParam body string token_secret def Profiver token secret (oAuth 1.x)
+     * @apiEndpointParam body string signup_hash zyd A signup hash (Dashboard login)
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -152,7 +154,6 @@ class Sso implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $providerName     = $request->getParsedBodyParam('provider');
         $credentialPubKey = $request->getParsedBodyParam('credential');
-        $signupHash       = $request->getParsedBodyParam('signup_hash');
         $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
 
         $availableProviders = $this->settings['sso_providers'];
@@ -227,10 +228,14 @@ class Sso implements ControllerInterface {
         }
 
         $command
-            ->setParameter('signupHash', $signupHash)
             ->setParameter('ipAddress', $request->getAttribute('ip_address'))
             ->setParameter('accessToken', $request->getParsedBodyParam('access_token'))
             ->setParameter('credentialPubKey', $credentialPubKey);
+
+        $signupHash = $request->getParsedBodyParam('signup_hash');
+        if ($signupHash) {
+            $command->setParameter('signupHash', $signupHash);
+        }
 
         $tokenSecret = $request->getParsedBodyParam('token_secret');
         if ($tokenSecret) {

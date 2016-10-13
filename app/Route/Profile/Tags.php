@@ -67,8 +67,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/tags
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      *
@@ -101,8 +101,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/tags/{tagSlug}
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      * @apiEndpointURIFragment string tagSlug tag-test
@@ -136,8 +136,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint POST /companies/{companySlug}/profiles/{userId}/tags
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      *
@@ -170,8 +170,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}/tags/{tagSlug}
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      * @apiEndpointURIFragment string tagSlug tag-test
@@ -205,8 +205,8 @@ class Tags implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}/tags
      * @apiGroup Profile Tags
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int userId 1827452
      *

@@ -27,7 +27,7 @@ class Categories implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            // 'category:listAll'
+            'category:listAll'
         ];
     }
 

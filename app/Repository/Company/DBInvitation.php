@@ -38,17 +38,21 @@ class DBInvitation extends AbstractSQLDBRepository implements InvitationInterfac
      * {@inheritdoc}
      */
     public function findOneByHash(string $hash) : Invitation {
-        return $this->findOneBy([
+        return $this->findOneBy(
+            [
             'hash' => $hash
-        ]);
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function getAllByCompanyId(int $companyId) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'company_id' => $companyId
-        ]);
+            ]
+        );
     }
 }

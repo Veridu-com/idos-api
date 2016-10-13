@@ -9,7 +9,23 @@
         },
         "data": {
             "description": "Sso response payload",
-            "type": "string"
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "format": "[a-zA-Z0-9_-]+"
+                },
+                "user_token": {
+                    "type": "string"
+                },
+                "identity_token": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "username",
+                "user_token"
+            ]
         }
     },
     "required": [

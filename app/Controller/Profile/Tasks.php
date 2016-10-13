@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/:userName/processes/:processId/:taskId.
+ * Handles requests to /profiles/{userName}/processes/{processId}/tasks and /profiles/{userName}/processes/{processId}/tasks/{taskId}.
  */
 class Tasks implements ControllerInterface {
     /**
@@ -103,9 +103,9 @@ class Tasks implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string name Task test Task name
      * @apiEndpointRequiredParam body string event user:created Task event
-     * @apiEndpointRequiredParam body boolean running false Task running flag
-     * @apiEndpointRequiredParam body boolean success true Task success flag
-     * @apiEndpointRequiredParam body string message xyz Task message
+     * @apiEndpointParam body boolean running false Task running flag
+     * @apiEndpointParam body boolean success true Task success flag
+     * @apiEndpointParam body string message xyz Task message
      * @apiEndpointResponse 201 schema/task/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -122,7 +122,7 @@ class Tasks implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('service', $request->getAttribute('service'))
-            ->setParameters(['processId' => $processId]);
+            ->setParameter('processId', $processId);
 
         $task = $this->commandBus->handle($command);
 
@@ -144,11 +144,9 @@ class Tasks implements ControllerInterface {
     /**
      * Updates a Task.
      *
-     * @apiEndpointRequiredParam body string name task Task name
-     * @apiEndpointRequiredParam body string event user:created Task event
-     * @apiEndpointRequiredParam body boolean running false Task running flag
-     * @apiEndpointRequiredParam body boolean success true Task success flag
-     * @apiEndpointRequiredParam body string message xyz Task message
+     * @apiEndpointParam body boolean running false Task running flag
+     * @apiEndpointParam body boolean success true Task success flag
+     * @apiEndpointParam body string message xyz Task message
      * @apiEndpointResponse 200 schema/task/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

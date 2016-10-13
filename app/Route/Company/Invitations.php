@@ -82,10 +82,12 @@ class Invitations implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/invitations',
                 'App\Controller\Company\Invitations:createNew'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::PRIVATE_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('invitations:createNew');
     }
@@ -95,7 +97,7 @@ class Invitations implements RouteInterface {
      *
      * Retrieves all public information from Invitations
      *
-     * @apiEndpoint GET /companies/{companySlug}/invitations/invitations
+     * @apiEndpoint GET /companies/{companySlug}/invitations
      * @apiGroup Company Invitations
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -118,10 +120,12 @@ class Invitations implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/invitations',
                 'App\Controller\Company\Invitations:listAll'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::PRIVATE_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('invitations:listAll');
     }
@@ -155,10 +159,12 @@ class Invitations implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/invitations/{invitationId:[0-9]+}',
                 'App\Controller\Company\Invitations:deleteOne'
             )
-            ->add($permission(
+            ->add(
+                $permission(
                 EndpointPermission::PRIVATE_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('invitations:deleteOne');
     }

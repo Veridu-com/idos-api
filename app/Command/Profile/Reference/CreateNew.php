@@ -21,6 +21,12 @@ class CreateNew extends AbstractCommand {
      */
     public $user;
     /**
+     * Reference ip address.
+     *
+     * @var string
+     */
+    public $ipaddr;
+    /**
      * New reference name.
      *
      * @var string
@@ -47,6 +53,10 @@ class CreateNew extends AbstractCommand {
 
         if (isset($parameters['value'])) {
             $this->value = $parameters['value'];
+        }
+
+        if (isset($parameters['ipaddr'])) {
+            $this->ipaddr = $parameters['ipaddr'];
         }
 
         return $this;

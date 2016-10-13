@@ -20,28 +20,24 @@ class CreateNew extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Candidate's creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Attribute name.
      *
      * @var string
      */
     public $attribute;
-
     /**
      * Candidate value.
      *
      * @var string
      */
     public $value;
-
     /**
      * Candidate support.
      *

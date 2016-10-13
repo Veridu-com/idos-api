@@ -14,6 +14,7 @@ use App\Handler;
 use App\Middleware;
 use App\Middleware\Auth;
 use App\Repository;
+use GuzzleHttp\Client as HttpClient;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Connection;
 use Interop\Container\ContainerInterface;
@@ -517,6 +518,11 @@ $container['gearmanClient'] = function (ContainerInterface $container) : Gearman
     } catch (\GearmanException $exception) {
         throw new AppException('Could not connect to Gearman Job Server');
     }
+};
+
+// HTTP Client
+$container['httpClient'] = function (ContainerInterface $container) : HttpClient {
+    return new HttpClient();
 };
 
 // Registering Event Emitter

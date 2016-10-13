@@ -61,7 +61,7 @@ class Categories implements ControllerInterface {
     /**
      * Lists all Categories that are visible to the acting Company.
      *
-     * @apiEndpointResponse 200 schema/services/listAll.json
+     * @apiEndpointResponse 200 schema/categories/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -74,7 +74,7 @@ class Categories implements ControllerInterface {
         $body = [
             'data'    => $entities->toArray(),
             'updated' => (
-                $entities->isEmpty() ? time() : max($entities->max('updated_at'), $entities->max('created_at'))
+                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
             )
         ];
 

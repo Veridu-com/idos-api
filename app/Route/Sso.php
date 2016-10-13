@@ -123,8 +123,6 @@ class Sso implements RouteInterface {
      *
      * @apiEndpoint POST /sso
      * @apiGroup Profile Sso
-     * @apiAuth header key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query key credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      *
      * @param \Slim\App $app
      * @param \callable $auth

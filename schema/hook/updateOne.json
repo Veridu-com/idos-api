@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "PUT /management/credentials/{pubKey}/hooks/{hookId}",
+    "title": "PUT /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}",
     "type": "object",
     "properties": {
         "status": {
