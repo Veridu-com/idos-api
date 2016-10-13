@@ -27,6 +27,10 @@ class CreateNewTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
+        $this->uri        = '/1.0/companies/veridu-ltd/services';
+        /**
+         * Creating a new Server
+         */
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -38,7 +42,44 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'service_id' => 1321189817,
+                    'name'          => 'New service name',
+                    'url'           => 'http://service-url.com',
+                    'enabled'       => true,
+                    'access'        => 1,
+                    'auth_username' => 'idos',
+                    'auth_password' => 'secret',
+                    'listens'       => [
+                        'source.add.facebook'
+                    ],
+                    'triggers' => [
+                        'source.scraper.facebook.finished'
+                    ]
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
+        $body = json_decode((string) $response->getBody(), true);
+
+        $serviceId = $body['data']['id'];
+
+        /**
+         * Creating a service-handler
+         */
+        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers';
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'service_id' => $serviceId,
                     'listens'    => [
                         'source.add.facebook'
                     ]

@@ -39,7 +39,7 @@ class UpdateOneTest extends AbstractFunctional {
             json_encode(
                 [
                     'listens' => [
-                        'idos:source.facebook.added'
+                        'idos:source.dropbox.created'
                     ]
                 ]
             )
@@ -52,7 +52,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
-        $this->assertEquals(['idos:source.facebook.added'], $body['data']['listens']);
+        $this->assertEquals(['idos:source.dropbox.created'], $body['data']['listens']);
 
         /*
          * Validates Response using the Json Schema.
@@ -81,7 +81,7 @@ class UpdateOneTest extends AbstractFunctional {
             json_encode(
                 [
                     'listens' => [
-                        'dummy:listens'
+                        'source.not.exists'
                     ]
                 ]
             )

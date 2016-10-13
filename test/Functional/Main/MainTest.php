@@ -13,7 +13,7 @@ class MainTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/';
+        $this->uri        = '/';
     }
 
     public function testSuccess() {
