@@ -115,10 +115,12 @@ class Sso implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
 
         $body = [
-            'data' => in_array(
-                $request->getAttribute('providerName'),
-                $this->settings['sso_providers']
-            )
+            'data' => [
+                'enabled' => in_array(
+                    $request->getAttribute('providerName'),
+                    $this->settings['sso_providers']
+                )
+            ]
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

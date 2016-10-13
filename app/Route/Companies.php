@@ -103,7 +103,7 @@ class Companies implements RouteInterface {
     /**
      * Retrieve a single Company.
      *
-     * Retrieves all public information from a single Company.
+     * Retrieves all public information about a single Company.
      *
      * @apiEndpoint GET /companies/{companySlug}
      * @apiGroup Company

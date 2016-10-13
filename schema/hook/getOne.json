@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "GET /management/credentials/{pubKey}/hooks/{hookId}",
+    "title": "GET /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}",
     "type": "object",
     "properties": {
         "status": {
