@@ -119,7 +119,7 @@ class Members implements ControllerInterface {
     /**
      * Updates a company member.
      * 
-     * Gets the member for the Acting Identity on the Target company.
+     * Updates a company member identified by the given id.
      *
      * @apiEndpointRequiredParam body string role company.owner Role type
      * @apiEndpointResponse 201 schema/member/updateOne.json
