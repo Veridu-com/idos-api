@@ -12,18 +12,18 @@ class S41InvitationsSeed extends AbstractSeed {
 
         $data = [
             [
-                'name'          => 'Rafael',
-                'email'         => 'rafael@veridu.com',
+                'name'          => 'Flavio Heleno',
+                'email'         => 'flavio@veridu.com',
                 'company_id'    => 1,
-                'role'          => 'company.admin',
+                'role'          => 'company.owner',
                 'credential_id' => 1,
                 'member_id'     => null,
-                'creator_id'    => 1,
+                'creator_id'    => null,
                 'expires'       => date('Y-m-d H:i:s', strtotime('now + 1 days')),
                 'hash'          => md5('cool-hash'), // cbff30de456ce61ccb7c1021c4dbf8b2
                 'voided'        => 0,
                 'created_at'    => $now
-            ],
+            ]
         ];
 
         $invitations = $this->table('invitations');
