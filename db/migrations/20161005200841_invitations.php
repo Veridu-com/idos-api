@@ -21,7 +21,7 @@ class Invitations extends AbstractMigration {
             ->addColumn('company_id', 'integer', ['null' => false])
             ->addColumn('credential_id', 'integer', ['null' => false])
             ->addColumn('member_id', 'integer', ['null' => true])
-            ->addColumn('creator_id', 'integer', ['null' => false])
+            ->addColumn('creator_id', 'integer', ['null' => true])
             ->addColumn('expires', 'timestamp', ['null' => false])
             ->addColumn('hash', 'text', ['null' => false])
             ->addColumn('voided', 'boolean', ['null' => false, 'default' => false])
