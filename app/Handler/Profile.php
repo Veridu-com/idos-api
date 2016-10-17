@@ -10,7 +10,6 @@ namespace App\Handler;
 
 use App\Command\Profile\ListAll;
 use App\Factory\Event;
-use App\Repository\Profile\ReviewInterface;
 use App\Repository\UserInterface;
 use App\Validator\Profile as ProfileValidator;
 use Illuminate\Support\Collection;
@@ -27,12 +26,6 @@ class Profile implements HandlerInterface {
      * @var \App\Repository\UserInterface
      */
     private $repository;
-    /**
-     * Review Repository instance.
-     *
-     * @var \App\Repository\ReviewInterface
-     */
-    private $reviewRepository;
     /**
      * Profile Validator instance.
      *
@@ -62,9 +55,6 @@ class Profile implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('User'),
                 $container
-                    ->get('repositoryFactory')
-                    ->create('Profile\Review'),
-                $container
                     ->get('validatorFactory')
                     ->create('Profile'),
                 $container
@@ -87,20 +77,18 @@ class Profile implements HandlerInterface {
      */
     public function __construct(
         UserInterface $repository,
-        ReviewInterface $reviewRepository,
         ProfileValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository       = $repository;
-        $this->reviewRepository = $reviewRepository;
-        $this->validator        = $validator;
-        $this->eventFactory     = $eventFactory;
-        $this->emitter          = $emitter;
+        $this->repository          = $repository;
+        $this->validator           = $validator;
+        $this->eventFactory        = $eventFactory;
+        $this->emitter             = $emitter;
     }
 
     /**
-     * Creates a new Profile.
+     * Lists all profiles.
      *
      * @param \App\Command\Profile\ListAll $command
      *

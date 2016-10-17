@@ -60,8 +60,8 @@ class Processes implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/processes
      * @apiGroup Profile Processes
-     * @apiAuth header key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
-     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -93,8 +93,8 @@ class Processes implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/processes/{processId}
      * @apiGroup Profile Processes
-     * @apiAuth header key CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
-     * @apiAuth query key credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int processId 3412
      *

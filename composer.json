@@ -52,7 +52,8 @@
         "robmorgan/phinx": "0.*",
         "slim/http-cache": "^0.3",
         "slim/slim": "^3.0",
-        "tedivm/stash": "^0.14"
+        "tedivm/stash": "^0.14",
+        "guzzlehttp/guzzle": "^6.2.2"
     },
     "require-dev": {
         "ext-xsl": "*",

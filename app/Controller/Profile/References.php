@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/reference.
+ * Handles requests to /profiles/{userName}/reference and /profiles/{userName}/references/{referenceName}.
  */
 class References implements ControllerInterface {
     /**
@@ -64,8 +64,8 @@ class References implements ControllerInterface {
      * @apiEndpointParam query string names firstName,middleName,lastName
      * @apiEndpointResponse 200 schema/reference/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBReference::getAllByUserIdAndNames
      *
@@ -142,7 +142,8 @@ class References implements ControllerInterface {
 
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('user', $request->getAttribute('targetUser'));
+            ->setParameter('user', $request->getAttribute('targetUser'))
+            ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
         $reference = $this->commandBus->handle($command);
 
@@ -167,8 +168,8 @@ class References implements ControllerInterface {
      * @apiEndpointRequiredParam body string value reference-value Reference value
      * @apiEndpointResponse 200 schema/reference/updateOne.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Handler\Profile\Reference::handleUpdateOne
      *

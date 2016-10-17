@@ -19,13 +19,13 @@ class Created extends AbstractServiceQueueEvent {
     /**
      * Event related Member.
      *
-     * @var App\Entity\Company\Invitation
+     * @var \App\Entity\Company\Invitation
      */
     public $invitation;
     /**
      * Event related Credential.
      *
-     * @var App\Entity\Company\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
     /**
@@ -50,7 +50,7 @@ class Created extends AbstractServiceQueueEvent {
     /**
      * Class constructor.
      *
-     * @param App\Entity\Company\Member $member
+     * @param \App\Entity\Company\Member $member
      *
      * @return void
      */

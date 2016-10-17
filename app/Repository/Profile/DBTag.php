@@ -43,7 +43,8 @@ class DBTag extends AbstractSQLDBRepository implements TagInterface {
             [
             'user_id' => $userId,
             'slug'    => $slug
-        ]);
+            ]
+        );
     }
 
     /**

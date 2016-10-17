@@ -1,6 +1,6 @@
 {
     "$schema" : "http://json-schema.org/draft-04/schema#",
-    "title": "DELETE /management/credentials/{pubKey}/hooks",
+    "title": "DELETE /companies/{companySlug}/credentials/{pubKey}/hooks",
     "type": "object",
     "properties": {
         "status": {

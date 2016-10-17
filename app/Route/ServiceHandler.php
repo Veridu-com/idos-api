@@ -65,7 +65,7 @@ class ServiceHandler implements RouteInterface {
      *
      * Retrieves a complete list of service handlers that belong to the requesting company.
      *
-     * @apiEndpoint GET /service-handlers
+     * @apiEndpoint GET /companies/{companySlug}/service-handlers
      * @apiGroup Company ServiceHandler
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -97,7 +97,7 @@ class ServiceHandler implements RouteInterface {
      *
      * Retrieves all public information from a single Service handler.
      *
-     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
+     * @apiEndpoint GET /companies/{companySlug}/service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -130,7 +130,7 @@ class ServiceHandler implements RouteInterface {
      *
      * Creates a new service handler for the requesting company.
      *
-     * @apiEndpoint POST /service-handlers
+     * @apiEndpoint POST /companies/{companySlug}/service-handlers
      * @apiGroup Company ServiceHandler
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -162,7 +162,7 @@ class ServiceHandler implements RouteInterface {
      *
      * Updates the information for a single ServiceHandler.
      *
-     * @apiEndpoint GET /service-handlers/{serviceHandlerId}
+     * @apiEndpoint GET /companies/{companySlug}/service-handlers/{serviceHandlerId}
      * @apiGroup Company ServiceHandler
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -181,7 +181,7 @@ class ServiceHandler implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:updateOne'
             )
@@ -195,7 +195,7 @@ class ServiceHandler implements RouteInterface {
      *
      * Deletes a single Service handler that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /service-handlers/{serviceHandlerId}
+     * @apiEndpoint DELETE /companies/{companySlug}/service-handlers/{servceHandlerId}
      * @apiGroup Company ServiceHandler
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -228,7 +228,7 @@ class ServiceHandler implements RouteInterface {
      *
      * Deletes all service handlers that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /service-handlers
+     * @apiEndpoint DELETE /companies/{companySlug}/service-handlers
      * @apiGroup Company ServiceHandler
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token

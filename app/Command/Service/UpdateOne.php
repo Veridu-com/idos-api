@@ -20,63 +20,48 @@ class UpdateOne extends AbstractCommand {
      * @var int
      */
     public $serviceId;
-
     /**
      * Service's company's instance.
      *
      * @var \App\Entity\Company
      */
     public $company;
-
-    /**
-     * Service's name.
-     *
-     * @var string
-     */
-    public $name;
-
     /**
      * Service's url.
      *
      * @var string
      */
     public $url;
-
     /**
      * Service's listens.
      *
      * @var array
      */
     public $listens;
-
     /**
      * Service's triggers.
      *
      * @var array
      */
     public $triggers;
-
     /**
      * Service's enabled.
      *
      * @var bool
      */
     public $enabled;
-
     /**
      * Service's access.
      *
      * @var int
      */
     public $access;
-
     /**
      * Service's authentication username.
      *
      * @var string
      */
     public $authUsername;
-
     /**
      * Service's authentication password.
      *
@@ -90,10 +75,6 @@ class UpdateOne extends AbstractCommand {
      * @return \App\Command\Service\UpdateOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
-        }
-
         if (isset($parameters['url'])) {
             $this->url = $parameters['url'];
         }

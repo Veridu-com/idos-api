@@ -17,13 +17,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{company-slug}/invitations.
+ * Handles requests to /companies/{companySlug}/invitations and /companies/{companySlug}/invitations/{invitationId}.
  */
 class Invitations implements ControllerInterface {
     /**
      * Invitation Repository instance.
      *
-     * @var App\Repository\Company\InvitationInterface
+     * @var \App\Repository\Company\InvitationInterface
      */
     private $repository;
     /**
@@ -35,16 +35,16 @@ class Invitations implements ControllerInterface {
     /**
      * Command Factory instance.
      *
-     * @var App\Factory\Command
+     * @var \App\Factory\Command
      */
     private $commandFactory;
 
     /**
      * Class constructor.
      *
-     * @param App\Repository\Company\InvitationInterface $repository
-     * @param \League\Tactician\CommandBus               $commandBus
-     * @param App\Factory\Command                        $commandFactory
+     * @param \App\Repository\Company\InvitationInterface $repository
+     * @param \League\Tactician\CommandBus                $commandBus
+     * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
      */
@@ -93,6 +93,9 @@ class Invitations implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string role company.owner Role type
      * @apiEndpointRequiredParam body string email jhondoe@idos.io User's email
+     * @apiEndpointRequiredParam body string name jhon User's name
+     * @apiEndpointRequiredParam body string credentialPubKey wqxehuwqwsthwosjbxwwsqwsdi A valid credential public key
+     * @apiEndpointParam body string expires 2016-11-23 Expiration date (if no expiration date is passed, the invitation will expire in one day)
      * @apiEndpointResponse 201 schema/member/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

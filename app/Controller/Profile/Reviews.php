@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to companies/{companySlug}/profiles/{userId}/flags/{flagId}/reviews.
+ * Handles requests to /companies/{companySlug}/profiles/{userId}/reviews and /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}.
  */
 class Reviews implements ControllerInterface {
     /**
@@ -72,8 +72,8 @@ class Reviews implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/review/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\Profile\DBReview::getAllByUserIdAndFlagIdsAndIdentity
      *
@@ -135,6 +135,8 @@ class Reviews implements ControllerInterface {
      * Created a new review data for a given source.
      *
      * @apiEndpointResponse 201 schema/review/createNew.json
+     * @apiEndpointRequiredParam body int flag_id 157896 Review flag_id
+     * @apiEndpointRequiredParam body boolean positive true Review positive
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -176,8 +178,8 @@ class Reviews implements ControllerInterface {
      * @apiEndpointRequiredParam body boolean positive false
      * @apiEndpointResponse 200 schema/review/updateOne.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

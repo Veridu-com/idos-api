@@ -163,10 +163,6 @@ class Service implements HandlerInterface {
             $this->validator->assertId($command->serviceId);
 
             $input = [];
-            if ($command->name) {
-                $this->validator->assertName($command->name);
-                $input['name'] = $command->name;
-            }
 
             if ($command->listens) {
                 $this->validator->assertArray($command->listens);

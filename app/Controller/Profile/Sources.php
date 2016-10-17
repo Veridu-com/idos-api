@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName:[a-zA-Z0-9_-]+}/sources.
+ * Handles requests to /profiles/{userName}/sources and /profiles/{userName}/sources/{sourceId}.
  */
 class Sources implements ControllerInterface {
     /**
@@ -136,6 +136,7 @@ class Sources implements ControllerInterface {
      *  - Phone should carry phone_number, country_code and optionally otp.
      *  - Submitted can carry as many fields as wanted.
      *
+     * @apiEndpointParam body string name twitter Source name
      * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
      * @apiEndpointResponse 201 schema/source/createNew.json
      *

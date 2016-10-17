@@ -21,7 +21,7 @@ class DeleteOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/companies/veridu-ltd/services/1321189817';
+        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers/1321189817';
     }
 
     public function testSuccess() {
@@ -52,7 +52,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/companies/veridu-ltd/service-handlers/12121212');
+        $this->uri = sprintf('/1.0/companies/veridu-ltd/service-handlers/123');
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [

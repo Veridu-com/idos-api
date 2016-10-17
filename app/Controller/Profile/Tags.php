@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/tags.
+ * Handles requests to /companies/{companySlug}/profiles/{userId}/tags and /companies/{companySlug}/profiles/{userId}/tags/{tagSlug}.
  */
 class Tags implements ControllerInterface {
     /**
@@ -73,8 +73,8 @@ class Tags implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/tag/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBTag::getAllByUserIdAndTagSlugs
      *
@@ -136,8 +136,8 @@ class Tags implements ControllerInterface {
      * Creates a new Tag for the Target User.
      *
      * @apiEndpointResponse 201 schema/tag/tagEntity.json
-     * @apiEndpointRequiredParam body string name Test Tag  Tag name
-     * @apiEndpointRequiredParam body string slug test-tag Tag slug
+     * @apiEndpointRequiredParam body string name Test Tag name
+     * @apiEndpointParam body string slug test-tag Tag slug
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

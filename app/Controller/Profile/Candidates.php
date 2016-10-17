@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/{userName}/candidate.
+ * Handles requests to /profiles/{userName}/candidates.
  */
 class Candidates implements ControllerInterface {
     /**
@@ -61,13 +61,13 @@ class Candidates implements ControllerInterface {
     /**
      * Retrieve a complete list of candidates of the given user.
      *
-     * @apiEndpointParam query string names firstName,middleName,lastName
+     * @apiEndpointParam query string attributes firstName,middleName,lastName
      * @apiEndpointResponse 200 schema/candidate/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\DBCandidate::getAllByUserIdAndNames
+     * @see \App\Repository\DBCandidate::findByUserId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -75,7 +75,7 @@ class Candidates implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
 
-        $entities = $this->repository->findBy(['user_id' => $user->id], $request->getQueryParams());
+        $entities = $this->repository->findByUserId($user->id, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),
@@ -96,8 +96,9 @@ class Candidates implements ControllerInterface {
     /**
      * Created a new candidate data for a given user.
      *
-     * @apiEndpointRequiredParam body string candidate firstName Attribute Name
+     * @apiEndpointRequiredParam body string name firstName Attribute Name
      * @apiEndpointRequiredParam body string value Jhon Candidate Value
+     * @apiEndpointRequiredParam body float support 0.7 Candidate Support
      * @apiEndpointResponse 201 schema/candidate/candidateEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

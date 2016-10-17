@@ -15,12 +15,6 @@ use App\Command\AbstractCommand;
  */
 class UpdateOne extends AbstractCommand {
     /**
-     * Task's name.
-     *
-     * @var string
-     */
-    public $name;
-    /**
      * Target User.
      *
      * @var \App\Entity\User
@@ -32,12 +26,6 @@ class UpdateOne extends AbstractCommand {
      * @var \App\Entity\Company\Credential
      */
     public $credential;
-    /**
-     * Task's trigger event.
-     *
-     * @var string
-     */
-    public $event;
     /**
      * Task's running flag.
      *
@@ -65,18 +53,8 @@ class UpdateOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Profile\Task\UpdateOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
-        }
-
-        if (isset($parameters['event'])) {
-            $this->event = $parameters['event'];
-        }
-
         if (isset($parameters['running'])) {
             $this->running = $parameters['running'];
         }
@@ -87,10 +65,6 @@ class UpdateOne extends AbstractCommand {
 
         if (isset($parameters['message'])) {
             $this->message = $parameters['message'];
-        }
-
-        if (isset($parameters['id'])) {
-            $this->id = $parameters['id'];
         }
 
         return $this;

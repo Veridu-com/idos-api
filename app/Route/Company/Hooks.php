@@ -68,8 +68,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      *
@@ -106,8 +106,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}/hooks
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      *
@@ -145,8 +145,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      * @apiEndpointURIFragment int hookId 1
@@ -185,8 +185,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      * @apiEndpointURIFragment int hookId 1
@@ -225,8 +225,8 @@ class Hooks implements RouteInterface {
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company Hooks
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      * @apiEndpointURIFragment int hookId 1

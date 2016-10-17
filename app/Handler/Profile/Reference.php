@@ -125,6 +125,7 @@ class Reference implements HandlerInterface {
             'user_id'    => $command->user->id,
             'name'       => $command->name,
             'value'      => $command->value,
+            'ipaddr'     => $command->ipaddr,
             'created_at' => time()
             ]
         );

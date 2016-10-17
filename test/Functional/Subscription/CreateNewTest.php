@@ -35,8 +35,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            'gate_id'    => '1321189817',
-            'flag_id'    => '1321189817'
+            'category_slug' => 'first-name'
         ];
 
         $request = $this->createRequest(
@@ -61,7 +60,7 @@ class CreateNewTest extends AbstractFunctional {
         );
     }
 
-    public function testInvalidGateId() {
+    public function testInvalidSlug() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -70,43 +69,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            'gate_id'    => '654',
-            'flag_id'    => '1321189817'
-        ];
-
-        $request = $this->createRequest(
-            $environment,
-            json_encode($data)
-        );
-
-        $response = $this->process($request);
-
-        $this->assertSame(500, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
-
-        /*
-         * Validates Response using the Json Schema.
-         */
-        $this->assertTrue(
-            $this->validateSchema('error.json', json_decode((string) $response->getBody())),
-            $this->schemaErrors
-        );
-    }
-
-    public function testInvalidFlagId() {
-        $environment = $this->createEnvironment(
-            [
-                'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
-            ]
-        );
-
-        $data = [
-            'flag_id'    => '654',
-            'gate_id'    => '1321189817'
+            'category_slug' => 'invalid-slug'
         ];
 
         $request = $this->createRequest(

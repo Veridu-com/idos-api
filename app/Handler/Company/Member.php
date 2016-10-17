@@ -138,10 +138,10 @@ class Member implements HandlerInterface {
     /**
      * Updates a single Company Member.
      *
-     * @param App\Command\Company\Member\UpdateOne $command
+     * @param \App\Command\Company\Member\UpdateOne $command
      *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\Create\MemberException
+     * @throws \App\Exception\Validate\MemberException
+     * @throws \App\Exception\Create\MemberException
      *
      * @return \App\Entity\Member
      */
@@ -179,10 +179,10 @@ class Member implements HandlerInterface {
     /**
      * Deletes a Member.
      *
-     * @param App\Command\Company\Member\DeleteOne $command
+     * @param \App\Command\Company\Member\DeleteOne $command
      *
-     * @throws App\Exception\Validate\MemberException
-     * @throws App\Exception\NotFound\MemberException
+     * @throws \App\Exception\Validate\MemberException
+     * @throws \App\Exception\NotFound\MemberException
      *
      * @return void
      */

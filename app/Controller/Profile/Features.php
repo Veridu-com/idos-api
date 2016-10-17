@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /profiles/:userName/features.
+ * Handles requests to /profiles/{userName}/features and /profiles/{userName}/features/{featureId}.
  */
 class Features implements ControllerInterface {
     /**
@@ -151,6 +151,8 @@ class Features implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string name Friend count  Feature name
      * @apiEndpointRequiredParam body string value 17 Feature value
+     * @apiEndpointRequiredParam body string type 17 Feature type
+     * @apiEndpointParam body int source_id 25367 Feature source_id
      * @apiEndpointResponse 201 schema/feature/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -199,8 +201,10 @@ class Features implements ControllerInterface {
     /**
      * Updates one Feature of the User.
      *
-     * @apiEndpointRequiredParam body string name  Friend count  Feature name
+     * @apiEndpointRequiredParam body string name Friend count  Feature name
      * @apiEndpointRequiredParam body string value 17 Feature value
+     * @apiEndpointRequiredParam body string type 17 Feature type
+     * @apiEndpointParam body int source_id 25367 Feature source_id
      * @apiEndpointResponse 200 schema/feature/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -243,8 +247,10 @@ class Features implements ControllerInterface {
     /**
      * Creates or updates a feature for the given user.
      *
-     * @apiEndpointRequiredParam body string name XYZ Feature name
-     * @apiEndpointRequiredParam body string value ZYX Feature value
+     * @apiEndpointRequiredParam body string name Friend count  Feature name
+     * @apiEndpointRequiredParam body string value 17 Feature value
+     * @apiEndpointRequiredParam body string type 17 Feature type
+     * @apiEndpointParam body int source_id 25367 Feature source_id
      * @apiEndpointResponse 201 schema/feature/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -291,8 +297,7 @@ class Features implements ControllerInterface {
     /**
      * Creates or updates features for the given user.
      *
-     * @apiEndpointRequiredParam body string name XYZ Feature name
-     * @apiEndpointRequiredParam body string value ZYX Feature value
+     * @apiEndpointRequiredParam body array features [] Feature features
      * @apiEndpointResponse 201 schema/feature/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

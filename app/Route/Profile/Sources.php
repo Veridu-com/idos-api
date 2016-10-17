@@ -69,7 +69,7 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/sources
      * @apiGroup Profile Sources
-     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth header token UserToken|CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
@@ -102,7 +102,7 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile Sources
-     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth header token UserToken|CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
@@ -136,7 +136,7 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint POST /profiles/{userName}/sources
      * @apiGroup Profile Sources
-     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth header token UserToken|CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
@@ -169,7 +169,7 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile Sources
-     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth header token UserToken|CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
@@ -203,7 +203,7 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile Sources
-     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth header token UserToken|CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int sourceId 12345
@@ -237,7 +237,7 @@ class Sources implements RouteInterface {
      *
      * @apiEndpoint DELETE /profiles/{userName}/sources
      * @apiGroup Profile Sources
-     * @apiAuth header token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
+     * @apiAuth header token UserToken|CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *

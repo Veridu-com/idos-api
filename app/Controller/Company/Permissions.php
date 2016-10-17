@@ -16,7 +16,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/permissions.
+ * Handles requests to /companies/{companySlug}/permissions and /companies/{companySlug}/permissions/{routeName}.
  */
 class Permissions implements ControllerInterface {
     /**
@@ -113,7 +113,7 @@ class Permissions implements ControllerInterface {
         $body = [
             'data'    => $permissions->toArray(),
             'updated' => (
-                $permissions->isEmpty() ? time() : $permissions->max('updated_at')
+                $permissions->isEmpty() ? time() : $permissions->max('updatedAt')
             )
         ];
 
