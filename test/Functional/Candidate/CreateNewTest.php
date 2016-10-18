@@ -25,7 +25,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/candidates';
     }
 
-    public function testSuccess() {
+    public function testSuccessWith1Support() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -39,20 +39,100 @@ class CreateNewTest extends AbstractFunctional {
                 [
                     'attribute' => 'candidate-test',
                     'value'     => 'value-test',
-                    'support'   => 1.2
+                    'support'   => 1.0
                 ]
             )
         );
 
         $response = $this->process($request);
-        $body     = json_decode((string) $response->getBody(), true);
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
 
+        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('candidate-test', $body['data']['attribute']);
         $this->assertSame('value-test', $body['data']['value']);
-        $this->assertSame(1.2, $body['data']['support']);
+        $this->assertEquals(1.0, $body['data']['support']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'candidate/createNew.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testSuccessWith08Support() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'attribute' => 'candidate-test',
+                    'value'     => 'value-test',
+                    'support'   => 0.8
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame('candidate-test', $body['data']['attribute']);
+        $this->assertSame('value-test', $body['data']['value']);
+        $this->assertSame(0.8, $body['data']['support']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'candidate/createNew.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testSuccessWith0Support() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'attribute' => 'candidate-test',
+                    'value'     => 'value-test',
+                    'support'   => 0.0
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame('candidate-test', $body['data']['attribute']);
+        $this->assertSame('value-test', $body['data']['value']);
+        $this->assertEquals(0.0, $body['data']['support']);
         /*
          * Validates Response using the Json Schema.
          */
@@ -79,7 +159,7 @@ class CreateNewTest extends AbstractFunctional {
                 [
                     'attribute' => '',
                     'value'     => 'value-test',
-                    'support'   => 1.2
+                    'support'   => 1.0
                 ]
             )
         );
@@ -117,7 +197,7 @@ class CreateNewTest extends AbstractFunctional {
                 [
                     'attribute' => 'Candidate name',
                     'value'     => '',
-                    'support'   => 1.2
+                    'support'   => 1.0
                 ]
             )
         );

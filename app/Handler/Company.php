@@ -108,7 +108,7 @@ class Company implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : CompanyEntity {
         try {
             $this->validator->assertLongString($command->name);
-            $this->validator->assertParentId($command->parentId);
+            $this->validator->assertNullableId($command->parentId);
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),

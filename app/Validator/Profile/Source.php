@@ -15,12 +15,11 @@ use App\Validator\ValidatorInterface;
  * Source Validation Rules.
  */
 class Source implements ValidatorInterface {
-    use Traits\AssertArray,
+    use Traits\AssertType,
         Traits\AssertEntity,
         Traits\AssertId,
         Traits\AssertIpAddr,
         Traits\AssertName,
-        Traits\AssertString,
         Traits\AssertOTPCode,
         Traits\ValidateFlag;
 }

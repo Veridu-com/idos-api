@@ -12,7 +12,7 @@ namespace App\Validator;
  * ServiceHandler Validation Rules.
  */
 class ServiceHandler implements ValidatorInterface {
-    use Traits\AssertArray,
+    use Traits\AssertType,
         Traits\AssertId,
         Traits\AssertName,
         Traits\AssertPassword,

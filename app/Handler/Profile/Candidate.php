@@ -111,7 +111,7 @@ class Candidate implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->attribute);
             $this->validator->assertValue($command->value);
-            $this->validator->assertFloat($command->support);
+            $this->validator->assertScore($command->support);
         } catch (ValidationException $e) {
             throw new Validate\Profile\CandidateException(
                 $e->getFullMessage(),
