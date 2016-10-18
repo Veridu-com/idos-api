@@ -147,7 +147,7 @@ class Widget implements HandlerInterface {
                 'hash'             => md5(sprintf('%s%s%s%s%s', $command->label, microtime(), $credential->id, $command->company->id, $command->creator->id)),
                 'label'            => $command->label,
                 'type'             => $command->type,
-                'config'           => $command->config,
+                'config'           => json_encode($command->config),
                 'enabled'          => $command->enabled,
                 'credential_id'    => $credential->id,
                 'company_id'       => $command->company->id,
