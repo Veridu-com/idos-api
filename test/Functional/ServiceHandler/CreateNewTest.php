@@ -27,9 +27,9 @@ class CreateNewTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $this->uri        = '/1.0/companies/veridu-ltd/services';
+        $this->uri = '/1.0/companies/veridu-ltd/services';
         /**
-         * Creating a new Server
+         * Creating a new Server.
          */
         $environment = $this->createEnvironment(
             [
@@ -65,10 +65,10 @@ class CreateNewTest extends AbstractFunctional {
         $serviceId = $body['data']['id'];
 
         /**
-         * Creating a service-handler
+         * Creating a service-handler.
          */
         $this->uri        = '/1.0/companies/veridu-ltd/service-handlers';
-        $environment = $this->createEnvironment(
+        $environment      = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->identityTokenHeader()

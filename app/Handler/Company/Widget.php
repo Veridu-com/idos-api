@@ -193,7 +193,7 @@ class Widget implements HandlerInterface {
             );
         }
 
-        $widget       = $this->repository->findByHash($command->hash);
+        $widget = $this->repository->findByHash($command->hash);
 
         $widget->label      = $command->label;
         $widget->hash       = $command->hash;

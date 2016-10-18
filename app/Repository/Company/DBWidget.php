@@ -42,5 +42,4 @@ class DBWidget extends AbstractSQLDBRepository implements WidgetInterface {
     public function findByHash(string $hash) : Widget {
         return $this->findOneBy(['hash' => $hash]);
     }
-
 }
