@@ -322,7 +322,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
         $jwt               = $container->get('jwt');
 
         return new Auth(
-            $repositoryFactory->create('Company\Credential'),
+            $repositoryFactory->create('Company\\Credential'),
             $repositoryFactory->create('Identity'),
             $repositoryFactory->create('User'),
             $repositoryFactory->create('Company'),
@@ -527,7 +527,5 @@ $container['httpClient'] = function (ContainerInterface $container) : HttpClient
 
 // Registering Event Emitter
 $container['eventEmitter'] = function (ContainerInterface $container) : Emitter {
-    $emitter = new Emitter();
-
-    return $emitter;
+    return new Emitter();
 };

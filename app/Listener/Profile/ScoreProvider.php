@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Listener\Profile;
 
-use App\Event\Score;
+use App\Event\Profile\Score;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 

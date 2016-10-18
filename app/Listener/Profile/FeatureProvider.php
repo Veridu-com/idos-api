@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Listener\Profile;
 
-use App\Event\Feature;
+use App\Event\Profile\Feature;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 

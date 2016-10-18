@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Listener\Company;
 
-use App\Event\Hook;
+use App\Event\Company\Hook;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 

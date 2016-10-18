@@ -36,12 +36,25 @@ class Profiles implements RouteInterface {
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Profiles::class] = function (ContainerInterface $container) {
             return new \App\Controller\Profiles(
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('repositoryFactory')->create('Profile\Candidate'),
-                $container->get('repositoryFactory')->create('Profile\Score'),
-                $container->get('repositoryFactory')->create('Profile\Source'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('User'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\\Attribute'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\\Candidate'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\\Score'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\\Source'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -88,12 +101,12 @@ class Profiles implements RouteInterface {
     /**
      * List all information of a single profile.
      *
-     * Retrieve a complete list of profiles that are visible to the requesting company.
+     * Retrieve all profile candidates, attributes, gates and flags.
      *
      * @apiEndpoint GET /profiles
      * @apiGroup Company Profile
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth header token UserToken eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiAuth query token userToken eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
      * @param \callable $auth

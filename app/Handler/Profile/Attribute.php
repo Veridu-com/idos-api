@@ -8,34 +8,34 @@ declare(strict_types = 1);
 
 namespace App\Handler\Profile;
 
-use App\Command\Profile\Candidate\CreateNew;
-use App\Command\Profile\Candidate\DeleteAll;
-use App\Entity\Profile\Candidate as CandidateEntity;
+use App\Command\Profile\Attribute\CreateNew;
+use App\Command\Profile\Attribute\DeleteAll;
+use App\Entity\Profile\Attribute as AttributeEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\CandidateInterface;
-use App\Validator\Profile\Candidate as CandidateValidator;
+use App\Repository\Profile\AttributeInterface;
+use App\Validator\Profile\Attribute as AttributeValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
 
 /**
- * Handles Candidate commands.
+ * Handles Attribute commands.
  */
-class Candidate implements HandlerInterface {
+class Attribute implements HandlerInterface {
     /**
-     * Candidate Repository instance.
+     * Attribute Repository instance.
      *
-     * @var \App\Repository\Profile\CandidateInterface
+     * @var \App\Repository\Profile\AttributeInterface
      */
     private $repository;
     /**
-     * Candidate Validator instance.
+     * Attribute Validator instance.
      *
-     * @var \App\Validator\Profile\Candidate
+     * @var \App\Validator\Profile\Attribute
      */
     private $validator;
     /**
@@ -56,13 +56,13 @@ class Candidate implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) {
         $container[self::class] = function (ContainerInterface $container) {
-            return new \App\Handler\Profile\Candidate(
+            return new \App\Handler\Profile\Attribute(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Profile\Candidate'),
+                    ->create('Profile\Attribute'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Profile\Candidate'),
+                    ->create('Profile\Attribute'),
                 $container
                     ->get('eventFactory'),
                 $container
@@ -74,16 +74,16 @@ class Candidate implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\CandidateInterface $repository
-     * @param \App\Validator\Candidate           $validator
+     * @param \App\Repository\AttributeInterface $repository
+     * @param \App\Validator\Attribute           $validator
      * @param \App\Factory\Event                 $eventFactory
      * @param \League\Event\Emitter              $emitter
      *
      * @return void
      */
     public function __construct(
-        CandidateInterface $repository,
-        CandidateValidator $validator,
+        AttributeInterface $repository,
+        AttributeValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
@@ -94,26 +94,24 @@ class Candidate implements HandlerInterface {
     }
 
     /**
-     * Creates a new candidate data for the given user.
+     * Creates a new attribute data for the given user.
      *
-     * @param \App\Command\Profile\Candidate\CreateNew $command
+     * @param \App\Command\Profile\Attribute\CreateNew $command
      *
-     * @see \App\Repository\DBCandidate::save
+     * @see \App\Repository\DBAttribute::save
      *
-     * @throws \App\Exception\Validade\CandidateExceptions
-     * @throws \App\Exception\Create\CandidateExceptions
+     * @throws \App\Exception\Validade\AttributeExceptions
+     * @throws \App\Exception\Create\AttributeExceptions
      *
-     * @return \App\Entity\Candidate
+     * @return \App\Entity\Attribute
      */
-    public function handleCreateNew(CreateNew $command) : CandidateEntity {
+    public function handleCreateNew(CreateNew $command) : AttributeEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
-            $this->validator->assertLongName($command->attribute);
-            $this->validator->assertValue($command->value);
-            $this->validator->assertScore($command->support);
+            $this->validator->assertLongName($command->name);
+            $this->validator->assertString($command->value);
         } catch (ValidationException $e) {
-            throw new Validate\Profile\CandidateException(
+            throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -123,50 +121,41 @@ class Candidate implements HandlerInterface {
         $entity = $this->repository->create(
             [
             'user_id'    => $command->user->id,
-            'creator'    => $command->service->id,
-            'attribute'  => $command->attribute,
+            'name'       => $command->name,
             'value'      => $command->value,
-            'support'    => $command->support,
             'created_at' => time()
             ]
         );
 
         try {
             $entity = $this->repository->save($entity);
-            $entity = $this->repository->hydrateRelations($entity);
-            $event  = $this->eventFactory->create(
-                'Profile\\Candidate\\Created',
-                $command->user,
-                $entity
-            );
+            $event  = $this->eventFactory->create('Profile\\Attribute\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new Create\Profile\CandidateException('Error while trying to create an candidate', 500, $e);
+            throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500, $e);
         }
 
         return $entity;
     }
 
     /**
-     * Deletes all candidate data from a given user.
+     * Deletes all attribute data from a given user.
      *
-     * @param \App\Command\Profile\Candidate\DeleteAll $command
+     * @param \App\Command\Profile\Attribute\DeleteAll $command
      *
-     * @see \App\Repository\DBCandidate::getAllByUserIdAndNames
-     * @see \App\Repository\DBCandidate::deleteByUserId
+     * @see \App\Repository\DBAttribute::getAllByUserIdAndNames
+     * @see \App\Repository\DBAttribute::deleteByUserId
      *
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         $this->validator->assertUser($command->user);
-        $this->validator->assertService($command->service);
         $this->validator->assertArray($command->queryParams);
 
         // FIXME replace this with a query that is inside the fuckin' repository
         $entities = $this->repository->findBy(
             [
-                'user_id' => $command->user->id,
-                'creator' => $command->service->id
+                'user_id' => $command->user->id
             ],
             $command->queryParams
         );
@@ -179,10 +168,10 @@ class Candidate implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = $this->eventFactory->create('Profile\\Candidate\\DeletedMulti', $entities);
+            $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\CandidateException('Error while deleting all candidates', 404);
+            throw new NotFound\AttributeException('Error while deleting all attributes', 404);
         }
 
             return $affectedRows;
