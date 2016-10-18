@@ -112,7 +112,7 @@ class Profiles implements ControllerInterface {
         $this->reviewRepository    = $reviewRepository;
         $this->flagRepository      = $flagRepository;
         $this->gateRepository      = $gateRepository;
-        $this->attributeRepository = $candidateRepository;
+        $this->attributeRepository = $attributeRepository;
         $this->commandBus          = $commandBus;
         $this->commandFactory      = $commandFactory;
     }
