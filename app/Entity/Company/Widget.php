@@ -31,5 +31,11 @@ class Widget extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
+    protected $json = [
+        'config'
+    ];
+    /**
+     * {@inheritdoc}
+     */
     protected $dates = ['created_at', 'updated_at'];
 }
