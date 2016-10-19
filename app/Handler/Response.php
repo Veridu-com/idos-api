@@ -256,19 +256,4 @@ class Response implements HandlerInterface {
 
         return $this->jsonResponse($response, $body, $statusCode);
     }
-
-    public function handleJavascriptResponse(JavascriptResponse $command) : ResponseInterface {
-        $windowData = json_encode($command->body['window']['data']);
-        
-        $body = "
-            window.{$command->body['window']['variable']} = $windowData;
-            {$command->body['script']}
-        ";
-
-        return $command->response
-            ->withStatus(200)
-            ->withHeader('Content-Type', 'application/javascript')
-            ->write($body);
-    }
-
 }

@@ -120,39 +120,6 @@ class Widgets implements ControllerInterface {
         return $this->commandBus->handle($command);
     }
 
-    public function olc(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $widgetHash       = $request->getAttribute('widgetHash');
-        $widget = $this->repository->findByHash($widgetHash);
-        $queryParams = $request->getQueryParams();
-
-        $config = $widget->config;
-        $preferences = $config->preferences ?? null;
-
-        if ($preferences) {
-            $preferences['selector']  = $queryParams['selector'] ?? '#idos-embedded-widget';
-        }
-
-        $body = [
-            'window' => [
-                'variable' => 'VeriduEmbeddedWidget',
-                'data' => [
-                    'version' => __VERSION__,
-                    'preferences' => $preferences ?? null,
-                    'providers'   => $config->providers ?? null
-                ],
-            ],
-            'script' =>  file_get_contents(__DIR__ . '../../../../resources/embedded-widget.js')
-        ];
-
-        $command = $this->commandFactory->create('JavascriptResponse');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
     /**
      * Creates a new widget for the given credential.
      *

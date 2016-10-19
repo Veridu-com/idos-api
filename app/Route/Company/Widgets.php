@@ -33,7 +33,6 @@ class Widgets implements RouteInterface {
             'widgets:createNew',
             'widgets:getOne',
             'widgets:updateOne',
-            'widgets:olc',
             'widgets:deleteOne'
         ];
     }
@@ -55,7 +54,6 @@ class Widgets implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
-        self::olc($app);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
@@ -209,24 +207,7 @@ class Widgets implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/widgets/{widgetHash:[a-z0-9_-]+}',
                 'App\Controller\Company\Widgets:getOne'
             )
-            ->add(
-                $permission(
-                EndpointPermission::SELF_ACTION,
-                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-                )
-            )
-            ->add($auth(Auth::IDENTITY))
             ->setName('widgets:getOne');
-    }
-
-
-    private static function olc(App $app) {
-        $app
-            ->get(
-                '/olc/{widgetHash:[a-z0-9_-]+}',
-                'App\Controller\Company\Widgets:olc'
-            )
-            ->setName('widgets:olc');
     }
 
     /**
