@@ -207,13 +207,6 @@ class Widgets implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/widgets/{widgetHash:[a-z0-9_-]+}',
                 'App\Controller\Company\Widgets:getOne'
             )
-            ->add(
-                $permission(
-                EndpointPermission::SELF_ACTION,
-                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-                )
-            )
-            ->add($auth(Auth::IDENTITY))
             ->setName('widgets:getOne');
     }
 

@@ -20,7 +20,6 @@ class Widget extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $visible = [
-        'id',
         'hash',
         'label',
         'type',
