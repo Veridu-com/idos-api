@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\CandidateInterface;
+use App\Repository\Profile\GateInterface;
 use App\Repository\Profile\ScoreInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Repository\UserInterface;
@@ -47,6 +48,12 @@ class Profiles implements ControllerInterface {
      */
     private $sourceRepository;
     /**
+     * Source Repository instance.
+     *
+     * @var \App\Repository\Profile\Gate
+     */
+    private $gateRepository;
+    /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
@@ -78,6 +85,7 @@ class Profiles implements ControllerInterface {
         CandidateInterface $candidateRepository,
         ScoreInterface $scoreRepository,
         SourceInterface $sourceRepository,
+        GateInterface $gateRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
@@ -86,6 +94,7 @@ class Profiles implements ControllerInterface {
         $this->candidateRepository = $candidateRepository;
         $this->scoreRepository     = $scoreRepository;
         $this->sourceRepository    = $sourceRepository;
+        $this->gateRepository      = $gateRepository;
         $this->commandBus          = $commandBus;
         $this->commandFactory      = $commandFactory;
     }
@@ -145,11 +154,14 @@ class Profiles implements ControllerInterface {
         $candidates = $this->candidateRepository->getAllByUserIdAndAttributeNames($user->id);
         $scores     = $this->scoreRepository->getByUserId($user->id);
         $sources    = $this->sourceRepository->getByUserId($user->id);
+        $gates      = $this->gateRepository->getByUserId($user->id);
 
         $data = [
+            'username'   => $user->username,
             'attributes' => $attributes->toArray(),
             'candidates' => $candidates->toArray(),
             'scores'     => $scores->toArray(),
+            'gates'      => $gates->toArray(),
             'sources'    => $sources->toArray()
         ];
 
