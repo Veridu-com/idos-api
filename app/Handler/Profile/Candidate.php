@@ -100,8 +100,8 @@ class Candidate implements HandlerInterface {
      *
      * @see \App\Repository\DBCandidate::save
      *
-     * @throws \App\Exception\Validade\CandidateExceptions
-     * @throws \App\Exception\Create\CandidateExceptions
+     * @throws \App\Exception\Validade\Profile\CandidateException
+     * @throws \App\Exception\Create\Profile\CandidateException
      *
      * @return \App\Entity\Candidate
      */
@@ -182,7 +182,7 @@ class Candidate implements HandlerInterface {
             $event = $this->eventFactory->create('Profile\\Candidate\\DeletedMulti', $entities);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\CandidateException('Error while deleting all candidates', 404);
+            throw new NotFound\Profile\CandidateException('Error while deleting all candidates', 404);
         }
 
             return $affectedRows;
