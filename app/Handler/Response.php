@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Handler;
 
-use App\Command\JavascriptResponse;
 use App\Command\ResponseDispatch;
 use Interop\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
