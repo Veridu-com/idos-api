@@ -17,6 +17,6 @@ use App\Validator\ValidatorInterface;
 class Widget implements ValidatorInterface {
     use Traits\AssertEntity,
         Traits\AssertId,
-        Traits\AssertString,
+        Traits\AssertType,
         Traits\AssertName;
 }
