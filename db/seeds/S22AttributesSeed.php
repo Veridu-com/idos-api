@@ -11,28 +11,42 @@ class S22AttributesSeed extends AbstractSeed {
         $data = [
             [
                 'user_id'    => 1,
-                'name'       => 'first-name',
+                'name'       => 'firstName',
                 'value'      => 'John',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'last-name',
-                'value'      => 'Doe',
+                'name'       => 'fullName',
+                'value'      => 'John Doe',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'city-name',
+                'name'       => 'lastName',
+                'value'      => 'Doe',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'user_id'    => 2,
+                'name'       => 'fullName',
+                'value'      => 'Janis Joplin',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'user_id'    => 1,
+                'name'       => 'cityName',
                 'value'      => 'Seattle',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'country-name',
+                'name'       => 'countryName',
                 'value'      => 'United States',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
@@ -46,21 +60,21 @@ class S22AttributesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'birth-day',
+                'name'       => 'birthDay',
                 'value'      => '13',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'birth-month',
+                'name'       => 'birthMonth',
                 'value'      => '10',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
-                'name'       => 'birth-year',
+                'name'       => 'birthYear',
                 'value'      => '1985',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
@@ -74,35 +88,35 @@ class S22AttributesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'first-name',
+                'name'       => 'firstName',
                 'value'      => 'Janis',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'middle-name',
+                'name'       => 'middleName',
                 'value'      => 'Lyn',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'last-name',
+                'name'       => 'lastName',
                 'value'      => 'Joplin',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'city-name',
+                'name'       => 'cityName',
                 'value'      => 'Port Arthur',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'country-name',
+                'name'       => 'countryName',
                 'value'      => 'United States',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
@@ -116,21 +130,21 @@ class S22AttributesSeed extends AbstractSeed {
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'birth-day',
+                'name'       => 'birthDay',
                 'value'      => '19',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'birth-month',
+                'name'       => 'birthMonth',
                 'value'      => '1',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 2,
-                'name'       => 'birth-year',
+                'name'       => 'birthYear',
                 'value'      => '1943',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
