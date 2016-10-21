@@ -8,60 +8,61 @@ use Phinx\Seed\AbstractSeed;
 
 class S22CandidatesSeed extends AbstractSeed {
     public function run() {
+        $now  = date('Y-m-d H:i:s');
         $data = [
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'attribute'  => 'first-name',
+                'attribute'  => 'firstName',
                 'value'      => 'John',
                 'support'    => 0.8,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'attribute'  => 'first-name',
+                'attribute'  => 'firstName',
                 'value'      => 'Johnny',
                 'support'    => 0.2,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'attribute'  => 'middle-name',
+                'attribute'  => 'middleName',
                 'value'      => 'Ross',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'attribute'  => 'last-name',
+                'attribute'  => 'lastName',
                 'value'      => 'Doe',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'attribute'  => 'city-name',
+                'attribute'  => 'cityName',
                 'value'      => 'Seattle',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'attribute'  => 'country-name',
+                'attribute'  => 'countryName',
                 'value'      => 'United States',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
@@ -69,35 +70,35 @@ class S22CandidatesSeed extends AbstractSeed {
                 'attribute'  => 'email',
                 'value'      => 'john.doe@myserver.com',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'attribute'  => 'birth-day',
+                'attribute'  => 'birthDay',
                 'value'      => '13',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'attribute'  => 'birth-month',
+                'attribute'  => 'birthMonth',
                 'value'      => '10',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'attribute'  => 'birth-year',
+                'attribute'  => 'birthYear',
                 'value'      => '1985',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
@@ -105,53 +106,53 @@ class S22CandidatesSeed extends AbstractSeed {
                 'attribute'  => 'phone',
                 'value'      => '7345551212',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'attribute'  => 'first-name',
+                'attribute'  => 'firstName',
                 'value'      => 'Janis',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'attribute'  => 'middle-name',
+                'attribute'  => 'middleName',
                 'value'      => 'Lyn',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'attribute'  => 'last-name',
+                'attribute'  => 'lastName',
                 'value'      => 'Joplin',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'attribute'  => 'city-name',
+                'attribute'  => 'cityName',
                 'value'      => 'Port Arthur',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'attribute'  => 'country-name',
+                'attribute'  => 'countryName',
                 'value'      => 'United States',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
@@ -159,35 +160,35 @@ class S22CandidatesSeed extends AbstractSeed {
                 'attribute'  => 'email',
                 'value'      => 'janis.joplin@myserver.com',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'attribute'  => 'birth-day',
+                'attribute'  => 'birthDay',
                 'value'      => '19',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'attribute'  => 'birth-month',
+                'attribute'  => 'birthMonth',
                 'value'      => '1',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'attribute'  => 'birth-year',
+                'attribute'  => 'birthYear',
                 'value'      => '1943',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
@@ -195,17 +196,17 @@ class S22CandidatesSeed extends AbstractSeed {
                 'attribute'  => 'phone',
                 'value'      => '(734) 5551212',
                 'support'    => 1.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'creator'    => 2,
-                'attribute'  => 'first-name',
+                'attribute'  => 'firstName',
                 'value'      => 'Cássio',
                 'support'    => 0.0,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+                'created_at' => $now,
+                'updated_at' => $now
             ]
         ];
 

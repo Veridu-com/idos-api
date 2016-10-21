@@ -26,7 +26,7 @@ class Candidate extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['creator', 'attribute', 'value', 'support', 'created_at'];
+    protected $visible = ['attribute', 'value', 'support', 'created_at'];
 
     /**
      * {@inheritdoc}

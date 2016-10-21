@@ -302,7 +302,6 @@ class Sso implements HandlerInterface {
                 $decodedResponse[$decodedResponseParam],
                 $command->appKey ?: 'Veridu'
             );
-
         } catch (NotFound $e) {
             $identityCommand = $this->commandFactory->create('Identity\\CreateNew');
             $identityCommand

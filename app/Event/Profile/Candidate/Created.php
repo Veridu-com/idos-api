@@ -32,6 +32,7 @@ class Created extends AbstractEvent {
     /**
      * Class constructor.
      *
+     * @param \App\Entity\User              $user
      * @param \App\Entity\Profile\Attribute $candidate
      *
      * @return void

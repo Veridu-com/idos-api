@@ -330,14 +330,28 @@ class Feature implements HandlerInterface {
             $process = $this->getRelatedProcess($command->user->id, $command->source ? $command->source : null);
 
             if ($inserting) {
-                $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $command->credential, $process, $command->source);
+                $event = $this->eventFactory->create(
+                    'Profile\\Feature\\Created',
+                    $feature,
+                    $command->user,
+                    $command->credential,
+                    $process,
+                    $command->source
+                );
             } else {
-                $event = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $command->credential, $process, $command->source);
+                $event = $this->eventFactory->create(
+                    'Profile\\Feature\\Updated',
+                    $feature,
+                    $command->user,
+                    $command->credential,
+                    $process,
+                    $command->source
+                );
             }
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\Profile\FeatureException('Error while trying to upsert a feature', 404, $e);
+            throw new Create\Profile\FeatureException('Error while trying to upsert a feature', 404, $e);
         }
 
         return $feature;

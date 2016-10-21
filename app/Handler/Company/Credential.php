@@ -20,7 +20,6 @@ use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Validator\Company\Credential as CredentialValidator;
-use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
