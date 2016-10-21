@@ -141,7 +141,7 @@ class Profiles implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\CandidateInterface::getAllByUserIdAndAttributeNames
+     * @see \App\Repository\CandidateInterface::findByUserId
      * @see \App\Repository\ScoreInterface::getByUserId
      * @see \App\Repository\SourceInterface::getByUserId
      *
@@ -151,7 +151,7 @@ class Profiles implements ControllerInterface {
         $user = $request->getAttribute('targetUser');
 
         $attributes = $this->attributeRepository->getAllByUserIdAndNames($user->id);
-        $candidates = $this->candidateRepository->getAllByUserIdAndAttributeNames($user->id);
+        $candidates = $this->candidateRepository->findByUserId($user->id);
         $scores     = $this->scoreRepository->getByUserId($user->id);
         $sources    = $this->sourceRepository->getByUserId($user->id);
         $gates      = $this->gateRepository->getByUserId($user->id);

@@ -10,6 +10,7 @@ namespace App\Handler\Profile;
 
 use App\Command\Profile\Attribute\CreateNew;
 use App\Command\Profile\Attribute\DeleteAll;
+use App\Command\Profile\Attribute\Upsert;
 use App\Entity\Profile\Attribute as AttributeEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -139,6 +140,42 @@ class Attribute implements HandlerInterface {
     }
 
     /**
+     * Creates or updates attribute data for the given user.
+     *
+     * @param \App\Command\Profile\Attribute\Upsert $command
+     *
+     * @see \App\Repository\DBAttribute::save
+     *
+     * @throws \App\Exception\Validade\AttributeExceptions
+     * @throws \App\Exception\Create\AttributeExceptions
+     *
+     * @return \App\Entity\Attribute
+     */
+    public function handleUpsert(Upsert $command) : AttributeEntity {
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertLongName($command->name);
+            $this->validator->assertString($command->value);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\AttributeException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $entity = $this->repository->upsert(
+            $command->user->id,
+            $command->name,
+            $command->value
+        );
+        $event = $this->eventFactory->create('Profile\\Attribute\\Created', $entity);
+        $this->emitter->emit($event);
+
+        return $entity;
+    }
+
+    /**
      * Deletes all attribute data from a given user.
      *
      * @param \App\Command\Profile\Attribute\DeleteAll $command
@@ -149,8 +186,16 @@ class Attribute implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertArray($command->queryParams);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertArray($command->queryParams);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\AttributeException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         // FIXME replace this with a query that is inside the fuckin' repository
         $entities = $this->repository->findBy(

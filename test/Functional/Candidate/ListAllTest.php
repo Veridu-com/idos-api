@@ -69,10 +69,10 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertCount(2, $body['data']);
 
-        $this->assertSame('first-name', $body['data'][0]['attribute']);
+        $this->assertSame('firstName', $body['data'][0]['attribute']);
         $this->assertSame('John', $body['data'][0]['value']);
 
-        $this->assertSame('first-name', $body['data'][1]['attribute']);
+        $this->assertSame('firstName', $body['data'][1]['attribute']);
         $this->assertSame('Johnny', $body['data'][1]['value']);
 
         /*
@@ -105,7 +105,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertCount(6, $body['data']);
 
-        $this->assertContains($body['data'][0]['attribute'], ['first-name', 'last-name']);
+        $this->assertContains($body['data'][0]['attribute'], ['firstName', 'lastName']);
         $this->assertContains($body['data'][0]['value'], ['John', 'Doe']);
 
         /*
@@ -137,9 +137,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(11, $body['data']);
-        $this->assertContains($body['data'][0]['attribute'], ['first-name', 'last-name']);
+        $this->assertContains($body['data'][0]['attribute'], ['firstName', 'lastName']);
         $this->assertContains($body['data'][0]['value'], ['John', 'Doe']);
-        $this->assertContains($body['data'][1]['attribute'], ['first-name']);
+        $this->assertContains($body['data'][1]['attribute'], ['firstName']);
         $this->assertContains($body['data'][1]['value'], ['Johnny']);
 
         /*
