@@ -30,11 +30,11 @@ interface CandidateInterface extends RepositoryInterface {
      * Gets all Candidate entities based on the user_id, filtering them by attribute name.
      *
      * @param int   $userId
-     * @param array $filters
+     * @param array $attributeNames
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAllByUserIdAndAttributeNames(int $userId, array $filters = []) : Collection;
+    public function getAllByUserIdAndAttributeNames(int $userId, array $attributeNames = []) : Collection;
 
     /**
      * Deletes all Candidate entities based on user_id.

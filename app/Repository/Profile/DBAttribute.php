@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Attribute;
+use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
@@ -59,6 +60,34 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
             'hydrate'    => false
         ]
     ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function upsert(int $userId, string $name, string $value) : Attribute {
+        $this->beginTransaction();
+
+        $result = $this->runRaw(
+            'INSERT INTO "attributes" ("user_id", "name", "value", "created_at") VALUES (:user_id, :name, :value, :created_at)
+            ON CONFLICT ("user_id", "name") DO UPDATE SET "value" = :value, "updated_at" = :updated_at',
+            [
+                'user_id'    => $userId,
+                'name'       => $name,
+                'value'      => $value,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ]
+        );
+
+        if (! $result) {
+            $this->rollBack();
+            throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500);
+        }
+
+        $this->commit();
+
+        return $this->findOneByUserIdAndName($userId, $name);
+    }
 
     /**
      * {@inheritdoc}

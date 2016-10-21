@@ -102,7 +102,7 @@ class Subscriptions implements ControllerInterface {
     /**
      * Creates a new Subscription for the credential.
      *
-     * @apiEndpointRequiredParam body string categorySlug first-name Subscription categorySlug
+     * @apiEndpointRequiredParam body string categorySlug firstName Subscription categorySlug
      * @apiEndpointResponse 201 schema/credential/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

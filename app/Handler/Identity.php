@@ -126,7 +126,6 @@ class Identity implements HandlerInterface {
         $identity->public_key  = Key::createNewRandomKey()->saveToAsciiSafeString();
         $identity->private_key = Key::createNewRandomKey()->saveToAsciiSafeString();
 
-
         try {
             $identity = $this->repository->save($identity);
             $event    = $this->eventFactory->create('Identity\\Created', $identity);

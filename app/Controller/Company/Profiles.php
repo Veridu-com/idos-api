@@ -223,11 +223,12 @@ class Profiles implements ControllerInterface {
 
         $profile = $this->repository->find($userId);
 
-        $sources  = $this->sourceRepository->getByUserId($profile->id);
-        $tags     = $this->tagRepository->getByUserId($profile->id);
-        $reviews  = $this->reviewRepository->getByUserId($profile->id);
-        $flags    = $this->flagRepository->getByUserId($profile->id);
-        $gates    = $this->gateRepository->getByUserId($profile->id);
+        $attributes       = $this->attributeRepository->findByUserId($profile->id);
+        $sources          = $this->sourceRepository->getByUserId($profile->id);
+        $tags             = $this->tagRepository->getByUserId($profile->id);
+        $reviews          = $this->reviewRepository->getByUserId($profile->id);
+        $flags            = $this->flagRepository->getByUserId($profile->id);
+        $gates            = $this->gateRepository->getByUserId($profile->id);
 
         foreach ($flags as $flag) {
             $flagReview = null;
@@ -248,37 +249,17 @@ class Profiles implements ControllerInterface {
             }
         }
 
-        $attributes       = $this->attributeRepository->findByUserId($profile->id);
-        $mappedCandidates = [];
-
-        foreach ($attributes as $attribute) {
-            $mappedCandidates[$attribute->name][] = $attribute->toArray();
-        }
-
-        $mappedCandidates = array_map(
-            function ($candidates) {
-            // sorting by support DESC
-                usort(
-                    $candidates, function ($a, $b) {
-                        return ($a['support'] <=> $b['support']) * -1;
-                    }
-                );
-
-                return $candidates;
-            }, $mappedCandidates
-        );
-
         $data = array_merge(
             $profile->toArray(),
+            ['attributes'  => $attributes->toArray()],
             ['sources'     => $profileSources],
             ['tags'        => $tags->toArray()],
             ['flags'       => $flags->toArray()],
-            ['gates'       => $gates->toArray()],
-            ['attributes'  => $mappedCandidates]
+            ['gates'       => $gates->toArray()]
         );
 
         $body = [
-            'data'    => $data
+            'data' => $data
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

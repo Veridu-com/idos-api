@@ -59,7 +59,7 @@ class AttributeListener extends AbstractListener {
      */
     private function formatCombination(string $name, array $items) : string {
         switch ($name) {
-            case 'full-name':
+            case 'fullName':
                 return implode(
                     ' ',
                     array_filter(
@@ -76,48 +76,48 @@ class AttributeListener extends AbstractListener {
                 }
 
                 return ucfirst($value);
-            case 'birth-date':
-                if ((! empty($items['birth-day']))
-                    && (! empty($items['birth-month']))
-                    && (! empty($items['birth-year']))
+            case 'birthDate':
+                if ((! empty($items['birthDay']))
+                    && (! empty($items['birthMonth']))
+                    && (! empty($items['birthYear']))
                 ) {
                     return sprintf(
                         '%02d/%02d/%04d',
-                        $items['birth-day'],
-                        $items['birth-month'],
-                        $items['birth-year']
+                        $items['birthDay'],
+                        $items['birthMonth'],
+                        $items['birthYear']
                     );
                 }
 
-                if ((! empty($items['birth-day']))
-                    && (! empty($items['birth-month']))
+                if ((! empty($items['birthDay']))
+                    && (! empty($items['birthMonth']))
                 ) {
                     return sprintf(
                         '%02d/%02d',
-                        $items['birth-day'],
-                        $items['birth-month']
+                        $items['birthDay'],
+                        $items['birthMonth']
                     );
                 }
 
-                if ((! empty($items['birth-month']))
-                    && (! empty($items['birth-year']))
+                if ((! empty($items['birthMonth']))
+                    && (! empty($items['birthYear']))
                 ) {
                     return sprintf(
                         '%02d/%04d',
-                        $items['birth-month'],
-                        $items['birth-year']
+                        $items['birthMonth'],
+                        $items['birthYear']
                     );
                 }
 
-                if (! empty($items['birth-year'])) {
+                if (! empty($items['birthYear'])) {
                     return sprintf(
                         '%04d',
-                        $items['birth-year']
+                        $items['birthYear']
                     );
                 }
 
                 return '';
-            case 'full-address':
+            case 'fullAddress':
                 return ucwords(
                     strtolower(
                         implode(
@@ -133,7 +133,7 @@ class AttributeListener extends AbstractListener {
                 );
             case 'email':
                 return strtolower($items[0]);
-            case 'phone':
+            case 'phoneNumber':
                 return implode('', $items);
         }
 
@@ -175,7 +175,9 @@ class AttributeListener extends AbstractListener {
             $probeScore       = 0;
 
             foreach ($features as $feature) {
-                $candidate          = $filteredCandidates[$feature->name]->whereStrict('value', $feature->value)->first();
+                $candidate          = $filteredCandidates[$feature->name]
+                    ->whereStrict('value', $feature->value)
+                    ->first();
                 $probeCombination[] = $candidate->value;
                 $probeScore += $candidate->support;
             }
@@ -255,41 +257,39 @@ class AttributeListener extends AbstractListener {
         $this->commandBus->handle($command);
 
         $compositions = [
-            'full-name'    => [
-                'first-name',
-                'middle-name',
-                'last-name'
+            'fullName'    => [
+                'firstName',
+                'middleName',
+                'lastName'
             ],
             'gender'       => [
                 'gender'
             ],
-            'birth-date'   => [
-                'birth-day',
-                'birth-month',
-                'birth-year'
+            'birthDate'   => [
+                'birthDay',
+                'birthMonth',
+                'birthYear'
             ],
-            'full-address' => [
-                'street-address',
-                'postal-code',
-                'city-name',
-                'region-name',
-                'country-name'
+            'fullAddress' => [
+                'streetAddress',
+                'postalCode',
+                'cityName',
+                'regionName',
+                'countryName'
             ],
             'email'        => [
                 'email'
             ],
-            'phone'        => [
-                'phone-country-code',
-                'phone-number'
+            'phoneNumber'  => [
+                'phoneCountryCode',
+                'phoneNumber'
             ]
         ];
 
         foreach ($compositions as $composition => $attributes) {
             $candidates = $this->candidateRepository->getAllByUserIdAndAttributeNames(
                 $event->user->id,
-                [
-                    'attribute' => implode(',', $attributes)
-                ]
+                $attributes
             );
 
             if ($candidates->isEmpty()) {
@@ -298,12 +298,6 @@ class AttributeListener extends AbstractListener {
 
             if (count($attributes) == 1) {
                 // single attribute
-                $combination = [
-                    $attributes[0] => $candidates
-                        ->sortBy('support')
-                        ->last()
-                        ->value
-                ];
                 $this->createAttribute(
                     $event->user,
                     $attributes[0],
@@ -316,11 +310,9 @@ class AttributeListener extends AbstractListener {
             }
 
             // attribute composition
-            $features = $this->featureRepository->getByUserId(
+            $features = $this->featureRepository->getByUserIdAndNames(
                 $event->user->id,
-                [
-                    'name' => implode(',', $attributes)
-                ]
+                $attributes
             );
 
             $combination = $this->bestCombination(

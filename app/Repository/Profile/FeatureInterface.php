@@ -61,6 +61,16 @@ interface FeatureInterface extends RepositoryInterface {
     public function getByUserId(int $userId, array $queryParams = []) : Collection;
 
     /**
+     * Return features based on their user id and names.
+     *
+     * @param int   $userId
+     * @param array $featureNames
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByUserIdAndNames(int $userId, array $featureNames = []) : Collection;
+
+    /**
      * Upsert a bulk of features.
      *
      * @param int   $serviceId The service identifier

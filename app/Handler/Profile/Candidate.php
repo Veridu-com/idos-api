@@ -100,8 +100,8 @@ class Candidate implements HandlerInterface {
      *
      * @see \App\Repository\DBCandidate::save
      *
-     * @throws \App\Exception\Validade\CandidateExceptions
-     * @throws \App\Exception\Create\CandidateExceptions
+     * @throws \App\Exception\Validade\Profile\CandidateException
+     * @throws \App\Exception\Create\Profile\CandidateException
      *
      * @return \App\Entity\Candidate
      */
@@ -158,9 +158,17 @@ class Candidate implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertService($command->service);
-        $this->validator->assertArray($command->queryParams);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertArray($command->queryParams);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\CandidateException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         // FIXME replace this with a query that is inside the fuckin' repository
         $entities = $this->repository->findBy(
@@ -174,15 +182,18 @@ class Candidate implements HandlerInterface {
         $affectedRows = 0;
 
         try {
-            // FIXME replace this with a deleteBy
-            foreach ($entities as $entity) {
-                $affectedRows += $this->repository->delete($entity->id);
-            }
+            $affectedRows = $this->repository->deleteAllByIdList(
+                $entities->pluck('id')->all()
+            );
 
-            $event = $this->eventFactory->create('Profile\\Candidate\\DeletedMulti', $entities);
+            $event = $this->eventFactory->create(
+                'Profile\\Candidate\\DeletedMulti',
+                $command->user,
+                $entities
+            );
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\CandidateException('Error while deleting all candidates', 404);
+            throw new NotFound\Profile\CandidateException('Error while deleting all candidates', 404);
         }
 
             return $affectedRows;

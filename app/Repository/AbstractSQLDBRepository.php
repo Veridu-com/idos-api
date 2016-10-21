@@ -80,6 +80,47 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     }
 
     /**
+     * {@inheritdoc}
+     */
+    // public function upsert(array $values, array $updates) {
+    //     $columns = array_keys($values);
+
+    //     foreach ($updates as $update) {
+    //         if (is_array($update)) {
+    //             $values[key($update)] = current($update);
+    //         }
+    //     }
+
+    //     $sql = sprintf(
+    //         'INSERT INTO "%s" (\'%s\') VALUES (:%s) ON CONFLICT DO UPDATE SET ',
+    //         $this->getTableName(),
+    //         implode('\', \'', $columns),
+    //         implode(', :', $columns)
+    //     );
+
+    //     $this->runRaw(
+    //         'INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
+    //         ON CONFLICT (user_id, source, creator, name)
+    //         DO UPDATE set value = :value, type = :type, updated_at = NOW()',
+    //         [
+    //                 'user_id' => $userId,
+    //                 'source'  => $feature['source'],
+    //                 'name'    => $feature['name'],
+    //                 'creator' => $serviceId,
+    //                 'type'    => $feature['type'],
+    //                 'value'   => $feature['value']
+    //             ]
+    //     );
+
+    //     $this->query()
+    //         ->raw()
+
+    // INSERT INTO distributors (did, dname)
+    // VALUES (5, 'Gizmo Transglobal'), (6, 'Associated Computing, Inc')
+    // ON CONFLICT (did) DO UPDATE SET dname = EXCLUDED.dname;
+    // }
+
+    /**
      * Begins a transaction.
      *
      * @throws \Exception

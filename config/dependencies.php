@@ -271,7 +271,7 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
 
     $commands[Command\ResponseDispatch::class] = Handler\Response::class;
 
-    $handlerMiddleware                         = new CommandHandlerMiddleware(
+    $handlerMiddleware = new CommandHandlerMiddleware(
         new ClassNameExtractor(),
         new ContainerLocator(
             $container,
