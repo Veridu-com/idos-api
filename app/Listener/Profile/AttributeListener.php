@@ -178,7 +178,7 @@ class AttributeListener extends AbstractListener {
                 $candidate          = $filteredCandidates[$feature->name]
                     ->whereStrict('value', $feature->value)
                     ->first();
-                $probeCombination[] = $candidate->value;
+                $probeCombination[$feature->name] = $candidate->value;
                 $probeScore += $candidate->support;
             }
 
@@ -321,12 +321,12 @@ class AttributeListener extends AbstractListener {
                 $attributes
             );
 
-            foreach ($attributes as $attribute) {
-                if (empty($combination[$attribute])) {
+            foreach ($combination as $attribute => $value) {
+                if (empty($value)) {
                     continue;
                 }
 
-                $this->createAttribute($event->user, $attribute, $combination[$attribute]);
+                $this->createAttribute($event->user, $attribute, $value);
             }
 
             $this->createAttribute(
