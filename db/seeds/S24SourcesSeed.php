@@ -83,19 +83,6 @@ class S24SourcesSeed extends AbstractSeed {
             ],
             [
                 'user_id' => 1,
-                'name'    => 'paypal',
-                'ipaddr'  => '192.168.0.2',
-                'tags'    => json_encode(
-                    [
-                        'profile_id'   => 1234567890,
-                        'access_token' => md5('x') // 9dd4e461268c8034f5c8564e155c67a6
-                    ]
-                ),
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
-            ],
-            [
-                'user_id' => 1,
                 'name'    => 'spotify',
                 'ipaddr'  => '192.168.0.2',
                 'tags'    => json_encode(
@@ -110,19 +97,6 @@ class S24SourcesSeed extends AbstractSeed {
             [
                 'user_id' => 1,
                 'name'    => 'twitter',
-                'ipaddr'  => '192.168.0.2',
-                'tags'    => json_encode(
-                    [
-                        'profile_id'   => 1234567890,
-                        'access_token' => md5('x') // 9dd4e461268c8034f5c8564e155c67a6
-                    ]
-                ),
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
-            ],
-            [
-                'user_id' => 1,
-                'name'    => 'yahoo',
                 'ipaddr'  => '192.168.0.2',
                 'tags'    => json_encode(
                     [
