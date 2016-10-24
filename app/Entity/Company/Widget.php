@@ -24,6 +24,7 @@ class Widget extends AbstractEntity {
         'label',
         'type',
         'config',
+        'credential',
         'created_at',
         'updated_at'
     ];
@@ -37,4 +38,10 @@ class Widget extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+    /**
+     * {@inheritdoc}
+     */
+    public $relationships = [
+        'credential' => 'Company\Credential'
+    ];
 }
