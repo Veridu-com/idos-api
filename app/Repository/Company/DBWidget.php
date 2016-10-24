@@ -39,7 +39,7 @@ class DBWidget extends AbstractSQLDBRepository implements WidgetInterface {
             'key'        => 'id',
             'entity'     => 'Credential',
             'nullable'   => false,
-            'hydrate'    => ['name', 'slug', 'public', 'production', 'private', 'created_at', 'updated_at']
+            'hydrate'    => ['name', 'slug', 'public', 'production', 'created_at', 'updated_at']
         ]
     ];
 
