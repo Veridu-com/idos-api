@@ -28,6 +28,20 @@ class DBWidget extends AbstractSQLDBRepository implements WidgetInterface {
      * @var string
      */
     protected $entityName = 'Company\Widget';
+    /**
+     * {@inheritdoc}
+     */
+    protected $relationships = [
+        'credential' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'credentials',
+            'foreignKey' => 'credential_id',
+            'key'        => 'id',
+            'entity'     => 'Credential',
+            'nullable'   => false,
+            'hydrate'    => ['name', 'slug', 'public', 'production', 'private', 'created_at', 'updated_at']
+        ]
+    ];
 
     /**
      * {@inheritdoc}
