@@ -16,7 +16,11 @@ class CompanyProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
             Company\Created::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener($container->get('log')('Event')),
+                new CompanyListener(
+                    $container->get('commandBus'),
+                    $container->get('commandFactory')
+                )
             ],
             Company\Updated::class => [
                 new Listener\LogFiredEventListener($container->get('log')('Event'))
