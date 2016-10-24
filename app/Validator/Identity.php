@@ -12,6 +12,6 @@ namespace App\Validator;
  * Identity Validation Rules.
  */
 class Identity implements ValidatorInterface {
-    use Traits\AssertString,
+    use Traits\AssertType,
         Traits\AssertName;
 }

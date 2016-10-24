@@ -20,7 +20,6 @@ use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Validator\Company\Credential as CredentialValidator;
-use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
@@ -128,8 +127,20 @@ class Credential implements HandlerInterface {
             ]
         );
 
-        $credential->public  = Key::createNewRandomKey()->saveToAsciiSafeString();
-        $credential->private = Key::createNewRandomKey()->saveToAsciiSafeString();
+        $credential->public  = md5(
+            sprintf(
+                'pub-%d-%d',
+                $command->company->id,
+                time()
+            )
+        );
+        $credential->private = md5(
+            sprintf(
+                'priv-%d-%d',
+                $command->company->id,
+                time()
+            )
+        );
 
         try {
             $credential = $this->repository->save($credential);

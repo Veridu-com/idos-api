@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Listener\Company;
 
-use App\Event\Company\Invitation as InvitationEvent;
+use App\Event\Company\Invitation;
 use App\Listener;
 use App\Listener\Manager\QueueServiceTaskListener;
 use Interop\Container\ContainerInterface;
@@ -27,7 +27,7 @@ class InvitationProvider extends Listener\AbstractListenerProvider {
         $eventLogger = $container->get('log')('Event');
 
         $this->events = [
-            InvitationEvent\Created::class => [
+            Invitation\Created::class => [
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient),
                 new Listener\LogFiredEventListener($eventLogger)
             ]

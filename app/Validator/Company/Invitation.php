@@ -19,6 +19,6 @@ class Invitation implements ValidatorInterface {
         Traits\AssertEmail,
         Traits\AssertDate,
         Traits\AssertName,
-        Traits\AssertString,
+        Traits\AssertType,
         Traits\AssertEntity;
 }

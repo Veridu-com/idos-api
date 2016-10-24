@@ -19,6 +19,6 @@ class Candidate implements ValidatorInterface {
         Traits\AssertEntity,
         Traits\AssertName,
         Traits\AssertValue,
-        Traits\AssertFloat,
-        Traits\AssertArray;
+        Traits\AssertScore,
+        Traits\AssertType;
 }

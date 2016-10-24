@@ -89,7 +89,7 @@ $appSettings = [
     ],
     'sso_providers_scopes' => [
         'amazon' => ['profile'],
-        'facebook' => [],
+        'facebook' => ['email', 'public_profile', 'user_friends'],
         'google' => ['userinfo_email', 'userinfo_profile'],
         'linkedin' => ['r_basicprofile'],
         'paypal' => ['profile', 'openid'],

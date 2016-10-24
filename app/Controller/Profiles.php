@@ -9,7 +9,9 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Factory\Command;
+use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\CandidateInterface;
+use App\Repository\Profile\GateInterface;
 use App\Repository\Profile\ScoreInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Repository\UserInterface;
@@ -46,6 +48,12 @@ class Profiles implements ControllerInterface {
      */
     private $sourceRepository;
     /**
+     * Source Repository instance.
+     *
+     * @var \App\Repository\Profile\Gate
+     */
+    private $gateRepository;
+    /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
@@ -61,24 +69,32 @@ class Profiles implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\UserInterface $repository
-     * @param \League\Tactician\CommandBus  $commandBus
-     * @param \App\Factory\Command          $commandFactory
+     * @param \App\Repository\UserInterface              $repository
+     * @param \App\Repository\Profile\AttributeInterface $attributeRepository
+     * @param \App\Repository\Profile\CandidateInterface $candidateRepository
+     * @param \App\Repository\Profile\ScoreInterface     $scoreRepository
+     * @param \App\Repository\Profile\SourceInterface    $sourceRepository
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \App\Factory\Command                       $commandFactory
      *
      * @return void
      */
     public function __construct(
         UserInterface $repository,
+        AttributeInterface $attributeRepository,
         CandidateInterface $candidateRepository,
         ScoreInterface $scoreRepository,
         SourceInterface $sourceRepository,
+        GateInterface $gateRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->repository          = $repository;
+        $this->attributeRepository = $attributeRepository;
         $this->candidateRepository = $candidateRepository;
         $this->scoreRepository     = $scoreRepository;
         $this->sourceRepository    = $sourceRepository;
+        $this->gateRepository      = $gateRepository;
         $this->commandBus          = $commandBus;
         $this->commandFactory      = $commandFactory;
     }
@@ -125,7 +141,7 @@ class Profiles implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\CandidateInterface::getAllByUserIdAndAttributeNames
+     * @see \App\Repository\CandidateInterface::findByUserId
      * @see \App\Repository\ScoreInterface::getByUserId
      * @see \App\Repository\SourceInterface::getByUserId
      *
@@ -134,14 +150,18 @@ class Profiles implements ControllerInterface {
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
 
-        $candidates = $this->candidateRepository->getAllByUserIdAndAttributeNames($user->id);
+        $attributes = $this->attributeRepository->getAllByUserIdAndNames($user->id);
+        $candidates = $this->candidateRepository->findByUserId($user->id);
         $scores     = $this->scoreRepository->getByUserId($user->id);
         $sources    = $this->sourceRepository->getByUserId($user->id);
+        $gates      = $this->gateRepository->getByUserId($user->id);
 
         $data = [
-            'attributes' => [],
+            'username'   => $user->username,
+            'attributes' => $attributes->toArray(),
             'candidates' => $candidates->toArray(),
             'scores'     => $scores->toArray(),
+            'gates'      => $gates->toArray(),
             'sources'    => $sources->toArray()
         ];
 
@@ -150,6 +170,8 @@ class Profiles implements ControllerInterface {
             'updated' => max(
                 $user->updatedAt,
                 $user->createdAt,
+                $attributes->max('updatedAt'),
+                $attributes->max('createdAt'),
                 $candidates->max('updatedAt'),
                 $candidates->max('createdAt'),
                 $scores->max('updatedAt'),

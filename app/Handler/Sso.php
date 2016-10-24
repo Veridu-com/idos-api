@@ -307,7 +307,7 @@ class Sso implements HandlerInterface {
             $identityCommand
                 ->setParameter('sourceName', $sourceName)
                 ->setParameter('profileId', $decodedResponse[$decodedResponseParam])
-                ->setParameter('appKey', $identityCommand->appKey ?: 'Veridu');
+                ->setParameter('appKey', $command->appKey ?: 'Veridu');
 
             $identity = $this->commandBus->handle($identityCommand);
         }

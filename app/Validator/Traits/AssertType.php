@@ -11,9 +11,66 @@ namespace App\Validator\Traits;
 use Respect\Validation\Validator;
 
 /**
- * Trait to add string assertion.
+ * Trait to add type assertion.
  */
-trait AssertString {
+trait AssertType {
+    /**
+     * Asserts a valid array.
+     *
+     * @param mixed $array
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertArray($array) {
+        Validator::arrayType()
+            ->assert($array);
+    }
+
+    /**
+     * Asserts a valid boolean.
+     *
+     * @param mixed $boolean
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertBoolean($boolean) {
+        Validator::boolType()
+            ->assert($boolean);
+    }
+
+    /**
+     * Asserts a valid boolean.
+     *
+     * @param mixed $boolean
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertNullableBoolean($boolean) {
+        Validator::oneOf(
+            Validator::boolType(),
+            Validator::nullType()
+        )->assert($boolean);
+    }
+
+    /**
+     * Asserts a valid float.
+     *
+     * @param mixed $value
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertFloat($value) {
+        Validator::floatType()
+            ->assert($value);
+    }
     /**
      * Asserts a valid string, minimum 1 char long.
      *

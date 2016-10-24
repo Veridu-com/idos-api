@@ -39,7 +39,7 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(10, $body['data']);
+        $this->assertCount(8, $body['data']);
 
         $this->assertSame(1321189817, $body['data'][0]['id']);
         $this->assertSame('facebook', $body['data'][0]['name']);
@@ -72,7 +72,7 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(10, $body['data']);
+        $this->assertCount(8, $body['data']);
 
         $this->assertSame(1321189817, $body['data'][0]['id']);
         $this->assertSame('facebook', $body['data'][0]['name']);
