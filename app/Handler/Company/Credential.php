@@ -131,14 +131,14 @@ class Credential implements HandlerInterface {
             sprintf(
                 'pub-%d-%d',
                 $command->company->id,
-                time()
+                random_int(1, time())
             )
         );
         $credential->private = md5(
             sprintf(
                 'priv-%d-%d',
                 $command->company->id,
-                time()
+                random_int(1, time())
             )
         );
 
