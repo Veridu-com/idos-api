@@ -7,7 +7,7 @@
 use Phinx\Migration\AbstractMigration;
 
 /**
- * GATE RELATED TABLES.
+ * FLAG RELATED TABLES.
  */
 class FlagInit extends AbstractMigration {
     public function change() {
