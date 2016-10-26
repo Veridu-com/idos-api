@@ -685,7 +685,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS E-mail Handler',
-                'url'           => 'http://handler.idos.io:8002/index.php/1.0/email/invitation',
+                'url'           => 'https://handler.idos.io/1.0/email/invitation',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
