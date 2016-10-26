@@ -141,16 +141,16 @@ class Profiles implements ControllerInterface {
             $gates      = $this->gateRepository->getByUserId($profile->id);
             $attributes = $this->attributeRepository->findByUserId($profile->id);
 
-            foreach ($flags as $flag) {
-                $flagReview = null;
+            foreach ($gates as $gate) {
+                $gateReview = null;
                 foreach ($reviews as $review) {
-                    if ($review->flagId === $flag->id) {
-                        $flagReview = $review->toArray();
+                    if ($review->gateId === $gate->id) {
+                        $gateReview = $review->toArray();
                         break;
                     }
                 }
 
-                $flag->review = $flagReview;
+                $gate->review = $gateReview;
             }
 
             $profileSources = [];
@@ -212,16 +212,16 @@ class Profiles implements ControllerInterface {
         $flags            = $this->flagRepository->getByUserId($profile->id);
         $gates            = $this->gateRepository->getByUserId($profile->id);
 
-        foreach ($flags as $flag) {
-            $flagReview = null;
+        foreach ($gates as $gate) {
+            $gateReview = null;
             foreach ($reviews as $review) {
-                if ($review->flagId === $flag->id) {
-                    $flagReview = $review->toArray();
+                if ($review->gateId === $gate->id) {
+                    $gateReview = $review->toArray();
                     break;
                 }
             }
 
-            $flag->review = $flagReview;
+            $gate->review = $gateReview;
         }
 
         $profileSources = [];
