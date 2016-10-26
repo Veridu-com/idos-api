@@ -1,17 +1,17 @@
 <?php
-/*
- * Copyright (c) 2012-2016 Veridu Ltd <https://veridu.com>
- * All rights reserved.
- */
 
 use Phinx\Migration\AbstractMigration;
 
-/**
- * GATE RELATED TABLES.
- */
-class GatesInit extends AbstractMigration {
-    public function change() {
-        // Profile reviews values
+class ReviewFlagToGate extends AbstractMigration
+{
+
+    /**
+     * Changes "reviews->flag" relationship to "review->gate"
+     */
+    public function change()
+    {
+        $this->table('reviews')->drop();
+
         $reviews = $this->table('reviews');
         $reviews
             ->addColumn('user_id', 'integer', ['null' => false])
@@ -24,5 +24,6 @@ class GatesInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('gate_id', 'gates', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
+
     }
 }
