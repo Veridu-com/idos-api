@@ -7,9 +7,9 @@
 use Phinx\Migration\AbstractMigration;
 
 /**
- * FLAG RELATED TABLES.
+ * FLAGS RELATED TABLES.
  */
-class FlagInit extends AbstractMigration {
+class FlagsInit extends AbstractMigration {
     public function change() {
         // Profile reviews values
         $reviews = $this->table('reviews');
