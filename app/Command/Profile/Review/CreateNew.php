@@ -27,11 +27,11 @@ class CreateNew extends AbstractCommand {
      */
     public $identity;
     /**
-     * Review's flagId.
+     * Review's gateId.
      *
      * @var int
      */
-    public $flagId;
+    public $gateId;
     /**
      * New review positive.
      *
@@ -47,8 +47,8 @@ class CreateNew extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['decoded_flag_id'])) {
-            $this->flagId = $parameters['decoded_flag_id'];
+        if (isset($parameters['decoded_gate_id'])) {
+            $this->gateId = $parameters['decoded_gate_id'];
         }
 
         if (isset($parameters['positive'])) {

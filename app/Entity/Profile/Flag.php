@@ -28,7 +28,6 @@ class Flag extends AbstractEntity {
     protected $visible = [
         'id',
         'creator',
-        'review',
         'slug',
         'attribute',
         'created_at',

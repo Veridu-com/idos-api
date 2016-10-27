@@ -68,7 +68,7 @@ class Reviews implements ControllerInterface {
     }
 
     /**
-     * Retrieve a complete list of reviews, given an user and an flag.
+     * Retrieve a complete list of reviews, given an user and an gate.
      *
      * @apiEndpointResponse 200 schema/review/listAll.json
      *
@@ -135,7 +135,7 @@ class Reviews implements ControllerInterface {
      * Created a new review data for a given source.
      *
      * @apiEndpointResponse 201 schema/review/createNew.json
-     * @apiEndpointRequiredParam body int flag_id 157896 Review flag_id
+     * @apiEndpointRequiredParam body int gate_id 157896 Review gate_id
      * @apiEndpointRequiredParam body boolean positive true Review positive
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

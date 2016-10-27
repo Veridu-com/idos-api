@@ -23,7 +23,7 @@ class S25GatesSeed extends AbstractSeed {
                 'creator'    => 1,
                 'name'       => 'Gate two',
                 'slug'       => 'gate-two',
-                'pass'       => true,
+                'pass'       => 'f',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
