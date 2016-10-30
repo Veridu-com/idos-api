@@ -16,7 +16,7 @@ class CandidateProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
             Candidate\Created::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event')),
+                new Listener\LogFiredEventListener($container->get('commandBus'), $container->get('commandFactory'), $container->get('log')('Event')),
                 new Listener\Profile\AttributeListener(
                     $container
                         ->get('repositoryFactory')
@@ -31,7 +31,7 @@ class CandidateProvider extends Listener\AbstractListenerProvider {
                 )
             ],
             Candidate\Updated::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event')),
+                new Listener\LogFiredEventListener($container->get('commandBus'), $container->get('commandFactory'), $container->get('log')('Event')),
                 new Listener\Profile\AttributeListener(
                     $container
                         ->get('repositoryFactory')
@@ -46,7 +46,7 @@ class CandidateProvider extends Listener\AbstractListenerProvider {
                 )
             ],
             Candidate\Deleted::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event')),
+                new Listener\LogFiredEventListener($container->get('commandBus'), $container->get('commandFactory'), $container->get('log')('Event')),
                 new Listener\Profile\AttributeListener(
                     $container
                         ->get('repositoryFactory')
@@ -61,7 +61,7 @@ class CandidateProvider extends Listener\AbstractListenerProvider {
                 )
             ],
             Candidate\DeletedMulti::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event')),
+                new Listener\LogFiredEventListener($container->get('commandBus'), $container->get('commandFactory'), $container->get('log')('Event')),
                 new Listener\Profile\AttributeListener(
                     $container
                         ->get('repositoryFactory')

@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Service;
 
 use App\Event\AbstractEvent;
+use App\Entity\Identity;
 use Illuminate\Support\Collection;
 
 /**
@@ -21,6 +22,12 @@ class DeletedMulti extends AbstractEvent {
      * @var \Illuminate\Support\Collection
      */
     public $services;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class DeletedMulti extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Collection $services) {
+    public function __construct(Collection $services, Identity $actor) {
         $this->services = $services;
+        $this->actor = $actor;
     }
 }

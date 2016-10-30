@@ -171,10 +171,12 @@ class Permissions implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Permission\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $identity)
             ->setParameter('companyId', $targetCompany->id);
 
         $permission = $this->commandBus->handle($command);
@@ -211,9 +213,11 @@ class Permissions implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
         $routeName     = $request->getAttribute('routeName');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Permission\\DeleteOne');
         $command
+            ->setParameter('actor', $identity)
             ->setParameter('companyId', $targetCompany->id)
             ->setParameter('routeName', $routeName);
 

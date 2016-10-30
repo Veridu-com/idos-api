@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Score;
 
 use App\Entity\Profile\Score;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Deleted extends AbstractEvent {
      * @var \App\Entity\Profile\Score
      */
     public $score;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Score $score) {
+    public function __construct(Score $score, Credential $actor) {
         $this->score = $score;
+        $this->actor = $actor;
     }
 }

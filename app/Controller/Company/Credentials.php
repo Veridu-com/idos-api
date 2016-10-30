@@ -150,7 +150,7 @@ class Credentials implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\Credential\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('identity', $identity)
+            ->setParameter('actor', $identity)
             ->setParameter('company', $company);
 
         $credential = $this->commandBus->handle($command);
@@ -190,7 +190,7 @@ class Credentials implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\Credential\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('identity', $identity)
+            ->setParameter('actor', $identity)
             ->setParameter('credentialId', $credential->id);
 
         $credential = $this->commandBus->handle($command);
@@ -229,7 +229,7 @@ class Credentials implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\Credential\\DeleteOne');
         $command
             ->setParameter('credential', $credential)
-            ->setParameter('identity', $identity);
+            ->setParameter('actor', $identity);
 
         $this->commandBus->handle($command);
         $body = [

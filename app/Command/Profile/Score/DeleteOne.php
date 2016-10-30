@@ -20,20 +20,24 @@ class DeleteOne extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Score's Creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * New score name.
      *
      * @var string
      */
     public $name;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

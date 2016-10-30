@@ -138,10 +138,12 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Reference\\CreateNew');
+        $credential = $request->getAttribute('credential');
 
+        $command = $this->commandFactory->create('Profile\\Reference\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
@@ -176,9 +178,12 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $credential = $request->getAttribute('credential');
+
         $command = $this->commandFactory->create('Profile\\Reference\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('name', $request->getAttribute('referenceName'));
 
@@ -211,8 +216,11 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $credential = $request->getAttribute('credential');
+
         $command = $this->commandFactory->create('Profile\\Reference\\DeleteOne');
         $command
+            ->setParameter('actor', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('name', $request->getAttribute('referenceName'));
 
@@ -243,8 +251,11 @@ class References implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $credential = $request->getAttribute('credential');
+
         $command = $this->commandFactory->create('Profile\\Reference\\DeleteAll');
         $command
+            ->setParameter('actor', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'));
 
         $body = [

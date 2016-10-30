@@ -20,27 +20,30 @@ class UpdateOne extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Gate's creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Gate's slug.
      *
      * @var string
      */
     public $slug;
-
     /**
      * Gate's property pass (user input).
      *
      * @var object
      */
     public $pass;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

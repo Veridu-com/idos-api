@@ -22,24 +22,23 @@ class Deleted extends AbstractEvent {
      * @var \App\Entity\Company\Credential
      */
     public $credential;
-
     /**
      * Event related Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $identity;
+    public $actor;
 
     /**
      * Class constructor.
      *
      * @param \App\Entity\Company\Credential $credential
-     * @param \App\Entity\Identity           $identity
+     * @param \App\Entity\Identity           $actor
      *
      * @return void
      */
-    public function __construct(Credential $credential, Identity $identity) {
+    public function __construct(Credential $credential, Identity $actor) {
         $this->credential = $credential;
-        $this->identity   = $identity;
+        $this->actor      = $actor;
     }
 }

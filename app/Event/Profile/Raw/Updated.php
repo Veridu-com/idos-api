@@ -25,34 +25,30 @@ class Updated extends AbstractServiceQueueEvent {
      * @var \App\Entity\Profile\Raw
      */
     public $raw;
-
     /**
      * Event related User.
      *
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Event related Source.
      *
      * @var \App\Entity\Profile\Source
      */
     public $source;
-
-    /**
-     * Event related Credential.
-     *
-     * @var \App\Entity\Company\Credential
-     */
-    public $credential;
-
     /**
      * Event related Process.
      *
      * @var \App\Entity\Profile\Process
      */
     public $process;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -61,12 +57,12 @@ class Updated extends AbstractServiceQueueEvent {
      *
      * @return void
      */
-    public function __construct(Raw $raw, User $user, Credential $credential, Source $source, Process $process) {
+    public function __construct(Raw $raw, User $user, Source $source, Process $process, Credential $actor) {
         $this->raw        = $raw;
         $this->user       = $user;
-        $this->credential = $credential;
         $this->process    = $process;
         $this->source     = $source;
+        $this->actor      = $actor;
     }
 
     /**
@@ -77,7 +73,7 @@ class Updated extends AbstractServiceQueueEvent {
             [
             'providerName' => $this->source->name,
             'sourceId'     => $this->source->getEncodedId(),
-            'publicKey'    => $this->credential->public,
+            'publicKey'    => $this->actor->public,
             'processId'    => $this->process->getEncodedId(),
             'userName'     => $this->user->username
             ], $merge

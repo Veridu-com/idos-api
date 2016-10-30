@@ -21,12 +21,6 @@ class DeleteOne extends AbstractCommand {
      */
     public $role;
     /**
-     * Acting identity.
-     *
-     * @var \App\Entity\Identity
-     */
-    public $identity;
-    /**
      * Target company.
      *
      * @var \App\Entity\Company
@@ -44,6 +38,13 @@ class DeleteOne extends AbstractCommand {
      * @var int
      */
     public $memberId;
+    /**
+     * Acting identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
+
     /**
      * {@inheritdoc}
      */

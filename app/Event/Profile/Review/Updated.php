@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Review;
 
 use App\Entity\Profile\Review;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Updated extends AbstractEvent {
      * @var \App\Entity\Profile\Review
      */
     public $review;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Updated extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Review $review) {
+    public function __construct(Review $review, Credential $actor) {
         $this->review = $review;
+        $this->actor = $actor;
     }
 }

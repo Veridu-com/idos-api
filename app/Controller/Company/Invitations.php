@@ -112,7 +112,7 @@ class Invitations implements ControllerInterface {
 
         $command
             ->setParameter('company', $targetCompany)
-            ->setParameter('identity', $identity)
+            ->setParameter('actor', $identity)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'))
             ->setParameters($request->getParsedBody());
 
@@ -146,8 +146,12 @@ class Invitations implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $identity = $request->getAttribute('identity');
+
         $command = $this->commandFactory->create('Company\\Invitation\\DeleteOne');
-        $command->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
+        $command
+            ->setParameter('actor', $identity)
+            ->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
 
         $this->commandBus->handle($command);
 

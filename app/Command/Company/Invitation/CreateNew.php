@@ -53,17 +53,17 @@ class CreateNew extends AbstractCommand {
      */
     public $company;
     /**
-     * Invitation's related identity, creator of the invitation.
-     *
-     * @var \App\Entity\Identity
-     */
-    public $identity;
-    /**
      * Ip address.
      *
      * @var string
      */
     public $ipaddr;
+    /**
+     * Invitation's related identity, creator of the invitation.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

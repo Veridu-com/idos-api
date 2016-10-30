@@ -162,8 +162,6 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Raw\\CreateNew');
-
         $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
         $service    = $request->getAttribute('service');
@@ -171,10 +169,11 @@ class Raw implements ControllerInterface {
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
+        $command = $this->commandFactory->create('Profile\\Raw\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('credential', $credential)
+            ->setParameter('actor', $credential)
             ->setParameter('service', $service)
             ->setParameter('source', $source);
 
@@ -223,7 +222,7 @@ class Raw implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Raw\\Upsert');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('credential', $credential)
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('source', $source);
@@ -261,16 +260,18 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Raw\\DeleteOne');
-
         $user   = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
+
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
         if ($source->userId !== $user->id) {
             throw new AppException('Source not found');
         }
 
+        $command = $this->commandFactory->create('Profile\\Raw\\DeleteOne');
         $command
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('collection', $request->getAttribute('collection'));
@@ -304,16 +305,18 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Raw\\DeleteAll');
-
         $user   = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
+
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
 
         if ($source->userId !== $user->id) {
             throw new AppException('Source not found');
         }
 
+        $command = $this->commandFactory->create('Profile\\Raw\\DeleteAll');
         $command
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source);
 

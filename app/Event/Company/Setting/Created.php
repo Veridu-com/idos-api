@@ -10,6 +10,7 @@ namespace App\Event\Company\Setting;
 
 use App\Entity\Company;
 use App\Entity\Company\Setting;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -22,6 +23,12 @@ class Created extends AbstractEvent {
      * @var \App\Entity\Company\Setting
      */
     public $setting;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -30,8 +37,8 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Setting $setting, Company $company) {
+    public function __construct(Setting $setting, Identity $actor) {
         $this->setting = $setting;
-        $this->company = $company;
+        $this->actor   = $actor;
     }
 }

@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Process;
 
 use App\Entity\Profile\Process;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Created extends AbstractEvent {
      * @var \App\Entity\Profile\Process
      */
     public $process;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Process $process) {
+    public function __construct(Process $process, Credential $actor) {
         $this->process = $process;
+        $this->actor = $actor;
     }
 }

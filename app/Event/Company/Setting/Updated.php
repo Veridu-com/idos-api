@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Company\Setting;
 
 use App\Entity\Company\Setting;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Updated extends AbstractEvent {
      * @var \App\Entity\Company\Setting
      */
     public $setting;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Updated extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Setting $setting) {
+    public function __construct(Setting $setting, Identity $actor) {
         $this->setting = $setting;
+        $this->actor = $actor;
     }
 }

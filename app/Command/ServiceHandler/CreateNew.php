@@ -20,20 +20,24 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $companyId;
-
     /**
      * ServiceHandler's service's id.
      *
      * @var string
      */
     public $serviceId;
-
     /**
      * ServiceHandler's listens attribute.
      *
      * @var string
      */
     public $listens;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

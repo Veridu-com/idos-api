@@ -118,7 +118,7 @@ class Source implements HandlerInterface {
         try {
             $this->validator->assertShortName($command->name);
             $this->validator->assertUser($command->user);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertCredential($command->actor);
             $this->validator->assertId($command->user->id);
             $this->validator->assertIpAddr($command->ipaddr);
 
@@ -180,8 +180,8 @@ class Source implements HandlerInterface {
             'Profile\\Source\\Created',
             $source,
             $command->user,
-            $command->credential,
-            $command->ipaddr
+            $command->ipaddr,
+            $command->actor
         );
 
         try {
@@ -207,7 +207,8 @@ class Source implements HandlerInterface {
                     'Profile\\Source\\OTP',
                     $command->user,
                     $source,
-                    $command->ipaddr
+                    $command->ipaddr,
+                    $command->actor
                 )
             );
         }
@@ -218,7 +219,8 @@ class Source implements HandlerInterface {
                     'Profile\\Source\\CRA',
                     $command->user,
                     $source,
-                    $command->ipaddr
+                    $command->ipaddr,
+                    $command->actor
                 )
             );
         }
@@ -330,7 +332,8 @@ class Source implements HandlerInterface {
                     'Profile\\Source\\Updated',
                     $command->user,
                     $source,
-                    $command->ipaddr
+                    $command->ipaddr,
+                    $command->actor
                 )
             );
         } catch (\Exception $e) {
@@ -378,7 +381,8 @@ class Source implements HandlerInterface {
                 'Profile\\Source\\Deleted',
                 $command->user,
                 $command->source,
-                $command->ipaddr
+                $command->ipaddr,
+                $command->actor
             )
         );
     }
@@ -416,7 +420,8 @@ class Source implements HandlerInterface {
                 'Profile\\Source\\DeletedMulti',
                 $command->user,
                 $sources,
-                $command->ipaddr
+                $command->ipaddr,
+                $command->actor
             )
         );
 

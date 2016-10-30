@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Company\Permission;
 
 use App\Entity\Company\Permission;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Deleted extends AbstractEvent {
      * @var \App\Entity\Company\Permission
      */
     public $permission;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Permission $permission) {
+    public function __construct(Permission $permission, Identity $actor) {
         $this->permission = $permission;
+        $this->actor = $actor;
     }
 }

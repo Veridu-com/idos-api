@@ -24,44 +24,46 @@ class ManagerProvider extends AbstractListenerProvider {
         $emitter       = $container->get('eventEmitter');
         $gearmanClient = $container->get('gearmanClient');
 
-        $eventLogger = $container->get('log')('Event');
+        $eventLogger    = $container->get('log')('Event');
+        $commandBus     = $container->get('commandBus');
+        $commandFactory = $container->get('commandFactory');
 
         $this->events = [
             Event\Manager\UnhandledEvent::class => [
-                new Listener\LogFiredEventListener($eventLogger)
+                new Listener\LogFiredEventListener($commandBus, $commandFactory, $eventLogger)
             ],
 
             Event\Manager\WorkQueued::class => [
-                new Listener\LogFiredEventListener($eventLogger)
+                new Listener\LogFiredEventListener($commandBus, $commandFactory, $eventLogger)
             ],
 
             // Source created triggers Manager\Scrape event listener
             Event\Profile\Source\Created::class => [
-                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\LogFiredEventListener($commandBus, $commandFactory, $eventLogger),
                 new ScrapeEventListener($credentialRepository, $serviceHandlerRepository, $settingRepository, $eventFactory, $emitter, $gearmanClient)
             ],
 
             // Raw created triggers Service Task listener
             Event\Profile\Raw\Created::class => [
-                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\LogFiredEventListener($commandBus, $commandFactory, $eventLogger),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
             Event\Profile\Raw\Updated::class => [
-                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\LogFiredEventListener($commandBus, $commandFactory, $eventLogger),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
 
             // Feature created triggers Service Task listener
             Event\Profile\Feature\Created::class => [
-                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\LogFiredEventListener($commandBus, $commandFactory, $eventLogger),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
             Event\Profile\Feature\Updated::class => [
-                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\LogFiredEventListener($commandBus, $commandFactory, $eventLogger),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
             Event\Profile\Feature\CreatedBulk::class => [
-                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\LogFiredEventListener($commandBus, $commandFactory, $eventLogger),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
             // Task Updated created triggers Service Task listener
@@ -78,7 +80,7 @@ class ManagerProvider extends AbstractListenerProvider {
 
             // Task Completed created triggers Service Task listener
             Event\Profile\Task\Completed::class => [
-                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\LogFiredEventListener($commandBus, $commandFactory, $eventLogger),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
 

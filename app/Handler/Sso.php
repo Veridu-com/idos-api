@@ -233,9 +233,9 @@ class Sso implements HandlerInterface {
     ) : MemberEntity {
         $command = $this->commandFactory->create('Company\\Member\\CreateNew');
 
-        $command->setParameter('company', $company);
-        $command->setParameter('ipaddr', $ipaddr);
-        $command->setParameters(
+        $command->setParameter('company', $company)
+                ->setParameter('ipaddr', $ipaddr)
+                ->setParameters(
             [
                 'identity_id' => $identityId,
                 'role'        => $role

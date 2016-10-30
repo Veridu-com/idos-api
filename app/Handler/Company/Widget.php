@@ -158,7 +158,7 @@ class Widget implements HandlerInterface {
 
         try {
             $widget  = $this->repository->save($widget);
-            $event   = $this->eventFactory->create('Company\\Widget\\Created', $widget);
+            $event   = $this->eventFactory->create('Company\\Widget\\Created', $widget, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\WidgetException('Error while trying to create a widget', 500, $e);
@@ -203,7 +203,7 @@ class Widget implements HandlerInterface {
 
         try {
             $widget  = $this->repository->save($widget);
-            $event   = $this->eventFactory->create('Company\\Widget\\Updated', $widget);
+            $event   = $this->eventFactory->create('Company\\Widget\\Updated', $widget, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Company\WidgetException('Error while trying to update a widget', 500, $e);
@@ -244,7 +244,7 @@ class Widget implements HandlerInterface {
             throw new NotFound\Company\WidgetException('No widgets found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Widget\\Deleted', $widget, $command->actor);
+        $event = $this->eventFactory->create('Company\\Widget\\Deleted', $widget, $command->actor, $command->actor);
         $this->emitter->emit($event);
     }
 }

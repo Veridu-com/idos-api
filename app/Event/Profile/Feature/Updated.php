@@ -25,27 +25,30 @@ class Updated extends AbstractServiceQueueEvent {
      * @var \App\Entity\Profile\Feature
      */
     public $feature;
-
     /**
      * Event related Source.
      *
      * @var \App\Entity\Profile\Source
      */
     public $source;
-
     /**
      * Event related User.
      *
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Event related Process.
      *
      * @var \App\Entity\Profile\Process
      */
     public $process;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -58,12 +61,12 @@ class Updated extends AbstractServiceQueueEvent {
      *
      * @return void
      */
-    public function __construct(Feature $feature, User $user, Credential $credential, Process $process, $source = null) {
+    public function __construct(Feature $feature, User $user, Process $process, Credential $actor, $source = null) {
         $this->feature     = $feature;
         $this->user        = $user;
-        $this->source      = $source;
         $this->process     = $process;
-        $this->credential  = $credential;
+        $this->actor       = $actor;
+        $this->source      = $source;
     }
 
     /**
@@ -75,7 +78,7 @@ class Updated extends AbstractServiceQueueEvent {
             [
             'providerName' => $this->source ? $this->source->name : null,
             'sourceId'     => $this->source ? $this->source->getEncodedId() : null,
-            'publicKey'    => $this->credential->public,
+            'publicKey'    => $this->actor->public,
             'processId'    => $this->process->getEncodedId(),
             'userName'     => $this->user->username
             ], $merge

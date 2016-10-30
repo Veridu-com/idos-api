@@ -20,20 +20,18 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $name;
-
     /**
      * Company's Parent Id.
      *
      * @var int
      */
     public $parentId;
-
     /**
      * Identity creating the company.
      *
      * @var \App\Entity\Identity
      */
-    public $identity;
+    public $actor;
 
     /**
      * {@inheritdoc}

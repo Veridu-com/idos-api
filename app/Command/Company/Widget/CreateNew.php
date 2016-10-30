@@ -20,48 +20,42 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $label;
-
     /**
      * Widget type.
      *
      * @var string
      */
     public $type;
-
     /**
      * Widget config.
      *
      * @var string
      */
     public $config;
-
     /**
      * Widget enabled.
      *
      * @var bool
      */
     public $enabled;
-
     /**
      * Target company.
      *
      * @var \App\Entity\Company
      */
     public $company;
-
     /**
      * Credential id.
      *
      * @var string
      */
     public $credentialPubKey;
-
     /**
      * Acting Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $creator;
+    public $actor;
 
     /**
      * {@inheritdoc}

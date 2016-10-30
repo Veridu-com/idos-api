@@ -10,6 +10,7 @@ namespace App\Event\Profile\Candidate;
 
 use App\Entity\Profile\Candidate;
 use App\Entity\User;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -28,6 +29,12 @@ class Created extends AbstractEvent {
      * @var \App\Entity\Profile\Candidate
      */
     public $candidate;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -37,8 +44,9 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(User $user, Candidate $candidate) {
+    public function __construct(User $user, Candidate $candidate, Credential $actor) {
         $this->user      = $user;
         $this->candidate = $candidate;
+        $this->actor     = $actor;
     }
 }

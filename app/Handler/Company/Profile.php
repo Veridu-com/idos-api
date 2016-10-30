@@ -115,7 +115,7 @@ class Profile implements HandlerInterface {
             throw new NotFound\Company\ProfileException('No profiles found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Profile\\Deleted', $user);
+        $event = $this->eventFactory->create('Company\\Profile\\Deleted', $user, $command->actor);
         $this->emitter->emit($event);
 
         return $rowsAffected;

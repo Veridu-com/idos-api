@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Attribute;
 
 use App\Entity\Profile\Attribute;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Updated extends AbstractEvent {
      * @var \App\Entity\Profile\Attribute
      */
     public $attribute;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Updated extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Attribute $attribute) {
+    public function __construct(Attribute $attribute, Credential $actor) {
         $this->attribute = $attribute;
+        $this->actor = $actor;
     }
 }

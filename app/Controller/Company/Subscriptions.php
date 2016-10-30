@@ -122,7 +122,7 @@ class Subscriptions implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
-            ->setParameter('identity', $identity);
+            ->setParameter('actor', $identity);
 
         $subscription = $this->commandBus->handle($command);
 
@@ -155,9 +155,11 @@ class Subscriptions implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $subscriptionId = $request->getAttribute('decodedSubscriptionId');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Subscription\\DeleteOne');
         $command
+            ->setParameter('actor', $identity)
             ->setParameter('subscriptionId', $subscriptionId);
 
         $this->commandBus->handle($command);

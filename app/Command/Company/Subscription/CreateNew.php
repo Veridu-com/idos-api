@@ -20,27 +20,24 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $categorySlug;
-
-    /**
-     * Acting Identity.
-     *
-     * @var \App\Entity\Identity
-     */
-    public $identity;
-
     /**
      * Acting Credential.
      *
      * @var \App\Entity\Credential
      */
     public $credential;
-
     /**
      * Subscription's credential's public key.
      *
      * @var string
      */
     public $credentialPubKey;
+    /**
+     * Acting Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

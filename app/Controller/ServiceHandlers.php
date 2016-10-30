@@ -24,14 +24,12 @@ class ServiceHandlers implements ControllerInterface {
      * @var \App\Repository\ServiceHandlerInterface
      */
     private $repository;
-
     /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
      */
     private $commandBus;
-
     /**
      * Command Factory instance.
      *
@@ -138,10 +136,12 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('ServiceHandler\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $identity)
             ->setParameter('companyId', $company->id);
 
         $entity = $this->commandBus->handle($command);
@@ -177,12 +177,14 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
         $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('serviceHandlerId', $serviceHandlerId)
+            ->setParameter('actor', $identity)
             ->setParameter('companyId', $company->id);
 
         $entity = $this->commandBus->handle($command);
@@ -214,11 +216,13 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
         $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
         $command
             ->setParameter('companyId', $company->id)
+            ->setParameter('actor', $identity)
             ->setParameter('serviceHandlerId', $serviceHandlerId);
 
         $this->commandBus->handle($command);
@@ -249,9 +253,12 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteAll');
-        $command->setParameter('companyId', $company->id);
+        $command
+            ->setParameter('actor', $identity)
+            ->setParameter('companyId', $company->id);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

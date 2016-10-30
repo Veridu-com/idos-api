@@ -139,10 +139,12 @@ class Services implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Service\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $identity)
             ->setParameter('company', $company);
 
         $entity = $this->commandBus->handle($command);
@@ -181,11 +183,13 @@ class Services implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company   = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
         $serviceId = $request->getAttribute('decodedServiceId');
 
         $command = $this->commandFactory->create('Service\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $identity)
             ->setParameter('serviceId', $serviceId)
             ->setParameter('company', $company);
 
@@ -217,10 +221,12 @@ class Services implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company   = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
         $serviceId = $request->getAttribute('decodedServiceId');
 
         $command = $this->commandFactory->create('Service\\DeleteOne');
         $command
+            ->setParameter('actor', $identity)
             ->setParameter('company', $company)
             ->setParameter('serviceId', $serviceId);
 
@@ -250,9 +256,12 @@ class Services implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Service\\DeleteAll');
-        $command->setParameter('company', $company);
+        $command
+            ->setParameter('actor', $identity)
+            ->setParameter('company', $company);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

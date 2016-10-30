@@ -21,12 +21,6 @@ class UpdateOne extends AbstractCommand {
      */
     public $user;
     /**
-     * Reviewer.
-     *
-     * @var \App\Entity\Identity
-     */
-    public $identity;
-    /**
      * Review's id.
      *
      * @var int
@@ -38,6 +32,12 @@ class UpdateOne extends AbstractCommand {
      * @var string
      */
     public $positive;
+    /**
+     * Reviewer.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

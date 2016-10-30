@@ -162,9 +162,11 @@ class Hooks implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $credentialPubKey = $request->getAttribute('pubKey');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Hook\\CreateNew');
         $command
+            ->setParameter('actor', $identity)
             ->setParameter('credentialPubKey', $credentialPubKey)
             ->setParameter('companyId', $company->id)
             ->setParameters($request->getParsedBody() ?: []);
@@ -205,9 +207,11 @@ class Hooks implements ControllerInterface {
         $hookId           = (int) $request->getAttribute('decodedHookId');
         $company          = $request->getAttribute('targetCompany');
         $credentialPubKey = $request->getAttribute('pubKey');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Hook\\UpdateOne');
         $command
+            ->setParameter('actor', $identity)
             ->setParameter('hookId', $hookId)
             ->setParameter('companyId', $company->id)
             ->setParameter('credentialPubKey', $credentialPubKey)
@@ -244,9 +248,11 @@ class Hooks implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $credentialPubKey = $request->getAttribute('pubKey');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Hook\\DeleteOne');
         $command
+            ->setParameter('actor', $identity)
             ->setParameter('hookId', $request->getAttribute('decodedHookId'))
             ->setParameter('credentialPubKey', $credentialPubKey)
             ->setParameter('companyId', $company->id);
