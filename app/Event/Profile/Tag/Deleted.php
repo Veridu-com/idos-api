@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Tag;
 
 use App\Entity\Profile\Tag;
-use App\Entity\Company\Credential;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -23,11 +23,11 @@ class Deleted extends AbstractEvent {
      */
     public $tag;
     /**
-     * Event related Credential.
+     * Event related Identity.
      *
-     * @var \App\Entity\Company\Credential
+     * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * Class constructor.
@@ -36,8 +36,8 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Tag $tag, Credential $actor) {
+    public function __construct(Tag $tag, Identity $identity) {
         $this->tag = $tag;
-        $this->actor = $actor;
+        $this->identity = $identity;
     }
 }

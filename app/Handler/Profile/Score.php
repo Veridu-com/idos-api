@@ -118,6 +118,7 @@ class Score implements HandlerInterface {
             $this->validator->assertName($command->attribute);
             $this->validator->assertName($command->name);
             $this->validator->assertScore($command->value);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -141,7 +142,7 @@ class Score implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Score\\Created', $entity, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Score\\Created', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ScoreException('Error while trying to create a score', 500, $e);
@@ -171,6 +172,7 @@ class Score implements HandlerInterface {
             $this->validator->assertName($command->attribute);
             $this->validator->assertName($command->name);
             $this->validator->assertScore($command->value);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -189,7 +191,7 @@ class Score implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Score\\Updated', $entity, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Score\\Updated', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ScoreException('Error while trying to update a score', 500, $e);
@@ -220,6 +222,7 @@ class Score implements HandlerInterface {
             $this->validator->assertName($command->attribute);
             $this->validator->assertName($command->name);
             $this->validator->assertScore($command->value);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -256,9 +259,9 @@ class Score implements HandlerInterface {
             $entity = $this->repository->hydrateRelations($entity);
 
             if ($inserting) {
-                $event = $this->eventFactory->create('Profile\\Score\\Created', $entity, $command->actor);
+                $event = $this->eventFactory->create('Profile\\Score\\Created', $entity, $command->credential);
             } else {
-                $event = $this->eventFactory->create('Profile\\Score\\Updated', $entity, $command->actor);
+                $event = $this->eventFactory->create('Profile\\Score\\Updated', $entity, $command->credential);
             }
 
             $this->emitter->emit($event);
@@ -287,6 +290,7 @@ class Score implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
             $this->validator->assertName($command->name);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -300,7 +304,7 @@ class Score implements HandlerInterface {
         try {
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = $this->eventFactory->create('Profile\\Score\\Deleted', $entity, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Score\\Deleted', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\ScoreException('No features found for deletion', 404);
@@ -326,6 +330,7 @@ class Score implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -346,7 +351,7 @@ class Score implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = $this->eventFactory->create('Profile\\Score\\DeletedMulti', $entities, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Score\\DeletedMulti', $entities, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting scores');

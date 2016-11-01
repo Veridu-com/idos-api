@@ -111,6 +111,7 @@ class Attribute implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertLongName($command->name);
             $this->validator->assertString($command->value);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),
@@ -130,7 +131,7 @@ class Attribute implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->actor);
+            $event  = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500, $e);
@@ -156,6 +157,8 @@ class Attribute implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertLongName($command->name);
             $this->validator->assertString($command->value);
+            $this->validator->assertCredential($command->credential);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),
@@ -169,7 +172,7 @@ class Attribute implements HandlerInterface {
             $command->name,
             $command->value
         );
-        $event = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->actor);
+        $event = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->credential);
         $this->emitter->emit($event);
 
         return $entity;
@@ -189,6 +192,7 @@ class Attribute implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertArray($command->queryParams);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),
@@ -213,7 +217,7 @@ class Attribute implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\AttributeException('Error while deleting all attributes', 404);

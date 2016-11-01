@@ -43,7 +43,7 @@ class DeleteOne extends AbstractCommand {
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * {@inheritdoc}

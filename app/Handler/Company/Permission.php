@@ -108,6 +108,7 @@ class Permission implements HandlerInterface {
         try {
             $this->validator->assertRouteName($command->routeName);
             $this->validator->assertId($command->companyId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\PermissionException(
                 $e->getFullMessage(),
@@ -126,7 +127,7 @@ class Permission implements HandlerInterface {
 
         try {
             $permission = $this->repository->save($permission);
-            $event      = $this->eventFactory->create('Company\\Permission\\Created', $permission, $command->actor);
+            $event      = $this->eventFactory->create('Company\\Permission\\Created', $permission, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\PermissionException('Error while trying to create a permission', 500, $e);
@@ -152,6 +153,7 @@ class Permission implements HandlerInterface {
         try {
             $this->validator->assertId($command->companyId);
             $this->validator->assertRouteName($command->routeName);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\PermissionException(
                 $e->getFullMessage(),
@@ -168,7 +170,7 @@ class Permission implements HandlerInterface {
             throw new NotFound\Company\PermissionException('No permissions found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Permission\\Deleted', $permission, $command->actor);
+        $event = $this->eventFactory->create('Company\\Permission\\Deleted', $permission, $command->identity);
         $this->emitter->emit($event);
     }
 
@@ -187,6 +189,7 @@ class Permission implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
             $this->validator->assertId($command->companyId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\PermissionException(
                 $e->getFullMessage(),
@@ -199,7 +202,7 @@ class Permission implements HandlerInterface {
 
         $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
 
-        $event = $this->eventFactory->create('Company\\Permission\\DeletedMulti', $permissions, $command->actor);
+        $event = $this->eventFactory->create('Company\\Permission\\DeletedMulti', $permissions, $command->identity);
         $this->emitter->emit($event);
 
         return $affectedRows;

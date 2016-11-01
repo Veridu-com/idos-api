@@ -48,7 +48,7 @@ class CreatedBulk extends AbstractServiceQueueEvent {
      *
      * @var \App\Entity\Company\Credential
      */
-    public $actor;
+    public $credential;
 
     /**
      * Class constructor.
@@ -61,11 +61,11 @@ class CreatedBulk extends AbstractServiceQueueEvent {
      *
      * @return void
      */
-    public function __construct(array $features, User $user, Process $process, Credential $actor, $source = null) {
+    public function __construct(array $features, User $user, Process $process, Credential $credential, $source = null) {
         $this->features    = $features;
         $this->user        = $user;
         $this->process     = $process;
-        $this->actor       = $actor;
+        $this->credential = $credential;
         $this->source      = $source;
     }
 

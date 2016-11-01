@@ -21,11 +21,11 @@ class ListAll extends AbstractCommand {
      */
     public $company;
     /**
-     * Actor.
+     * Credential.
      *
      * @var \App\Entity\Company\Credential
      */
-    public $actor;
+    public $credential;
 
     /**
      * {@inheritdoc}

@@ -115,6 +115,7 @@ class Task implements HandlerInterface {
             $this->validator->assertNullableBoolean($command->success);
             $this->validator->assertNullableString($command->message);
             $this->validator->assertId($command->processId);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\TaskException(
                 $e->getFullMessage(),
@@ -138,7 +139,7 @@ class Task implements HandlerInterface {
 
         try {
             $task  = $this->repository->save($task);
-            $event = $this->eventFactory->create('Profile\\Task\\Created', $task, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Task\\Created', $task, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\TaskException('Error while trying to create a task', 500, $e);
@@ -162,7 +163,6 @@ class Task implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : TaskEntity {
         try {
-            $this->validator->assertCredential($command->actor);
             $this->validator->assertUser($command->user);
             $this->validator->assertId($command->id);
 
@@ -190,6 +190,7 @@ class Task implements HandlerInterface {
             if (! $updated) {
                 return $task;
             }
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\TaskException(
                 $e->getFullMessage(),
@@ -207,7 +208,7 @@ class Task implements HandlerInterface {
             $this->emitter->emit($updated);
 
             if (! $task->running && $task->success) {
-                $completed = $this->eventFactory->create('Profile\\Task\\Completed', $task, $command->user, $task->event, $command->actor);
+                $completed = $this->eventFactory->create('Profile\\Task\\Completed', $task, $command->user, $task->event, $command->credential);
                 $this->emitter->emit($completed);
             }
         } catch (\Exception $e) {

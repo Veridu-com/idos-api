@@ -48,7 +48,7 @@ class Updated extends AbstractServiceQueueEvent {
      *
      * @var \App\Entity\Company\Credential
      */
-    public $actor;
+    public $credential;
 
     /**
      * Class constructor.
@@ -57,12 +57,12 @@ class Updated extends AbstractServiceQueueEvent {
      *
      * @return void
      */
-    public function __construct(Raw $raw, User $user, Source $source, Process $process, Credential $actor) {
+    public function __construct(Raw $raw, User $user, Source $source, Process $process, Credential $credential) {
         $this->raw        = $raw;
         $this->user       = $user;
         $this->process    = $process;
         $this->source     = $source;
-        $this->actor      = $actor;
+        $this->credential = $credential;
     }
 
     /**

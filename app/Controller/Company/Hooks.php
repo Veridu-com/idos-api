@@ -166,7 +166,7 @@ class Hooks implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Hook\\CreateNew');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('credentialPubKey', $credentialPubKey)
             ->setParameter('companyId', $company->id)
             ->setParameters($request->getParsedBody() ?: []);
@@ -211,7 +211,7 @@ class Hooks implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Hook\\UpdateOne');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('hookId', $hookId)
             ->setParameter('companyId', $company->id)
             ->setParameter('credentialPubKey', $credentialPubKey)
@@ -252,7 +252,7 @@ class Hooks implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Hook\\DeleteOne');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('hookId', $request->getAttribute('decodedHookId'))
             ->setParameter('credentialPubKey', $credentialPubKey)
             ->setParameter('companyId', $company->id);

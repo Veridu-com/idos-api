@@ -27,7 +27,7 @@ class Deleted extends AbstractEvent {
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * Class constructor.
@@ -36,8 +36,8 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Permission $permission, Identity $actor) {
+    public function __construct(Permission $permission, Identity $identity) {
         $this->permission = $permission;
-        $this->actor = $actor;
+        $this->identity = $identity;
     }
 }

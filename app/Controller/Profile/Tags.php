@@ -155,7 +155,7 @@ class Tags implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('actor', $identity);
+            ->setParameter('identity', $identity);
 
         $tag = $this->commandBus->handle($command);
 
@@ -193,7 +193,7 @@ class Tags implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Tag\\DeleteOne');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('user', $user)
             ->setParameter('slug', $request->getAttribute('tagSlug'));
 
@@ -230,7 +230,7 @@ class Tags implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Tag\\DeleteAll');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('user', $user);
 
         $body = [

@@ -112,7 +112,7 @@ class Invitations implements ControllerInterface {
 
         $command
             ->setParameter('company', $targetCompany)
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'))
             ->setParameters($request->getParsedBody());
 
@@ -150,7 +150,7 @@ class Invitations implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Invitation\\DeleteOne');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
 
         $this->commandBus->handle($command);

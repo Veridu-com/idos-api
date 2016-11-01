@@ -39,11 +39,11 @@ class CreateNew extends AbstractCommand {
      */
     public $ipaddr;
     /**
-     * Acting Identity.
+     * Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * {@inheritdoc}

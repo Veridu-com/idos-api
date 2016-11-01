@@ -34,7 +34,7 @@ class Created extends AbstractEvent {
      *
      * @var \App\Entity\Company\Credential
      */
-    public $actor;
+    public $credential;
 
     /**
      * Class constructor.
@@ -44,9 +44,9 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(User $user, Candidate $candidate, Credential $actor) {
+    public function __construct(User $user, Candidate $candidate, Credential $credential) {
         $this->user      = $user;
         $this->candidate = $candidate;
-        $this->actor     = $actor;
+        $this->credential = $credential;
     }
 }

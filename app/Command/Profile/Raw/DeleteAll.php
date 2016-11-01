@@ -27,11 +27,11 @@ class DeleteAll extends AbstractCommand {
      */
     public $source;
     /**
-     * Actor.
+     * Credential.
      *
      * @var \App\Entity\Company\Credential
      */
-    public $actor;
+    public $credential;
 
     /**
      * {@inheritdoc}

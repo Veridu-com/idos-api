@@ -114,6 +114,7 @@ class Service implements HandlerInterface {
             $this->validator->assertArray($command->triggers);
             $this->validator->assertAccessMode($command->access);
             $this->validator->assertFlag($command->enabled);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\ServiceException(
                 $e->getFullMessage(),
@@ -141,7 +142,7 @@ class Service implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = $this->eventFactory->create('Service\\Created', $entity);
+            $event  = $this->eventFactory->create('Service\\Created', $entity, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\ServiceException('Error while trying to create a feature', 500, $e);
@@ -198,6 +199,8 @@ class Service implements HandlerInterface {
                 $this->validator->assertPassword($command->authPassword);
                 $input['auth_password'] = $command->authPassword;
             }
+
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\ServiceException(
                 $e->getFullMessage(),
@@ -223,7 +226,7 @@ class Service implements HandlerInterface {
             try {
                 $entity->updatedAt = time();
                 $entity            = $this->repository->save($entity);
-                $event             = $this->eventFactory->create('Service\\Updated', $entity);
+                $event             = $this->eventFactory->create('Service\\Updated', $entity, $command->identity);
                 $this->emitter->emit($event);
             } catch (\Exception $e) {
                 throw new Update\ServiceException('Error while trying to update a service', 500, $e);
@@ -246,6 +249,7 @@ class Service implements HandlerInterface {
         try {
             $this->validator->assertCompany($command->company);
             $this->validator->assertId($command->serviceId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\ServiceException(
                 $e->getFullMessage(),
@@ -262,7 +266,7 @@ class Service implements HandlerInterface {
             throw new NotFound\ServiceException('No services found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Service\\Deleted', $service);
+        $event = $this->eventFactory->create('Service\\Deleted', $service, $command->identity);
         $this->emitter->emit($event);
     }
 
@@ -276,6 +280,7 @@ class Service implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
             $this->validator->assertCompany($command->company);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\ServiceException(
                 $e->getFullMessage(),
@@ -288,7 +293,7 @@ class Service implements HandlerInterface {
 
         $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
 
-        $event = $this->eventFactory->create('Service\\DeletedMulti', $services);
+        $event = $this->eventFactory->create('Service\\DeletedMulti', $services, $command->identity);
         $this->emitter->emit($event);
 
         return $affectedRows;

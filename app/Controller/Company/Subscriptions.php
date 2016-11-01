@@ -122,7 +122,7 @@ class Subscriptions implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
-            ->setParameter('actor', $identity);
+            ->setParameter('identity', $identity);
 
         $subscription = $this->commandBus->handle($command);
 
@@ -159,7 +159,7 @@ class Subscriptions implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Subscription\\DeleteOne');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('subscriptionId', $subscriptionId);
 
         $this->commandBus->handle($command);

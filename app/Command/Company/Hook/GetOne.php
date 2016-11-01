@@ -33,11 +33,11 @@ class GetOne extends AbstractCommand {
      */
     public $hookId;
     /**
-     * Acting Identity.
+     * Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * {@inheritdoc}

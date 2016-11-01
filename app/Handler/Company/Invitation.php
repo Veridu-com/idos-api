@@ -133,13 +133,14 @@ class Invitation implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : InvitationEntity {
         try {
             $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->actor);
+            $this->validator->assertIdentity($command->identity);
             $this->validator->assertName($command->credentialPubKey);
             $this->validator->assertString($command->name);
             $this->validator->assertEmail($command->email);
             if ($command->expires) {
                 $this->validator->assertDate($command->expires);
             }
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -168,7 +169,7 @@ class Invitation implements HandlerInterface {
             [
                 'credential_id' => $credential->id,
                 'company_id'    => $command->company->id,
-                'creator_id'    => $command->actor->id,
+                'creator_id'    => $command->identity->id,
                 'name'          => $command->name,
                 'email'         => $command->email,
                 'role'          => $command->role,
@@ -180,7 +181,7 @@ class Invitation implements HandlerInterface {
 
         try {
             $invitation = $this->repository->save($invitation);
-            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash, $command->actor);
+            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\MemberException('Error while trying to create an invitation', 500, $e);
@@ -202,6 +203,7 @@ class Invitation implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->invitationId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -223,7 +225,7 @@ class Invitation implements HandlerInterface {
             throw new NotFound\Company\MemberException('No invitations found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Invitation\\Deleted', $invitation, $command->actor);
+        $event = $this->eventFactory->create('Company\\Invitation\\Deleted', $invitation, $command->identity);
         $this->emitter->emit($event);
     }
 }

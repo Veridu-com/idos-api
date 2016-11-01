@@ -49,102 +49,82 @@ class Metric implements HandlerInterface {
         'company' => [
             'metricsTable' => 'company_metrics',
             'actor' => 'identity',
-            'tables'    => 'companies'
         ],
         'company:credential' => [
             'metricsTable' => 'credential_metrics',
             'actor' => 'identity',
-            'tables'    => 'credentials'
         ],
         'company:hook' => [
             'metricsTable' => 'hook_metrics',
-            'actor' => 'identity',
-            'tables'    => 'hooks'
+            'actor' => 'identity'
         ],
         'company:invitation' => [
             'metricsTable' => 'invitation_metrics',
-            'actor' => 'identity',
-            'tables'    => 'invitations'
+            'actor' => 'identity'
         ],
         'company:member' => [
             'metricsTable' => 'member_metrics',
-            'actor' => 'identity',
-            'tables'    => 'members'
+            'actor' => 'identity'
         ],
         'company:permission' => [
             'metricsTable' => 'permission_metrics',
-            'actor' => 'identity',
-            'tables'    => 'permissions'
+            'actor' => 'identity'
         ],
         'company:setting' => [
             'metricsTable' => 'setting_metrics',
-            'actor' => 'identity',
-            'tables'    => 'settings'
+            'actor' => 'identity'
         ],
         'profile:attribute' => [
             'metricsTable' => 'attribute_metrics',
-            'actor' => 'credential',
-            'tables'    => 'attributes'
+            'actor' => 'credential'
         ],
         'profile:candidate' => [
             'metricsTable' => 'candidate_metrics',
-            'actor' => 'credential',
-            'tables'    => 'candidates'
+            'actor' => 'credential'
         ],
         'profile:feature' => [
             'metricsTable' => 'feature_metrics',
-            'actor' => 'credential',
-            'tables'    => 'features'
+            'actor' => 'credential'
         ],
         'profile:flag' => [
             'metricsTable' => 'flag_metrics',
-            'actor' => 'credential',
-            'tables'    => 'flags'
+            'actor' => 'credential'
         ],
         'profile:gate' => [
             'metricsTable' => 'gate_metrics',
-            'actor' => 'credential',
-            'tables'    => 'gates'
+            'actor' => 'credential'
         ],
         'profile:process' => [
             'metricsTable' => 'process_metrics',
-            'actor' => 'credential',
-            'tables'    => 'processes'
+            'actor' => 'credential'
         ],
         'profile:raw' => [
             'metricsTable' => 'raw_metrics',
-            'actor' => 'credential',
-            'tables'    => 'raw'
+            'actor' => 'credential'
         ],
         'profile:reference' => [
             'metricsTable' => 'reference_metrics',
-            'actor' => 'credential',
-            'tables'    => 'references'
+            'actor' => 'credential'
         ],
         'profile:review' => [
             'metricsTable' => 'review_metrics',
-            'actor' => 'identity',
-            'tables'    => 'reviews'
+            'actor' => 'identity'
         ],
         'profile:score' => [
             'metricsTable' => 'score_metrics',
-            'actor' => 'credential',
-            'tables'    => 'scores'
+            'actor' => 'credential'
         ],
         'profile:source' => [
             'metricsTable' => 'source_metrics',
-            'actor' => 'credential',
-            'tables'    => 'sources'
+            'actor' => 'credential'
         ],
         'profile:tag' => [
             'metricsTable' => 'tag_metrics',
-            'actor' => 'identity',
-            'tables'    => 'tags'
+            'actor' => 'identity'
         ],
         'profile:task' => [
             'table' => 'task_metrics',
-            'actor' => 'credential',
-            'tables'    => 'tasks'
+            'actor' => 'credential'
         ]
     ];
 
@@ -263,8 +243,11 @@ class Metric implements HandlerInterface {
             $payload['endpoint']    = 'profile:' . $endpointName;
         }
 
-        $payload['actor_id'] = $command->event->actor->id;
-        $payload['entity_id'] = $command->event->$endpointName->id;
+        $endpointProperties = $this->endpoints[$payload['endpoint']];
+        $actor = $endpointProperties['actor'];
+
+        $payload[$actor . '_id'] = $command->event->$actor->id;
+        $payload[$endpointName . '_id'] = $command->event->$endpointName->id;
         $payload['created_at'] = time();
         $payload['action']     = strtolower($eventType);
 

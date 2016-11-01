@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Tag;
 
-use App\Entity\Company\Credential;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 
@@ -23,11 +23,11 @@ class DeletedMulti extends AbstractEvent {
      */
     public $tags;
     /**
-     * Event related Credential.
+     * Event related Identity.
      *
-     * @var \App\Entity\Company\Credential
+     * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * Class constructor.
@@ -36,8 +36,8 @@ class DeletedMulti extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Collection $tags, Credential $actor) {
+    public function __construct(Collection $tags, Identity $identity) {
         $this->tags = $tags;
-        $this->actor = $actor;
+        $this->identity = $identity;
     }
 }

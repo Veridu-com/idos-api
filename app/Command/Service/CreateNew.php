@@ -69,11 +69,11 @@ class CreateNew extends AbstractCommand {
      */
     public $authPassword;
     /**
-     * Actor.
+     * Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * {@inheritdoc}

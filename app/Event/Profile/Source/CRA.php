@@ -33,7 +33,7 @@ class CRA extends AbstractEvent {
      *
      * @var \App\Entity\Company\Credential
      */
-    public $actor;
+    public $credential;
 
     /**
      * Class constructor.
@@ -43,9 +43,9 @@ class CRA extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Source $source, string $ipAddr, Credential $actor) {
+    public function __construct(Source $source, string $ipAddr, Credential $credential) {
         $this->source = $source;
         $this->ipAddr = $ipAddr;
-        $this->actor  = $actor;
+        $this->credential = $credential;
     }
 }

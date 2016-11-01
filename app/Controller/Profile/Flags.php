@@ -156,7 +156,7 @@ class Flags implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Flag\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -197,7 +197,7 @@ class Flags implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Flag\\DeleteOne');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('slug', $slug);
@@ -235,7 +235,7 @@ class Flags implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Flag\\DeleteAll');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('queryParams', $request->getQueryParams());

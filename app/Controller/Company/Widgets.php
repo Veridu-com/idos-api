@@ -142,7 +142,7 @@ class Widgets implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\Widget\\CreateNew');
         $command
             ->setParameter('company', $company)
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameters($request->getParsedBody());
 
         $widget = $this->commandBus->handle($command);
@@ -184,7 +184,7 @@ class Widgets implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Widget\\UpdateOne');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('hash', $widgetHash)
             ->setParameters($request->getParsedBody() ?: []);
 
@@ -223,7 +223,7 @@ class Widgets implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\Widget\\DeleteOne');
         $command
             ->setParameter('hash', $widgetHash)
-            ->setParameter('actor', $identity);
+            ->setParameter('identity', $identity);
 
         $this->commandBus->handle($command);
         $body = [

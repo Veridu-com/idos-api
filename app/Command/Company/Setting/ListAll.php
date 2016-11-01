@@ -33,11 +33,11 @@ class ListAll extends AbstractCommand {
      */
     public $hasParentAccess;
     /**
-     * Acting Identity.
+     * Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * {@inheritdoc}

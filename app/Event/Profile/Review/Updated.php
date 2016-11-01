@@ -23,11 +23,11 @@ class Updated extends AbstractEvent {
      */
     public $review;
     /**
-     * Event related Credential.
+     * Event related Identity.
      *
-     * @var \App\Entity\Company\Credential
+     * @var \App\Entity\Company\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * Class constructor.
@@ -36,8 +36,8 @@ class Updated extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Review $review, Credential $actor) {
+    public function __construct(Review $review, Identity $identity) {
         $this->review = $review;
-        $this->actor = $actor;
+        $this->identity = $identity;
     }
 }

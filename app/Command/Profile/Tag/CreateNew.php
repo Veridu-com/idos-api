@@ -33,11 +33,11 @@ class CreateNew extends AbstractCommand {
      */
     public $slug;
     /**
-     * Tag creator.
+     * Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * {@inheritdoc}

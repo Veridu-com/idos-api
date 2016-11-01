@@ -143,7 +143,7 @@ class References implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Reference\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
@@ -183,7 +183,7 @@ class References implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Reference\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('name', $request->getAttribute('referenceName'));
 
@@ -220,7 +220,7 @@ class References implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Reference\\DeleteOne');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'))
             ->setParameter('name', $request->getAttribute('referenceName'));
 
@@ -255,7 +255,7 @@ class References implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Reference\\DeleteAll');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $request->getAttribute('targetUser'));
 
         $body = [

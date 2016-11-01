@@ -27,7 +27,7 @@ class DeletedMulti extends AbstractEvent {
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * Class constructor.
@@ -36,8 +36,8 @@ class DeletedMulti extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Collection $settings, Identity $actor) {
+    public function __construct(Collection $settings, Identity $identity) {
         $this->settings = $settings;
-        $this->actor = $actor;
+        $this->identity = $identity;
     }
 }

@@ -112,6 +112,7 @@ class Reference implements HandlerInterface {
         try {
             $this->validator->assertName($command->name);
             $this->validator->assertValue($command->value);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReferenceException(
                 $e->getFullMessage(),
@@ -133,7 +134,7 @@ class Reference implements HandlerInterface {
         try {
             $reference = $this->repository->save($reference);
 
-            $event = $this->eventFactory->create('Profile\\Reference\\Created', $reference, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Reference\\Created', $reference, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ReferenceException('Error while trying to create a reference', 500, $e);
@@ -158,6 +159,7 @@ class Reference implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : ReferenceEntity {
         try {
             $this->validator->assertValue($command->value);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReferenceException(
                 $e->getFullMessage(),
@@ -172,7 +174,7 @@ class Reference implements HandlerInterface {
         try {
             $reference = $this->repository->save($reference);
 
-            $event = $this->eventFactory->create('Profile\\Reference\\Updated', $reference, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Reference\\Updated', $reference, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ReferenceException('Error while trying to update a feature', 500, $e);
@@ -197,6 +199,7 @@ class Reference implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertName($command->name);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReferenceException(
                 $e->getFullMessage(),
@@ -230,7 +233,7 @@ class Reference implements HandlerInterface {
         $references   = $this->repository->getAllByUserId($command->user->id);
         $affectedRows = $this->repository->deleteByUserId($command->user->id);
 
-        $event = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references, $command->actor);
+        $event = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references, $command->credential);
         $this->emitter->emit($event);
 
         return $affectedRows;

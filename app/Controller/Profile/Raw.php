@@ -173,7 +173,7 @@ class Raw implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('service', $service)
             ->setParameter('source', $source);
 
@@ -222,7 +222,7 @@ class Raw implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Raw\\Upsert');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('source', $source);
@@ -271,7 +271,7 @@ class Raw implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Raw\\DeleteOne');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('collection', $request->getAttribute('collection'));
@@ -316,7 +316,7 @@ class Raw implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Raw\\DeleteAll');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source);
 

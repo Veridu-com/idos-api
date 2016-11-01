@@ -154,7 +154,7 @@ class Sources implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
@@ -202,7 +202,7 @@ class Sources implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Source\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
@@ -245,7 +245,7 @@ class Sources implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Source\\DeleteOne');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
@@ -282,7 +282,7 @@ class Sources implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Source\\DeleteAll');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 

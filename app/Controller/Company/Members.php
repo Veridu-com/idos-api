@@ -139,7 +139,7 @@ class Members implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\Member\\UpdateOne');
         $command
             ->setParameter('company', $targetCompany)
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('memberId', $memberId)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'))
             ->setParameters($request->getParsedBody());
@@ -181,7 +181,7 @@ class Members implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\Member\\DeleteOne');
         $command
             ->setParameter('company', $targetCompany)
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('memberId', $memberId)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 

@@ -27,11 +27,11 @@ class UpdateOne extends AbstractCommand {
      */
     public $company;
     /**
-     * Acting Identity.
+     * Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * {@inheritdoc}

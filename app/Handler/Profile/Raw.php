@@ -118,8 +118,9 @@ class Raw implements HandlerInterface {
         try {
             $this->validator->assertSource($command->source);
             $this->validator->assertUser($command->user);
-            $this->validator->assertCredential($command->actor);
+            $this->validator->assertCredential($command->credential);
             $this->validator->assertName($command->collection);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
                 $e->getFullMessage(),
@@ -155,7 +156,7 @@ class Raw implements HandlerInterface {
                 $command->user,
                 $command->source,
                 $process,
-                $command->actor
+                $command->credential
             );
 
             $this->emitter->emit($event);
@@ -184,6 +185,7 @@ class Raw implements HandlerInterface {
         try {
             $this->validator->assertSource($command->source);
             $this->validator->assertName($command->collection);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
                 $e->getFullMessage(),
@@ -229,7 +231,7 @@ class Raw implements HandlerInterface {
                     $command->user,
                     $command->source,
                     $process,
-                    $command->actor
+                    $command->credential
                 );
             } else {
                 $event = $this->eventFactory->create(
@@ -238,7 +240,7 @@ class Raw implements HandlerInterface {
                     $command->user,
                     $command->source,
                     $process,
-                    $command->actor
+                    $command->credential
                 );
             }
 

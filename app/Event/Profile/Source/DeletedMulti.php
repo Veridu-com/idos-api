@@ -40,7 +40,7 @@ class DeletedMulti extends AbstractEvent {
      *
      * @var \App\Entity\Company\Credential
      */
-    public $actor;
+    public $credential;
 
     /**
      * Class constructor.
@@ -51,10 +51,10 @@ class DeletedMulti extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(User $user, Collection $sources, string $ipAddr, Credential $actor) {
+    public function __construct(User $user, Collection $sources, string $ipAddr, Credential $credential) {
         $this->user    = $user;
         $this->sources = $sources;
         $this->ipAddr  = $ipAddr;
-        $this->actor   = $actor;
+        $this->credential = $credential;
     }
 }

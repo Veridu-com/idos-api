@@ -161,7 +161,7 @@ class Tasks implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Task\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('service', $request->getAttribute('service'))
             ->setParameter('processId', $processId);
 
@@ -206,7 +206,7 @@ class Tasks implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('id', $taskId);
 
         $task = $this->commandBus->handle($command);

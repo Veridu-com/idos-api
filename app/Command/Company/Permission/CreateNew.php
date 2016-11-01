@@ -27,11 +27,11 @@ class CreateNew extends AbstractCommand {
      */
     public $companyId;
     /**
-     * Acting Identity.
+     * Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * {@inheritdoc}

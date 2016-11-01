@@ -115,6 +115,7 @@ class Flag implements HandlerInterface {
             if (isset($command->attribute)) {
                 $this->validator->assertSlug($command->attribute);
             }
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FlagException(
                 $e->getFullMessage(),
@@ -137,7 +138,7 @@ class Flag implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Flag\\Created', $entity, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Flag\\Created', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Create\Profile\FlagException('Error while trying to create a flag', 500, $e);
@@ -164,6 +165,7 @@ class Flag implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
             $this->validator->assertSlug($command->slug);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FlagException(
                 $e->getFullMessage(),
@@ -177,7 +179,7 @@ class Flag implements HandlerInterface {
         try {
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = $this->eventFactory->create('Profile\\Flag\\Deleted', $entity, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Flag\\Deleted', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting flag');
@@ -203,6 +205,7 @@ class Flag implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FlagException(
                 $e->getFullMessage(),
@@ -223,7 +226,7 @@ class Flag implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = $this->eventFactory->create('Profile\\Flag\\DeletedMulti', $entities, $command->actor);
+            $event = $this->eventFactory->create('Profile\\Flag\\DeletedMulti', $entities, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting flags');

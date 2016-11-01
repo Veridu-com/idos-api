@@ -157,7 +157,7 @@ class Gates implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Gate\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -200,7 +200,7 @@ class Gates implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Gate\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('slug', $slug);
@@ -241,7 +241,7 @@ class Gates implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Gate\\Upsert');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -282,7 +282,7 @@ class Gates implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Gate\\DeleteOne');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('slug', $slug);
@@ -320,7 +320,7 @@ class Gates implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Gate\\DeleteAll');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('queryParams', $request->getQueryParams());

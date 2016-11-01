@@ -51,11 +51,11 @@ class CreateNew extends AbstractCommand {
      */
     public $credentialPubKey;
     /**
-     * Acting Identity.
+     * Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * {@inheritdoc}

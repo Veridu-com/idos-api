@@ -272,7 +272,7 @@ class Profiles implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\Profile\\DeleteOne');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('userId', $userId);
 
         $deleted = $this->commandBus->handle($command);

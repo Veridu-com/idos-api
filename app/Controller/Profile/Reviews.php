@@ -153,7 +153,7 @@ class Reviews implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('actor', $identity);
+            ->setParameter('identity', $identity);
 
         $review = $this->commandBus->handle($command);
 
@@ -192,7 +192,7 @@ class Reviews implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('id', (int) $request->getAttribute('decodedReviewId'));
 
         $review = $this->commandBus->handle($command);

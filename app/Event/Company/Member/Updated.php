@@ -27,7 +27,7 @@ class Updated extends AbstractEvent {
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * Class constructor.
@@ -36,8 +36,8 @@ class Updated extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Member $member, Identity $actor) {
+    public function __construct(Member $member, Identity $identity) {
         $this->member = $member;
-        $this->actor = $actor;
+        $this->identity = $identity;
     }
 }

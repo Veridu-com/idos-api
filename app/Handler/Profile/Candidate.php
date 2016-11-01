@@ -112,6 +112,7 @@ class Candidate implements HandlerInterface {
             $this->validator->assertLongName($command->attribute);
             $this->validator->assertValue($command->value);
             $this->validator->assertScore($command->support);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\CandidateException(
                 $e->getFullMessage(),
@@ -138,7 +139,7 @@ class Candidate implements HandlerInterface {
                 'Profile\\Candidate\\Created',
                 $command->user,
                 $entity,
-                $command->actor
+                $command->credential
             );
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -163,6 +164,7 @@ class Candidate implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
             $this->validator->assertArray($command->queryParams);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\CandidateException(
                 $e->getFullMessage(),
@@ -191,7 +193,7 @@ class Candidate implements HandlerInterface {
                 'Profile\\Candidate\\DeletedMulti',
                 $command->user,
                 $entities,
-                $command->actor
+                $command->credential
             );
             $this->emitter->emit($event);
         } catch (\Exception $e) {

@@ -27,7 +27,7 @@ class Created extends AbstractEvent {
      *
      * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * Class constructor.
@@ -36,8 +36,8 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(ServiceHandler $serviceHandler, Identity $actor) {
+    public function __construct(ServiceHandler $serviceHandler, Identity $identity) {
         $this->serviceHandler = $serviceHandler;
-        $this->actor = $actor;
+        $this->identity = $identity;
     }
 }

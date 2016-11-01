@@ -156,7 +156,7 @@ class Scores implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Score\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -201,7 +201,7 @@ class Scores implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Score\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('name', $name);
@@ -243,7 +243,7 @@ class Scores implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Score\\Upsert');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -284,7 +284,7 @@ class Scores implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Score\\DeleteOne');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('name', $name);
@@ -322,7 +322,7 @@ class Scores implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Score\\DeleteAll');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('queryParams', $request->getQueryParams());
