@@ -123,7 +123,7 @@ class Metric implements HandlerInterface {
             'actor' => 'identity'
         ],
         'profile:task' => [
-            'table' => 'task_metrics',
+            'metricsTable' => 'task_metrics',
             'actor' => 'credential'
         ]
     ];
