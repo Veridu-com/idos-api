@@ -6,24 +6,28 @@
 
 declare(strict_types = 1);
 
-namespace App\Listener\Company;
+namespace App\Listener\Profile;
 
-use App\Event\Company\Permission;
+use App\Event\Profile\Tag;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 
-class PermissionProvider extends Listener\AbstractListenerProvider {
+class TagProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Permission\Created::class => [
+            Tag\Created::class => [
                 new Listener\LogFiredEventListener(($container->get('log'))('Event')),
                 new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
-            Permission\Deleted::class => [
+            Tag\Updated::class => [
                 new Listener\LogFiredEventListener(($container->get('log'))('Event')),
                 new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
-            Permission\DeletedMulti::class => [
+            Tag\Deleted::class => [
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+            ],
+            Tag\DeletedMulti::class => [
                 new Listener\LogFiredEventListener(($container->get('log'))('Event')),
                 new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ]

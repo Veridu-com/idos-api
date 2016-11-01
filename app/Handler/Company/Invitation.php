@@ -180,7 +180,7 @@ class Invitation implements HandlerInterface {
 
         try {
             $invitation = $this->repository->save($invitation);
-            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $command->company->name, $dashboardName, $signupHash, $command->actor);
+            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\MemberException('Error while trying to create an invitation', 500, $e);

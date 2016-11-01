@@ -34,6 +34,12 @@ class Metric implements HandlerInterface {
      * @var \App\Validator\Metric
      */
     private $validator;
+    /**
+     * Gearman Client instance.
+     *
+     * @var \GearmanClient
+     */
+    private $gearmanClient;
 
     /**
      * {@inheritdoc}
@@ -46,7 +52,9 @@ class Metric implements HandlerInterface {
                     ->create('Metric'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Metric')
+                    ->create('Metric'),
+                $container
+                    ->get('gearmanClient')
             );
         };
     }
@@ -63,10 +71,12 @@ class Metric implements HandlerInterface {
      */
     public function __construct(
         MetricInterface $repository,
-        MetricValidator $validator
+        MetricValidator $validator,
+        \GearmanClient $gearmanClient
     ) {
-        $this->repository = $repository;
-        $this->validator  = $validator;
+        $this->repository    = $repository;
+        $this->validator     = $validator;
+        $this->gearmanClient = $gearmanClient;
     }
 
     /**
@@ -96,7 +106,7 @@ class Metric implements HandlerInterface {
      *
      * @return \App\Entity\Metric
      */
-    public function handleCreateNew(CreateNew $command) : MetricEntity {
+    public function handleCreateNew(CreateNew $command) : bool {
         try {
             $this->validator->assertEvent($command->event);
         } catch (ValidationException $e) {
@@ -108,42 +118,31 @@ class Metric implements HandlerInterface {
         }
 
         $eventClass = explode('\\', get_class($command->event));
-        $eventTokenType = $eventClass[2];
-        $eventEndpoint = $eventClass[count($eventClass) - 2];
+        $eventType = array_pop($eventClass);
+        $eventNamespace = implode('\\', $eventClass);
+        $endpointName = strtolower(array_pop($eventClass));
+        $endpointType = array_pop($eventClass);
 
-        $data = [];
-        $this->repository->prepare($eventEndpoint);
-        switch ($eventTokenType) {
-            case 'Company':
-                $data['identity_id'] = $command->event->identity->id;
-                break;
+        $payload = [];
 
-            case 'Profile':
-                $property = strtolower($eventEndpoint);
-                $data['credential_id'] = $command->event->$property->credential_id;
-                var_dump($command->event->$property);exit;
-                break;
-
-            default:
-
+        if ($eventNamespace == 'App\\Event\\Company') {
+            $payload['endpoint'] = 'company';
+        } else if($endpointType == 'Company') {
+            $payload['endpoint']    = 'company:' . $endpointName;
+        } else if ($endpointType == 'Profile') {
+            $payload['endpoint']    = 'profile:' . $endpointName;
         }
 
-        var_dump($data);exit;
+        $payload['id'] = $command->event->$endpointName->id;
+        $payload['actor_id'] = $command->event->actor->id;
+        $payload['created_at'] = time();
+        $payload['action']     = strtolower($eventType);
 
-        $metric = $this->repository->create(
-            [
-                'name'       => $command->name,
-                'value'      => $command->value,
-                'created_at' => time()
-            ]
+        $this->gearmanClient->doBackground(
+            sprintf('idos-metrics-%s', str_replace('.', '', __VERSION__)),
+            json_encode($payload)
         );
 
-        try {
-            $metric = $this->repository->save($metric);
-        } catch (\Exception $e) {
-            throw new Create\MetricException('Error while trying to create a metric', 500, $e);
-        }
-
-        return $metric;
+        return $this->gearmanClient->returnCode() == \GEARMAN_SUCCESS;
     }
 }

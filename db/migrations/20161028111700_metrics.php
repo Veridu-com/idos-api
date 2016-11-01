@@ -24,7 +24,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['identity_id'])
             ->addIndex(['company_id'])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -57,7 +56,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['identity_id'])
             ->addIndex(['credential_id'])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -79,6 +77,38 @@ class Metrics extends AbstractMigration {
             ->create();
 
         /**
+         * Hook Related Metrics
+         */
+        $this
+            ->table('hook_metrics')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('hook_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addIndex(['hook_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $this
+            ->table('hook_metrics_hourly')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $this
+            ->table('hook_metrics_daily')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        /**
          * Invitation Related Metrics
          */
         $this
@@ -90,7 +120,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['identity_id'])
             ->addIndex(['invitation_id'])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('invitation_id', 'invitations', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -123,7 +152,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['identity_id'])
             ->addIndex(['member_id'])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('member_id', 'members', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -156,7 +184,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['identity_id'])
             ->addIndex(['permission_id'])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('permission_id', 'permissions', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -178,64 +205,30 @@ class Metrics extends AbstractMigration {
             ->create();
 
         /**
-         * Review Related Metrics
-         */
-        $this
-            ->table('review_metrics')
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('review_id', 'integer', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['identity_id'])
-            ->addIndex(['review_id'])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('review_id', 'reviews', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $this
-            ->table('review_metrics_hourly')
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['identity_id'])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $this
-            ->table('review_metrics_daily')
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['identity_id'])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        /**
          * Settings Related Metrics
          */
         $this
-            ->table('settings_metrics')
+            ->table('setting_metrics')
             ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('settings_id', 'integer', ['null' => false])
+            ->addColumn('setting_id', 'integer', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
             ->addTimestamps()
             ->addIndex(['identity_id'])
-            ->addIndex(['settings_id'])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('settings_id', 'settings', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $this
-            ->table('settings_metrics_hourly')
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['identity_id'])
+            ->addIndex(['setting_id'])
             ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
-            ->table('settings_metrics_daily')
+            ->table('setting_metrics_hourly')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $this
+            ->table('setting_metrics_daily')
             ->addColumn('identity_id', 'integer', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
             ->addTimestamps()
@@ -244,36 +237,35 @@ class Metrics extends AbstractMigration {
             ->create();
 
         /**
-         * Tag Related Metrics
+         * Attribute Related Metrics
          */
         $this
-            ->table('tag_metrics')
-            ->addColumn('identity_id', 'integer', ['null' => false])
-            ->addColumn('tag_id', 'integer', ['null' => false])
+            ->table('attribute_metrics')
+            ->addColumn('credential_id', 'integer', ['null' => false])
+            ->addColumn('attribute_id', 'integer', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
             ->addTimestamps()
-            ->addIndex(['identity_id'])
-            ->addIndex(['tag_id'])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('tag_id', 'tags', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addIndex(['credential_id'])
+            ->addIndex(['attribute_id'])
+            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
-            ->table('tag_metrics_hourly')
-            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->table('attribute_metrics_hourly')
+            ->addColumn('credential_id', 'integer', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
             ->addTimestamps()
-            ->addIndex(['identity_id'])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addIndex(['credential_id'])
+            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
-            ->table('tag_metrics_daily')
-            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->table('attribute_metrics_daily')
+            ->addColumn('credential_id', 'integer', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
             ->addTimestamps()
-            ->addIndex(['identity_id'])
-            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addIndex(['credential_id'])
+            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         /**
@@ -288,7 +280,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['credential_id'])
             ->addIndex(['candidate_id'])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('candidate_id', 'candidates', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -321,7 +312,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['credential_id'])
             ->addIndex(['feature_id'])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('feature_id', 'features', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -354,7 +344,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['credential_id'])
             ->addIndex(['flag_id'])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('flag_id', 'flags', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -387,7 +376,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['credential_id'])
             ->addIndex(['gate_id'])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('gate_id', 'gates', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -409,6 +397,38 @@ class Metrics extends AbstractMigration {
             ->create();
 
         /**
+         * Process Related Metrics
+         */
+        $this
+            ->table('process_metrics')
+            ->addColumn('credential_id', 'integer', ['null' => false])
+            ->addColumn('process_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['credential_id'])
+            ->addIndex(['process_id'])
+            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $this
+            ->table('process_metrics_hourly')
+            ->addColumn('credential_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['credential_id'])
+            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $this
+            ->table('process_metrics_daily')
+            ->addColumn('credential_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['credential_id'])
+            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        /**
          * Raw Data Related Metrics
          */
         $this
@@ -420,7 +440,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['credential_id'])
             ->addIndex(['source_id'])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -453,7 +472,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['credential_id'])
             ->addIndex(['reference_id'])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('reference_id', 'references', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -475,6 +493,38 @@ class Metrics extends AbstractMigration {
             ->create();
 
         /**
+         * Review Related Metrics
+         */
+        $this
+            ->table('review_metrics')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('review_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addIndex(['review_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $this
+            ->table('review_metrics_hourly')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $this
+            ->table('review_metrics_daily')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        /**
          * Score Related Metrics
          */
         $this
@@ -486,7 +536,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['credential_id'])
             ->addIndex(['score_id'])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('score_id', 'scores', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -519,7 +568,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['credential_id'])
             ->addIndex(['source_id'])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('source_id', 'sources', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -541,6 +589,38 @@ class Metrics extends AbstractMigration {
             ->create();
 
         /**
+         * Tag Related Metrics
+         */
+        $this
+            ->table('tag_metrics')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('tag_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addIndex(['tag_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $this
+            ->table('tag_metrics_hourly')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        $this
+            ->table('tag_metrics_daily')
+            ->addColumn('identity_id', 'integer', ['null' => false])
+            ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex(['identity_id'])
+            ->addForeignKey('identity_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
+        /**
          * Task Related Metrics
          */
         $this
@@ -552,7 +632,6 @@ class Metrics extends AbstractMigration {
             ->addIndex(['credential_id'])
             ->addIndex(['task_id'])
             ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('task_id', 'tasks', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
@@ -566,39 +645,6 @@ class Metrics extends AbstractMigration {
 
         $this
             ->table('task_metrics_daily')
-            ->addColumn('credential_id', 'integer', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['credential_id'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        /**
-         * User Related Metrics
-         */
-        $this
-            ->table('user_metrics')
-            ->addColumn('credential_id', 'integer', ['null' => false])
-            ->addColumn('user_id', 'integer', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['credential_id'])
-            ->addIndex(['user_id'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $this
-            ->table('user_metrics_hourly')
-            ->addColumn('credential_id', 'integer', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['credential_id'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $this
-            ->table('user_metrics_daily')
             ->addColumn('credential_id', 'integer', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
             ->addTimestamps()

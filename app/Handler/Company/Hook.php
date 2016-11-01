@@ -253,6 +253,18 @@ class Hook implements HandlerInterface {
             throw new NotFound\Company\HookException('Credential not found', 404);
         }
 
+        $validResponse = false;
+        try {
+            if ($this->httpClient->request('GET', $command->url)->getStatusCode() === 204) {
+                $validResponse = true;
+            }
+        } catch (\Exception $e) {
+        }
+
+        if (! $validResponse) {
+            throw new Update\Company\HookException('Failed to perform hook handshake.', 500);
+        }
+
         $hook->trigger    = $command->trigger;
         $hook->url        = $command->url;
         $hook->subscribed = $command->subscribed;

@@ -181,7 +181,7 @@ class Setting implements HandlerInterface {
 
         try {
             $setting = $this->repository->save($setting);
-            $event   = $this->eventFactory->create('Company\\Setting\\Created', $setting, $command->company, $command->actor);
+            $event   = $this->eventFactory->create('Company\\Setting\\Created', $setting, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\SettingException('Error while trying to create a setting', 500, $e);

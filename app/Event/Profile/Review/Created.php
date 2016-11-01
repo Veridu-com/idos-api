@@ -28,25 +28,18 @@ class Created extends AbstractEvent {
      *
      * @var \App\Entity\Identity
      */
-    public $identity;
-    /**
-     * Event related Credential.
-     *
-     * @var \App\Entity\Company\Credential
-     */
     public $actor;
 
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Review   $review
+     * @param \App\Entity\Profile\Review   $review
      * @param \App\Entity\Identity $identity
      *
      * @return void
      */
-    public function __construct(Review $review, Identity $identity, Credential $actor) {
+    public function __construct(Review $review, Identity $actor) {
         $this->review   = $review;
-        $this->identity = $identity;
         $this->actor    = $actor;
     }
 }
