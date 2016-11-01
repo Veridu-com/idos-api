@@ -22,24 +22,23 @@ class Updated extends AbstractEvent {
      * @var \App\Entity\Company
      */
     public $company;
-
     /**
      * Event related Identity.
      *
      * @var \App\Entity\Identity
      */
-    public $identity;
+    public $actor;
 
     /**
      * Class constructor.
      *
      * @param \App\Entity\Company  $company
-     * @param \App\Entity\Identity $identity
+     * @param \App\Entity\Identity $actor
      *
      * @return void
      */
-    public function __construct(Company $company, Identity $identity) {
+    public function __construct(Company $company, Identity $actor) {
         $this->company  = $company;
-        $this->identity = $identity;
+        $this->actor    = $actor;
     }
 }

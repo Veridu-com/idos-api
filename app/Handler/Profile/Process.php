@@ -130,7 +130,7 @@ class Process implements HandlerInterface {
 
         try {
             $this->repository->save($process);
-            $event = $this->eventFactory->create('Profile\\Process\\Created', $process);
+            $event = $this->eventFactory->create('Profile\\Process\\Created', $process, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ProcessException('Error while trying to create a process', 500, $e);
@@ -173,7 +173,7 @@ class Process implements HandlerInterface {
 
         try {
             $process = $this->repository->save($process);
-            $event   = $this->eventFactory->create('Profile\\Process\\Updated', $process);
+            $event   = $this->eventFactory->create('Profile\\Process\\Updated', $process, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ProcessException('Error while trying to update a feature', 500, $e);

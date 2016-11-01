@@ -154,7 +154,7 @@ class Sources implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Source\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('credential', $credential)
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 
@@ -194,6 +194,7 @@ class Sources implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
         $sourceId = (int) $request->getAttribute('decodedSourceId');
 
         $source = $this->repository->findOne($sourceId, $user->id);
@@ -201,6 +202,7 @@ class Sources implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Source\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
@@ -236,12 +238,14 @@ class Sources implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
         $sourceId = (int) $request->getAttribute('decodedSourceId');
 
         $source = $this->repository->findOne($sourceId, $user->id);
 
         $command = $this->commandFactory->create('Profile\\Source\\DeleteOne');
         $command
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
@@ -274,9 +278,11 @@ class Sources implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Source\\DeleteAll');
         $command
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 

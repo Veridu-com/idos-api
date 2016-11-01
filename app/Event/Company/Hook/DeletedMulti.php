@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Company\Hook;
 
 use App\Entity\Company\Hook;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 
@@ -22,6 +23,12 @@ class DeletedMulti extends AbstractEvent {
      * @var \Illuminate\Support\Collection
      */
     public $hooks;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -30,7 +37,8 @@ class DeletedMulti extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Collection $hooks) {
+    public function __construct(Collection $hooks, Identity $actor) {
         $this->hooks = $hooks;
+        $this->actor = $actor;
     }
 }

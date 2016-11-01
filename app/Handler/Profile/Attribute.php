@@ -130,7 +130,7 @@ class Attribute implements HandlerInterface {
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = $this->eventFactory->create('Profile\\Attribute\\Created', $entity);
+            $event  = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500, $e);
@@ -169,7 +169,7 @@ class Attribute implements HandlerInterface {
             $command->name,
             $command->value
         );
-        $event = $this->eventFactory->create('Profile\\Attribute\\Created', $entity);
+        $event = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->actor);
         $this->emitter->emit($event);
 
         return $entity;
@@ -213,7 +213,7 @@ class Attribute implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities);
+            $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\AttributeException('Error while deleting all attributes', 404);

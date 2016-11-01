@@ -32,6 +32,12 @@ class Upsert extends AbstractCommand {
      * @var string
      */
     public $value;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

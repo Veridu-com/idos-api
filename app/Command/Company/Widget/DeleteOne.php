@@ -20,7 +20,6 @@ class DeleteOne extends AbstractCommand {
      * @var string
      */
     public $hash;
-
     /**
      * Acting identity.
      *

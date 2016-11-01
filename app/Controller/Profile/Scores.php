@@ -151,10 +151,12 @@ class Scores implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -194,10 +196,12 @@ class Scores implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
         $name    = $request->getAttribute('scoreName');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('name', $name);
@@ -234,10 +238,12 @@ class Scores implements ControllerInterface {
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\Upsert');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -274,9 +280,11 @@ class Scores implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
         $name    = $request->getAttribute('scoreName');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\DeleteOne');
         $command
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('name', $name);
@@ -310,9 +318,11 @@ class Scores implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\DeleteAll');
         $command
+            ->setParameter('actor', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('queryParams', $request->getQueryParams());

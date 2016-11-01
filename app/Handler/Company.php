@@ -129,8 +129,8 @@ class Company implements HandlerInterface {
         $company->private_key = Key::createNewRandomKey()->saveToAsciiSafeString();
 
         try {
-            $company = $this->repository->saveNewCompany($company, $command->identity);
-            $event   = $this->eventFactory->create('Company\\Created', $company, $command->identity);
+            $company = $this->repository->saveNewCompany($company, $command->actor);
+            $event   = $this->eventFactory->create('Company\\Created', $company, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\CompanyException('Error while trying to create a company', 500, $e);
@@ -167,7 +167,7 @@ class Company implements HandlerInterface {
 
         try {
             $company = $this->repository->save($company);
-            $event   = $this->eventFactory->create('Company\\Updated', $company, $command->identity);
+            $event   = $this->eventFactory->create('Company\\Updated', $company, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\CompanyException('Error while trying to update a company', 500, $e);
@@ -204,7 +204,7 @@ class Company implements HandlerInterface {
             throw new NotFound\CompanyException('No companies found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Deleted', $command->company, $command->identity);
+        $event = $this->eventFactory->create('Company\\Deleted', $command->company, $command->actor);
         $this->emitter->emit($event);
     }
 }

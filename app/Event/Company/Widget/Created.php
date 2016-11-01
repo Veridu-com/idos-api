@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Company\Widget;
 
 use App\Entity\Company\Widget;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Created extends AbstractEvent {
      * @var \App\Entity\Company\Widget
      */
     public $widget;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Widget $widget) {
+    public function __construct(Widget $widget, Identity $actor) {
         $this->widget = $widget;
+        $this->actor = $actor;
     }
 }

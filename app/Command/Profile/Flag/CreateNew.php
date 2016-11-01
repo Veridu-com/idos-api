@@ -20,27 +20,30 @@ class CreateNew extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Warning's creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Flag's slug (user input).
      *
      * @var string
      */
     public $slug;
-
     /**
      * Flag's attribute (user input).
      *
      * @var string
      */
     public $attribute;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

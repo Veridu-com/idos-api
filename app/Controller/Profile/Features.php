@@ -177,7 +177,7 @@ class Features implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('credential', $credential)
+            ->setParameter('actor', $credential)
             ->setParameter('source', $source)
             ->setParameter('service', $service);
 
@@ -225,7 +225,7 @@ class Features implements ControllerInterface {
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('service', $service)
-            ->setParameter('credential', $credential)
+            ->setParameter('actor', $credential)
             ->setParameter('featureId', $featureId);
 
         $feature = $this->commandBus->handle($command);
@@ -273,7 +273,7 @@ class Features implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('credential', $credential)
+            ->setParameter('actor', $credential)
             ->setParameter('source', $source)
             ->setParameter('service', $service);
 
@@ -314,7 +314,7 @@ class Features implements ControllerInterface {
         $command
             ->setParameter('features', $request->getParsedBody())
             ->setParameter('user', $user)
-            ->setParameter('credential', $credential)
+            ->setParameter('actor', $credential)
             ->setParameter('service', $service);
 
         $success = $this->commandBus->handle($command);
@@ -351,7 +351,9 @@ class Features implements ControllerInterface {
         $featureId = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
-        $command->setParameter('user', $user)
+        $command
+            ->setParameter('actor', $credential)
+            ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('featureId', $featureId);
 
@@ -386,7 +388,9 @@ class Features implements ControllerInterface {
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');
-        $command->setParameter('user', $user)
+        $command
+            ->setParameter('actor', $credential)
+            ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('queryParams', $request->getQueryParams());
 

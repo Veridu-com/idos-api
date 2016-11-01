@@ -21,12 +21,6 @@ class UpdateOne extends AbstractCommand {
      */
     public $user;
     /**
-     * Target Credential.
-     *
-     * @var \App\Entity\Company\Credential
-     */
-    public $credential;
-    /**
      * Task's running flag.
      *
      * @var bool
@@ -50,6 +44,12 @@ class UpdateOne extends AbstractCommand {
      * @var int
      */
     public $id;
+    /**
+     * Target Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

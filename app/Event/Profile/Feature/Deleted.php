@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Feature;
 
 use App\Entity\Profile\Feature;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Deleted extends AbstractEvent {
      * @var \App\Entity\Profile\Feature
      */
     public $feature;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Feature $feature) {
+    public function __construct(Feature $feature, Credential $actor) {
         $this->feature = $feature;
+        $this->actor = $actor;
     }
 }

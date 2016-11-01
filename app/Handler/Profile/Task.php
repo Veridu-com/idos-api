@@ -138,7 +138,7 @@ class Task implements HandlerInterface {
 
         try {
             $task  = $this->repository->save($task);
-            $event = $this->eventFactory->create('Profile\\Task\\Created', $task);
+            $event = $this->eventFactory->create('Profile\\Task\\Created', $task, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\TaskException('Error while trying to create a task', 500, $e);
@@ -162,7 +162,7 @@ class Task implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : TaskEntity {
         try {
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertCredential($command->actor);
             $this->validator->assertUser($command->user);
             $this->validator->assertId($command->id);
 
@@ -207,7 +207,7 @@ class Task implements HandlerInterface {
             $this->emitter->emit($updated);
 
             if (! $task->running && $task->success) {
-                $completed = $this->eventFactory->create('Profile\\Task\\Completed', $task, $command->user, $command->credential, $task->event);
+                $completed = $this->eventFactory->create('Profile\\Task\\Completed', $task, $command->user, $task->event, $command->actor);
                 $this->emitter->emit($completed);
             }
         } catch (\Exception $e) {

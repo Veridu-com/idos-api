@@ -136,7 +136,7 @@ class Companies implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('identity', $identity)
+            ->setParameter('actor', $identity)
             ->setParameter('parentId', $company->id);
         $company = $this->commandBus->handle($command);
 
@@ -175,7 +175,7 @@ class Companies implements ControllerInterface {
         $command = $this->commandFactory->create('Company\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('identity', $identity)
+            ->setParameter('actor', $identity)
             ->setParameter('company', $targetCompany);
         $targetCompany = $this->commandBus->handle($command);
 
@@ -211,7 +211,7 @@ class Companies implements ControllerInterface {
 
         $command = $this->commandFactory->create('Company\\DeleteOne');
         $command->setParameter('company', $targetCompany);
-        $command->setParameter('identity', $identity);
+        $command->setParameter('actor', $identity);
 
         $this->commandBus->handle($command);
         $body = [

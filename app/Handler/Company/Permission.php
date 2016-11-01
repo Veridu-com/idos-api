@@ -126,7 +126,7 @@ class Permission implements HandlerInterface {
 
         try {
             $permission = $this->repository->save($permission);
-            $event      = $this->eventFactory->create('Company\\Permission\\Created', $permission);
+            $event      = $this->eventFactory->create('Company\\Permission\\Created', $permission, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\PermissionException('Error while trying to create a permission', 500, $e);
@@ -168,7 +168,7 @@ class Permission implements HandlerInterface {
             throw new NotFound\Company\PermissionException('No permissions found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Permission\\Deleted', $permission);
+        $event = $this->eventFactory->create('Company\\Permission\\Deleted', $permission, $command->actor);
         $this->emitter->emit($event);
     }
 
@@ -199,7 +199,7 @@ class Permission implements HandlerInterface {
 
         $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
 
-        $event = $this->eventFactory->create('Company\\Permission\\DeletedMulti', $permissions);
+        $event = $this->eventFactory->create('Company\\Permission\\DeletedMulti', $permissions, $command->actor);
         $this->emitter->emit($event);
 
         return $affectedRows;

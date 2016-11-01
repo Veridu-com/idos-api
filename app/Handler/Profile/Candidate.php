@@ -137,7 +137,8 @@ class Candidate implements HandlerInterface {
             $event  = $this->eventFactory->create(
                 'Profile\\Candidate\\Created',
                 $command->user,
-                $entity
+                $entity,
+                $command->actor
             );
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -189,7 +190,8 @@ class Candidate implements HandlerInterface {
             $event = $this->eventFactory->create(
                 'Profile\\Candidate\\DeletedMulti',
                 $command->user,
-                $entities
+                $entities,
+                $command->actor
             );
             $this->emitter->emit($event);
         } catch (\Exception $e) {

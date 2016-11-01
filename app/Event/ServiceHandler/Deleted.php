@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\ServiceHandler;
 
 use App\Entity\ServiceHandler;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Deleted extends AbstractEvent {
      * @var \App\Entity\ServiceHandler
      */
     public $serviceHandler;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(ServiceHandler $serviceHandler) {
+    public function __construct(ServiceHandler $serviceHandler, Identity $actor) {
         $this->serviceHandler = $serviceHandler;
+        $this->actor = $actor;
     }
 }

@@ -20,6 +20,12 @@ class DeleteAll extends AbstractCommand {
      * @var int
      */
     public $companyId;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

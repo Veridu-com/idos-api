@@ -20,62 +20,60 @@ class CreateNew extends AbstractCommand {
      * @var \App\Entity\Company
      */
     public $company;
-
     /**
      * Service's name.
      *
      * @var string
      */
     public $name;
-
     /**
      * Service's url.
      *
      * @var string
      */
     public $url;
-
     /**
      * Service's listens.
      *
      * @var array
      */
     public $listens;
-
     /**
      * Service's triggers.
      *
      * @var array
      */
     public $triggers;
-
     /**
      * Service's enabled.
      *
      * @var bool
      */
     public $enabled;
-
     /**
      * Service's access.
      *
      * @var int
      */
     public $access;
-
     /**
      * Service's authentication username.
      *
      * @var string
      */
     public $authUsername;
-
     /**
      * Service's authentication password.
      *
      * @var string
      */
     public $authPassword;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

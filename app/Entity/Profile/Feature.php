@@ -21,7 +21,6 @@ use App\Entity\AbstractEntity;
  * @property string $creator
  * @property string $type
  * @property string $value
- * @property int    $user_id
  * @property int    $created_at
  * @property int    $updated_at
  */

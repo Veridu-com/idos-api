@@ -76,7 +76,7 @@ class Settings implements ControllerInterface {
         $command
             ->setParameter('hasParentAccess', $request->getAttribute('hasParentAccess'))
             ->setParameter('queryParams', $request->getQueryParams())
-            ->setParameter('identity', $identity)
+            ->setParameter('actor', $identity)
             ->setParameter('company', $targetCompany);
 
         $result   = $this->commandBus->handle($command);
@@ -119,7 +119,7 @@ class Settings implements ControllerInterface {
             ->setParameter('company', $company)
             ->setParameter('settingId', $settingId)
             ->setParameter('hasParentAccess', $request->getAttribute('hasParentAccess'))
-            ->setParameter('identity', $identity);
+            ->setParameter('actor', $identity);
 
         $setting = $this->commandBus->handle($command);
 
@@ -155,10 +155,12 @@ class Settings implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('targetCompany');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $identity)
             ->setParameter('company', $company);
 
         $setting = $this->commandBus->handle($command);
@@ -193,10 +195,12 @@ class Settings implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $settingId = $request->getAttribute('decodedSettingId');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('actor', $identity)
             ->setParameter('settingId', $settingId);
 
         $setting = $this->commandBus->handle($command);
@@ -229,9 +233,12 @@ class Settings implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $settingId = $request->getAttribute('decodedSettingId');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\DeleteOne');
-        $command->setParameter('settingId', $settingId);
+        $command
+            ->setParameter('actor', $identity)
+            ->setParameter('settingId', $settingId);
 
         $this->commandBus->handle($command);
         $body = [
@@ -261,9 +268,12 @@ class Settings implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company = $request->getAttribute('company');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\DeleteAll');
-        $command->setParameter('companyId', $company->id);
+        $command
+            ->setParameter('actor', $identity)
+            ->setParameter('companyId', $company->id);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

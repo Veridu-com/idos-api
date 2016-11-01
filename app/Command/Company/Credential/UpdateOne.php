@@ -33,7 +33,7 @@ class UpdateOne extends AbstractCommand {
      *
      * @var int
      */
-    public $identity;
+    public $actor;
 
     /**
      * {@inheritdoc}

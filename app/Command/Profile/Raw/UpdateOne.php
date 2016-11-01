@@ -20,34 +20,36 @@ class UpdateOne extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Raw's Service.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Raw's Source.
      *
      * @var \App\Entity\Profile\Source
      */
     public $source;
-
     /**
      * New raw collection name.
      *
      * @var string
      */
     public $collection;
-
     /**
      * New raw data.
      *
      * @var string
      */
     public $data;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

@@ -118,7 +118,7 @@ class Raw implements HandlerInterface {
         try {
             $this->validator->assertSource($command->source);
             $this->validator->assertUser($command->user);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertCredential($command->actor);
             $this->validator->assertName($command->collection);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
@@ -153,9 +153,9 @@ class Raw implements HandlerInterface {
                 'Profile\\Raw\\Created',
                 $raw,
                 $command->user,
-                $command->credential,
                 $command->source,
-                $process
+                $process,
+                $command->actor
             );
 
             $this->emitter->emit($event);
@@ -169,7 +169,7 @@ class Raw implements HandlerInterface {
     /**
      * Creates or updates a raw data in the given source.
      *
-     * @param \App\Command\Raw\Upsert $command
+     * @param \App\Command\Profile\Raw\Upsert $command
      *
      * @see \App\Repository\DBRaw::findOne
      * @see \App\Repository\DBRaw::create
@@ -227,18 +227,18 @@ class Raw implements HandlerInterface {
                     'Profile\\Raw\\Created',
                     $entity,
                     $command->user,
-                    $command->credential,
                     $command->source,
-                    $process
+                    $process,
+                    $command->actor
                 );
             } else {
                 $event = $this->eventFactory->create(
                     'Profile\\Raw\\Updated',
                     $entity,
                     $command->user,
-                    $command->credential,
                     $command->source,
-                    $process
+                    $process,
+                    $command->actor
                 );
             }
 

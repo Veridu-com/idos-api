@@ -166,7 +166,7 @@ class Feature implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertCredential($command->actor);
 
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->name);
@@ -207,7 +207,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->hydrateRelations($feature);
 
             $process = $this->getRelatedProcess($command->user->id, $command->source ? $command->source : null);
-            $event   = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $command->credential, $process, $command->source);
+            $event   = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $process, $command->actor, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\FeatureException('Error while trying to create a feature', 500, $e);
@@ -259,7 +259,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->hydrateRelations($feature);
 
             $process = $this->getRelatedProcess($command->user->id, $command->source ? $command->source : null);
-            $event   = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $command->credential, $process, $command->source);
+            $event   = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $process, $command->actor, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\FeatureException('Error while trying to update a feature', 500, $e);
@@ -343,8 +343,8 @@ class Feature implements HandlerInterface {
                     'Profile\\Feature\\Updated',
                     $feature,
                     $command->user,
-                    $command->credential,
                     $process,
+                    $command->actor,
                     $command->source
                 );
             }
@@ -367,7 +367,7 @@ class Feature implements HandlerInterface {
     public function handleUpsertBulk(UpsertBulk $command) : bool {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertCredential($command->actor);
             $this->validator->assertService($command->service);
             $this->validator->assertFeatures($command->features);
         } catch (ValidationException $e) {
@@ -411,7 +411,7 @@ class Feature implements HandlerInterface {
                 $source  = ($sourceId ? $sources[$sourceId] : null);
                 $process = $this->getRelatedProcess($command->user->id, $source ? $source : null);
 
-                $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $sourceFeatures, $command->user, $command->credential, $process, $source);
+                $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $sourceFeatures, $command->user, $process, $command->actor, $source);
                 $this->emitter->emit($event);
             }
         }
@@ -451,7 +451,7 @@ class Feature implements HandlerInterface {
             throw new NotFound\Profile\FeatureException('No features found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Profile\\Feature\\Deleted', $feature);
+        $event = $this->eventFactory->create('Profile\\Feature\\Deleted', $feature, $command->actor);
         $this->emitter->emit($event);
 
         return $affectedRows;
@@ -489,7 +489,7 @@ class Feature implements HandlerInterface {
             $affectedRows += $this->repository->delete($deletedFeature->id);
         }
 
-        $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures);
+        $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures, $command->actor);
         $this->emitter->emit($event);
 
         return $affectedRows;

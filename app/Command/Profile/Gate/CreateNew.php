@@ -20,27 +20,30 @@ class CreateNew extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Gate's creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Gate's name (user input).
      *
      * @var string
      */
     public $name;
-
     /**
      * Gate's value (user input).
      *
      * @var bool
      */
     public $pass;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

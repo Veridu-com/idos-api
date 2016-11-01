@@ -10,6 +10,7 @@ namespace App\Event\Profile\Source;
 
 use App\Entity\Profile\Source;
 use App\Entity\User;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -34,6 +35,12 @@ class Deleted extends AbstractEvent {
      * @var string
      */
     public $ipAddr;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -44,9 +51,10 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(User $user, Source $source, string $ipAddr) {
+    public function __construct(User $user, Source $source, string $ipAddr, Credential $actor) {
         $this->user   = $user;
         $this->source = $source;
         $this->ipAddr = $ipAddr;
+        $this->actor  = $actor;
     }
 }

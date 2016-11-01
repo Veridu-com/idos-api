@@ -117,7 +117,7 @@ class Subscription implements HandlerInterface {
 
         $subscription = $this->repository->create(
             [
-                'identity_id'      => $command->identity->id,
+                'identity_id'      => $command->actor->id,
                 'category_slug'    => $command->categorySlug,
                 'credential_id'    => $command->credential->id,
                 'created_at'       => time()
@@ -126,7 +126,7 @@ class Subscription implements HandlerInterface {
 
         try {
             $subscription = $this->repository->save($subscription);
-            $event        = $this->eventFactory->create('Company\\Subscription\\Created', $subscription);
+            $event        = $this->eventFactory->create('Company\\Subscription\\Created', $subscription, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\SubscriptionException('Error while trying to create a subscription', 500, $e);
@@ -163,7 +163,7 @@ class Subscription implements HandlerInterface {
             throw new NotFound\Company\SubscriptionException('No subscriptions found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Subscription\\Deleted', $subscription);
+        $event = $this->eventFactory->create('Company\\Subscription\\Deleted', $subscription, $command->actor);
         $this->emitter->emit($event);
     }
 }

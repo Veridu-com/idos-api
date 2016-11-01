@@ -44,6 +44,12 @@ class CreateNew extends AbstractCommand {
      * @var int
      */
     public $companyId;
+    /**
+     * Acting Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

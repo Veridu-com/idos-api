@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Event\Company\Permission;
 
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 
@@ -21,6 +22,12 @@ class DeletedMulti extends AbstractEvent {
      * @var \Illuminate\Support\Collection
      */
     public $permissions;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class DeletedMulti extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Collection $permissions) {
+    public function __construct(Collection $permissions, Identity $actor) {
         $this->permissions = $permissions;
+        $this->actor = $actor;
     }
 }

@@ -20,20 +20,24 @@ class GetOne extends AbstractCommand {
      * @var int
      */
     public $companyId;
-
     /**
      * Target Credential's public key.
      *
      * @var string
      */
     public $credentialPubKey;
-
     /**
      * Hook id.
      *
      * @var int
      */
     public $hookId;
+    /**
+     * Acting Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

@@ -123,7 +123,7 @@ class Tag implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : TagEntity {
         try {
             $this->validator->assertName($command->name);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertIdentity($command->actor);
         } catch (ValidationException $e) {
             throw new Validate\Profile\TagException(
                 $e->getFullMessage(),
@@ -132,13 +132,10 @@ class Tag implements HandlerInterface {
             );
         }
 
-        $user     = $command->user;
-        $identity = $command->identity;
-
         $tag = $this->repository->create(
             [
-                'user_id'     => $user->id,
-                'identity_id' => $identity->id,
+                'user_id'     => $command->user->id,
+                'identity_id' => $command->actor->id,
                 'name'        => $command->name,
                 'created_at'  => time()
             ]
@@ -147,7 +144,7 @@ class Tag implements HandlerInterface {
         try {
             $tag = $this->repository->save($tag);
 
-            $event = $this->eventFactory->create('Profile\\Tag\\Created', $tag);
+            $event = $this->eventFactory->create('Profile\\Tag\\Created', $tag, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\TagException('Error while trying to create a tag', 500, $e);
@@ -187,7 +184,7 @@ class Tag implements HandlerInterface {
             throw new NotFound\Profile\TagException('No tags found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Profile\\Tag\\Deleted', $tag);
+        $event = $this->eventFactory->create('Profile\\Tag\\Deleted', $tag, $command->actor);
         $this->emitter->emit($event);
     }
 
@@ -205,7 +202,7 @@ class Tag implements HandlerInterface {
         $tags         = $this->repository->getByUserId($command->user->id);
         $rowsAffected = $this->repository->deleteByUserId($command->user->id);
 
-        $event = $this->eventFactory->create('Profile\\Tag\\DeletedMulti', $tags);
+        $event = $this->eventFactory->create('Profile\\Tag\\DeletedMulti', $tags, $command->actor);
         $this->emitter->emit($event);
 
         return $rowsAffected;

@@ -111,7 +111,7 @@ class Review implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertId($command->gateId);
             $this->validator->assertFlag($command->positive);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertIdentity($command->actor);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReviewException(
                 $e->getFullMessage(),
@@ -123,8 +123,8 @@ class Review implements HandlerInterface {
         $entity = $this->repository->create(
             [
                 'user_id'     => $command->user->id,
-                'identity_id' => $command->identity->id,
-                'gate_id'     => $command->gateId,
+                'identity_id' => $command->actor->id,
+                'flag_id'     => $command->flagId,
                 'positive'    => $this->validator->validateFlag($command->positive),
                 'created_at'  => time()
             ]
@@ -133,7 +133,7 @@ class Review implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
 
-            $event = $this->eventFactory->create('Profile\\Review\\Created', $entity, $command->identity);
+            $event = $this->eventFactory->create('Profile\\Review\\Created', $entity, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\ReviewException('Error while trying to create a review', 500, $e);
@@ -160,7 +160,7 @@ class Review implements HandlerInterface {
             $this->validator->assertId($command->id);
             $this->validator->assertUser($command->user);
             $this->validator->assertFlag($command->positive);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertIdentity($command->actor);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReviewException(
                 $e->getFullMessage(),
@@ -174,7 +174,7 @@ class Review implements HandlerInterface {
 
         try {
             $review = $this->repository->save($review);
-            $event  = $this->eventFactory->create('Profile\\Review\\Updated', $review);
+            $event  = $this->eventFactory->create('Profile\\Review\\Updated', $review, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ReviewException('Error while trying to update a review', 500, $e);

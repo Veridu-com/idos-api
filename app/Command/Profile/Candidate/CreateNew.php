@@ -44,6 +44,12 @@ class CreateNew extends AbstractCommand {
      * @var float
      */
     public $support;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

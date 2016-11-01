@@ -137,7 +137,7 @@ class Flag implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Flag\\Created', $entity);
+            $event = $this->eventFactory->create('Profile\\Flag\\Created', $entity, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Create\Profile\FlagException('Error while trying to create a flag', 500, $e);
@@ -177,7 +177,7 @@ class Flag implements HandlerInterface {
         try {
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = $this->eventFactory->create('Profile\\Flag\\Deleted', $entity);
+            $event = $this->eventFactory->create('Profile\\Flag\\Deleted', $entity, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting flag');
@@ -223,7 +223,7 @@ class Flag implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = $this->eventFactory->create('Profile\\Flag\\DeletedMulti', $entities);
+            $event = $this->eventFactory->create('Profile\\Flag\\DeletedMulti', $entities, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new AppException('Error while deleting flags');

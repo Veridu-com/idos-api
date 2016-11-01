@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Flag;
 
 use App\Entity\Profile\Flag;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Created extends AbstractEvent {
      * @var \App\Entity\Profile\Flag
      */
     public $flag;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Flag $flag) {
+    public function __construct(Flag $flag, Credential $actor) {
         $this->flag = $flag;
+        $this->actor = $actor;
     }
 }

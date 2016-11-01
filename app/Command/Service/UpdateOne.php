@@ -68,6 +68,12 @@ class UpdateOne extends AbstractCommand {
      * @var string
      */
     public $authPassword;
+    /**
+     * Actor.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $actor;
 
     /**
      * {@inheritdoc}

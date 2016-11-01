@@ -133,7 +133,7 @@ class Invitation implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : InvitationEntity {
         try {
             $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertIdentity($command->actor);
             $this->validator->assertName($command->credentialPubKey);
             $this->validator->assertString($command->name);
             $this->validator->assertEmail($command->email);
@@ -168,7 +168,7 @@ class Invitation implements HandlerInterface {
             [
                 'credential_id' => $credential->id,
                 'company_id'    => $command->company->id,
-                'creator_id'    => $command->identity->id,
+                'creator_id'    => $command->actor->id,
                 'name'          => $command->name,
                 'email'         => $command->email,
                 'role'          => $command->role,
@@ -180,7 +180,7 @@ class Invitation implements HandlerInterface {
 
         try {
             $invitation = $this->repository->save($invitation);
-            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash);
+            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\MemberException('Error while trying to create an invitation', 500, $e);
@@ -223,7 +223,7 @@ class Invitation implements HandlerInterface {
             throw new NotFound\Company\MemberException('No invitations found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Invitation\\Deleted', $invitation);
+        $event = $this->eventFactory->create('Company\\Invitation\\Deleted', $invitation, $command->actor);
         $this->emitter->emit($event);
     }
 }

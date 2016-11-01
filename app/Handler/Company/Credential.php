@@ -144,7 +144,7 @@ class Credential implements HandlerInterface {
 
         try {
             $credential = $this->repository->save($credential);
-            $event      = $this->eventFactory->create('Company\\Credential\\Created', $credential, $command->identity);
+            $event      = $this->eventFactory->create('Company\\Credential\\Created', $credential, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\CredentialException('Error while trying to create a credential', 500, $e);
@@ -181,7 +181,7 @@ class Credential implements HandlerInterface {
 
         try {
             $credential = $this->repository->save($credential);
-            $event      = $this->eventFactory->create('Company\\Credential\\Updated', $credential, $command->identity);
+            $event      = $this->eventFactory->create('Company\\Credential\\Updated', $credential, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Company\CredentialException('Error while trying to update a credential', 500, $e);
@@ -218,7 +218,7 @@ class Credential implements HandlerInterface {
             throw new NotFound\Company\CredentialException('No credentials found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Credential\\Deleted', $credential, $command->identity);
+        $event = $this->eventFactory->create('Company\\Credential\\Deleted', $credential, $command->actor);
         $this->emitter->emit($event);
     }
 }

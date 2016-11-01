@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Reference;
 
 use App\Entity\Profile\Reference;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,6 +22,12 @@ class Deleted extends AbstractEvent {
      * @var \App\Entity\Profile\Reference
      */
     public $reference;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $actor;
 
     /**
      * Class constructor.
@@ -29,7 +36,8 @@ class Deleted extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Reference $reference) {
+    public function __construct(Reference $reference, Credential $actor) {
         $this->reference = $reference;
+        $this->actor = $actor;
     }
 }

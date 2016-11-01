@@ -203,7 +203,7 @@ class Hook implements HandlerInterface {
 
         try {
             $hook  = $this->repository->save($hook);
-            $event = $this->eventFactory->create('Company\\Hook\\Created', $hook);
+            $event = $this->eventFactory->create('Company\\Hook\\Created', $hook, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\HookException('Error while trying to create a hook', 500, $e);
@@ -253,6 +253,18 @@ class Hook implements HandlerInterface {
             throw new NotFound\Company\HookException('Credential not found', 404);
         }
 
+        $validResponse = false;
+        try {
+            if ($this->httpClient->request('GET', $command->url)->getStatusCode() === 204) {
+                $validResponse = true;
+            }
+        } catch (\Exception $e) {
+        }
+
+        if (! $validResponse) {
+            throw new Update\Company\HookException('Failed to perform hook handshake.', 500);
+        }
+
         $hook->trigger    = $command->trigger;
         $hook->url        = $command->url;
         $hook->subscribed = $command->subscribed;
@@ -260,7 +272,7 @@ class Hook implements HandlerInterface {
 
         try {
             $hook  = $this->repository->save($hook);
-            $event = $this->eventFactory->create('Company\\Hook\\Updated', $hook);
+            $event = $this->eventFactory->create('Company\\Hook\\Updated', $hook, $command->actor);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Company\HookException('Error while trying to update a hook', 500, $e);
@@ -313,7 +325,7 @@ class Hook implements HandlerInterface {
             throw new NotFound\Company\HookException('No hooks found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Hook\\Deleted', $hook);
+        $event = $this->eventFactory->create('Company\\Hook\\Deleted', $hook, $command->actor);
         $this->emitter->emit($event);
     }
 }
