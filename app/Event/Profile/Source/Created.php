@@ -76,7 +76,7 @@ class Created extends AbstractServiceQueueEvent {
             [
             'accessToken'   => $this->source->tags->access_token,
             'providerName'  => $this->source->name,
-            'publicKey'     => $this->actor->public,
+            'publicKey'     => $this->credential->public,
             'sourceId'      => $this->source->getEncodedId(),
             'processId'     => $this->process->getEncodedId(),
             'userName'      => $this->user->username

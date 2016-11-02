@@ -115,7 +115,7 @@ class Profiles implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\ListAll');
         $command
-            ->setParameter('actor', $credential)
+            ->setParameter('credential', $credential)
             ->setParameter('company', $company);
 
         $entities = $this->commandBus->handle($command);

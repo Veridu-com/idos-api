@@ -22,19 +22,18 @@ class Deleted extends AbstractEvent {
      * @var \App\Entity\Company\Widget
      */
     public $widget;
-
     /**
      * Event related Identity.
      *
-     * @var \App\Entity\Company\Identity
+     * @var \App\Entity\Identity
      */
-    public $actor;
+    public $identity;
 
     /**
      * Class constructor.
      *
      * @param \App\Entity\Company\Widget $widget
-     * @param \App\Entity\Identity       $actor
+     * @param \App\Entity\Identity       $identity
      *
      * @return void
      */

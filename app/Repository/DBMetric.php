@@ -15,28 +15,32 @@ use Illuminate\Support\Collection;
  * Database-based Metric Repository Implementation.
  */
 class DBMetric extends AbstractSQLDBRepository implements MetricInterface {
-    /**
-     * The table associated with the repository.
-     *
-     * @var string
-     */
-    protected $tableName = 'metrics';
-    /**
-     * The entity associated with the repository.
-     *
-     * @var string
-     */
-    protected $entityName = 'Metric';
 
-    public function prepare($endpointName, $metricType = null) {
-        $this->tableName = strtolower($endpointName) . '_metrics' . ($metricType ? (_ . $metricType) : '');
+    /**
+     * Prepare the repository to respond accordingly to an specific metric entity.
+     *
+     * @param string       $entityName  The entity name
+     * @param string|null  $metricType  The metric type
+     */
+    public function prepare($entityName, $metricType = null) {
+        $this->tableName = strtolower($entityName) . '_metrics' . ($metricType ? ('_' . $metricType) : '');
+        $this->entityName = $entityName . 'Metric';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get(array $queryParams = []) : Collection {
-        $entities = $this->findBy([], $queryParams);
+    public function get(string $from = null, string $to = null, array $queryParams = []) : Collection {
+        $constraints = [];
+        if ($from !== null) {
+            $constraints['created_at'] = [$from, '>='];
+        }
+
+        if ($to !== null) {
+            $constraints['created_at'] = [$to, '<='];
+        }
+
+        $entities = $this->findBy($constraints, $queryParams);
         foreach ($entities as $entity) {
             if (! $entity->count) {
                 $entity->count = 1;

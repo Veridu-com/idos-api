@@ -40,93 +40,6 @@ class Metric implements HandlerInterface {
      * @var \GearmanClient
      */
     private $gearmanClient;
-    /**
-     * Metrics endpoint list.
-     *
-     * @var array
-     */
-    private $endpoints = [
-        'company' => [
-            'metricsTable' => 'company_metrics',
-            'actor' => 'identity',
-        ],
-        'company:credential' => [
-            'metricsTable' => 'credential_metrics',
-            'actor' => 'identity',
-        ],
-        'company:hook' => [
-            'metricsTable' => 'hook_metrics',
-            'actor' => 'identity'
-        ],
-        'company:invitation' => [
-            'metricsTable' => 'invitation_metrics',
-            'actor' => 'identity'
-        ],
-        'company:member' => [
-            'metricsTable' => 'member_metrics',
-            'actor' => 'identity'
-        ],
-        'company:permission' => [
-            'metricsTable' => 'permission_metrics',
-            'actor' => 'identity'
-        ],
-        'company:setting' => [
-            'metricsTable' => 'setting_metrics',
-            'actor' => 'identity'
-        ],
-        'profile:attribute' => [
-            'metricsTable' => 'attribute_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:candidate' => [
-            'metricsTable' => 'candidate_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:feature' => [
-            'metricsTable' => 'feature_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:flag' => [
-            'metricsTable' => 'flag_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:gate' => [
-            'metricsTable' => 'gate_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:process' => [
-            'metricsTable' => 'process_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:raw' => [
-            'metricsTable' => 'raw_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:reference' => [
-            'metricsTable' => 'reference_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:review' => [
-            'metricsTable' => 'review_metrics',
-            'actor' => 'identity'
-        ],
-        'profile:score' => [
-            'metricsTable' => 'score_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:source' => [
-            'metricsTable' => 'source_metrics',
-            'actor' => 'credential'
-        ],
-        'profile:tag' => [
-            'metricsTable' => 'tag_metrics',
-            'actor' => 'identity'
-        ],
-        'profile:task' => [
-            'metricsTable' => 'task_metrics',
-            'actor' => 'credential'
-        ]
-    ];
 
     /**
      * {@inheritdoc}
@@ -178,29 +91,34 @@ class Metric implements HandlerInterface {
     public function handleListAll(ListAll $command) : Collection {
         $this->validator->assertArray($command->queryParams);
 
-        if (! isset($command->queryParams['endpoint']) || ! array_key_exists($command->queryParams['endpoint'], $this->endpoints)) {
+        $endpoints = [
+            'profile:source',
+            'profile:gate'
+        ];
+
+        if (! in_array($command->queryParams['endpoint'], $endpoints)) {
             return collect();
         }
 
-        $endpointName = $command->queryParams['endpoint'];
-        $endpoint = $this->endpoints[$endpointName];
-        $tableName = $endpoint['metricsTable'];
+        $endpoint = $command->queryParams['endpoint'];
+        $entityName = strpos($endpoint, ':') === false ? ucfirst($endpoint) : ucfirst(substr($endpoint, strpos($endpoint, ':') + 1));
+        $metricType = null;
 
         if (isset($command->queryParams['interval'])) {
             switch ($command->queryParams['interval']) {
                 case 'hour':
-                    $tableName .= '_hourly';
+                    $metricType = 'hourly';
                     break;
 
                 case 'day':
-                    $tableName .= '_daily';
+                    $metricType = 'daily';
                     break;
 
                 default:
             }
         }
 
-        $this->repository->prepare($endpointName);
+        $this->repository->prepare($entityName, $metricType);
         $entities = $this->repository->get();
 
         return $entities;
@@ -227,29 +145,32 @@ class Metric implements HandlerInterface {
             );
         }
 
-        $eventClass = explode('\\', get_class($command->event));
-        $eventType = array_pop($eventClass);
-        $eventNamespace = implode('\\', $eventClass);
-        $endpointName = strtolower(array_pop($eventClass));
-        $endpointType = array_pop($eventClass);
-
-        $payload = [];
-
-        if ($eventNamespace == 'App\\Event\\Company') {
-            $payload['endpoint'] = 'company';
-        } else if($endpointType == 'Company') {
-            $payload['endpoint']    = 'company:' . $endpointName;
-        } else if ($endpointType == 'Profile') {
-            $payload['endpoint']    = 'profile:' . $endpointName;
+        $eventClass = explode('\\', substr(get_class($command->event), strlen('App\\Event\\')));
+        $action = strtolower(array_pop($eventClass));
+        $endpoint = strtolower($eventClass[0]);
+        if (count($eventClass) > 1) {
+            $endpoint .= ':' . strtolower($eventClass[1]);
         }
 
-        $endpointProperties = $this->endpoints[$payload['endpoint']];
-        $actor = $endpointProperties['actor'];
+        $entityName = strpos($endpoint, ':') === false ? $endpoint : substr($endpoint, strpos($endpoint, ':') + 1);
+        $payload = [
+            'endpoint' => $endpoint,
+            'action' => $action,
+            'created'  => time()
+        ];
 
-        $payload[$actor . '_id'] = $command->event->$actor->id;
-        $payload[$endpointName . '_id'] = $command->event->$endpointName->id;
-        $payload['created_at'] = time();
-        $payload['action']     = strtolower($eventType);
+        switch ($endpoint) {
+            case 'profile:source':
+            case 'profile:gate':
+                $credential = $command->event->credential->toArray();
+                $credential['id'] = $command->event->credential->id;
+
+                $payload['credential'] = $credential;
+                $payload[$entityName] = $command->event->$entityName->toArray();
+                break;
+
+            default:
+        }
 
         $this->gearmanClient->doBackground(
             sprintf('idos-metrics-%s', str_replace('.', '', __VERSION__)),

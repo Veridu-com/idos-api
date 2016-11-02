@@ -141,7 +141,7 @@ class ServiceHandlers implements ControllerInterface {
         $command = $this->commandFactory->create('ServiceHandler\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('companyId', $company->id);
 
         $entity = $this->commandBus->handle($command);
@@ -184,7 +184,7 @@ class ServiceHandlers implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('serviceHandlerId', $serviceHandlerId)
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('companyId', $company->id);
 
         $entity = $this->commandBus->handle($command);
@@ -222,7 +222,7 @@ class ServiceHandlers implements ControllerInterface {
         $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
         $command
             ->setParameter('companyId', $company->id)
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('serviceHandlerId', $serviceHandlerId);
 
         $this->commandBus->handle($command);
@@ -257,7 +257,7 @@ class ServiceHandlers implements ControllerInterface {
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteAll');
         $command
-            ->setParameter('actor', $identity)
+            ->setParameter('identity', $identity)
             ->setParameter('companyId', $company->id);
 
         $body = [

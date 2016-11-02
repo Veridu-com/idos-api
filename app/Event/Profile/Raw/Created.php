@@ -73,7 +73,7 @@ class Created extends AbstractServiceQueueEvent {
             [
             'providerName' => $this->source->name,
             'sourceId'     => $this->source->getEncodedId(),
-            'publicKey'    => $this->actor->public,
+            'publicKey'    => $this->credential->public,
             'processId'    => $this->process->getEncodedId(),
             'userName'     => $this->user->username
             ], $merge

@@ -78,7 +78,7 @@ class Updated extends AbstractServiceQueueEvent {
             [
             'providerName' => $this->source ? $this->source->name : null,
             'sourceId'     => $this->source ? $this->source->getEncodedId() : null,
-            'publicKey'    => $this->actor->public,
+            'publicKey'    => $this->credential->public,
             'processId'    => $this->process->getEncodedId(),
             'userName'     => $this->user->username
             ], $merge

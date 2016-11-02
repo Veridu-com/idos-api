@@ -76,7 +76,7 @@ class Created extends AbstractServiceQueueEvent {
         return array_merge(
             [
             'sourceId'     => $this->source ? $this->source->getEncodedId() : null,
-            'publicKey'    => $this->actor->public,
+            'publicKey'    => $this->credential->public,
             'processId'    => $this->process->getEncodedId(),
             'userName'     => $this->user->username
             ], $merge
