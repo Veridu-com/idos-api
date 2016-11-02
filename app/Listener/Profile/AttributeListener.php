@@ -60,21 +60,24 @@ class AttributeListener extends AbstractListener {
     private function formatCombination(string $name, array $items) : string {
         switch ($name) {
             case 'fullName':
-                return implode(
-                    ' ',
-                    array_filter(
-                        $items,
-                        function ($item) {
-                            return ! empty($item);
-                        }
-                    )
-                );
+                $name = [];
+                if (! empty($items['firstName'])) {
+                    $name[] = $items['firstName'];
+                }
+
+                if (! empty($items['middleName'])) {
+                    $name[] = $items['middleName'];
+                }
+
+                if (! empty($items['lastName'])) {
+                    $name[] = $items['lastName'];
+                }
+                return implode(' ', $name);
             case 'gender':
                 $value = strtolower($item[0]);
                 if (! in_array(strtolower($value), ['male', 'female'])) {
                     return '';
                 }
-
                 return ucfirst($value);
             case 'birthDate':
                 if ((! empty($items['birthDay']))
@@ -115,22 +118,29 @@ class AttributeListener extends AbstractListener {
                         $items['birthYear']
                     );
                 }
-
                 return '';
             case 'fullAddress':
-                return ucwords(
-                    strtolower(
-                        implode(
-                            ', ',
-                            array_filter(
-                                $items,
-                                function ($element) {
-                                    return ! empty($element);
-                                }
-                            )
-                        )
-                    )
-                );
+                $address = [];
+                if (! empty($items['streetAddress'])) {
+                    $address[] = $items['streetAddress'];
+                }
+
+                if (! empty($items['postalCode'])) {
+                    $address[] = $items['postalCode'];
+                }
+
+                if (! empty($items['cityName'])) {
+                    $address[] = $items['cityName'];
+                }
+
+                if (! empty($items['regionName'])) {
+                    $address[] = $items['regionName'];
+                }
+
+                if (! empty($items['countryName'])) {
+                    $address[] = $items['countryName'];
+                }
+                return ucwords(strtolower(implode(', ', $address)));
             case 'email':
                 return strtolower($items[0]);
             case 'phoneNumber':
