@@ -13,9 +13,9 @@ use App\Entity\Company\Invitation;
 use App\Event\AbstractServiceQueueEvent;
 
 /**
- * Created event.
+ * Updated event.
  */
-class Created extends AbstractServiceQueueEvent {
+class Updated extends AbstractServiceQueueEvent {
     /**
      * Event related Member.
      *
@@ -28,6 +28,12 @@ class Created extends AbstractServiceQueueEvent {
      * @var \App\Entity\Company\Credential
      */
     public $credential;
+    /**
+     * Whether to re-send or not the e-mail.
+     *
+     * @var bool
+     */
+    public $resendEmail;
     /**
      * Event related Company name. Dashboard's owner.
      *
@@ -86,6 +92,6 @@ class Created extends AbstractServiceQueueEvent {
      * @return string
      **/
     public function __toString() {
-        return 'idos:invitation.created';
+        return 'idos:invitation.updated';
     }
 }

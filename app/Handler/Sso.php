@@ -356,13 +356,14 @@ class Sso implements HandlerInterface {
             if (! empty($command->signupHash)) {
                 try {
                     $invitation = $this->invitationRepository->findOneByHash($command->signupHash);
+                    $expires = strftime('%Y-%m-%d', $invitation->expires);
 
-                    if ($invitation->expires < strftime('%Y-%m-%d', time())) {
-                        throw new InvitationException('Expired invitation.');
+                    if ($expires < strftime('%Y-%m-%d', time())) {
+                        throw new InvitationException('It looks like your invitation has expired. Please contact your administrator to get re-invited');
                     }
 
                     if ($invitation->voided) {
-                        throw new InvitationException('Invitation already used.');
+                        throw new InvitationException('It looks like this invite has already been used. If you already registered please login using the online account you previously associated. Alternatively please contact your administrator to get re-invited');
                     }
 
                     $company = $this->companyRepository->find($invitation->companyId);
@@ -464,6 +465,24 @@ class Sso implements HandlerInterface {
             '/people/~:(id)?format=json',
             'id',
             'Sso\\CreatedLinkedin'
+        );
+    }
+
+    /**
+     * Creates a token with the spotify provider.
+     *
+     * @param \App\Command\Sso\CreateNewPaypal $command
+     *
+     * @return string
+     */
+    public function handleCreateNewSpotify(CreateNewSpotify $command) {
+        return $this->createNew(
+            'spotify',
+            $command,
+            'OAuth\OAuth2\Token\StdOAuth2Token',
+            '/identity/openidconnect/userinfo/?schema=openid',
+            'user_id',
+            'Sso\\CreatedSpotify'
         );
     }
 

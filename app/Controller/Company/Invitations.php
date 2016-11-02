@@ -89,7 +89,7 @@ class Invitations implements ControllerInterface {
     }
 
     /**
-     * Creates a new Member for the Target Company.
+     * Creates a new Invitation for the Target Company.
      *
      * @apiEndpointRequiredParam body string role company.owner Role type
      * @apiEndpointRequiredParam body string email jhondoe@idos.io User's email
@@ -134,7 +134,7 @@ class Invitations implements ControllerInterface {
     }
 
     /**
-     * Deletes one Invitation of the Target Company based on the userId.
+     * Deletes one Invitation of the Target Company based on the invitation id.
      *
      * @apiEndpointResponse 200 schema/member/deleteOne.json
      *
@@ -153,6 +153,40 @@ class Invitations implements ControllerInterface {
 
         $body = [
             'status' => true
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Updates one Invitation of the Target Company based on the invitation id.
+     *
+     * @apiEndpointResponse 200 schema/member/updateOne.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Handler\Invitation::handleUpdateOne
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $command = $this->commandFactory->create('Company\\Invitation\\UpdateOne');
+        
+        $command->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
+        $command->setParameters($request->getParsedBody());
+
+        $entity = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => true,
+            'data' => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
