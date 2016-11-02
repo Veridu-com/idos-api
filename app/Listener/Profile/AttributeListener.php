@@ -185,9 +185,13 @@ class AttributeListener extends AbstractListener {
             $probeScore       = 0;
 
             foreach ($features as $feature) {
-                $candidate          = $filteredCandidates[$feature->name]
+                $candidate = $filteredCandidates[$feature->name]
                     ->whereStrict('value', $feature->value)
                     ->first();
+                if (empty($candidate)) {
+                    continue;
+                }
+
                 $probeCombination[$feature->name] = $candidate->value;
                 $probeScore += $candidate->support;
             }
