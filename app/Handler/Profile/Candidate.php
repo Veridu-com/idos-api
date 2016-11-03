@@ -193,9 +193,9 @@ class Candidate implements HandlerInterface {
             );
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\Profile\CandidateException('Error while deleting all candidates', 404);
+            throw new NotFound\Profile\CandidateException('Error while deleting all candidates', 500, $e);
         }
 
-            return $affectedRows;
+        return $affectedRows;
     }
 }
