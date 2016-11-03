@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /companies/{companySlug}/invitations",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Invitation response payload",
+            "type": "object",
+            "$ref": "invitationEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}
