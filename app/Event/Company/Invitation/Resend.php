@@ -17,7 +17,7 @@ use App\Event\AbstractServiceQueueEvent;
  */
 class Resend extends AbstractServiceQueueEvent {
     /**
-     * Event related Member.
+     * Event related Invitation.
      *
      * @var \App\Entity\Company\Invitation
      */

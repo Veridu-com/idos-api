@@ -356,7 +356,7 @@ class Sso implements HandlerInterface {
             if (! empty($command->signupHash)) {
                 try {
                     $invitation = $this->invitationRepository->findOneByHash($command->signupHash);
-                    $expires = strftime('%Y-%m-%d', $invitation->expires);
+                    $expires    = strftime('%Y-%m-%d', $invitation->expires);
 
                     if ($expires < strftime('%Y-%m-%d', time())) {
                         throw new InvitationException('It looks like your invitation has expired. Please contact your administrator to get re-invited');

@@ -4,9 +4,8 @@ use Phinx\Migration\AbstractMigration;
 
 class ReviewFlagToGate extends AbstractMigration
 {
-
     /**
-     * Changes "reviews->flag" relationship to "review->gate"
+     * Changes "reviews->flag" relationship to "review->gate".
      */
     public function change()
     {

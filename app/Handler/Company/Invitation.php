@@ -17,10 +17,10 @@ use App\Exception\NotFound;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\CompanyInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\InvitationInterface;
 use App\Repository\Company\SettingInterface;
+use App\Repository\CompanyInterface;
 use App\Validator\Company\Invitation as InvitationValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -226,7 +226,7 @@ class Invitation implements HandlerInterface {
             if ($diff->days < 1 || $diff->days > 7) {
                 throw new Validate\Company\InvitationException('Invalid expiration date. Min: 1 day, Max: 7 days from today');
             }
-            
+
             // updates entity
             $invitation->expires = $expires;
         }
@@ -261,9 +261,9 @@ class Invitation implements HandlerInterface {
                         $company->name,
                         $dashboardName,
                         $signupHash
-                    )                                                                                                                       
+                    )
                 );
-            }           
+            }
         } catch (\Exception $e) {
             throw new Create\Company\InvitationException('Error while trying to create an invitation', 500, $e);
         }
