@@ -13,9 +13,9 @@ use App\Entity\Company\Invitation;
 use App\Event\AbstractServiceQueueEvent;
 
 /**
- * UpdatedWithResend event.
+ * Resend event.
  */
-class UpdatedWithResend extends AbstractServiceQueueEvent {
+class Resend extends AbstractServiceQueueEvent {
     /**
      * Event related Member.
      *
@@ -86,6 +86,6 @@ class UpdatedWithResend extends AbstractServiceQueueEvent {
      * @return string
      **/
     public function __toString() {
-        return 'idos:invitation.updated-with-resend';
+        return 'idos:invitation.resend';
     }
 }

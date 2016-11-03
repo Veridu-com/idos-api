@@ -521,7 +521,7 @@ class S30ServiceHandlersSeed extends AbstractSeed {
                 'listens'       => json_encode(
                     [
                         'idos:invitation.created',
-                        'idos:invitation.updated-with-resend'
+                        'idos:invitation.resend'
                     ]
                 ),
                 'created_at' => $now

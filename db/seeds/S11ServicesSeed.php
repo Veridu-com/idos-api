@@ -685,7 +685,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS E-mail Handler',
-                'url'           => 'http://email.idos.io:8002/index.php/1.0/email/invitation',
+                'url'           => 'https://email.idos.io/1.0/email/invitation',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -694,7 +694,7 @@ class S11ServicesSeed extends AbstractSeed {
                 'listens'       => json_encode(
                     [
                         'idos:invitation.created',
-                        'idos:invitation.updated-with-resend'
+                        'idos:invitation.resend'
                     ]
                 ),
                 'triggers'      => json_encode([]),

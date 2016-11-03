@@ -31,7 +31,7 @@ class InvitationProvider extends Listener\AbstractListenerProvider {
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient),
                 new Listener\LogFiredEventListener($eventLogger)
             ],
-            Invitation\UpdatedWithResend::class => [
+            Invitation\Resend::class => [
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient),
                 new Listener\LogFiredEventListener($eventLogger)
             ],

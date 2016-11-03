@@ -124,7 +124,7 @@ class Invitation implements HandlerInterface {
     /**
      * Creates a new invitation for a future member.
      *
-     * @param \App\Command\Company\Member\CreateNew $command
+     * @param \App\Command\Company\Invitation\CreateNew $command
      *
      * @throws \App\Exception\Validate\InvitationException
      * @throws \App\Exception\Create\InvitationException
@@ -193,7 +193,7 @@ class Invitation implements HandlerInterface {
     /**
      * Updates a invitation for a future member.
      *
-     * @param \App\Command\Company\Member\UpdateOne $command
+     * @param \App\Command\Company\Invitation\UpdateOne $command
      *
      * @throws \App\Exception\Validate\InvitationException
      * @throws \App\Exception\Create\InvitationException
@@ -241,13 +241,29 @@ class Invitation implements HandlerInterface {
         try {
             $invitation = $this->repository->save($invitation);
 
-            if ($command->resendEmail) {
-                $event = $this->eventFactory->create('Company\\Invitation\\UpdatedWithResend', $invitation, $credential, $company->name, $dashboardName, $signupHash);
-            } else {
-                $event = $this->eventFactory->create('Company\\Invitation\\Updated', $invitation, $credential, $company->name, $dashboardName, $signupHash);
-            }
+            $this->emitter->emit(
+                $this->eventFactory->create(
+                    'Company\\Invitation\\Updated',
+                    $invitation,
+                    $credential,
+                    $company->name,
+                    $dashboardName,
+                    $signupHash
+                )
+            );
 
-            $this->emitter->emit($event);
+            if ($command->resendEmail) {
+                $this->emitter->emit(
+                    $this->eventFactory->create(
+                        'Company\\Invitation\\Resend',
+                        $invitation,
+                        $credential,
+                        $company->name,
+                        $dashboardName,
+                        $signupHash
+                    )                                                                                                                       
+                );
+            }           
         } catch (\Exception $e) {
             throw new Create\Company\InvitationException('Error while trying to create an invitation', 500, $e);
         }
@@ -258,7 +274,7 @@ class Invitation implements HandlerInterface {
     /**
      * Deletes an Invitation.
      *
-     * @param \App\Command\Company\Member\DeleteOne $command
+     * @param \App\Command\Company\Invitation\DeleteOne $command
      *
      * @throws \App\Exception\Validate\InvitationException
      * @throws \App\Exception\NotFound\InvitationException
