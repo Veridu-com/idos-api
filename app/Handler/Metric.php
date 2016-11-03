@@ -118,8 +118,11 @@ class Metric implements HandlerInterface {
             }
         }
 
+        $from = isset($command->queryParams['from']) ? (int) $command->queryParams['from'] : null;
+        $to = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
+
         $this->repository->prepare($entityName, $metricType);
-        $entities = $this->repository->get();
+        $entities = $this->repository->get($from, $to);
 
         return $entities;
     }

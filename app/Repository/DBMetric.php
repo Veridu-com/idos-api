@@ -30,14 +30,14 @@ class DBMetric extends AbstractSQLDBRepository implements MetricInterface {
     /**
      * {@inheritdoc}
      */
-    public function get(string $from = null, string $to = null, array $queryParams = []) : Collection {
+    public function get(int $from = null, int $to = null, array $queryParams = []) : Collection {
         $constraints = [];
-        if ($from !== null) {
-            $constraints['created_at'] = [$from, '>='];
-        }
-
-        if ($to !== null) {
-            $constraints['created_at'] = [$to, '<='];
+        if ($from !== null && $to !== null) {
+            $constraints['created_at'] = [[date('Y-m-d H:i:s', $from), date('Y-m-d H:i:s', $to)], 'BETWEEN'];
+        } else if ($from !== null) {
+            $constraints['created_at'] = [date('Y-m-d H:i:s', $from), '>='];
+        } else if ($to !== null) {
+            $constraints['created_at'] = [date('Y-m-d H:i:s', $to), '<='];
         }
 
         $entities = $this->findBy($constraints, $queryParams);

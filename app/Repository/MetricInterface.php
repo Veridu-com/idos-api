@@ -22,5 +22,5 @@ interface MetricInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function get(string $from, string $to, array $queryParams) : Collection;
+    public function get(int $from, int $to, array $queryParams) : Collection;
 }
