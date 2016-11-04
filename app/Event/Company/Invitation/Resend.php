@@ -10,15 +10,14 @@ namespace App\Event\Company\Invitation;
 
 use App\Entity\Company\Credential;
 use App\Entity\Company\Invitation;
-use App\Entity\Identity;
 use App\Event\AbstractServiceQueueEvent;
 
 /**
- * Created event.
+ * Resend event.
  */
-class Created extends AbstractServiceQueueEvent {
+class Resend extends AbstractServiceQueueEvent {
     /**
-     * Event related Member.
+     * Event related Invitation.
      *
      * @var \App\Entity\Company\Invitation
      */
@@ -47,12 +46,6 @@ class Created extends AbstractServiceQueueEvent {
      * @var string
      */
     public $signupHash;
-    /**
-     * Event related Identity.
-     *
-     * @var \App\Entity\Identity
-     */
-    public $identity;
 
     /**
      * Class constructor.
@@ -61,13 +54,12 @@ class Created extends AbstractServiceQueueEvent {
      *
      * @return void
      */
-    public function __construct(Invitation $invitation, Credential $credential, string $companyName, string $dashboardName, string $signupHash, Identity $identity) {
+    public function __construct(Invitation $invitation, Credential $credential, string $companyName, string $dashboardName, string $signupHash) {
         $this->invitation    = $invitation;
         $this->credential    = $credential;
         $this->companyName   = $companyName;
         $this->dashboardName = $dashboardName;
         $this->signupHash    = $signupHash;
-        $this->identity = $identity;
     }
 
     /**
@@ -94,6 +86,6 @@ class Created extends AbstractServiceQueueEvent {
      * @return string
      **/
     public function __toString() {
-        return 'idos:invitation.created';
+        return 'idos:invitation.resend';
     }
 }

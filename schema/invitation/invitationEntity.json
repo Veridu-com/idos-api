@@ -1,0 +1,61 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.veridu.com/1.0/schema/invitation/invitationEntity.json",
+    "title": "Invitation",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "Invitation id",
+            "type": "integer",
+            "pattern": ""
+        },
+        "member_id": {
+            "description":"Member Id",
+            "type": "integer",
+            "pattern": ""
+        },
+        "name": {
+            "description":"Future member's name",
+            "type":"string",
+            "pattern":""
+        },
+        "email": {
+            "description":"Future member's email",
+            "type":"string",
+            "pattern":""
+        },
+        "role": {
+            "description": "Future member's role",
+            "type": "string",
+            "pattern": ""
+        },
+        "voided": {
+            "description":"Invitation's voided, true when it was already used",
+            "type":"boolean",
+            "pattern":""
+        },
+        "expires": {
+            "description": "Invitation's expiration unixtime",
+            "type": "integer"
+        },
+        "created_at" : {
+            "description": "Invitation's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Invitation's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "id",
+        "member_id",
+        "name",
+        "email",
+        "role",
+        "voided",
+        "expires",
+        "created_at",
+        "updated_at"
+    ]
+}

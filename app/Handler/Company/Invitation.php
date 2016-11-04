@@ -10,6 +10,7 @@ namespace App\Handler\Company;
 
 use App\Command\Company\Invitation\CreateNew;
 use App\Command\Company\Invitation\DeleteOne;
+use App\Command\Company\Invitation\UpdateOne;
 use App\Entity\Company\Invitation as InvitationEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -123,12 +124,12 @@ class Invitation implements HandlerInterface {
     /**
      * Creates a new invitation for a future member.
      *
-     * @param \App\Command\Company\Member\CreateNew $command
+     * @param \App\Command\Company\Invitation\CreateNew $command
      *
-     * @throws \App\Exception\Validate\MemberException
-     * @throws \App\Exception\Create\MemberException
+     * @throws \App\Exception\Validate\InvitationException
+     * @throws \App\Exception\Create\InvitationException
      *
-     * @return \App\Entity\Member
+     * @return \App\Entity\Company\Invitation
      */
     public function handleCreateNew(CreateNew $command) : InvitationEntity {
         try {
@@ -142,7 +143,7 @@ class Invitation implements HandlerInterface {
             }
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
-            throw new Validate\Company\MemberException(
+            throw new Validate\Company\InvitationException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -156,11 +157,11 @@ class Invitation implements HandlerInterface {
         $diff            = $today->diff($expiresDateTime);
 
         if ($diff->days < 1 || $diff->days > 7) {
-            throw new Validate\Company\MemberException('Invalid expiration date. Min: 1 day, Max: 7 days from today');
+            throw new Validate\Company\InvitationException('Invalid expiration date. Min: 1 day, Max: 7 days from today');
         }
 
         $credential           = $this->credentialRepository->findByPubKey($command->credentialPubKey);
-        $dashboardNameSetting = $this->settingRepository->findByCompanyIdSectionAndProperties($credential->companyId, 'company.dashboard', ['name'])->first();
+        $dashboardNameSetting = $this->settingRepository->findByCompanyIdSectionAndProperties($credential->companyId, 'company.details', ['dashboardName'])->first();
 
         $dashboardName = (! $dashboardNameSetting) ? sprintf('%s idOS Dashboard', $company->name) : $dashboardNameSetting->value;
         $signupHash    = md5($command->email . $command->company->id . microtime());
@@ -184,7 +185,88 @@ class Invitation implements HandlerInterface {
             $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new Create\Company\MemberException('Error while trying to create an invitation', 500, $e);
+            throw new Create\Company\InvitationException('Error while trying to create an invitation', 500, $e);
+        }
+
+        return $invitation;
+    }
+
+    /**
+     * Updates a invitation for a future member.
+     *
+     * @param \App\Command\Company\Invitation\UpdateOne $command
+     *
+     * @throws \App\Exception\Validate\InvitationException
+     * @throws \App\Exception\Create\InvitationException
+     *
+     * @return \App\Entity\Company\Invitation
+     */
+    public function handleUpdateOne(UpdateOne $command) : InvitationEntity {
+        try {
+            $this->validator->assertId($command->invitationId);
+            if ($command->expires) {
+                $this->validator->assertDate($command->expires);
+            }
+        } catch (ValidationException $e) {
+            throw new Validate\Company\InvitationException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        $invitation = $this->repository->find($command->invitationId);
+
+        if ($command->expires) {
+            $expires         = strftime('%Y-%m-%d', strtotime($command->expires));
+            $now             = time();
+            $expiresDateTime = new \DateTime($expires);
+            $today           = new \DateTime(strftime('%Y-%m-%d', $now));
+            $diff            = $today->diff($expiresDateTime);
+
+            if ($diff->days < 1 || $diff->days > 7) {
+                throw new Validate\Company\InvitationException('Invalid expiration date. Min: 1 day, Max: 7 days from today');
+            }
+
+            // updates entity
+            $invitation->expires = $expires;
+        }
+
+        $credential           = $this->credentialRepository->find($invitation->credentialId);
+        $company              = $this->companyRepository->find($invitation->companyId);
+        $dashboardNameSetting = $this->settingRepository->findByCompanyIdSectionAndProperties($credential->companyId, 'company.details', ['dashboardName'])->first();
+
+        $dashboardName = (! $dashboardNameSetting) ? sprintf('%s idOS Dashboard', $company->name) : $dashboardNameSetting->value;
+        $signupHash    = $invitation->hash;
+
+        try {
+            $invitation = $this->repository->save($invitation);
+
+            $this->emitter->emit(
+                $this->eventFactory->create(
+                    'Company\\Invitation\\Updated',
+                    $invitation,
+                    $credential,
+                    $company->name,
+                    $dashboardName,
+                    $signupHash
+                )
+            );
+
+            if ($command->resendEmail) {
+                $this->emitter->emit(
+                    $this->eventFactory->create(
+                        'Company\\Invitation\\Resend',
+                        $invitation,
+                        $credential,
+                        $company->name,
+                        $dashboardName,
+                        $signupHash
+                    )
+                );
+            }
+        } catch (\Exception $e) {
+            throw new Create\Company\InvitationException('Error while trying to create an invitation', 500, $e);
         }
 
         return $invitation;
@@ -193,19 +275,19 @@ class Invitation implements HandlerInterface {
     /**
      * Deletes an Invitation.
      *
-     * @param \App\Command\Company\Member\DeleteOne $command
+     * @param \App\Command\Company\Invitation\DeleteOne $command
      *
-     * @throws \App\Exception\Validate\MemberException
-     * @throws \App\Exception\NotFound\MemberException
+     * @throws \App\Exception\Validate\InvitationException
+     * @throws \App\Exception\NotFound\InvitationException
      *
-     * @return void
+     * @return int
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         try {
             $this->validator->assertId($command->invitationId);
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
-            throw new Validate\Company\MemberException(
+            throw new Validate\Company\InvitationException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -222,10 +304,12 @@ class Invitation implements HandlerInterface {
         }
 
         if (! $rowsAffected) {
-            throw new NotFound\Company\MemberException('No invitations found for deletion', 404);
+            throw new NotFound\Company\InvitationException('No invitations found for deletion', 404);
         }
 
         $event = $this->eventFactory->create('Company\\Invitation\\Deleted', $invitation, $command->identity);
         $this->emitter->emit($event);
+
+        return $rowsAffected;
     }
 }
