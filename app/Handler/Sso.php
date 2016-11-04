@@ -248,12 +248,12 @@ class Sso implements HandlerInterface {
     /**
      * Creates a new sso source and a new user token.
      *
-     * @param string                       $sourceName           The provider
-     * @param \App\Command\AbstractCommand $command              The CreateNew command for the provider
-     * @param callable|string              $tokenClass           The oauth token class
-     * @param string                       $serviceRequestUrl    The provider url that will be used to get the user id
-     * @param string                       $decodedResponseParam The response parameter that holds the user's id
-     * @param callable|string              $eventClass           The createNew event class name to be emitted
+     * @param string                       $sourceName        The provider
+     * @param \App\Command\AbstractCommand $command           The CreateNew command for the provider
+     * @param callable|string              $tokenClass        The oauth token class
+     * @param string                       $serviceRequestUrl The provider url that will be used to get the user id
+     * @param callable                     $getProfileId      Callable that returns the profile id from the response
+     * @param callable|string              $eventClass        The createNew event class name to be emitted
      *
      * @throws \App\Exception\AppException        Exception thrown in case of error contacting the provider
      * @throws \App\Exception\Create\SsoException
@@ -269,7 +269,7 @@ class Sso implements HandlerInterface {
         CreateNew $command,
         string $tokenClass,
         string $serviceRequestUrl,
-        string $decodedResponseParam,
+        callable $getProfileId,
         string $eventClass
     ) : array {
         $service = call_user_func_array($this->service, [$sourceName, $command->appKey, $command->appSecret]);
@@ -295,18 +295,19 @@ class Sso implements HandlerInterface {
         }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
+        $profileId  = $getProfileId($decodedResponse);
 
         try {
             $identity = $this->identityRepository->findOneBySourceNameAndProfileId(
                 $sourceName,
-                $decodedResponse[$decodedResponseParam],
+                $profileId,
                 $command->appKey ?: 'Veridu'
             );
         } catch (NotFound $e) {
             $identityCommand = $this->commandFactory->create('Identity\\CreateNew');
             $identityCommand
                 ->setParameter('sourceName', $sourceName)
-                ->setParameter('profileId', $decodedResponse[$decodedResponseParam])
+                ->setParameter('profileId', $profileId)
                 ->setParameter('appKey', $command->appKey ?: 'Veridu');
 
             $identity = $this->commandBus->handle($identityCommand);
@@ -320,7 +321,7 @@ class Sso implements HandlerInterface {
         }
 
         $array = [
-            'profile_id'   => $decodedResponse[$decodedResponseParam],
+            'profile_id'   => $profileId,
             'access_token' => $command->accessToken,
             'sso'          => true
         ];
@@ -404,12 +405,16 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewAmazon(CreateNewAmazon $command) {
+        $getProfileId = function ($response) {
+            return $response['user_id'];
+        };
+
         return $this->createNew(
             'amazon',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/user/profile',
-            'user_id',
+            $getProfileId,
             'Sso\\CreatedAmazon'
         );
     }
@@ -422,12 +427,16 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewFacebook(CreateNewFacebook $command) {
+        $getProfileId = function ($response) {
+            return $response['id'];
+        };
+
         return $this->createNew(
             'facebook',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/me?fields=id',
-            'id',
+            $getProfileId,
             'Sso\\CreatedFacebook'
         );
     }
@@ -440,12 +449,16 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewGoogle(CreateNewGoogle $command) {
+        $getProfileId = function ($response) {
+            return $response['id'];
+        };
+
         return $this->createNew(
             'google',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             'https://www.googleapis.com/oauth2/v1/userinfo',
-            'id',
+            $getProfileId,
             'Sso\\CreatedGoogle'
         );
     }
@@ -458,12 +471,16 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewLinkedin(CreateNewLinkedin $command) {
+        $getProfileId = function ($response) {
+            return $response['id'];
+        };
+
         return $this->createNew(
             'linkedin',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/people/~:(id)?format=json',
-            'id',
+            $getProfileId,
             'Sso\\CreatedLinkedin'
         );
     }
@@ -471,18 +488,66 @@ class Sso implements HandlerInterface {
     /**
      * Creates a token with the spotify provider.
      *
-     * @param \App\Command\Sso\CreateNewPaypal $command
+     * @param \App\Command\Sso\CreateNewSpotify $command
      *
      * @return string
      */
     public function handleCreateNewSpotify(CreateNewSpotify $command) {
+        $getProfileId = function ($response) {
+            return $response['user_id'];
+        };
+
         return $this->createNew(
             'spotify',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
-            '/identity/openidconnect/userinfo/?schema=openid',
-            'user_id',
+            '/me',
+            $getProfileId,
             'Sso\\CreatedSpotify'
+        );
+    }
+
+    /**
+     * Creates a token with the yahoo provider.
+     *
+     * @param \App\Command\Sso\CreateNewYahoo $command
+     *
+     * @return string
+     */
+    public function handleCreateNewYahoo(CreateNewYahoo $command) {
+        $getProfileId = function ($response) {
+            return $response['guid']['value'];
+        };
+
+        return $this->createNew(
+            'yahoo',
+            $command,
+            'OAuth\OAuth2\Token\StdOAuth2Token',
+            'https://social.yahooapis.com/v1/me/guid?format=json',
+            $getProfileId,
+            'Sso\\CreatedYahoo'
+        );
+    }
+
+    /**
+     * Creates a token with the dropbox provider.
+     *
+     * @param \App\Command\Sso\CreateNewDropbox $command
+     *
+     * @return string
+     */
+    public function handleCreateNewDropbox(CreateNewDropbox $command) {
+        $getProfileId = function ($response) {
+            return $response['uid'];
+        };
+
+        return $this->createNew(
+            'dropbox',
+            $command,
+            'OAuth\OAuth2\Token\StdOAuth2Token',
+            '/account/info',
+            $getProfileId,
+            'Sso\\CreatedYahoo'
         );
     }
 
@@ -494,12 +559,16 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewPaypal(CreateNewPaypal $command) {
+        $getProfileId = function ($response) {
+            return $response['user_id'];
+        };
+
         return $this->createNew(
             'paypal',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/identity/openidconnect/userinfo/?schema=openid',
-            'user_id',
+            $getProfileId,
             'Sso\\CreatedPaypal'
         );
     }
@@ -512,12 +581,16 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewTwitter(CreateNewTwitter $command) {
+        $getProfileId = function ($response) {
+            return $response['id_str'];
+        };
+
         return $this->createNew(
             'twitter',
             $command,
             'OAuth\OAuth1\Token\StdOAuth1Token',
             '/account/verify_credentials.json?include_entities=false&skip_status=true',
-            'id_str',
+            $getProfileId,
             'Sso\\CreatedTwitter'
         );
     }
