@@ -24,6 +24,12 @@ class Created extends AbstractEvent {
      */
     public $setting;
     /**
+     * Event related Company.
+     *
+     * @var \App\Entity\Company
+     */
+    public $company;
+    /**
      * Event related Identity.
      *
      * @var \App\Entity\Identity
@@ -37,8 +43,9 @@ class Created extends AbstractEvent {
      *
      * @return void
      */
-    public function __construct(Setting $setting, Identity $identity) {
+    public function __construct(Setting $setting, Company $company, Identity $identity) {
         $this->setting = $setting;
+        $this->company = $company;
         $this->identity = $identity;
     }
 }

@@ -182,7 +182,7 @@ class Setting implements HandlerInterface {
 
         try {
             $setting = $this->repository->save($setting);
-            $event   = $this->eventFactory->create('Company\\Setting\\Created', $setting, $command->identity);
+            $event   = $this->eventFactory->create('Company\\Setting\\Created', $setting, $command->company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\SettingException('Error while trying to create a setting', 500, $e);
@@ -223,7 +223,7 @@ class Setting implements HandlerInterface {
 
         try {
             $setting = $this->repository->save($setting);
-            $event   = $this->eventFactory->create('Company\\Setting\\Updated', $setting, $command->identity);
+            $event   = $this->eventFactory->create('Company\\Setting\\Updated', $setting, $command->company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Company\SettingException('Error while trying to update a setting', 500, $e);
@@ -262,7 +262,7 @@ class Setting implements HandlerInterface {
             throw new NotFound\Company\SettingException('No settings found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Setting\\Deleted', $setting, $command->identity);
+        $event = $this->eventFactory->create('Company\\Setting\\Deleted', $setting, $command->company, $command->identity);
         $this->emitter->emit($event);
     }
 
@@ -291,7 +291,7 @@ class Setting implements HandlerInterface {
 
         $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
 
-        $event = $this->eventFactory->create('Company\\Setting\\DeletedMulti', $settings, $command->identity);
+        $event = $this->eventFactory->create('Company\\Setting\\DeletedMulti', $settings, $command->company, $command->identity);
         $this->emitter->emit($event);
 
         return $rowsAffected;

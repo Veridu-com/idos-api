@@ -246,7 +246,7 @@ class Widget implements HandlerInterface {
             throw new NotFound\Company\WidgetException('No widgets found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Widget\\Deleted', $widget, $command->identity, $command->identity);
+        $event = $this->eventFactory->create('Company\\Widget\\Deleted', $widget, $command->identity);
         $this->emitter->emit($event);
     }
 }

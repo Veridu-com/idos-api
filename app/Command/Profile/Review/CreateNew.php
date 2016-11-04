@@ -21,7 +21,7 @@ class CreateNew extends AbstractCommand {
      */
     public $user;
     /**
-     * Review's flagId.
+     * Review's gateId.
      *
      * @var int
      */

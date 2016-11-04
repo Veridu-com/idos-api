@@ -55,9 +55,9 @@ class Metrics implements RouteInterface {
     /**
      * List all Metrics.
      *
-     * Retrieve a complete list of logged events.
+     * Retrieve a complete list of the metrics.
      *
-     * @apiEndpoint GET /logged-events
+     * @apiEndpoint GET /metrics
      * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
