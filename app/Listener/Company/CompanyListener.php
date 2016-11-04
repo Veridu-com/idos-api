@@ -8,15 +8,10 @@ declare(strict_types = 1);
 
 namespace App\Listener\Company;
 
-use App\Entity\Profile\Candidate;
 use App\Entity\Profile\Feature;
-use App\Entity\User;
 use App\Factory\Command;
 use App\Listener;
 use App\Listener\AbstractListener;
-use App\Repository\Profile\CandidateInterface;
-use App\Repository\Profile\FeatureInterface;
-use Illuminate\Support\Collection;
 use League\Event\EventInterface;
 use League\Tactician\CommandBus;
 

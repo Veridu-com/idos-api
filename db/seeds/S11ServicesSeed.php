@@ -693,7 +693,8 @@ class S11ServicesSeed extends AbstractSeed {
                 'private'       => md5('private-29'), // d9288a19a2abe8351e12ce90bd761c42
                 'listens'       => json_encode(
                     [
-                        'idos:invitation.created'
+                        'idos:invitation.created',
+                        'idos:invitation.resend'
                     ]
                 ),
                 'triggers'      => json_encode([]),

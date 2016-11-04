@@ -13,11 +13,11 @@ use App\Entity\Company\Invitation;
 use App\Event\AbstractServiceQueueEvent;
 
 /**
- * Created event.
+ * Resend event.
  */
-class Created extends AbstractServiceQueueEvent {
+class Resend extends AbstractServiceQueueEvent {
     /**
-     * Event related Member.
+     * Event related Invitation.
      *
      * @var \App\Entity\Company\Invitation
      */
@@ -86,6 +86,6 @@ class Created extends AbstractServiceQueueEvent {
      * @return string
      **/
     public function __toString() {
-        return 'idos:invitation.created';
+        return 'idos:invitation.resend';
     }
 }

@@ -61,7 +61,7 @@ class Invitations implements ControllerInterface {
     /**
      * Lists all Invitations that belongs to the Target Company.
      *
-     * @apiEndpointResponse 200 schema/member/listAll.json
+     * @apiEndpointResponse 200 schema/invitation/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -89,14 +89,14 @@ class Invitations implements ControllerInterface {
     }
 
     /**
-     * Creates a new Member for the Target Company.
+     * Creates a new Invitation for the Target Company.
      *
      * @apiEndpointRequiredParam body string role company.owner Role type
      * @apiEndpointRequiredParam body string email jhondoe@idos.io User's email
      * @apiEndpointRequiredParam body string name jhon User's name
      * @apiEndpointRequiredParam body string credentialPubKey wqxehuwqwsthwosjbxwwsqwsdi A valid credential public key
      * @apiEndpointParam body string expires 2016-11-23 Expiration date (if no expiration date is passed, the invitation will expire in one day)
-     * @apiEndpointResponse 201 schema/member/createNew.json
+     * @apiEndpointResponse 201 schema/invitation/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -134,9 +134,9 @@ class Invitations implements ControllerInterface {
     }
 
     /**
-     * Deletes one Invitation of the Target Company based on the userId.
+     * Deletes one Invitation of the Target Company based on the invitation id.
      *
-     * @apiEndpointResponse 200 schema/member/deleteOne.json
+     * @apiEndpointResponse 200 schema/invitation/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -153,6 +153,40 @@ class Invitations implements ControllerInterface {
 
         $body = [
             'status' => true
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * Updates one Invitation of the Target Company based on the invitation id.
+     *
+     * @apiEndpointResponse 200 schema/invitation/updateOne.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Handler\Invitation::handleUpdateOne
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $command = $this->commandFactory->create('Company\\Invitation\\UpdateOne');
+
+        $command->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
+        $command->setParameters($request->getParsedBody());
+
+        $entity = $this->commandBus->handle($command);
+
+        $body = [
+            'status' => true,
+            'data'   => $entity->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

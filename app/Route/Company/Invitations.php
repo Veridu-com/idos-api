@@ -29,6 +29,7 @@ class Invitations implements RouteInterface {
         return [
             'invitations:listAll',
             'invitations:createNew',
+            'invitations:updateOne',
             'invitations:deleteOne'
         ];
     }
@@ -50,6 +51,7 @@ class Invitations implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
+        self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
@@ -167,5 +169,44 @@ class Invitations implements RouteInterface {
             )
             ->add($auth(Auth::IDENTITY))
             ->setName('invitations:deleteOne');
+    }
+
+    /**
+     * Updates a single Invitation.
+     *
+     * Updates a single Invitation that belongs to the requesting company.
+     *
+     * @apiEndpoint DELETE /companies/{companySlug}/invitation/{invitationId}
+     * @apiGroup Company Invitations
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int invitationId 1243
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/companies/invitations/updateOne.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Company\Invitations::deleteOne
+     */
+    private static function updateOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->patch(
+                '/companies/{companySlug:[a-z0-9_-]+}/invitations/{invitationId:[0-9]+}',
+                'App\Controller\Company\Invitations:updateOne'
+            )
+            ->add(
+                $permission(
+                EndpointPermission::PRIVATE_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                )
+            )
+            ->add($auth(Auth::IDENTITY))
+            ->setName('invitations:updateOne');
     }
 }

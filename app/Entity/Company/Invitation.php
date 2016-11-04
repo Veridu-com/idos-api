@@ -19,11 +19,15 @@ class Invitation extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'name', 'email', 'role', 'expires', 'voided', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'member_id', 'name', 'email', 'role', 'expires', 'voided', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at', 'expires'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $obfuscated = ['id', 'member_id'];
     /**
      * {@inheritdoc}
      */
