@@ -17,7 +17,7 @@ class Repository extends AbstractFactory {
     /**
      * Repository Strategy.
      *
-     * @var \App\Repository\RepositoryStrategyInterface;
+     * @var \App\Repository\RepositoryStrategyInterface
      */
     protected $strategy;
 

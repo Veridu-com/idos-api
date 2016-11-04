@@ -72,12 +72,14 @@ class AttributeListener extends AbstractListener {
                 if (! empty($items['lastName'])) {
                     $name[] = $items['lastName'];
                 }
+
                 return implode(' ', $name);
             case 'gender':
                 $value = strtolower($item[0]);
                 if (! in_array(strtolower($value), ['male', 'female'])) {
                     return '';
                 }
+
                 return ucfirst($value);
             case 'birthDate':
                 if ((! empty($items['birthDay']))
@@ -118,6 +120,7 @@ class AttributeListener extends AbstractListener {
                         $items['birthYear']
                     );
                 }
+
                 return '';
             case 'fullAddress':
                 $address = [];
@@ -140,6 +143,7 @@ class AttributeListener extends AbstractListener {
                 if (! empty($items['countryName'])) {
                     $address[] = $items['countryName'];
                 }
+
                 return ucwords(strtolower(implode(', ', $address)));
             case 'email':
                 return strtolower($items[0]);
