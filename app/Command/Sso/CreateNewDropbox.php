@@ -15,7 +15,7 @@ class CreateNewDropbox extends CreateNew {
     /**
      * {@inheritdoc}
      *
-     * @return \App\Command\Sso\CreateNewDropbox
+     * @return self
      */
     public function setParameters(array $parameters) : self {
         parent::setParameters($parameters);

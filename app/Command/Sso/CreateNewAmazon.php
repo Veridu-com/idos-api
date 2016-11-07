@@ -9,7 +9,17 @@ declare(strict_types = 1);
 namespace App\Command\Sso;
 
 /**
- * Sso "Create New" Command.
+ * Sso "Create New Amazon" Command.
  */
 class CreateNewAmazon extends CreateNew {
+    /**
+     * {@inheritdoc}
+     *
+     * @return self
+     */
+    public function setParameters(array $parameters) : self {
+        parent::setParameters($parameters);
+
+        return $this;
+    }
 }

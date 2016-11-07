@@ -405,17 +405,35 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewAmazon(CreateNewAmazon $command) {
-        $getProfileId = function ($response) {
-            return $response['user_id'];
-        };
-
         return $this->createNew(
             'amazon',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/user/profile',
-            $getProfileId,
+            function ($response) {
+                return $response['user_id'];
+            },
             'Sso\\CreatedAmazon'
+        );
+    }
+
+    /**
+     * Creates a token with the dropbox provider.
+     *
+     * @param \App\Command\Sso\CreateNewDropbox $command
+     *
+     * @return string
+     */
+    public function handleCreateNewDropbox(CreateNewDropbox $command) {
+        return $this->createNew(
+            'dropbox',
+            $command,
+            'OAuth\OAuth2\Token\StdOAuth2Token',
+            '/account/info',
+            function ($response) {
+                return $response['uid'];
+            },
+            'Sso\\CreatedYahoo'
         );
     }
 
@@ -427,16 +445,14 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewFacebook(CreateNewFacebook $command) {
-        $getProfileId = function ($response) {
-            return $response['id'];
-        };
-
         return $this->createNew(
             'facebook',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/me?fields=id',
-            $getProfileId,
+            function ($response) {
+                return $response['id'];
+            },
             'Sso\\CreatedFacebook'
         );
     }
@@ -449,16 +465,14 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewGoogle(CreateNewGoogle $command) {
-        $getProfileId = function ($response) {
-            return $response['id'];
-        };
-
         return $this->createNew(
             'google',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             'https://www.googleapis.com/oauth2/v1/userinfo',
-            $getProfileId,
+            function ($response) {
+                return $response['id'];
+            },
             'Sso\\CreatedGoogle'
         );
     }
@@ -471,83 +485,15 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewLinkedin(CreateNewLinkedin $command) {
-        $getProfileId = function ($response) {
-            return $response['id'];
-        };
-
         return $this->createNew(
             'linkedin',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/people/~:(id)?format=json',
-            $getProfileId,
+            function ($response) {
+                return $response['id'];
+            },
             'Sso\\CreatedLinkedin'
-        );
-    }
-
-    /**
-     * Creates a token with the spotify provider.
-     *
-     * @param \App\Command\Sso\CreateNewSpotify $command
-     *
-     * @return string
-     */
-    public function handleCreateNewSpotify(CreateNewSpotify $command) {
-        $getProfileId = function ($response) {
-            return $response['user_id'];
-        };
-
-        return $this->createNew(
-            'spotify',
-            $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
-            '/me',
-            $getProfileId,
-            'Sso\\CreatedSpotify'
-        );
-    }
-
-    /**
-     * Creates a token with the yahoo provider.
-     *
-     * @param \App\Command\Sso\CreateNewYahoo $command
-     *
-     * @return string
-     */
-    public function handleCreateNewYahoo(CreateNewYahoo $command) {
-        $getProfileId = function ($response) {
-            return $response['guid']['value'];
-        };
-
-        return $this->createNew(
-            'yahoo',
-            $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
-            'https://social.yahooapis.com/v1/me/guid?format=json',
-            $getProfileId,
-            'Sso\\CreatedYahoo'
-        );
-    }
-
-    /**
-     * Creates a token with the dropbox provider.
-     *
-     * @param \App\Command\Sso\CreateNewDropbox $command
-     *
-     * @return string
-     */
-    public function handleCreateNewDropbox(CreateNewDropbox $command) {
-        $getProfileId = function ($response) {
-            return $response['uid'];
-        };
-
-        return $this->createNew(
-            'dropbox',
-            $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
-            '/account/info',
-            $getProfileId,
-            'Sso\\CreatedYahoo'
         );
     }
 
@@ -559,17 +505,35 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewPaypal(CreateNewPaypal $command) {
-        $getProfileId = function ($response) {
-            return $response['user_id'];
-        };
-
         return $this->createNew(
             'paypal',
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/identity/openidconnect/userinfo/?schema=openid',
-            $getProfileId,
+            function ($response) {
+                return $response['user_id'];
+            },
             'Sso\\CreatedPaypal'
+        );
+    }
+
+    /**
+     * Creates a token with the spotify provider.
+     *
+     * @param \App\Command\Sso\CreateNewSpotify $command
+     *
+     * @return string
+     */
+    public function handleCreateNewSpotify(CreateNewSpotify $command) {
+        return $this->createNew(
+            'spotify',
+            $command,
+            'OAuth\OAuth2\Token\StdOAuth2Token',
+            '/me',
+            function ($response) {
+                return $response['user_id'];
+            },
+            'Sso\\CreatedSpotify'
         );
     }
 
@@ -581,17 +545,35 @@ class Sso implements HandlerInterface {
      * @return string
      */
     public function handleCreateNewTwitter(CreateNewTwitter $command) {
-        $getProfileId = function ($response) {
-            return $response['id_str'];
-        };
-
         return $this->createNew(
             'twitter',
             $command,
             'OAuth\OAuth1\Token\StdOAuth1Token',
             '/account/verify_credentials.json?include_entities=false&skip_status=true',
-            $getProfileId,
+            function ($response) {
+                return $response['id_str'];
+            },
             'Sso\\CreatedTwitter'
+        );
+    }
+
+    /**
+     * Creates a token with the yahoo provider.
+     *
+     * @param \App\Command\Sso\CreateNewYahoo $command
+     *
+     * @return string
+     */
+    public function handleCreateNewYahoo(CreateNewYahoo $command) {
+        return $this->createNew(
+            'yahoo',
+            $command,
+            'OAuth\OAuth2\Token\StdOAuth2Token',
+            'https://social.yahooapis.com/v1/me/guid?format=json',
+            function ($response) {
+                return $response['guid']['value'];
+            },
+            'Sso\\CreatedYahoo'
         );
     }
 }
