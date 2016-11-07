@@ -16,8 +16,8 @@ use Slim\App;
 /**
  * Profile SSO.
  *
- * Profile SSO is the "Single Sign-On" service that a User can use to easily authenticate themselves
- * across multiple platforms using the Veridu service, without having to use/create new login credentials for each platform.
+ * Profile SSO is the "Single Sign-On" service that a User can use to easily authenticate themselves across multiple
+ * platforms using the Veridu service, without having to use/create new login credentials for each platform.
  *
  * @link docs/sso/overview.md
  * @see \App\Controller\Sso
@@ -63,7 +63,7 @@ class Sso implements RouteInterface {
      * Retrieve a complete list of all sso providers.
      *
      * @apiEndpoint GET /sso
-     * @apiGroup Profile Sso
+     * @apiGroup SSO
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -91,7 +91,7 @@ class Sso implements RouteInterface {
      * Retrieves the status of a sso provider.
      *
      * @apiEndpoint GET /sso/{providerName}
-     * @apiGroup Profile Sso
+     * @apiGroup SSO
      * @apiEndpointURIFragment string providerName facebook
      *
      * @param \Slim\App $app
@@ -122,7 +122,7 @@ class Sso implements RouteInterface {
      * Create a new sso.
      *
      * @apiEndpoint POST /sso
-     * @apiGroup Profile Sso
+     * @apiGroup SSO
      *
      * @param \Slim\App $app
      * @param \callable $auth
