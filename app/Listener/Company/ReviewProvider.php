@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Listener\Company;
 
-use App\Event\Review;
+use App\Event\Company\Review;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 

@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Listener\Company;
 
-use App\Event\Credential;
+use App\Event\Company\Credential;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 

@@ -13,7 +13,7 @@ use App\Middleware\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class HandleCompanyTokenTest extends AbstractAuthFunctional {
+class HandleIdentityTokenTest extends AbstractAuthFunctional {
     protected function setUp() {
         parent::setUp();
 

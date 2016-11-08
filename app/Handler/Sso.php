@@ -248,12 +248,12 @@ class Sso implements HandlerInterface {
     /**
      * Creates a new sso source and a new user token.
      *
-     * @param string                       $sourceName           The provider
-     * @param \App\Command\AbstractCommand $command              The CreateNew command for the provider
-     * @param callable|string              $tokenClass           The oauth token class
-     * @param string                       $serviceRequestUrl    The provider url that will be used to get the user id
-     * @param string                       $decodedResponseParam The response parameter that holds the user's id
-     * @param callable|string              $eventClass           The createNew event class name to be emitted
+     * @param string                       $sourceName        The provider
+     * @param \App\Command\AbstractCommand $command           The CreateNew command for the provider
+     * @param callable|string              $tokenClass        The oauth token class
+     * @param string                       $serviceRequestUrl The provider url that will be used to get the user id
+     * @param callable                     $getProfileId      Callable that returns the profile id from the response
+     * @param callable|string              $eventClass        The createNew event class name to be emitted
      *
      * @throws \App\Exception\AppException        Exception thrown in case of error contacting the provider
      * @throws \App\Exception\Create\SsoException
@@ -269,7 +269,7 @@ class Sso implements HandlerInterface {
         CreateNew $command,
         string $tokenClass,
         string $serviceRequestUrl,
-        string $decodedResponseParam,
+        callable $getProfileId,
         string $eventClass
     ) : array {
         $service = call_user_func_array($this->service, [$sourceName, $command->appKey, $command->appSecret]);
@@ -295,19 +295,20 @@ class Sso implements HandlerInterface {
         }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
+        $profileId  = $getProfileId($decodedResponse);
 
         try {
             $identity = $this->identityRepository->findOneBySourceNameAndProfileId(
                 $sourceName,
-                $decodedResponse[$decodedResponseParam],
+                $profileId,
                 $command->appKey ?: 'Veridu'
             );
         } catch (NotFound $e) {
             $identityCommand = $this->commandFactory->create('Identity\\CreateNew');
             $identityCommand
                 ->setParameter('sourceName', $sourceName)
-                ->setParameter('profileId', $decodedResponse[$decodedResponseParam])
-                ->setParameter('appKey', $identityCommand->appKey ?: 'Veridu');
+                ->setParameter('profileId', $profileId)
+                ->setParameter('appKey', $command->appKey ?: 'Veridu');
 
             $identity = $this->commandBus->handle($identityCommand);
         }
@@ -320,7 +321,7 @@ class Sso implements HandlerInterface {
         }
 
         $array = [
-            'profile_id'   => $decodedResponse[$decodedResponseParam],
+            'profile_id'   => $profileId,
             'access_token' => $command->accessToken,
             'sso'          => true
         ];
@@ -356,13 +357,14 @@ class Sso implements HandlerInterface {
             if (! empty($command->signupHash)) {
                 try {
                     $invitation = $this->invitationRepository->findOneByHash($command->signupHash);
+                    $expires    = strftime('%Y-%m-%d', $invitation->expires);
 
-                    if ($invitation->expires < strftime('%Y-%m-%d', time())) {
-                        throw new InvitationException('Expired invitation.');
+                    if ($expires < strftime('%Y-%m-%d', time())) {
+                        throw new InvitationException('It looks like your invitation has expired. Please contact your administrator to get re-invited');
                     }
 
                     if ($invitation->voided) {
-                        throw new InvitationException('Invitation already used.');
+                        throw new InvitationException('It looks like this invite has already been used. If you already registered please login using the online account you previously associated. Alternatively please contact your administrator to get re-invited');
                     }
 
                     $company = $this->companyRepository->find($invitation->companyId);
@@ -408,8 +410,30 @@ class Sso implements HandlerInterface {
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/user/profile',
-            'user_id',
+            function ($response) {
+                return $response['user_id'];
+            },
             'Sso\\CreatedAmazon'
+        );
+    }
+
+    /**
+     * Creates a token with the dropbox provider.
+     *
+     * @param \App\Command\Sso\CreateNewDropbox $command
+     *
+     * @return string
+     */
+    public function handleCreateNewDropbox(CreateNewDropbox $command) {
+        return $this->createNew(
+            'dropbox',
+            $command,
+            'OAuth\OAuth2\Token\StdOAuth2Token',
+            '/account/info',
+            function ($response) {
+                return $response['uid'];
+            },
+            'Sso\\CreatedYahoo'
         );
     }
 
@@ -426,7 +450,9 @@ class Sso implements HandlerInterface {
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/me?fields=id',
-            'id',
+            function ($response) {
+                return $response['id'];
+            },
             'Sso\\CreatedFacebook'
         );
     }
@@ -444,7 +470,9 @@ class Sso implements HandlerInterface {
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             'https://www.googleapis.com/oauth2/v1/userinfo',
-            'id',
+            function ($response) {
+                return $response['id'];
+            },
             'Sso\\CreatedGoogle'
         );
     }
@@ -462,7 +490,9 @@ class Sso implements HandlerInterface {
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/people/~:(id)?format=json',
-            'id',
+            function ($response) {
+                return $response['id'];
+            },
             'Sso\\CreatedLinkedin'
         );
     }
@@ -480,8 +510,30 @@ class Sso implements HandlerInterface {
             $command,
             'OAuth\OAuth2\Token\StdOAuth2Token',
             '/identity/openidconnect/userinfo/?schema=openid',
-            'user_id',
+            function ($response) {
+                return $response['user_id'];
+            },
             'Sso\\CreatedPaypal'
+        );
+    }
+
+    /**
+     * Creates a token with the spotify provider.
+     *
+     * @param \App\Command\Sso\CreateNewSpotify $command
+     *
+     * @return string
+     */
+    public function handleCreateNewSpotify(CreateNewSpotify $command) {
+        return $this->createNew(
+            'spotify',
+            $command,
+            'OAuth\OAuth2\Token\StdOAuth2Token',
+            '/me',
+            function ($response) {
+                return $response['user_id'];
+            },
+            'Sso\\CreatedSpotify'
         );
     }
 
@@ -498,8 +550,30 @@ class Sso implements HandlerInterface {
             $command,
             'OAuth\OAuth1\Token\StdOAuth1Token',
             '/account/verify_credentials.json?include_entities=false&skip_status=true',
-            'id_str',
+            function ($response) {
+                return $response['id_str'];
+            },
             'Sso\\CreatedTwitter'
+        );
+    }
+
+    /**
+     * Creates a token with the yahoo provider.
+     *
+     * @param \App\Command\Sso\CreateNewYahoo $command
+     *
+     * @return string
+     */
+    public function handleCreateNewYahoo(CreateNewYahoo $command) {
+        return $this->createNew(
+            'yahoo',
+            $command,
+            'OAuth\OAuth2\Token\StdOAuth2Token',
+            'https://social.yahooapis.com/v1/me/guid?format=json',
+            function ($response) {
+                return $response['guid']['value'];
+            },
+            'Sso\\CreatedYahoo'
         );
     }
 }

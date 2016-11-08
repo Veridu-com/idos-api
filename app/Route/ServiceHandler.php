@@ -181,7 +181,7 @@ class ServiceHandler implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/service-handlers/{serviceHandlerId:[0-9]+}',
                 'App\Controller\ServiceHandlers:updateOne'
             )

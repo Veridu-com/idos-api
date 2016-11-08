@@ -4,11 +4,20 @@
     "title": "Member",
     "type": "object",
     "properties": {
-        "user": {
-            "description": "User entity",
-            "type": "object",
-            "$ref": "../user/userEntity.json",
+        "id": {
+            "description": "Member id",
+            "type": "integer",
             "pattern": ""
+        },
+        "company_id": {
+            "description":"Company Id",
+            "type": "integer",
+            "pattern": ""
+        },
+        "identity_id": {
+            "description":"Identity Id",
+            "type":"integer",
+            "pattern":""
         },
         "role": {
             "description": "Role access of the member in the company",
@@ -25,7 +34,9 @@
         }
     },
     "required": [
-        "user",
+        "id",
+        "company_id",
+        "identity_id",
         "role",
         "created_at",
         "updated_at"

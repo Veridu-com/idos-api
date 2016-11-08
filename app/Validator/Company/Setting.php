@@ -17,7 +17,7 @@ use App\Validator\ValidatorInterface;
 class Setting implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertFlag,
-        Traits\AssertArray,
+        Traits\AssertType,
         Traits\AssertEntity,
         Traits\AssertName;
 }

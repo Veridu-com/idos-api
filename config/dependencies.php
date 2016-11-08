@@ -270,7 +270,8 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
     }
 
     $commands[Command\ResponseDispatch::class] = Handler\Response::class;
-    $handlerMiddleware                         = new CommandHandlerMiddleware(
+
+    $handlerMiddleware = new CommandHandlerMiddleware(
         new ClassNameExtractor(),
         new ContainerLocator(
             $container,
@@ -322,7 +323,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
         $jwt               = $container->get('jwt');
 
         return new Auth(
-            $repositoryFactory->create('Company\Credential'),
+            $repositoryFactory->create('Company\\Credential'),
             $repositoryFactory->create('Identity'),
             $repositoryFactory->create('User'),
             $repositoryFactory->create('Company'),
@@ -527,7 +528,5 @@ $container['httpClient'] = function (ContainerInterface $container) : HttpClient
 
 // Registering Event Emitter
 $container['eventEmitter'] = function (ContainerInterface $container) : Emitter {
-    $emitter = new Emitter();
-
-    return $emitter;
+    return new Emitter();
 };

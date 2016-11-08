@@ -124,9 +124,9 @@ class S11SettingsSeed extends AbstractSeed {
 
         $data[] = [
             'company_id' => 1,
-            'section'    => 'company.dashboard',
-            'property'   => 'name',
-            'value'      => 'Veridu idOS Dashboard',
+            'section'    => 'company.details',
+            'property'   => 'dashboardName',
+            'value'      => 'Veridu Dashboard',
             'created_at' => $now
         ];
 

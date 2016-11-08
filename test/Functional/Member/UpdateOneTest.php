@@ -34,7 +34,7 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment, json_encode(['role' => 'member']));
+        $request = $this->createRequest($environment, json_encode(['role' => 'company.admin']));
 
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());

@@ -100,8 +100,8 @@ class Candidate implements HandlerInterface {
      *
      * @see \App\Repository\DBCandidate::save
      *
-     * @throws \App\Exception\Validade\CandidateExceptions
-     * @throws \App\Exception\Create\CandidateExceptions
+     * @throws \App\Exception\Validade\Profile\CandidateException
+     * @throws \App\Exception\Create\Profile\CandidateException
      *
      * @return \App\Entity\Candidate
      */
@@ -111,7 +111,7 @@ class Candidate implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertLongName($command->attribute);
             $this->validator->assertValue($command->value);
-            $this->validator->assertFloat($command->support);
+            $this->validator->assertScore($command->support);
         } catch (ValidationException $e) {
             throw new Validate\Profile\CandidateException(
                 $e->getFullMessage(),
@@ -134,7 +134,11 @@ class Candidate implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
-            $event  = $this->eventFactory->create('Profile\\Candidate\\Created', $entity);
+            $event  = $this->eventFactory->create(
+                'Profile\\Candidate\\Created',
+                $command->user,
+                $entity
+            );
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\CandidateException('Error while trying to create an candidate', 500, $e);
@@ -154,9 +158,17 @@ class Candidate implements HandlerInterface {
      * @return int
      */
     public function handleDeleteAll(DeleteAll $command) : int {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertService($command->service);
-        $this->validator->assertArray($command->queryParams);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertArray($command->queryParams);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\CandidateException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         // FIXME replace this with a query that is inside the fuckin' repository
         $entities = $this->repository->findBy(
@@ -170,17 +182,20 @@ class Candidate implements HandlerInterface {
         $affectedRows = 0;
 
         try {
-            // FIXME replace this with a deleteBy
-            foreach ($entities as $entity) {
-                $affectedRows += $this->repository->delete($entity->id);
-            }
+            $affectedRows = $this->repository->deleteAllByIdList(
+                $entities->pluck('id')->all()
+            );
 
-            $event = $this->eventFactory->create('Profile\\Candidate\\DeletedMulti', $entities);
+            $event = $this->eventFactory->create(
+                'Profile\\Candidate\\DeletedMulti',
+                $command->user,
+                $entities
+            );
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\CandidateException('Error while deleting all candidates', 404);
+            throw new NotFound\Profile\CandidateException('Error while deleting all candidates', 500, $e);
         }
 
-            return $affectedRows;
+        return $affectedRows;
     }
 }

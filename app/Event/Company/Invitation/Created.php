@@ -72,6 +72,7 @@ class Created extends AbstractServiceQueueEvent {
                     'name'  => $this->invitation->name,
                     'email' => $this->invitation->email
                 ],
+                'invitation'    => $this->invitation->toArray(),
                 'dashboardName' => $this->dashboardName,
                 'companyName'   => $this->companyName,
                 'signupHash'    => $this->signupHash

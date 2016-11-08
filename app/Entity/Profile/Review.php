@@ -24,7 +24,7 @@ class Review extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'flag_id', 'user_id', 'positive', 'created_at'];
+    protected $visible = ['id', 'gate_id', 'user_id', 'positive', 'created_at'];
     /**
      * {@inheritdoc}
      */
@@ -32,5 +32,5 @@ class Review extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $obfuscated = ['id', 'flag_id', 'user_id'];
+    protected $obfuscated = ['id', 'gate_id', 'user_id'];
 }

@@ -61,7 +61,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthYear Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/birthyear-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/birthyear-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -85,7 +85,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS FirstName Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/firstname-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/firstname-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -109,7 +109,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS LastName Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/lastname-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/lastname-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -133,7 +133,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthDay Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/birthday-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/birthday-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -157,7 +157,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthMonth Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/birthmonth-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/birthmonth-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -181,7 +181,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Country Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/country-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/country-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -205,7 +205,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS E-mail Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/email-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/email-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -229,7 +229,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS City Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/city-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/city-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -253,7 +253,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS ZipCode Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/zipcode-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/zipcode-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -277,7 +277,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Phone Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/phone-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/phone-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -301,7 +301,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Street Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/street-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/street-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -325,7 +325,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Gender Candidates',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/gender-candidates',
+                'url'           => 'https://handler.idos.io/morpheus/gender-candidates',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -349,7 +349,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS FirstName Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/firstname-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/firstname-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -373,7 +373,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Overall Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/overall-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/overall-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -397,7 +397,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthYear Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/birthyear-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/birthyear-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -421,7 +421,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS LastName Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/lastname-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/lastname-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -445,7 +445,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthDay Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/birthday-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/birthday-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -469,7 +469,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS BirthMonth Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/birthmonth-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/birthmonth-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -493,7 +493,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Country Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/country-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/country-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -517,7 +517,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS E-mail Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/email-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/email-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -541,7 +541,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Overall Model C',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/overall-cs-nb',
+                'url'           => 'https://handler.idos.io/morpheus/overall-cs-nb',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -565,7 +565,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS City Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/city-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/city-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -589,7 +589,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS ZipCode Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/zipcode-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/zipcode-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -613,7 +613,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Phone Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/phone-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/phone-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -637,7 +637,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Street Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/street-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/street-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -661,7 +661,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Gender Model M',
-                'url'           => 'https://handler.idos.io/skynet-web/rest/gender-mlp',
+                'url'           => 'https://handler.idos.io/morpheus/gender-mlp',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -685,7 +685,7 @@ class S11ServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS E-mail Handler',
-                'url'           => 'http://email.idos.io:8002/index.php/1.0/user/invitation',
+                'url'           => 'https://handler.idos.io/1.0/email/invitation',
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
@@ -693,7 +693,8 @@ class S11ServicesSeed extends AbstractSeed {
                 'private'       => md5('private-29'), // d9288a19a2abe8351e12ce90bd761c42
                 'listens'       => json_encode(
                     [
-                        'idos:invitation.created'
+                        'idos:invitation.created',
+                        'idos:invitation.resend'
                     ]
                 ),
                 'triggers'      => json_encode([]),

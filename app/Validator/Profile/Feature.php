@@ -21,7 +21,7 @@ class Feature implements ValidatorInterface {
         Traits\AssertName,
         Traits\AssertFlag,
         Traits\AssertValue,
-        Traits\AssertArray;
+        Traits\AssertType;
 
     public function assertFeatures($features) {
         Validator::arrayType()->assert($features);

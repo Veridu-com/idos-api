@@ -136,7 +136,7 @@ class Scores implements ControllerInterface {
     /**
      * Created a new score for a given attribute.
      *
-     * @apiEndpointRequiredParam body   string     attribute  first-name Score attribute
+     * @apiEndpointRequiredParam body   string     attribute  firstName Score attribute
      * @apiEndpointRequiredParam body   string     name  overall Score name
      * @apiEndpointRequiredParam body   float     value 0.2 Score value
      * @apiEndpointResponse 201 schema/score/scoreEntity.json
@@ -178,7 +178,7 @@ class Scores implements ControllerInterface {
     /**
      * Updates a score from the given attribute.
      *
-     * @apiEndpointRequiredParam body   string     attribute  first-name Score attribute
+     * @apiEndpointRequiredParam body   string     attribute  firstName Score attribute
      * @apiEndpointRequiredParam body   string     name  overall Score name
      * @apiEndpointRequiredParam body   float     value 0.2 Score value
      * @apiEndpointResponse 200 schema/score/updateOne.json
@@ -221,7 +221,7 @@ class Scores implements ControllerInterface {
     /**
      * Created a new score for a given attribute.
      *
-     * @apiEndpointRequiredParam body   string     attribute  first-name Score attribute
+     * @apiEndpointRequiredParam body   string     attribute  firstName Score attribute
      * @apiEndpointRequiredParam body   string     name  overall Score name
      * @apiEndpointRequiredParam body   float     value 0.2 Score value
      * @apiEndpointResponse 201 schema/score/createNew.json

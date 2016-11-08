@@ -90,14 +90,11 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
     /**
      * {@inheritdoc}
      */
-    public function getAllByUserIdAndAttributeNames(int $userId, array $filters = []) : Collection {
-        $result = $this->query()
-            ->selectRaw('candidates.*')
-            ->where('user_id', '=', $userId);
-
-        $result = $this->filter($result, $filters);
-
-        return $result->get();
+    public function getAllByUserIdAndAttributeNames(int $userId, array $attributeNames = []) : Collection {
+        return $this->query()
+            ->where('user_id', $userId)
+            ->whereIn('attribute', $attributeNames)
+            ->get();
     }
 
     /**
@@ -143,5 +140,18 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
                 'attribute' => $attributeName
             ]
         );
+    }
+
+    public function getAllByUserIdAndServiceId(int $userId, int $serviceId) : Collection {
+        return $this->query()
+            ->where('user_id', $userId)
+            ->where('creator', $serviceId)
+            ->get();
+    }
+
+    public function deleteAllByIdList(array $idList) : int {
+        return $this->query()
+            ->whereIn('id', $idList)
+            ->delete();
     }
 }
