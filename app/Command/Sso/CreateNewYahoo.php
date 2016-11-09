@@ -9,9 +9,9 @@ declare(strict_types = 1);
 namespace App\Command\Sso;
 
 /**
- * Sso "Create New Google" Command.
+ * Sso "Create New Yahoo" Command.
  */
-class CreateNewGoogle extends CreateNew {
+class CreateNewYahoo extends CreateNew {
     /**
      * {@inheritdoc}
      *

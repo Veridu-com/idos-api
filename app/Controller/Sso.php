@@ -18,7 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Collection;
 
 /**
- * Handles requests to /profiles/:userName/features.
+ * Handles requests to /sso.
  */
 class Sso implements ControllerInterface {
     /**
@@ -136,7 +136,7 @@ class Sso implements ControllerInterface {
      * Creates a token for the given user in the given provider.
      *
      * @apiEndpointResponse 201 schema/sso/createNew.json
-     * @apiEndpointRequiredParam body string provider twitter Provider name (one of: amazon, facebook, google, linkedin, paypal, twitter)
+     * @apiEndpointRequiredParam body string provider twitter Provider name (one of: amazon, dropbox, facebook, google, linkedin, paypal, spotify, twitter or yahoo)
      * @apiEndpointRequiredParam body string access_token abc Provider access token (oAuth 1.x and 2.x)
      * @apiEndpointRequiredParam body string credential wxz Credential public key.
      * @apiEndpointParam body string token_secret def Profiver token secret (oAuth 1.x)
@@ -196,6 +196,9 @@ class Sso implements ControllerInterface {
             case 'amazon':
                 $command = $this->commandFactory->create('Sso\\CreateNewAmazon');
                 break;
+            case 'dropbox':
+                $command = $this->commandFactory->create('Sso\\CreateNewDropbox');
+                break;
             case 'facebook':
                 $command = $this->commandFactory->create('Sso\\CreateNewFacebook');
                 break;
@@ -208,8 +211,14 @@ class Sso implements ControllerInterface {
             case 'paypal':
                 $command = $this->commandFactory->create('Sso\\CreateNewPaypal');
                 break;
+            case 'spotify':
+                $command = $this->commandFactory->create('Sso\\CreateNewSpotify');
+                break;
             case 'twitter':
                 $command = $this->commandFactory->create('Sso\\CreateNewTwitter');
+                break;
+            case 'yahoo':
+                $command = $this->commandFactory->create('Sso\\CreateNewYahoo');
                 break;
         }
 

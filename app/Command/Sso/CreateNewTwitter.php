@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Sso;
 
 /**
- * Sso "Create New" Command.
+ * Sso "Create New Twitter" Command.
  */
 class CreateNewTwitter extends CreateNew {
     /**
@@ -22,7 +22,7 @@ class CreateNewTwitter extends CreateNew {
     /**
      * {@inheritdoc}
      *
-     * @return \App\Command\Sso\CreateNewTwitter
+     * @return self
      */
     public function setParameters(array $parameters) : self {
         parent::setParameters($parameters);
