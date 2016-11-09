@@ -57,6 +57,7 @@ class Updated extends AbstractServiceQueueEvent {
      * @param \App\Entity\User                $user
      * @param \App\Entity\Company\Credential  $credential
      * @param \App\Entity\Profile\Process     $process
+     * @param \App\Entity\Company\Credential $credential
      * @param \App\Entity\Profile\Source|null $source
      *
      * @return void

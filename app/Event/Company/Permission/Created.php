@@ -33,6 +33,7 @@ class Created extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\Company\Permission $permission
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */

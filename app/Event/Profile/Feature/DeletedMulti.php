@@ -33,6 +33,7 @@ class DeletedMulti extends AbstractEvent {
      * Class constructor.
      *
      * @param \Illuminate\Support\Collection $features
+     * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */

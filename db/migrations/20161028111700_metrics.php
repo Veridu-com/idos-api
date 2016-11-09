@@ -12,95 +12,37 @@ use Phinx\Migration\AbstractMigration;
  */
 class Metrics extends AbstractMigration {
     public function change() {
-        /**
-         * Gate Related Metrics
-         */
+        //@FIXME make the id bigserial
         $this
-            ->table('gate_metrics')
-            ->addColumn('credential_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('pass', 'boolean', ['null' => false])
+            ->table('metrics')
+            ->addColumn('endpoint', 'text', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
+            ->addColumn('data', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addTimestamps()
-            ->addIndex(['credential_id'])
-            ->addIndex(['name'])
-            ->addIndex(['pass'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $this
-            ->table('gate_metrics_hourly')
-            ->addColumn('credential_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('pass', 'boolean', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addColumn('count', 'integer', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['credential_id'])
-            ->addIndex(['name'])
-            ->addIndex(['pass'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        $this
-            ->table('gate_metrics_daily')
-            ->addColumn('credential_id', 'integer', ['null' => false])
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('pass', 'boolean', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addColumn('count', 'integer', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['credential_id'])
-            ->addIndex(['name'])
-            ->addIndex(['pass'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
-            ->create();
-
-        /**
-         * Source Related Metrics
-         */
-        $this
-            ->table('source_metrics')
-            ->addColumn('credential_id', 'integer', ['null' => false])
-            ->addColumn('provider', 'text', ['null' => false])
-            ->addColumn('sso', 'boolean', ['null' => false])
-            ->addColumn('action', 'text', ['null' => false])
-            ->addTimestamps()
-            ->addIndex(['credential_id'])
-            ->addIndex(['provider'])
+            ->addIndex(['endpoint'])
             ->addIndex(['action'])
-            ->addIndex(['sso'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
-            ->table('source_metrics_hourly')
-            ->addColumn('credential_id', 'integer', ['null' => false])
-            ->addColumn('provider', 'text', ['null' => false])
-            ->addColumn('sso', 'boolean', ['null' => false])
+            ->table('metrics_hourly')
+            ->addColumn('endpoint', 'text', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
             ->addColumn('count', 'integer', ['null' => false])
+            ->addColumn('data', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addTimestamps()
-            ->addIndex(['credential_id'])
-            ->addIndex(['provider'])
+            ->addIndex(['endpoint'])
             ->addIndex(['action'])
-            ->addIndex(['sso'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
         $this
-            ->table('source_metrics_daily')
-            ->addColumn('credential_id', 'integer', ['null' => false])
-            ->addColumn('provider', 'text', ['null' => false])
-            ->addColumn('sso', 'boolean', ['null' => false])
+            ->table('metrics_daily')
+            ->addColumn('endpoint', 'text', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
             ->addColumn('count', 'integer', ['null' => false])
+            ->addColumn('data', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addTimestamps()
-            ->addIndex(['credential_id'])
-            ->addIndex(['provider'])
+            ->addIndex(['endpoint'])
             ->addIndex(['action'])
-            ->addIndex(['sso'])
-            ->addForeignKey('credential_id', 'credentials', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
     }
 }

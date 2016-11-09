@@ -57,8 +57,11 @@ class Metrics implements ControllerInterface {
     }
 
     /**
-     * Lists all Metrics that are visible to the acting Company.
+     * Lists all Metrics.
      *
+     * @apiEndpointParam query int from 1449280800 Initial metric date timestamp in number of seconds (lower bound)
+     * @apiEndpointParam query int to 1449480800 Final metric date timestamp in number of seconds (upper bound)
+     * @apiEndpointParam query string interval hourly|daily The interval which the measurements were made
      * @apiEndpointResponse 200 schema/metric/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

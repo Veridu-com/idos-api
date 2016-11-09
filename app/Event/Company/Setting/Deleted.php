@@ -10,6 +10,7 @@ namespace App\Event\Company\Setting;
 
 use App\Entity\Company\Setting;
 use App\Entity\Identity;
+use App\Entity\Company;
 use App\Event\AbstractEvent;
 
 /**
@@ -39,6 +40,8 @@ class Deleted extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\Company\Setting $setting
+     * @param \App\Entity\Company $company
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */

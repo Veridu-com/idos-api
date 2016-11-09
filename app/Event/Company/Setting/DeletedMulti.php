@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Company\Setting;
 
 use App\Entity\Identity;
+use App\Entity\Company;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 
@@ -39,6 +40,8 @@ class DeletedMulti extends AbstractEvent {
      * Class constructor.
      *
      * @param \Illuminate\Support\Collection $settings
+     * @param \App\Entity\Company $company
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */

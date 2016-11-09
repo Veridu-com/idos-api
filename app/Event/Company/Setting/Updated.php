@@ -39,6 +39,8 @@ class Updated extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\Company\Setting $setting
+     * @param \App\Entity\Company $company
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */

@@ -11,7 +11,6 @@ namespace App\Handler;
 use App\Command\Metric\ListAll;
 use App\Command\Metric\CreateNew;
 use App\Exception\Validate;
-use App\Exception\Create;
 use App\Repository\MetricInterface;
 use App\Entity\Metric as MetricEntity;
 use App\Validator\Metric as MetricValidator;
@@ -64,8 +63,7 @@ class Metric implements HandlerInterface {
      *
      * @param \App\Repository\MetricInterface $repository
      * @param \App\Validator\Metric           $validator
-     * @param \App\Factory\Event                   $eventFactory
-     * @param \League\Event\Emitter                $emitter
+     * @param \GearmanClient                  $gearmanClient
      *
      * @return void
      */
@@ -100,18 +98,12 @@ class Metric implements HandlerInterface {
             return collect();
         }
 
-        $endpoint = $command->queryParams['endpoint'];
-        $entityName = strpos($endpoint, ':') === false ? ucfirst($endpoint) : ucfirst(substr($endpoint, strpos($endpoint, ':') + 1));
         $metricType = null;
-
         if (isset($command->queryParams['interval'])) {
             switch ($command->queryParams['interval']) {
-                case 'hour':
-                    $metricType = 'hourly';
-                    break;
-
-                case 'day':
-                    $metricType = 'daily';
+                case 'hourly':
+                case 'daily':
+                    $metricType = $command->queryParams['interval'];
                     break;
 
                 default:
@@ -121,8 +113,8 @@ class Metric implements HandlerInterface {
         $from = isset($command->queryParams['from']) ? (int) $command->queryParams['from'] : null;
         $to = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
 
-        $this->repository->prepare($entityName, $metricType);
-        $entities = $this->repository->get($from, $to);
+        $this->repository->prepare($metricType);
+        $entities = $this->repository->getByDateInterval($from, $to);
 
         return $entities;
     }
@@ -140,7 +132,7 @@ class Metric implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : bool {
         try {
             $this->validator->assertEvent($command->event);
-        } catch (ValidationException $e) {
+        } catch (ValidateException $e) {
             throw new Validate\MetricException(
                 $e->getFullMessage(),
                 400,

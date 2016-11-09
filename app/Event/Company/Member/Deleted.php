@@ -33,6 +33,7 @@ class Deleted extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\Company\Member $member
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */

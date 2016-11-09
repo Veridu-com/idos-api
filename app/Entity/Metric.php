@@ -9,25 +9,28 @@ declare(strict_types = 1);
 namespace App\Entity;
 
 /**
- * Source Metric Entity.
+ * Metric Entity.
  *
  * @apiEntity schema/metric/metricEntity.json
  *
  * @property int        $id
- * @property int        $credential_id
- * @property string     $provider
- * @property boolean    $sso
+ * @property string     $endpoint
  * @property string     $action
- * @property string     $count
+ * @property int        $count
+ * @property string     $data
  * @property int        $created_at
  */
-class SourceMetric extends AbstractEntity {
+class Metric extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['credential_id', 'provider', 'sso', 'action', 'count', 'created_at'];
+    protected $visible = ['endpoint', 'action', 'count', 'data', 'created_at'];
     /**
      * {@inheritdoc}
      */
     protected $dates = ['created_at'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $json = ['data'];
 }

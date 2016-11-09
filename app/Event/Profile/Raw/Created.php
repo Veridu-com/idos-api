@@ -54,6 +54,10 @@ class Created extends AbstractServiceQueueEvent {
      * Class constructor.
      *
      * @param \App\Entity\Profile\Raw $raw
+     * @param \App\Entity\User $user
+     * @param \App\Entity\Profile\Source $source
+     * @param \App\Entity\Profile\Process $process
+     * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */

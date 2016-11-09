@@ -33,6 +33,7 @@ class Updated extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\Profile\Score $score
+     * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */

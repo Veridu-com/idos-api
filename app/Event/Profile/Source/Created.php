@@ -54,6 +54,7 @@ class Created extends AbstractServiceQueueEvent {
      * @param \App\Entity\User   $user
      * @param \App\Entity\Source $source
      * @param string             $ipAddr
+     * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */

@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Listener\Profile;
+namespace App\Listener\Company;
 
 use App\Event\Profile\Review;
 use App\Listener;

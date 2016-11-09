@@ -43,13 +43,5 @@ class SpecialInit extends AbstractMigration {
             ->addIndex('credential_id')
             ->addIndex('user_id')
             ->create();
-
-        // System metrics
-        $metrics = $this->table('metrics');
-        $metrics
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'float', ['null' => false])
-            ->addTimestamps()
-            ->create();
     }
 }

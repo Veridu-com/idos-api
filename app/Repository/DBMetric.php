@@ -15,22 +15,24 @@ use Illuminate\Support\Collection;
  * Database-based Metric Repository Implementation.
  */
 class DBMetric extends AbstractSQLDBRepository implements MetricInterface {
+    /**
+     * The entity associated with the repository.
+     *
+     * @var string
+     */
+    protected $entityName = 'Metric';
 
     /**
-     * Prepare the repository to respond accordingly to an specific metric entity.
-     *
-     * @param string       $entityName  The entity name
-     * @param string|null  $metricType  The metric type
+     * {@inheritdoc}
      */
-    public function prepare($entityName, $metricType = null) {
-        $this->tableName = strtolower($entityName) . '_metrics' . ($metricType ? ('_' . $metricType) : '');
-        $this->entityName = $entityName . 'Metric';
+    public function prepare($metricType = null) {
+        $this->tableName = 'metrics' . ($metricType ? ('_' . $metricType) : '');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get(int $from = null, int $to = null, array $queryParams = []) : Collection {
+    public function getByDateInterval(int $from = null, int $to = null, array $queryParams = []) : Collection {
         $constraints = [];
         if ($from !== null && $to !== null) {
             $constraints['created_at'] = [[date('Y-m-d H:i:s', $from), date('Y-m-d H:i:s', $to)], 'BETWEEN'];

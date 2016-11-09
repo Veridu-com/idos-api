@@ -40,6 +40,7 @@ class CRA extends AbstractEvent {
      *
      * @param \App\Entity\Profile\Source $source
      * @param string                     $ipAddr
+     * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */

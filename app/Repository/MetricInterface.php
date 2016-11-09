@@ -16,11 +16,18 @@ use Illuminate\Support\Collection;
  */
 interface MetricInterface extends RepositoryInterface {
     /**
+     * Prepare the repository to respond accordingly to an specific metric entity.
+     *
+     * @param string|null  $metricType  The metric type
+     */
+    public function prepare($metricType = null);
+
+    /**
      * Return logged events.
      *
      * @param array $queryParams
      *
      * @return \Illuminate\Support\Collection
      */
-    public function get(int $from, int $to, array $queryParams) : Collection;
+    public function getByDateInterval(int $from, int $to, array $queryParams = []) : Collection;
 }
