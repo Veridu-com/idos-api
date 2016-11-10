@@ -699,6 +699,22 @@ class S11ServicesSeed extends AbstractSeed {
                 ),
                 'triggers'      => json_encode([]),
                 'enabled'       => true,
+            ],
+            [
+                'name'          => 'idOS OTP E-mail Handler',
+                'url'           => 'https://handler.idos.io/1.0/email/otp',
+                'company_id'    => 1,
+                'auth_username' => '***REMOVED***',
+                'auth_password' => '***REMOVED***',
+                'public'        => md5('public-30'), // aafc17b2c826b02b9bec9de6e37d5ea9
+                'private'       => md5('private-30'), // d9288a19a2abe8351e12ce90bd761c42
+                'listens'       => json_encode(
+                    [
+                        'idos:otp.email.created'
+                    ]
+                ),
+                'triggers'      => json_encode([]),
+                'enabled'       => true,
             ]
         ];
 
