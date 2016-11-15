@@ -119,7 +119,7 @@ class Member implements HandlerInterface {
 
         $member = $this->repository->create(
             [
-                'identity_id' => $command->identityId,
+                'identity_id' => $command->identity->id,
                 'role'        => $command->role,
                 'company_id'  => $command->company->id
             ]

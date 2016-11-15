@@ -8,10 +8,12 @@ declare(strict_types = 1);
 
 namespace App\Handler;
 
-use App\Command\Metric\ListAll;
+use App\Command\Metric\ListAllSystem;
+use App\Command\Metric\ListAllUser;
 use App\Command\Metric\CreateNew;
 use App\Exception\Validate;
-use App\Repository\MetricInterface;
+use App\Repository\Metric\SystemInterface;
+use App\Repository\Metric\UserInterface;
 use App\Entity\Metric as MetricEntity;
 use App\Validator\Metric as MetricValidator;
 use Illuminate\Support\Collection;
@@ -22,11 +24,17 @@ use Interop\Container\ContainerInterface;
  */
 class Metric implements HandlerInterface {
     /**
-     * User Repository instance.
+     * System Metrics Repository instance.
      *
-     * @var \App\Repository\MetricInterface
+     * @var \App\Repository\Metric\SystemInterface
      */
-    private $repository;
+    private $systemMetricsRepository;
+    /**
+     * User Metrics Repository instance.
+     *
+     * @var \App\Repository\Metric\UserInterface
+     */
+    private $userMetricsRepository;
     /**
      * Metric Validator instance.
      *
@@ -48,7 +56,10 @@ class Metric implements HandlerInterface {
             return new \App\Handler\Metric(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Metric'),
+                    ->create('Metric\System'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Metric\User'),
                 $container
                     ->get('validatorFactory')
                     ->create('Metric'),
@@ -61,37 +72,40 @@ class Metric implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\MetricInterface $repository
-     * @param \App\Validator\Metric           $validator
-     * @param \GearmanClient                  $gearmanClient
+     * @param \App\Repository\Metric\SystemInterface     $systemMetricsRepository
+     * @param \App\Repository\Metric\UserInterface       $userMetricsRepository
+     * @param \App\Validator\Metric                      $validator
+     * @param \GearmanClient                             $gearmanClient
      *
      * @return void
      */
     public function __construct(
-        MetricInterface $repository,
+        SystemInterface $systemMetricsRepository,
+        UserInterface $userMetricsRepository,
         MetricValidator $validator,
         \GearmanClient $gearmanClient
     ) {
-        $this->repository    = $repository;
-        $this->validator     = $validator;
-        $this->gearmanClient = $gearmanClient;
+        $this->systemMetricsRepository  = $systemMetricsRepository;
+        $this->userMetricsRepository    = $userMetricsRepository;
+        $this->validator                = $validator;
+        $this->gearmanClient            = $gearmanClient;
     }
 
     /**
-     * Lists all metrics.
+     * Lists all system metrics.
      *
-     * @param \App\Command\Metric\ListAll $command
+     * @param \App\Command\Metric\ListAllSystem $command
      *
-     * @see \App\Repository\DBMetric::get
+     * @see \App\Repository\Metric\DBSystem::getByDateInterval
      *
      * @return \Illuminate\Support\Collection
      */
-    public function handleListAll(ListAll $command) : Collection {
+    public function handleListAllSystem(ListAllSystem $command) : Collection {
         $this->validator->assertArray($command->queryParams);
+        $this->validator->assertIdentity($command->identity);
 
         $endpoints = [
-            'profile:source',
-            'profile:gate'
+            'profile:source'
         ];
 
         if (! in_array($command->queryParams['endpoint'], $endpoints)) {
@@ -113,8 +127,29 @@ class Metric implements HandlerInterface {
         $from = isset($command->queryParams['from']) ? (int) $command->queryParams['from'] : null;
         $to = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
 
-        $this->repository->prepare($metricType);
-        $entities = $this->repository->getByDateInterval($from, $to);
+        $this->systemMetricsRepository->prepare($metricType);
+        $entities = $this->systemMetricsRepository->getByIdentityAndDateInterval($command->identity, $from, $to, $command->queryParams);
+
+        return $entities;
+    }
+
+    /**
+     * Lists all user metrics.
+     *
+     * @param \App\Command\Metric\ListAllUser $command
+     *
+     * @see \App\Repository\Metric\DBUser::getByDateInterval
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function handleListAllUser(ListAllUser $command) : Collection {
+        $this->validator->assertArray($command->queryParams);
+        $this->validator->assertIdentity($command->identity);
+
+        $from = isset($command->queryParams['from']) ? (int) $command->queryParams['from'] : null;
+        $to = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
+
+        $entities = $this->userMetricsRepository->getByIdentityAndDateInterval($command->identity, $from, $to, $command->queryParams);
 
         return $entities;
     }
@@ -127,7 +162,7 @@ class Metric implements HandlerInterface {
      * @see \App\Repository\DBMetric::create
      * @see \App\Repository\DBMetric::save
      *
-     * @return \App\Entity\Metric
+     * @return \App\Entity\Metric\System
      */
     public function handleCreateNew(CreateNew $command) : bool {
         try {
@@ -147,30 +182,53 @@ class Metric implements HandlerInterface {
             $endpoint .= ':' . strtolower($eventClass[1]);
         }
 
-        $entityName = strpos($endpoint, ':') === false ? $endpoint : substr($endpoint, strpos($endpoint, ':') + 1);
+        $entityName = $endpoint;
+        if (strpos($endpoint, ':') !== false) {
+            $entityName = substr($endpoint, strpos($endpoint, ':') + 1);
+        }
+
+        if ($action === 'deletedmulti') {
+            $action = 'deleted';
+            $entities = $command->event->{$entityName . 's'};
+        } else {
+            $entities = [$command->event->$entityName];
+        }
+
         $payload = [
             'endpoint' => $endpoint,
             'action' => $action,
             'created'  => time()
         ];
 
-        switch ($endpoint) {
-            case 'profile:source':
-            case 'profile:gate':
-                $credential = $command->event->credential->toArray();
-                $credential['id'] = $command->event->credential->id;
+        foreach ($entities as $entity) {
+            switch ($endpoint) {
+                case 'profile:source':
+                case 'profile:attribute':
+                case 'profile:gate':
+                case 'profile:flag':
 
-                $payload['credential'] = $credential;
-                $payload[$entityName] = $command->event->$entityName->toArray();
+                    $credential = $command->event->credential->toArray();
+                    $credential['id'] = $command->event->credential->id;
+
+                    $payload['user_id'] = $entity->user_id;
+                    $payload['credential'] = $credential;
+                    $payload[$entityName] = $entity->toArray();
+                    $payload[$entityName]['id'] = $entity->id;
+
+                    if ($endpoint === 'profile:gate') {
+                        $payload[$entityName]['confidence_level'] = 'low';
+                    }
                 break;
 
-            default:
-        }
+                default:
+                    return false;
+            }
 
-        $this->gearmanClient->doBackground(
-            sprintf('idos-metrics-%s', str_replace('.', '', __VERSION__)),
-            json_encode($payload)
-        );
+            $this->gearmanClient->doBackground(
+                sprintf('idos-metrics-%s', str_replace('.', '', __VERSION__)),
+                json_encode($payload)
+            );
+        }
 
         return $this->gearmanClient->returnCode() == \GEARMAN_SUCCESS;
     }

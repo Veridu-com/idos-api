@@ -25,7 +25,8 @@ class Metrics implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'metric:listAll'
+            'metric:listAllSystem',
+            'metric:listAllUser'
         ];
     }
 
@@ -37,7 +38,10 @@ class Metrics implements RouteInterface {
             return new \App\Controller\Metrics(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Metric'),
+                    ->create('Metric\System'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Metric\User'),
                 $container
                     ->get('commandBus'),
                 $container
@@ -49,18 +53,19 @@ class Metrics implements RouteInterface {
         $authMiddleware       = $container->get('authMiddleware');
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
-        self::listAll($app, $authMiddleware, $permissionMiddleware);
+        self::listAllSystem($app, $authMiddleware, $permissionMiddleware);
+        self::listAllUser($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
-     * List all Metrics.
+     * List all system metrics.
      *
-     * Retrieve a complete list of the metrics.
+     * Retrieve a complete list of the system metrics.
      *
-     * @apiEndpoint GET /metrics
+     * @apiEndpoint GET /metrics/system
      * @apiGroup Profile
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -68,19 +73,51 @@ class Metrics implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/metrics/listAll.md
+     * @link docs/metrics/listAllSystem.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Metrics::listAll
+     * @see \App\Controller\Metrics::listAllSystem
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAllSystem(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/metrics',
-                'App\Controller\Metrics:listAll'
+                '/metrics/system',
+                'App\Controller\Metrics:listAllSystem'
             )
             ->add($permission(EndpointPermission::SELF_ACTION))
             ->add($auth(Auth::IDENTITY))
-            ->setName('metric:listAll');
+            ->setName('metric:listAllSystem');
+    }
+
+    /**
+     * List all user metrics.
+     *
+     * Retrieve a complete list of the user metrics.
+     *
+     * @apiEndpoint GET /metrics/user
+     * @apiGroup Profile
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/metrics/listAllUser.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Metrics::listAllUser
+     */
+    private static function listAllUser(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/metrics/user',
+                'App\Controller\Metrics:listAllUser'
+            )
+            ->add($permission(EndpointPermission::SELF_ACTION))
+            ->add($auth(Auth::IDENTITY))
+            ->setName('metric:listAllUser');
     }
 }

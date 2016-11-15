@@ -6,12 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Entity;
+namespace App\Entity\Metric;
+
+use App\Entity\AbstractEntity;
 
 /**
- * Metric Entity.
+ * System Metric Entity.
  *
- * @apiEntity schema/metric/metricEntity.json
+ * @apiEntity schema/metric/systemEntity.json
  *
  * @property int        $id
  * @property string     $endpoint
@@ -20,7 +22,7 @@ namespace App\Entity;
  * @property string     $data
  * @property int        $created_at
  */
-class Metric extends AbstractEntity {
+class System extends AbstractEntity {
     /**
      * {@inheritdoc}
      */

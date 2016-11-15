@@ -11,20 +11,26 @@ namespace App\Command\Metric;
 use App\Command\AbstractCommand;
 
 /**
- * Metric ListAll Command.
+ * Metric ListAllUser Command.
  */
-class ListAll extends AbstractCommand {
+class ListAllUser extends AbstractCommand {
     /**
      * Query parameters.
      *
      * @var array
      */
     public $queryParams;
+    /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}
      *
-     * @return \App\Command\Metric\ListAll
+     * @return \App\Command\Metric\ListAllUser
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['queryParams'])) {

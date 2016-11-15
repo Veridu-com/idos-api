@@ -168,7 +168,7 @@ class Auth implements MiddlewareInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param string                                   $reqToken
      *
-     * @return \Psr\Http\Mesage\ServerRequestInterface
+     * @return \Psr\Http\Message\ServerRequestInterface
      */
     private function handleIdentityToken(ServerRequestInterface $request, string $reqToken) : ServerRequestInterface {
         try {

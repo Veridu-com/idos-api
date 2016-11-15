@@ -14,10 +14,10 @@ class S43MetricsSeed extends AbstractSeed {
         for ($i = 0; $i < $count; $i++) {
             $data = [
                 [
-                    'endpoint'      => 'profile:source',
-                    'action'        => ['created', 'deleted'][random_int(0, 1)],
-                    'data'          => json_encode([
-                        'credential_id' => 1,
+                    'credential_public' => ['4c9184f37cff01bcdc32dc486ec36961', 'fc8ce54607854df8b72e7324c8f6aa24'][random_int(0, 1)],
+                    'endpoint'          => 'profile:source',
+                    'action'            => ['created', 'deleted'][random_int(0, 1)],
+                    'data'              => json_encode([
                         'provider'      => ['facebook', 'google', 'yahoo', 'linkedin'][random_int(0, 3)],
                         'sso'           => (bool) random_int(0, 1)
                     ]),
@@ -31,10 +31,10 @@ class S43MetricsSeed extends AbstractSeed {
 
             $data = [
                 [
-                    'endpoint'      => 'profile:gate',
-                    'action'        => ['created', 'deleted'][random_int(0, 1)],
-                    'data'          => json_encode([
-                        'credential_id' => 1,
+                    'credential_public' => ['4c9184f37cff01bcdc32dc486ec36961', 'fc8ce54607854df8b72e7324c8f6aa24'][random_int(0, 1)],
+                    'endpoint'          => 'profile:gate',
+                    'action'            => ['created', 'deleted'][random_int(0, 1)],
+                    'data'              => json_encode([
                         'name'          => ['Gate One', 'Gate Two'][random_int(0, 1)],
                         'pass'          => (bool) random_int(0, 1)
                     ]),
