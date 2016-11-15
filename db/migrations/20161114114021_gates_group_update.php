@@ -12,7 +12,7 @@ use Phinx\Migration\AbstractMigration;
  * Changes:
  * 		1. "gates"."slug" should be a FK to "categories" table
  * 		2. "gates" should have a "conficence_level" smallint column
- * 			
+ *      3. "gates" should have an "attribute" column, FK to "categories" (type="attribute") so we can effectively identify which (and if - it is nullable) attribute it is related.
  */
 class GatesGroupUpdate extends AbstractMigration
 {
