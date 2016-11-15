@@ -10,31 +10,34 @@ class S25GatesSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
-                'user_id'    => 1,
-                'creator'    => 1,
-                'slug'       => 'first-name',
-                'pass'       => true,
+                'user_id'          => 1,
+                'creator'          => 1,
+                'name'             => 'firstName',
+                'slug'             => 'firstname',
+                'pass'             => true,
                 'confidence_level' => 'low',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => null
             ],
             [
-                'user_id'    => 1,
-                'creator'    => 1,
-                'slug'       => 'middle-name',
-                'pass'       => 'f',
+                'user_id'          => 1,
+                'creator'          => 1,
+                'name'             => 'middleName',
+                'slug'             => 'middlename',
+                'pass'             => 'f',
                 'confidence_level' => 'medium',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => null
             ],
             [
-                'user_id'    => 1,
-                'creator'    => 1,
-                'slug'       => 'last-name',
+                'user_id'          => 1,
+                'creator'          => 1,
+                'name'             => 'lastName',
+                'slug'             => 'lastname',
                 'confidence_level' => 'high',
-                'pass'       => 'f',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
+                'pass'             => 'f',
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => null
             ],
         ];
 

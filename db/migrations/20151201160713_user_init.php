@@ -132,7 +132,6 @@ class UserInit extends AbstractMigration {
             ->addIndex('creator')
             ->addIndex('name')
             ->addIndex(['user_id', 'creator', 'name'], ['unique' => true])
-            ->addIndex(['user_id', 'creator', 'slug'], ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();

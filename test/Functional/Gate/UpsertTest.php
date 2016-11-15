@@ -38,7 +38,7 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'slug' => 'slug-test',
+                    'name' => 'name-test',
                     'pass' => true
                 ]
             )
@@ -50,7 +50,7 @@ class UpsertTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('slug-test', $body['data']['slug']);
+        $this->assertSame('name-test', $body['data']['name']);
         $this->assertTrue($body['data']['pass']);
 
         /*
@@ -79,7 +79,7 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'slug'  => 'slug-test',
+                    'name'  => 'name-test',
                     'value' => false
                 ]
             )
@@ -91,7 +91,7 @@ class UpsertTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('slug-test', $body['data']['slug']);
+        $this->assertSame('name-test', $body['data']['name']);
         $this->assertFalse($body['data']['pass']);
 
         /*
@@ -118,7 +118,7 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'slug'  => '',
+                    'name'  => '',
                     'value' => 0.6
                 ]
             )

@@ -4,7 +4,6 @@ use Phinx\Migration\AbstractMigration;
 
 class ReviewFlagToGate extends AbstractMigration
 {
-   
     /**
      * Changes "reviews->flag" relationship to "review->gate".
      */
@@ -18,10 +17,10 @@ class ReviewFlagToGate extends AbstractMigration
             ->addForeignKey('gate_id', 'gates', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->save();
     }
-    
+
     /**
-    * {@inheritdoc}.
-    */
+     * {@inheritdoc}.
+     */
     public function down()
     {
     }

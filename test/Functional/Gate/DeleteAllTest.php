@@ -68,7 +68,7 @@ class DeleteAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'slug=first*'
+                    'QUERY_STRING'       => 'name=first*'
                 ]
             )
         );
@@ -98,7 +98,7 @@ class DeleteAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'slug=*name*'
+                    'QUERY_STRING'       => 'name=*name*'
                 ]
             )
         );

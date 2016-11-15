@@ -54,18 +54,18 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testFilters() {
-        $key            = 'slug';
+        $key            = 'name';
         $filterableKeys = [
             'creator.name' => [
                 [
                     'value'   => 'id*',
-                    'results' => ['first-name', 'middle-name', 'last-name']
+                    'results' => ['firstName', 'middleName', 'lastName']
                 ],
             ],
-            'slug' => [
+            'name' => [
                 [
                     'value'   => 'middle*',
-                    'results' => ['middle-name']
+                    'results' => ['middleName']
                 ],
             ]
         ];
@@ -127,7 +127,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'slug=middle*'
+                    'QUERY_STRING'       => 'name=middle*'
                 ]
             )
         );
@@ -141,7 +141,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['slug'], ['middle-name']);
+            $this->assertContains($entity['name'], ['middleName']);
         }
 
         /*
@@ -161,7 +161,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'slug=first*'
+                    'QUERY_STRING'       => 'name=first*'
                 ]
             )
         );
@@ -175,7 +175,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['slug'], ['first-name']);
+            $this->assertContains($entity['name'], ['firstName']);
         }
 
         /*
@@ -209,7 +209,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['slug'], ['first-name', 'middle-name', 'last-name']);
+            $this->assertContains($entity['name'], ['firstName', 'middleName', 'lastName']);
         }
 
         /*
@@ -243,7 +243,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['slug'], ['first-name', 'middle-name', 'last-name']);
+            $this->assertContains($entity['name'], ['firstName', 'middleName', 'lastName']);
         }
 
         /*
@@ -260,7 +260,7 @@ class ListAllTest extends AbstractFunctional {
 
     public function testOrdering() {
         $orderableKeys = [
-            'slug',
+            'name',
             'pass',
             'created_at',
             'updated_at'

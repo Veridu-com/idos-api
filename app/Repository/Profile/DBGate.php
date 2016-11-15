@@ -34,15 +34,13 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
      */
     protected $filterableKeys = [
         'creator.name' => 'string',
-        'name'         => 'string',
-        'slug'         => 'string',
+        'name'         => 'string'
     ];
     /**
      * {@inheritdoc}
      */
     protected $orderableKeys = [
         'name',
-        'slug',
         'pass',
         'created_at',
         'updated_at'
@@ -90,12 +88,12 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneBySlug(string $slug, int $serviceId, int $userId) : Gate {
+    public function findOneByName(string $name, int $serviceId, int $userId) : Gate {
         return $this->findOneBy(
             [
                 'user_id' => $userId,
                 'creator' => $serviceId,
-                'slug'    => $slug
+                'name'    => $name
             ]
         );
     }
