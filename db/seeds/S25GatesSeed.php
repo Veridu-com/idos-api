@@ -12,17 +12,26 @@ class S25GatesSeed extends AbstractSeed {
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'name'       => 'Gate one',
-                'slug'       => 'gate-one',
+                'slug'       => 'first-name',
                 'pass'       => true,
+                'confidence_level' => 'low',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'name'       => 'Gate two',
-                'slug'       => 'gate-two',
+                'slug'       => 'middle-name',
+                'pass'       => 'f',
+                'confidence_level' => 'medium',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => null
+            ],
+            [
+                'user_id'    => 1,
+                'creator'    => 1,
+                'slug'       => 'last-name',
+                'confidence_level' => 'high',
                 'pass'       => 'f',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null

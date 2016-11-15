@@ -314,6 +314,67 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     }
 
     /**
+     * Upserts a register into the database.
+     *
+     * @param      \App\Entity\EntityInterface  $entity        The entity
+     * @param      array                        $conflictKeys  The conflict keys, which keys ON CONCLIFCT will trigger.
+     * @param      array                        $updateArray   The update array
+     *
+     * @throws     \App\Exception\NotFound      
+     * @throws     \RuntimeException            
+     *
+     * @return     bool
+     */
+    public function upsert(EntityInterface $entity, array $conflictKeys = [], array $updateArray = []) : bool {
+        $serialized = $entity->serialize();
+        $keys = $values = [];
+        $conflictSQL = '';
+
+        foreach ($serialized as $key => $value) {
+            array_push($keys, $key);
+            array_push($values, $value);
+        } 
+
+        // creates conflict SQL
+        if (sizeof($conflictKeys) && sizeof($updateArray)) {
+            $onConflict = sprintf('(%s)', implode(',', $conflictKeys));
+            $updateSql = 'DO UPDATE set ';
+
+            // updates the updateArray
+            // this has to be done because of parameter conflicting using bindParams
+            $newArray = [];
+            foreach ($updateArray as $key => $value) {
+                $comma = last($updateArray) == $value ? '' : ',';
+                $conflictKey = sprintf('conflict_%s', $key);
+
+                $updateSql .= sprintf('%s = :%s%s', $key, $conflictKey, $comma);
+                $newArray[$conflictKey] = $value;
+            }
+            $updateArray = $newArray;
+
+            $conflictSQL = sprintf('%s %s', $onConflict, $updateSql);
+        } else {
+            $conflictSQL = 'DO NOTHING';
+        }
+
+        $insertKeys = implode(',', $keys);
+        $params = array_map(function ($key) { return ":$key"; }, $keys);
+        $insertParams = implode(',', $params);
+
+        $sql = sprintf('INSERT INTO %s 
+            (%s) 
+            VALUES (%s)
+            ON CONFLICT %s',
+            $this->getTableName(),
+            $insertKeys, 
+            $insertParams,
+            $conflictSQL
+        );
+
+        return $this->runRaw($sql, array_merge($serialized, $updateArray));
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function find(int $id) : EntityInterface {

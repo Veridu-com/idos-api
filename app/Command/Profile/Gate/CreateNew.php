@@ -29,11 +29,18 @@ class CreateNew extends AbstractCommand {
     public $service;
 
     /**
-     * Gate's name (user input).
+     * Gate's slug (user input).
      *
      * @var string
      */
-    public $name;
+    public $slug;
+
+    /**
+     * Gate's confidence level (user input).
+     *
+     * @var string
+     */
+    public $confidenceLevel;
 
     /**
      * Gate's value (user input).
@@ -56,8 +63,12 @@ class CreateNew extends AbstractCommand {
             $this->service = $parameters['service'];
         }
 
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
+        if (isset($parameters['slug'])) {
+            $this->slug = $parameters['slug'];
+        }
+
+        if (isset($parameters['confidence_level'])) {
+            $this->confidenceLevel = $parameters['confidence_level'];
         }
 
         if (isset($parameters['pass'])) {

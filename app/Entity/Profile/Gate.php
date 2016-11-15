@@ -17,7 +17,6 @@ use App\Extension\SlugMutator;
  * @apiEntity schema/gate/gateEntity.json
  *
  * @property int    $id
- * @property string $name
  * @property string $slug
  * @property bool $pass
  * @property int    $user_id
@@ -25,7 +24,6 @@ use App\Extension\SlugMutator;
  * @property int    $updated_at
  */
 class Gate extends AbstractEntity {
-    use SlugMutator;
 
     /**
      * {@inheritdoc}
@@ -33,7 +31,6 @@ class Gate extends AbstractEntity {
     protected $visible = [
         'id',
         'creator',
-        'name',
         'slug',
         'pass',
         'review',

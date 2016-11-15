@@ -90,12 +90,12 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByName(string $name, int $serviceId, int $userId) : Gate {
+    public function findOneBySlug(string $slug, int $serviceId, int $userId) : Gate {
         return $this->findOneBy(
             [
                 'user_id' => $userId,
                 'creator' => $serviceId,
-                'name'    => $name
+                'slug'    => $slug
             ]
         );
     }

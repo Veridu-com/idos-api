@@ -34,12 +34,12 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name    = 'Testing';
+        $slug    = 'testing';
         $pass    = true;
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                    'name' => $name,
+                    'slug' => $slug,
                     'pass' => $pass
                 ]
             )
@@ -50,7 +50,7 @@ class CreateNewTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame($name, $body['data']['name']);
+        $this->assertSame($slug, $body['data']['slug']);
         $this->assertSame($pass, $body['data']['pass']);
 
         /*
@@ -70,12 +70,12 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name    = '';
+        $slug    = '';
         $pass    = true;
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                    'name' => $name,
+                    'slug' => $slug,
                     'pass' => $pass
                 ]
             )
@@ -104,12 +104,12 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name    = 'Name';
+        $slug    = 'Name';
         $pass    = 'words';
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                    'name' => $name,
+                    'slug' => $slug,
                     'pass' => $pass
                 ]
             )

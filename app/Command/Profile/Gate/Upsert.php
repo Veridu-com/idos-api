@@ -29,11 +29,11 @@ class Upsert extends AbstractCommand {
     public $service;
 
     /**
-     * Gate's name (user input).
+     * Gate's slug (user input).
      *
      * @var string
      */
-    public $name;
+    public $slug;
 
     /**
      * Gate's value (user input).
@@ -56,8 +56,8 @@ class Upsert extends AbstractCommand {
             $this->service = $parameters['service'];
         }
 
-        if (isset($parameters['name'])) {
-            $this->name = $parameters['name'];
+        if (isset($parameters['slug'])) {
+            $this->slug = $parameters['slug'];
         }
 
         if (isset($parameters['pass'])) {

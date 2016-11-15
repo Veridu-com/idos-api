@@ -4,11 +4,6 @@
     "title": "Gate",
     "type": "object",
     "properties": {
-        "name": {
-            "description": "Gate Name",
-            "type": "string",
-            "pattern": ""
-        },
         "slug": {
             "description": "Slug based on Gate's name",
             "type": "string",
@@ -28,12 +23,10 @@
         }
     },
     "dependencies": {
-        "slug": ["name"]
     },
     "required": [
-        "name",
-        "pass",
         "slug",
+        "pass",
         "created_at"
     ]
 }

@@ -20,6 +20,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
+use App\Repository\CategoryInterface;
 use App\Repository\Profile\GateInterface;
 use App\Validator\Profile\Gate as GateValidator;
 use Interop\Container\ContainerInterface;
@@ -65,6 +66,9 @@ class Gate implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Profile\Gate'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Category'),
+                $container
                     ->get('validatorFactory')
                     ->create('Profile\Gate'),
                 $container
@@ -79,6 +83,7 @@ class Gate implements HandlerInterface {
      * Class constructor.
      *
      * @param \App\Repository\GateInterface $repository
+     * @param \App\Repository\CategoryInterface $categoryRepository
      * @param \App\Validator\Gate           $validator
      * @param \App\Factory\Event            $eventFactory
      * @param \League\Event\Emitter         $emitter
@@ -87,11 +92,13 @@ class Gate implements HandlerInterface {
      */
     public function __construct(
         GateInterface $repository,
+        CategoryInterface $categoryRepository,
         GateValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository   = $repository;
+        $this->categoryRepository   = $categoryRepository;
         $this->validator    = $validator;
         $this->eventFactory = $eventFactory;
         $this->emitter      = $emitter;
@@ -113,8 +120,12 @@ class Gate implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
-            $this->validator->assertName($command->name);
+            $this->validator->assertSlug($command->slug);
             $this->validator->assertFlag($command->pass);
+
+            if ($command->confidenceLevel) {
+                $this->validator->assertMediumName($command->confidenceLevel);
+            }
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -127,19 +138,22 @@ class Gate implements HandlerInterface {
             [
                 'user_id'    => $command->user->id,
                 'creator'    => $command->service->id,
-                'name'       => $command->name,
+                'slug'       => $command->slug,
                 'pass'       => $this->validator->validateFlag($command->pass),
                 'created_at' => time()
             ]
         );
 
         try {
+            $this->upsertCategory($command->slug, $command->service->id);
+
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
             $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
+            var_dump($exception->getMessage());die;
             throw new Create\Profile\GateException('Error while trying to create a gate', 500, $exception);
         }
 
@@ -201,13 +215,13 @@ class Gate implements HandlerInterface {
     public function handleUpsert(Upsert $command) : GateEntity {
         $this->validator->assertUser($command->user);
         $this->validator->assertService($command->service);
-        $this->validator->assertName($command->name);
+        $this->validator->assertSlug($command->slug);
         $this->validator->assertFlag($command->pass);
 
         $entity    = null;
         $inserting = false;
         try {
-            $entity = $this->repository->findOneByName($command->name, $command->service->id, $command->user->id);
+            $entity = $this->repository->findOneBySlug($command->slug, $command->service->id, $command->user->id);
 
             $entity->pass      = $this->validator->validateFlag($command->pass);
             $entity->updatedAt = time();
@@ -218,11 +232,13 @@ class Gate implements HandlerInterface {
                 [
                     'user_id'    => $command->user->id,
                     'creator'    => $command->service->id,
-                    'name'       => $command->name,
+                    'slug'       => $command->slug,
                     'pass'       => $command->pass,
                     'created_at' => time()
                 ]
             );
+
+            $this->upsertCategory($command->slug, $command->service->id);
         }
 
         try {
@@ -241,6 +257,33 @@ class Gate implements HandlerInterface {
         }
 
         return $entity;
+    }
+
+    /**
+     * Upserts a category.
+     *
+     * @param      string                          $slug       The slug
+     * @param      int                          $serviceId  The service identifier
+     *
+     * @throws     \App\Exception\NotFound\Profile\GateException
+     * @throws     \App\Exception\Update\Profile\GateException
+     * @throws     \App\Exception\Validate\Profile\GateException
+     *
+     * @return     bool
+     */
+    private function upsertCategory(string $slug, int $serviceId) : bool {
+        try {
+            $category = $this->categoryRepository->create([
+                'name' => $slug,
+                'service_id' => $serviceId,
+                'type' => 'gate',
+                'slug' => $slug
+            ]);
+
+            return $this->categoryRepository->upsert($category);
+        } catch (\Exception $e) {
+            throw new Update\Profile\GateException('Error while trying to upsert a Gate category', 500, $e);
+        }
     }
 
     /**
