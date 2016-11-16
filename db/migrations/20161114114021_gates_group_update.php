@@ -12,12 +12,11 @@ use Phinx\Migration\AbstractMigration;
  * Changes:
  * 		1. "gates"."name" should be a FK to "categories" table
  * 		2. "gates" should have a "conficence_level" string column
- *      5. "confidence_level" added to composite index
+ *      3. "confidence_level" added to composite index
  */
 class GatesGroupUpdate extends AbstractMigration
 {
-    public function up()
-    {
+    public function up() {
         $gates = $this->table('gates');
         $gates
             ->addColumn('confidence_level', 'text', ['null' => true])

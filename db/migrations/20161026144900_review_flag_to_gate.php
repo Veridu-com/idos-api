@@ -2,13 +2,11 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class ReviewFlagToGate extends AbstractMigration
-{
+class ReviewFlagToGate extends AbstractMigration {
     /**
      * Changes "reviews->flag" relationship to "review->gate".
      */
-    public function up()
-    {
+    public function up() {
         // Profile reviews values
         $reviews = $this->table('reviews');
         $reviews
@@ -16,12 +14,5 @@ class ReviewFlagToGate extends AbstractMigration
             ->renameColumn('flag_id', 'gate_id')
             ->addForeignKey('gate_id', 'gates', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->save();
-    }
-
-    /**
-     * {@inheritdoc}.
-     */
-    public function down()
-    {
     }
 }

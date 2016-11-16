@@ -141,7 +141,6 @@ class Gate implements HandlerInterface {
                 'creator'                => $command->service->id,
                 'name'                   => $command->name,
                 'confidence_level'       => $command->confidenceLevel,
-                'slug'                   => GateEntity::generateSlug($command->name, $command->confidenceLevel),
                 'pass'                   => $this->validator->validateFlag($command->pass),
                 'created_at'             => time()
             ]
@@ -227,7 +226,6 @@ class Gate implements HandlerInterface {
                 'name'             => $command->name,
                 'pass'             => $command->pass,
                 'confidence_level' => $command->confidenceLevel,
-                'slug'             => GateEntity::generateSlug($command->name, $command->confidenceLevel),
                 'user_id'          => $command->user->id,
                 'creator'          => $command->service->id,
                 'created_at'       => time()
