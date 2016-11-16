@@ -14,8 +14,10 @@ mb_internal_encoding('UTF-8');
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Loads .env if available
-$dotEnv = new Dotenv\Dotenv(__DIR__ . '/../');
-$dotEnv->load();
+if (is_file(__DIR__ . '/../.env')) {
+    $dotEnv = new Dotenv\Dotenv(__DIR__ . '/../');
+    $dotEnv->load();
+}
 
 // Load application settings
 require_once __DIR__ . '/../config/settings.php';
