@@ -33,6 +33,13 @@ class CreateNew extends AbstractCommand {
      */
     public $name;
     /**
+     * Gate's confidence level (user input).
+     *
+     * @var string
+     */
+    public $confidenceLevel;
+
+    /**
      * Gate's value (user input).
      *
      * @var bool
@@ -61,6 +68,10 @@ class CreateNew extends AbstractCommand {
 
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
+        }
+
+        if (isset($parameters['confidence_level'])) {
+            $this->confidenceLevel = $parameters['confidence_level'];
         }
 
         if (isset($parameters['pass'])) {

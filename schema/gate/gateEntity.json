@@ -5,12 +5,12 @@
     "type": "object",
     "properties": {
         "name": {
-            "description": "Gate Name",
+            "description": "Gate's name",
             "type": "string",
-            "pattern": ""
+            "pattern": "[a-zA-Z0-9_-]+"
         },
         "slug": {
-            "description": "Slug based on Gate's name",
+            "description": "Gate's slug",
             "type": "string",
             "pattern": "[a-zA-Z0-9_-]+"
         },
@@ -28,12 +28,12 @@
         }
     },
     "dependencies": {
-        "slug": ["name"]
+        "slug": ["name", "confidence_level"]
     },
     "required": [
         "name",
-        "pass",
         "slug",
+        "pass",
         "created_at"
     ]
 }

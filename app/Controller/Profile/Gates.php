@@ -119,7 +119,7 @@ class Gates implements ControllerInterface {
         $service = $request->getAttribute('service');
         $slug    = $request->getAttribute('gateSlug');
 
-        $entity = $this->repository->findOne($slug, $service->id, $user->id);
+        $entity = $this->repository->findBySlug($slug, $service->id, $user->id);
 
         $body = [
             'data'    => $entity->toArray(),

@@ -49,7 +49,7 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(2, $body['deleted']);
+        $this->assertSame(3, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.
@@ -68,7 +68,7 @@ class DeleteAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=*one'
+                    'QUERY_STRING'       => 'name=first*'
                 ]
             )
         );
@@ -98,7 +98,7 @@ class DeleteAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=Gate*'
+                    'QUERY_STRING'       => 'name=*name*'
                 ]
             )
         );
@@ -109,7 +109,7 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(2, $body['deleted']);
+        $this->assertSame(3, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.
@@ -139,7 +139,7 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(2, $body['deleted']);
+        $this->assertSame(3, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.
@@ -169,7 +169,7 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(2, $body['deleted']);
+        $this->assertSame(3, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.

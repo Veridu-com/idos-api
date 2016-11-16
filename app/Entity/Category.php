@@ -14,12 +14,10 @@ namespace App\Entity;
  * @apiEntity schema/service/serviceEntity.json
  *
  * @property int        $id
+ * @property string     $displayName
  * @property string     $name
- * @property string     $url
- * @property array      $listens
- * @property array      $triggers
- * @property bool       $enabled
- * @property int        $access
+ * @property string     $type
+ * @property string     $description
  * @property int        $created_at
  * @property int        $updated_at
  */
@@ -29,8 +27,8 @@ class Category extends AbstractEntity {
      */
     protected $visible = [
         'id',
+        'display_name',
         'name',
-        'slug',
         'type',
         'description',
         'created_at',
