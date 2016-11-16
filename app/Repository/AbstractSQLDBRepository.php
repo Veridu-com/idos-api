@@ -280,14 +280,14 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * It is VERY recommended to fetch the entity from the database after you run this upsert method.
      * If so, you NEED to run both methods *upsert()* & *find()* WITHIN A TRANSACTION
      * 
-     * Which columns (entity properties) won't be updated?
-     * - "id"
-     * - "updated_at"
+     * Which columns (entity properties) can't be trusted on the @return \App\Entity\EntityInterface?
+     *  - "id" is not going to be filled.
+     *  - "updated_at" is always updated if "updated_at" key is present on the @param $updateArray.
      * 
-     * @param \App\Entity\EntityInterface $entity          The entity
-     * @param array|string                $conflictKeys    The conflict keys, which keys ON CONCLIFCT will trigger.
-     * @param array                       $updateArray     The update array
-     * @param string                      $constraintName  The constraint name
+     * @param \App\Entity\EntityInterface $entity         The entity
+     * @param array|string                $conflictKeys   The conflict keys, which keys ON CONCLIFCT will trigger.
+     * @param array                       $updateArray    The update array
+     * @param string                      $constraintName The constraint name
      *
      * @throws \App\Exception\NotFound
      * @throws \RuntimeException
@@ -312,13 +312,11 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             foreach ($updateArray as $key => $value) {
                 $conflictKey = sprintf('conflict_%s', $key);
 
-                $updateSqlArray[] = sprintf('"%s" = :%s', $key, $conflictKey);
+                $updateSqlArray[]             = sprintf('"%s" = :%s', $key, $conflictKey);
                 $newUpdateArray[$conflictKey] = $value;
 
                 // updates entity
-                if ($key !== 'updated_at') {
-                    $entity->$key = $value;
-                }
+                $entity->$key = $value;
             }
             $updateArray = $newUpdateArray;
 
@@ -348,7 +346,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             return $entity;
         }
 
-        throw new \RuntimeException("There was an error when trying to upsert a register.");
+        throw new \RuntimeException('There was an error when trying to upsert a register.');
     }
 
     /**

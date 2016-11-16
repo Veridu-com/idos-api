@@ -21,7 +21,6 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Helper\Utils;
 use App\Repository\CategoryInterface;
 use App\Repository\Profile\GateInterface;
 use App\Validator\Profile\Gate as GateValidator;
@@ -142,7 +141,7 @@ class Gate implements HandlerInterface {
                 'creator'                => $command->service->id,
                 'name'                   => $command->name,
                 'confidence_level'       => $command->confidenceLevel,
-                'slug' => GateEntity::generateSlug($command->name, $command->confidenceLevel),
+                'slug'                   => GateEntity::generateSlug($command->name, $command->confidenceLevel),
                 'pass'                   => $this->validator->validateFlag($command->pass),
                 'created_at'             => time()
             ]
@@ -225,18 +224,18 @@ class Gate implements HandlerInterface {
             $this->upsertCategory($command->name, $command->service->id);
 
             $entity = $this->repository->create([
-                'name' => $command->name,
-                'pass' => $command->pass,
+                'name'             => $command->name,
+                'pass'             => $command->pass,
                 'confidence_level' => $command->confidenceLevel,
-                'slug' => GateEntity::generateSlug($command->name, $command->confidenceLevel),
-                'user_id' => $command->user->id,
-                'creator' => $command->service->id,
-                'created_at' => time()
+                'slug'             => GateEntity::generateSlug($command->name, $command->confidenceLevel),
+                'user_id'          => $command->user->id,
+                'creator'          => $command->service->id,
+                'created_at'       => time()
             ]);
 
             $entity = $this->repository->upsert($entity, ['user_id', 'creator', 'name', 'confidence_level'], [
                 'updated_at' => date('Y-m-d H:i:s'),
-                'pass' => $entity->pass
+                'pass'       => $entity->pass
             ]);
             $entity = $this->repository->findBySlug($entity->slug, $entity->creator, $entity->userId);
 

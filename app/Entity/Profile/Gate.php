@@ -43,8 +43,8 @@ class Gate extends AbstractEntity {
     /**
      * Generates a slug for the entity.
      *
-     * @param      string  $name             The name
-     * @param      string  $confidenceLevel  The confidence level
+     * @param string $name            The name
+     * @param string $confidenceLevel The confidence level
      * 
      * @return string
      */
@@ -54,6 +54,7 @@ class Gate extends AbstractEntity {
         }
 
         $confidenceSufix = $confidenceLevel ? sprintf('-%s', $confidenceLevel) : '';
+
         return Utils::slugify(sprintf('%s%s', $name, $confidenceSufix));
     }
 

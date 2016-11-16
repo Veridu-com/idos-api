@@ -38,8 +38,8 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'name-test',
-                    'pass' => true,
+                    'name'             => 'name-test',
+                    'pass'             => true,
                     'confidence_level' => 'high'
                 ]
             )
@@ -78,8 +78,8 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'name-test',
-                    'pass' => true,
+                    'name'             => 'name-test',
+                    'pass'             => true,
                     'confidence_level' => 'high'
                 ]
             )
@@ -91,8 +91,8 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => 'name-test',
-                    'pass' => false,
+                    'name'             => 'name-test',
+                    'pass'             => false,
                     'confidence_level' => 'high'
                 ]
             )
