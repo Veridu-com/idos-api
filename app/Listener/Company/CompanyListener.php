@@ -617,5 +617,47 @@ class CompanyListener extends AbstractListener {
                 ]
             );
         $this->commandBus->handle($command);
+
+        $command
+            ->setParameter('companyId', $event->company->id)
+            ->setParameter('serviceId', 29)
+            ->setParameter(
+                'listens',
+                [
+                    'idos:invitation.created',
+                    'idos:invitation.resend'
+                ]
+            );
+        $this->commandBus->handle($command);
+
+        $command
+            ->setParameter('companyId', $event->company->id)
+            ->setParameter('serviceId', 30)
+            ->setParameter(
+                'listens',
+                [
+                    'idos:otp.email.created'
+                ]
+            );
+        $this->commandBus->handle($command);
+
+        $command
+            ->setParameter('companyId', $event->company->id)
+            ->setParameter('serviceId', 31)
+            ->setParameter(
+                'listens',
+                [
+                    'idos:feature.amazon.created',
+                    'idos:feature.dropbox.created',
+                    'idos:feature.facebook.created',
+                    'idos:feature.google.created',
+                    'idos:feature.linkedin.created',
+                    'idos:feature.paypal.created',
+                    'idos:feature.spotify.created',
+                    'idos:feature.twitter.created',
+                    'idos:feature.yahoo.created'
+                ]
+            );
+        $this->commandBus->handle($command);
     }
 }

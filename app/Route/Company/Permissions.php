@@ -18,7 +18,10 @@ use Slim\App;
 /**
  * Permissions.
  *
- * Permissions are levels of access a Company has to specific features or information within the API. This is used to control or monetise access to features for customers and their users.
+ * Permissions control the level of access a Company has to specific features or information within the API.
+ * **Note:** advanced usage only
+ *
+ * @apiDisabled
  *
  * @link docs/companies/permissions/overview.md
  * @see \App\Controller\Company\Permissions
@@ -64,7 +67,7 @@ class Permissions implements RouteInterface {
      * Retrieves a complete list of all permissions that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions
-     * @apiGroup Company Permissions
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -101,7 +104,7 @@ class Permissions implements RouteInterface {
      * Creates a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/permissions
-     * @apiGroup Company Permissions
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -138,7 +141,7 @@ class Permissions implements RouteInterface {
      * Retrieves all public information from a Permission.
      *
      * @apiEndpoint GET /companies/{companySlug}/permissions/{routeName}
-     * @apiGroup Company Permissions
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -177,7 +180,7 @@ class Permissions implements RouteInterface {
      * Deletes a single Permission that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/permissions/{routeName}
-     * @apiGroup Company Permissions
+     * @apiGroup Company
      *
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token

@@ -11,5 +11,4 @@ class InvitationExpiresToDate extends AbstractMigration
         $invitations = $this->table('invitations');
         $invitations->changeColumn('expires', 'date');
     }
-
 }

@@ -18,6 +18,7 @@ use Slim\App;
  * Profile Tasks.
  *
  * A Profile Task is a request a Service makes to the API to extract and provide specific information from the Raw data.
+ * **Note:** advanced usage only
  *
  * @link docs/profile/tasks/overview.md
  * @see \App\Controller\Profile\Tasks
@@ -64,7 +65,7 @@ class Tasks implements RouteInterface {
      * Create a new task for the given process.
      *
      * @apiEndpoint POST /profiles/{userName}/processes//{processId}/tasks
-     * @apiGroup Profile Tasks
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -98,7 +99,7 @@ class Tasks implements RouteInterface {
      * Retrieves all public information from a Task.
      *
      * @apiEndpoint GET /profiles/{userName}/processes/{processId}/tasks/{taskId}
-     * @apiGroup Profile Tasks
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -133,7 +134,7 @@ class Tasks implements RouteInterface {
      * Updates Task's specific information.
      *
      * @apiEndpoint PUT /profiles/{userName}/processes/{processId}/tasks/{taskId}
-     * @apiGroup Profile Tasks
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -168,7 +169,7 @@ class Tasks implements RouteInterface {
      * Retrieve a complete list of all tasks that belong to the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/processes/{processId}/tasks
-     * @apiGroup Profile Tasks
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c

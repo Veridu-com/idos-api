@@ -10,8 +10,7 @@ use Phinx\Migration\AbstractMigration;
  * SPECIAL TABLES.
  */
 class SpecialInit extends AbstractMigration {
-    public function change() {
-
+    public function up() {
         $addressLookup = $this->table('address_lookup');
         $addressLookup
             ->addColumn('provider', 'text', ['null' => false])

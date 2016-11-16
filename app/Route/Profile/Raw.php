@@ -16,7 +16,9 @@ use Slim\App;
 /**
  * Profile Raw.
  *
- * Profile Raw is the raw data extracted from a Profile. This is what the API reads and extracts information in order to process more complex requests.
+ * Profiles Raw is the raw data extracted from a Profile. This is what the API reads and extracts information in order
+ * to process more complex requests.
+ * **Note:** advanced usage only
  *
  * @link docs/profiles/sources/raw/overview.md
  * @see \App\Controller\Profile\Raw
@@ -61,7 +63,7 @@ class Raw implements RouteInterface {
      * Retrieve a complete list of the raw data by a given source.
      *
      * @apiEndpoint GET /profiles/{userName}/raw
-     * @apiGroup Profile Raw
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -94,7 +96,7 @@ class Raw implements RouteInterface {
      * Creates a new raw data for the given source.
      *
      * @apiEndpoint POST /profiles/{userName}/raw
-     * @apiGroup Profile Raw
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -127,7 +129,7 @@ class Raw implements RouteInterface {
      * Creates or update a raw data for the given source.
      *
      * @apiEndpoint POST /profiles/{userName}/raw
-     * @apiGroup Profile Raw
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2

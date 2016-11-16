@@ -18,7 +18,8 @@ use Slim\App;
 /**
  * Company Credentials.
  *
- * Company Credential is a way of identifying a specific Company accessing the API from a specific origin (eg. using a plugin from website X, or from website Y).
+ * Also known as API Keys, a Company Credential is a way of identifying a specific Company accessing the API from a
+ * specific origin (eg. using a plugin from website X, or from website Y).
  *
  * @link docs/companies/credentials/overview.md
  * @see \App\Controller\Companies
@@ -67,7 +68,7 @@ class Credentials implements RouteInterface {
      * Retrieves a complete list of all credentials that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials
-     * @apiGroup Company Credentials
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -105,7 +106,7 @@ class Credentials implements RouteInterface {
      * Creates a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials
-     * @apiGroup Company Credentials
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -143,7 +144,7 @@ class Credentials implements RouteInterface {
      * Retrieves all public information from a Credential
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}
-     * @apiGroup Company Credentials
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -181,7 +182,7 @@ class Credentials implements RouteInterface {
      * Updates Credential's specific information
      *
      * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}
-     * @apiGroup Company Credentials
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -219,7 +220,7 @@ class Credentials implements RouteInterface {
      * Deletes a single Credential that belongs to the target company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}
-     * @apiGroup Company Credentials
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd

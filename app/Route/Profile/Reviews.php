@@ -17,7 +17,10 @@ use Slim\App;
 /**
  * Profile Reviews.
  *
- * A Profile Reviews allows a Company to provide feedback on any Attributes the API has extracted that they feel is inaccurate or incorrect. For example if the API has failed a Profile at an 18+ Gate, and later the User provides evidence proving their age is 18+, the Company should use a Profile Reviews to flag this information as inaccurate in order for Veridu to improve the accuracy of the API.
+ * A Profile Review allows a Company to provide feedback on any Attributes the API has extracted that they feel is
+ * inaccurate or incorrect. For example if the API has failed a Profile at an 18+ Gate, and later the User provides
+ * evidence proving their age is 18+, the Company should use a Profile Review to flag this information as inaccurate
+ * in order for Veridu to improve the accuracy of the API.
  *
  * @link docs/profiles/review/overview.md
  * @see \App\Controller\Profile\Reviews
@@ -64,7 +67,7 @@ class Reviews implements RouteInterface {
      * Retrieve all reviews from a given user, matching one or more flags.
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/reviews
-     * @apiGroup Profile Reviews
+     * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -96,7 +99,7 @@ class Reviews implements RouteInterface {
      * Retrieves a review from the given user.
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
-     * @apiGroup Profile Reviews
+     * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -130,7 +133,7 @@ class Reviews implements RouteInterface {
      * Creates a new review for the given user.
      *
      * @apiEndpoint POST /companies/{companySlug}/profiles/{userId}/reviews
-     * @apiGroup Profile Reviews
+     * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -164,7 +167,7 @@ class Reviews implements RouteInterface {
      * Updates a review for the given user and reference.
      *
      * @apiEndpoint PUT /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
-     * @apiGroup Profile Reviews
+     * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
