@@ -57,10 +57,6 @@ class UpdateOne extends AbstractCommand {
             $this->tags = $parameters['tags'];
         }
 
-        if (isset($parameters['otpCode'])) {
-            $this->otpCode = $parameters['otpCode'];
-        }
-
         return $this;
     }
 }

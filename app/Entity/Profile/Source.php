@@ -40,9 +40,15 @@ class Source extends AbstractEntity {
      * @return null|stdClass The modified tags attribute.
      */
     public function getTagsAttribute($tags) {
+        $otpAllowed = ['otp_verified', 'otp_voided'];
+
         if (is_object($tags)) {
             foreach (get_object_vars($tags) as $key => $value) {
                 if (strpos($key, 'otp_', 0) !== false) {
+                    if (in_array($key, $otpAllowed)) {
+                        continue;
+                    }
+
                     unset($tags->$key);
                 }
             }
