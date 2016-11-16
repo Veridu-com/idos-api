@@ -214,10 +214,6 @@ class Metric implements HandlerInterface {
                     $payload['credential'] = $credential;
                     $payload[$entityName] = $entity->toArray();
                     $payload[$entityName]['id'] = $entity->id;
-
-                    if ($endpoint === 'profile:gate') {
-                        $payload[$entityName]['confidence_level'] = 'low';
-                    }
                 break;
 
                 default:

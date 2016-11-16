@@ -167,7 +167,7 @@ class Attribute implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->upsert(
+        $entity = $this->repository->upsertOne(
             $command->user->id,
             $command->name,
             $command->value

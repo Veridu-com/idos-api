@@ -25,7 +25,7 @@ interface AttributeInterface extends RepositoryInterface {
      *
      * @return \App\Entity\Profile\Attribute
      */
-    public function upsert(int $userId, string $name, string $value) : Attribute;
+    public function upsertOne(int $userId, string $name, string $value) : Attribute;
     /**
      * Returns all Attribute entities based on the user id.
      *
