@@ -10,7 +10,6 @@ namespace App\Entity\Profile;
 
 use App\Entity\AbstractEntity;
 use App\Helper\Utils;
-use App\Extension\SlugMutator;
 
 /**
  * Gates Entity.
@@ -27,8 +26,6 @@ use App\Extension\SlugMutator;
  * @property int    $updated_at
  */
 class Gate extends AbstractEntity {
-    use SlugMutator;
-
     /**
      * {@inheritdoc}
      */
@@ -44,9 +41,36 @@ class Gate extends AbstractEntity {
     ];
 
     /**
+     * Sets the name attribute.
+     *
+     * @param string $value The value
+     * 
+     * @return self
+     */
+    public function setNameAttribute(string $value) : self {
+        $this->attributes['name'] = $value;
+
+        $confidenceLevel = $this->attributes['confidence_level'] ?? '';
+
+        if (empty($value)) {
+            $this->attributes['slug'] = Utils::slugify($confidenceLevel);
+
+            return $this;
+        }
+
+        if (empty($confidenceLevel)) {
+            return $this;
+        }
+
+        $this->attributes['slug'] =  Utils::slugify(sprintf('%s-%s', $confidenceLevel, $value));
+
+        return $this;
+    }
+
+    /**
      * Sets the confidence level attribute.
      *
-     * @param      string  $value  The value
+     * @param string $value The value
      * 
      * @return self
      */
@@ -55,32 +79,19 @@ class Gate extends AbstractEntity {
 
         $name = $this->attributes['name'] ?? '';
 
-        if (! $value || ! strlen($value)) {
+        if (empty($value)) {
             $this->attributes['slug'] = Utils::slugify($name);
+
+            return $this;
+        }
+
+        if (empty($name)) {
             return $this;
         }
 
         $this->attributes['slug'] =  Utils::slugify(sprintf('%s-%s', $name, $value));
 
         return $this;
-    }
-
-    /**
-     * Generates a slug for the entity.
-     *
-     * @param string $name            The name
-     * @param string $confidenceLevel The confidence level
-     * 
-     * @return string
-     */
-    public static function generateSlug(string $name, $confidenceLevel = null) : string {
-        if ($confidenceLevel && ! is_string($confidenceLevel)) {
-            throw new \RuntimeException("$confidenceLevel parameter must be a string.");
-        }
-
-        $confidenceSufix = $confidenceLevel ? sprintf('-%s', $confidenceLevel) : '';
-
-        return Utils::slugify(sprintf('%s%s', $name, $confidenceSufix));
     }
 
     /**

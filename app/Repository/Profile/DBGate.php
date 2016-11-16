@@ -34,13 +34,15 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
      */
     protected $filterableKeys = [
         'creator.name' => 'string',
-        'name'         => 'string'
+        'name'         => 'string',
+        'slug'         => 'string',
     ];
     /**
      * {@inheritdoc}
      */
     protected $orderableKeys = [
         'name',
+        'slug',
         'pass',
         'created_at',
         'updated_at'

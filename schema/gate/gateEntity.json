@@ -9,6 +9,11 @@
             "type": "string",
             "pattern": "[a-zA-Z0-9_-]+"
         },
+        "slug": {
+            "description": "Gate's slug",
+            "type": "string",
+            "pattern": "[a-zA-Z0-9_-]+"
+        },
         "pass": {
             "description": "Gate value",
             "type": "boolean"
@@ -23,9 +28,11 @@
         }
     },
     "dependencies": {
+        "slug": ["name", "confidence_level"]
     },
     "required": [
         "name",
+        "slug",
         "pass",
         "created_at"
     ]

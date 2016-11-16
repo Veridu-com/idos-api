@@ -279,7 +279,6 @@ class Gate implements HandlerInterface {
 
             return $this->categoryRepository->upsert($category);
         } catch (\Exception $e) {
-            die($e->getMessage());
             throw new Update\Profile\GateException('Error while trying to upsert a Gate category', 500, $e);
         }
     }
