@@ -13,6 +13,7 @@ use App\Command\Profile\Gate\DeleteAll;
 use App\Command\Profile\Gate\DeleteOne;
 use App\Command\Profile\Gate\UpdateOne;
 use App\Command\Profile\Gate\Upsert;
+use App\Entity\Category;
 use App\Entity\Profile\Gate as GateEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
@@ -141,6 +142,7 @@ class Gate implements HandlerInterface {
                 'creator'                => $command->service->id,
                 'name'                   => $command->name,
                 'confidence_level'       => $command->confidenceLevel,
+                'slug' => GateEntity::generateSlug($command->name, $command->confidenceLevel),
                 'pass'                   => $this->validator->validateFlag($command->pass),
                 'created_at'             => time()
             ]
@@ -188,7 +190,7 @@ class Gate implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->findOne($command->slug, $command->service->id, $command->user->id);
+        $entity = $this->repository->findBySlug($command->slug, $command->service->id, $command->user->id);
 
         $entity->pass      = $this->validator->validateFlag($command->pass);
         $entity->updatedAt = time();
@@ -217,41 +219,32 @@ class Gate implements HandlerInterface {
         $this->validator->assertUser($command->user);
         $this->validator->assertService($command->service);
         $this->validator->assertName($command->name);
-        $this->validator->assertFlag($command->pass);
 
-        $entity    = null;
-        $inserting = false;
         try {
-            $slug              = Utils::slugify($command->name);
-            $entity            = $this->repository->findOne($slug, $command->service->id, $command->user->id);
-            $entity->pass      = $this->validator->validateFlag($command->pass);
-            $entity->updatedAt = time();
-        } catch (NotFound $e) {
-
-            $inserting = true;
-            if ($command->confidenceLevel) {
-                $this->validator->assertMediumName($command->confidenceLevel);
-            }
-
-            $entity = $this->repository->create(
-                [
-                    'name'             => $command->name,
-                    'user_id'          => $command->user->id,
-                    'confidence_level' => $command->confidenceLevel,
-                    'creator'          => $command->service->id,
-                    'pass'             => $command->pass,
-                    'created_at'       => time()
-                ]
-            );
-
+            $this->repository->beginTransaction();
             $this->upsertCategory($command->name, $command->service->id);
-        }
 
-        try {
-            $entity = $this->repository->save($entity);
+            $entity = $this->repository->create([
+                'name' => $command->name,
+                'pass' => $command->pass,
+                'confidence_level' => $command->confidenceLevel,
+                'slug' => GateEntity::generateSlug($command->name, $command->confidenceLevel),
+                'user_id' => $command->user->id,
+                'creator' => $command->service->id,
+                'created_at' => time()
+            ]);
+
+            $entity = $this->repository->upsert($entity, ['user_id', 'creator', 'name', 'confidence_level'], [
+                'updated_at' => date('Y-m-d H:i:s'),
+                'pass' => $entity->pass
+            ]);
+            $entity = $this->repository->findBySlug($entity->slug, $entity->creator, $entity->userId);
+
+            $this->repository->commit();
+
             $entity = $this->repository->hydrateRelations($entity);
 
-            if ($inserting) {
+            if ($entity->createdAt === $entity->updatedAt) {
                 $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity);
             } else {
                 $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity);
@@ -259,6 +252,7 @@ class Gate implements HandlerInterface {
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
+            $this->repository->rollBack();
             throw new Update\Profile\GateException('Error while trying to upsert a gate', 500, $e);
         }
 
@@ -275,9 +269,9 @@ class Gate implements HandlerInterface {
      * @throws \App\Exception\Update\Profile\GateException
      * @throws \App\Exception\Validate\Profile\GateException
      *
-     * @return bool
+     * @return \App\Entity\Category
      */
-    private function upsertCategory(string $name, int $serviceId) : bool {
+    private function upsertCategory(string $name, int $serviceId) : Category {
         try {
             $category = $this->categoryRepository->create([
                 'display_name' => $name,
@@ -288,6 +282,7 @@ class Gate implements HandlerInterface {
 
             return $this->categoryRepository->upsert($category);
         } catch (\Exception $e) {
+            die($e->getMessage());
             throw new Update\Profile\GateException('Error while trying to upsert a Gate category', 500, $e);
         }
     }
@@ -319,7 +314,7 @@ class Gate implements HandlerInterface {
         }
 
         try {
-            $entity       = $this->repository->findOne($command->slug, $command->service->id, $command->user->id);
+            $entity       = $this->repository->findBySlug($command->slug, $command->service->id, $command->user->id);
             $affectedRows = $this->repository->delete($entity->id);
 
             $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity);

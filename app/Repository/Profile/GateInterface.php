@@ -25,7 +25,7 @@ interface GateInterface extends RepositoryInterface {
      *
      * @return \App\Entity\Profile\Gate
      */
-    public function findOne(string $slug, int $serviceId, int $userId) : Gate;
+    public function findBySlug(string $slug, int $serviceId, int $userId) : Gate;
 
     /**
      * Returns a gate based on its user id, source id, service id (creator) and name.
@@ -36,7 +36,7 @@ interface GateInterface extends RepositoryInterface {
      *
      * @return \App\Entity\Profile\Gate
      */
-    public function findOneByName(string $name, int $serviceId, int $userId) : Gate;
+    public function findByName(string $name, int $serviceId, int $userId) : Gate;
 
     /**
      * Return gates based on their user id and service id (creator).

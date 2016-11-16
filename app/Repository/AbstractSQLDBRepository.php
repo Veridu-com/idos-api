@@ -80,47 +80,6 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     }
 
     /**
-     * {@inheritdoc}
-     */
-    // public function upsert(array $values, array $updates) {
-    //     $columns = array_keys($values);
-
-    //     foreach ($updates as $update) {
-    //         if (is_array($update)) {
-    //             $values[key($update)] = current($update);
-    //         }
-    //     }
-
-    //     $sql = sprintf(
-    //         'INSERT INTO "%s" (\'%s\') VALUES (:%s) ON CONFLICT DO UPDATE SET ',
-    //         $this->getTableName(),
-    //         implode('\', \'', $columns),
-    //         implode(', :', $columns)
-    //     );
-
-    //     $this->runRaw(
-    //         'INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
-    //         ON CONFLICT (user_id, source, creator, name)
-    //         DO UPDATE set value = :value, type = :type, updated_at = NOW()',
-    //         [
-    //                 'user_id' => $userId,
-    //                 'source'  => $feature['source'],
-    //                 'name'    => $feature['name'],
-    //                 'creator' => $serviceId,
-    //                 'type'    => $feature['type'],
-    //                 'value'   => $feature['value']
-    //             ]
-    //     );
-
-    //     $this->query()
-    //         ->raw()
-
-    // INSERT INTO distributors (did, dname)
-    // VALUES (5, 'Gizmo Transglobal'), (6, 'Associated Computing, Inc')
-    // ON CONFLICT (did) DO UPDATE SET dname = EXCLUDED.dname;
-    // }
-
-    /**
      * Begins a transaction.
      *
      * @throws \Exception
@@ -315,63 +274,81 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
     /**
      * Upserts a register into the database.
-     *
-     * @param \App\Entity\EntityInterface $entity       The entity
-     * @param array                       $conflictKeys The conflict keys, which keys ON CONCLIFCT will trigger.
-     * @param array                       $updateArray  The update array
+     * Due to some, what I consider a misbehavior, it is not trustable to get lastVal() or lastId() from the database
+     * which will cause the @return \App\Entity\EntityInterface to be not fully up-to-date with the database.
+     * 
+     * It is VERY recommended to fetch the entity from the database after you run this upsert method.
+     * If so, you NEED to run both methods *upsert()* & *find()* WITHIN A TRANSACTION
+     * 
+     * Which columns (entity properties) won't be updated?
+     * - "id"
+     * - "updated_at"
+     * 
+     * @param \App\Entity\EntityInterface $entity          The entity
+     * @param array|string                $conflictKeys    The conflict keys, which keys ON CONCLIFCT will trigger.
+     * @param array                       $updateArray     The update array
+     * @param string                      $constraintName  The constraint name
      *
      * @throws \App\Exception\NotFound
      * @throws \RuntimeException
      *
-     * @return bool
+     * @return \App\Entity\EntityInterface
      */
-    public function upsert(EntityInterface $entity, array $conflictKeys = [], array $updateArray = []) : bool {
+    public function upsert(EntityInterface $entity, $conflictKeys = [], array $updateArray = []) : EntityInterface {
         $serialized  = $entity->serialize();
         $keys        = $values        = [];
-        $conflictSQL = '';
 
         foreach ($serialized as $key => $value) {
             array_push($keys, $key);
             array_push($values, $value);
         }
 
-        // creates conflict SQL
-        if (sizeof($conflictKeys) && sizeof($updateArray)) {
-            $onConflict = sprintf('(%s)', implode(',', $conflictKeys));
-            $updateSql  = 'DO UPDATE set ';
+        $conflictSQL = 'DO NOTHING';
+        if (count($conflictKeys) && count($updateArray)) {
+            $newUpdateArray = $updateSqlArray = [];
 
             // updates the updateArray
             // this has to be done because of parameter conflicting using bindParams
-            $newArray = [];
             foreach ($updateArray as $key => $value) {
-                $comma       = last($updateArray) == $value ? '' : ',';
                 $conflictKey = sprintf('conflict_%s', $key);
 
-                $updateSql .= sprintf('%s = :%s%s', $key, $conflictKey, $comma);
-                $newArray[$conflictKey] = $value;
+                $updateSqlArray[] = sprintf('"%s" = :%s', $key, $conflictKey);
+                $newUpdateArray[$conflictKey] = $value;
+
+                // updates entity
+                if ($key !== 'updated_at') {
+                    $entity->$key = $value;
+                }
             }
-            $updateArray = $newArray;
+            $updateArray = $newUpdateArray;
+
+            $updateSql  = 'DO UPDATE SET ' . implode(', ', $updateSqlArray);
+            $onConflict = sprintf('(%s)', implode(',', $conflictKeys));
 
             $conflictSQL = sprintf('%s %s', $onConflict, $updateSql);
-        } else {
-            $conflictSQL = 'DO NOTHING';
         }
 
-        $insertKeys = implode(',', $keys);
+        $quotedKeys = array_map(function ($key) { return sprintf('"%s"', $key); }, $keys);
+        $insertKeys = implode(',', $quotedKeys);
+
         $params     = array_map(function ($key) { return ":$key"; }, $keys);
         $insertParams = implode(',', $params);
 
-        $sql = sprintf('INSERT INTO %s 
+        $sql = sprintf('INSERT INTO "%s" 
             (%s) 
             VALUES (%s)
-            ON CONFLICT %s',
+            ON CONFLICT %s RETURNING "id" as id',
             $this->getTableName(),
             $insertKeys,
             $insertParams,
             $conflictSQL
         );
 
-        return $this->runRaw($sql, array_merge($serialized, $updateArray));
+        if ($this->runRaw($sql, array_merge($serialized, $updateArray))) {
+            return $entity;
+        }
+
+        throw new \RuntimeException("There was an error when trying to upsert a register.");
     }
 
     /**

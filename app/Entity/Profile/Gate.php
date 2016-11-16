@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Entity\Profile;
 
 use App\Entity\AbstractEntity;
-use App\Extension\SlugMutator;
+use App\Helper\Utils;
 
 /**
  * Gates Entity.
@@ -19,27 +19,43 @@ use App\Extension\SlugMutator;
  * @property int    $id
  * @property string $name
  * @property string $slug
+ * @property string $confidenceLevel
  * @property bool $pass
  * @property int    $user_id
  * @property int    $created_at
  * @property int    $updated_at
  */
 class Gate extends AbstractEntity {
-    use SlugMutator;
-
     /**
      * {@inheritdoc}
      */
     protected $visible = [
-        'id',
         'name',
         'slug',
+        'confidence_level',
         'pass',
         'review',
         'creator',
         'created_at',
         'updated_at'
     ];
+
+    /**
+     * Generates a slug for the entity.
+     *
+     * @param      string  $name             The name
+     * @param      string  $confidenceLevel  The confidence level
+     * 
+     * @return string
+     */
+    public static function generateSlug(string $name, $confidenceLevel = null) : string {
+        if ($confidenceLevel && ! is_string($confidenceLevel)) {
+            throw new \RuntimeException("$confidenceLevel parameter must be a string.");
+        }
+
+        $confidenceSufix = $confidenceLevel ? sprintf('-%s', $confidenceLevel) : '';
+        return Utils::slugify(sprintf('%s%s', $name, $confidenceSufix));
+    }
 
     /**
      * {@inheritdoc}

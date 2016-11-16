@@ -40,8 +40,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment, json_encode(
                 [
                     'name'             => $name,
-                    'pass'             => $pass,
-                    'confidence_level' => 'high'
+                    'pass'             => $pass
                 ]
             )
         );

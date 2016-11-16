@@ -39,7 +39,8 @@ class UpsertTest extends AbstractFunctional {
             json_encode(
                 [
                     'name' => 'name-test',
-                    'pass' => true
+                    'pass' => true,
+                    'confidence_level' => 'high'
                 ]
             )
         );
@@ -66,8 +67,6 @@ class UpsertTest extends AbstractFunctional {
     }
 
     public function testUpdated() {
-        $this->testCreated();
-
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -80,12 +79,27 @@ class UpsertTest extends AbstractFunctional {
             json_encode(
                 [
                     'name'  => 'name-test',
-                    'value' => false
+                    'pass' => true,
+                    'confidence_level' => 'high'
                 ]
             )
         );
 
         $response = $this->process($request);
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'name'  => 'name-test',
+                    'pass' => false,
+                    'confidence_level' => 'high'
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+
         $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
