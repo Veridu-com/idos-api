@@ -31,7 +31,7 @@ class UserInit extends AbstractMigration {
             ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('attribute', 'text', ['null' => false])
             ->addColumn('value', 'binary', ['null' => true])
-            ->addColumn('support', 'float', ['null' => false, 'default' => 0.0])
+            ->addColumn('support', 'decimal', ['null' => false, 'default' => 0.0])
             ->addTimestamps()
             ->addIndex('user_id')
             ->addIndex('creator')

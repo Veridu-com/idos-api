@@ -18,14 +18,16 @@ use Slim\App;
 /**
  * Profile Attributes.
  *
- * A Profile Attribute is a piece of information within a Profile that has been extract and evaluated by the API.
+ * A Profile Attribute is a specific piece of information within a Profile that has been extracted by the API.
+ * This Attribute can be simple like a first or second name, or more detailed like a User's hometown or employment.
+ * If the API has extracted multiple results for one Attribute, all of them will be listed as Candidates.
  *
  * @link docs/profiles/attribute/overview.md
  * @see \App\Controller\Profile\Attributes
  */
 class Attributes implements RouteInterface {
     /**
-     * {@inheritdco}.
+     * {@inheritdoc}.
      */
     public static function getPublicNames() : array {
         return [
@@ -59,7 +61,7 @@ class Attributes implements RouteInterface {
      * Retrieve a complete list of the attributes for a given user.
      *
      * @apiEndpoint GET /profiles/{userName}/attributes
-     * @apiGroup Profile Attribuets
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2

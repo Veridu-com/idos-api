@@ -66,7 +66,7 @@ class Widgets implements RouteInterface {
      * Retrieves a complete list of all widgets that belong to the requesting credential.
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/widgets
-     * @apiGroup Company Widgets
+     * @apiGroup Company
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -104,7 +104,7 @@ class Widgets implements RouteInterface {
      * Create a new widget for the target company.
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}/widgets
-     * @apiGroup Company Widgets
+     * @apiGroup Company
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -143,7 +143,7 @@ class Widgets implements RouteInterface {
      * Updates a widget that belongs to the requesting credential.
      *
      * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}/widgets/{widgetId}
-     * @apiGroup Company Widgets
+     * @apiGroup Company
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -183,7 +183,7 @@ class Widgets implements RouteInterface {
      * Retrieves all public information from a widget
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/widgets/{widgetId}
-     * @apiGroup Company Widgets
+     * @apiGroup Company
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -216,7 +216,7 @@ class Widgets implements RouteInterface {
      * Deletes a widget that belongs to the requesting credential.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/widgets/{widgetId}
-     * @apiGroup Company Widgets
+     * @apiGroup Company
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string companySlug veridu-ltd

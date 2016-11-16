@@ -116,6 +116,7 @@ class Env {
 
     /**
      * Return a json-encoded environment variable value.
+     *
      * @param string     $varName
      * @param mixed|null $default
      *

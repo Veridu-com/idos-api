@@ -4,8 +4,7 @@ use Phinx\Migration\AbstractMigration;
 
 class InvitationExpiresToDate extends AbstractMigration
 {
-    public function change()
-    {
+    public function change() {
         $invitations = $this->table('invitations');
         $invitations->changeColumn('expires', 'date');
     }

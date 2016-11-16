@@ -17,7 +17,9 @@ use Slim\App;
 /**
  * Profile Processes.
  *
- * The Profile Process is literally the process the API uses in order to extract information from the raw data provided by the User. This Process is broken up by the Services that perform Tasks.
+ * The Profile Process is the process the API uses in order to extract information from the raw data provided by the
+ * User. This Process is broken up by the Services that perform Tasks.
+ * **Note:** advanced usage only
  *
  * @link docs/profile/processes/overview.md
  * @see \App\Controller\Profile\Processes
@@ -59,7 +61,7 @@ class Processes implements RouteInterface {
      * Retrieve a complete list of all processes that belong to the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/processes
-     * @apiGroup Profile Processes
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -92,7 +94,7 @@ class Processes implements RouteInterface {
      * Retrieves all public information from a Process.
      *
      * @apiEndpoint GET /profiles/{userName}/processes/{processId}
-     * @apiGroup Profile Processes
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2

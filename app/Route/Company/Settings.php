@@ -19,9 +19,10 @@ use Slim\App;
  * Company Settings.
  *
  * Company Settings is used for a wide range of minor and major changes for a specific Company.
- * Settings are used to change multiple aspects of the layout of the API dashboard, the way certain
- * information is displayed in order to tailor to a certain company's thematic requests, or to create
- * different environments suited to different purposes.
+ * Settings are used to change multiple aspects of the layout of the API dashboard, the way certain information
+ * is displayed in order to tailor to a certain company's thematic requests, or to create different environments
+ * suited to different purposes.
+ * **Note:** advanced usage only
  *
  * @link docs/companies/settings/overview.md
  * @see \App\Controller\Company\Settings
@@ -69,7 +70,7 @@ class Settings implements RouteInterface {
      * Retrieves a complete list of all settings that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/settings
-     * @apiGroup Company Settings
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -107,7 +108,7 @@ class Settings implements RouteInterface {
      * Creates a new credential for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/settings
-     * @apiGroup Company Settings
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -145,7 +146,7 @@ class Settings implements RouteInterface {
      * Retrieves all public information from a Setting.
      *
      * @apiEndpoint GET /companies/{companySlug}/settings/{settingId}
-     * @apiGroup Company Settings
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -183,7 +184,7 @@ class Settings implements RouteInterface {
      * Updates the specific information for a single Setting.
      *
      * @apiEndpoint PUT /companies/{companySlug}/settings/{settingId}
-     * @apiGroup Company Settings
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -221,7 +222,7 @@ class Settings implements RouteInterface {
      * Deletes a single Setting that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/settings/{settingId}
-     * @apiGroup Company Settings
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd

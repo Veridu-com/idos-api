@@ -26,7 +26,8 @@
             "pattern": ""
         },
         "value": {
-            "description": "Feature value"
+            "description": "Feature value",
+            "type": ["string", "number", "null"]
         },
         "source": {
             "description": "Source name",
