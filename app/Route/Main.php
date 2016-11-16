@@ -13,7 +13,9 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Root routing definitions.
+ * General Purpose Endpoints.
+ *
+ * Comprehensive list of secondary endpoints.
  *
  * @link docs/overview.md
  * @see \App\Controller\Main
@@ -47,7 +49,7 @@ class Main implements RouteInterface {
     /**
      * List all Endpoints.
      *
-     * Retrieve a complete list of all public endpoints.
+     * Retrieve a complete list with all available endpoints and call methods.
      *
      * @apiEndpoint GET /
      * @apiGroup General

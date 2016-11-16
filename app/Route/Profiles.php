@@ -16,6 +16,10 @@ use Slim\App;
 /**
  * Profile routing definitions.
  *
+ * Add Profile description here.
+ *
+ * @apiDisabled
+ *
  * @link docs/profiles/overview.md
  * @see \App\Controller\Profiles
  */
@@ -102,12 +106,12 @@ class Profiles implements RouteInterface {
     }
 
     /**
-     * List all information of a single profile.
+     * Retrieve all information of a single profile.
      *
      * Retrieve all profile candidates, attributes, gates and flags.
      *
      * @apiEndpoint GET /profiles
-     * @apiGroup Company Profile
+     * @apiGroup Company
      * @apiAuth header token UserToken eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth query token userToken eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *

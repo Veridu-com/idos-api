@@ -59,6 +59,8 @@ class AttributeListener extends AbstractListener {
      */
     private function formatCombination(string $name, array $items) : string {
         switch ($name) {
+            case 'profilePicture':
+                return $items[0];
             case 'fullName':
                 $name = [];
                 if (! empty($items['firstName'])) {
@@ -275,6 +277,9 @@ class AttributeListener extends AbstractListener {
         $this->commandBus->handle($command);
 
         $compositions = [
+            'profilePicture' => [
+                'profilePicture'
+            ],
             'fullName'    => [
                 'firstName',
                 'middleName',

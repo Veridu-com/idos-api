@@ -17,7 +17,9 @@ use Slim\App;
 /**
  * Profile References.
  *
- * A Profile Reference is the information a User initially provides as true information, which the API can use as a reference during processing the Raw data of the Users Profile in order to authenticate its legitimacy.
+ * The Profile References endpoint allows you to confirm authenticity of information you already have for a user.
+ * You can submit reference data for the user and retrieve information on how well this matches to data processed
+ * from other sources.
  *
  * @link docs/profiles/reference/overview.md
  * @see \App\Controller\Profile\References
@@ -67,7 +69,7 @@ class References implements RouteInterface {
      * Retrieve a complete list of the references by a given user.
      *
      * @apiEndpoint GET /profiles/{userName}/references
-     * @apiGroup Profile References
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -99,7 +101,7 @@ class References implements RouteInterface {
      * Retrieves a reference from the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/references/{referenceName}
-     * @apiGroup Profile References
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -133,7 +135,7 @@ class References implements RouteInterface {
      * Creates a new reference for the given user.
      *
      * @apiEndpoint POST /profiles/{userName}/references
-     * @apiGroup Profile References
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -166,7 +168,7 @@ class References implements RouteInterface {
      * Updates a reference for the given user.
      *
      * @apiEndpoint PUT /profiles/{userName}/references/{referenceName}
-     * @apiGroup Profile References
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -200,7 +202,7 @@ class References implements RouteInterface {
      * Deletes a reference from the given user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/references/{referenceName}
-     * @apiGroup Profile References
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -234,7 +236,7 @@ class References implements RouteInterface {
      * Deletes all references from the given user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/references
-     * @apiGroup Profile References
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2

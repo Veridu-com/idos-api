@@ -16,7 +16,11 @@ use Slim\App;
 /**
  * Company Services.
  *
- * Company Services are what allows a company to add tailored functionality to the API in order to assess specific information. If a company wants to support a specific Profile Source, access a certain data point within a Profile, or change the way the API interprets data, Services are a simple and direct way of doing this.
+ * Company Services are what allows a company to add tailored functionality to the API in order to assess specific
+ * information. If a company wants to support a specific Profile Source, access a certain data point within a Profile,
+ * or change the way the API interprets data, Services are a simple and direct way of doing this.
+ *
+ * @apiDisabled
  *
  * @link docs/services/overview.md
  * @see \App\Controller\Services
@@ -66,7 +70,7 @@ class Service implements RouteInterface {
      * Retrieves a complete list of all services.
      *
      * @apiEndpoint GET /companies/{companySlug}/services
-     * @apiGroup Company Service
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
@@ -98,7 +102,7 @@ class Service implements RouteInterface {
      * Retrieves all public information from a Service.
      *
      * @apiEndpoint GET /companies/{companySlug}/services/{serviceId}
-     * @apiGroup Company Service
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  int  serviceId 1234
@@ -131,7 +135,7 @@ class Service implements RouteInterface {
      * Create a new service for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/services
-     * @apiGroup Company Service
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
@@ -163,7 +167,7 @@ class Service implements RouteInterface {
      * Updates Service's specific information.
      *
      * @apiEndpoint PUT /companies/{companySlug}/services/{serviceId}
-     * @apiGroup Company Service
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment int serviceId 1234
@@ -196,7 +200,7 @@ class Service implements RouteInterface {
      * Deletes a single Service that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/services/{serviceId}
-     * @apiGroup Company Service
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment int serviceId 1234
@@ -229,7 +233,7 @@ class Service implements RouteInterface {
      * Deletes all services that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/services
-     * @apiGroup Company Service
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *

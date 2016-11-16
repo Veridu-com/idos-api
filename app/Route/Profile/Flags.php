@@ -17,7 +17,8 @@ use Slim\App;
 /**
  * Profile Flags.
  *
- * A Profile Flag is used to flag a Profile with a specific Feature or Gate response. If a Company wants Users over the age of 18, they could have a Profile Flag showing that a Profile has failed an 18+ Gate. If a Company wants to easily see if a Profile contains inconsistent names, a Profile Flag could be used in conjunction with the specific Feature.
+ * Specific observations from the analysis of a profile are represented as Flags.
+ * These can indicate recent name change, a mismatch of names in different profiles, etc.
  *
  * @link docs/profile/flags/overview.md
  * @see \App\Controller\Profile\Flags
@@ -66,7 +67,7 @@ class Flags implements RouteInterface {
      * Retrieve a complete list of all flags that belong to the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/flags
-     * @apiGroup Profile Flags
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -99,7 +100,7 @@ class Flags implements RouteInterface {
      * Retrieves all public information from a Flag.
      *
      * @apiEndpoint GET /profiles/{userName}/flags/{flagSlug}
-     * @apiGroup Profile Flags
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -133,7 +134,7 @@ class Flags implements RouteInterface {
      * Create a new flag for the given user.
      *
      * @apiEndpoint POST /profiles/{userName}/flags
-     * @apiGroup Profile Flags
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -166,7 +167,7 @@ class Flags implements RouteInterface {
      * Deletes a single Flag that belongs to the given user
      *
      * @apiEndpoint DELETE /profiles/{userName}/flags/{flagSlug}
-     * @apiGroup Profile Flags
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
@@ -200,7 +201,7 @@ class Flags implements RouteInterface {
      * Deletes all flags that belongs to the given user
      *
      * @apiEndpoint DELETE /profiles/{userName}/flags
-     * @apiGroup Profile Flags
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c

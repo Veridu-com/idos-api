@@ -63,7 +63,7 @@ class Subscriptions implements RouteInterface {
      * Retrieves a complete list of all subscriptions that belong to the requesting credential.
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions
-     * @apiGroup Company Subscriptions
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -102,7 +102,7 @@ class Subscriptions implements RouteInterface {
      * Creates a new subscription for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions
-     * @apiGroup Company Subscriptions
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -141,7 +141,7 @@ class Subscriptions implements RouteInterface {
      * Deletes a single Subscription that belongs to the target company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions/{subscriptionId}
-     * @apiGroup Company Subscriptions
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd

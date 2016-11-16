@@ -15,21 +15,21 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * Warning's user.
+     * Flag's user.
      *
      * @var \App\Entity\User
      */
     public $user;
 
     /**
-     * Warning's creator.
+     * Flag's creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
 
     /**
-     * Gate slug.
+     * Flag slug.
      *
      * @var string
      */

@@ -7,8 +7,7 @@ class ReviewFlagToGate extends AbstractMigration
     /**
      * Changes "reviews->flag" relationship to "review->gate".
      */
-    public function change()
-    {
+    public function change() {
         $this->table('reviews')->drop();
 
         $reviews = $this->table('reviews');
