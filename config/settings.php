@@ -40,9 +40,12 @@ $appSettings = [
         ]
     ],
     'log' => [
-        'path' => sprintf(
-            '%s/../log/api.log',
-            __DIR__
+        'path' => Env::asString(
+            'IDOS_LOG_FILE',
+            sprintf(
+                '%s/../log/api.log',
+                __DIR__
+            )
         ),
         'level' => Monolog\Logger::DEBUG
     ],
