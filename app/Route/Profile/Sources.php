@@ -188,7 +188,7 @@ class Sources implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/sources/{sourceId:[0-9]+}',
                 'App\Controller\Profile\Sources:updateOne'
             )
