@@ -54,28 +54,20 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testFilters() {
-        $key            = 'slug';
+        $key            = 'name';
         $filterableKeys = [
             'creator.name' => [
                 [
                     'value'   => 'id*',
-                    'results' => ['gate-one', 'gate-two']
+                    'results' => ['firstName', 'middleName', 'lastName']
                 ],
             ],
-
             'name' => [
                 [
-                    'value'   => '*one',
-                    'results' => ['gate-one']
+                    'value'   => 'middle*',
+                    'results' => ['middleName']
                 ],
-            ],
-
-            'slug' => [
-                [
-                    'value'   => '*one',
-                    'results' => ['gate-one']
-                ],
-            ],
+            ]
         ];
 
         for ($i = 1; $i < count($filterableKeys); $i++) {
@@ -130,12 +122,12 @@ class ListAllTest extends AbstractFunctional {
         }
     }
 
-    public function testNameFilter() {
+    public function testSlugFilter() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=*one'
+                    'QUERY_STRING'       => 'name=middle*'
                 ]
             )
         );
@@ -149,8 +141,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['name'], ['Gate one']);
-            $this->assertContains($entity['slug'], ['gate-one']);
+            $this->assertContains($entity['name'], ['middleName']);
         }
 
         /*
@@ -165,12 +156,12 @@ class ListAllTest extends AbstractFunctional {
         );
     }
 
-    public function testNameFilterMultiple() {
+    public function testSlugFilterMultiple() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=Gate*'
+                    'QUERY_STRING'       => 'name=first*'
                 ]
             )
         );
@@ -181,11 +172,10 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['name'], ['Gate one', 'Gate two']);
-            $this->assertContains($entity['slug'], ['gate-one', 'gate-two']);
+            $this->assertContains($entity['name'], ['firstName']);
         }
 
         /*
@@ -216,11 +206,10 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['name'], ['Gate one', 'Gate two']);
-            $this->assertContains($entity['slug'], ['gate-one', 'gate-two']);
+            $this->assertContains($entity['name'], ['firstName', 'middleName', 'lastName']);
         }
 
         /*
@@ -251,11 +240,10 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['name'], ['Gate one', 'Gate two']);
-            $this->assertContains($entity['slug'], ['gate-one', 'gate-two']);
+            $this->assertContains($entity['name'], ['firstName', 'middleName', 'lastName']);
         }
 
         /*
@@ -273,7 +261,6 @@ class ListAllTest extends AbstractFunctional {
     public function testOrdering() {
         $orderableKeys = [
             'name',
-            'slug',
             'pass',
             'created_at',
             'updated_at'
@@ -296,7 +283,7 @@ class ListAllTest extends AbstractFunctional {
                 $body = json_decode((string) $response->getBody(), true);
                 $this->assertNotEmpty($body);
                 $this->assertTrue($body['status']);
-                $this->assertCount(2, $body['data']);
+                $this->assertCount(3, $body['data']);
 
                 $keys = [];
 

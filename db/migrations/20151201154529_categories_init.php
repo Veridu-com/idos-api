@@ -20,7 +20,6 @@ class CategoriesInit extends AbstractMigration {
             ->addColumn('description', 'text', ['null' => true])
             ->addColumn('service_id', 'integer', ['null' => false])
             ->addIndex('type')
-            ->addIndex('name', ['unique' => true])
             ->addIndex('slug', ['unique' => true])
             ->addTimestamps()
             ->addForeignKey('service_id', 'services', 'id', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])

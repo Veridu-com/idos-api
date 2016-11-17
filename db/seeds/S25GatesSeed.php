@@ -10,22 +10,34 @@ class S25GatesSeed extends AbstractSeed {
     public function run() {
         $data = [
             [
-                'user_id'    => 1,
-                'creator'    => 1,
-                'name'       => 'Gate one',
-                'slug'       => 'gate-one',
-                'pass'       => true,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
+                'user_id'          => 1,
+                'creator'          => 1,
+                'name'             => 'firstName',
+                'slug'             => 'firstname-low',
+                'pass'             => true,
+                'confidence_level' => 'low',
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => null
             ],
             [
-                'user_id'    => 1,
-                'creator'    => 1,
-                'name'       => 'Gate two',
-                'slug'       => 'gate-two',
-                'pass'       => 'f',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => null
+                'user_id'          => 1,
+                'creator'          => 1,
+                'name'             => 'middleName',
+                'slug'             => 'middlename-medium',
+                'pass'             => 'f',
+                'confidence_level' => 'medium',
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => null
+            ],
+            [
+                'user_id'          => 1,
+                'creator'          => 1,
+                'name'             => 'lastName',
+                'slug'             => 'lastname-high',
+                'confidence_level' => 'high',
+                'pass'             => 'f',
+                'created_at'       => date('Y-m-d H:i:s'),
+                'updated_at'       => null
             ],
         ];
 
