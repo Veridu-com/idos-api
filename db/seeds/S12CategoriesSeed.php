@@ -345,24 +345,24 @@ class S12CategoriesSeed extends AbstractSeed {
                 'service_id'          => 1
             ],
             [
-                'display_name'        => 'No Chargeback score low',
+                'display_name'        => 'No Chargeback low score',
                 'name'                => 'noChargebackScoreLow',
                 'type'                => 'score',
-                'description'         => 'No Chargeback score low.',
+                'description'         => 'No Chargeback low score.',
                 'service_id'          => 1
             ],
             [
-                'display_name'        => 'No Chargeback score medium',
+                'display_name'        => 'No Chargeback medium score',
                 'name'                => 'noChargebackScoreMed',
                 'type'                => 'score',
-                'description'         => 'No Chargeback score medium.',
+                'description'         => 'No Chargeback medium score.',
                 'service_id'          => 1
             ],
             [
-                'display_name'        => 'No Chargeback score high',
+                'display_name'        => 'No Chargeback high score',
                 'name'                => 'noChargebackScoreHigh',
                 'type'                => 'score',
-                'description'         => 'No Chargeback score high.',
+                'description'         => 'No Chargeback high score.',
                 'service_id'          => 1
             ],
             // Gates
