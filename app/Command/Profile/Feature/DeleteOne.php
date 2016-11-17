@@ -20,20 +20,24 @@ class DeleteOne extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Feature's Service (creator).
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Feature's id (user input).
      *
      * @var int
      */
     public $featureId;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

@@ -152,10 +152,12 @@ class Gates implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -193,10 +195,12 @@ class Gates implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
         $slug    = $request->getAttribute('gateSlug');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('slug', $slug);
@@ -232,10 +236,12 @@ class Gates implements ControllerInterface {
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\Upsert');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service);
 
@@ -272,9 +278,12 @@ class Gates implements ControllerInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
         $slug    = $request->getAttribute('gateSlug');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\DeleteOne');
-        $command->setParameter('user', $user)
+        $command
+            ->setParameter('credential', $credential)
+            ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('slug', $slug);
 
@@ -307,9 +316,11 @@ class Gates implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\DeleteAll');
         $command
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('queryParams', $request->getQueryParams());

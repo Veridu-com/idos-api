@@ -16,16 +16,20 @@ class GateProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
             Gate\Created::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
             Gate\Updated::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
             Gate\Deleted::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
             Gate\DeletedMulti::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ]
         ];
     }

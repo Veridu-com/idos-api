@@ -20,6 +20,12 @@ class ListAll extends AbstractCommand {
      * @var \App\Entity\Company
      */
     public $company;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

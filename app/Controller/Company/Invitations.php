@@ -146,8 +146,12 @@ class Invitations implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $identity = $request->getAttribute('identity');
+
         $command = $this->commandFactory->create('Company\\Invitation\\DeleteOne');
-        $command->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
+        $command
+            ->setParameter('identity', $identity)
+            ->setParameter('invitationId', $request->getAttribute('decodedInvitationId'));
 
         $this->commandBus->handle($command);
 

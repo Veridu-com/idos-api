@@ -18,5 +18,6 @@ class ServiceHandler implements ValidatorInterface {
         Traits\AssertPassword,
         Traits\AssertSlug,
         Traits\AssertUrl,
-        Traits\AssertUserName;
+        Traits\AssertUserName,
+        Traits\AssertEntity;
 }

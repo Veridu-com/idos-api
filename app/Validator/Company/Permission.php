@@ -16,5 +16,6 @@ use App\Validator\ValidatorInterface;
  */
 class Permission implements ValidatorInterface {
     use Traits\AssertId,
-        Traits\AssertRouteName;
+        Traits\AssertRouteName,
+        Traits\AssertEntity;
 }

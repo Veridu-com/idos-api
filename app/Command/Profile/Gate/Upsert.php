@@ -20,14 +20,12 @@ class Upsert extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Gate's creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Gate's slug (user input).
      *
@@ -41,7 +39,6 @@ class Upsert extends AbstractCommand {
      * @var string
      */
     public $name;
-
     /**
      * Gate's confidence level (user input).
      *
@@ -55,6 +52,12 @@ class Upsert extends AbstractCommand {
      * @var bool
      */
     public $pass;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

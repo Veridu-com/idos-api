@@ -56,7 +56,11 @@ class Updated extends AbstractServiceQueueEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Company\Member $member
+     * @param \App\Entity\Company\Invitation $invitation
+     * @param \App\Entity\Company\Credential $credential
+     * @param string $companyName
+     * @param string $dashboardName
+     * @param string $signupHash
      *
      * @return void
      */

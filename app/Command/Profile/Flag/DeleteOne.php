@@ -20,20 +20,24 @@ class DeleteOne extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Flag's creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Flag slug.
      *
      * @var string
      */
     public $slug;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

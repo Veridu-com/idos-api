@@ -47,8 +47,6 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
         $query = $this->filter($query, $queryParams);
 
         return $query->get();
-
-        return $query->get();
     }
 
     /**

@@ -71,20 +71,20 @@ class OTP extends AbstractServiceQueueEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\User               $user
      * @param \App\Entity\Profile\Source     $source
+     * @param \App\Entity\User               $user
      * @param \App\Entity\Company\Credential $credential
      * @param \App\Entity\Company            $company
-     * @param \App\Entity\Profile\Process    $source
+     * @param \App\Entity\Profile\Process    $process
      * @param string                         $ipAddr
      *
      * @return void
      */
     public function __construct(Source $source, User $user, Credential $credential, Company $company, Process $process, string $ipAddr) {
+        $this->source     = $source;
         $this->user       = $user;
         $this->credential = $credential;
         $this->company    = $company;
-        $this->source     = $source;
         $this->process    = $process;
         $this->ipAddr     = $ipAddr;
 

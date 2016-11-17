@@ -64,7 +64,7 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
     /**
      * {@inheritdoc}
      */
-    public function upsert(int $userId, string $name, string $value) : Attribute {
+    public function upsertOne(int $userId, string $name, string $value) : Attribute {
         $this->beginTransaction();
 
         $result = $this->runRaw(

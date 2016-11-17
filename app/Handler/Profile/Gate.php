@@ -123,6 +123,7 @@ class Gate implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertName($command->name);
             $this->validator->assertFlag($command->pass);
+            $this->validator->assertCredential($command->credential);
 
             if ($command->confidenceLevel) {
                 $this->validator->assertMediumName($command->confidenceLevel);
@@ -152,7 +153,7 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity);
+            $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Create\Profile\GateException('Error while trying to create a gate', 500, $exception);
@@ -180,6 +181,7 @@ class Gate implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertSlug($command->slug);
             $this->validator->assertFlag($command->pass);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -197,7 +199,7 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 
-            $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity);
+            $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
             throw new Update\Profile\GateException('Error while trying to update a gate', 500, $e);
@@ -254,9 +256,9 @@ class Gate implements HandlerInterface {
             $entity = $this->repository->hydrateRelations($entity);
 
             if ($entity->createdAt === $entity->updatedAt) {
-                $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity);
+                $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity, $command->credential);
             } else {
-                $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity);
+                $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity, $command->credential);
             }
 
             $this->emitter->emit($event);
@@ -313,6 +315,7 @@ class Gate implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
             $this->validator->assertSlug($command->slug);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -325,7 +328,7 @@ class Gate implements HandlerInterface {
             $entity       = $this->repository->findBySlug($command->slug, $command->service->id, $command->user->id);
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity);
+            $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new NotFound\Profile\GateException('No gates found for deletion', 404);
@@ -350,6 +353,7 @@ class Gate implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -370,7 +374,7 @@ class Gate implements HandlerInterface {
                 $affectedRows += $this->repository->delete($entity->id);
             }
 
-            $event = $this->eventFactory->create('Profile\\Gate\\DeletedMulti', $entities);
+            $event = $this->eventFactory->create('Profile\\Gate\\DeletedMulti', $entities, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\GateException('Error while trying to delete all gates', 500, $e);

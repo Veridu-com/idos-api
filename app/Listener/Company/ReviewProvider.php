@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Listener\Company;
 
-use App\Event\Company\Review;
+use App\Event\Profile\Review;
 use App\Listener;
 use Interop\Container\ContainerInterface;
 
@@ -16,10 +16,12 @@ class ReviewProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
             Review\Created::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
             Review\Updated::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ]
         ];
     }

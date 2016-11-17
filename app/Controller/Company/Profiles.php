@@ -268,9 +268,13 @@ class Profiles implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $userId = $request->getAttribute('decodedUserId');
+        $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Profile\\DeleteOne');
-        $command->setParameter('userId', $userId);
+        $command
+            ->setParameter('identity', $identity)
+            ->setParameter('userId', $userId);
+
         $deleted = $this->commandBus->handle($command);
 
         $body = [

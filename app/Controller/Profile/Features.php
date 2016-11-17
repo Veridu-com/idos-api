@@ -351,7 +351,9 @@ class Features implements ControllerInterface {
         $featureId = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
-        $command->setParameter('user', $user)
+        $command
+            ->setParameter('credential', $credential)
+            ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('featureId', $featureId);
 
@@ -386,7 +388,9 @@ class Features implements ControllerInterface {
         $service = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');
-        $command->setParameter('user', $user)
+        $command
+            ->setParameter('credential', $credential)
+            ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('queryParams', $request->getQueryParams());
 

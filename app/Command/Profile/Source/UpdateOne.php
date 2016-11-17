@@ -46,6 +46,12 @@ class UpdateOne extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

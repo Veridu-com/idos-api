@@ -16,16 +16,20 @@ class AttributeProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
             Attribute\Created::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
             Attribute\Updated::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
             Attribute\Deleted::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
             Attribute\DeletedMulti::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ]
         ];
     }

@@ -10,8 +10,7 @@ use Phinx\Migration\AbstractMigration;
  * SPECIAL TABLES.
  */
 class SpecialInit extends AbstractMigration {
-    public function change() {
-
+    public function up() {
         $addressLookup = $this->table('address_lookup');
         $addressLookup
             ->addColumn('provider', 'text', ['null' => false])
@@ -42,14 +41,6 @@ class SpecialInit extends AbstractMigration {
             ->addIndex('company_id')
             ->addIndex('credential_id')
             ->addIndex('user_id')
-            ->create();
-
-        // System metrics
-        $metrics = $this->table('metrics');
-        $metrics
-            ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'decimal', ['null' => false])
-            ->addTimestamps()
             ->create();
     }
 }

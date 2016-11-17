@@ -20,13 +20,18 @@ class DeleteOne extends AbstractCommand {
      * @var int
      */
     public $serviceId;
-
     /**
      * Acting company.
      *
      * @var \App\Entity\Company
      */
     public $company;
+    /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}

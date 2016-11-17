@@ -20,20 +20,24 @@ class DeleteAll extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Score's Creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Query Params.
      *
      * @var array
      */
     public $queryParams;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

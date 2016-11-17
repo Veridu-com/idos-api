@@ -20,13 +20,18 @@ class UpdateOne extends AbstractCommand {
      * @var object
      */
     public $settingId;
-
     /**
      * Setting's property value (user input).
      *
      * @var object
      */
     public $value;
+    /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}

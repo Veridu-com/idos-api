@@ -24,7 +24,7 @@ class ManagerProvider extends AbstractListenerProvider {
         $emitter       = $container->get('eventEmitter');
         $gearmanClient = $container->get('gearmanClient');
 
-        $eventLogger = $container->get('log')('Event');
+        $eventLogger    = ($container->get('log'))('Event');
 
         $this->events = [
             Event\Manager\UnhandledEvent::class => [

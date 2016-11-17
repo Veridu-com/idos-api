@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Company\Hook;
 
 use App\Entity\Company\Hook;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,15 +22,23 @@ class Created extends AbstractEvent {
      * @var \App\Entity\Company\Hook
      */
     public $hook;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * Class constructor.
      *
      * @param \App\Entity\Company\Hook $hook
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */
-    public function __construct(Hook $hook) {
-        $this->hook = $hook;
+    public function __construct(Hook $hook, Identity $identity) {
+        $this->hook  = $hook;
+        $this->identity = $identity;
     }
 }

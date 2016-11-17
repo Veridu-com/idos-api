@@ -16,13 +16,16 @@ class PermissionProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $this->events = [
             Permission\Created::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
             Permission\Deleted::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ],
             Permission\DeletedMulti::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
+                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
             ]
         ];
     }

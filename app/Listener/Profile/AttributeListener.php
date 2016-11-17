@@ -10,6 +10,7 @@ namespace App\Listener\Profile;
 
 use App\Entity\Profile\Candidate;
 use App\Entity\Profile\Feature;
+use App\Entity\Company\Credential;
 use App\Entity\User;
 use App\Factory\Command;
 use App\Listener;
@@ -77,7 +78,7 @@ class AttributeListener extends AbstractListener {
 
                 return implode(' ', $name);
             case 'gender':
-                $value = strtolower($item[0]);
+                $value = strtolower($items[0]);
                 if (! in_array(strtolower($value), ['male', 'female'])) {
                     return '';
                 }
@@ -221,13 +222,14 @@ class AttributeListener extends AbstractListener {
     /**
      * Creates a new attribute.
      *
-     * @param \App\Entity\User $user
-     * @param string           $name
-     * @param string           $value
+     * @param \App\Entity\User               $user
+     * @param \App\Entity\Company\Credential $credential
+     * @param string                         $name
+     * @param string                         $value
      *
      * @return void
      */
-    private function createAttribute(User $user, string $name, string $value) {
+    private function createAttribute(User $user, Credential $credential, string $name, string $value) {
         if (empty($value)) {
             return;
         }
@@ -235,6 +237,7 @@ class AttributeListener extends AbstractListener {
         $command = $this->commandFactory->create('Profile\\Attribute\\Upsert');
         $command
             ->setParameter('user', $user)
+            ->setParameter('credential', $credential)
             ->setParameter('name', $name)
             ->setParameter('value', $value);
         $this->commandBus->handle($command);
@@ -273,6 +276,7 @@ class AttributeListener extends AbstractListener {
         $command = $this->commandFactory->create('Profile\\Attribute\\DeleteAll');
         $command
             ->setParameter('user', $event->user)
+            ->setParameter('credential', $event->credential)
             ->setParameter('queryParams', []);
         $this->commandBus->handle($command);
 
@@ -323,6 +327,7 @@ class AttributeListener extends AbstractListener {
                 // single attribute
                 $this->createAttribute(
                     $event->user,
+                    $event->credential,
                     $attributes[0],
                     $candidates
                         ->sortBy('support')
@@ -349,11 +354,12 @@ class AttributeListener extends AbstractListener {
                     continue;
                 }
 
-                $this->createAttribute($event->user, $attribute, $value);
+                $this->createAttribute($event->user, $event->credential, $attribute, $value);
             }
 
             $this->createAttribute(
                 $event->user,
+                $event->credential,
                 $composition,
                 $this->formatCombination($composition, $combination)
             );

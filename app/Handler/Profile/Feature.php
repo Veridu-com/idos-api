@@ -43,14 +43,18 @@ class Feature implements HandlerInterface {
      * @var \App\Repository\Profile\FeatureInterface
      */
     private $repository;
-
     /**
      * Source Repository instance.
      *
-     * @var \App\Repository\SourceInterface
+     * @var \App\Repository\Profile\SourceInterface
      */
     private $sourceRepository;
-
+    /**
+     * Process Repository instance.
+     *
+     * @var \App\Repository\Profile\ProcessInterface
+     */
+    private $processRepository;
     /**
      * Feature Validator instance.
      *
@@ -63,14 +67,12 @@ class Feature implements HandlerInterface {
      * @var \App\Factory\Event
      */
     private $eventFactory;
-
     /**
      * Event emitter instance.
      *
      * @var \League\Event\Emitter
      */
     private $emitter;
-
     /**
      * {@inheritdoc}
      */
@@ -100,10 +102,10 @@ class Feature implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\FeatureInterface $repository
-     * @param \App\Validator\Feature           $validator
-     * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter            $emitter
+     * @param \App\Repository\Profile\FeatureInterface $repository
+     * @param \App\Validator\Profile\Feature           $validator
+     * @param \App\Factory\Event                       $eventFactory
+     * @param \League\Event\Emitter                    $emitter
      *
      * @return void
      */
@@ -133,7 +135,7 @@ class Feature implements HandlerInterface {
      * @throws \App\Exception\Validate\Profile\FeatureException
      * @throws \App\Exception\Create\Profile\FeatureException
      *
-     * @return \App\Entity\Feature
+     * @return \App\Entity\Profile\Feature
      */
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
         try {
@@ -145,11 +147,14 @@ class Feature implements HandlerInterface {
 
             $this->validator->assertName($command->type);
             $this->validator->assertNullableValue($command->value);
+
             $sourceName = null;
             if ($command->source !== null) {
                 $this->validator->assertSource($command->source);
                 $sourceName = $command->source->name;
             }
+
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -177,10 +182,9 @@ class Feature implements HandlerInterface {
         try {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
-
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
-            $event   = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $command->credential, $process, $command->source);
+            $event   = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $process, $command->credential, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\FeatureException('Error while trying to create a feature', 500, $e);
@@ -209,6 +213,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertId($command->featureId);
             $this->validator->assertName($command->type);
             $this->validator->assertNullableValue($command->value);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -230,10 +235,9 @@ class Feature implements HandlerInterface {
         try {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
-
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
-            $event   = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $command->credential, $process, $command->source);
+            $event   = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $process, $command->credential, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\FeatureException('Error while trying to update a feature', 500, $e);
@@ -256,6 +260,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertLongName($command->name);
             $this->validator->assertName($command->type);
             $this->validator->assertNullableValue($command->value);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -309,8 +314,8 @@ class Feature implements HandlerInterface {
                     'Profile\\Feature\\Created',
                     $feature,
                     $command->user,
-                    $command->credential,
                     $process,
+                    $command->credential,
                     $command->source
                 );
             } else {
@@ -318,8 +323,8 @@ class Feature implements HandlerInterface {
                     'Profile\\Feature\\Updated',
                     $feature,
                     $command->user,
-                    $command->credential,
                     $process,
+                    $command->credential,
                     $command->source
                 );
             }
@@ -345,6 +350,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertCredential($command->credential);
             $this->validator->assertService($command->service);
             $this->validator->assertFeatures($command->features);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -386,7 +392,7 @@ class Feature implements HandlerInterface {
                 $source  = ($sourceId ? $sources[$sourceId] : null);
                 $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($source), $command->source ? $command->source : null);
 
-                $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $sourceFeatures, $command->user, $command->credential, $process, $source);
+                $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $sourceFeatures, $command->user, $process, $command->credential, $source);
                 $this->emitter->emit($event);
             }
         }
@@ -411,6 +417,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
             $this->validator->assertId($command->featureId);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -426,7 +433,7 @@ class Feature implements HandlerInterface {
             throw new NotFound\Profile\FeatureException('No features found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Profile\\Feature\\Deleted', $feature);
+        $event = $this->eventFactory->create('Profile\\Feature\\Deleted', $feature, $command->credential);
         $this->emitter->emit($event);
 
         return $affectedRows;
@@ -449,6 +456,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
             $this->validator->assertArray($command->queryParams);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -464,7 +472,7 @@ class Feature implements HandlerInterface {
             $affectedRows += $this->repository->delete($deletedFeature->id);
         }
 
-        $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures);
+        $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures, $command->credential);
         $this->emitter->emit($event);
 
         return $affectedRows;

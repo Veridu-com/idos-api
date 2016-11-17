@@ -61,6 +61,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 1)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -80,6 +81,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 2)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -99,6 +101,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 3)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -118,6 +121,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 4)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -137,6 +141,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 5)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -156,6 +161,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 6)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -175,6 +181,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 7)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -194,6 +201,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 8)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -213,6 +221,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 9)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -232,6 +241,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 10)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -251,6 +261,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 11)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -270,6 +281,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 12)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -289,6 +301,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 13)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -308,6 +321,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 14)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -327,6 +341,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 15)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -346,6 +361,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 16)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -365,6 +381,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 17)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -384,6 +401,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 18)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -403,6 +421,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 19)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -422,6 +441,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 20)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -441,6 +461,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 21)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -460,6 +481,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 22)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -479,6 +501,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 23)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -498,6 +521,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 24)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -517,6 +541,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 25)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -536,6 +561,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 26)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -555,6 +581,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 27)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [
@@ -574,6 +601,7 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 28)
+            ->setParameter('identity', $event->identity)
             ->setParameter(
                 'listens',
                 [

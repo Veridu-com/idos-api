@@ -110,6 +110,7 @@ class Credential implements HandlerInterface {
             $this->validator->assertName($command->name);
             $this->validator->assertFlag($command->production);
             $this->validator->assertId($command->company->id);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\CredentialException(
                 $e->getFullMessage(),
@@ -167,6 +168,7 @@ class Credential implements HandlerInterface {
         try {
             $this->validator->assertId($command->credentialId);
             $this->validator->assertName($command->name);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\CredentialException(
                 $e->getFullMessage(),
@@ -203,6 +205,7 @@ class Credential implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->credential->id);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\CredentialException(
                 $e->getFullMessage(),

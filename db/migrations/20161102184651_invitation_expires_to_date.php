@@ -12,5 +12,4 @@ class InvitationExpiresToDate extends AbstractMigration
         $invitations->changeColumn('expires', 'date')
         	->save();
     }
-
 }

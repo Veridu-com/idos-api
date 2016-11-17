@@ -20,27 +20,24 @@ class GetOne extends AbstractCommand {
      * @var int
      */
     public $settingId;
-
-    /**
-     * Acting Identity.
-     *
-     * @var \App\Entity\Identity
-     */
-    public $identity;
-
     /**
      * Target Company.
      *
      * @var \App\Entity\Company
      */
     public $company;
-
     /**
      * Parent access.
      *
      * @var bool
      */
     public $hasParentAccess;
+    /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}

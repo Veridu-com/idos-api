@@ -26,6 +26,12 @@ class DeleteOne extends AbstractCommand {
      * @var string
      */
     public $name;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

@@ -147,11 +147,11 @@ class Tags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Tag\\CreateNew');
-
-        $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
         $identity = $request->getAttribute('identity');
 
+        $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
+
+        $command = $this->commandFactory->create('Profile\\Tag\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
@@ -187,9 +187,13 @@ class Tags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Tag\\DeleteOne');
+        $identity = $request->getAttribute('identity');
+
         $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
+
+        $command = $this->commandFactory->create('Profile\\Tag\\DeleteOne');
         $command
+            ->setParameter('identity', $identity)
             ->setParameter('user', $user)
             ->setParameter('slug', $request->getAttribute('tagSlug'));
 
@@ -220,9 +224,14 @@ class Tags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $command = $this->commandFactory->create('Profile\\Tag\\DeleteAll');
+        $identity = $request->getAttribute('identity');
+
         $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
-        $command->setParameter('user', $user);
+
+        $command = $this->commandFactory->create('Profile\\Tag\\DeleteAll');
+        $command
+            ->setParameter('identity', $identity)
+            ->setParameter('user', $user);
 
         $body = [
             'deleted' => $this->commandBus->handle($command)

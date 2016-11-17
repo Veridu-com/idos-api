@@ -21,12 +21,6 @@ class CreateNew extends AbstractCommand {
      */
     public $role;
     /**
-     * Member's identity id.
-     *
-     * @var string
-     */
-    public $identityId;
-    /**
      * Target Company.
      *
      * @var string
@@ -38,15 +32,17 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $ipaddr;
+    /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['identity_id'])) {
-            $this->identityId = $parameters['identity_id'];
-        }
-
         if(isset($parameters['role'])) {
             $this->role = $parameters['role'];
         }

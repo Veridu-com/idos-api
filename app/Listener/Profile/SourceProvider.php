@@ -29,27 +29,35 @@ class SourceProvider extends Listener\AbstractListenerProvider {
         $emitter       = $container->get('eventEmitter');
         $gearmanClient = $container->get('gearmanClient');
 
-        $eventLogger = $container->get('log')('Event');
+        $eventLogger = ($container->get('log'))('Event');
+        $commandBus = $container->get('commandBus');
+        $commandFactory = $container->get('commandFactory');
 
         $this->events = [
             Source\CRA::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Source\OTP::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event')),
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory),
                 new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
             ],
             Source\Created::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Source\Updated::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Source\Deleted::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Source\DeletedMulti::class => [
-                new Listener\LogFiredEventListener($container->get('log')('Event'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];
     }
