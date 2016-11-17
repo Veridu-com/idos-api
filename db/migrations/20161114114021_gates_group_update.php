@@ -18,6 +18,9 @@ class GatesGroupUpdate extends AbstractMigration
 {
     public function up() {
         $gates = $this->table('gates');
+        
+        $this->query('DELETE FROM "gates"');
+
         $gates
             ->addColumn('confidence_level', 'text', ['null' => true])
             ->removeIndex(['user_id', 'creator', 'name'], 'gates_user_id_creator_name')
@@ -31,9 +34,47 @@ class GatesGroupUpdate extends AbstractMigration
             ->renameColumn('slug', 'name')
             ->save();
 
+        $this->updateCategories();
+
         $subscriptions = $this->table('subscriptions');
         $subscriptions
             ->renameColumn('category_slug', 'category_name')
             ->save();
     }
+
+    /**
+     * Updates the categories table.
+     * 
+     * @return void
+     */
+    private function updateCategories() {
+        $categories = $this->query('SELECT * FROM "categories"');
+
+        if (! count($categories)) {
+            return;
+        }
+        
+        foreach ($categories as $category) {
+            $sql = sprintf('UPDATE "%s" SET "name" = \'%s\' where id = \'%s\'', 'categories', $this->slugToCamelCase($category['name']), $category['id']);
+            $this->query($sql);
+        }
+    }
+
+    /**
+     * Transforms a "slugified-string" to a "camelCaseString".
+     *
+     * @param string  $slug   The slug
+     *
+     * @return string
+     */
+    private function slugToCamelCase(string $slug) : string {
+        $words  = explode('-', strtolower($slug));
+        $return = '';
+        foreach ($words as $word) {
+            $return .= ucfirst(trim($word));
+        }
+
+        return lcfirst($return);
+    }
+
 }
