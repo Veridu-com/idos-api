@@ -28,6 +28,17 @@ interface CompanyInterface extends RepositoryInterface {
     public function isParent(Company $parent, Company $child) : bool;
 
     /**
+     * Gets the children recursively, by company identifier.
+     *
+     * @param      integer                      $companyId  The company identifier
+     *
+     * @throws     \App\Exception\AppException
+     *
+     * @return     \Illuminate\Support\Collection
+     */
+    public function getChildrenById(int $companyId) : Collection;
+    
+    /**
      * Returns a company based on its public key.
      *
      * @param string $pubKey

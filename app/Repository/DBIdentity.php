@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\Identity;
 use App\Exception\NotFound;
 use Illuminate\Support\Collection;
@@ -68,6 +69,8 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
      * {@inheritdoc}
      */
     public function findByPubKey(string $pubKey) : Identity {
+        $companyRepository = $this->repositoryFactory->create('Company');
+        
         $identities = $this->query()
             ->leftJoin('members', 'members.identity_id', 'identities.id')
             ->leftJoin('roles', 'members.role', 'roles.name')
@@ -126,10 +129,17 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
             throw new NotFound();
         }
 
+        $identityCompanies = new Collection($companies['entities']);
+
         // populating identities available companies
-        $identity->relations['company'] = new Collection($companies['entities']);
         $identity->relations['member']  = new Collection($members['entities']);
 
+        foreach ($identityCompanies as $key => $company) {
+            $children = $companyRepository->getChildrenById($company->id);
+            $identityCompanies = $identityCompanies->merge($children->toArray());
+        }
+
+        $identity->relations['company'] = $identityCompanies->unique('slug');
         return $identity;
     }
 
