@@ -20,6 +20,7 @@ class Metrics extends AbstractMigration {
             ->addColumn('credential_public', 'text', ['null' => false])
             ->addColumn('endpoint', 'text', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
+            ->addTimestamps()
             ->addColumn('data', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addIndex(['credential_public'])
             ->addIndex(['endpoint'])
