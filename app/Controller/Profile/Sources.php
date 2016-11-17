@@ -130,14 +130,14 @@ class Sources implements ControllerInterface {
      * Creates a new Source for the acting User.
      *
      * All source related data is packed on TAGS payload field.
-     *  - oAuth 1.x should carry access_token and token_secret.
-     *  - oAuth 2.x should carry access_token and optionally token_refresh.
-     *  - E-mail should carry email_address and can optionally otp.
-     *  - Phone should carry phone_number, country_code and optionally otp.
-     *  - Submitted can carry as many fields as wanted.
+     *  - oAuth 1.x should carry `access_token` and `token_secret`.
+     *  - oAuth 2.x should carry `access_token` and optionally `token_refresh`.
+     *  - E-mail should carry `email_address` and can optionally an `otp_check` flag for OTP verification.
+     *  - Phone should carry `phone_number`, `country_code` and optionally an `otp_check` flag for OTP verification.
+     *  - Submitted can carry as many fields as wanted and optionally a `cra_check` flag for CRA verification.
      *
      * @apiEndpointParam body string name twitter Source name
-     * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
+     * @apiEndpointParam body string tags {"otp_check": "email"} Source's new tags
      * @apiEndpointResponse 201 schema/source/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -177,8 +177,9 @@ class Sources implements ControllerInterface {
      * Updates one Source of the acting User based on path paremeter source id.
      *
      * All source related data is packed on TAGS payload field.
-     *  - E-mail can carry a otp_check for OTP verification.
-     *  - SMS can carry a otp_check for OTP verification.
+     *  - E-mail can carry an `otp_check` flag for OTP verification.
+     *  - SMS can carry an `otp_check` flag for OTP verification.
+     *  - Submitted can carry a `cra_check` flag for CRA verification.
      *
      * @apiEndpointParam body string otpCode OTP Code check for One Time Password Verifications
      * @apiEndpointParam body string tags  {"otp_check": "email"} Source's new tags
@@ -194,6 +195,7 @@ class Sources implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
         $sourceId = (int) $request->getAttribute('decodedSourceId');
 
         $source = $this->repository->findOne($sourceId, $user->id);
@@ -201,6 +203,7 @@ class Sources implements ControllerInterface {
         $command = $this->commandFactory->create('Profile\\Source\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
@@ -236,12 +239,14 @@ class Sources implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user     = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
         $sourceId = (int) $request->getAttribute('decodedSourceId');
 
         $source = $this->repository->findOne($sourceId, $user->id);
 
         $command = $this->commandFactory->create('Profile\\Source\\DeleteOne');
         $command
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('source', $source)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
@@ -274,9 +279,11 @@ class Sources implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Source\\DeleteAll');
         $command
+            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('ipaddr', $request->getAttribute('ip_address'));
 

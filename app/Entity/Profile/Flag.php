@@ -37,7 +37,6 @@ class Flag extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['id', 'created_at', 'updated_at'];
-
     /**
      * {@inheritdoc}
      */

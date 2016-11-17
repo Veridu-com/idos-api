@@ -99,6 +99,45 @@ class Tasks implements ControllerInterface {
     }
 
     /**
+     * Lists all Tasks that belongs to the given process.
+     *
+     * @apiEndpointParam query int page 10|1 Current page
+     * @apiEndpointResponse 200 schema/task/listAll.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Repository\DBProcess::find
+     * @see \App\Repository\Profile\DBTask::getAllByProcessId
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $processId = $request->getAttribute('decodedProcessId');
+
+        $process = $this->processRepository->find($processId);
+        $result  = $this->repository->getAllByProcessId($process->id, $request->getQueryParams());
+
+        $entities = $result['collection'];
+
+        $body = [
+            'data'       => $entities->toArray(),
+            'pagination' => $result['pagination'],
+            'updated'    => (
+            $entities->isEmpty() ? null : max($entities->max('updatedAt'), $entities->max('createdAt'))
+            )
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
      * Creates a new Task for the given process.
      *
      * @apiEndpointRequiredParam body string name Task test Task name
@@ -116,11 +155,13 @@ class Tasks implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $credential = $request->getAttribute('credential');
         $processId = $request->getAttribute('decodedProcessId');
 
         $command = $this->commandFactory->create('Profile\\Task\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('credential', $credential)
             ->setParameter('service', $request->getAttribute('service'))
             ->setParameter('processId', $processId);
 
@@ -173,45 +214,6 @@ class Tasks implements ControllerInterface {
         $body = [
             'data'    => $task->toArray(),
             'updated' => $task->updatedAt
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Lists all Tasks that belongs to the given process.
-     *
-     * @apiEndpointParam query int page 10|1 Current page
-     * @apiEndpointResponse 200 schema/task/listAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see \App\Repository\DBProcess::find
-     * @see \App\Repository\Profile\DBTask::getAllByProcessId
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $processId = $request->getAttribute('decodedProcessId');
-
-        $process = $this->processRepository->find($processId);
-        $result  = $this->repository->getAllByProcessId($process->id, $request->getQueryParams());
-
-        $entities = $result['collection'];
-
-        $body = [
-            'data'       => $entities->toArray(),
-            'pagination' => $result['pagination'],
-            'updated'    => (
-                $entities->isEmpty() ? null : max($entities->max('updatedAt'), $entities->max('createdAt'))
-            )
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

@@ -32,6 +32,12 @@ class CreateNew extends AbstractCommand {
      * @var int
      */
     public $userId;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

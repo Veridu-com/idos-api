@@ -21,12 +21,6 @@ class CreateNew extends AbstractCommand {
      */
     public $user;
     /**
-     * Reviewer.
-     *
-     * @var \App\Entity\Identity
-     */
-    public $identity;
-    /**
      * Review's gateId.
      *
      * @var int
@@ -38,6 +32,12 @@ class CreateNew extends AbstractCommand {
      * @var bool
      */
     public $positive;
+    /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}

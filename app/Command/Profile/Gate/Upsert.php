@@ -20,13 +20,18 @@ class Upsert extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Gate's creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
+    /**
+     * Gate's slug (user input).
+     *
+     * @var string
+     */
+    public $slug;
 
     /**
      * Gate's name (user input).
@@ -34,6 +39,12 @@ class Upsert extends AbstractCommand {
      * @var string
      */
     public $name;
+    /**
+     * Gate's confidence level (user input).
+     *
+     * @var string
+     */
+    public $confidenceLevel;
 
     /**
      * Gate's value (user input).
@@ -41,6 +52,12 @@ class Upsert extends AbstractCommand {
      * @var bool
      */
     public $pass;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}
@@ -56,8 +73,16 @@ class Upsert extends AbstractCommand {
             $this->service = $parameters['service'];
         }
 
+        if (isset($parameters['slug'])) {
+            $this->slug = $parameters['slug'];
+        }
+
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
+        }
+
+        if (isset($parameters['confidence_level'])) {
+            $this->confidenceLevel = $parameters['confidence_level'];
         }
 
         if (isset($parameters['pass'])) {

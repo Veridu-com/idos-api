@@ -12,13 +12,13 @@ class S40SubscriptionsSeed extends AbstractSeed {
 
         $data = [
             [
-                'category_slug' => 'first-name-mismatch',
+                'category_name' => 'firstNameMismatch',
                 'credential_id' => 1,
                 'identity_id'   => 1,
                 'created_at'    => $now
             ],
             [
-                'category_slug' => 'last-name-mismatch',
+                'category_name' => 'lastNameMismatch',
                 'credential_id' => 1,
                 'identity_id'   => 1,
                 'created_at'    => $now

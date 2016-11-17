@@ -20,27 +20,24 @@ class UpsertBulk extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
-    /**
-     * Target Credential.
-     *
-     * @var \App\Entity\Company\Credential
-     */
-    public $credential;
-
     /**
      * Features (user input).
      *
      * @var array
      */
     public $features;
-
     /**
      * Feature's Service (creator).
      *
      * @var \App\Entity\Service
      */
     public $service;
+    /**
+     * Target Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

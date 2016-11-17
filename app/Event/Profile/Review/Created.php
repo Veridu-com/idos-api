@@ -10,6 +10,7 @@ namespace App\Event\Profile\Review;
 
 use App\Entity\Identity;
 use App\Entity\Profile\Review;
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -32,7 +33,7 @@ class Created extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Review   $review
+     * @param \App\Entity\Profile\Review   $review
      * @param \App\Entity\Identity $identity
      *
      * @return void

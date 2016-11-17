@@ -21,6 +21,7 @@ use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
+use App\Repository\CompanyInterface;
 use App\Repository\Profile\ProcessInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Validator\Profile\Source as SourceValidator;
@@ -70,6 +71,9 @@ class Source implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Profile\Process'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Company'),
+                $container
                     ->get('validatorFactory')
                     ->create('Profile\Source'),
                 $container
@@ -81,24 +85,26 @@ class Source implements HandlerInterface {
     }
 
     /**
-     * Class constructor.
+     * Class Constructor.
      *
-     * @param \App\Repository\Profile\SourceInterface $repository
-     * @param \App\Validator\Profile\Source           $validator
-     * @param \App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                   $emitter
-     *
-     * @return void
+     * @param \App\Repository\Profile\SourceInterface  $repository        The repository
+     * @param \App\Repository\Profile\ProcessInterface $processRepository The process repository
+     * @param \App\Repository\CompanyInterface         $companyRepository The company repository
+     * @param \App\Handler\Profile\SourceValidator     $validator         The validator
+     * @param \App\Factory\Event                       $eventFactory      The event factory
+     * @param \League\Event\Emitter                    $emitter           The emitter
      */
     public function __construct(
         SourceInterface $repository,
         ProcessInterface $processRepository,
+        CompanyInterface $companyRepository,
         SourceValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository        = $repository;
         $this->processRepository = $processRepository;
+        $this->companyRepository = $companyRepository;
         $this->validator         = $validator;
         $this->eventFactory      = $eventFactory;
         $this->emitter           = $emitter;
@@ -126,6 +132,7 @@ class Source implements HandlerInterface {
             foreach ($command->tags as $key => $value) {
                 $this->validator->assertString($key);
             }
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),
@@ -134,11 +141,21 @@ class Source implements HandlerInterface {
             );
         }
 
+        $company = $this->companyRepository->find($command->credential->companyId);
+
         // OTP check
         $sendOTP = false;
-        if ((isset($command->tags['otp_check']))
-            && ($this->validator->validateFlag($command->tags['otp_check']))
-        ) {
+        if (isset($command->tags['otp_check'])) {
+            $this->validator->validateFlag($command->tags['otp_check']);
+
+            if((! isset($command->tags['email'])) && (! isset($command->tags['phone']))) {
+                throw new ValidationException('OTP Checks must have "phone" or "email" fields.', 400);
+            }
+
+            if (isset($command->tags['email'])) {
+                $this->validator->assertEmail($command->tags['email']);
+            }
+
             $command->tags['otp_code']     = mt_rand(100000, 999999);
             $command->tags['otp_verified'] = false;
             $command->tags['otp_attempts'] = 0;
@@ -180,8 +197,8 @@ class Source implements HandlerInterface {
             'Profile\\Source\\Created',
             $source,
             $command->user,
-            $command->credential,
-            $command->ipaddr
+            $command->ipaddr,
+            $command->credential
         );
 
         try {
@@ -205,8 +222,11 @@ class Source implements HandlerInterface {
             $this->emitter->emit(
                 $this->eventFactory->create(
                     'Profile\\Source\\OTP',
-                    $command->user,
                     $source,
+                    $command->user,
+                    $command->credential,
+                    $company,
+                    $processEntity,
                     $command->ipaddr
                 )
             );
@@ -218,7 +238,8 @@ class Source implements HandlerInterface {
                     'Profile\\Source\\CRA',
                     $command->user,
                     $source,
-                    $command->ipaddr
+                    $command->ipaddr,
+                    $command->credential
                 )
             );
         }
@@ -250,6 +271,7 @@ class Source implements HandlerInterface {
             foreach ($command->tags as $key => $value) {
                 $this->validator->assertString($key);
             }
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),
@@ -261,7 +283,8 @@ class Source implements HandlerInterface {
         $source     = $command->source;
         $serialized = $source->serialize();
 
-        $tags = json_decode($serialized['tags']);
+        $tags        = json_decode($serialized['tags']);
+        $commandTags = (object) $command->tags;
 
         if ((isset($tags->otp_voided))) {
             throw new NotAllowed\Profile\SourceException('Too many tries', 500);
@@ -270,7 +293,8 @@ class Source implements HandlerInterface {
         if (isset($command->otpCode)) {
             try {
                 $this->validator->assertOTPCode($command->otpCode);
-            } catch (ValidationException $e) {
+                $this->validator->assertCredential($command->credential);
+        } catch (ValidationException $e) {
                 throw new Validate\Profile\SourceException(
                     $e->getFullMessage(),
                     400,
@@ -282,11 +306,12 @@ class Source implements HandlerInterface {
         // OTP check must only work on valid sources (i.e. not voided and unverified)
         if ($tags
             && property_exists($tags, 'otp_check')
-            && (empty($tags->otp_verified))
+            && ! $tags->otp_verified
         ) {
             // code verification
-            if ((isset($tags->otp_code))
-                && ($tags->otp_code === $command->otpCode)
+            if (property_exists($tags, 'otp_code')
+                && property_exists($commandTags, 'otp_code')
+                && ($tags->otp_code === $commandTags->otp_code)
             ) {
                 $tags->otp_verified = true;
             }
@@ -330,7 +355,8 @@ class Source implements HandlerInterface {
                     'Profile\\Source\\Updated',
                     $command->user,
                     $source,
-                    $command->ipaddr
+                    $command->ipaddr,
+                    $command->credential
                 )
             );
         } catch (\Exception $e) {
@@ -359,6 +385,7 @@ class Source implements HandlerInterface {
             $this->validator->assertSource($command->source);
             $this->validator->assertId($command->source->id);
             $this->validator->assertIpAddr($command->ipaddr);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),
@@ -378,7 +405,8 @@ class Source implements HandlerInterface {
                 'Profile\\Source\\Deleted',
                 $command->user,
                 $command->source,
-                $command->ipaddr
+                $command->ipaddr,
+                $command->credential
             )
         );
     }
@@ -400,6 +428,7 @@ class Source implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertId($command->user->id);
             $this->validator->assertIpAddr($command->ipaddr);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),
@@ -416,7 +445,8 @@ class Source implements HandlerInterface {
                 'Profile\\Source\\DeletedMulti',
                 $command->user,
                 $sources,
-                $command->ipaddr
+                $command->ipaddr,
+                $command->credential
             )
         );
 

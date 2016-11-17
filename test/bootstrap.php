@@ -17,4 +17,9 @@ mb_internal_encoding('UTF-8');
  */
 require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once __DIR__ . '/../config/testing.php';
+// Loads .env if available
+$dotEnv = new Dotenv\Dotenv(__DIR__ . '/../', '.env.testing');
+$dotEnv->overload();
+
+// Load application settings
+require_once __DIR__ . '/../config/settings.php';

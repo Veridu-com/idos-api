@@ -20,41 +20,36 @@ class CreateNew extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Raw's Service.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Raw's Source.
      *
      * @var \App\Entity\Profile\Source
      */
     public $source;
-
-    /**
-     * Target Credential.
-     *
-     * @var \App\Entity\Company\Credential
-     */
-    public $credential;
-
     /**
      * New raw collection name.
      *
      * @var string
      */
     public $collection;
-
     /**
      * New raw data.
      *
      * @var string
      */
     public $data;
+    /**
+     * Target Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

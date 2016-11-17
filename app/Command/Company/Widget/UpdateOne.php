@@ -20,28 +20,24 @@ class UpdateOne extends AbstractCommand {
      * @var string
      */
     public $label;
-
     /**
      * Widget hash.
      *
      * @var string
      */
     public $hash;
-
     /**
      * Widget type.
      *
      * @var string
      */
     public $type;
-
     /**
      * Widget config.
      *
      * @var string
      */
     public $config;
-
     /**
      * Widget enabled.
      *

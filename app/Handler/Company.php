@@ -109,6 +109,7 @@ class Company implements HandlerInterface {
         try {
             $this->validator->assertLongString($command->name);
             $this->validator->assertNullableId($command->parentId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),
@@ -153,6 +154,7 @@ class Company implements HandlerInterface {
         try {
             $this->validator->assertId($command->company->id);
             $this->validator->assertMediumString($command->name);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),
@@ -190,6 +192,7 @@ class Company implements HandlerInterface {
         try {
             $this->validator->assertCompany($command->company);
             $this->validator->assertId($command->company->id);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),

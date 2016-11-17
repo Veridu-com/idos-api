@@ -20,20 +20,24 @@ class UpdateOne extends AbstractCommand {
      * @var int
      */
     public $serviceHandlerId;
-
     /**
      * ServiceHandler's company's id.
      *
      * @var int
      */
     public $companyId;
-
     /**
      * ServiceHandler's listens attribute.
      *
      * @var string
      */
     public $listens;
+    /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}

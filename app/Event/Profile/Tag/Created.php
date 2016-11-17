@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Tag;
 
 use App\Entity\Profile\Tag;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -21,15 +22,23 @@ class Created extends AbstractEvent {
      * @var \App\Entity\Profile\Tag
      */
     public $tag;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * Class constructor.
      *
      * @param \App\Entity\Profile\Tag $tag
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */
-    public function __construct(Tag $tag) {
+    public function __construct(Tag $tag, Identity $identity) {
         $this->tag = $tag;
+        $this->identity = $identity;
     }
 }

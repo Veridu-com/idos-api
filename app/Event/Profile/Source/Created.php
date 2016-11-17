@@ -41,6 +41,12 @@ class Created extends AbstractServiceQueueEvent {
      * @var string
      */
     public $ipAddr;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * Class constructor.
@@ -48,14 +54,15 @@ class Created extends AbstractServiceQueueEvent {
      * @param \App\Entity\User   $user
      * @param \App\Entity\Source $source
      * @param string             $ipAddr
+     * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */
-    public function __construct(Source $source, User $user, Credential $credential, string $ipAddr) {
+    public function __construct(Source $source, User $user, string $ipAddr, Credential $credential) {
         $this->user       = $user;
         $this->source     = $source;
-        $this->credential = $credential;
         $this->ipAddr     = $ipAddr;
+        $this->credential = $credential;
     }
 
     /**

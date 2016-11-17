@@ -20,27 +20,24 @@ class ListAll extends AbstractCommand {
      * @var \App\Entity\Company
      */
     public $company;
-
-    /**
-     * Acting Identity.
-     *
-     * @var \App\Entity\Identity
-     */
-    public $identity;
-
     /**
      * Query parameters.
      *
      * @var array
      */
     public $queryParams;
-
     /**
      * Parent access.
      *
      * @var bool
      */
     public $hasParentAccess;
+    /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}

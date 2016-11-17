@@ -22,7 +22,6 @@ class Deleted extends AbstractEvent {
      * @var \App\Entity\Company
      */
     public $company;
-
     /**
      * Event related Identity.
      *

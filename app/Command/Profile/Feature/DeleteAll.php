@@ -34,6 +34,12 @@ class DeleteAll extends AbstractCommand {
      * @var array
      */
     public $queryParams;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

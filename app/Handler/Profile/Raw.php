@@ -120,6 +120,7 @@ class Raw implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertCredential($command->credential);
             $this->validator->assertName($command->collection);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
                 $e->getFullMessage(),
@@ -153,9 +154,9 @@ class Raw implements HandlerInterface {
                 'Profile\\Raw\\Created',
                 $raw,
                 $command->user,
-                $command->credential,
                 $command->source,
-                $process
+                $process,
+                $command->credential
             );
 
             $this->emitter->emit($event);
@@ -169,7 +170,7 @@ class Raw implements HandlerInterface {
     /**
      * Creates or updates a raw data in the given source.
      *
-     * @param \App\Command\Raw\Upsert $command
+     * @param \App\Command\Profile\Raw\Upsert $command
      *
      * @see \App\Repository\DBRaw::findOne
      * @see \App\Repository\DBRaw::create
@@ -184,6 +185,7 @@ class Raw implements HandlerInterface {
         try {
             $this->validator->assertSource($command->source);
             $this->validator->assertName($command->collection);
+            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
                 $e->getFullMessage(),
@@ -227,18 +229,18 @@ class Raw implements HandlerInterface {
                     'Profile\\Raw\\Created',
                     $entity,
                     $command->user,
-                    $command->credential,
                     $command->source,
-                    $process
+                    $process,
+                    $command->credential
                 );
             } else {
                 $event = $this->eventFactory->create(
                     'Profile\\Raw\\Updated',
                     $entity,
                     $command->user,
-                    $command->credential,
                     $command->source,
-                    $process
+                    $process,
+                    $command->credential
                 );
             }
 

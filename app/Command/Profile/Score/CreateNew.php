@@ -21,21 +21,18 @@ class CreateNew extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Score's creator.
      *
      * @var \App\Entity\Service
      */
     public $service;
-
     /**
      * Score's Attribute.
      *
      * @var \App\Entity\Profile\Attribute
      */
     public $attribute;
-
     /**
      * New score name.
      *
@@ -48,6 +45,12 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $value;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}

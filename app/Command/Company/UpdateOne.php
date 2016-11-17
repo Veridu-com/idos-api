@@ -26,9 +26,8 @@ class UpdateOne extends AbstractCommand {
      * @var \App\Entity\Company
      */
     public $company;
-
     /**
-     * Acting Identity.
+     * Identity.
      *
      * @var \App\Entity\Identity
      */

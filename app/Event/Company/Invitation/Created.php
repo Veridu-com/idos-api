@@ -10,6 +10,7 @@ namespace App\Event\Company\Invitation;
 
 use App\Entity\Company\Credential;
 use App\Entity\Company\Invitation;
+use App\Entity\Identity;
 use App\Event\AbstractServiceQueueEvent;
 
 /**
@@ -46,20 +47,32 @@ class Created extends AbstractServiceQueueEvent {
      * @var string
      */
     public $signupHash;
+    /**
+     * Event related Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Company\Member $member
+     * @param \App\Entity\Company\Invitation $invitation
+     * @param \App\Entity\Company\Credential $credential
+     * @param string $companyName
+     * @param string $dashboardName
+     * @param string $signupHash
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */
-    public function __construct(Invitation $invitation, Credential $credential, string $companyName, string $dashboardName, string $signupHash) {
+    public function __construct(Invitation $invitation, Credential $credential, string $companyName, string $dashboardName, string $signupHash, Identity $identity) {
         $this->invitation    = $invitation;
         $this->credential    = $credential;
         $this->companyName   = $companyName;
         $this->dashboardName = $dashboardName;
         $this->signupHash    = $signupHash;
+        $this->identity = $identity;
     }
 
     /**

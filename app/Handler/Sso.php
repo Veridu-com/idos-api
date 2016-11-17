@@ -16,6 +16,7 @@ use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
 use App\Command\Sso\CreateNewTwitter;
 use App\Entity\Company as CompanyEntity;
+use App\Entity\Identity as IdentityEntity;
 use App\Entity\Company\Credential;
 use App\Entity\Company\Member as MemberEntity;
 use App\Entity\Profile\Source as SourceEntity;
@@ -227,17 +228,17 @@ class Sso implements HandlerInterface {
 
     private function createNewMembership(
         CompanyEntity $company,
-        int $identityId,
+        IdentityEntity $identity,
         string $role,
         string $ipaddr
     ) : MemberEntity {
         $command = $this->commandFactory->create('Company\\Member\\CreateNew');
 
-        $command->setParameter('company', $company);
-        $command->setParameter('ipaddr', $ipaddr);
-        $command->setParameters(
+        $command->setParameter('company', $company)
+                ->setParameter('ipaddr', $ipaddr)
+                ->setParameter('identity', $identity)
+                ->setParameters(
             [
-                'identity_id' => $identityId,
                 'role'        => $role
             ]
         );
@@ -378,7 +379,7 @@ class Sso implements HandlerInterface {
                             // if can't find membership, creates
                             $member = $this->createNewMembership(
                                 $company,
-                                $identity->id,
+                                $identity,
                                 $invitation->role,
                                 $command->ipAddress
                             );

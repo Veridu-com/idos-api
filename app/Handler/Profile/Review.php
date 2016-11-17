@@ -174,7 +174,7 @@ class Review implements HandlerInterface {
 
         try {
             $review = $this->repository->save($review);
-            $event  = $this->eventFactory->create('Profile\\Review\\Updated', $review);
+            $event  = $this->eventFactory->create('Profile\\Review\\Updated', $review, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ReviewException('Error while trying to update a review', 500, $e);

@@ -17,5 +17,6 @@ use App\Validator\ValidatorInterface;
 class Process implements ValidatorInterface {
     use Traits\AssertId,
         Traits\AssertName,
-        Traits\AssertEvent;
+        Traits\AssertEvent,
+        Traits\AssertEntity;
 }

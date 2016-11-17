@@ -46,6 +46,12 @@ class UpdateOne extends AbstractCommand {
      * @var \App\Entity\User
      */
     public $user;
+    /**
+     * Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * {@inheritdoc}
@@ -55,10 +61,6 @@ class UpdateOne extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['tags'])) {
             $this->tags = $parameters['tags'];
-        }
-
-        if (isset($parameters['otpCode'])) {
-            $this->otpCode = $parameters['otpCode'];
         }
 
         return $this;

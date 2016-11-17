@@ -23,14 +23,12 @@ class Completed extends AbstractServiceQueueEvent {
      * @var \App\Entity\Profile\Task
      */
     public $task;
-
     /**
      * Event related User.
      *
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Event related Credential.
      *
@@ -39,25 +37,18 @@ class Completed extends AbstractServiceQueueEvent {
     public $credential;
 
     /**
-     * Class constructor.
-     *
-     * @param \App\Entity\Profile\Task $task
-     *
-     * @return void
-     */
-    /**
      * Class contructor.
      *
      * @param \App\Entity\Profile\Task       $task            Task completed
      * @param \App\Entity\User               $user            Target User
-     * @param \App\Entity\Company\Credential $credential      Target Credential
      * @param string                         $eventIdentifier Event identifier  eg.: "idos:scraper.facebook.completed" (comes from the Task "creator property")
+     * @param \App\Entity\Company\Credential $credential      Target Credential
      */
-    public function __construct(Task $task, User $user, Credential $credential, string $eventIdentifier) {
+    public function __construct(Task $task, User $user, string $eventIdentifier, Credential $credential) {
         $this->task            = $task;
         $this->user            = $user;
-        $this->credential      = $credential;
         $this->eventIdentifier = $eventIdentifier;
+        $this->credential = $credential;
     }
 
     /**

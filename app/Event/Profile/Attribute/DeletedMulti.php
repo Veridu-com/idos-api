@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Attribute;
 
+use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 
@@ -21,15 +22,23 @@ class DeletedMulti extends AbstractEvent {
      * @var \Illuminate\Support\Collection
      */
     public $attributes;
+    /**
+     * Event related Credential.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    public $credential;
 
     /**
      * Class constructor.
      *
      * @param \Illuminate\Support\Collection $attributes
+     * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */
-    public function __construct(Collection $attributes) {
+    public function __construct(Collection $attributes, Credential $credential) {
         $this->attributes = $attributes;
+        $this->credential = $credential;
     }
 }

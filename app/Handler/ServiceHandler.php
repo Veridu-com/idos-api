@@ -107,6 +107,7 @@ class ServiceHandler implements HandlerInterface {
             $this->validator->assertId($command->companyId);
             $this->validator->assertId($command->serviceId);
             $this->validator->assertArray($command->listens);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\ServiceHandlerException(
                 $e->getFullMessage(),
@@ -128,7 +129,7 @@ class ServiceHandler implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
-            $event  = $this->eventFactory->create('ServiceHandler\\Created', $entity);
+            $event  = $this->eventFactory->create('ServiceHandler\\Created', $entity, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\ServiceHandlerException('Error while trying to create a service handler', 500, $e);
@@ -149,6 +150,7 @@ class ServiceHandler implements HandlerInterface {
             $this->validator->assertId($command->companyId);
             $this->validator->assertId($command->serviceHandlerId);
             $this->validator->assertArray($command->listens);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\ServiceHandlerException(
                 $e->getFullMessage(),
@@ -177,7 +179,7 @@ class ServiceHandler implements HandlerInterface {
         try {
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
-            $event  = $this->eventFactory->create('ServiceHandler\\Updated', $entity);
+            $event  = $this->eventFactory->create('ServiceHandler\\Updated', $entity, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\ServiceHandlerException('Error while trying to update a service handler', 500, $e);
@@ -199,6 +201,7 @@ class ServiceHandler implements HandlerInterface {
         try {
             $this->validator->assertId($command->companyId);
             $this->validator->assertId($command->serviceHandlerId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\ServiceHandlerException(
                 $e->getFullMessage(),
@@ -215,7 +218,7 @@ class ServiceHandler implements HandlerInterface {
             throw new NotFound\ServiceHandlerException('No service handlers found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('ServiceHandler\\Deleted', $serviceHandler);
+        $event = $this->eventFactory->create('ServiceHandler\\Deleted', $serviceHandler, $command->identity);
         $this->emitter->emit($event);
     }
 
@@ -229,6 +232,7 @@ class ServiceHandler implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
             $this->validator->assertId($command->companyId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\ServiceHandlerException(
                 $e->getFullMessage(),
@@ -241,7 +245,7 @@ class ServiceHandler implements HandlerInterface {
 
         $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
 
-        $event = $this->eventFactory->create('ServiceHandler\\DeletedMulti', $serviceHandlers);
+        $event = $this->eventFactory->create('ServiceHandler\\DeletedMulti', $serviceHandlers, $command->identity);
         $this->emitter->emit($event);
 
         return $rowsAffected;

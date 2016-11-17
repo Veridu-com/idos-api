@@ -27,6 +27,13 @@ class DeleteAll extends AbstractCommand {
      */
     public $company;
     /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
+
+    /**
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {

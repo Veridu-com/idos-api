@@ -20,21 +20,18 @@ class CreateNew extends AbstractCommand {
      * @var object
      */
     public $section;
-
     /**
      * Setting's property name (user input).
      *
      * @var object
      */
     public $property;
-
     /**
      * Setting's protected value.
      *
      * @var bool
      */
     public $protected;
-
     /**
      * Setting's property value (user input).
      *
@@ -42,13 +39,18 @@ class CreateNew extends AbstractCommand {
      * @var object
      */
     public $value;
-
     /**
      * Company.
      *
      * @var \App\Entity\Company
      */
     public $company;
+    /**
+     * Identity.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
 
     /**
      * {@inheritdoc}

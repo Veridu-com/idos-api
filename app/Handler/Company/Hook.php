@@ -165,6 +165,7 @@ class Hook implements HandlerInterface {
         try {
             $this->validator->assertTriggerName($command->trigger);
             $this->validator->assertUrl($command->url);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),
@@ -203,7 +204,7 @@ class Hook implements HandlerInterface {
 
         try {
             $hook  = $this->repository->save($hook);
-            $event = $this->eventFactory->create('Company\\Hook\\Created', $hook);
+            $event = $this->eventFactory->create('Company\\Hook\\Created', $hook, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\HookException('Error while trying to create a hook', 500, $e);
@@ -232,6 +233,7 @@ class Hook implements HandlerInterface {
             $this->validator->assertId($command->hookId);
             $this->validator->assertTriggerName($command->trigger);
             $this->validator->assertUrl($command->url);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),
@@ -253,6 +255,18 @@ class Hook implements HandlerInterface {
             throw new NotFound\Company\HookException('Credential not found', 404);
         }
 
+        $validResponse = false;
+        try {
+            if ($this->httpClient->request('GET', $command->url)->getStatusCode() === 204) {
+                $validResponse = true;
+            }
+        } catch (\Exception $e) {
+        }
+
+        if (! $validResponse) {
+            throw new Update\Company\HookException('Failed to perform hook handshake.', 500);
+        }
+
         $hook->trigger    = $command->trigger;
         $hook->url        = $command->url;
         $hook->subscribed = $command->subscribed;
@@ -260,7 +274,7 @@ class Hook implements HandlerInterface {
 
         try {
             $hook  = $this->repository->save($hook);
-            $event = $this->eventFactory->create('Company\\Hook\\Updated', $hook);
+            $event = $this->eventFactory->create('Company\\Hook\\Updated', $hook, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Company\HookException('Error while trying to update a hook', 500, $e);
@@ -286,6 +300,7 @@ class Hook implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertId($command->hookId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),
@@ -313,7 +328,7 @@ class Hook implements HandlerInterface {
             throw new NotFound\Company\HookException('No hooks found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Hook\\Deleted', $hook);
+        $event = $this->eventFactory->create('Company\\Hook\\Deleted', $hook, $command->identity);
         $this->emitter->emit($event);
     }
 }

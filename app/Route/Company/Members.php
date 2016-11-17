@@ -18,7 +18,10 @@ use Slim\App;
 /**
  * Company Members.
  *
- * A Company Member is a user profile for an employee of a Company with an adjustable level of permissions and access to specific information. (eg. for distinguishing a low level employee with read-only permissions from an administrator)
+ * Each Company can have one or more Company Members, these Company Members will have access to the Company
+ * configuration and information as controlled by the Access Roles.
+ * All Access Roles configured in a parent Company will have access to all date from children Companies created.
+ * These users will NOT be visible to users who only have access to the child Company.
  *
  * @link docs/companies/members/overview.md
  * @see \App\Controller\Companies
@@ -67,7 +70,7 @@ class Members implements RouteInterface {
      * Retrieves a complete list of all members that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/members
-     * @apiGroup Company Members
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -105,7 +108,7 @@ class Members implements RouteInterface {
      * Retrieve a member entity related to that company and identity.
      *
      * @apiEndpoint GET /companies/{companySlug}/membership
-     * @apiGroup Company Members
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -143,7 +146,7 @@ class Members implements RouteInterface {
      * Retrieves all public information from a Member
      *
      * @apiEndpoint GET /companies/{companySlug}/members/{memberId}
-     * @apiGroup Company Members
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -182,7 +185,7 @@ class Members implements RouteInterface {
      * Updates one member data.
      *
      * @apiEndpoint PUT /companies/{companySlug}/members/{memberId}
-     * @apiGroup Company Members
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -221,7 +224,7 @@ class Members implements RouteInterface {
      * Deletes one member from the database.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/members/{memberId}
-     * @apiGroup Company Members
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd

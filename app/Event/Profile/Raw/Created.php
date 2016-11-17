@@ -25,21 +25,24 @@ class Created extends AbstractServiceQueueEvent {
      * @var \App\Entity\Profile\Raw
      */
     public $raw;
-
     /**
      * Event related User.
      *
      * @var \App\Entity\User
      */
     public $user;
-
     /**
      * Event related Source.
      *
      * @var \App\Entity\Profile\Source
      */
     public $source;
-
+    /**
+     * Event related Process.
+     *
+     * @var \App\Entity\Profile\Process
+     */
+    public $process;
     /**
      * Event related Credential.
      *
@@ -48,25 +51,22 @@ class Created extends AbstractServiceQueueEvent {
     public $credential;
 
     /**
-     * Event related Process.
-     *
-     * @var \App\Entity\Profile\Process
-     */
-    public $process;
-
-    /**
      * Class constructor.
      *
      * @param \App\Entity\Profile\Raw $raw
+     * @param \App\Entity\User $user
+     * @param \App\Entity\Profile\Source $source
+     * @param \App\Entity\Profile\Process $process
+     * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */
-    public function __construct(Raw $raw, User $user, Credential $credential, Source $source, Process $process) {
+    public function __construct(Raw $raw, User $user, Source $source, Process $process, Credential $credential) {
         $this->raw        = $raw;
         $this->user       = $user;
-        $this->credential = $credential;
         $this->process    = $process;
         $this->source     = $source;
+        $this->credential = $credential;
     }
 
     /**

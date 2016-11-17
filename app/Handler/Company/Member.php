@@ -108,6 +108,7 @@ class Member implements HandlerInterface {
         try {
             $this->validator->assertCompany($command->company);
             $this->validator->assertShortName($command->role);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -118,7 +119,7 @@ class Member implements HandlerInterface {
 
         $member = $this->repository->create(
             [
-                'identity_id' => $command->identityId,
+                'identity_id' => $command->identity->id,
                 'role'        => $command->role,
                 'company_id'  => $command->company->id
             ]
@@ -126,7 +127,7 @@ class Member implements HandlerInterface {
 
         try {
             $member = $this->repository->save($member);
-            $event  = $this->eventFactory->create('Company\\Member\\Created', $member);
+            $event  = $this->eventFactory->create('Company\\Member\\Created', $member, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\MemberException('Error while trying to create a member', 500, $e);
@@ -151,6 +152,7 @@ class Member implements HandlerInterface {
             $this->validator->assertIdentity($command->identity);
             $this->validator->assertShortName($command->role);
             $this->validator->assertId($command->memberId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -167,7 +169,7 @@ class Member implements HandlerInterface {
         try {
             // persists entity
             $member = $this->repository->save($member);
-            $event  = $this->eventFactory->create('Company\\Member\\Updated', $member);
+            $event  = $this->eventFactory->create('Company\\Member\\Updated', $member, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\MemberException('Error while trying to create a member', 500, $e);
@@ -191,6 +193,7 @@ class Member implements HandlerInterface {
             $this->validator->assertCompany($command->company);
             $this->validator->assertIdentity($command->identity);
             $this->validator->assertId($command->memberId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -206,7 +209,7 @@ class Member implements HandlerInterface {
             throw new NotFound\Company\MemberException('No invitations found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Member\\Deleted', $member);
+        $event = $this->eventFactory->create('Company\\Member\\Deleted', $member, $command->identity);
         $this->emitter->emit($event);
 
         return $rowsAffected;

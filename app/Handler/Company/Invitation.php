@@ -141,6 +141,7 @@ class Invitation implements HandlerInterface {
             if ($command->expires) {
                 $this->validator->assertDate($command->expires);
             }
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\InvitationException(
                 $e->getFullMessage(),
@@ -181,7 +182,7 @@ class Invitation implements HandlerInterface {
 
         try {
             $invitation = $this->repository->save($invitation);
-            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash);
+            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\InvitationException('Error while trying to create an invitation', 500, $e);
@@ -284,6 +285,7 @@ class Invitation implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
             $this->validator->assertId($command->invitationId);
+            $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\InvitationException(
                 $e->getFullMessage(),
@@ -305,7 +307,7 @@ class Invitation implements HandlerInterface {
             throw new NotFound\Company\InvitationException('No invitations found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Company\\Invitation\\Deleted', $invitation);
+        $event = $this->eventFactory->create('Company\\Invitation\\Deleted', $invitation, $command->identity);
         $this->emitter->emit($event);
 
         return $rowsAffected;

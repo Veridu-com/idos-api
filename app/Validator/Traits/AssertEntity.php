@@ -125,4 +125,18 @@ trait AssertEntity {
         Validator::instance('App\\Entity\\ServiceHandler')
             ->assert($entity);
     }
+
+    /**
+     * Asserts a valid Event.
+     *
+     * @param mixed $entity
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertEvent($entity) {
+        Validator::instance('\\League\\Event\\EventInterface')
+            ->assert($entity);
+    }
 }

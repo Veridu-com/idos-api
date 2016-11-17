@@ -18,8 +18,15 @@ use Slim\App;
 /**
  * Company.
  *
- * A Company is a profile within the API available for a customer who requires a
- * sophisticated level of control over employees with different levels of Permission.
+ * Within the hierarchy a Company allows you to separate access to the services to specific individuals.
+ * Each Company is allowed to have multiple Users, Keys, Widgets and even other Companies.
+ * All Access Roles configured in a parent Company will have access to all data from children Companies created.
+ * These users will NOT be visible to users who only have access to the child Company.
+ * Default roles available are:
+ *  - Administrator: an administrator will have full read/write access
+ *  - Reviewer: a reviewer is allowed to view the end-users who have been verified.
+ *    They are also able to provide review feedback and view reports.
+ * **Note:** advanced usage only
  *
  * @link docs/companies/overview.md
  * @see \App\Controller\Companies
@@ -44,16 +51,19 @@ class Companies implements RouteInterface {
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Companies::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Companies(
-                $container->get('repositoryFactory')->create('Company'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
         $container            = $app->getContainer();
         $authMiddleware       = $container->get('authMiddleware');
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
-        // $limitMiddleware      = $container->
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
@@ -96,7 +106,6 @@ class Companies implements RouteInterface {
                 )
             )
             ->add($auth(Auth::IDENTITY))
-            // ->add($limit(
             ->setName('companies:listAll');
     }
 
@@ -132,15 +141,15 @@ class Companies implements RouteInterface {
     }
 
     /**
-     * Create new Company.
+     * Create a new Company.
      *
-     * Creates a new child company for the requesting company.
+     * Creates a new child company for the {companySlug} company.
      *
      * @apiEndpoint POST /companies/{companySlug}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment string companySlug veridu-ltd Parent company
      *
      * @param \Slim\App $app
      * @param \callable $auth

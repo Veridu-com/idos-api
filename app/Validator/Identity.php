@@ -13,5 +13,6 @@ namespace App\Validator;
  */
 class Identity implements ValidatorInterface {
     use Traits\AssertType,
-        Traits\AssertName;
+        Traits\AssertName,
+        Traits\AssertEntity;
 }
