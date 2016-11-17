@@ -126,7 +126,6 @@ class Widget implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : WidgetEntity {
         try {
             $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->creator);
             $this->validator->assertString($command->label);
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
@@ -145,14 +144,14 @@ class Widget implements HandlerInterface {
 
         $widget = $this->repository->create(
             [
-                'hash'             => md5(sprintf('%s%s%s%s%s', $command->label, microtime(), $credential->id, $command->company->id, $command->creator->id)),
+                'hash'             => md5(sprintf('%s%s%s%s%s', $command->label, microtime(), $credential->id, $command->company->id, $command->identity->id)),
                 'label'            => $command->label,
                 'type'             => $command->type,
                 'config'           => json_encode($command->config),
                 'enabled'          => $command->enabled,
                 'credential_id'    => $credential->id,
                 'company_id'       => $command->company->id,
-                'creator_id'       => $command->creator->id,
+                'creator_id'       => $command->identity->id,
                 'created_at'       => time()
             ]
         );
