@@ -16,7 +16,11 @@ use Slim\App;
 /**
  * Company Categories.
  *
- * Company Categories are what allows a company to add tailored functionality to the API in order to assess specific information. If a company wants to support a specific Profile Source, access a certain data point within a Profile, or change the way the API interprets data, Categories are a simple and direct way of doing this.
+ * Company Categories are what allows a company to add tailored functionality to the API in order to assess specific
+ * information. If a company wants to support a specific Profile Source, access a certain data point within a Profile,
+ * or change the way the API interprets data, Categories are a simple and direct way of doing this.
+ *
+ * @apiDisabled
  *
  * @link docs/categories/overview.md
  * @see \App\Controller\Categories
@@ -37,9 +41,13 @@ class Categories implements RouteInterface {
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Categories::class] = function (ContainerInterface $container) {
             return new \App\Controller\Categories(
-                $container->get('repositoryFactory')->create('Category'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Category'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -56,7 +64,7 @@ class Categories implements RouteInterface {
      * Retrieves a complete list of all categories.
      *
      * @apiEndpoint GET /categories
-     * @apiGroup Company Category
+     * @apiGroup CompanyDisabled
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *

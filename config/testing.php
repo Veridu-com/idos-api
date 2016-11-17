@@ -7,14 +7,14 @@
 declare(strict_types = 1);
 
 $appSettings = [
-    'debug' => true,
-    'displayErrorDetails' => true,
+    'debug'                             => false,
+    'displayErrorDetails'               => false,
     'determineRouteBeforeAppMiddleware' => true,
     'trustedProxies'                    => [
     ],
     'db' => [
         'sql' => [
-            'driver'    => 'pgsql',
+            'driver' => 'pgsql',
             // 'read' => [
             //     'host' => 'localhost'
             // ],
@@ -23,9 +23,9 @@ $appSettings = [
             // ],
             'host'      => 'localhost',
             'port'      => 5432,
-            'database'  => 'veridu-idos-api',
-            'username'  => 'veridu',
-            'password'  => 'veridu',
+            'database'  => 'veridu-api',
+            'username'  => 'veridu-api',
+            'password'  => 'veridu-api',
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
@@ -36,32 +36,20 @@ $appSettings = [
         ],
 
         'nosql' => [
-            'driver'    => 'mongodb',
-            'host'      => 'localhost',
-            'port'      => 27017
+            'driver' => 'mongodb',
+            'host'   => 'localhost',
+            'port'   => 27017
             //'database'  => 'veridu-idos-api',
             //'username'  => 'veridu',
             //'password'  => 'veridu',
         ]
     ],
     'log' => [
-        'path'  => sprintf(
-            '%s/../log/api-%04d%02d%02d.log',
-            __DIR__,
-            date('Y'),
-            date('m'),
-            date('d')
-        ),
+        'path'  => sprintf('%s/../log/testing-%04d%02d%02d.log', __DIR__, date('Y'), date('m'), date('d')),
         'level' => Monolog\Logger::DEBUG
     ],
     'cache' => [
-        'driver'  => 'redis',
-        'options' => [
-            'servers' => [
-                ['localhost', 6379]
-            ]
-        ]
-        // 'driver' => 'ephemeral'
+        'driver' => 'ephemeral'
     ],
     'gearman' => [
         'timeout' => 1000,
@@ -69,30 +57,15 @@ $appSettings = [
             ['localhost', 4730]
         ]
     ],
+    'mongo' => [
+        'dsn' => 'mongodb:///tmp/mongodb-27017.sock'
+    ],
     'optimus' => [
         'prime'   => 0,
         'inverse' => 0,
         'random'  => 0
     ],
-    'repository' => [
-        'strategy' => 'db',
-        'cached'   => false
-    ],
-    'secure' => '',
-    'sso_providers' => [
-        'amazon',
-        'facebook',
-        'google',
-        'linkedin',
-        'paypal',
-        'twitter',
-    ],
-    'sso_providers_scopes' => [
-        'amazon' => ['profile'],
-        'facebook' => ['email', 'public_profile', 'user_friends'],
-        'google' => ['userinfo_email', 'userinfo_profile'],
-        'linkedin' => ['r_basicprofile'],
-        'paypal' => ['profile', 'openid'],
-        'twitter' => []
+    'strategy' => [
+        'repository' => 'array'
     ]
 ];

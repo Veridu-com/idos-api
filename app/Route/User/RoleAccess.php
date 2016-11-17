@@ -18,7 +18,11 @@ use Slim\App;
 /**
  * Role Access.
  *
- * Access Roles are the level of permissions a User has that are accessible from specific sources. It is used to limit what sensitive information (eg. last name, phone number etc) is available to specific Members or Users.
+ * With Access Roles you can control exactly what information (e.g. last name, phone number, etc.)
+ * is available to a Company Member.
+ * **Note:** advanced usage only
+ *
+ * @apiDisabled
  *
  * @link docs/access/roles/overview.md
  * @see \App\Controller\User\RoleAccess
@@ -68,7 +72,7 @@ class RoleAccess implements RouteInterface {
      * Retrieve a complete list of all Role Access that belong to the acting User.
      *
      * @apiEndpoint GET /access/roles
-     * @apiGroup Access Roles
+     * @apiGroup User
      * @apiAuth query   token UserToken  eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth header  token userToken  eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
@@ -100,7 +104,7 @@ class RoleAccess implements RouteInterface {
      * Creates a new Role Access for the acting User.
      *
      * @apiEndpoint POST /access/roles
-     * @apiGroup Access Roles
+     * @apiGroup User
      * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
@@ -132,7 +136,7 @@ class RoleAccess implements RouteInterface {
      * Deletes all RoleAccesses that belong to the acting User.
      *
      * @apiEndpoint DELETE /access/roles
-     * @apiGroup Access Roles
+     * @apiGroup User
      * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
@@ -164,7 +168,7 @@ class RoleAccess implements RouteInterface {
      * Retrieves all public information from a RoleAccess.
      *
      * @apiEndpoint GET /access/roles/{roleAccessId}
-     * @apiGroup Access Roles
+     * @apiGroup User
      * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
@@ -197,7 +201,7 @@ class RoleAccess implements RouteInterface {
      * Retrieves all public information from a RoleAccess.
      *
      * @apiEndpoint GET /access/roles/{roleAccessId}
-     * @apiGroup Access Roles
+     * @apiGroup User
      * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
@@ -230,7 +234,7 @@ class RoleAccess implements RouteInterface {
      * Deletes a single RoleAccess that belongs to the requesting user.
      *
      * @apiEndpoint DELETE /access/roles/{roleAccessId}
-     * @apiGroup Access Roles
+     * @apiGroup User
      * @apiAuth query   token UserToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id

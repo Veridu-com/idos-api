@@ -18,6 +18,9 @@ use Slim\App;
 /**
  * Company Invitations.
  *
+ * Company Invitations is the best way to add new Members to a Company.
+ * The invitation is sent by e-mail and contains a unique sign-up link with limited expiration time.
+ *
  * @link docs/companies/invitations/overview.md
  * @see \App\Controller\Companies
  */
@@ -62,7 +65,7 @@ class Invitations implements RouteInterface {
      * Creates a new invitation for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/invitations
-     * @apiGroup Company Invitations
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -100,7 +103,7 @@ class Invitations implements RouteInterface {
      * Retrieves all public information from Invitations
      *
      * @apiEndpoint GET /companies/{companySlug}/invitations
-     * @apiGroup Company Invitations
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -138,7 +141,7 @@ class Invitations implements RouteInterface {
      * Deletes a single Invitation that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/invitation/{invitationId}
-     * @apiGroup Company Invitations
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -177,7 +180,7 @@ class Invitations implements RouteInterface {
      * Updates a single Invitation that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/invitation/{invitationId}
-     * @apiGroup Company Invitations
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd

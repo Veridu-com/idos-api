@@ -18,7 +18,9 @@ use Slim\App;
 /**
  * Company Profile.
  *
- * A Company Profile where a Company will access the collection of data on a specific User. This is where the Company can review in detail the raw data, attributes, features, flags, and score gathered from all sources provided by a specific User
+ * The Company Profile endpoint lists a summary all users associated to a specific company, including details such as
+ * the attributes, gates, etc.
+ * It can also be used to retrieve a summary of all information related to single user or delete a single user.
  *
  * @link docs/company/profiles/overview.md
  * @see \App\Controller\Company\Profiles
@@ -68,7 +70,7 @@ class Profiles implements RouteInterface {
      * Retrieve a complete list of all users that belong to this company.
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles
-     * @apiGroup Company Profile
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -101,7 +103,7 @@ class Profiles implements RouteInterface {
      * Retrieves all public information from a company profile.
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}
-     * @apiGroup Company Profile
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -133,7 +135,7 @@ class Profiles implements RouteInterface {
      * Deletes the requested company profile.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}
-     * @apiGroup Company Profile
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd

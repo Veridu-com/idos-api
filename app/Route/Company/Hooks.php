@@ -18,7 +18,8 @@ use Slim\App;
 /**
  * Company Hook.
  *
- * A Hook is a feature that allows a Company to receive updates or alerts when a User changes their data in a specific way. If a User deletes or updates a certain attribute, a Hook will update or alert the Company in realtime.
+ * A Hook is a feature that allows a Company to receive updates or alerts when a User changes their data in a specific
+ * way. If a User deletes or updates a certain attribute, a Hook will update or alert the Company in realtime.
  *
  * @link docs/management/hooks/overview.md
  * @see \App\Controller\Company\Hooks
@@ -67,7 +68,7 @@ class Hooks implements RouteInterface {
      * Retrieves a complete list of all hooks that belong to the requesting credential.
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks
-     * @apiGroup Company Hooks
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -105,7 +106,7 @@ class Hooks implements RouteInterface {
      * Create a new hook for the requesting credential.
      *
      * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}/hooks
-     * @apiGroup Company Hooks
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -144,7 +145,7 @@ class Hooks implements RouteInterface {
      * Updates a hook that belongs to the requesting credential.
      *
      * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
-     * @apiGroup Company Hooks
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -184,7 +185,7 @@ class Hooks implements RouteInterface {
      * Retrieves all public information from a hook
      *
      * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
-     * @apiGroup Company Hooks
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -224,7 +225,7 @@ class Hooks implements RouteInterface {
      * Deletes a hook that belongs to the requesting credential.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
-     * @apiGroup Company Hooks
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd

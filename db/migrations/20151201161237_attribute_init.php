@@ -18,7 +18,7 @@ class AttributeInit extends AbstractMigration {
             ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('attribute', 'text', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'float', ['null' => false, 'default' => 0.0])
+            ->addColumn('value', 'decimal', ['null' => false, 'default' => 0.0])
             ->addTimestamps()
             ->addIndex('user_id')
             ->addIndex('creator')

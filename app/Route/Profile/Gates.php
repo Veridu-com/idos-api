@@ -17,7 +17,11 @@ use Slim\App;
 /**
  * Profile Gates.
  *
- * A Profile Gate is a criterion set by a Company who requires a polar yes-no answer for a specific, vital feature of a Profile. For example if a Company requires Users to be over the age of 18, a Gate is used to filter out any User not fulfilling this criterion. Multiple Gates can be used to create more specific criteria if needed. For example if a Company requires Users to be over the age of 18 and living and in the USA, it would require 3 Gates, one for the age, one for employment and one for residency.
+ * A Profile Gate is a criterion set by a Company who requires a yes-no answer for a specific, vital feature of a
+ * Profile. For example if a Company requires Users to be over the age of 18, a Gate is used to filter out any User
+ * not fulfilling this criterion. Multiple Gates can be used to create more specific criteria if needed.
+ * For example if a Company requires Users to be over the age of 18 and living and in the USA, it would require 3
+ * Gates, one for the age, one for employment and one for residency.
  *
  * @link docs/profile/gates/overview.md
  * @see \App\Controller\Profile\Gates
@@ -70,7 +74,7 @@ class Gates implements RouteInterface {
      * Retrieve a complete list of all gates that belong to the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/gates
-     * @apiGroup Profile Gates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -103,7 +107,7 @@ class Gates implements RouteInterface {
      * Retrieves all public information from a Gate.
      *
      * @apiEndpoint GET /profiles/{userName}/gates/{gateSlug}
-     * @apiGroup Profile Gates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -137,7 +141,7 @@ class Gates implements RouteInterface {
      * Create a new gate for the given user.
      *
      * @apiEndpoint POST /profiles/{userName}/gates
-     * @apiGroup Profile Gates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -170,7 +174,7 @@ class Gates implements RouteInterface {
      * Updates Gate's specific information.
      *
      * @apiEndpoint PUT /profiles/{userName}/gates/{gateSlug}
-     * @apiGroup Profile Gates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -204,7 +208,7 @@ class Gates implements RouteInterface {
      * Updates Gate's specific information.
      *
      * @apiEndpoint PUT /profiles/{userName}/gates/{gateSlug}
-     * @apiGroup Profile Gates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -237,7 +241,7 @@ class Gates implements RouteInterface {
      * Deletes a single Gate that belongs to the given user
      *
      * @apiEndpoint DELETE /profiles/{userName}/gates/{gateSlug}
-     * @apiGroup Profile Gates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -271,7 +275,7 @@ class Gates implements RouteInterface {
      * Deletes all gates that belongs to the given user
      *
      * @apiEndpoint DELETE /profiles/{userName}/gates
-     * @apiGroup Profile Gates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
