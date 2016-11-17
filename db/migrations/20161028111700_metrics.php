@@ -11,19 +11,22 @@ use Phinx\Migration\AbstractMigration;
  * These tables holds API metrics information.
  */
 class Metrics extends AbstractMigration {
-    public function change() {
+    public function up() {
         //@FIXME make the id bigserial
+        //select * from categories;
+
         $this
             ->table('metrics')
+            ->removeColumn('name')
+            ->removeColumn('value')
             ->addColumn('credential_public', 'text', ['null' => false])
             ->addColumn('endpoint', 'text', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
             ->addColumn('data', 'jsonb', ['null' => false, 'default' => '[]'])
-            ->addTimestamps()
             ->addIndex(['credential_public'])
             ->addIndex(['endpoint'])
             ->addIndex(['action'])
-            ->create();
+            ->save();
 
         $this
             ->table('metrics_hourly')
