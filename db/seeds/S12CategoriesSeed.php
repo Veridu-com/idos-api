@@ -344,6 +344,27 @@ class S12CategoriesSeed extends AbstractSeed {
                 'description'         => 'Zipcode score.',
                 'service_id'          => 1
             ],
+            [
+                'display_name'        => 'No Chargeback score low',
+                'name'                => 'noChargebackScoreLow',
+                'type'                => 'score',
+                'description'         => 'No Chargeback score low.',
+                'service_id'          => 1
+            ],
+            [
+                'display_name'        => 'No Chargeback score medium',
+                'name'                => 'noChargebackScoreMed',
+                'type'                => 'score',
+                'description'         => 'No Chargeback score medium.',
+                'service_id'          => 1
+            ],
+            [
+                'display_name'        => 'No Chargeback score high',
+                'name'                => 'noChargebackScoreHigh',
+                'type'                => 'score',
+                'description'         => 'No Chargeback score high.',
+                'service_id'          => 1
+            ],
             // Gates
             [
                 'display_name'        => 'No Chargeback',
