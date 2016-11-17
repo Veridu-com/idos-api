@@ -353,7 +353,6 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
         $command
-            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
             ->setParameter('credential', $credential)
