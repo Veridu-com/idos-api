@@ -214,9 +214,21 @@ class Gate implements HandlerInterface {
      * @return \App\Entity\Score
      */
     public function handleUpsert(Upsert $command) : GateEntity {
-        $this->validator->assertUser($command->user);
-        $this->validator->assertService($command->service);
-        $this->validator->assertName($command->name);
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertService($command->service);
+            $this->validator->assertName($command->name);
+
+            if ($command->confidenceLevel) {
+                $this->validator->assertMediumName($command->confidenceLevel);
+            }
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\GateException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         try {
             $this->repository->beginTransaction();
