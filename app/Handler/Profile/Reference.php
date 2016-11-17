@@ -215,7 +215,7 @@ class Reference implements HandlerInterface {
             throw new NotFound\Profile\ReferenceException('No references found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Profile\\Reference\\Deleted', $reference);
+        $event = $this->eventFactory->create('Profile\\Reference\\Deleted', $reference, $command->credential);
         $this->emitter->emit($event);
     }
 
