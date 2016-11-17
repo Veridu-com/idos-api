@@ -13,13 +13,15 @@ use Phinx\Migration\AbstractMigration;
 class Metrics extends AbstractMigration {
     public function change() {
         //@FIXME make the id bigserial
+        //select * from categories;
+
         $this
             ->table('metrics')
             ->addColumn('credential_public', 'text', ['null' => false])
             ->addColumn('endpoint', 'text', ['null' => false])
             ->addColumn('action', 'text', ['null' => false])
-            ->addColumn('data', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addTimestamps()
+            ->addColumn('data', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addIndex(['credential_public'])
             ->addIndex(['endpoint'])
             ->addIndex(['action'])

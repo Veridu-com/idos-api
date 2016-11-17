@@ -150,8 +150,9 @@ class Candidates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $credential = $request->getAttribute('credential');
+        $service    = $request->getAttribute('service');
 
         $command = $this->commandFactory->create('Profile\\Candidate\\DeleteAll');
         $command
