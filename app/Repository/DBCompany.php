@@ -84,6 +84,23 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
     /**
      * {@inheritdoc}
      */
+    public function getChildrenById(int $companyId) : Collection {
+        $children = $this->getByParentId($companyId);
+
+        if ($children->isEmpty()) {
+            return new Collection();
+        }
+
+        foreach ($children as $child) {
+            $children = $children->merge($this->getChildrenById($child->id));
+        }
+
+        return $children;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function createNewMember(Company $company, Identity $identity, string $role) : Member {
         $query = $this->query('members', Member::class);
         $id    = $query->insertGetId(
