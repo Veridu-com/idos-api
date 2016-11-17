@@ -4,12 +4,13 @@
 *.phar
 *.sublime-project
 *.sublime-workspace
-.php_cs
+.env
+.env.docker
+.env.testing
 .idea
+.idea/
+.php_cs
 composer.lock
-config/settings.php
-config/testing.php
-environment.php
 humbug.json
 humbuglog.*
 phinx.yml
@@ -22,5 +23,3 @@ server/docker/
 sftp-config.json
 vendor/
 VeriduRuleset.xml
-.idea/
-.env

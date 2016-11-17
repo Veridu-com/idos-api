@@ -15,7 +15,7 @@ class CreateNewSpotify extends CreateNew {
     /**
      * {@inheritdoc}
      *
-     * @return \App\Command\Sso\CreateNewSpotify
+     * @return self
      */
     public function setParameters(array $parameters) : self {
         parent::setParameters($parameters);

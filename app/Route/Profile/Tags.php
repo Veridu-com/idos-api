@@ -17,7 +17,9 @@ use Slim\App;
 /**
  * Profile Tags.
  *
- * A Profile tag is used by a Company to categorise and organise certain Profiles for the purposes of improving management of large numbers of Users and data. A Company will use Profile Tags in order to create specific categories of Profiles for Members to easily assign or view.
+ * A Profile tag is used by a Company to categorise and organise certain Profiles for the purposes of improving
+ * management of large numbers of Users and data. A Company will use Profile Tags in order to create specific
+ * categories of Profiles for Members to easily assign or view.
  *
  * @link docs/profiles/tags/overview.md
  * @see \App\Controller\Profile\Tags
@@ -66,7 +68,7 @@ class Tags implements RouteInterface {
      * Retrieve a complete list of all tags that belong to the requesting user.
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/tags
-     * @apiGroup Profile Tags
+     * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -100,7 +102,7 @@ class Tags implements RouteInterface {
      * Retrieves all public information from a Tag
      *
      * @apiEndpoint GET /companies/{companySlug}/profiles/{userId}/tags/{tagSlug}
-     * @apiGroup Profile Tags
+     * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -135,7 +137,7 @@ class Tags implements RouteInterface {
      * Creates a new tag for the requesting user.
      *
      * @apiEndpoint POST /companies/{companySlug}/profiles/{userId}/tags
-     * @apiGroup Profile Tags
+     * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -169,7 +171,7 @@ class Tags implements RouteInterface {
      * Deletes a single Tag that belongs to the requesting user.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}/tags/{tagSlug}
-     * @apiGroup Profile Tags
+     * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
@@ -204,7 +206,7 @@ class Tags implements RouteInterface {
      * Delete all tags that belong to the requesting user.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/profiles/{userId}/tags
-     * @apiGroup Profile Tags
+     * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd

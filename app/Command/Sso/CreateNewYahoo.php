@@ -15,7 +15,7 @@ class CreateNewYahoo extends CreateNew {
     /**
      * {@inheritdoc}
      *
-     * @return \App\Command\Sso\CreateNewYahoo
+     * @return self
      */
     public function setParameters(array $parameters) : self {
         parent::setParameters($parameters);

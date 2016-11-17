@@ -19,7 +19,7 @@ use Slim\App;
  *
  * A Profile Feature is a specific question the API can answer using data extracted from the Profile.
  * An example feature could be "quantity of uploaded photos" and the API will give a quantitative answer.
- * Another example feature could be "User's Facebook and Twitter name matches" and the API will give a polar yes-no answer.
+ * Another example feature could be "User's Facebook and Twitter name matches" and the API will give a yes-no answer.
  *
  * @link docs/profile/features/overview.md
  * @see \App\Controller\Profile\Features
@@ -75,7 +75,7 @@ class Features implements RouteInterface {
      * Retrieve a complete list of all features that belong to the given user.
      *
      * @apiEndpoint GET /profiles/{userName}/features
-     * @apiGroup Profile Features
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -108,7 +108,7 @@ class Features implements RouteInterface {
      * Retrieves all public information from a Feature.
      *
      * @apiEndpoint GET /profiles/{userName}/features/{featureId}
-     * @apiGroup Profile Features
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -142,7 +142,7 @@ class Features implements RouteInterface {
      * Create a new feature for the given user.
      *
      * @apiEndpoint POST /profiles/{userName}/features
-     * @apiGroup Profile Features
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -175,7 +175,7 @@ class Features implements RouteInterface {
      * Updates Feature's specific information.
      *
      * @apiEndpoint PATCH /profiles/{userName}/features/{featureId}
-     * @apiGroup Profile Features
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -209,7 +209,7 @@ class Features implements RouteInterface {
      * Create or update a feature for the given user.
      *
      * @apiEndpoint PUT /profiles/{userName}/features
-     * @apiGroup Profile Features
+     * @apiGroup Profile
      * @apiAuth header token  CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token  credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -242,7 +242,7 @@ class Features implements RouteInterface {
      * Create or update features for the given user.
      *
      * @apiEndpoint PUT /profiles/{userName}/features/bulk
-     * @apiGroup Profile Features
+     * @apiGroup Profile
      * @apiAuth header token  CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token  credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -275,7 +275,7 @@ class Features implements RouteInterface {
      * Deletes a single Feature that belongs to the given user
      *
      * @apiEndpoint DELETE /profiles/{userName}/features/{featureId}
-     * @apiGroup Profile Features
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -309,7 +309,7 @@ class Features implements RouteInterface {
      * Deletes all features that belongs to the given user
      *
      * @apiEndpoint DELETE /profiles/{userName}/features
-     * @apiGroup Profile Features
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2

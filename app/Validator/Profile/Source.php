@@ -18,6 +18,7 @@ class Source implements ValidatorInterface {
     use Traits\AssertType,
         Traits\AssertEntity,
         Traits\AssertId,
+        Traits\AssertEmail,
         Traits\AssertIpAddr,
         Traits\AssertName,
         Traits\AssertOTPCode,

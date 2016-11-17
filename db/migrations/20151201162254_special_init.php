@@ -48,7 +48,7 @@ class SpecialInit extends AbstractMigration {
         $metrics = $this->table('metrics');
         $metrics
             ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('value', 'float', ['null' => false])
+            ->addColumn('value', 'decimal', ['null' => false])
             ->addTimestamps()
             ->create();
     }

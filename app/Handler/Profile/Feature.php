@@ -20,6 +20,7 @@ use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Extension\RetrieveProcess;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\FeatureInterface;
@@ -34,6 +35,8 @@ use Respect\Validation\Exceptions\ValidationException;
  * Handles Feature commands.
  */
 class Feature implements HandlerInterface {
+    use RetrieveProcess;
+
     /**
      * Feature Repository instance.
      *
@@ -121,37 +124,6 @@ class Feature implements HandlerInterface {
     }
 
     /**
-     * Gets the process.
-     *
-     * @param \App\Command\CommandInterface $command The command
-     *
-     * @return \App\Entity\Profile\Process
-     */
-    private function getRelatedProcess(int $userId, $source = null) : Process {
-        $event    = sprintf('idos:feature.%s.created', $source ? $source->name : 'profile');
-        $sourceId = $source ? $source->id : null;
-
-        try {
-            if ($source) {
-                return $this->processRepository->findOneBySourceId($sourceId);
-            }
-
-            return $this->processRepository->findLastByUserIdSourceIdAndEvent($event, $sourceId, $userId);
-        } catch (NotFound $e) {
-            $entity = $this->processRepository->create(
-                [
-                    'name'      => 'idos:verification',
-                    'user_id'   => $userId,
-                    'source_id' => $sourceId,
-                    'event'     => $event
-                ]
-            );
-
-            return $this->processRepository->save($entity);
-        }
-    }
-
-    /**
      * Creates a feature.
      *
      * @param \App\Command\Profile\Feature\CreateNew $command
@@ -206,7 +178,8 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
-            $process = $this->getRelatedProcess($command->user->id, $command->source ? $command->source : null);
+            $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
+
             $event   = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $command->credential, $process, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -258,7 +231,8 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
 
-            $process = $this->getRelatedProcess($command->user->id, $command->source ? $command->source : null);
+            $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
+
             $event   = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $command->credential, $process, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
@@ -327,7 +301,8 @@ class Feature implements HandlerInterface {
         try {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
-            $process = $this->getRelatedProcess($command->user->id, $command->source ? $command->source : null);
+
+            $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
             if ($inserting) {
                 $event = $this->eventFactory->create(
@@ -409,7 +384,7 @@ class Feature implements HandlerInterface {
             // sourceId will be 0 to null sources
             foreach ($featuresPerSource as $sourceId => $sourceFeatures) {
                 $source  = ($sourceId ? $sources[$sourceId] : null);
-                $process = $this->getRelatedProcess($command->user->id, $source ? $source : null);
+                $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($source), $command->source ? $command->source : null);
 
                 $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $sourceFeatures, $command->user, $command->credential, $process, $source);
                 $this->emitter->emit($event);
@@ -493,5 +468,17 @@ class Feature implements HandlerInterface {
         $this->emitter->emit($event);
 
         return $affectedRows;
+    }
+
+    /**
+     * Gets the process event name.
+     *
+     * @param mixed $source The source
+     *
+     * @return string The process event name.
+     */
+    private function getProcessEventName($source = null) : string
+    {
+        return sprintf('idos:feature.%s.created', $source ? $source->name : 'profile');
     }
 }

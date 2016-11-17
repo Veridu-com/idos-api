@@ -16,7 +16,9 @@ use Slim\App;
 /**
  * ServiceHandler.
  *
- * A ServiceHandler allows a specific Company to have access to a certain Service. This allows control over and monetisation to the way they utilise the API, tailoring access for their own specific requirements.
+ * A ServiceHandler allows a specific Company to have access to a certain Company Service.
+ *
+ * @apiDisabled
  *
  * @link docs/service-handlers/overview.md
  * @see \App\Controller\ServiceHandlers
@@ -66,7 +68,7 @@ class ServiceHandler implements RouteInterface {
      * Retrieves a complete list of service handlers that belong to the requesting company.
      *
      * @apiEndpoint GET /companies/{companySlug}/service-handlers
-     * @apiGroup Company ServiceHandler
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
@@ -98,7 +100,7 @@ class ServiceHandler implements RouteInterface {
      * Retrieves all public information from a single Service handler.
      *
      * @apiEndpoint GET /companies/{companySlug}/service-handlers/{serviceHandlerId}
-     * @apiGroup Company ServiceHandler
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string serviceHandlerId 1
@@ -131,7 +133,7 @@ class ServiceHandler implements RouteInterface {
      * Creates a new service handler for the requesting company.
      *
      * @apiEndpoint POST /companies/{companySlug}/service-handlers
-     * @apiGroup Company ServiceHandler
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
@@ -163,7 +165,7 @@ class ServiceHandler implements RouteInterface {
      * Updates the information for a single ServiceHandler.
      *
      * @apiEndpoint GET /companies/{companySlug}/service-handlers/{serviceHandlerId}
-     * @apiGroup Company ServiceHandler
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  string  serviceHandlerId 1
@@ -195,8 +197,8 @@ class ServiceHandler implements RouteInterface {
      *
      * Deletes a single Service handler that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/service-handlers/{servceHandlerId}
-     * @apiGroup Company ServiceHandler
+     * @apiEndpoint DELETE /companies/{companySlug}/service-handlers/{serviceHandlerId}
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment  string  serviceHandlerId 1
@@ -229,7 +231,7 @@ class ServiceHandler implements RouteInterface {
      * Deletes all service handlers that belongs to the requesting company.
      *
      * @apiEndpoint DELETE /companies/{companySlug}/service-handlers
-     * @apiGroup Company ServiceHandler
+     * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *

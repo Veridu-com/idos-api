@@ -18,8 +18,9 @@ use Slim\App;
 /**
  * Profile Candidate.
  *
- * FIXME: make it more clear what is a candidate and what is an attribute
- * A Profile Candidate is a piece of information within a Profile that has been extracted by the API. This information can be simple like a full name, or more detailed like a Users hometown or employment. If the API has extracted multiple results for one Candidate, they will all be listed with an Candidate Score.
+ * Attribute Candidates are listed as all possible results for an Attribute. If the API extracts multiple results for
+ * one Attribute, then it will list each Candidate a numerical support score calculated by the level of presence
+ * it has within the Profile. The Candidate with the highest support score will be given as a Profile Attribute.
  *
  * @link docs/profiles/candidate/overview.md
  * @see \App\Controller\Profile\Candidates
@@ -63,7 +64,7 @@ class Candidates implements RouteInterface {
      * Retrieve a complete list of the candidates by a given user.
      *
      * @apiEndpoint GET /profiles/{userName}/candidates
-     * @apiGroup Profile Candidates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -96,7 +97,7 @@ class Candidates implements RouteInterface {
      * Creates a new candidate for the given user.
      *
      * @apiEndpoint POST /profiles/{userName}/candidates
-     * @apiGroup Profile Candidates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
@@ -129,7 +130,7 @@ class Candidates implements RouteInterface {
      * Deletes all candidates for the given user.
      *
      * @apiEndpoint DELETE /profiles/{userName}/candidates
-     * @apiGroup Profile Candidates
+     * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
