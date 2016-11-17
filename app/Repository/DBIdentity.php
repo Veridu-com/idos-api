@@ -70,7 +70,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
      */
     public function findByPubKey(string $pubKey) : Identity {
         $companyRepository = $this->repositoryFactory->create('Company');
-        
+
         $identities = $this->query()
             ->leftJoin('members', 'members.identity_id', 'identities.id')
             ->leftJoin('roles', 'members.role', 'roles.name')
@@ -135,11 +135,12 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
         $identity->relations['member']  = new Collection($members['entities']);
 
         foreach ($identityCompanies as $key => $company) {
-            $children = $companyRepository->getChildrenById($company->id);
+            $children          = $companyRepository->getChildrenById($company->id);
             $identityCompanies = $identityCompanies->merge($children->toArray());
         }
 
         $identity->relations['company'] = $identityCompanies->unique('slug');
+
         return $identity;
     }
 

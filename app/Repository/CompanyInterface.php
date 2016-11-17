@@ -30,14 +30,14 @@ interface CompanyInterface extends RepositoryInterface {
     /**
      * Gets the children recursively, by company identifier.
      *
-     * @param      integer                      $companyId  The company identifier
+     * @param int $companyId The company identifier
      *
-     * @throws     \App\Exception\AppException
+     * @throws \App\Exception\AppException
      *
-     * @return     \Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getChildrenById(int $companyId) : Collection;
-    
+
     /**
      * Returns a company based on its public key.
      *

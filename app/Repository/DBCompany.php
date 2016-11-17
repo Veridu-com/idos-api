@@ -81,7 +81,6 @@ class DBCompany extends AbstractSQLDBRepository implements CompanyInterface {
         return $company;
     }
 
-
     /**
      * {@inheritdoc}
      */
