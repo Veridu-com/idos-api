@@ -223,12 +223,18 @@ class S30ServiceHandlersSeed extends AbstractSeed {
             ],
             [
                 'company_id'    => 1,
-                'service_id'    => 30, // idOS OTP Email handler
+                'service_id'    => 29, // idOS OTP Email handler
                 'listens'       => json_encode(
                     [
                         'idos:otp.email.created',
                     ]
                 ),
+                'created_at' => $now
+            ],
+            [
+                'company_id'    => 1,
+                'service_id'    => 30, // idOS ProfilePicture Candidates
+                'listens'       => $featureListens,
                 'created_at' => $now
             ]
         ];
