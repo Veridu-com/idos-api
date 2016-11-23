@@ -348,13 +348,14 @@ class Features implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user      = $request->getAttribute('targetUser');
         $service   = $request->getAttribute('service');
+        $credential   = $request->getAttribute('credential');
         $featureId = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
         $command
-            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
+            ->setParameter('credential', $credential)
             ->setParameter('featureId', $featureId);
 
         $this->commandBus->handle($command);
@@ -386,6 +387,7 @@ class Features implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
         $service = $request->getAttribute('service');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');
         $command

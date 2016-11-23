@@ -205,7 +205,7 @@ class Task implements HandlerInterface {
         try {
             $task = $this->repository->save($task);
 
-            $updated = $this->eventFactory->create('Profile\\Task\\Updated', $task);
+            $updated = $this->eventFactory->create('Profile\\Task\\Updated', $task, $command->credential);
             $this->emitter->emit($updated);
 
             if (! $task->running && $task->success) {

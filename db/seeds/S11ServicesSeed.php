@@ -396,8 +396,8 @@ class S11ServicesSeed extends AbstractSeed {
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
-                'public'        => md5('public-30'), // aafc17b2c826b02b9bec9de6e37d5ea9
-                'private'       => md5('private-30'), // d9288a19a2abe8351e12ce90bd761c42
+                'public'        => md5('otp-email'), // 9cafc5da23986acc339e67720027fa76
+                'private'       => md5('private-30'), // 5721e477350583248ac65ba24e1b2494
                 'listens'       => json_encode(
                     [
                         'idos:otp.email.created'
@@ -414,19 +414,7 @@ class S11ServicesSeed extends AbstractSeed {
                 'auth_password' => '***REMOVED***',
                 'public'        => md5('public-31'), // 2f6b1872b112a131afa5f54ef2250dc8
                 'private'       => md5('private-31'), // 81ef395515f1e3261a4ee3f0e3ca48ba
-                'listens'       => json_encode(
-                    [
-                        'idos:feature.amazon.created',
-                        'idos:feature.dropbox.created',
-                        'idos:feature.facebook.created',
-                        'idos:feature.google.created',
-                        'idos:feature.linkedin.created',
-                        'idos:feature.paypal.created',
-                        'idos:feature.spotify.created',
-                        'idos:feature.twitter.created',
-                        'idos:feature.yahoo.created'
-                    ]
-                ),
+                'listens'       => $featureListens,
                 'triggers' => json_encode(['handler:profilepicture-candidates.completed']),
                 'enabled'  => true
             ]
