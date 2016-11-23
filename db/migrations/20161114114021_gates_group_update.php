@@ -18,7 +18,7 @@ class GatesGroupUpdate extends AbstractMigration
 {
     public function up() {
         $gates = $this->table('gates');
-        
+
         $this->query('DELETE FROM "gates"');
 
         $gates
@@ -53,7 +53,7 @@ class GatesGroupUpdate extends AbstractMigration
         if (! count($categories)) {
             return;
         }
-        
+
         foreach ($categories as $category) {
             $sql = sprintf('UPDATE "%s" SET "name" = \'%s\' where id = \'%s\'', 'categories', $this->slugToCamelCase($category['name']), $category['id']);
             $this->query($sql);
@@ -63,7 +63,7 @@ class GatesGroupUpdate extends AbstractMigration
     /**
      * Transforms a "slugified-string" to a "camelCaseString".
      *
-     * @param string  $slug   The slug
+     * @param string $slug The slug
      *
      * @return string
      */

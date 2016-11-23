@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Repository\Metric;
 
-use App\Entity\Metric\System;
 use App\Entity\Identity;
+use App\Entity\Metric\System;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 

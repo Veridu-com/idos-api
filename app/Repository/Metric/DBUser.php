@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Repository\Metric;
 
-use App\Entity\Metric\User;
 use App\Entity\Identity;
+use App\Entity\Metric\User;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 
@@ -72,7 +72,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             $query = $query->where(
                 function ($query) use ($sources) {
                     foreach ($sources as $source) {
-                        if (!in_array(
+                        if (! in_array(
                             $source, [
                             'amazon',
                             'dropbox',
@@ -96,7 +96,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
                             continue;
                         }
 
-                        $query = $query->orWhereRaw('jsonb_exists(sources, \''. $source .'\')');
+                        $query = $query->orWhereRaw('jsonb_exists(sources, \'' . $source . '\')');
                     }
                 }
             );
@@ -112,7 +112,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
                             continue;
                         }
 
-                        $query = $query->orWhereRaw('jsonb_exists(gates, \''. $gate .'\')');
+                        $query = $query->orWhereRaw('jsonb_exists(gates, \'' . $gate . '\')');
                     }
                 }
             );
@@ -128,7 +128,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
                             continue;
                         }
 
-                        $query = $query->orWhereRaw('jsonb_exists(flags, \''. $flag .'\')');
+                        $query = $query->orWhereRaw('jsonb_exists(flags, \'' . $flag . '\')');
                     }
                 }
             );
@@ -156,7 +156,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
                     break;
             }
         }
-        
+
         $entities = $query->get(['*']);
 
         return $entities;

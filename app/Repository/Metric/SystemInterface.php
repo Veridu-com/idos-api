@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Repository\Metric;
 
-use App\Entity\Metric\System;
 use App\Entity\Identity;
+use App\Entity\Metric\System;
 use App\Repository\RepositoryInterface;
 use Illuminate\Support\Collection;
 
@@ -20,7 +20,7 @@ interface SystemInterface extends RepositoryInterface {
     /**
      * Prepare the repository to respond accordingly to an specific metric type.
      *
-     * @param string|null  $metricType  The metric type
+     * @param string|null $metricType The metric type
      */
     public function prepare($metricType = null);
 
@@ -28,9 +28,9 @@ interface SystemInterface extends RepositoryInterface {
      * Return system metrics.
      *
      * @param \App\Entity\Identity $identity
-     * @param int $from
-     * @param int $to
-     * @param array $queryParams
+     * @param int                  $from
+     * @param int                  $to
+     * @param array                $queryParams
      *
      * @return \Illuminate\Support\Collection
      */

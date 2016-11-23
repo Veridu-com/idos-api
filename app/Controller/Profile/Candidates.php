@@ -109,8 +109,8 @@ class Candidates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Candidate\\CreateNew');

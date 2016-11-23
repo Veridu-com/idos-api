@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Repository\Metric;
 
-use App\Entity\Metric\User;
 use App\Entity\Identity;
+use App\Entity\Metric\User;
 use App\Repository\RepositoryInterface;
 use Illuminate\Support\Collection;
 
@@ -21,9 +21,9 @@ interface UserInterface extends RepositoryInterface {
      * Return user metrics.
      *
      * @param \App\Entity\Identity $identity
-     * @param int $from
-     * @param int $to
-     * @param array $queryParams
+     * @param int                  $from
+     * @param int                  $to
+     * @param array                $queryParams
      *
      * @return \Illuminate\Support\Collection
      */

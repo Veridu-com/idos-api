@@ -156,7 +156,7 @@ class Tasks implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $credential = $request->getAttribute('credential');
-        $processId = $request->getAttribute('decodedProcessId');
+        $processId  = $request->getAttribute('decodedProcessId');
 
         $command = $this->commandFactory->create('Profile\\Task\\CreateNew');
         $command

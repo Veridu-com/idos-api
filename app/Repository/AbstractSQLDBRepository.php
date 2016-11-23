@@ -624,7 +624,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             if (strtolower($operator) === 'between') {
                 return $query->whereBetween($this->getTableName() . '.' . $column, $value);
             }
-            
+
             return $query->where($this->getTableName() . '.' . $column, $operator, $value);
         }
 

@@ -59,10 +59,10 @@ class Created extends AbstractServiceQueueEvent {
      *
      * @param \App\Entity\Company\Invitation $invitation
      * @param \App\Entity\Company\Credential $credential
-     * @param string $companyName
-     * @param string $dashboardName
-     * @param string $signupHash
-     * @param \App\Entity\Identity $identity
+     * @param string                         $companyName
+     * @param string                         $dashboardName
+     * @param string                         $signupHash
+     * @param \App\Entity\Identity           $identity
      *
      * @return void
      */
@@ -72,7 +72,7 @@ class Created extends AbstractServiceQueueEvent {
         $this->companyName   = $companyName;
         $this->dashboardName = $dashboardName;
         $this->signupHash    = $signupHash;
-        $this->identity = $identity;
+        $this->identity      = $identity;
     }
 
     /**
