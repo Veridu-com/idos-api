@@ -150,8 +150,8 @@ class Gates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\CreateNew');
@@ -192,9 +192,9 @@ class Gates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-        $slug    = $request->getAttribute('gateSlug');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
+        $slug       = $request->getAttribute('gateSlug');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\UpdateOne');
@@ -234,8 +234,8 @@ class Gates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\Upsert');
@@ -275,9 +275,9 @@ class Gates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-        $slug    = $request->getAttribute('gateSlug');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
+        $slug       = $request->getAttribute('gateSlug');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\DeleteOne');
@@ -314,8 +314,8 @@ class Gates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Gate\\DeleteAll');

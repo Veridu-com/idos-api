@@ -38,7 +38,7 @@ class DeletedMulti extends AbstractEvent {
      * @return void
      */
     public function __construct(Collection $gates, Credential $credential) {
-        $this->gates = $gates;
+        $this->gates      = $gates;
         $this->credential = $credential;
     }
 }

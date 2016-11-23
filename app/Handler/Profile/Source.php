@@ -132,6 +132,7 @@ class Source implements HandlerInterface {
             foreach ($command->tags as $key => $value) {
                 $this->validator->assertString($key);
             }
+
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
@@ -271,6 +272,7 @@ class Source implements HandlerInterface {
             foreach ($command->tags as $key => $value) {
                 $this->validator->assertString($key);
             }
+
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
@@ -294,7 +296,7 @@ class Source implements HandlerInterface {
             try {
                 $this->validator->assertOTPCode($command->otpCode);
                 $this->validator->assertCredential($command->credential);
-        } catch (ValidationException $e) {
+            } catch (ValidationException $e) {
                 throw new Validate\Profile\SourceException(
                     $e->getFullMessage(),
                     400,

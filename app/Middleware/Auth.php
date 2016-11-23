@@ -178,7 +178,7 @@ class Auth implements MiddlewareInterface {
         }
 
         // Ensures JWT Audience is the current API
-        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        $this->jwtValidation->setAudience(sprintf('https://api.idos.io/%s', __VERSION__));
         if (! $token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed', 400);
         }
@@ -227,7 +227,7 @@ class Auth implements MiddlewareInterface {
         }
 
         // Ensures JWT Audience is the current API
-        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        $this->jwtValidation->setAudience(sprintf('https://api.idos.io/%s', __VERSION__));
         if (! $token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed', 400);
         }
@@ -295,7 +295,7 @@ class Auth implements MiddlewareInterface {
         }
 
         // Ensures JWT Audience is the current API
-        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        $this->jwtValidation->setAudience(sprintf('https://api.idos.io/%s', __VERSION__));
         if (! $token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed', 400);
         }
@@ -380,7 +380,7 @@ class Auth implements MiddlewareInterface {
         }
 
         // Ensures JWT Audience is the current API
-        $this->jwtValidation->setAudience(sprintf('https://api.veridu.com/%s', __VERSION__));
+        $this->jwtValidation->setAudience(sprintf('https://api.idos.io/%s', __VERSION__));
         if (! $token->validate($this->jwtValidation)) {
             throw new AppException('Token Validation Failed', 400);
         }

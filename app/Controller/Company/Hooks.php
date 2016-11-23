@@ -162,7 +162,7 @@ class Hooks implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $credentialPubKey = $request->getAttribute('pubKey');
-        $identity = $request->getAttribute('identity');
+        $identity         = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Hook\\CreateNew');
         $command
@@ -207,7 +207,7 @@ class Hooks implements ControllerInterface {
         $hookId           = (int) $request->getAttribute('decodedHookId');
         $company          = $request->getAttribute('targetCompany');
         $credentialPubKey = $request->getAttribute('pubKey');
-        $identity = $request->getAttribute('identity');
+        $identity         = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Hook\\UpdateOne');
         $command
@@ -248,7 +248,7 @@ class Hooks implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $credentialPubKey = $request->getAttribute('pubKey');
-        $identity = $request->getAttribute('identity');
+        $identity         = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Hook\\DeleteOne');
         $command

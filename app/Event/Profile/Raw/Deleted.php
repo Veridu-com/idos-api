@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Raw;
 
-use App\Entity\Profile\Raw;
 use App\Entity\Company\Credential;
+use App\Entity\Profile\Raw;
 use App\Event\AbstractEvent;
 
 /**
@@ -32,13 +32,13 @@ class Deleted extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Profile\Raw $raw
+     * @param \App\Entity\Profile\Raw        $raw
      * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */
     public function __construct(Raw $raw, Credential $credential) {
-        $this->raw = $raw;
+        $this->raw        = $raw;
         $this->credential = $credential;
     }
 }

@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Review;
 
-use App\Entity\Company\Credential;
 use App\Entity\Identity;
 use App\Entity\Profile\Review;
 use App\Event\AbstractEvent;
@@ -34,12 +33,12 @@ class Updated extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\Profile\Review $review
-     * @param \App\Entity\Identity $identity
+     * @param \App\Entity\Identity       $identity
      *
      * @return void
      */
     public function __construct(Review $review, Identity $identity) {
-        $this->review = $review;
+        $this->review   = $review;
         $this->identity = $identity;
     }
 }

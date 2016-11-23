@@ -149,7 +149,7 @@ class Tags implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity = $request->getAttribute('identity');
 
-        $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $command = $this->commandFactory->create('Profile\\Tag\\CreateNew');
         $command
@@ -189,7 +189,7 @@ class Tags implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity = $request->getAttribute('identity');
 
-        $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $command = $this->commandFactory->create('Profile\\Tag\\DeleteOne');
         $command
@@ -226,7 +226,7 @@ class Tags implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity = $request->getAttribute('identity');
 
-        $user    = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $command = $this->commandFactory->create('Profile\\Tag\\DeleteAll');
         $command

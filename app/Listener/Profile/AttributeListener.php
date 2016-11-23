@@ -8,9 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Listener\Profile;
 
+use App\Entity\Company\Credential;
 use App\Entity\Profile\Candidate;
 use App\Entity\Profile\Feature;
-use App\Entity\Company\Credential;
 use App\Entity\User;
 use App\Factory\Command;
 use App\Listener;

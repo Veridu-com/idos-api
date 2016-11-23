@@ -18,7 +18,8 @@ use Slim\App;
  *
  * Profiles Raw is the raw data extracted from a Profile. This is what the API reads and extracts information in order
  * to process more complex requests.
- * **Note:** advanced usage only
+ *
+ * **Note:** advanced usage only.
  *
  * @link docs/profiles/sources/raw/overview.md
  * @see \App\Controller\Profile\Raw

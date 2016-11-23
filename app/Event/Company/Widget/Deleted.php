@@ -38,7 +38,7 @@ class Deleted extends AbstractEvent {
      * @return void
      */
     public function __construct(Widget $widget, Identity $identity) {
-        $this->widget = $widget;
+        $this->widget   = $widget;
         $this->identity = $identity;
     }
 }

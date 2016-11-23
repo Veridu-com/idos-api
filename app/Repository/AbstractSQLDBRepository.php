@@ -276,14 +276,14 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * Upserts a register into the database.
      * Due to some, what I consider a misbehavior, it is not trustable to get lastVal() or lastId() from the database
      * which will cause the @return \App\Entity\EntityInterface to be not fully up-to-date with the database.
-     * 
+     *
      * It is VERY recommended to fetch the entity from the database after you run this upsert method.
      * If so, you NEED to run both methods *upsert()* & *find()* WITHIN A TRANSACTION
-     * 
+     *
      * Which columns (entity properties) can't be trusted on the @return \App\Entity\EntityInterface?
      *  - "id" is not going to be filled.
      *  - "updated_at" is always updated if "updated_at" key is present on the @param $updateArray.
-     * 
+     *
      * @param \App\Entity\EntityInterface $entity         The entity
      * @param array|string                $conflictKeys   The conflict keys, which keys ON CONCLIFCT will trigger.
      * @param array                       $updateArray    The update array
@@ -296,7 +296,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      */
     public function upsert(EntityInterface $entity, $conflictKeys = [], array $updateArray = []) : EntityInterface {
         $serialized  = $entity->serialize();
-        $keys        = $values        = [];
+        $keys        = $values = [];
 
         foreach ($serialized as $key => $value) {
             array_push($keys, $key);
@@ -318,6 +318,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                 // updates entity
                 $entity->$key = $value;
             }
+
             $updateArray = $newUpdateArray;
 
             $updateSql  = 'DO UPDATE SET ' . implode(', ', $updateSqlArray);
@@ -326,13 +327,24 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             $conflictSQL = sprintf('%s %s', $onConflict, $updateSql);
         }
 
-        $quotedKeys = array_map(function ($key) { return sprintf('"%s"', $key); }, $keys);
+        $quotedKeys = array_map(
+            function ($key) {
+                return sprintf('"%s"', $key);
+
+            }, $keys
+        );
         $insertKeys = implode(',', $quotedKeys);
 
-        $params     = array_map(function ($key) { return ":$key"; }, $keys);
+        $params = array_map(
+            function ($key) {
+                return ":$key";
+
+            }, $keys
+        );
         $insertParams = implode(',', $params);
 
-        $sql = sprintf('INSERT INTO "%s" 
+        $sql = sprintf(
+            'INSERT INTO "%s" 
             (%s) 
             VALUES (%s)
             ON CONFLICT %s RETURNING "id" as id',
@@ -612,7 +624,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             if (strtolower($operator) === 'between') {
                 return $query->whereBetween($this->getTableName() . '.' . $column, $value);
             }
-            
+
             return $query->where($this->getTableName() . '.' . $column, $operator, $value);
         }
 

@@ -194,9 +194,9 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
+        $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
-        $sourceId = (int) $request->getAttribute('decodedSourceId');
+        $sourceId   = (int) $request->getAttribute('decodedSourceId');
 
         $source = $this->repository->findOne($sourceId, $user->id);
 
@@ -238,9 +238,9 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user     = $request->getAttribute('targetUser');
+        $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
-        $sourceId = (int) $request->getAttribute('decodedSourceId');
+        $sourceId   = (int) $request->getAttribute('decodedSourceId');
 
         $source = $this->repository->findOne($sourceId, $user->id);
 
@@ -278,7 +278,7 @@ class Sources implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user = $request->getAttribute('targetUser');
+        $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Source\\DeleteAll');

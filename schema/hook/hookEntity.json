@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "https://api.veridu.com/1.0/schema/hook/hookEntity.json",
+    "id": "https://api.idos.io/1.0/schema/hook/hookEntity.json",
     "title": "Hook",
     "type": "object",
     "properties": {

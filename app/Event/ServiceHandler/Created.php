@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\ServiceHandler;
 
-use App\Entity\ServiceHandler;
 use App\Entity\Identity;
+use App\Entity\ServiceHandler;
 use App\Event\AbstractEvent;
 
 /**
@@ -33,12 +33,12 @@ class Created extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\ServiceHandler $serviceHandler
-     * @param \App\Entity\Identity $identity
+     * @param \App\Entity\Identity       $identity
      *
      * @return void
      */
     public function __construct(ServiceHandler $serviceHandler, Identity $identity) {
         $this->serviceHandler = $serviceHandler;
-        $this->identity = $identity;
+        $this->identity       = $identity;
     }
 }

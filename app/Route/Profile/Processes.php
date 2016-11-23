@@ -19,7 +19,8 @@ use Slim\App;
  *
  * The Profile Process is the process the API uses in order to extract information from the raw data provided by the
  * User. This Process is broken up by the Services that perform Tasks.
- * **Note:** advanced usage only
+ *
+ * **Note:** advanced usage only.
  *
  * @link docs/profile/processes/overview.md
  * @see \App\Controller\Profile\Processes

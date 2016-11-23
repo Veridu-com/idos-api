@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "https://api.veridu.com/1.0/schema/user/featureEntity.json",
+    "id": "https://api.idos.io/1.0/schema/user/featureEntity.json",
     "title": "Feature",
     "type": "object",
     "properties": {

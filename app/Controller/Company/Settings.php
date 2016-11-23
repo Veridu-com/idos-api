@@ -152,7 +152,7 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
+        $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\CreateNew');
@@ -193,7 +193,7 @@ class Settings implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $settingId = $request->getAttribute('decodedSettingId');
-        $identity = $request->getAttribute('identity');
+        $identity  = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\UpdateOne');
         $command
@@ -231,7 +231,7 @@ class Settings implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $settingId = $request->getAttribute('decodedSettingId');
-        $identity = $request->getAttribute('identity');
+        $identity  = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\DeleteOne');
         $command
@@ -265,7 +265,7 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company  = $request->getAttribute('company');
         $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\DeleteAll');
