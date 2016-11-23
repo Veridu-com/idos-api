@@ -4,14 +4,14 @@ use Phinx\Migration\AbstractMigration;
 
 /**
  * Gates update:.
- * 
+ *
  * Gates needs to be grouped - they have a clear relationship with each other:
- * 		firstNameHigh, firstNameMedium, firstNameLow
- * 		
+ *      firstNameHigh, firstNameMedium, firstNameLow
+ *
  * At this point we could only group gates using regular expression - which is not the best thing to do.
  * Changes:
- * 		1. "gates"."name" should be a FK to "categories" table
- * 		2. "gates" should have a "conficence_level" string column
+ *      1. "gates"."name" should be a FK to "categories" table
+ *      2. "gates" should have a "conficence_level" string column
  *      3. "confidence_level" added to composite index
  */
 class GatesGroupUpdate extends AbstractMigration
@@ -44,7 +44,7 @@ class GatesGroupUpdate extends AbstractMigration
 
     /**
      * Updates the categories table.
-     * 
+     *
      * @return void
      */
     private function updateCategories() {
@@ -76,5 +76,4 @@ class GatesGroupUpdate extends AbstractMigration
 
         return lcfirst($return);
     }
-
 }

@@ -60,70 +60,78 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
 
         if ($from !== null && $to !== null) {
             $query = $query->whereBetween('created_at', [date('Y-m-d H:i:s', $from), date('Y-m-d H:i:s', $to)]);
-        } else if ($from !== null) {
+        } elseif ($from !== null) {
             $query = $query->where('created_at', '>=', date('Y-m-d H:i:s', $from));
-        } else if ($to !== null) {
+        } elseif ($to !== null) {
             $query = $query->where('created_at', '<=', date('Y-m-d H:i:s', $to));
         }
 
         if (isset($queryParams['source'])) {
             $sources = explode(',', $queryParams['source']);
 
-            $query = $query->where(function ($query) use ($sources) {
-                foreach ($sources as $source) {
-                    if (!in_array($source, [
-                        'amazon',
-                        'dropbox',
-                        'facebook',
-                        'foursquare',
-                        'google',
-                        'instagram',
-                        'linkedin',
-                        'paypal',
-                        'spotify',
-                        'twitter',
-                        'yahoo',
-                        'email',
-                        'sms',
-                        'spotafriend',
-                        'tracesmart',
-                        'submitted'
-                    ])
-                    ) {
-                        continue;
-                    }
+            $query = $query->where(
+                function ($query) use ($sources) {
+                    foreach ($sources as $source) {
+                        if (!in_array(
+                            $source, [
+                            'amazon',
+                            'dropbox',
+                            'facebook',
+                            'foursquare',
+                            'google',
+                            'instagram',
+                            'linkedin',
+                            'paypal',
+                            'spotify',
+                            'twitter',
+                            'yahoo',
+                            'email',
+                            'sms',
+                            'spotafriend',
+                            'tracesmart',
+                            'submitted'
+                            ]
+                        )
+                        ) {
+                            continue;
+                        }
 
-                    $query = $query->orWhereRaw('jsonb_exists(sources, \''. $source .'\')');
+                        $query = $query->orWhereRaw('jsonb_exists(sources, \''. $source .'\')');
+                    }
                 }
-            });
+            );
         }
 
         if (isset($queryParams['gate'])) {
             $gates = explode(',', $queryParams['gate']);
 
-            $query = $query->where(function ($query) use ($gates) {
-                foreach ($gates as $gate) {
-                    if (preg_match('/[^a-zA-Z0-9-_.]/', $gate)) {
-                        continue;
-                    }
+            $query = $query->where(
+                function ($query) use ($gates) {
+                    foreach ($gates as $gate) {
+                        if (preg_match('/[^a-zA-Z0-9-_.]/', $gate)) {
+                            continue;
+                        }
 
-                    $query = $query->orWhereRaw('jsonb_exists(gates, \''. $gate .'\')');
+                        $query = $query->orWhereRaw('jsonb_exists(gates, \''. $gate .'\')');
+                    }
                 }
-            });
+            );
         }
 
         if (isset($queryParams['flag'])) {
             $flags = explode(',', $queryParams['flag']);
 
-            $query = $query->where(function ($query) use ($flags) {
-                foreach ($flags as $flag) {
-                    if (preg_match('/[^a-zA-Z0-9-_]/', $flag)) {
-                        continue;
-                    }
+            $query = $query->where(
+                function ($query) use ($flags) {
+                    foreach ($flags as $flag) {
+                        if (preg_match('/[^a-zA-Z0-9-_]/', $flag)) {
+                            continue;
+                        }
 
-                    $query = $query->orWhereRaw('jsonb_exists(flags, \''. $flag .'\')');
+                        $query = $query->orWhereRaw('jsonb_exists(flags, \''. $flag .'\')');
+                    }
                 }
-            });
+            );
         }
 
         foreach ($queryParams as $paramName => $paramValue) {
@@ -132,13 +140,13 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
                     if (substr_compare($paramValue, '>=', 0, 2) === 0) {
                         $value = (int) substr($paramValue, 2);
                         $query = $query->whereRaw('(data->>\'birthYear\')::int >= ?', [$value]);
-                    } else if (substr_compare($paramValue, '<=', 0, 2) === 0) {
+                    } elseif (substr_compare($paramValue, '<=', 0, 2) === 0) {
                         $value = (int) substr($paramValue, 2);
                         $query = $query->whereRaw('(data->>\'birthYear\')::int <= ?', [$value]);
-                    } else if (substr_compare($paramValue, '>', 0, 1) === 0) {
+                    } elseif (substr_compare($paramValue, '>', 0, 1) === 0) {
                         $value = (int) substr($paramValue, 1);
                         $query = $query->whereRaw('(data->>\'birthYear\')::int > ?', [$value]);
-                    } else if (substr_compare($paramValue, '<', 0, 1) === 0) {
+                    } elseif (substr_compare($paramValue, '<', 0, 1) === 0) {
                         $value = (int) substr($paramValue, 1);
                         $query = $query->whereRaw('(data->>\'birthYear\')::int < ?', [$value]);
                     } else {

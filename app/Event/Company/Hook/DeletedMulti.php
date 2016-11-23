@@ -34,12 +34,12 @@ class DeletedMulti extends AbstractEvent {
      * Class constructor.
      *
      * @param \Illuminate\Support\Collection $hooks
-     * @param \App\Entity\Identity $identity
+     * @param \App\Entity\Identity           $identity
      *
      * @return void
      */
     public function __construct(Collection $hooks, Identity $identity) {
-        $this->hooks = $hooks;
+        $this->hooks    = $hooks;
         $this->identity = $identity;
     }
 }

@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Company\Profile;
 
-use App\Entity\User;
 use App\Entity\Identity;
+use App\Entity\User;
 use App\Event\AbstractEvent;
 
 /**
@@ -32,13 +32,13 @@ class Deleted extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\User $user
+     * @param \App\Entity\User     $user
      * @param \App\Entity\Identity $identity
      *
      * @return void
      */
     public function __construct(User $user, Identity $identity) {
         $this->companyProfile = $user;
-        $this->identity = $identity;
+        $this->identity       = $identity;
     }
 }

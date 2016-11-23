@@ -184,7 +184,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->hydrateRelations($feature);
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
-            $event   = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $process, $command->credential, $command->source);
+            $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $process, $command->credential, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Profile\FeatureException('Error while trying to create a feature', 500, $e);
@@ -237,7 +237,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->hydrateRelations($feature);
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
-            $event   = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $process, $command->credential, $command->source);
+            $event = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $process, $command->credential, $command->source);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\FeatureException('Error while trying to update a feature', 500, $e);
@@ -485,8 +485,7 @@ class Feature implements HandlerInterface {
      *
      * @return string The process event name.
      */
-    private function getProcessEventName($source = null) : string
-    {
+    private function getProcessEventName($source = null) : string {
         return sprintf('idos:feature.%s.created', $source ? $source->name : 'profile');
     }
 }

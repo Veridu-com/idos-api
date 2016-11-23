@@ -242,8 +242,8 @@ class S30ServiceHandlersSeed extends AbstractSeed {
 
 /**
  * Created gates:.
- * 
- * id |            name            
+ *
+ * id |            name
  * ----+----------------------------
  * 1 | idOS Scraper
  * 2 | idOS Feature Extractor

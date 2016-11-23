@@ -235,13 +235,13 @@ class Sso implements HandlerInterface {
         $command = $this->commandFactory->create('Company\\Member\\CreateNew');
 
         $command->setParameter('company', $company)
-                ->setParameter('ipaddr', $ipaddr)
-                ->setParameter('identity', $identity)
-                ->setParameters(
-            [
-                'role'        => $role
-            ]
-        );
+            ->setParameter('ipaddr', $ipaddr)
+            ->setParameter('identity', $identity)
+            ->setParameters(
+                [
+                    'role'        => $role
+                    ]
+            );
 
         return $this->commandBus->handle($command);
     }

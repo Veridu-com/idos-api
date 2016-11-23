@@ -206,7 +206,6 @@ class Metric implements HandlerInterface {
                 case 'profile:attribute':
                 case 'profile:gate':
                 case 'profile:flag':
-
                     $credential = $command->event->credential->toArray();
                     $credential['id'] = $command->event->credential->id;
 
@@ -214,7 +213,7 @@ class Metric implements HandlerInterface {
                     $payload['credential'] = $credential;
                     $payload[$entityName] = $entity->toArray();
                     $payload[$entityName]['id'] = $entity->id;
-                break;
+                    break;
 
                 default:
                     return false;

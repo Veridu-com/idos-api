@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Source;
 
-use App\Entity\Profile\Source;
 use App\Entity\Company\Credential;
+use App\Entity\Profile\Source;
 use App\Event\AbstractEvent;
 
 /**
@@ -38,15 +38,15 @@ class CRA extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Profile\Source $source
-     * @param string                     $ipAddr
+     * @param \App\Entity\Profile\Source     $source
+     * @param string                         $ipAddr
      * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */
     public function __construct(Source $source, string $ipAddr, Credential $credential) {
-        $this->source = $source;
-        $this->ipAddr = $ipAddr;
+        $this->source     = $source;
+        $this->ipAddr     = $ipAddr;
         $this->credential = $credential;
     }
 }

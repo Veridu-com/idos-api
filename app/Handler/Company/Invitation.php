@@ -141,6 +141,7 @@ class Invitation implements HandlerInterface {
             if ($command->expires) {
                 $this->validator->assertDate($command->expires);
             }
+
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\InvitationException(

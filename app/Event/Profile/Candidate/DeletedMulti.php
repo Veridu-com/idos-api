@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Candidate;
 
-use App\Entity\User;
 use App\Entity\Company\Credential;
+use App\Entity\User;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 

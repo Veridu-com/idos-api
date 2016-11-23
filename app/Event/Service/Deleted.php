@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Service;
 
-use App\Entity\Service;
 use App\Entity\Identity;
+use App\Entity\Service;
 use App\Event\AbstractEvent;
 
 /**
@@ -32,7 +32,7 @@ class Deleted extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Service $services
+     * @param \App\Entity\Service  $services
      * @param \App\Entity\Identity $identity
      *
      * @return void

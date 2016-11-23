@@ -132,7 +132,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
         $identityCompanies = new Collection($companies['entities']);
 
         // populating identities available companies
-        $identity->relations['member']  = new Collection($members['entities']);
+        $identity->relations['member'] = new Collection($members['entities']);
 
         foreach ($identityCompanies as $key => $company) {
             $children          = $companyRepository->getChildrenById($company->id);
