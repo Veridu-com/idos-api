@@ -74,7 +74,7 @@ class EndpointPermission implements MiddlewareInterface {
          * Tags the response with an "allowed" header,
          * so the GateKeeper middleware lets the response go through
          */
-        $response = $response->withHeader('Allowed', 'true');
+        $response        = $response->withHeader('Allowed', 'true');
         $identityMembers = [];
 
         // Public Actions do not need permission checking

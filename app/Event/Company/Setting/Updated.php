@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Event\Company\Setting;
 
+use App\Entity\Company;
 use App\Entity\Company\Setting;
 use App\Entity\Identity;
 use App\Event\AbstractEvent;

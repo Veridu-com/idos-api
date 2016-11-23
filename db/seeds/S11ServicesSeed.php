@@ -415,8 +415,8 @@ class S11ServicesSeed extends AbstractSeed {
                 'public'        => md5('public-31'), // 2f6b1872b112a131afa5f54ef2250dc8
                 'private'       => md5('private-31'), // 81ef395515f1e3261a4ee3f0e3ca48ba
                 'listens'       => $featureListens,
-                'triggers' => json_encode(['handler:profilepicture-candidates.completed']),
-                'enabled'  => true
+                'triggers'      => json_encode(['handler:profilepicture-candidates.completed']),
+                'enabled'       => true
             ],
             [
                 'name'          => 'idOS Widget Handler',
@@ -427,8 +427,8 @@ class S11ServicesSeed extends AbstractSeed {
                 'public'        => md5('public-32'), // 2f6b1872b112a131afa5f54ef2250dc8
                 'private'       => md5('private-32'), // 81ef395515f1e3261a4ee3f0e3ca48ba
                 'listens'       => json_encode([]),
-                'triggers' => json_encode([]),
-                'enabled'  => true
+                'triggers'      => json_encode([]),
+                'enabled'       => true
             ]
         ];
 

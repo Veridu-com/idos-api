@@ -207,6 +207,7 @@ class Setting implements HandlerInterface {
         try {
             $this->validator->assertId($command->settingId);
             $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company);
         } catch (ValidationException $e) {
             throw new Validate\Company\SettingException(
                 $e->getFullMessage(),

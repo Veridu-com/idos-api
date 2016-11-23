@@ -93,7 +93,9 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
     protected $filterableKeys = [
     ];
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function findDirectMembership(int $identityId, int $companyId) : Member {
         return $this->findOneBy(
             [
@@ -130,7 +132,8 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
             if (! $company->parentId) {
                 throw new NotFound();
             }
-            return $this->hasParentAccess($identityId, $company->parentId);            
+
+            return $this->hasParentAccess($identityId, $company->parentId);
         }
     }
 

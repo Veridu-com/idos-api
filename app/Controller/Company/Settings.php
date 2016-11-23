@@ -192,13 +192,15 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId = $request->getAttribute('decodedSettingId');
-        $identity  = $request->getAttribute('identity');
+        $settingId     = $request->getAttribute('decodedSettingId');
+        $identity      = $request->getAttribute('identity');
+        $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Company\\Setting\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
+            ->setParameter('company', $targetCompany)
             ->setParameter('settingId', $settingId);
 
         $setting = $this->commandBus->handle($command);
