@@ -110,7 +110,7 @@ class Profiles implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
+        $company    = $request->getAttribute('company');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\ListAll');

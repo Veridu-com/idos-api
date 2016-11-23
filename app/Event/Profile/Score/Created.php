@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Score;
 
-use App\Entity\Profile\Score;
 use App\Entity\Company\Credential;
+use App\Entity\Profile\Score;
 use App\Event\AbstractEvent;
 
 /**
@@ -32,13 +32,13 @@ class Created extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Profile\Score $score
+     * @param \App\Entity\Profile\Score      $score
      * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */
     public function __construct(Score $score, Credential $credential) {
-        $this->score = $score;
+        $this->score      = $score;
         $this->credential = $credential;
     }
 }

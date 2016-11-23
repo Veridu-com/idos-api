@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Company\Setting;
 
-use App\Entity\Identity;
 use App\Entity\Company;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 
@@ -40,14 +40,14 @@ class DeletedMulti extends AbstractEvent {
      * Class constructor.
      *
      * @param \Illuminate\Support\Collection $settings
-     * @param \App\Entity\Company $company
-     * @param \App\Entity\Identity $identity
+     * @param \App\Entity\Company            $company
+     * @param \App\Entity\Identity           $identity
      *
      * @return void
      */
     public function __construct(Collection $settings, Company $company, Identity $identity) {
         $this->settings = $settings;
-        $this->company = $company;
+        $this->company  = $company;
         $this->identity = $identity;
     }
 }

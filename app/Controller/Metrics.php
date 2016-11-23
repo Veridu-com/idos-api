@@ -47,10 +47,10 @@ class Metrics implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Metric\SystemInterface     $systemMetricsRepository
-     * @param \App\Repository\Metric\UserInterface       $userMetricsRepository
-     * @param \League\Tactician\CommandBus               $commandBus
-     * @param \App\Factory\Command                       $commandFactory
+     * @param \App\Repository\Metric\SystemInterface $systemMetricsRepository
+     * @param \App\Repository\Metric\UserInterface   $userMetricsRepository
+     * @param \League\Tactician\CommandBus           $commandBus
+     * @param \App\Factory\Command                   $commandFactory
      *
      * @return void
      */

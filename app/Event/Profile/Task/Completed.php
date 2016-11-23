@@ -48,7 +48,7 @@ class Completed extends AbstractServiceQueueEvent {
         $this->task            = $task;
         $this->user            = $user;
         $this->eventIdentifier = $eventIdentifier;
-        $this->credential = $credential;
+        $this->credential      = $credential;
     }
 
     /**

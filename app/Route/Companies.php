@@ -22,11 +22,6 @@ use Slim\App;
  * Each Company is allowed to have multiple Users, Keys, Widgets and even other Companies.
  * All Access Roles configured in a parent Company will have access to all data from children Companies created.
  * These users will NOT be visible to users who only have access to the child Company.
- * Default roles available are:
- *  - Administrator: an administrator will have full read/write access
- *  - Reviewer: a reviewer is allowed to view the end-users who have been verified.
- *    They are also able to provide review feedback and view reports.
- * **Note:** advanced usage only
  *
  * @link docs/companies/overview.md
  * @see \App\Controller\Companies

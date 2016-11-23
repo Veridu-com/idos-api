@@ -33,12 +33,12 @@ class Created extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\Company\Subscription $subscription
-     * @param \App\Entity\Identity $identity
+     * @param \App\Entity\Identity             $identity
      *
      * @return void
      */
     public function __construct(Subscription $subscription, Identity $identity) {
         $this->subscription = $subscription;
-        $this->identity = $identity;
+        $this->identity     = $identity;
     }
 }

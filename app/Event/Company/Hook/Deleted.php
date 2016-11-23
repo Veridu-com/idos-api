@@ -33,12 +33,12 @@ class Deleted extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\Company\Hook $hook
-     * @param \App\Entity\Identity $identity
+     * @param \App\Entity\Identity     $identity
      *
      * @return void
      */
     public function __construct(Hook $hook, Identity $identity) {
-        $this->hook  = $hook;
+        $this->hook     = $hook;
         $this->identity = $identity;
     }
 }

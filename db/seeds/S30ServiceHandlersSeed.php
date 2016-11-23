@@ -235,7 +235,7 @@ class S30ServiceHandlersSeed extends AbstractSeed {
                 'company_id'    => 1,
                 'service_id'    => 30, // idOS ProfilePicture Candidates
                 'listens'       => $featureListens,
-                'created_at' => $now
+                'created_at'    => $now
             ]
         ];
 
@@ -248,8 +248,8 @@ class S30ServiceHandlersSeed extends AbstractSeed {
 
 /**
  * Created gates:.
- * 
- * id |            name            
+ *
+ * id |            name
  * ----+----------------------------
  * 1 | idOS Scraper
  * 2 | idOS Feature Extractor

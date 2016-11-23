@@ -95,6 +95,7 @@ class OTP extends AbstractServiceQueueEvent {
             $this->type   = 'email';
             $this->target = $this->sourceTags->email;
         }
+
         if(property_exists($this->sourceTags, 'phone')) {
             $this->type   = 'phone';
             $this->target = $this->sourceTags->phone;
@@ -121,8 +122,7 @@ class OTP extends AbstractServiceQueueEvent {
     /**
      * {inheritdoc}.
      */
-    public function __toString()
-    {
+    public function __toString() {
         return sprintf('idos:otp.%s.created', $this->type);
     }
 }

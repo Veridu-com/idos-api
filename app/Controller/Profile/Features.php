@@ -346,10 +346,10 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user      = $request->getAttribute('targetUser');
-        $service   = $request->getAttribute('service');
+        $user         = $request->getAttribute('targetUser');
+        $service      = $request->getAttribute('service');
         $credential   = $request->getAttribute('credential');
-        $featureId = $request->getAttribute('decodedFeatureId');
+        $featureId    = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
         $command
@@ -385,8 +385,8 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');

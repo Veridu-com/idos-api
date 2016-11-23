@@ -155,7 +155,7 @@ class Subscriptions implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $subscriptionId = $request->getAttribute('decodedSubscriptionId');
-        $identity = $request->getAttribute('identity');
+        $identity       = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Subscription\\DeleteOne');
         $command

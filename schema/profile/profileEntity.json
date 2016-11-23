@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "https://api.veridu.com/1.0/schema/profile/profileEntity.json",
+    "id": "https://api.idos.io/1.0/schema/profile/profileEntity.json",
     "title": "Score",
     "type": "object",
     "properties": {

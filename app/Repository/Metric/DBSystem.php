@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Repository\Metric;
 
-use App\Entity\Metric\System;
 use App\Entity\Identity;
+use App\Entity\Metric\System;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 
@@ -76,9 +76,9 @@ class DBSystem extends AbstractSQLDBRepository implements SystemInterface {
 
         if ($from !== null && $to !== null) {
             $query = $query->whereBetween('created_at', [date('Y-m-d H:i:s', $from), date('Y-m-d H:i:s', $to)]);
-        } else if ($from !== null) {
+        } elseif ($from !== null) {
             $query = $query->where('created_at', '>=', date('Y-m-d H:i:s', $from));
-        } else if ($to !== null) {
+        } elseif ($to !== null) {
             $query = $query->where('created_at', '<=', date('Y-m-d H:i:s', $to));
         }
 

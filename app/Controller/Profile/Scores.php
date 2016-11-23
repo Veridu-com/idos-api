@@ -149,8 +149,8 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\CreateNew');
@@ -193,9 +193,9 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-        $name    = $request->getAttribute('scoreName');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
+        $name       = $request->getAttribute('scoreName');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\UpdateOne');
@@ -236,8 +236,8 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\Upsert');
@@ -277,9 +277,9 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-        $name    = $request->getAttribute('scoreName');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
+        $name       = $request->getAttribute('scoreName');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\DeleteOne');
@@ -316,8 +316,8 @@ class Scores implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Score\\DeleteAll');

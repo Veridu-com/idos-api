@@ -33,12 +33,12 @@ class DeletedMulti extends AbstractEvent {
      * Class constructor.
      *
      * @param \Illuminate\Support\Collection $permissions
-     * @param \App\Entity\Identity $identity
+     * @param \App\Entity\Identity           $identity
      *
      * @return void
      */
     public function __construct(Collection $permissions, Identity $identity) {
         $this->permissions = $permissions;
-        $this->identity = $identity;
+        $this->identity    = $identity;
     }
 }

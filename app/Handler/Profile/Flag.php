@@ -115,6 +115,7 @@ class Flag implements HandlerInterface {
             if (isset($command->attribute)) {
                 $this->validator->assertSlug($command->attribute);
             }
+
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FlagException(

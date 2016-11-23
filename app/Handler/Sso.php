@@ -16,9 +16,9 @@ use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
 use App\Command\Sso\CreateNewTwitter;
 use App\Entity\Company as CompanyEntity;
-use App\Entity\Identity as IdentityEntity;
 use App\Entity\Company\Credential;
 use App\Entity\Company\Member as MemberEntity;
+use App\Entity\Identity as IdentityEntity;
 use App\Entity\Profile\Source as SourceEntity;
 use App\Entity\User;
 use App\Exception\Create;
@@ -235,13 +235,13 @@ class Sso implements HandlerInterface {
         $command = $this->commandFactory->create('Company\\Member\\CreateNew');
 
         $command->setParameter('company', $company)
-                ->setParameter('ipaddr', $ipaddr)
-                ->setParameter('identity', $identity)
-                ->setParameters(
-            [
-                'role'        => $role
-            ]
-        );
+            ->setParameter('ipaddr', $ipaddr)
+            ->setParameter('identity', $identity)
+            ->setParameters(
+                [
+                    'role'        => $role
+                    ]
+            );
 
         return $this->commandBus->handle($command);
     }

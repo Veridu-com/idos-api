@@ -44,7 +44,7 @@ class Gate extends AbstractEntity {
      * Sets the name attribute.
      *
      * @param string $value The value
-     * 
+     *
      * @return self
      */
     public function setNameAttribute(string $value) : self {
@@ -62,7 +62,7 @@ class Gate extends AbstractEntity {
             return $this;
         }
 
-        $this->attributes['slug'] =  Utils::slugify(sprintf('%s-%s', $confidenceLevel, $value));
+        $this->attributes['slug'] = Utils::slugify(sprintf('%s-%s', $confidenceLevel, $value));
 
         return $this;
     }
@@ -71,7 +71,7 @@ class Gate extends AbstractEntity {
      * Sets the confidence level attribute.
      *
      * @param string $value The value
-     * 
+     *
      * @return self
      */
     public function setConfidenceLevelAttribute($value = null) : self {
@@ -89,7 +89,7 @@ class Gate extends AbstractEntity {
             return $this;
         }
 
-        $this->attributes['slug'] =  Utils::slugify(sprintf('%s-%s', $name, $value));
+        $this->attributes['slug'] = Utils::slugify(sprintf('%s-%s', $name, $value));
 
         return $this;
     }

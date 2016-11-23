@@ -190,6 +190,7 @@ class Task implements HandlerInterface {
             if (! $updated) {
                 return $task;
             }
+
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\TaskException(

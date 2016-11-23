@@ -29,8 +29,8 @@ class SourceProvider extends Listener\AbstractListenerProvider {
         $emitter       = $container->get('eventEmitter');
         $gearmanClient = $container->get('gearmanClient');
 
-        $eventLogger = ($container->get('log'))('Event');
-        $commandBus = $container->get('commandBus');
+        $eventLogger    = ($container->get('log'))('Event');
+        $commandBus     = $container->get('commandBus');
         $commandFactory = $container->get('commandFactory');
 
         $this->events = [
