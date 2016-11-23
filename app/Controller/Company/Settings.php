@@ -70,13 +70,11 @@ class Settings implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $identity      = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\ListAll');
         $command
             ->setParameter('hasParentAccess', $request->getAttribute('hasParentAccess'))
             ->setParameter('queryParams', $request->getQueryParams())
-            ->setParameter('identity', $identity)
             ->setParameter('company', $targetCompany);
 
         $result   = $this->commandBus->handle($command);
