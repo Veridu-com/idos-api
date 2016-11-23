@@ -4,6 +4,11 @@
     "title": "Gate",
     "type": "object",
     "properties": {
+        "id": {
+            "description": "Member id",
+            "type": "integer",
+            "pattern": ""
+        },
         "name": {
             "description": "Gate's name",
             "type": "string",
@@ -31,6 +36,7 @@
         "slug": ["name", "confidence_level"]
     },
     "required": [
+        "id",
         "name",
         "slug",
         "pass",

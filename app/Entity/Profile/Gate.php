@@ -30,6 +30,7 @@ class Gate extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $visible = [
+        'id',
         'name',
         'slug',
         'confidence_level',

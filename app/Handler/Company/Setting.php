@@ -109,7 +109,6 @@ class Setting implements HandlerInterface {
      */
     public function handleListAll(ListAll $command) : array {
         $this->validator->assertCompany($command->company);
-        $this->validator->assertIdentity($command->identity);
         $this->validator->assertArray($command->queryParams);
 
         if ($command->hasParentAccess) {
@@ -208,6 +207,7 @@ class Setting implements HandlerInterface {
         try {
             $this->validator->assertId($command->settingId);
             $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company);
         } catch (ValidationException $e) {
             throw new Validate\Company\SettingException(
                 $e->getFullMessage(),

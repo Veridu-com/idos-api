@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
  */
 interface MemberInterface extends RepositoryInterface {
     /**
-     * Finds one membership by identity and company ids.
+     * Finds direct or indirectly between an Identity and a Company.
      *
      * @param int $identityId The identity identifier
      * @param int $companyId  The company identifier
@@ -25,6 +25,18 @@ interface MemberInterface extends RepositoryInterface {
      * @return \App\Entity\Company\Member
      */
     public function findMembership(int $identityId, int $companyId) : Member;
+
+    /**
+     * Finds a direct membership with a Company and an Identity.
+     *
+     * @param      integer                  $identityId  The identity identifier
+     * @param      integer                  $companyId   The company identifier
+     *
+     * @throws     \App\Exception\NotFound
+     *
+     * @return     \App\Entity\Company\Member
+     */
+    public function findDirectMembership(int $identityId, int $companyId) : Member;
 
     /**
      * Gets by company identifier.

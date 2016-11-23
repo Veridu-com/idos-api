@@ -93,7 +93,7 @@ class Hooks implements RouteInterface {
             )
             ->add(
                 $permission(
-                EndpointPermission::SELF_ACTION,
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
             )
@@ -131,7 +131,7 @@ class Hooks implements RouteInterface {
             )
             ->add(
                 $permission(
-                EndpointPermission::SELF_ACTION,
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
             )
@@ -171,7 +171,7 @@ class Hooks implements RouteInterface {
             )
             ->add(
                 $permission(
-                EndpointPermission::SELF_ACTION,
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
             )
@@ -211,7 +211,7 @@ class Hooks implements RouteInterface {
             )
             ->add(
                 $permission(
-                EndpointPermission::SELF_ACTION,
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
             )
@@ -251,7 +251,7 @@ class Hooks implements RouteInterface {
             )
             ->add(
                 $permission(
-                EndpointPermission::SELF_ACTION,
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
             )
