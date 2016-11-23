@@ -29,12 +29,12 @@ interface MemberInterface extends RepositoryInterface {
     /**
      * Finds a direct membership with a Company and an Identity.
      *
-     * @param      integer                  $identityId  The identity identifier
-     * @param      integer                  $companyId   The company identifier
+     * @param int $identityId The identity identifier
+     * @param int $companyId  The company identifier
      *
-     * @throws     \App\Exception\NotFound
+     * @throws \App\Exception\NotFound
      *
-     * @return     \App\Entity\Company\Member
+     * @return \App\Entity\Company\Member
      */
     public function findDirectMembership(int $identityId, int $companyId) : Member;
 
