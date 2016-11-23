@@ -56,4 +56,21 @@ class Source extends AbstractEntity {
 
         return $tags;
     }
+
+    /**
+     * Sets the tag attribute.
+     *
+     * @param string $key   The key
+     * @param mixed  $value The value
+     *
+     * @return self
+     */
+    public function setTag(string $key, $value) : self {
+        $tags                     = $this->tags;
+        $tags->$key               = $value;
+        $this->attributes['tags'] = json_encode($tags);
+
+        return $this;
+    }
+
 }
