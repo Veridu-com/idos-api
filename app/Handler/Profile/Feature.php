@@ -390,7 +390,7 @@ class Feature implements HandlerInterface {
             // sourceId will be 0 to null sources
             foreach ($featuresPerSource as $sourceId => $sourceFeatures) {
                 $source  = ($sourceId ? $sources[$sourceId] : null);
-                $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($source), $command->source ? $command->source : null);
+                $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($source), $source);
 
                 $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $sourceFeatures, $command->user, $process, $command->credential, $source);
                 $this->emitter->emit($event);
