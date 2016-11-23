@@ -9,13 +9,35 @@ declare(strict_types = 1);
 namespace App\Repository\Company;
 
 use App\Entity\Company\Member;
+use App\Exception\NotFound;
+use App\Factory\Entity;
+use App\Factory\Repository;
 use App\Repository\AbstractSQLDBRepository;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
+use Jenssegers\Optimus\Optimus;
 
 /**
  * Database-based Member Repository Implementation.
  */
 class DBMember extends AbstractSQLDBRepository implements MemberInterface {
+    /**
+     * Compay repository.
+     * 
+     * @var \App\Repository\CompanyInterface
+     */
+    private $companyRepository;
+
+    public function __construct(
+        Entity $entityFactory,
+        Repository $repositoryFactory,
+        Optimus $optimus,
+        ConnectionInterface $sqlConnection
+    ) {
+        parent::__construct($entityFactory, $repositoryFactory, $optimus, $sqlConnection);
+        $this->companyRepository = $this->repositoryFactory->create('Company');
+    }
+
     /**
      * The table associated with the repository.
      *
@@ -71,16 +93,45 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
     protected $filterableKeys = [
     ];
 
+
+    public function findDirectMembership(int $identityId, int $companyId) : Member {
+        return $this->findOneBy(
+            [
+                'identity_id' => $identityId,
+                'company_id'  => $companyId
+            ]
+        );
+    }
     /**
      * {@inheritdoc}
      */
     public function findMembership(int $identityId, int $companyId) : Member {
-        return $this->findOneBy(
-            [
-            'identity_id' => $identityId,
-            'company_id'  => $companyId
-            ]
-        );
+        try {
+            return $this->findDirectMembership($identityId, $companyId);
+        } catch (NotFound $e) {
+            // this means the user doesn't have a direct relationship with the company
+            // but the user may have an indirect relationship
+            // if the user has a role in a company that is a parent of the given company
+            // it should return the membership relationship with this father
+
+            return $this->hasParentAccess($identityId, $companyId);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasParentAccess(int $identityId, int $companyId) : Member {
+        $company = $this->companyRepository->find($companyId);
+
+        try {
+            return $this->findDirectMembership($identityId, $companyId);
+        } catch (NotFound $e) {
+            if (! $company->parentId) {
+                throw new NotFound();
+            }
+            return $this->hasParentAccess($identityId, $company->parentId);            
+        }
     }
 
     /**
