@@ -14,9 +14,9 @@ use League\Event\EventInterface;
 
 /**
  * This listener is responsible to add to the source tags 
- * the "profilePicture" and the "profileURL" properties.
+ * "profilePicture" and "profileURL".
  * 
- * This listener is built having the \App\Event\Profile\Feature\Created event is triggered.
+ * This listener is called after the \App\Event\Profile\Feature\Created event is fired.
  */
 class AddSourceTagFromCreateFeatureListener extends AbstractListener {
     /**
@@ -41,14 +41,21 @@ class AddSourceTagFromCreateFeatureListener extends AbstractListener {
         }
 
         if ($event->feature->name == 'profilePicture') {
-            $event->source->setTag('profilePicture', $event->feature->value);
+            $event->source->setTag('profile_picture', $event->feature->value);
+            $this->sourceRepository->save($event->source);
+
+            return;
+        }
+
+        if ($event->feature->name == 'profileId') {
+            $event->source->setTag('profile_id', $event->feature->value);
             $this->sourceRepository->save($event->source);
 
             return;
         }
 
         if ($event->feature->name == 'profileURL') {
-            $event->source->setTag('profileURL', $event->feature->value);
+            $event->source->setTag('profile_url', $event->feature->value);
             $this->sourceRepository->save($event->source);
 
             return;
