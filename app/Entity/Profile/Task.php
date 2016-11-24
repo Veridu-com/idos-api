@@ -13,7 +13,7 @@ use App\Entity\AbstractEntity;
 /**
  * Task Entity.
  *
- * @apiEntity schema/tasks/taskEntity.json
+ * @apiEntity schema/task/taskEntity.json
  *
  * @property int     $id
  * @property string  $name

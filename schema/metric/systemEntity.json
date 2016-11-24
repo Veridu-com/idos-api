@@ -1,0 +1,10 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.idos.io/1.0/schema/metric/systemEntity.json",
+    "title": "System",
+    "type": "object",
+    "properties": {
+    },
+    "required": [
+    ]
+}
