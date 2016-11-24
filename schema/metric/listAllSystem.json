@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /metrics/system",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "System response payload",
+            "type": "array",
+            "items": {
+                "$ref": "systemEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

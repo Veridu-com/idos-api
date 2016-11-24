@@ -1,0 +1,24 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /metrics/user",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "User response payload",
+            "type": "array",
+            "items": {
+                "$ref": "userEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}
