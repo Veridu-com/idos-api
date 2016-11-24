@@ -82,6 +82,8 @@ class DBSystem extends AbstractSQLDBRepository implements SystemInterface {
             $query = $query->where('created_at', '<=', date('Y-m-d H:i:s', $to));
         }
 
+        $query = $query->orderBy('created_at', 'asc');
+
         $entities = $query->get(['*']);
         foreach ($entities as $entity) {
             if (! $entity->count) {

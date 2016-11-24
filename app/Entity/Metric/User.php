@@ -28,7 +28,7 @@ class User extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['sources', 'data', 'gates', 'flags', 'created_at', 'updated_at'];
+    protected $visible = ['sources', 'data', 'gates', 'flags', 'count', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
