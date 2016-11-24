@@ -13,15 +13,15 @@ use App\Repository\Profile\SourceInterface;
 use League\Event\EventInterface;
 
 /**
- * This listener is responsible to add to the source tags 
+ * This listener is responsible to add to the source tags
  * "profilePicture" and  "profileURL".
- * 
+ *
  * This listener is called after \App\Event\Profile\Feature\CreatedBulk event is fired.
  */
 class AddSourceTagFromUpsertBulkFeatureListener extends AbstractListener {
     /**
      * Source repository.
-     * 
+     *
      * @var \App\Repository\Profile\SourceInterface
      */
     private $sourceRepository;
@@ -30,7 +30,7 @@ class AddSourceTagFromUpsertBulkFeatureListener extends AbstractListener {
      * Class constructor.
      *
      * @param \App\Repository\Profile\SourceInterface $sourceRepository The source repository
-     * 
+     *
      * @return void
      */
     public function __construct(SourceInterface $sourceRepository) {

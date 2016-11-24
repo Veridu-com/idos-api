@@ -13,15 +13,15 @@ use App\Repository\Profile\SourceInterface;
 use League\Event\EventInterface;
 
 /**
- * This listener is responsible to add to the source tags 
+ * This listener is responsible to add to the source tags
  * "profilePicture" and "profileURL".
- * 
+ *
  * This listener is called after the \App\Event\Profile\Feature\Created event is fired.
  */
 class AddSourceTagFromCreateFeatureListener extends AbstractListener {
     /**
      * Source repository.
-     * 
+     *
      * @var \App\Repository\Profile\SourceInterface
      */
     private $sourceRepository;
