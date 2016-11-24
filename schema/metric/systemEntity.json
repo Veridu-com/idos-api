@@ -4,7 +4,40 @@
     "title": "System",
     "type": "object",
     "properties": {
+        "endpoint": {
+            "description":"Endpoint name",
+            "type": "string",
+            "pattern": ""
+        },
+        "action": {
+            "description":"Recorded action",
+            "type": "string",
+            "pattern": ""
+        },
+        "count": {
+            "description":"Number of users",
+            "type": "integer",
+            "pattern": ""
+        },
+        "data": {
+            "description": "Data for the recorded action",
+            "type": "object"
+        },
+        "created_at": {
+            "description": "Metric's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Metric's last update unixtime",
+            "type": ["integer", "null"]
+        }
     },
     "required": [
+        "endpoint",
+        "action",
+        "count",
+        "data",
+        "created_at",
+        "updated_at"
     ]
 }
