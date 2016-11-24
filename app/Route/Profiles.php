@@ -77,10 +77,11 @@ class Profiles implements RouteInterface {
      *
      * Retrieve all profile candidates, attributes, gates and flags.
      *
-     * @apiEndpoint GET /profiles
+     * @apiEndpoint GET /profiles/{userName}
      * @apiGroup Profile
      * @apiAuth header token UserToken eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth query token userToken eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -91,7 +92,7 @@ class Profiles implements RouteInterface {
      * @link docs/profiles/listAll.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profiles::listAll
+     * @see \App\Controller\Profiles::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app

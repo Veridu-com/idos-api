@@ -9,6 +9,51 @@
             "type": "string",
             "pattern": ""
         },
+        "attributes": {
+            "description": "List of profile attributes",
+            "type": "array",
+            "items": {
+                "$ref": "../attribute/attributeEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "candidates": {
+            "description": "List of attribute candidates",
+            "type": "array",
+            "items": {
+                "$ref": "../candidate/candidateEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "scores": {
+            "description": "List of attribute scores",
+            "type": "array",
+            "items": {
+                "$ref": "../score/scoreEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "gates": {
+            "description": "List of profile gates",
+            "type": "array",
+            "items": {
+                "$ref": "../gate/gateEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "sources": {
+            "description": "List of profile sources",
+            "type": "array",
+            "items": {
+                "$ref": "../source/sourceEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
         "created_at": {
             "description": "Profile's creation unixtime",
             "type": "integer"
