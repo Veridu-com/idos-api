@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "GET /profiles",
+    "title": "GET /profiles/{userName}",
     "type": "object",
     "properties": {
         "status": {
@@ -9,12 +9,8 @@
         },
         "data": {
             "description": "Profile response payload",
-            "type": "array",
-            "items": {
-                "$ref": "profileEntity.json"
-            },
-            "minItems": 0,
-            "uniqueItems": true
+            "type": "object",
+            "$ref": "profileEntity.json"
         },
         "updated": {
             "description": "Unixtime of the last update",
@@ -27,4 +23,3 @@
         "updated"
     ]
 }
-

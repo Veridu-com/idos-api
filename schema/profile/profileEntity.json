@@ -1,20 +1,20 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "id": "https://api.idos.io/1.0/schema/profile/profileEntity.json",
-    "title": "Score",
+    "title": "Profile",
     "type": "object",
     "properties": {
         "username": {
-            "description": "User's username",
+            "description": "Profile's username",
             "type": "string",
             "pattern": ""
         },
         "created_at": {
-            "description": "Score's creation unixtime",
+            "description": "Profile's creation unixtime",
             "type": "integer"
         },
         "updated_at": {
-            "description": "Score's last update unixtime",
+            "description": "Profile's last update unixtime",
             "type": ["integer", "null"]
         }
     },

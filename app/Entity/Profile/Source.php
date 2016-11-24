@@ -72,5 +72,4 @@ class Source extends AbstractEntity {
 
         return $this;
     }
-
 }

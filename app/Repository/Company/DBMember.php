@@ -23,7 +23,7 @@ use Jenssegers\Optimus\Optimus;
 class DBMember extends AbstractSQLDBRepository implements MemberInterface {
     /**
      * Compay repository.
-     * 
+     *
      * @var \App\Repository\CompanyInterface
      */
     private $companyRepository;

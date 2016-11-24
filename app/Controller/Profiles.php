@@ -100,43 +100,6 @@ class Profiles implements ControllerInterface {
     }
 
     /**
-     * Lists all Profiles that are visible to the acting Company.
-     *
-     * @apiEndpointResponse 200 schema/profile/listAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company    = $request->getAttribute('company');
-        $credential = $request->getAttribute('credential');
-
-        $command = $this->commandFactory->create('Profile\\ListAll');
-        $command
-            ->setParameter('credential', $credential)
-            ->setParameter('company', $company);
-
-        $entities = $this->commandBus->handle($command);
-
-        $body = [
-            'data'    => $entities->toArray(),
-            'updated' => (
-                $entities->isEmpty() ? time() : max($entities->max('updatedAt'), $entities->max('createdAt'))
-            )
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
      * Retrieves a single profile.
      *
      * @apiEndpointResponse 200 schema/profile/getOne.json
@@ -165,22 +128,18 @@ class Profiles implements ControllerInterface {
             'candidates' => $candidates->toArray(),
             'scores'     => $scores->toArray(),
             'gates'      => $gates->toArray(),
-            'sources'    => $sources->toArray()
+            'sources'    => $sources->toArray(),
+            'created_at' => $user->createdAt
         ];
 
         $body = [
             'data'    => $data,
             'updated' => max(
                 $user->updatedAt,
-                $user->createdAt,
                 $attributes->max('updatedAt'),
-                $attributes->max('createdAt'),
                 $candidates->max('updatedAt'),
-                $candidates->max('createdAt'),
                 $scores->max('updatedAt'),
-                $scores->max('createdAt'),
-                $sources->max('updatedAt'),
-                $sources->max('createdAt')
+                $sources->max('updatedAt')
             )
         ];
 
