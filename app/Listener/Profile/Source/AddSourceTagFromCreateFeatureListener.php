@@ -56,7 +56,7 @@ class AddSourceTagFromCreateFeatureListener extends AbstractListener {
             return;
         }
 
-        if ($event->feature->name == 'profileURL') {
+        if ($event->feature->name === 'profileURL') {
             $event->source->setTag('profile_url', $event->feature->value);
             $this->sourceRepository->save($event->source);
 
