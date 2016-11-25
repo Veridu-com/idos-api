@@ -119,7 +119,7 @@ class Profiles implements ControllerInterface {
         $attributes = $this->attributeRepository->getAllByUserIdAndNames($user->id);
         $candidates = $this->candidateRepository->findByUserId($user->id);
         $scores     = $this->scoreRepository->getByUserId($user->id);
-        $sources    = $this->sourceRepository->getByUserId($user->id);
+        $sources    = $this->sourceRepository->getLatestSources($user->id);
         $gates      = $this->gateRepository->getByUserId($user->id);
 
         $data = [
