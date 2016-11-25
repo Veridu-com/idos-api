@@ -16,7 +16,7 @@ use League\Event\EventInterface;
  * This listener is responsible to add to the source tags 
  * "profilePicture" and "profileURL".
  * 
- * This listener is called after the \App\Event\Profile\Feature\Created event is fired.
+ * This listener is called after the \App\Event\Profile\Feature\Created event was fired.
  */
 class AddSourceTagFromCreateFeatureListener extends AbstractListener {
     /**
@@ -26,28 +26,30 @@ class AddSourceTagFromCreateFeatureListener extends AbstractListener {
      */
     private $sourceRepository;
 
+    /**
+     * Class constructor.
+     *
+     * @param \App\Repository\Profile\SourceInterface $sourceRepository The source repository
+     * 
+     * @return void
+     */
     public function __construct(SourceInterface $sourceRepository) {
         $this->sourceRepository = $sourceRepository;
     }
 
-    /**
-     * { function_description }.
-     *
-     * @param \League\Event\EventInterface $event The event
-     */
     public function handle(EventInterface $event) {
         if (! $event->source) {
             return;
         }
 
-        if ($event->feature->name == 'profilePicture') {
+        if ($event->feature->name === 'profilePicture') {
             $event->source->setTag('profile_picture', $event->feature->value);
             $this->sourceRepository->save($event->source);
 
             return;
         }
 
-        if ($event->feature->name == 'profileId') {
+        if ($event->feature->name === 'profileId') {
             $event->source->setTag('profile_id', $event->feature->value);
             $this->sourceRepository->save($event->source);
 

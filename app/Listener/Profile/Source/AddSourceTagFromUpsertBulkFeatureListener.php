@@ -16,7 +16,7 @@ use League\Event\EventInterface;
  * This listener is responsible to add to the source tags 
  * "profilePicture" and  "profileURL".
  * 
- * This listener is called after \App\Event\Profile\Feature\CreatedBulk event is fired.
+ * This listener is called after \App\Event\Profile\Feature\CreatedBulk event was fired.
  */
 class AddSourceTagFromUpsertBulkFeatureListener extends AbstractListener {
     /**
@@ -43,13 +43,13 @@ class AddSourceTagFromUpsertBulkFeatureListener extends AbstractListener {
                 continue;
             }
 
-            if ($feature['name'] == 'profilePicture') {
+            if ($feature['name'] === 'profilePicture') {
                 $event->source->setTag('profile_picture', $feature['value']);
                 $this->sourceRepository->save($event->source);
                 continue;
             }
 
-            if ($feature['name'] == 'profileId') {
+            if ($feature['name'] === 'profileId') {
                 $event->source->setTag('profile_id', $feature['value']);
                 $this->sourceRepository->save($event->source);
                 continue;
