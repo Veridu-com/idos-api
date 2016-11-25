@@ -44,13 +44,13 @@ interface SourceInterface extends RepositoryInterface {
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByUserId(int $userId) : Collection;
-    
+
     /**
      * Gets the latest sources of the user.
      *
-     * @param      integer     $userId  The user identifier
+     * @param int $userId The user identifier
      *
-     * @return     Collection  The latest sources.
+     * @return Collection The latest sources.
      */
     public function getLatest(int $userId) : Collection;
 
