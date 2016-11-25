@@ -79,7 +79,14 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
 
     public function getLatestSources(int $userId) : Collection {
         $sources = $this->getByUserId($userId);
-        return $sources->unique('name');
+        $sourceAssoc = [];
+
+        $sources->map(function ($source) use ($sourceAssoc) {
+            $sourceAssoc[$source->name] = $source;
+            return;
+        });
+
+        return new Collection(array_values($sourceAssoc));
     }
 
     /**
