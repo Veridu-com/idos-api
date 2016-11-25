@@ -81,6 +81,7 @@ class EndpointPermission implements MiddlewareInterface {
         if ($this->permissionType === self::PUBLIC_ACTION) {
             return $next($request, $response);
         }
+
         // get identity set on Auth middleware
         $identity = $request->getAttribute('identity');
         if ($identity) {

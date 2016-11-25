@@ -14,7 +14,11 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile routing definitions.
+ * Metrics.
+ *
+ * Metrics is what the API uses to document its activity when it is in operation.
+ * It also gathers information about how the User interacts with the API when they make a verification.
+ * This is used for collecting data on the verification process for analysing trends or creating visualisations.
  *
  * @link docs/metrics/overview.md
  * @see \App\Controller\Metrics
@@ -63,7 +67,7 @@ class Metrics implements RouteInterface {
      * Retrieve a complete list of the system metrics.
      *
      * @apiEndpoint GET /metrics/system
-     * @apiGroup Profile
+     * @apiGroup Metrics
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
@@ -95,7 +99,7 @@ class Metrics implements RouteInterface {
      * Retrieve a complete list of the user metrics.
      *
      * @apiEndpoint GET /metrics/user
-     * @apiGroup Profile
+     * @apiGroup Metrics
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *

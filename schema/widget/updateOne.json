@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "GET /profiles/{userName}/flags/{flagSlug}",
+    "title": "PUT /companies/{companySlug}/credentials/{pubKey}/widgets/{widgetId}",
     "type": "object",
     "properties": {
         "status": {
@@ -8,17 +8,18 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Flag response payload",
+            "description": "Widget response payload",
             "type": "object",
-            "$ref": "flagEntity.json"
+            "$ref": "widgetEntity.json"
         },
         "updated": {
             "description": "Unixtime of the last update",
-            "type": ["integer", "null"]
+            "type": "integer"
         }
     },
     "required": [
         "status",
-        "data"
+        "data",
+        "updated"
     ]
 }

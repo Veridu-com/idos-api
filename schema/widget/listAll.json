@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "PUT /profiles/{userName}/gates",
+    "title": "GET /companies/{companySlug}/credentials/{pubKey}/widgets",
     "type": "object",
     "properties": {
         "status": {
@@ -8,9 +8,13 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Gate response payload",
-            "type": "object",
-            "$ref": "gateEntity.json"
+            "description": "Widget response payload",
+            "type": "array",
+            "items": {
+                "$ref": "widgetEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
         }
     },
     "required": [

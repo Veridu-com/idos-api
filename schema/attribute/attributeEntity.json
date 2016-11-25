@@ -1,33 +1,31 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "id": "https://api.idos.io/1.0/schema/user/processEntity.json",
-    "title": "Process",
+    "id": "https://api.idos.io/1.0/schema/attribute/attributeEntity.json",
+    "title": "Attribute",
     "type": "object",
     "properties": {
         "name": {
-            "description": "Process Name",
+            "description": "Attribute name",
             "type": "string",
             "pattern": ""
         },
-        "event": {
-            "description": "Event that triggered the process",
-            "type": ["string", "null"],
+        "value": {
+            "description": "Attribute value",
+            "type": "string",
             "pattern": ""
         },
         "created_at": {
-            "description": "Process's creation unixtime",
+            "description": "Attribute's creation unixtime",
             "type": "integer"
         },
         "updated_at": {
-            "description": "Process's last update unixtime",
+            "description": "Attribute's last update unixtime",
             "type": ["integer", "null"]
         }
     },
-    "dependencies": {
-    },
     "required": [
         "name",
-        "event",
+        "value",
         "created_at"
     ]
 }

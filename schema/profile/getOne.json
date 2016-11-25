@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "PUT /profiles/{userName}/gates",
+    "title": "GET /profiles/{userName}",
     "type": "object",
     "properties": {
         "status": {
@@ -8,13 +8,18 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Gate response payload",
+            "description": "Profile response payload",
             "type": "object",
-            "$ref": "gateEntity.json"
+            "$ref": "profileEntity.json"
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": "integer"
         }
     },
     "required": [
         "status",
-        "data"
+        "data",
+        "updated"
     ]
 }

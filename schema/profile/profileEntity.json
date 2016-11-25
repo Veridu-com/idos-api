@@ -1,20 +1,65 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "id": "https://api.idos.io/1.0/schema/profile/profileEntity.json",
-    "title": "Score",
+    "title": "Profile",
     "type": "object",
     "properties": {
         "username": {
-            "description": "User's username",
+            "description": "Profile's username",
             "type": "string",
             "pattern": ""
         },
+        "attributes": {
+            "description": "List of profile attributes",
+            "type": "array",
+            "items": {
+                "$ref": "../attribute/attributeEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "candidates": {
+            "description": "List of attribute candidates",
+            "type": "array",
+            "items": {
+                "$ref": "../candidate/candidateEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "scores": {
+            "description": "List of attribute scores",
+            "type": "array",
+            "items": {
+                "$ref": "../score/scoreEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "gates": {
+            "description": "List of profile gates",
+            "type": "array",
+            "items": {
+                "$ref": "../gate/gateEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "sources": {
+            "description": "List of profile sources",
+            "type": "array",
+            "items": {
+                "$ref": "../source/sourceEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
         "created_at": {
-            "description": "Score's creation unixtime",
+            "description": "Profile's creation unixtime",
             "type": "integer"
         },
         "updated_at": {
-            "description": "Score's last update unixtime",
+            "description": "Profile's last update unixtime",
             "type": ["integer", "null"]
         }
     },

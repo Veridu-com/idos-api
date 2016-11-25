@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "PUT /profiles/{userName}/gates",
+    "title": "GET /metrics/user",
     "type": "object",
     "properties": {
         "status": {
@@ -8,9 +8,13 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Gate response payload",
-            "type": "object",
-            "$ref": "gateEntity.json"
+            "description": "User response payload",
+            "type": "array",
+            "items": {
+                "$ref": "userEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
         }
     },
     "required": [

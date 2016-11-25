@@ -8,7 +8,7 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Warnings response payload",
+            "description": "Flag response payload",
             "type": "array",
             "items": {
                 "$ref": "flagEntity.json"
