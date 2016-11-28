@@ -14,22 +14,48 @@ use Interop\Container\ContainerInterface;
 
 class RawProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
+        $repositoryFactory        = $container->get('repositoryFactory');
+        $credentialRepository     = $repositoryFactory->create('Company\Credential');
+        $serviceHandlerRepository = $repositoryFactory->create('ServiceHandler');
+
+        $eventFactory  = $container->get('eventFactory');
+        $emitter       = $container->get('eventEmitter');
+        $gearmanClient = $container->get('gearmanClient');
+
+        $eventLogger    = ($container->get('log'))('Event');
+        $commandBus     = $container->get('commandBus');
+        $commandFactory = $container->get('commandFactory');
+
         $this->events = [
             Raw\Created::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new QueueServiceTaskListener(
+                    $credentialRepository,
+                    $serviceHandlerRepository,
+                    $eventFactory,
+                    $emitter,
+                    $gearmanClient
+                ),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Raw\Updated::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new QueueServiceTaskListener(
+                    $credentialRepository,
+                    $serviceHandlerRepository,
+                    $eventFactory,
+                    $emitter,
+                    $gearmanClient
+                ),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Raw\Deleted::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Raw\DeletedMulti::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];
     }

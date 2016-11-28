@@ -41,10 +41,24 @@ class SourceProvider extends Listener\AbstractListenerProvider {
             Source\OTP::class => [
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory),
-                new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
+                new QueueServiceTaskListener(
+                    $credentialRepository,
+                    $serviceHandlerRepository,
+                    $eventFactory,
+                    $emitter,
+                    $gearmanClient
+                )
             ],
             Source\Created::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                new Listener\Manager\ScrapeEventListener(
+                    $credentialRepository,
+                    $serviceHandlerRepository,
+                    $settingRepository,
+                    $eventFactory,
+                    $emitter,
+                    $gearmanClient
+                ),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Source\Updated::class => [
@@ -53,10 +67,12 @@ class SourceProvider extends Listener\AbstractListenerProvider {
             ],
             Source\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                new Listener\Source\LogoutListener($eventLogger, $commandBus, $commandFactory),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Source\DeletedMulti::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                new Listener\Source\LogoutListener($eventLogger, $commandBus, $commandFactory),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];
