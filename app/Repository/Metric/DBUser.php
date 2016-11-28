@@ -59,23 +59,23 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->whereIn('credential_public', $keys);
 
         $metricType = null;
-        $columns = ['sources', 'data', 'gates', 'flags'];
+        $columns    = ['sources', 'data', 'gates', 'flags'];
         if (isset($queryParams['interval'])) {
             switch ($queryParams['interval']) {
                 case 'hourly':
                     $metricType = 'hourly';
-                    $groupBy = $this->dbConnection->raw('DATE_TRUNC(\'hour\', "created_at")');
-                    $columns[] = $this->dbConnection->raw($groupBy . ' AS "created_at"');
-                    $columns[] = $this->dbConnection->raw('COUNT(*) AS "count"');
-                    $query = $query->groupBy('data', 'flags', 'gates', 'sources', $groupBy);
+                    $groupBy    = $this->dbConnection->raw('DATE_TRUNC(\'hour\', "created_at")');
+                    $columns[]  = $this->dbConnection->raw($groupBy . ' AS "created_at"');
+                    $columns[]  = $this->dbConnection->raw('COUNT(*) AS "count"');
+                    $query      = $query->groupBy('data', 'flags', 'gates', 'sources', $groupBy);
                     break;
 
                 case 'daily':
                     $metricType = 'daily';
-                    $groupBy = $this->dbConnection->raw('DATE_TRUNC(\'day\', "created_at")');
-                    $columns[] = $this->dbConnection->raw($groupBy . ' AS "created_at"');
-                    $columns[] = $this->dbConnection->raw('COUNT(*) AS "count"');
-                    $query = $query->groupBy('data', 'flags', 'gates', 'sources', $groupBy);
+                    $groupBy    = $this->dbConnection->raw('DATE_TRUNC(\'day\', "created_at")');
+                    $columns[]  = $this->dbConnection->raw($groupBy . ' AS "created_at"');
+                    $columns[]  = $this->dbConnection->raw('COUNT(*) AS "count"');
+                    $query      = $query->groupBy('data', 'flags', 'gates', 'sources', $groupBy);
                     break;
 
                 default:
