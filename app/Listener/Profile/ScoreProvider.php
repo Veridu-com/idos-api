@@ -14,22 +14,26 @@ use Interop\Container\ContainerInterface;
 
 class ScoreProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
+        $eventLogger    = ($container->get('log'))('Event');
+        $commandBus     = $container->get('commandBus');
+        $commandFactory = $container->get('commandFactory');
+
         $this->events = [
             Score\Created::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Score\Updated::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Score\Deleted::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Score\DeletedMulti::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];
     }
