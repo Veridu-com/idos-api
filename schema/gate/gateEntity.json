@@ -5,9 +5,8 @@
     "type": "object",
     "properties": {
         "id": {
-            "description": "Member id",
-            "type": "integer",
-            "pattern": ""
+            "description": "Gate id",
+            "type": "integer"
         },
         "name": {
             "description": "Gate's name",

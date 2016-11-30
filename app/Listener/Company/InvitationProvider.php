@@ -41,7 +41,13 @@ class InvitationProvider extends Listener\AbstractListenerProvider {
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Invitation\Resend::class => [
-                new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient),
+                new QueueServiceTaskListener(
+                    $credentialRepository,
+                    $serviceHandlerRepository,
+                    $eventFactory,
+                    $emitter,
+                    $gearmanClient
+                ),
                 new Listener\LogFiredEventListener($eventLogger)
             ],
             Invitation\Updated::class => [

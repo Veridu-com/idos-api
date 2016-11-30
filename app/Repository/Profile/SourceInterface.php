@@ -46,6 +46,15 @@ interface SourceInterface extends RepositoryInterface {
     public function getByUserId(int $userId) : Collection;
 
     /**
+     * Gets the latest sources of the user.
+     *
+     * @param int $userId The user identifier
+     *
+     * @return Collection The latest sources.
+     */
+    public function getLatest(int $userId) : Collection;
+
+    /**
      * Deletes sources based on the user id.
      *
      * @param int $userId

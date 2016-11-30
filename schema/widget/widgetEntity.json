@@ -5,22 +5,20 @@
     "type": "object",
     "properties": {
         "hash": {
-            "description": "",
-            "type": "",
-            "pattern": ""
+            "description": "Widget's identifier",
+            "type": "string",
+            "pattern": "[a-zA-Z0-9]{32}"
         },
         "label": {
-            "description": "Member id",
-            "type": "string",
-            "pattern": ""
+            "description": "Widget's label",
+            "type": "string"
         },
         "type": {
-            "description": "Gate's name",
-            "type": "string",
-            "pattern": "[a-zA-Z0-9_-]+"
+            "description": "Widget type",
+            "enum": ["embedded-widget"]
         },
         "config": {
-            "description": "Gate's slug",
+            "description": "Widget's configuration in json format",
             "type": "string",
             "pattern": "[a-zA-Z0-9_-]+"
         },
@@ -39,5 +37,12 @@
         }
     },
     "required": [
+        "hash",
+        "label",
+        "type",
+        "config",
+        "credential",
+        "created_at",
+        "updated_at"
     ]
 }
