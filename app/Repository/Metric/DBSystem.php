@@ -87,9 +87,10 @@ class DBSystem extends AbstractSQLDBRepository implements SystemInterface {
                 'json_build_object(
                 \'provider\', "data"->>\'provider\',
                 \'sso\', cast("data"->>\'sso\' as boolean)
-                ) AS "data"');
+                ) AS "data"'
+            );
 
-            $query      = $query->groupBy(
+            $query = $query->groupBy(
                 'endpoint',
                 $this->dbConnection->raw('"data"->>\'sso\''),
                 $this->dbConnection->raw('"data"->>\'provider\''),

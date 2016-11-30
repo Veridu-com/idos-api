@@ -69,7 +69,7 @@ trait QueueCompanyServiceHandlers {
      */
     private function queue(array $payload) : bool {
         $task = $this->gearmanClient->doBackground(
-            sprintf('idos-manager-%s', str_replace('.', '', __VERSION__)),
+            'manager',
             json_encode($payload)
         );
 

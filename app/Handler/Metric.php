@@ -220,7 +220,7 @@ class Metric implements HandlerInterface {
             }
 
             $this->gearmanClient->doBackground(
-                sprintf('idos-metrics-%s', str_replace('.', '', __VERSION__)),
+                'metrics',
                 json_encode($payload)
             );
         }
