@@ -116,6 +116,7 @@ class Metric implements HandlerInterface {
             switch ($command->queryParams['interval']) {
                 case 'hourly':
                 case 'daily':
+                case 'weekly':
                     $metricType = $command->queryParams['interval'];
                     break;
 
