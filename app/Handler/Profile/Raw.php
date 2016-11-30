@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Handler\Profile;
 
 use App\Command\Profile\Raw\CreateNew;
+use App\Command\Profile\Raw\DeleteAll;
 use App\Command\Profile\Raw\Upsert;
 use App\Entity\Profile\Raw as RawEntity;
 use App\Exception\Create;
@@ -19,6 +20,7 @@ use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ProcessInterface;
 use App\Repository\Profile\RawInterface;
+use App\Repository\Profile\SourceInterface;
 use App\Validator\Profile\Raw as RawValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -34,6 +36,12 @@ class Raw implements HandlerInterface {
      * @var \App\Repository\Profile\RawInterface
      */
     private $repository;
+    /**
+     * Source Repository instance.
+     *
+     * @var \App\Repository\Profile\SourceInterface
+     */
+    private $sourceRepository;
     /**
      * Raw Validator instance.
      *
@@ -64,6 +72,9 @@ class Raw implements HandlerInterface {
                     ->create('Profile\Raw'),
                 $container
                     ->get('repositoryFactory')
+                    ->create('Profile\Source'),
+                $container
+                    ->get('repositoryFactory')
                     ->create('Profile\Process'),
                 $container
                     ->get('validatorFactory')
@@ -88,12 +99,14 @@ class Raw implements HandlerInterface {
      */
     public function __construct(
         RawInterface $repository,
+        SourceInterface $sourceRepository,
         ProcessInterface $processRepository,
         RawValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository          = $repository;
+        $this->sourceRepository   = $sourceRepository;
         $this->processRepository   = $processRepository;
         $this->validator           = $validator;
         $this->eventFactory        = $eventFactory;
@@ -118,7 +131,6 @@ class Raw implements HandlerInterface {
         try {
             $this->validator->assertSource($command->source);
             $this->validator->assertUser($command->user);
-            $this->validator->assertCredential($command->credential);
             $this->validator->assertName($command->collection);
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
@@ -165,6 +177,51 @@ class Raw implements HandlerInterface {
         }
 
         return $raw;
+    }
+
+    /**
+     * Deletes the raw data of a user.
+     *
+     * @param \App\Command\Profile\Raw\DeleteAll $command
+     *
+     * @see \App\Repository\DBRaw::findOne
+     * @see \App\Repository\DBRaw::create
+     * @see \App\Repository\DBRaw::save
+     *
+     * @throws \App\Exception\Validate\Profile\RawException
+     * @throws \App\Exception\Create\Profile\RawException
+     *
+     * @return int
+     */
+    public function handleDeleteAll(DeleteAll $command) : int {
+        try {
+            $this->validator->assertUser($command->user);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\RawException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        try {
+            $sourceNameInput = $command->queryParams['source'] ?? null;
+
+            if ($sourceNameInput) {
+                $userSources = $this->sourceRepository->getbyUserIdAndName($command->user->id, $sourceNameInput);
+            } else {
+                $userSources = $this->sourceRepository->getbyUserId($command->user->id);
+            }
+            
+            $affectedRows = 0;
+            foreach ($userSources as $source) {
+                $affectedRows += $this->repository->deleteBySource($source);
+            }
+        } catch (NotFound $e) {
+            throw new Create\Profile\RawException('Error while trying to delete raw data', 500, $e);
+        }
+
+        return $affectedRows;
     }
 
     /**

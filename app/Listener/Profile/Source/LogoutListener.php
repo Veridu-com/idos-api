@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Listener\Profile\Source;
 
+use App\Entity\Profile\Source;
+use App\Entity\User;
 use App\Factory\Command;
 use App\Listener\AbstractListener;
 use League\Event\EventInterface;
@@ -29,15 +31,29 @@ class LogoutListener extends AbstractListener {
      */
     private $logger;
 
-    private function deleteRaw(User $user, Source $source) {
+    /**
+     * Deletes raw entry of a user.
+     *
+     * @param      \App\Entity\User            $user    The user
+     * @param      \App\Entity\Profile\Source  $source  The source
+     * 
+     * @return int
+     */
+    private function deleteRaw(EventInterface $event) {
         $command = $this->commandFactory->create('Profile\Raw\DeleteAll');
         $command
             ->setParameter('user', $event->user)
-            ->setParameter('source', $event->source);
-        $this->commandBus->handle($command);
+            ->setParameter('queryParams', [ 'source' => $event->source->name ]);
+        
+        return $this->commandBus->handle($command);
     }
 
-    private function deleteFeature() {
+    /**
+     * Deletes all features related to the source.
+     *
+     * @param      \App\Entity\Profile\Source  $source  The source
+     */
+    private function deleteFeature(Source $source) {
         $command = $this->commandFactory->create('Profile\Feature\DeleteAll');
         // FIXME Profile\Feature\DeleteAll requires a service
     }
@@ -64,7 +80,7 @@ class LogoutListener extends AbstractListener {
      */
     public function handle(EventInterface $event) {
         if (property_exists($event, 'source')) {
-            $this->deleteRaw($event->user, $event->source);
+            $this->deleteRaw($event);
             // FIXME add $this->deleteFeature
             return;
         }
