@@ -10,6 +10,7 @@ namespace App\Listener\Profile;
 
 use App\Event\Profile\Raw;
 use App\Listener;
+use App\Listener\Manager\QueueServiceTaskListener;
 use Interop\Container\ContainerInterface;
 
 class RawProvider extends Listener\AbstractListenerProvider {

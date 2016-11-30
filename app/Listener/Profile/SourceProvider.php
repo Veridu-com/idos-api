@@ -11,6 +11,7 @@ namespace App\Listener\Profile;
 use App\Event\Profile\Source;
 use App\Listener;
 use App\Listener\Manager\QueueServiceTaskListener;
+use App\Listener\Profile\Source\LogoutListener;
 use Interop\Container\ContainerInterface;
 
 class SourceProvider extends Listener\AbstractListenerProvider {
@@ -67,12 +68,12 @@ class SourceProvider extends Listener\AbstractListenerProvider {
             ],
             Source\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),
-                new Listener\Source\LogoutListener($eventLogger, $commandBus, $commandFactory),
+                new LogoutListener($eventLogger, $commandBus, $commandFactory),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Source\DeletedMulti::class => [
                 new Listener\LogFiredEventListener($eventLogger),
-                new Listener\Source\LogoutListener($eventLogger, $commandBus, $commandFactory),
+                new LogoutListener($eventLogger, $commandBus, $commandFactory),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];

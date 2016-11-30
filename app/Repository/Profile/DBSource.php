@@ -79,6 +79,18 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     /**
      * {@inheritdoc}
      */
+    public function getLatest(int $userId) : Collection {
+        $sources = $this->query()
+            ->where('user_id', $userId)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        return $sources->unique('name');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function deleteByUserId(int $userId) : int {
         return $this->deleteBy(['user_id' => $userId]);
     }

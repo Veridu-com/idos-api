@@ -20,19 +20,19 @@ class TagProvider extends Listener\AbstractListenerProvider {
 
         $this->events = [
             Tag\Created::class => [
-                new Listener\LogFiredEventListener(($eventLogger),
+                new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Tag\Updated::class => [
-                new Listener\LogFiredEventListener(($eventLogger),
+                new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Tag\Deleted::class => [
-                new Listener\LogFiredEventListener(($eventLogger),
+                new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Tag\DeletedMulti::class => [
-                new Listener\LogFiredEventListener(($eventLogger),
+                new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];

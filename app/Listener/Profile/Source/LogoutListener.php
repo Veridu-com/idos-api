@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Listener\Profile\Source;
 
+use App\Factory\Command;
 use App\Listener\AbstractListener;
 use League\Event\EventInterface;
 use League\Tactician\CommandBus;
@@ -48,7 +49,7 @@ class LogoutListener extends AbstractListener {
      *
      * @return void
      */
-    public function __construct(Logger $logger) {
+    public function __construct(Logger $logger, CommandBus $commandBus, Command $commandFactory) {
         $this->logger         = $logger;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;

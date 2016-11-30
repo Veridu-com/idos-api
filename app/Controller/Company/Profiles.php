@@ -136,33 +136,13 @@ class Profiles implements ControllerInterface {
         foreach ($profiles as $profile) {
             $sources    = $this->sourceRepository->getByUserId($profile->id);
             $tags       = $this->tagRepository->getByUserId($profile->id);
-            $reviews    = $this->reviewRepository->getByUserId($profile->id);
             $flags      = $this->flagRepository->getByUserId($profile->id);
             $gates      = $this->gateRepository->getByUserId($profile->id);
             $attributes = $this->attributeRepository->findByUserId($profile->id);
 
-            foreach ($gates as $gate) {
-                $gateReview = null;
-                foreach ($reviews as $review) {
-                    if ($review->gateId === $gate->id) {
-                        $gateReview = $review->toArray();
-                        break;
-                    }
-                }
-
-                $gate->review = $gateReview;
-            }
-
-            $profileSources = [];
-            foreach ($sources as $source) {
-                if (! in_array($source->name, $profileSources)) {
-                    $profileSources[] = $source->name;
-                }
-            }
-
             $data[] = array_merge(
                 $profile->toArray(),
-                ['sources'     => $profileSources],
+                ['sources'     => $sources->toArray()],
                 ['tags'        => $tags->toArray()],
                 ['flags'       => $flags->toArray()],
                 ['gates'       => $gates->toArray()],
@@ -224,17 +204,10 @@ class Profiles implements ControllerInterface {
             $gate->review = $gateReview;
         }
 
-        $profileSources = [];
-        foreach ($sources as $source) {
-            if (! in_array($source->name, $profileSources)) {
-                $profileSources[] = $source->name;
-            }
-        }
-
         $data = array_merge(
             $profile->toArray(),
             ['attributes'  => $attributes->toArray()],
-            ['sources'     => $profileSources],
+            ['sources'     => $sources->toArray()],
             ['tags'        => $tags->toArray()],
             ['flags'       => $flags->toArray()],
             ['gates'       => $gates->toArray()]

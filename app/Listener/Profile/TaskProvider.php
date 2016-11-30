@@ -10,6 +10,7 @@ namespace App\Listener\Profile;
 
 use App\Event\Profile\Task;
 use App\Listener;
+use App\Listener\Manager\QueueServiceTaskListener;
 use Interop\Container\ContainerInterface;
 
 class TaskProvider extends Listener\AbstractListenerProvider {
