@@ -80,15 +80,12 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
      * {@inheritdoc}
      */
     public function getLatest(int $userId) : Collection {
-        // Consedering the default ordering as a chronological ordering
-        $sources     = $this->getByUserId($userId);
-        $sourceAssoc = [];
+        $sources = $this->query()
+            ->where('user_id', $userId)
+            ->orderBy('id', 'desc')
+            ->get();
 
-        foreach ($sources as $source) {
-            $sourceAssoc[$source->name] = $source;
-        }
-
-        return new Collection(array_values($sourceAssoc));
+        return $sources->unique('name');
     }
 
     /**
