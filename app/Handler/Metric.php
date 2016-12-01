@@ -116,6 +116,7 @@ class Metric implements HandlerInterface {
             switch ($command->queryParams['interval']) {
                 case 'hourly':
                 case 'daily':
+                case 'weekly':
                     $metricType = $command->queryParams['interval'];
                     break;
 
@@ -219,7 +220,7 @@ class Metric implements HandlerInterface {
             }
 
             $this->gearmanClient->doBackground(
-                sprintf('idos-metrics-%s', str_replace('.', '', __VERSION__)),
+                'metrics',
                 json_encode($payload)
             );
         }

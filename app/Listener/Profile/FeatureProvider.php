@@ -18,7 +18,7 @@ class FeatureProvider extends Listener\AbstractListenerProvider {
         $repositoryFactory        = $container->get('repositoryFactory');
         $credentialRepository     = $repositoryFactory->create('Company\Credential');
         $serviceHandlerRepository = $repositoryFactory->create('ServiceHandler');
-        $sourceRepository = $repositoryFactory->create('Profile\Source');
+        $sourceRepository         = $repositoryFactory->create('Profile\Source');
 
         $eventFactory  = $container->get('eventFactory');
         $emitter       = $container->get('eventEmitter');
@@ -27,7 +27,7 @@ class FeatureProvider extends Listener\AbstractListenerProvider {
         $eventLogger    = ($container->get('log'))('Event');
         $commandBus     = $container->get('commandBus');
         $commandFactory = $container->get('commandFactory');
-        
+
         $this->events = [
             Feature\CreatedBulk::class => [
                 new Listener\LogFiredEventListener($eventLogger),
