@@ -46,6 +46,16 @@ interface SourceInterface extends RepositoryInterface {
     public function getByUserId(int $userId) : Collection;
 
     /**
+     * Return sources based on their user id and name.
+     *
+     * @param int $userId
+     * @param string $name
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getByUserIdAndName(int $userId, string $name) : Collection;
+
+    /**
      * Gets the latest sources of the user.
      *
      * @param int $userId The user identifier

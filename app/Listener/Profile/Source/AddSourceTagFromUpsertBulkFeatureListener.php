@@ -15,7 +15,7 @@ use League\Event\EventInterface;
 /**
  * This listener is responsible to add to the source tags
  * "profilePicture" and  "profileURL".
- * 
+ *
  * This listener is called after \App\Event\Profile\Feature\CreatedBulk event was fired.
  */
 class AddSourceTagFromUpsertBulkFeatureListener extends AbstractListener {
