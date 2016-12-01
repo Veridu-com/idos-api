@@ -79,6 +79,16 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
     /**
      * {@inheritdoc}
      */
+    public function getByUserIdAndName(int $userId, string $name) : Collection {
+        return $this->findBy([
+            'user_id' => $userId,
+            'name' => $name
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getLatest(int $userId) : Collection {
         $sources = $this->query()
             ->where('user_id', $userId)
