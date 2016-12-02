@@ -289,7 +289,7 @@ class Raw implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-    
+
     /**
      * Deletes the raw data of a user.
      *
@@ -306,7 +306,7 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user       = $request->getAttribute('targetUser');
+        $user        = $request->getAttribute('targetUser');
         $queryParams = $request->getQueryParams();
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
@@ -317,9 +317,8 @@ class Raw implements ControllerInterface {
             ->setParameter('user', $user)
             ->setParameter('queryParams', $queryParams);
 
-
         $body = [
-            'status' => true,
+            'status'  => true,
             'deleted' => $this->commandBus->handle($command)
         ];
 

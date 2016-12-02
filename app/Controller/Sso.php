@@ -113,7 +113,6 @@ class Sso implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-
         $body = [
             'data' => [
                 'enabled' => in_array(

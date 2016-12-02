@@ -19,7 +19,7 @@ use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
 class DBServiceHandlerTest extends AbstractUnit {
-     /*
+    /*
      * Jenssengers\Optimus\Optimus $optimus
      */
     private $optimus;
@@ -159,7 +159,6 @@ class DBServiceHandlerTest extends AbstractUnit {
         $this->assertInstanceOf(ServiceHandlerEntity::class, $entity);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($this->getToArray(), $entity->toArray());
-
     }
 
     public function getAllByCompanyId() {

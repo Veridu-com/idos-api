@@ -27,9 +27,9 @@ use Test\Unit\AbstractUnit;
 
 class CredentialsTest extends AbstractUnit {
     private function getCompanyEntity($id) {
-         $optimus = $this->getMockBuilder(Optimus::class)
-             ->disableOriginalConstructor()
-             ->getMock();
+        $optimus = $this->getMockBuilder(Optimus::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
         return new CompanyEntity(
             [

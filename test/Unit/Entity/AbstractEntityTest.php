@@ -163,22 +163,22 @@ class AbstractEntityTest extends AbstractUnit {
     }
 
     public function testHydrate() {
-         $array = [
+        $array = [
             'id'         => 1,
             'name'       => 'Abstract Entity',
             'created_at' => time(),
             'updated_at' => time()
          ];
-         $abstractMock = $this->getMockBuilder(AbstractEntity::class)
-             ->setMethods(['getReferenceCacheKeys'])
-             ->setConstructorArgs([$array, $this->optimus])
-             ->getMockForAbstractClass();
+        $abstractMock = $this->getMockBuilder(AbstractEntity::class)
+            ->setMethods(['getReferenceCacheKeys'])
+            ->setConstructorArgs([$array, $this->optimus])
+            ->getMockForAbstractClass();
 
-         $abstractMock->hydrate($array);
-         $this->assertSame(1, $abstractMock->id);
-         $this->assertSame('Abstract Entity', $abstractMock->name);
-         $this->assertTrue(is_int($abstractMock->createdAt));
-         $this->assertTrue(is_int($abstractMock->updatedAt));
+        $abstractMock->hydrate($array);
+        $this->assertSame(1, $abstractMock->id);
+        $this->assertSame('Abstract Entity', $abstractMock->name);
+        $this->assertTrue(is_int($abstractMock->createdAt));
+        $this->assertTrue(is_int($abstractMock->updatedAt));
     }
 
     public function testToArray() {

@@ -2,8 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class InvitationExpiresToDate extends AbstractMigration
-{
+class InvitationExpiresToDate extends AbstractMigration {
     /**
      * Converts "invitations"."expires" to "date".
      */

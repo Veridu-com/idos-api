@@ -142,11 +142,11 @@ class Profiles implements ControllerInterface {
 
             $data[] = array_merge(
                 $profile->toArray(),
-                ['sources'     => $sources->toArray()],
-                ['tags'        => $tags->toArray()],
-                ['flags'       => $flags->toArray()],
-                ['gates'       => $gates->toArray()],
-                ['attributes'  => $attributes->toArray()]
+                ['sources'    => $sources->toArray()],
+                ['tags'       => $tags->toArray()],
+                ['flags'      => $flags->toArray()],
+                ['gates'      => $gates->toArray()],
+                ['attributes' => $attributes->toArray()]
             );
         }
 
@@ -206,11 +206,11 @@ class Profiles implements ControllerInterface {
 
         $data = array_merge(
             $profile->toArray(),
-            ['attributes'  => $attributes->toArray()],
-            ['sources'     => $sources->toArray()],
-            ['tags'        => $tags->toArray()],
-            ['flags'       => $flags->toArray()],
-            ['gates'       => $gates->toArray()]
+            ['attributes' => $attributes->toArray()],
+            ['sources'    => $sources->toArray()],
+            ['tags'       => $tags->toArray()],
+            ['flags'      => $flags->toArray()],
+            ['gates'      => $gates->toArray()]
         );
 
         $body = [
@@ -224,7 +224,6 @@ class Profiles implements ControllerInterface {
             ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
-
     }
 
     /**

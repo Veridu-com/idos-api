@@ -22,7 +22,6 @@ class AbstractFactoryTest extends AbstractUnit {
 
         $this->setExpectedException(\TypeError::class);
         $method->invoke($abstractMock, new \stdClass());
-
     }
 
     public function testGetFormatedName() {
@@ -32,7 +31,6 @@ class AbstractFactoryTest extends AbstractUnit {
 
         $method = $this->setProtectedMethod($abstractMock, 'getFormattedName');
         $this->assertSame('Factory', $method->invoke($abstractMock, 'factory'));
-
     }
 
     public function testGetClassName() {

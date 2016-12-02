@@ -38,11 +38,11 @@ class UpdateOne extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if(isset($parameters['expires'])) {
+        if (isset($parameters['expires'])) {
             $this->expires = $parameters['expires'];
         }
 
-        if(isset($parameters['resend_email'])) {
+        if (isset($parameters['resend_email'])) {
             $this->resendEmail = $parameters['resend_email'];
         }
 

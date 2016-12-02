@@ -8,6 +8,5 @@ use Phinx\Seed\AbstractSeed;
 
 class S00CountrySeed extends AbstractSeed {
     public function run() {
-
     }
 }

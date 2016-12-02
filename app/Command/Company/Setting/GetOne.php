@@ -45,7 +45,6 @@ class GetOne extends AbstractCommand {
      * @return \App\Command\Company\Setting\GetOne
      */
     public function setParameters(array $parameters) : self {
-
         return $this;
     }
 }

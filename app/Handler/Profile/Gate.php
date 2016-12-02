@@ -138,12 +138,12 @@ class Gate implements HandlerInterface {
 
         $entity = $this->repository->create(
             [
-                'user_id'                => $command->user->id,
-                'creator'                => $command->service->id,
-                'name'                   => $command->name,
-                'confidence_level'       => $command->confidenceLevel,
-                'pass'                   => $this->validator->validateFlag($command->pass),
-                'created_at'             => time()
+                'user_id'          => $command->user->id,
+                'creator'          => $command->service->id,
+                'name'             => $command->name,
+                'confidence_level' => $command->confidenceLevel,
+                'pass'             => $this->validator->validateFlag($command->pass),
+                'created_at'       => time()
             ]
         );
 

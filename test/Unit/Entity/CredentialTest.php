@@ -115,7 +115,6 @@ class CredentialTest extends AbstractUnit {
         $this->assertNotEmpty($result);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($array, $result);
-
     }
 
     public function testReferenceCacheKeysEmptyAttributes() {
@@ -128,7 +127,6 @@ class CredentialTest extends AbstractUnit {
         $this->assertNotEmpty($result);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($array, $result);
-
     }
 
     public function testReferenceCacheKeys() {
@@ -149,6 +147,5 @@ class CredentialTest extends AbstractUnit {
         $this->assertNotEmpty($result);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($array, $result);
-
     }
 }

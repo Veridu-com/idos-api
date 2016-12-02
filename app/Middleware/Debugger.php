@@ -41,15 +41,19 @@ class Debugger implements MiddlewareInterface {
     ) : ResponseInterface {
         $queryParams = $request->getQueryParams();
 
-        if (empty($queryParams['forcedError']))
+        if (empty($queryParams['forcedError'])) {
             return $next($request, $response);
+        }
 
         $class = explode('_', $queryParams['forcedError']);
-        foreach ($class as &$item)
+        foreach ($class as &$item) {
             $item = ucfirst(strtolower($item));
-        $class    = sprintf('\\App\\Exception\\%s', implode('', $class));
-        if ((! $this->protectedException($class)) && (class_exists($class)))
+        }
+
+        $class = sprintf('\\App\\Exception\\%s', implode('', $class));
+        if ((! $this->protectedException($class)) && (class_exists($class))) {
             throw new $class();
+        }
 
         throw new \Exception('UnknownError');
     }

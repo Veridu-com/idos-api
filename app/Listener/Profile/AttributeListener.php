@@ -284,15 +284,15 @@ class AttributeListener extends AbstractListener {
             'profilePicture' => [
                 'profilePicture'
             ],
-            'fullName'    => [
+            'fullName' => [
                 'firstName',
                 'middleName',
                 'lastName'
             ],
-            'gender'       => [
+            'gender' => [
                 'gender'
             ],
-            'birthDate'   => [
+            'birthDate' => [
                 'birthDay',
                 'birthMonth',
                 'birthYear'
@@ -304,10 +304,10 @@ class AttributeListener extends AbstractListener {
                 'regionName',
                 'countryName'
             ],
-            'email'        => [
+            'email' => [
                 'email'
             ],
-            'phoneNumber'  => [
+            'phoneNumber' => [
                 'phoneCountryCode',
                 'phoneNumber'
             ]
