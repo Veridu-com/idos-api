@@ -235,7 +235,6 @@ class Gate implements HandlerInterface {
         try {
             $this->repository->beginTransaction();
             $this->upsertCategory($command->name, $command->service->id);
-            $now = time();
 
             $entity = $this->repository->create(
                 [
@@ -249,7 +248,7 @@ class Gate implements HandlerInterface {
 
             $this->repository->upsert(
                 $entity, ['user_id', 'creator', 'name', 'confidence_level'], [
-                'updated_at' => strftime(date('Y-m-d H:i:s', $now)),
+                'updated_at' => date('Y-m-d H:i:s'),
                 'pass'       => $entity->pass
                 ]
             );
