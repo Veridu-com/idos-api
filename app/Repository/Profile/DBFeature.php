@@ -139,6 +139,38 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
+    public function upsertOne(int $serviceId, int $userId, $sourceName, string $name, string $type, string $value) : Feature {
+        $this->beginTransaction();
+
+        $result = $this->runRaw(
+            'INSERT INTO "features" ("user_id", "source", "name", "creator", "type", "value", "created_at") VALUES (:user_id, :source, :name, :creator, :type, :value, :created_at)
+            ON CONFLICT ("user_id", "source", "creator", "name") DO UPDATE SET "type" = :type, "value" = :value, "updated_at" = :updated_at',
+            [
+
+                'user_id'    => $userId,
+                'source'     => $sourceName,
+                'name'       => $name,
+                'creator'    => $serviceId,
+                'type'       => $type,
+                'value'      => $value,
+                'created_at' => date('Y-m-d H:i:s', time()),
+                'updated_at' => date('Y-m-d H:i:s', time())
+            ]
+        );
+
+        if (! $result) {
+            $this->rollBack();
+            throw new Create\Profile\FeatureException('Error while trying to create an feature', 500);
+        }
+
+        $this->commit();
+
+        return $this->findOneByName($name, $serviceId, $sourceName, $userId);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function upsertBulk(int $serviceId, int $userId, array $features) : bool {
         $this->beginTransaction();
         $success = true;

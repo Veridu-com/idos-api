@@ -27,6 +27,10 @@ class ScoreProvider extends Listener\AbstractListenerProvider {
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
+            Score\Upserted::class => [
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
+            ],
             Score\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)

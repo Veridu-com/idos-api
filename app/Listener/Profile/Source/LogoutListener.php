@@ -34,8 +34,8 @@ class LogoutListener extends AbstractListener {
     /**
      * Deletes raw entry of a user.
      *
-     * @param      \App\Entity\User            $user    The user
-     * @param      \App\Entity\Profile\Source  $source  The source
+     * @param \App\Entity\User           $user   The user
+     * @param \App\Entity\Profile\Source $source The source
      * 
      * @return int
      */
@@ -43,15 +43,15 @@ class LogoutListener extends AbstractListener {
         $command = $this->commandFactory->create('Profile\Raw\DeleteAll');
         $command
             ->setParameter('user', $event->user)
-            ->setParameter('queryParams', [ 'source' => $event->source->name ]);
-        
+            ->setParameter('queryParams', ['source' => $event->source->name]);
+
         return $this->commandBus->handle($command);
     }
 
     /**
      * Deletes all features related to the source.
      *
-     * @param      \App\Entity\Profile\Source  $source  The source
+     * @param \App\Entity\Profile\Source $source The source
      */
     private function deleteFeature(Source $source) {
         $command = $this->commandFactory->create('Profile\Feature\DeleteAll');

@@ -231,39 +231,11 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entity    = null;
-        $inserting = false;
         try {
-            $entity = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
-
-            $entity->attribute = $command->attribute;
-            $entity->value     = $command->value;
-            $entity->updatedAt = time();
-        } catch (NotFound $e) {
-            $inserting = true;
-
-            $entity = $this->repository->create(
-                [
-                    'user_id'    => $command->user->id,
-                    'creator'    => $command->service->id,
-                    'attribute'  => $command->attribute,
-                    'name'       => $command->name,
-                    'value'      => $command->value,
-                    'created_at' => time()
-                ]
-            );
-        }
-
-        try {
-            $entity = $this->repository->save($entity);
+            $entity = $this->repository->upsertOne($command->service->id, $command->user->id, $command->name, $command->attribute, $command->value);
             $entity = $this->repository->hydrateRelations($entity);
 
-            if ($inserting) {
-                $event = $this->eventFactory->create('Profile\\Score\\Created', $entity, $command->credential);
-            } else {
-                $event = $this->eventFactory->create('Profile\\Score\\Updated', $entity, $command->credential);
-            }
-
+            $event = $this->eventFactory->create('Profile\\Score\\Upserted', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ScoreException('Error while trying to upsert a score', 500, $e);

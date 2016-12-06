@@ -279,55 +279,20 @@ class Feature implements HandlerInterface {
             $command->value = json_encode($command->value);
         }
 
-        $feature   = null;
-        $inserting = false;
         try {
-            $feature = $this->repository->findOneByName($command->name, $command->service->id, $sourceName, $command->user->id);
-
-            $feature->type      = $command->type;
-            $feature->value     = $command->value;
-            $feature->updatedAt = time();
-        } catch (NotFound $e) {
-            $inserting = true;
-
-            $feature = $this->repository->create(
-                [
-                    'user_id'    => $command->user->id,
-                    'source'     => $sourceName,
-                    'name'       => $command->name,
-                    'creator'    => $command->service->id,
-                    'type'       => $command->type,
-                    'value'      => $command->value,
-                    'created_at' => time()
-                ]
-            );
-        }
-
-        try {
-            $feature = $this->repository->save($feature);
+            $feature = $this->repository->upsertOne($command->service->id, $command->user->id, $sourceName, $command->name, $command->type, $command->value);
             $feature = $this->repository->hydrateRelations($feature);
 
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
-            if ($inserting) {
-                $event = $this->eventFactory->create(
-                    'Profile\\Feature\\Created',
-                    $feature,
-                    $command->user,
-                    $process,
-                    $command->credential,
-                    $command->source
-                );
-            } else {
-                $event = $this->eventFactory->create(
-                    'Profile\\Feature\\Updated',
-                    $feature,
-                    $command->user,
-                    $process,
-                    $command->credential,
-                    $command->source
-                );
-            }
+            $event = $this->eventFactory->create(
+                'Profile\\Feature\\Upserted',
+                $feature,
+                $command->user,
+                $process,
+                $command->credential,
+                $command->source
+            );
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {

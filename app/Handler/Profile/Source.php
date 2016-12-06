@@ -405,7 +405,7 @@ class Source implements HandlerInterface {
                 $command->credential
             )
         );
-        
+
         $rowsAffected = $this->repository->delete($command->source->id);
 
         if (! $rowsAffected) {
