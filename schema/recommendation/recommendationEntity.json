@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.idos.io/1.0/schema/recommendation/recommendationEntity.json",
+    "title": "Recommendation",
+    "type": "object",
+    "properties": {
+        "result": {
+            "description": "Recommendation result",
+            "type": "boolean"
+        },
+        "reasons": {
+            "description": "Recommendation data",
+            "type": "array"
+        },
+        "created_at": {
+            "description": "Recommendation's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Recommendation's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "result",
+        "reasons",
+        "created_at",
+        "updated_at"
+    ]
+}
