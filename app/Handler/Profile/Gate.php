@@ -242,27 +242,26 @@ class Gate implements HandlerInterface {
                 'pass'             => $command->pass,
                 'confidence_level' => $command->confidenceLevel,
                 'user_id'          => $command->user->id,
-                'creator'          => $command->service->id,
-                'created_at'       => time()
+                'creator'          => $command->service->id
                 ]
             );
 
-            $entity = $this->repository->upsert(
+            $this->repository->upsert(
                 $entity, ['user_id', 'creator', 'name', 'confidence_level'], [
                 'updated_at' => date('Y-m-d H:i:s'),
                 'pass'       => $entity->pass
                 ]
             );
             $entity = $this->repository->findBySlug($entity->slug, $entity->creator, $entity->userId);
-
+            
             $this->repository->commit();
 
             $entity = $this->repository->hydrateRelations($entity);
 
-            if ($entity->createdAt === $entity->updatedAt) {
-                $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity, $command->credential);
-            } else {
+            if ($entity->updatedAt) {
                 $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity, $command->credential);
+            } else {
+                $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity, $command->credential);
             }
 
             $this->emitter->emit($event);
