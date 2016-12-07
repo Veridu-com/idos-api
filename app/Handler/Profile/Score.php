@@ -231,45 +231,39 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entity    = null;
-        $inserting = false;
         try {
-            $entity = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
+            $score = $this->repository->create([
+                'creator' => $command->service->id,
+                'user_id' => $command->user->id,
+                'attribute' => $command->attribute,
+                'name' => $command->name,
+                'value' => $command->value,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
 
-            $entity->attribute = $command->attribute;
-            $entity->value     = $command->value;
-            $entity->updatedAt = time();
-        } catch (NotFound $e) {
-            $inserting = true;
+            $this->repository->beginTransaction();
+            $this->repository->upsert($score, ['user_id', 'creator', 'name'], [
+                'attribute' => $command->attribute,
+                'value' => $command->value,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
 
-            $entity = $this->repository->create(
-                [
-                    'user_id'    => $command->user->id,
-                    'creator'    => $command->service->id,
-                    'attribute'  => $command->attribute,
-                    'name'       => $command->name,
-                    'value'      => $command->value,
-                    'created_at' => time()
-                ]
-            );
-        }
+            $score = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
+            $this->repository->commit();
 
-        try {
-            $entity = $this->repository->save($entity);
-            $entity = $this->repository->hydrateRelations($entity);
-
-            if ($inserting) {
-                $event = $this->eventFactory->create('Profile\\Score\\Created', $entity, $command->credential);
+            if ($score->updatedAt) {
+                $event = $this->eventFactory->create('Profile\\Score\\Updated', $score, $command->credential);
             } else {
-                $event = $this->eventFactory->create('Profile\\Score\\Updated', $entity, $command->credential);
+                $event = $this->eventFactory->create('Profile\\Score\\Created', $score, $command->credential);
             }
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
+            throw $e;
             throw new Update\Profile\ScoreException('Error while trying to upsert a score', 500, $e);
         }
 
-        return $entity;
+        return $score;
     }
 
     /**

@@ -29,6 +29,22 @@ trait AssertType {
     }
 
     /**
+     * Asserts a valid array.
+     *
+     * @param mixed $array
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertNullableArray($array) {
+        Validator::oneOf(
+            Validator::arrayType(),
+            Validator::nullType()
+        )->assert($array);
+    }
+
+    /**
      * Asserts a valid boolean.
      *
      * @param mixed $boolean

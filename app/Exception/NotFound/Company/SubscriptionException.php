@@ -13,7 +13,7 @@ use App\Exception\NotFound;
 /**
  * Subscription not found exception.
  *
- * @apiEndpointResponse 500 schema/error.json
+ * @apiEndpointResponse 404 schema/error.json
  */
 class SubscriptionException extends NotFound {
 }

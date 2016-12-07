@@ -13,7 +13,7 @@ use App\Exception\NotFound;
 /**
  * RoleAccess not found exception.
  *
- * @apiEndpointResponse 500 schema/error.json
+ * @apiEndpointResponse 404 schema/error.json
  */
 class RoleAccessException extends NotFound {
 }

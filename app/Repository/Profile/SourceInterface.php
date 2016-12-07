@@ -48,7 +48,7 @@ interface SourceInterface extends RepositoryInterface {
     /**
      * Return sources based on their user id and name.
      *
-     * @param int $userId
+     * @param int    $userId
      * @param string $name
      *
      * @return \Illuminate\Database\Eloquent\Collection

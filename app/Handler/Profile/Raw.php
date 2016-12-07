@@ -106,7 +106,7 @@ class Raw implements HandlerInterface {
         Emitter $emitter
     ) {
         $this->repository          = $repository;
-        $this->sourceRepository   = $sourceRepository;
+        $this->sourceRepository    = $sourceRepository;
         $this->processRepository   = $processRepository;
         $this->validator           = $validator;
         $this->eventFactory        = $eventFactory;
@@ -212,7 +212,7 @@ class Raw implements HandlerInterface {
             } else {
                 $userSources = $this->sourceRepository->getbyUserId($command->user->id);
             }
-            
+
             $affectedRows = 0;
             foreach ($userSources as $source) {
                 $affectedRows += $this->repository->deleteBySource($source);

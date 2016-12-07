@@ -13,7 +13,7 @@ use App\Exception\AppException;
 /**
  * Source validate exception.
  *
- * @apiEndpointResponse 500 schema/error.json
+ * @apiEndpointResponse 400 schema/error.json
  */
 class SourceException extends AppException {
 }

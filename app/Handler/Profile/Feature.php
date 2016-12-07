@@ -279,39 +279,32 @@ class Feature implements HandlerInterface {
             $command->value = json_encode($command->value);
         }
 
-        $feature   = null;
-        $inserting = false;
         try {
-            $feature = $this->repository->findOneByName($command->name, $command->service->id, $sourceName, $command->user->id);
+            $feature = $this->repository->create([
+                'user_id' => $command->user->id,
+                'source' => $command->source ? $command->source->name : null,
+                'name' => $command->name,
+                'creator' => $command->service->id,
+                'type' => $command->type,
+                'value' => $command->value,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
 
-            $feature->type      = $command->type;
-            $feature->value     = $command->value;
-            $feature->updatedAt = time();
-        } catch (NotFound $e) {
-            $inserting = true;
+            $this->repository->beginTransaction();
+            $this->repository->upsert($feature, ['user_id', 'source', 'creator', 'name'], [
+                'type' => $command->type,
+                'value' => $command->value,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
 
-            $feature = $this->repository->create(
-                [
-                    'user_id'    => $command->user->id,
-                    'source'     => $sourceName,
-                    'name'       => $command->name,
-                    'creator'    => $command->service->id,
-                    'type'       => $command->type,
-                    'value'      => $command->value,
-                    'created_at' => time()
-                ]
-            );
-        }
-
-        try {
-            $feature = $this->repository->save($feature);
-            $feature = $this->repository->hydrateRelations($feature);
+            $feature = $this->repository->findOneByName($command->name, $command->service->id, $command->source ? $command->source->name : null, $command->user->id);
+            $this->repository->commit();
 
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
-            if ($inserting) {
+            if ($feature->updatedAt) {
                 $event = $this->eventFactory->create(
-                    'Profile\\Feature\\Created',
+                    'Profile\\Feature\\Updated',
                     $feature,
                     $command->user,
                     $process,
@@ -320,7 +313,7 @@ class Feature implements HandlerInterface {
                 );
             } else {
                 $event = $this->eventFactory->create(
-                    'Profile\\Feature\\Updated',
+                    'Profile\\Feature\\Created',
                     $feature,
                     $command->user,
                     $process,
