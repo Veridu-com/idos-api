@@ -41,15 +41,21 @@ class Upsert extends AbstractCommand {
     /**
      * Recommendation's result (user input).
      *
-     * @var bool
+     * @var string
      */
     public $result;
     /**
-     * Recommendation's reasons (user input).
+     * Rules that the profile passed (user input).
      *
      * @var array
      */
-    public $reasons;
+    public $passed;
+    /**
+     * Rules that the profile failed to pass (user input).
+     *
+     * @var array
+     */
+    public $failed;
 
     /**
      * {@inheritdoc}
@@ -61,8 +67,12 @@ class Upsert extends AbstractCommand {
             $this->result = $parameters['result'];
         }
 
-        if (isset($parameters['reasons'])) {
-            $this->reasons = $parameters['reasons'];
+        if (isset($parameters['passed'])) {
+            $this->passed = $parameters['passed'];
+        }
+
+        if (isset($parameters['failed'])) {
+            $this->failed = $parameters['failed'];
         }
 
         return $this;

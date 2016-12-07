@@ -19,7 +19,8 @@ use App\Entity\AbstractEntity;
  * @property int    $creator
  * @property int    $user_id
  * @property string $result
- * @property string $reasons
+ * @property string $passed
+ * @property string $failed
  * @property int    $created_at
  * @property int    $updated_at
  */
@@ -29,7 +30,8 @@ class Recommendation extends AbstractEntity {
      */
     protected $visible = [
         'result',
-        'reasons',
+        'passed',
+        'failed',
         'created_at',
         'updated_at'
     ];
@@ -40,5 +42,5 @@ class Recommendation extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $json = ['reasons'];
+    protected $json = ['passed', 'failed'];
 }

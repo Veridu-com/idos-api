@@ -37,7 +37,8 @@ class UpsertTest extends AbstractFunctional {
         $request = $this->createRequest(
             $environment, json_encode([
                 'result'  => 'result-test',
-                'reasons' => []
+                'passed' => [],
+                'failed' => []
             ])
         );
 
@@ -48,7 +49,8 @@ class UpsertTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('result-test', $body['data']['result']);
-        $this->assertSame([], $body['data']['reasons']);
+        $this->assertSame([], $body['data']['passed']);
+        $this->assertSame([], $body['data']['failed']);
 
         /*
          * Validates Response using the Json Schema.
@@ -75,10 +77,15 @@ class UpsertTest extends AbstractFunctional {
         $request = $this->createRequest(
             $environment, json_encode([
                 'result'  => 'result-test-2',
-                'reasons' => [
-                    'reason-1',
-                    'reason-2',
-                    'reason-3'
+                'passed' => [
+                    'rule-1',
+                    'rule-2',
+                    'rule-3'
+                ],
+                'failed' => [
+                    'rule-4',
+                    'rule-5',
+                    'rule-6'
                 ]
             ])
         );
@@ -90,7 +97,8 @@ class UpsertTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('result-test-2', $body['data']['result']);
-        $this->assertSame(['reason-1', 'reason-2', 'reason-3'], $body['data']['reasons']);
+        $this->assertSame(['rule-1', 'rule-2', 'rule-3'], $body['data']['passed']);
+        $this->assertSame(['rule-4', 'rule-5', 'rule-6'], $body['data']['failed']);
 
         /*
          * Validates Response using the Json Schema.

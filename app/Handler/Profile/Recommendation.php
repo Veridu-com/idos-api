@@ -103,7 +103,8 @@ class Recommendation implements HandlerInterface {
             $this->validator->assertCompany($command->company);
             $this->validator->assertCredential($command->credential);
             $this->validator->assertString($command->result);
-            $this->validator->assertNullableArray($command->reasons);
+            $this->validator->assertNullableArray($command->passed);
+            $this->validator->assertNullableArray($command->failed);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RecommendationException(
                 $e->getFullMessage(),
@@ -117,14 +118,16 @@ class Recommendation implements HandlerInterface {
                 'creator' => $command->service->id,
                 'user_id' => $command->user->id,
                 'result' => $command->result,
-                'reasons' => $command->reasons,
+                'passed' => $command->passed,
+                'failed' => $command->failed,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
             $this->repository->beginTransaction();
             $this->repository->upsert($recommendation, ['user_id'], [
                 'result' => $command->result,
-                'reasons' => json_encode($command->reasons),
+                'passed' => json_encode($command->passed),
+                'failed' => json_encode($command->failed),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 

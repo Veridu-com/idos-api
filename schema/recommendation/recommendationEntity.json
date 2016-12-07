@@ -8,8 +8,12 @@
             "description": "Recommendation result",
             "type": "string"
         },
-        "reasons": {
-            "description": "Reasons for the recommendation result",
+        "passed": {
+            "description": "Rules that the profile passed",
+            "type": "array"
+        },
+        "failed": {
+            "description": "Rules that the profile failed to pass",
             "type": "array"
         },
         "created_at": {
@@ -23,7 +27,8 @@
     },
     "required": [
         "result",
-        "reasons",
+        "passed",
+        "failed",
         "created_at",
         "updated_at"
     ]
