@@ -71,20 +71,6 @@ interface FeatureInterface extends RepositoryInterface {
     public function getByUserIdAndNames(int $userId, array $featureNames = []) : Collection;
 
     /**
-     * Creates or updates a feature.
-     *
-     * @param int    $serviceId
-     * @param int    $userId
-     * @param string $sourceName
-     * @param string $name
-     * @param string $type
-     * @param string $value
-     *
-     * @return \App\Entity\Profile\Feature
-     */
-    public function upsertOne(int $serviceId, int $userId, $sourceName, string $name, string $type, string $value) : Feature;
-
-    /**
      * Upsert a bulk of features.
      *
      * @param int   $serviceId The service identifier

@@ -280,13 +280,30 @@ class Feature implements HandlerInterface {
         }
 
         try {
-            $feature = $this->repository->upsertOne($command->service->id, $command->user->id, $sourceName, $command->name, $command->type, $command->value);
-            $feature = $this->repository->hydrateRelations($feature);
+            $feature = $this->repository->create([
+                'user_id' => $command->user->id,
+                'source' => $command->source ? $command->source->name : null,
+                'name' => $command->name,
+                'creator' => $command->service->id,
+                'type' => $command->type,
+                'value' => $command->value,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
+
+            $this->repository->beginTransaction();
+            $this->repository->upsert($feature, ['user_id', 'source', 'creator', 'name'], [
+                'type' => $command->type,
+                'value' => $command->value,
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            $feature = $this->repository->findOneByName($command->name, $command->service->id, $command->source ? $command->source->name : null, $command->user->id);
+            $this->repository->commit();
 
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
             $event = $this->eventFactory->create(
-                'Profile\\Feature\\Upserted',
+                'Profile\\Feature\\' . ($feature->updated_at === null ? 'Created' : 'Updated'),
                 $feature,
                 $command->user,
                 $process,

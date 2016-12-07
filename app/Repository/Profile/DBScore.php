@@ -106,34 +106,4 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
             ], $queryParams
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function upsertOne(int $serviceId, int $userId, string $name, string $attribute, float $value) : Score {
-        $this->beginTransaction();
-
-        $result = $this->runRaw(
-            'INSERT INTO "scores" ("creator", "user_id", "attribute", "name", "value", "created_at") VALUES (:creator, :user_id, :attribute, :name, :value, :created_at)
-            ON CONFLICT ("user_id", "creator", "name") DO UPDATE SET "attribute" = :attribute, "value" = :value, "updated_at" = :updated_at',
-            [
-                'creator'    => $serviceId,
-                'user_id'    => $userId,
-                'name'       => $name,
-                'attribute'  => $attribute,
-                'value'      => $value,
-                'created_at' => date('Y-m-d H:i:s', time()),
-                'updated_at' => date('Y-m-d H:i:s', time())
-            ]
-        );
-
-        if (! $result) {
-            $this->rollBack();
-            throw new Create\Profile\ScoreException('Error while trying to create a score', 500);
-        }
-
-        $this->commit();
-
-        return $this->findOne($name, $serviceId, $userId);
-    }
 }

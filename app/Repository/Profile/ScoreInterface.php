@@ -47,17 +47,4 @@ interface ScoreInterface extends RepositoryInterface {
      * @return \Illuminate\Support\Collection
      */
     public function getByUserId(int $userId, array $queryParams = []) : Collection;
-
-    /**
-     * Creates or updates a score.
-     *
-     * @param int    $serviceId
-     * @param int    $userId
-     * @param string $name
-     * @param string $attribute
-     * @param float  $value
-     *
-     * @return \App\Entity\Profile\Score
-     */
-    public function upsertOne(int $serviceId, int $userId, string $name, string $attribute, float $value) : Score;
 }
