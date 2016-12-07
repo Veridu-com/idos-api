@@ -141,7 +141,7 @@ class UserInit extends AbstractMigration {
         $recommendations
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('creator', 'integer', ['null' => false])
-            ->addColumn('result', 'boolean', ['null' => false])
+            ->addColumn('result', 'text', ['null' => false])
             ->addColumn('reasons', 'text', ['null' => false])
             ->addTimestamps()
             ->addIndex('user_id', ['unique' => true])

@@ -6,10 +6,10 @@
     "properties": {
         "result": {
             "description": "Recommendation result",
-            "type": "boolean"
+            "type": "string"
         },
         "reasons": {
-            "description": "Recommendation data",
+            "description": "Reasons for the recommendation result",
             "type": "array"
         },
         "created_at": {

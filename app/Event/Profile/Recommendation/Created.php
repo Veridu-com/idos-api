@@ -16,9 +16,9 @@ use App\Entity\User;
 use App\Event\AbstractEvent;
 
 /**
- * Upserted event.
+ * Created event.
  */
-class Upserted extends AbstractEvent {
+class Created extends AbstractEvent {
     /**
      * Event related Recommendation.
      *
@@ -73,6 +73,6 @@ class Upserted extends AbstractEvent {
      * @return string
      **/
     public function __toString() {
-        return sprintf('idos:recommendation.%s.upserted', $this->user->id);
+        return sprintf('idos:recommendation.%s.created', $this->user->id);
     }
 }

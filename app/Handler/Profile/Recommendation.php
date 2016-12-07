@@ -102,8 +102,8 @@ class Recommendation implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertCompany($command->company);
             $this->validator->assertCredential($command->credential);
-            $this->validator->assertBoolean($command->result);
-            //$this->validator->assertArray($command->reasons);
+            $this->validator->assertString($command->result);
+            $this->validator->assertNullableArray($command->reasons);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RecommendationException(
                 $e->getFullMessage(),
@@ -113,16 +113,43 @@ class Recommendation implements HandlerInterface {
         }
 
         try {
-            $recommendation = $this->repository->upsertOne($command->service->id, $command->user->id, $command->result, $command->reasons);
+            $recommendation = $this->repository->create([
+                'creator' => $command->service->id,
+                'user_id' => $command->user->id,
+                'result' => $command->result,
+                'reasons' => $command->reasons,
+                'created_at' => date('Y-m-d H:i:s')
+            ]);
 
-            $event = $this->eventFactory->create(
-                'Profile\\Recommendation\\Upserted',
-                $recommendation,
-                $command->user,
-                $command->service,
-                $command->company,
-                $command->credential
-            );
+            $this->repository->beginTransaction();
+            $this->repository->upsert($recommendation, ['user_id'], [
+                'result' => $command->result,
+                'reasons' => json_encode($command->reasons),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+            $recommendation = $this->repository->findOne($command->user->id);
+            $this->repository->commit();
+
+            if ($recommendation->updatedAt) {
+                $event = $this->eventFactory->create(
+                    'Profile\\Recommendation\\Updated',
+                    $recommendation,
+                    $command->user,
+                    $command->service,
+                    $command->company,
+                    $command->credential
+                );
+            } else {
+                $event = $this->eventFactory->create(
+                    'Profile\\Recommendation\\Created',
+                    $recommendation,
+                    $command->user,
+                    $command->service,
+                    $command->company,
+                    $command->credential
+                );
+            }
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {

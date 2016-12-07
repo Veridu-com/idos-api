@@ -63,18 +63,6 @@ class FeatureProvider extends Listener\AbstractListenerProvider {
                 ),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
-            Feature\Upserted::class => [
-                new Listener\LogFiredEventListener($eventLogger),
-                new Listener\Profile\Source\AddSourceTagFromCreateFeatureListener($sourceRepository),
-                new QueueServiceTaskListener(
-                    $credentialRepository,
-                    $serviceHandlerRepository,
-                    $eventFactory,
-                    $emitter,
-                    $gearmanClient
-                ),
-                new Listener\MetricEventListener($commandBus, $commandFactory)
-            ],
             Feature\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)

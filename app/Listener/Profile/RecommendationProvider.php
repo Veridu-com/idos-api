@@ -19,7 +19,11 @@ class RecommendationProvider extends Listener\AbstractListenerProvider {
         $commandFactory = $container->get('commandFactory');
 
         $this->events = [
-            Recommendation\Upserted::class => [
+            Recommendation\Created::class => [
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
+            ],
+            Recommendation\Updated::class => [
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ]

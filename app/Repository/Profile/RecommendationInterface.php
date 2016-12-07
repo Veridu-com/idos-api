@@ -23,16 +23,4 @@ interface RecommendationInterface extends RepositoryInterface {
      * @return \App\Entity\Profile\Recommendation
      */
     public function findOne(int $userId) : Recommendation;
-
-    /**
-     * Creates or updates a recommendation.
-     *
-     * @param int   $userId
-     * @param int   $serviceId
-     * @param bool  $result
-     * @param array $reasons
-     *
-     * @return \App\Entity\Profile\Recommendation
-     */
-    public function upsertOne(int $userId, int $serviceId, bool $result, array $reasons) : Recommendation;
 }

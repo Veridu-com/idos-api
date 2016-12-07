@@ -251,7 +251,12 @@ class Score implements HandlerInterface {
             $score = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
             $this->repository->commit();
 
-            $event = $this->eventFactory->create('Profile\\Score\\' . ($score->updated_at === null ? 'Created' : 'Updated'), $score, $command->credential);
+            if ($score->updatedAt) {
+                $event = $this->eventFactory->create('Profile\\Score\\Updated', $score, $command->credential);
+            } else {
+                $event = $this->eventFactory->create('Profile\\Score\\Created', $score, $command->credential);
+            }
+
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw $e;

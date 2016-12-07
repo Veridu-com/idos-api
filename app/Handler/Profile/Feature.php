@@ -302,14 +302,25 @@ class Feature implements HandlerInterface {
 
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
-            $event = $this->eventFactory->create(
-                'Profile\\Feature\\' . ($feature->updated_at === null ? 'Created' : 'Updated'),
-                $feature,
-                $command->user,
-                $process,
-                $command->credential,
-                $command->source
-            );
+            if ($feature->updatedAt) {
+                $event = $this->eventFactory->create(
+                    'Profile\\Feature\\Updated',
+                    $feature,
+                    $command->user,
+                    $process,
+                    $command->credential,
+                    $command->source
+                );
+            } else {
+                $event = $this->eventFactory->create(
+                    'Profile\\Feature\\Created',
+                    $feature,
+                    $command->user,
+                    $process,
+                    $command->credential,
+                    $command->source
+                );
+            }
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {

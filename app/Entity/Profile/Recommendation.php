@@ -18,7 +18,7 @@ use App\Entity\AbstractEntity;
  * @property int    $id
  * @property int    $creator
  * @property int    $user_id
- * @property bool   $result
+ * @property string $result
  * @property string $reasons
  * @property int    $created_at
  * @property int    $updated_at
