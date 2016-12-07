@@ -191,9 +191,9 @@ class AttributeListener extends AbstractListener {
             $probeCombination = [];
             $probeScore       = 0;
 
-            foreach ($features as $feature) {
+            foreach ($features as $feature) {                
                 $candidate = $filteredCandidates[$feature->name]
-                    ->whereStrict('value', $feature->value)
+                    ->where('value', $feature->value)
                     ->first();
                 if (empty($candidate)) {
                     continue;
@@ -364,5 +364,6 @@ class AttributeListener extends AbstractListener {
                 $this->formatCombination($composition, $combination)
             );
         }
+
     }
 }
