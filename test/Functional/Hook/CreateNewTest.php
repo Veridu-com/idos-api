@@ -40,8 +40,8 @@ class CreateNewTest extends AbstractFunctional {
             json_encode(
                 [
                     'trigger'    => 'trigger.test',
-                    'url'        => 'http://localhost:8080/callback',
-                    'subscribed' => false,
+                    'url'        => 'http://127.0.0.1:8080/index.php/1.0/callback',
+                    'subscribed' => false
                 ]
             )
         );

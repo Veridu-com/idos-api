@@ -39,7 +39,7 @@ class UpdateOneTest extends AbstractFunctional {
             json_encode(
                 [
                     'trigger'    => 'trigger.changed',
-                    'url'        => 'http://changed.com/test.php',
+                    'url'        => 'http://127.0.0.1:8080/index.php/1.0/callback',
                     'subscribed' => false
                 ]
             )
@@ -52,7 +52,7 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('trigger.changed', $body['data']['trigger']);
-        $this->assertSame('http://changed.com/test.php', $body['data']['url']);
+        $this->assertSame('http://127.0.0.1:8080/index.php/1.0/callback', $body['data']['url']);
         $this->assertFalse($body['data']['subscribed']);
 
         /*

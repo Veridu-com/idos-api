@@ -4,7 +4,7 @@
     "title": "Subscription",
     "type": "object",
     "properties": {
-        "category_slug": {
+        "category_name": {
             "description": "The attribute related to the subscription",
             "type": "string"
         },
@@ -18,7 +18,7 @@
         }
     },
     "required": [
-        "category_slug",
+        "category_name",
         "created_at"
     ]
 }

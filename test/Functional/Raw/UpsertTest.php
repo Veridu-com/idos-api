@@ -27,12 +27,22 @@ class UpsertTest extends AbstractRawFunctional {
     }
 
     public function testCreated() {
+        $this->httpMethod = 'DELETE';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
+
+
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
+        $request  = $this->createRequest($environment);
+        $response = $this->process($request);
+
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->httpMethod = 'PUT';
 
         $request = $this->createRequest(
             $environment,
@@ -82,7 +92,7 @@ class UpsertTest extends AbstractRawFunctional {
                 [
                     'source_id'  => 1321189817,
                     'collection' => 'name-test',
-                    'data'       => ['test' => 'data2']
+                    'data'       => ['test' => 'data']
                 ]
             )
         );
@@ -117,7 +127,7 @@ class UpsertTest extends AbstractRawFunctional {
         );
 
         $request = $this->createRequest(
-            $environment,
+            $environment,   
             json_encode(
                 [
                     'source_id'  => null,
