@@ -40,6 +40,7 @@ class Members implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'members:listAll',
+            'members:getMembership'
             'members:getOne',
             'members:updateOne',
             'members:deleteOne',
