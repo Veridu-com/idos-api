@@ -46,8 +46,7 @@ class LogoutListener extends AbstractListener {
     /**
      * Deletes raw entry of a user.
      *
-     * @param \App\Entity\User           $user   The user
-     * @param \App\Entity\Profile\Source $source The source
+     * @param \League\Event\EventInterface $event
      *
      * @return int
      */
@@ -99,7 +98,7 @@ class LogoutListener extends AbstractListener {
 
         if (property_exists($event, 'sources')) {
             foreach ($event->sources as $source) {
-                $this->deleteRaw($event->user);
+                $this->deleteRaw($event);
                 // FIXME add $this->deleteFeature
             }
         }
