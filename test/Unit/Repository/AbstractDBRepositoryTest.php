@@ -62,7 +62,6 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
         $this->setProtectedProperty($abstractMock, 'tableName', 'AbstractSQLDBRepository');
         $getTableName = $this->setProtectedMethod($abstractMock, 'getTableName');
         $this->assertSame('AbstractSQLDBRepository', $getTableName->invoke($abstractMock));
-
     }
 
     public function testConstructorRightInterface() {

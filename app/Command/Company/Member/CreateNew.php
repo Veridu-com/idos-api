@@ -43,11 +43,11 @@ class CreateNew extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-        if(isset($parameters['role'])) {
+        if (isset($parameters['role'])) {
             $this->role = $parameters['role'];
         }
 
-        if(isset($parameters['ipaddr'])) {
+        if (isset($parameters['ipaddr'])) {
             $this->ipaddr = $parameters['ipaddr'];
         }
 

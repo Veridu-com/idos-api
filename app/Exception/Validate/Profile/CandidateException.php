@@ -13,7 +13,7 @@ use App\Exception\AppException;
 /**
  * Candidate validate exception.
  *
- * @apiEndpointResponse 500 schema/error.json
+ * @apiEndpointResponse 400 schema/error.json
  */
 class CandidateException extends AppException {
 }

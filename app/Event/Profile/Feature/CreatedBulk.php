@@ -74,13 +74,12 @@ class CreatedBulk extends AbstractServiceQueueEvent {
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-
         return array_merge(
             [
-            'sourceId'     => $this->source ? $this->source->getEncodedId() : null,
-            'publicKey'    => $this->credential->public,
-            'processId'    => $this->process->getEncodedId(),
-            'userName'     => $this->user->username
+            'sourceId'  => $this->source ? $this->source->getEncodedId() : null,
+            'publicKey' => $this->credential->public,
+            'processId' => $this->process->getEncodedId(),
+            'userName'  => $this->user->username
             ], $merge
         );
     }

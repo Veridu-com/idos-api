@@ -149,7 +149,7 @@ class Source implements HandlerInterface {
         if (isset($command->tags['otp_check'])) {
             $this->validator->validateFlag($command->tags['otp_check']);
 
-            if((! isset($command->tags['email'])) && (! isset($command->tags['phone']))) {
+            if ((! isset($command->tags['email'])) && (! isset($command->tags['phone']))) {
                 throw new ValidationException('OTP Checks must have "phone" or "email" fields.', 400);
             }
 
@@ -406,7 +406,7 @@ class Source implements HandlerInterface {
                 $command->credential
             )
         );
-        
+
         $rowsAffected = $this->repository->delete($command->source->id);
 
         if (! $rowsAffected) {

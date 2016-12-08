@@ -13,7 +13,7 @@ use App\Exception\AppException;
 /**
  * Company validate exception.
  *
- * @apiEndpointResponse 500 schema/error.json
+ * @apiEndpointResponse 400 schema/error.json
  */
 class CompanyException extends AppException {
 }

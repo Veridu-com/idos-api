@@ -124,8 +124,4 @@ class Main implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-
-    public function callback(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {    
-        return http_response_code(204);
-    }
 }

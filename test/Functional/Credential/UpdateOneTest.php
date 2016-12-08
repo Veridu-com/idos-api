@@ -112,6 +112,5 @@ class UpdateOneTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
-
     }
 }

@@ -25,7 +25,6 @@ class ServiceTest extends AbstractUnit {
     }
 
     public function testSerialize() {
-
         $updated = time();
         $array   = [
             'id'         => 1,
@@ -86,6 +85,5 @@ class ServiceTest extends AbstractUnit {
 
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($array['created_at']));
-
     }
 }

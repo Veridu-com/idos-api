@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "PUT /profiles/{userName}/recommendation",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "data": {
+            "description": "Recommendation response payload",
+            "type": "object",
+            "$ref": "recommendationEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

@@ -12,7 +12,6 @@ use Test\Unit\AbstractUnit;
 
 class UserTest extends AbstractUnit {
     public function testSerialize() {
-
         $updated = time();
         $array   = [
             'id'          => 0,
@@ -131,7 +130,6 @@ class UserTest extends AbstractUnit {
         $this->assertNotEmpty($result);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($array, $result);
-
     }
 
     public function testReferenceCacheKeysEmptyAttributes() {
@@ -144,7 +142,6 @@ class UserTest extends AbstractUnit {
         $this->assertNotEmpty($result);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($array, $result);
-
     }
 
     public function testReferenceCacheKeys() {
@@ -169,6 +166,5 @@ class UserTest extends AbstractUnit {
         $this->assertNotEmpty($result);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($array, $result);
-
     }
 }

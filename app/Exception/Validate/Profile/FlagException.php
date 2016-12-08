@@ -13,7 +13,7 @@ use App\Exception\AppException;
 /**
  * Flag validate exception.
  *
- * @apiEndpointResponse 500 schema/error.json
+ * @apiEndpointResponse 400 schema/error.json
  */
 class FlagException extends AppException {
 }

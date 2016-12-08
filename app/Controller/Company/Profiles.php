@@ -9,10 +9,12 @@ declare(strict_types = 1);
 namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
+use App\Exception\NotFound;
 use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\FlagInterface;
 use App\Repository\Profile\GateInterface;
+use App\Repository\Profile\RecommendationInterface;
 use App\Repository\Profile\ReviewInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Repository\Profile\TagInterface;
@@ -68,6 +70,12 @@ class Profiles implements ControllerInterface {
      */
     private $attributeRepository;
     /**
+     * RecommendationRepository instance.
+     *
+     * @var \App\Repository\RecommendationInterface
+     */
+    private $recommendationRepository;
+    /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
@@ -83,15 +91,16 @@ class Profiles implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\UserInterface      $repository
-     * @param \App\Repository\SourceInterface    $sourceRepository
-     * @param \App\Repository\TagInterface       $tagRepository
-     * @param \App\Repository\ReviewInterface    $reviewRepository
-     * @param \App\Repository\FlagInterface      $flagRepository
-     * @param \App\Repository\GateInterface      $gateRepository
-     * @param \App\Repository\AttributeInterface $attributeRepository
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param \App\Factory\Command               $commandFactory
+     * @param \App\Repository\UserInterface           $repository
+     * @param \App\Repository\SourceInterface         $sourceRepository
+     * @param \App\Repository\TagInterface            $tagRepository
+     * @param \App\Repository\ReviewInterface         $reviewRepository
+     * @param \App\Repository\FlagInterface           $flagRepository
+     * @param \App\Repository\GateInterface           $gateRepository
+     * @param \App\Repository\AttributeInterface      $attributeRepository
+     * @param \App\Repository\RecommendationInterface $recommendationRepository
+     * @param \League\Tactician\CommandBus            $commandBus
+     * @param \App\Factory\Command                    $commandFactory
      *
      * @return void
      */
@@ -103,18 +112,20 @@ class Profiles implements ControllerInterface {
         FlagInterface $flagRepository,
         GateInterface $gateRepository,
         AttributeInterface $attributeRepository,
+        RecommendationInterface $recommendationRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository          = $repository;
-        $this->sourceRepository    = $sourceRepository;
-        $this->tagRepository       = $tagRepository;
-        $this->reviewRepository    = $reviewRepository;
-        $this->flagRepository      = $flagRepository;
-        $this->gateRepository      = $gateRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->commandBus          = $commandBus;
-        $this->commandFactory      = $commandFactory;
+        $this->repository                = $repository;
+        $this->sourceRepository          = $sourceRepository;
+        $this->tagRepository             = $tagRepository;
+        $this->reviewRepository          = $reviewRepository;
+        $this->flagRepository            = $flagRepository;
+        $this->gateRepository            = $gateRepository;
+        $this->attributeRepository       = $attributeRepository;
+        $this->recommendationRepository  = $recommendationRepository;
+        $this->commandBus                = $commandBus;
+        $this->commandFactory            = $commandFactory;
     }
 
     /**
@@ -134,19 +145,26 @@ class Profiles implements ControllerInterface {
         $profiles = $this->repository->findByCompanyId($company->id);
 
         foreach ($profiles as $profile) {
-            $sources    = $this->sourceRepository->getByUserId($profile->id);
-            $tags       = $this->tagRepository->getByUserId($profile->id);
-            $flags      = $this->flagRepository->getByUserId($profile->id);
-            $gates      = $this->gateRepository->getByUserId($profile->id);
-            $attributes = $this->attributeRepository->findByUserId($profile->id);
+            $sources        = $this->sourceRepository->getByUserId($profile->id);
+            $tags           = $this->tagRepository->getByUserId($profile->id);
+            $flags          = $this->flagRepository->getByUserId($profile->id);
+            $gates          = $this->gateRepository->getByUserId($profile->id);
+            $attributes     = $this->attributeRepository->findByUserId($profile->id);
+
+            try {
+                $recommendation = $this->recommendationRepository->findOne($profile->id)->toArray();
+            } catch (NotFound $e) {
+                $recommendation = null;
+            }
 
             $data[] = array_merge(
                 $profile->toArray(),
-                ['sources'     => $sources->toArray()],
-                ['tags'        => $tags->toArray()],
-                ['flags'       => $flags->toArray()],
-                ['gates'       => $gates->toArray()],
-                ['attributes'  => $attributes->toArray()]
+                ['sources'        => $sources->toArray()],
+                ['tags'           => $tags->toArray()],
+                ['flags'          => $flags->toArray()],
+                ['gates'          => $gates->toArray()],
+                ['attributes'     => $attributes->toArray()],
+                ['recommendation' => $recommendation]
             );
         }
 
@@ -192,6 +210,12 @@ class Profiles implements ControllerInterface {
         $flags            = $this->flagRepository->getByUserId($profile->id);
         $gates            = $this->gateRepository->getByUserId($profile->id);
 
+        try {
+            $recommendation = $this->recommendationRepository->findOne($profile->id)->toArray();
+        } catch (NotFound $e) {
+            $recommendation = null;
+        }
+
         foreach ($gates as $gate) {
             $gateReview = null;
             foreach ($reviews as $review) {
@@ -206,11 +230,12 @@ class Profiles implements ControllerInterface {
 
         $data = array_merge(
             $profile->toArray(),
-            ['attributes'  => $attributes->toArray()],
-            ['sources'     => $sources->toArray()],
-            ['tags'        => $tags->toArray()],
-            ['flags'       => $flags->toArray()],
-            ['gates'       => $gates->toArray()]
+            ['attributes'     => $attributes->toArray()],
+            ['sources'        => $sources->toArray()],
+            ['tags'           => $tags->toArray()],
+            ['flags'          => $flags->toArray()],
+            ['gates'          => $gates->toArray()],
+            ['recommendation' => $recommendation]
         );
 
         $body = [
@@ -224,7 +249,6 @@ class Profiles implements ControllerInterface {
             ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
-
     }
 
     /**

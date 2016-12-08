@@ -33,7 +33,6 @@ class DeleteAll extends AbstractCommand {
      * @return \App\Command\Service\DeleteAll
      */
     public function setParameters(array $parameters) : self {
-
         return $this;
     }
 }

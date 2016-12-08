@@ -19,7 +19,6 @@ class HandleCredentialTokenTest extends AbstractAuthFunctional {
 
         $this->httpMethod = 'GET';
         $this->uri        = '/';
-
     }
 
     public function testSuccess() {

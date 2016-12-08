@@ -77,19 +77,19 @@ class CreateNew extends AbstractCommand {
             $this->name = $parameters['name'];
         }
 
-        if(isset($parameters['role'])) {
+        if (isset($parameters['role'])) {
             $this->role = $parameters['role'];
         }
 
-        if(isset($parameters['credential_public'])) {
+        if (isset($parameters['credential_public'])) {
             $this->credentialPubKey = $parameters['credential_public'];
         }
 
-        if(isset($parameters['expires'])) {
+        if (isset($parameters['expires'])) {
             $this->expires = $parameters['expires'];
         }
 
-        if(isset($parameters['ipaddr'])) {
+        if (isset($parameters['ipaddr'])) {
             $this->ipaddr = $parameters['ipaddr'];
         }
 

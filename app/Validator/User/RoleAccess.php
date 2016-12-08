@@ -59,7 +59,6 @@ class RoleAccess implements ValidatorInterface {
             RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE | RoleAccessEntity::ACCESS_EXECUTE
             ]
         )->assert($value);
-
     }
 
     /**

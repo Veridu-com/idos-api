@@ -21,8 +21,9 @@ class DeletedMultiTest extends AbstractUnit {
             ->getMock();
 
         $settings = [];
-        for($i = 0; $i < 5; $i++)
+        for ($i = 0; $i < 5; $i++) {
             $settings[] = new Setting([], $optimus);
+        }
 
         $collection = new Collection($settings);
 

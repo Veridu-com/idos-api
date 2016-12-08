@@ -13,7 +13,7 @@ use App\Exception\AppException;
 /**
  * Process validate exception.
  *
- * @apiEndpointResponse 500 schema/error.json
+ * @apiEndpointResponse 400 schema/error.json
  */
 class ProcessException extends AppException {
 }
