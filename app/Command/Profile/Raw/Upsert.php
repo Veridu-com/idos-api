@@ -29,7 +29,7 @@ class Upsert extends AbstractCommand {
     /**
      * Raw's Source.
      *
-     * @var \App\Entity\Source
+     * @var \App\Entity\Profile\Source
      */
     public $source;
     /**

@@ -39,6 +39,12 @@ class Gate implements HandlerInterface {
      */
     private $repository;
     /**
+     * Category Repository instance.
+     *
+     * @var \App\Repository\CategoryInterface
+     */
+    private $categoryRepository;
+    /**
      * Gate Validator instance.
      *
      * @var \App\Validator\Profile\Gate

@@ -10,6 +10,7 @@ namespace App\Handler\Profile;
 
 use App\Command\Profile\Recommendation\Upsert;
 use App\Entity\Profile\Recommendation as RecommendationEntity;
+use App\Exception\Create;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;

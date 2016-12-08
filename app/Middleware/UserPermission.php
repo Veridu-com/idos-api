@@ -28,11 +28,20 @@ class UserPermission implements MiddlewareInterface {
      * @var array
      */
     private $defaultPermissions;
-
     /**
      * Role access repository.
+     *
+     * @var \App\Repository\User\RoleAccessInterface
      */
     private $roleAccessRepository;
+    /**
+     * Role access resource.
+     */
+    private $resource;
+    /**
+     * Role access access level.
+     */
+    private $accessLevel;
 
     /**
      * Gets the access from role.

@@ -10,6 +10,7 @@ namespace App\Repository;
 
 use App\Entity\EntityInterface;
 use App\Exception\NotFound;
+use App\Exception\AppException;
 use App\Factory\Entity;
 use App\Factory\Repository;
 use Illuminate\Support\Collection;

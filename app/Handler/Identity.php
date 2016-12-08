@@ -11,12 +11,14 @@ namespace App\Handler;
 use App\Command\Identity\CreateNew;
 use App\Entity\Identity as IdentityEntity;
 use App\Exception\Create;
+use App\Exception\Validate;
 use App\Factory\Event;
 use App\Repository\IdentityInterface;
 use App\Validator\Identity as IdentityValidator;
 use Defuse\Crypto\Key;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Identity commands.

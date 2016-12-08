@@ -253,38 +253,4 @@ class Settings implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
-
-    /**
-     * Deletes all Settings that belongs to the Target Company.
-     *
-     * @apiEndpointResponse 200 schema/setting/deleteAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see \App\Handler\Settings::handleDeleteAll
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company  = $request->getAttribute('company');
-        $identity = $request->getAttribute('identity');
-
-        $command = $this->commandFactory->create('Company\\Setting\\DeleteAll');
-        $command
-            ->setParameter('identity', $identity)
-            ->setParameter('companyId', $company->id);
-
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
 }

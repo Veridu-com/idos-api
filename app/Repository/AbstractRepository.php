@@ -25,28 +25,30 @@ abstract class AbstractRepository implements RepositoryInterface {
      * @var \App\Factory\Entity
      */
     protected $entityFactory;
-
     /**
      * Repository Factory.
      *
      * @var \App\Factory\Repository
      */
     protected $repositoryFactory;
-
     /**
      * Optimus instance.
      *
      * @var \Jenssegers\Optimus\Optimus
      */
     protected $optimus;
-
+    /**
+     * Entity class name.
+     *
+     * @var string
+     */
+    protected $entityName;
     /**
      * Entity relationships.
      *
      * @var array
      */
     protected $relationships = [];
-
     /**
      * Entity filterable columns.
      *

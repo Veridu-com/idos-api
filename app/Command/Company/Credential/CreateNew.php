@@ -53,8 +53,8 @@ class CreateNew extends AbstractCommand {
             $this->production = $parameters['production'];
         }
 
-        if (isset($parameters['companyId'])) {
-            $this->companyId = $parameters['companyId'];
+        if (isset($parameters['company'])) {
+            $this->company = $parameters['company'];
         }
 
         return $this;

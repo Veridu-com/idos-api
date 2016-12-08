@@ -18,6 +18,7 @@ use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Exception\AppException;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ScoreInterface;
@@ -301,7 +302,7 @@ class Score implements HandlerInterface {
             $event = $this->eventFactory->create('Profile\\Score\\Deleted', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\ScoreException('No features found for deletion', 404);
+            throw new NotFound\Profile\ScoreException('No features found for deletion', 404);
         }
 
         return $affectedRows;

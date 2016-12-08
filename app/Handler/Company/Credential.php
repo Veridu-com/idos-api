@@ -109,6 +109,7 @@ class Credential implements HandlerInterface {
         try {
             $this->validator->assertName($command->name);
             $this->validator->assertFlag($command->production);
+            $this->validator->assertCompany($command->company);
             $this->validator->assertId($command->company->id);
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {

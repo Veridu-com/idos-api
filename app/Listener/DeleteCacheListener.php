@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Listener;
 
 use Apix\Cache\AbstractCache;
-use App\Event\AbstractListener;
 use League\Event\EventInterface;
 
 class DeleteCacheListener extends AbstractListener {

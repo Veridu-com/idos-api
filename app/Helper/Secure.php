@@ -10,7 +10,7 @@ namespace App\Helper;
 
 use Defuse\Crypto\Crypto;
 use Defuse\Crypto\KeyProtectedByPassword;
-use Defuse\Crypto\WrongKeyOrModifiedCiphertextException;
+use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 
 /**
  * Secure Class.

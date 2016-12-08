@@ -32,7 +32,7 @@ class QueueServiceTaskListener extends AbstractListener {
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**

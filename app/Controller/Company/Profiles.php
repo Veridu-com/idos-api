@@ -36,43 +36,43 @@ class Profiles implements ControllerInterface {
     /**
      * SourceRepository instance.
      *
-     * @var \App\Repository\SourceInterface
+     * @var \App\Repository\Profile\SourceInterface
      */
     private $sourceRepository;
     /**
      * TagRepository instance.
      *
-     * @var \App\Repository\TagInterface
+     * @var \App\Repository\Profile\TagInterface
      */
     private $tagRepository;
     /**
      * ReviewRepository instance.
      *
-     * @var \App\Repository\ReviewInterface
+     * @var \App\Repository\Profile\ReviewInterface
      */
     private $reviewRepository;
     /**
      * FlagRepository instance.
      *
-     * @var \App\Repository\FlagInterface
+     * @var \App\Repository\Profile\FlagInterface
      */
     private $flagRepository;
     /**
      * GateRepository instance.
      *
-     * @var \App\Repository\GateInterface
+     * @var \App\Repository\Profile\GateInterface
      */
     private $gateRepository;
     /**
      * AttributeRepository instance.
      *
-     * @var \App\Repository\AttributeInterface
+     * @var \App\Repository\Profile\AttributeInterface
      */
     private $attributeRepository;
     /**
      * RecommendationRepository instance.
      *
-     * @var \App\Repository\RecommendationInterface
+     * @var \App\Repository\Profile\RecommendationInterface
      */
     private $recommendationRepository;
     /**
@@ -91,14 +91,14 @@ class Profiles implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\UserInterface           $repository
-     * @param \App\Repository\SourceInterface         $sourceRepository
-     * @param \App\Repository\TagInterface            $tagRepository
-     * @param \App\Repository\ReviewInterface         $reviewRepository
-     * @param \App\Repository\FlagInterface           $flagRepository
-     * @param \App\Repository\GateInterface           $gateRepository
-     * @param \App\Repository\AttributeInterface      $attributeRepository
-     * @param \App\Repository\RecommendationInterface $recommendationRepository
+     * @param \App\Repository\UserInterface                   $repository
+     * @param \App\Repository\Profile\SourceInterface         $sourceRepository
+     * @param \App\Repository\Profile\TagInterface            $tagRepository
+     * @param \App\Repository\Profile\ReviewInterface         $reviewRepository
+     * @param \App\Repository\Profile\FlagInterface           $flagRepository
+     * @param \App\Repository\Profile\GateInterface           $gateRepository
+     * @param \App\Repository\Profile\AttributeInterface      $attributeRepository
+     * @param \App\Repository\ProfileRecommendationInterface  $recommendationRepository
      * @param \League\Tactician\CommandBus            $commandBus
      * @param \App\Factory\Command                    $commandFactory
      *

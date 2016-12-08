@@ -16,6 +16,7 @@ use App\Entity\Profile\Reference as ReferenceEntity;
 use App\Exception\Create;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Exception\NotFound;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ReferenceInterface;

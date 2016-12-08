@@ -25,6 +25,18 @@ use Monolog\Logger;
  */
 class LogoutListener extends AbstractListener {
     /**
+     * Command Bus instance.
+     *
+     * @var \League\Tactician\CommandBus
+     */
+    private $commandBus;
+    /**
+     * Command Factory instance.
+     *
+     * @var \App\Factory\Command
+     */
+    private $commandFactory;
+    /**
      * Event Logger.
      *
      * @var \Monolog\Logger
@@ -87,7 +99,7 @@ class LogoutListener extends AbstractListener {
 
         if (property_exists($event, 'sources')) {
             foreach ($event->sources as $source) {
-                $this->deleteRaw($event->user, $source);
+                $this->deleteRaw($event->user);
                 // FIXME add $this->deleteFeature
             }
         }

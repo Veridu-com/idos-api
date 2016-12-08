@@ -7,6 +7,7 @@
 declare(strict_types = 1);
 
 namespace App\Entity;
+use Jenssegers\Optimus\Optimus;
 
 /**
  * Abstract Cacheable Entity Implementation.
@@ -22,7 +23,7 @@ abstract class AbstractCacheableEntity extends AbstractEntity implements Cacheab
     /**
      * {@inheritdoc}
      */
-    public function __construct(array $attributes = []) {
+    public function __construct(array $attributes, Optimus $optimus) {
         $this->cachePrefix = str_replace('App\\Entity\\', '', get_class($this));
 
         parent::__construct($attributes);

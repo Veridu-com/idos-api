@@ -23,7 +23,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Acting Credential.
      *
-     * @var \App\Entity\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
     /**
