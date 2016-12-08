@@ -43,7 +43,6 @@ class DeletedMulti extends AbstractEvent implements UserIdGetterInterface {
         $this->credential = $credential;
     }
 
-
     /**
      * {@inheritdoc}
      */

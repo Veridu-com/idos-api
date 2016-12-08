@@ -9,8 +9,8 @@ declare(strict_types = 1);
 namespace App\Extension;
 
 use App\Factory\Event as EventFactory;
-use League\Event\EventInterface;
 use League\Event\Emitter;
+use League\Event\EventInterface;
 
 /**
  * Sends Unhandled Events.
@@ -19,9 +19,9 @@ trait DispatchesUnhandledEvents {
     /**
      * Dispatches an unhandled event.
      *
-     * @param      \League\Event\EventInterface  $event         The event
-     * @param      EventFactory                  $eventFactory  The event factory
-     * @param      \League\Event\Emitter         $emitter       The emitter
+     * @param \League\Event\EventInterface $event        The event
+     * @param EventFactory                 $eventFactory The event factory
+     * @param \League\Event\Emitter        $emitter      The emitter
      */
     private function dispatchUnhandledEvent(EventInterface $event, EventFactory $eventFactory, Emitter $emitter) {
         $unhandledEvent = $eventFactory->create(

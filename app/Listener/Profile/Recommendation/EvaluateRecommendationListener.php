@@ -11,7 +11,6 @@ namespace App\Listener\Profile\Recommendation;
 use App\Entity\User;
 use App\Extension\DispatchesUnhandledEvents;
 use App\Extension\QueuesOnManager;
-use App\Factory\Command;
 use App\Factory\Event as EventFactory;
 use App\Listener\AbstractListener;
 use App\Repository\Company\SettingInterface;
@@ -19,7 +18,6 @@ use App\Repository\ServiceHandlerInterface;
 use App\Repository\UserInterface;
 use League\Event\Emitter;
 use League\Event\EventInterface;
-use League\Tactician\CommandBus;
 use Monolog\Logger;
 
 /**
@@ -76,21 +74,21 @@ class EvaluateRecommendationListener extends AbstractListener {
      * @return void
      */
     public function __construct(
-        SettingInterface $settingRepository, 
-        ServiceHandlerInterface $serviceHandlerRepository, 
-        UserInterface $userRepository, 
-        Logger $logger, 
+        SettingInterface $settingRepository,
+        ServiceHandlerInterface $serviceHandlerRepository,
+        UserInterface $userRepository,
+        Logger $logger,
         EventFactory $eventFactory,
         Emitter $emitter,
         \GearmanClient $gearmanClient
     ) {
-        $this->settingRepository = $settingRepository;
+        $this->settingRepository        = $settingRepository;
         $this->serviceHandlerRepository = $serviceHandlerRepository;
-        $this->userRepository = $userRepository;
-        $this->logger = $logger;
-        $this->eventFactory = $eventFactory;
-        $this->emitter = $emitter;
-        $this->gearmanClient = $gearmanClient;
+        $this->userRepository           = $userRepository;
+        $this->logger                   = $logger;
+        $this->eventFactory             = $eventFactory;
+        $this->emitter                  = $emitter;
+        $this->gearmanClient            = $gearmanClient;
     }
 
     /**
@@ -120,7 +118,6 @@ class EvaluateRecommendationListener extends AbstractListener {
             ]
         );
 
-
         if ($settings->isEmpty()) {
             // tries to get by company
             $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
@@ -133,6 +130,7 @@ class EvaluateRecommendationListener extends AbstractListener {
         // fails silently
         if ($settings->isEmpty()) {
             $this->logger->debug('Unhandled recommendation process - no rules defined.');
+
             return false;
         }
 
@@ -152,9 +150,9 @@ class EvaluateRecommendationListener extends AbstractListener {
                 'pass'    => $service->authPassword,
                 'url'     => $service->url,
                 'handler' => [
-                    'username' => $user->username,
+                    'username'  => $user->username,
                     'publickey' => $event->credential->public,
-                    'rules' => $rules
+                    'rules'     => $rules
                 ]
             ];
 

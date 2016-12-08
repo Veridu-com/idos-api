@@ -30,7 +30,7 @@ class Created extends AbstractEvent implements UserIdGetterInterface, ServiceQue
      * @var \App\Entity\Company\Credential
      */
     public $credential;
-    
+
     /**
      * Class constructor.
      *
@@ -56,7 +56,7 @@ class Created extends AbstractEvent implements UserIdGetterInterface, ServiceQue
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
         return array_merge([
-            'username' => $this->user->username, 
+            'username'  => $this->user->username,
             'publicKey' => $this->credential->public,
         ], $merge);
     }

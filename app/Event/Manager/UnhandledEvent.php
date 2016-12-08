@@ -36,7 +36,7 @@ class UnhandledEvent extends AbstractEvent {
     /**
      * Returns a string representation of the object.
      *
-     * @return     string  String representation of the object.
+     * @return string String representation of the object.
      */
     public function __toString() {
         return sprintf('%s -> %s', get_class($this), get_class($this->event));

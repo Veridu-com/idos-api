@@ -136,16 +136,16 @@ class S11SettingsSeed extends AbstractSeed {
             'company_id' => 1,
             'section'    => 'recommendation',
             'property'   => 'ruleset',
-            'value' => json_encode([ 
+            'value'      => json_encode([
                 [
-                    "tag" => "Default rule",
-                    "tests" => [
+                    'tag'   => 'Default rule',
+                    'tests' => [
                         [
-                            "tag" => "default test #1",
-                            "category" => "gate",
-                            "slug" => "nochargebackgate-medium",
-                            "confidence_level" => "medium",
-                            "pass" => true
+                            'tag'              => 'default test #1',
+                            'category'         => 'gate',
+                            'slug'             => 'nochargebackgate-medium',
+                            'confidence_level' => 'medium',
+                            'pass'             => true
                         ]
                     ]
                 ]

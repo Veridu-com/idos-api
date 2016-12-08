@@ -10,7 +10,6 @@ namespace App\Event\Profile\Gate;
 
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Gate;
-use App\Entity\User;
 use App\Event\AbstractEvent;
 use App\Event\Interfaces\UserIdGetterInterface;
 
@@ -50,11 +49,11 @@ class Updated extends AbstractEvent implements UserIdGetterInterface {
     public function getUserId(): int {
         return $this->gate->userId;
     }
-    
+
     /**
      * Returns a string representation of the object.
      *
-     * @return     string  String representation of the object.
+     * @return string String representation of the object.
      */
     public function __toString() {
         return sprintf('gate.updated.%s', $this->gate->slug);

@@ -119,7 +119,7 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
-        
+
         $entity = $this->repository->create(
             [
             'user_id'    => $command->user->id,

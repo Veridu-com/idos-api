@@ -8,13 +8,10 @@ declare(strict_types = 1);
 
 namespace App\Event\Interfaces;
 
-use App\Entity\User;
-
 /**
  * User Id getter interface.
  */
 interface UserIdGetterInterface {
-
     /**
      * Gets the user id.
      */

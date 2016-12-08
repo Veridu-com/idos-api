@@ -42,7 +42,7 @@ class Deleted extends AbstractEvent implements UserIdGetterInterface {
         $this->attribute  = $attribute;
         $this->credential = $credential;
     }
-    
+
     /**
      * {@inheritdoc}
      */

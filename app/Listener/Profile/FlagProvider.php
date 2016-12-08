@@ -14,9 +14,9 @@ use Interop\Container\ContainerInterface;
 
 class FlagProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
-        $eventLogger    = ($container->get('log'))('Event');
-        $commandBus     = $container->get('commandBus');
-        $commandFactory = $container->get('commandFactory');
+        $eventLogger       = ($container->get('log'))('Event');
+        $commandBus        = $container->get('commandBus');
+        $commandFactory    = $container->get('commandFactory');
         $repositoryFactory = $container->get('repositoryFactory');
 
         $credentialRepository     = $repositoryFactory->create('Company\Credential');
@@ -30,11 +30,11 @@ class FlagProvider extends Listener\AbstractListenerProvider {
 
         // Listeners
         $evaluateRecommendationListener = new Listener\Profile\Recommendation\EvaluateRecommendationListener(
-            $settingRepository, 
-            $serviceHandlerRepository, 
-            $userRepository, 
-            $eventLogger, 
-            $eventFactory, 
+            $settingRepository,
+            $serviceHandlerRepository,
+            $userRepository,
+            $eventLogger,
+            $eventFactory,
             $emitter,
             $gearmanClient
         );
