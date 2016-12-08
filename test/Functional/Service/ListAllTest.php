@@ -84,7 +84,7 @@ class ListAllTest extends AbstractFunctional {
 
         $this->assertSame(1860914067, $body['data'][2]['id']);
         $this->assertSame('idOS BirthYear Candidates', $body['data'][2]['name']);
-        $this->assertSame('https://handler.idos.io/skynet-web/rest/birthyear-candidates', $body['data'][2]['url']);
+        $this->assertSame('https://handler.idos.io/morpheus/birthyear-candidates', $body['data'][2]['url']);
         $this->assertSame('043578887a8013e3805a789927b0fbf2', $body['data'][2]['public']);
         $this->assertSame(1, $body['data'][2]['access']);
         $this->assertTrue($body['data'][2]['enabled']);

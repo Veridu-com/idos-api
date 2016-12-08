@@ -147,13 +147,12 @@ class Members implements ControllerInterface {
         $member = $this->commandBus->handle($command);
 
         $body = [
-            'status' => true,
-            'data'   => $member->toArray()
+            'data'   => $member->toArray(),
+            'updated' => time()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -193,7 +192,6 @@ class Members implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

@@ -15,6 +15,12 @@ use App\Command\AbstractCommand;
  */
 class DeleteOne extends AbstractCommand {
     /**
+     * Company.
+     *
+     * @var \App\Entity\Company
+     */
+    public $company;
+    /**
      * Setting Id.
      *
      * @var int

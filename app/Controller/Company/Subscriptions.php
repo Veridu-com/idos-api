@@ -125,7 +125,7 @@ class Subscriptions implements ControllerInterface {
             ->setParameter('identity', $identity);
 
         $subscription = $this->commandBus->handle($command);
-
+        
         $body = [
             'data' => $subscription->toArray()
         ];

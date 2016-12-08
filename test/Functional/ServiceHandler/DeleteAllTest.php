@@ -25,6 +25,26 @@ class DeleteAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
+        //retrieves all service-handlers to count the total number of service-handlers. 
+        $this->uri = '/1.0/companies/veridu-ltd/service-handlers';
+        $this->httpMethod = 'GET';
+        
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+                ]
+            )
+        );
+
+        $listAll = $this->process($request);
+        $body = json_decode((string) $listAll->getBody(), true);
+        //total number of services
+        $total = count($body['data']);
+
+        $this->httpMethod = 'DELETE';
+        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers';
+
         // then creates the DELETE request
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -33,13 +53,15 @@ class DeleteAllTest extends AbstractFunctional {
                 ]
             )
         );
-        $response = $this->process($request);
+
+        $response = $this->process($request);   
+
         $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(29, $body['deleted']);
+        $this->assertSame($total, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.

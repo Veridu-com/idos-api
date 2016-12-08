@@ -35,7 +35,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            'category_slug' => 'first-name'
+            'category_name' => 'first-name'
         ];
 
         $request = $this->createRequest(

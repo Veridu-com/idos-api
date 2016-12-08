@@ -36,7 +36,7 @@ class CreateNewTest extends AbstractFunctional {
         $request  = $this->createRequest(
             $environment, json_encode(
                 [
-                    'flag_id'    => 1860914067,
+                    'gate_id'    => 1321189817,
                     'positive'   => $positive
                 ]
             )
@@ -69,7 +69,7 @@ class CreateNewTest extends AbstractFunctional {
         $request  = $this->createRequest(
             $environment, json_encode(
                 [
-                    'flag_id'    => 1321189817,
+                    'gate_id'    => 1321189817,
                     'positive'   => $positive
                 ]
             )

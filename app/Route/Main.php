@@ -25,7 +25,9 @@ class Main implements RouteInterface {
      * {@inheritdoc}
      */
     public static function getPublicNames() : array {
-        return [];
+        return [
+            'main:callback'
+        ];
     }
 
     /**
@@ -44,6 +46,7 @@ class Main implements RouteInterface {
         $permissionMiddleware = $app->getContainer()->get('endpointPermissionMiddleware');
 
         self::listAll($app, $permissionMiddleware);
+        self::callback($app, $permissionMiddleware);
     }
 
     /**
@@ -70,5 +73,15 @@ class Main implements RouteInterface {
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->setName('main:listAll');
+    }
+
+    private static function callback(App $app, callable $permission) {
+        $app
+            ->get(
+                '/callback',
+                'App\Controller\Main:callback'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->setName('main:callback');
     }
 }

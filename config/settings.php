@@ -13,8 +13,8 @@ if (! defined('__VERSION__')) {
 }
 
 $appSettings = [
-    'debug'                             => Env::asBool('IDOS_DEBUG', false),
-    'displayErrorDetails'               => Env::asBool('IDOS_DEBUG', false),
+    'debug'                             => Env::asBool('IDOS_DEBUG', true),
+    'displayErrorDetails'               => Env::asBool('IDOS_DEBUG', true),
     'determineRouteBeforeAppMiddleware' => true,
     'trustedProxies'                    => Env::asArray('IDOS_TRUSTED_PROXIES', ['127.0.0.1']),
     'db'                                => [
@@ -22,9 +22,9 @@ $appSettings = [
             'driver'    => Env::asString('IDOS_SQL_DRIVER', 'pgsql'),
             'host'      => Env::asString('IDOS_SQL_HOST', 'localhost'),
             'port'      => Env::asInteger('IDOS_SQL_PORT', 5432),
-            'database'  => Env::asString('IDOS_SQL_NAME', 'idos-api'),
-            'username'  => Env::asString('IDOS_SQL_USER', 'idos-api'),
-            'password'  => Env::asString('IDOS_SQL_PASS', 'idos-api'),
+            'database'  => Env::asString('IDOS_SQL_NAME', 'veridu-api'),
+            'username'  => Env::asString('IDOS_SQL_USER', 'caue'),
+            'password'  => Env::asString('IDOS_SQL_PASS', '123456'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',

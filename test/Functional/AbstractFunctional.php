@@ -30,6 +30,13 @@ use Slim\Http\Uri;
  * Join all common methods of the other functional classes.
  */
 abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
+   
+   /**
+    * Username to be used in all endpoint testing under /profiles/{userName} route.
+    * 
+    * @var string userName
+    */
+    protected $userName = 'f67b96dcf96b49d713a520ce9f54053c';
     /**
      * Slim's Application Instance.
      *

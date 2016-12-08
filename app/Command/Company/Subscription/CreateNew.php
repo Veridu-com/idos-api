@@ -19,7 +19,7 @@ class CreateNew extends AbstractCommand {
      *
      * @var string
      */
-    public $categorySlug;
+    public $categoryName;
     /**
      * Acting Credential.
      *
@@ -45,8 +45,8 @@ class CreateNew extends AbstractCommand {
      * @return \App\Command\Company\Subscription\CreateNew
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['category_slug'])) {
-            $this->categorySlug = $parameters['category_slug'];
+        if (isset($parameters['category_name'])) {
+            $this->categoryName = $parameters['category_name'];
         }
 
         if (isset($parameters['identity'])) {

@@ -307,8 +307,9 @@ class Source implements HandlerInterface {
 
         // OTP check must only work on valid sources (i.e. not voided and unverified)
         if ($tags
-            && property_exists($tags, 'otp_check')
-            && ! $tags->otp_verified
+            && property_exists($tags, 'otp_check') 
+            && (! property_exists($tags, 'otp_verified')) 
+            || (! $tags->otp_verified)
         ) {
             // code verification
             if (property_exists($tags, 'otp_code')
