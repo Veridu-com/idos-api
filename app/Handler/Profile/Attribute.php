@@ -220,7 +220,7 @@ class Attribute implements HandlerInterface {
             $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\AttributeException('Error while deleting all attributes', 404);
+            throw new NotFound\Profile\AttributeException('Error while deleting all attributes', 404);
         }
 
         return $affectedRows;

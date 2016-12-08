@@ -40,6 +40,18 @@ class Source implements HandlerInterface {
      */
     private $repository;
     /**
+     * Process Repository instance.
+     *
+     * @var \App\Repository\Profile\ProcessInterface
+     */
+    private $processRepository;
+    /**
+     * Company Repository instance.
+     *
+     * @var \App\Repository\CompanyInterface
+     */
+    private $companyRepository;
+    /**
      * Source Validator instance.
      *
      * @var \App\Validator\Profile\Source

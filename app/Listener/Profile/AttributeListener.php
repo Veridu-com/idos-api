@@ -28,13 +28,13 @@ class AttributeListener extends AbstractListener {
     /**
      * Candidate Repository instance.
      *
-     * @var \App\Repository\Profile\Candidate
+     * @var \App\Repository\Profile\CandidateInterface
      */
     private $candidateRepository;
     /**
      * Feature Repository instance.
      *
-     * @var \App\Repository\Profile\Feature
+     * @var \App\Repository\Profile\FeatureInterface
      */
     private $featureRepository;
     /**

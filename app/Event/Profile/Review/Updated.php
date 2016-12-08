@@ -25,7 +25,7 @@ class Updated extends AbstractEvent {
     /**
      * Event related Identity.
      *
-     * @var \App\Entity\Company\Identity
+     * @var \App\Entity\Identity
      */
     public $identity;
 

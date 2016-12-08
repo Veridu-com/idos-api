@@ -35,56 +35,54 @@ class Auth implements MiddlewareInterface {
      * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
-
     /**
      * User Repository.
      *
      * @var \App\Repository\UserInterface
      */
     private $userRepository;
-
     /**
      * Company Repository.
      *
      * @var \App\Repository\CompanyInterface
      */
     private $companyRepository;
-
     /**
      * Service Repository.
      *
      * @var \App\Repository\ServiceInterface
      */
     private $serviceRepository;
-
+    /**
+     * Identity Repository.
+     *
+     * @var \App\Repository\IdentityInterface
+     */
+    private $identityRepository;
     /**
      * JWT Parser.
      *
      * @var \Lcobucci\JWT\Parser
      */
     private $jwtParser;
-
     /**
      * JWT Validation Data.
      *
      * @var \Lcobucci\JWT\ValidationData
      */
     private $jwtValidation;
-
     /**
      * JWT SHA256-HMAC Signer.
      *
      * @var \Lcobucci\JWT\Signer\Hmac\Sha256
      */
     private $jwtSigner;
-
     /**
      * Authorization Requirement Bitmask.
      *
      * @var int
      */
     private $authorizationRequirement;
-
     /**
      * Public access
      * Scope: Public.
@@ -92,21 +90,18 @@ class Auth implements MiddlewareInterface {
      * @const NONE No authorization
      */
     const NONE = 0x00;
-
     /**
      * Scope: Integration.
      *
      * @const USER User Token
      */
     const USER = 0x01;
-
     /**
      * Scope: System.
      *
      * @const IDENTIY Identity Token
      */
     const IDENTITY = 0x02;
-
     /**
      * Scope: Integration.
      *

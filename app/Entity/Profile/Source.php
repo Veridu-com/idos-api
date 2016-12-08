@@ -35,9 +35,9 @@ class Source extends AbstractEntity {
      * Gets the tags attribute.
      * Filters all "otp-*" tags.
      *
-     * @param null|stdClass $tags The tags
+     * @param null|\stdClass $tags The tags
      *
-     * @return null|stdClass The modified tags attribute.
+     * @return null|\stdClass The modified tags attribute.
      */
     public function getTagsAttribute($tags) {
         $otpAllowed = ['otp_verified', 'otp_voided'];

@@ -29,7 +29,7 @@ class CreateNew extends AbstractCommand {
     /**
      * User's owner credential.
      *
-     * @var \App\Entity\Credential
+     * @var \App\Entity\Company\Credential
      */
     public $credential;
 

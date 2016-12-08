@@ -14,6 +14,7 @@ use App\Command\Profile\Reference\DeleteOne;
 use App\Command\Profile\Reference\UpdateOne;
 use App\Entity\Profile\Reference as ReferenceEntity;
 use App\Exception\Create;
+use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;

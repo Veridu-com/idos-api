@@ -11,11 +11,13 @@ namespace App\Handler;
 use App\Command\User\CreateNew;
 use App\Entity\User as UserEntity;
 use App\Exception\Create;
+use App\Exception\Validate;
 use App\Factory\Event;
 use App\Repository\UserInterface;
 use App\Validator\User as UserValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles User commands.

@@ -43,6 +43,12 @@ class Raw implements HandlerInterface {
      */
     private $sourceRepository;
     /**
+     * Process Repository instance.
+     *
+     * @var \App\Repository\Profile\ProcessInterface
+     */
+    private $processRepository;
+    /**
      * Raw Validator instance.
      *
      * @var \App\Validator\Profile\Raw

@@ -35,6 +35,12 @@ class Completed extends AbstractServiceQueueEvent {
      * @var \App\Entity\Company\Credential
      */
     public $credential;
+    /**
+     * Event identifier.
+     *
+     * @var string
+     */
+    public $eventIdentifier;
 
     /**
      * Class contructor.

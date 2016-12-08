@@ -6,14 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Exception\NotFound;
+namespace App\Exception\NotFound\Company;
 
 use App\Exception\NotFound;
 
 /**
- * Company not found exception.
+ * Widget not found exception.
  *
- * @apiEndpointResponse 500 schema/error.json
+ * @apiEndpointResponse 404 schema/error.json
  */
-class CompanyException extends NotFound {
+class WidgetException extends NotFound {
 }

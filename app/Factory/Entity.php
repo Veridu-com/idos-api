@@ -18,7 +18,7 @@ class Entity extends AbstractFactory {
     /**
      * Optimus variable.
      *
-     * @var \Jessengers\Optimus\Optimus
+     * @var \Jenssegers\Optimus\Optimus
      */
     private $optimus;
 
