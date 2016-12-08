@@ -8,9 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
+use App\Exception\AppException;
 use App\Factory\Entity;
 use App\Factory\Repository;
-use App\Exception\AppException;
 use Illuminate\Database\Connection as SQLConnection;
 use Jenssegers\Optimus\Optimus;
 

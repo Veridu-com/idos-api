@@ -9,8 +9,8 @@ declare(strict_types = 1);
 namespace App\Helper;
 
 use Defuse\Crypto\Crypto;
-use Defuse\Crypto\KeyProtectedByPassword;
 use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
+use Defuse\Crypto\KeyProtectedByPassword;
 
 /**
  * Secure Class.

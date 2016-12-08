@@ -14,11 +14,11 @@ use App\Command\Profile\Score\DeleteOne;
 use App\Command\Profile\Score\UpdateOne;
 use App\Command\Profile\Score\Upsert;
 use App\Entity\Profile\Score as ScoreEntity;
+use App\Exception\AppException;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
-use App\Exception\AppException;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ScoreInterface;
@@ -234,18 +234,18 @@ class Score implements HandlerInterface {
 
         try {
             $score = $this->repository->create([
-                'creator' => $command->service->id,
-                'user_id' => $command->user->id,
-                'attribute' => $command->attribute,
-                'name' => $command->name,
-                'value' => $command->value,
+                'creator'    => $command->service->id,
+                'user_id'    => $command->user->id,
+                'attribute'  => $command->attribute,
+                'name'       => $command->name,
+                'value'      => $command->value,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
             $this->repository->beginTransaction();
             $this->repository->upsert($score, ['user_id', 'creator', 'name'], [
-                'attribute' => $command->attribute,
-                'value' => $command->value,
+                'attribute'  => $command->attribute,
+                'value'      => $command->value,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 

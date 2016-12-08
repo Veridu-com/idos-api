@@ -36,7 +36,7 @@ trait QueueCompanyServiceHandlers {
      * @var \GearmanClient
      */
     private $gearmanClient;
-    
+
     /**
      * Queues Service Handlers' tasks for the given event and company.
      *

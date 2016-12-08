@@ -259,7 +259,7 @@ class Gate implements HandlerInterface {
                 ]
             );
             $entity = $this->repository->findBySlug($entity->slug, $entity->creator, $entity->userId);
-            
+
             $this->repository->commit();
 
             $entity = $this->repository->hydrateRelations($entity);

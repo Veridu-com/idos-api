@@ -10,10 +10,10 @@ namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
 use App\Entity\User;
+use App\Exception\AppException;
 use App\Factory\Command;
 use App\Repository\Profile\RawInterface;
 use App\Repository\Profile\SourceInterface;
-use App\Exception\AppException;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

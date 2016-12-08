@@ -281,19 +281,19 @@ class Feature implements HandlerInterface {
 
         try {
             $feature = $this->repository->create([
-                'user_id' => $command->user->id,
-                'source' => $command->source ? $command->source->name : null,
-                'name' => $command->name,
-                'creator' => $command->service->id,
-                'type' => $command->type,
-                'value' => $command->value,
+                'user_id'    => $command->user->id,
+                'source'     => $command->source ? $command->source->name : null,
+                'name'       => $command->name,
+                'creator'    => $command->service->id,
+                'type'       => $command->type,
+                'value'      => $command->value,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
             $this->repository->beginTransaction();
             $this->repository->upsert($feature, ['user_id', 'source', 'creator', 'name'], [
-                'type' => $command->type,
-                'value' => $command->value,
+                'type'       => $command->type,
+                'value'      => $command->value,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
