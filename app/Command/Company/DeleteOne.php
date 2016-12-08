@@ -33,7 +33,6 @@ class DeleteOne extends AbstractCommand {
      * @return \App\Command\Company\DeleteOne
      */
     public function setParameters(array $parameters) : self {
-
         return $this;
     }
 }

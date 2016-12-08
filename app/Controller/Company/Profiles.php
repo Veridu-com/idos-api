@@ -249,7 +249,6 @@ class Profiles implements ControllerInterface {
             ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
-
     }
 
     /**

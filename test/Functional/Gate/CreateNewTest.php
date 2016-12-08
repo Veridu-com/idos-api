@@ -39,8 +39,8 @@ class CreateNewTest extends AbstractFunctional {
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                    'name'             => $name,
-                    'pass'             => $pass
+                    'name' => $name,
+                    'pass' => $pass
                 ]
             )
         );

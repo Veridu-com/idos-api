@@ -78,23 +78,23 @@ class MemberTest extends AbstractUnit {
     }
 
     public function testToArray() {
-         $array = [
+        $array = [
             'id'         => 1,
             'user_id'    => 1,
             'role'       => 'admin',
             'created_at' => time(),
             'updated_at' => time()
          ];
-         $abstractMock = $this->getMockBuilder(Member::class)
-             ->setMethods(null)
-             ->setConstructorArgs([$array, $this->optimus])
-             ->getMockForAbstractClass();
-         $array = $abstractMock->toArray();
-         $this->assertArrayHasKey('user', $array);
-         $this->assertArrayHasKey('role', $array);
-         $this->assertSame('admin', $array['role']);
-         $this->assertArrayHasKey('created_at', $array);
-         $this->assertTrue(is_int($abstractMock->createdAt));
+        $abstractMock = $this->getMockBuilder(Member::class)
+            ->setMethods(null)
+            ->setConstructorArgs([$array, $this->optimus])
+            ->getMockForAbstractClass();
+        $array = $abstractMock->toArray();
+        $this->assertArrayHasKey('user', $array);
+        $this->assertArrayHasKey('role', $array);
+        $this->assertSame('admin', $array['role']);
+        $this->assertArrayHasKey('created_at', $array);
+        $this->assertTrue(is_int($abstractMock->createdAt));
     }
 
     public function testGetCachedKeysEmptyAttributes() {
@@ -153,7 +153,6 @@ class MemberTest extends AbstractUnit {
         $this->assertNotEmpty($result);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($array, $result);
-
     }
 
     public function testReferenceCacheKeysEmptyAttributes() {
@@ -166,7 +165,6 @@ class MemberTest extends AbstractUnit {
         $this->assertNotEmpty($result);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
         $this->assertEquals($array, $result);
-
     }
 
     public function testReferenceCacheKeys() {

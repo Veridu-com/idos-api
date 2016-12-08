@@ -43,7 +43,6 @@ class DeleteOne extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-
         return $this;
     }
 }

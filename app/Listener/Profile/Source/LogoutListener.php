@@ -36,7 +36,7 @@ class LogoutListener extends AbstractListener {
      *
      * @param \App\Entity\User           $user   The user
      * @param \App\Entity\Profile\Source $source The source
-     * 
+     *
      * @return int
      */
     private function deleteRaw(EventInterface $event) {

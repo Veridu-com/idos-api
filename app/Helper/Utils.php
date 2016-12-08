@@ -37,8 +37,9 @@ class Utils {
         // remove unwanted characters
         $text = preg_replace('~[^-\w]+~', '', $text);
 
-        if (empty($text))
+        if (empty($text)) {
             return 'n-a';
+        }
 
         return $text;
     }

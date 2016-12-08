@@ -223,6 +223,6 @@ class Attribute implements HandlerInterface {
             throw new NotFound\AttributeException('Error while deleting all attributes', 404);
         }
 
-            return $affectedRows;
+        return $affectedRows;
     }
 }

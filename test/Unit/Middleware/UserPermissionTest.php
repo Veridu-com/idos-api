@@ -299,7 +299,6 @@ class UserPermissionTest extends AbstractUnit {
         callable $nextMock,
         int $actingAccessLevel
     ) {
-
         $possibleAccessLevels = [
             RoleAccessEntity::ACCESS_NONE,
             RoleAccessEntity::ACCESS_READ,
@@ -420,7 +419,6 @@ class UserPermissionTest extends AbstractUnit {
         callable $nextMock,
         string $actingRole
     ) {
-
         $possibleAccessLevels = [
             RoleAccessEntity::ACCESS_NONE,
             RoleAccessEntity::ACCESS_READ,
@@ -487,7 +485,6 @@ class UserPermissionTest extends AbstractUnit {
      * Tests all possible permission combination of a company acessing a route.
      */
     public function testCompanyAccess() {
-
         $this->mockBasic($dbConnectionMock, $entityFactory, $routeMock, $requestMock, $responseMock, $nextMock);
 
         //A company is acessing a route, so an user should not be defined
@@ -537,7 +534,6 @@ class UserPermissionTest extends AbstractUnit {
      * Tests all possible permission combination of a user acessing a route.
      */
     public function testUserAccess() {
-
         $this->mockBasic(
             $dbConnectionMock,
             $entityFactory,

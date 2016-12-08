@@ -21,8 +21,9 @@ class DeletedMultiTest extends AbstractUnit {
             ->getMock();
 
         $permissions = [];
-        for($i = 0; $i < 5; $i++)
+        for ($i = 0; $i < 5; $i++) {
             $permissions[] = new Permission([], $optimus);
+        }
 
         $collection = new Collection($permissions);
 

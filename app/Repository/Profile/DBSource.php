@@ -80,10 +80,12 @@ class DBSource extends AbstractSQLDBRepository implements SourceInterface {
      * {@inheritdoc}
      */
     public function getByUserIdAndName(int $userId, string $name) : Collection {
-        return $this->findBy([
+        return $this->findBy(
+            [
             'user_id' => $userId,
             'name'    => $name
-        ]);
+            ]
+        );
     }
 
     /**

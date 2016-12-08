@@ -11,7 +11,6 @@ use Phinx\Migration\AbstractMigration;
  */
 class CategoriesInit extends AbstractMigration {
     public function change() {
-
         $categories = $this->table('categories');
         $categories
             ->addColumn('name', 'text', ['null' => false])

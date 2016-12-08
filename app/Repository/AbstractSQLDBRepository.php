@@ -330,7 +330,6 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $quotedKeys = array_map(
             function ($key) {
                 return sprintf('"%s"', $key);
-
             }, $keys
         );
         $insertKeys = implode(',', $quotedKeys);
@@ -338,14 +337,13 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $params = array_map(
             function ($key) {
                 return ":$key";
-
             }, $keys
         );
         $insertParams = implode(',', $params);
 
         $sql = sprintf(
-            'INSERT INTO "%s" 
-            (%s) 
+            'INSERT INTO "%s"
+            (%s)
             VALUES (%s)
             ON CONFLICT %s RETURNING "id" as id',
             $this->getTableName(),
@@ -506,7 +504,6 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @return \Illuminate\Database\Query\Builder The modified query
      */
     public function treatQueryModifiers(Builder $query, array $queryParams) : Builder {
-
         if (isset($queryParams['filter:order']) && in_array($queryParams['filter:order'], $this->orderableKeys)) {
             $order = 'ASC';
 
@@ -858,7 +855,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     protected function getRelationByForeignKey(string $foreignKeyColumn) {
         foreach ($this->relationships as $relationName => $relationProperties) {
             $relationForeignKeyColumn = null;
-            switch($relationProperties['type']) {
+            switch ($relationProperties['type']) {
                 case 'ONE_TO_ONE':
                     // FIXME This should throw a RuntimeException if it must be implemented
                     break;
@@ -948,7 +945,6 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             ],
             'collection' => $pagination->getCollection()
         ];
-
     }
 
     /**

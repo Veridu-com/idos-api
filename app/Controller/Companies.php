@@ -152,7 +152,6 @@ class Companies implements ControllerInterface {
             ->setParameter('statusCode', 201);
 
         return $this->commandBus->handle($command);
-
     }
 
     /**

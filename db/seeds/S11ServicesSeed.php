@@ -46,8 +46,8 @@ class S11ServicesSeed extends AbstractSeed {
                         'idos:source.yahoo.created'
                     ]
                 ),
-                'triggers'      => json_encode(['handler:scrape.completed']),
-                'enabled'       => true,
+                'triggers' => json_encode(['handler:scrape.completed']),
+                'enabled'  => true,
             ],
             [
                 'name'          => 'idOS Feature Extractor',
@@ -70,8 +70,8 @@ class S11ServicesSeed extends AbstractSeed {
                         'idos:raw.yahoo.created'
                     ]
                 ),
-                'triggers'      => json_encode(['handler:feature.completed']),
-                'enabled'       => true,
+                'triggers' => json_encode(['handler:feature.completed']),
+                'enabled'  => true,
             ],
             [
                 'name'          => 'idOS BirthYear Candidates',
@@ -387,8 +387,8 @@ class S11ServicesSeed extends AbstractSeed {
                         'idos:invitation.resend'
                     ]
                 ),
-                'triggers'      => json_encode([]),
-                'enabled'       => true,
+                'triggers' => json_encode([]),
+                'enabled'  => true,
             ],
             [
                 'name'          => 'idOS OTP E-mail Handler',
@@ -403,8 +403,8 @@ class S11ServicesSeed extends AbstractSeed {
                         'idos:otp.email.created'
                     ]
                 ),
-                'triggers'      => json_encode([]),
-                'enabled'       => true,
+                'triggers' => json_encode([]),
+                'enabled'  => true,
             ],
             [
                 'name'          => 'idOS ProfilePicture Candidates',
@@ -436,6 +436,5 @@ class S11ServicesSeed extends AbstractSeed {
         $table
             ->insert($servicesData)
             ->save();
-
     }
 }

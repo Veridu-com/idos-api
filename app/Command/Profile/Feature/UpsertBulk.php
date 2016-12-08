@@ -45,7 +45,6 @@ class UpsertBulk extends AbstractCommand {
      * @return \App\Command\Profile\Feature\UpsertBulk
      */
     public function setParameters(array $parameters) : self {
-
         return $this;
     }
 }

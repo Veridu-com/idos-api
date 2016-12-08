@@ -132,7 +132,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
             }
         }
 
-        if(isset($rawFilters['filter:order'])) {
+        if (isset($rawFilters['filter:order'])) {
             $sort = 'DESC';
 
             if (isset($rawFilters['filter:sort']) && in_array($rawFilters['filter:sort'], ['ASC', 'DESC'])) {
@@ -232,7 +232,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $collections  = $this->listCollections();
         $affectedRows = 0;
 
-        foreach($collections as $collection) {
+        foreach ($collections as $collection) {
             $affectedRows += $this->deleteOneBySourceAndCollection($collection->getName(), $source);
         }
 

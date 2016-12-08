@@ -32,6 +32,5 @@ class UpdateOneTest extends AbstractCommandTest {
         ];
 
         $this->assertSetParameters(UpdateOne::class, $attributes);
-
     }
 }

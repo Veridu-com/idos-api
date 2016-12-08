@@ -55,7 +55,6 @@ class UpdateOneTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
-
     }
 
     public function testNotFound() {

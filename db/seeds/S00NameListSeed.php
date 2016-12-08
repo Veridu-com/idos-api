@@ -8,6 +8,5 @@ use Phinx\Seed\AbstractSeed;
 
 class S00NameListSeed extends AbstractSeed {
     public function run() {
-
     }
 }

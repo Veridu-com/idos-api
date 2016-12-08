@@ -118,10 +118,10 @@ class Subscription implements HandlerInterface {
 
         $subscription = $this->repository->create(
             [
-                'identity_id'      => $command->identity->id,
-                'category_slug'    => $command->categorySlug,
-                'credential_id'    => $command->credential->id,
-                'created_at'       => time()
+                'identity_id'   => $command->identity->id,
+                'category_slug' => $command->categorySlug,
+                'credential_id' => $command->credential->id,
+                'created_at'    => time()
             ]
         );
 

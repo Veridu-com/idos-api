@@ -220,7 +220,7 @@ class Members implements ControllerInterface {
         $member = $this->repository->findMembership($identity->id, $company->id);
 
         $body = [
-            'data'    => $member->toArray()
+            'data' => $member->toArray()
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

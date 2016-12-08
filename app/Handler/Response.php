@@ -88,10 +88,11 @@ class Response implements HandlerInterface {
         array_walk_recursive(
             $body,
             function ($value, $key) use ($xml) {
-                if (is_bool($value))
+                if (is_bool($value)) {
                     $xml->addChild($key, ($value ? 'true' : 'false'));
-                else
+                } else {
                     $xml->addChild($key, $value);
+                }
             }
         );
         $body     = $xml->asXML();

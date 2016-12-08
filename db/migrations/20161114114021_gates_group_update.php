@@ -14,8 +14,7 @@ use Phinx\Migration\AbstractMigration;
  *      2. "gates" should have a "conficence_level" string column
  *      3. "confidence_level" added to composite index
  */
-class GatesGroupUpdate extends AbstractMigration
-{
+class GatesGroupUpdate extends AbstractMigration {
     public function up() {
         $gates = $this->table('gates');
 

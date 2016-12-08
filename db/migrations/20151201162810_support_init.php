@@ -11,7 +11,6 @@ use Phinx\Migration\AbstractMigration;
  */
 class SupportInit extends AbstractMigration {
     public function change() {
-
         $cityList = $this->table('city_list');
         $cityList
             ->addColumn('name', 'text', ['null' => false])

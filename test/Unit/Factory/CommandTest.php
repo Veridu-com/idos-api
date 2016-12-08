@@ -28,7 +28,6 @@ class CommandTest extends AbstractUnit {
     }
 
     private function getCommandNames() {
-
         $commandPaths = glob(__DIR__ . '/../../../app/Command/*/*.php');
         $commands     = [];
         foreach ($commandPaths as $commandPath) {

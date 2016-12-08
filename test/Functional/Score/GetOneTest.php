@@ -52,7 +52,6 @@ class GetOneTest extends AbstractFunctional {
             ),
             $this->schemaErrors
         );
-
     }
 
     public function testNotFound() {

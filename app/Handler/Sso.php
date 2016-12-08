@@ -239,7 +239,7 @@ class Sso implements HandlerInterface {
             ->setParameter('identity', $identity)
             ->setParameters(
                 [
-                    'role'        => $role
+                    'role' => $role
                     ]
             );
 
