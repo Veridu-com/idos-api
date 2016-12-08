@@ -59,6 +59,9 @@ class Profiles implements RouteInterface {
                     ->get('repositoryFactory')
                     ->create('Profile\\Gate'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\\Recommendation'),
+                $container
                     ->get('commandBus'),
                 $container
                     ->get('commandFactory')

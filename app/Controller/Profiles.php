@@ -8,10 +8,12 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Exception\NotFound;
 use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\CandidateInterface;
 use App\Repository\Profile\GateInterface;
+use App\Repository\Profile\RecommendationInterface;
 use App\Repository\Profile\ScoreInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Repository\UserInterface;
@@ -54,6 +56,12 @@ class Profiles implements ControllerInterface {
      */
     private $gateRepository;
     /**
+     * Recommendation Repository instance.
+     *
+     * @var \App\Repository\Profile\Recommendation
+     */
+    private $recommendationRepository;
+    /**
      * Command Bus instance.
      *
      * @var \League\Tactician\CommandBus
@@ -69,13 +77,15 @@ class Profiles implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\UserInterface              $repository
-     * @param \App\Repository\Profile\AttributeInterface $attributeRepository
-     * @param \App\Repository\Profile\CandidateInterface $candidateRepository
-     * @param \App\Repository\Profile\ScoreInterface     $scoreRepository
-     * @param \App\Repository\Profile\SourceInterface    $sourceRepository
-     * @param \League\Tactician\CommandBus               $commandBus
-     * @param \App\Factory\Command                       $commandFactory
+     * @param \App\Repository\UserInterface                   $repository
+     * @param \App\Repository\Profile\AttributeInterface      $attributeRepository
+     * @param \App\Repository\Profile\CandidateInterface      $candidateRepository
+     * @param \App\Repository\Profile\ScoreInterface          $scoreRepository
+     * @param \App\Repository\Profile\SourceInterface         $sourceRepository
+     * @param \App\Repository\Profile\GateInterface           $gateRepository
+     * @param \App\Repository\Profile\RecommendationInterface $recommendationRepository
+     * @param \League\Tactician\CommandBus                    $commandBus
+     * @param \App\Factory\Command                            $commandFactory
      *
      * @return void
      */
@@ -86,17 +96,19 @@ class Profiles implements ControllerInterface {
         ScoreInterface $scoreRepository,
         SourceInterface $sourceRepository,
         GateInterface $gateRepository,
+        RecommendationInterface $recommendationRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository          = $repository;
-        $this->attributeRepository = $attributeRepository;
-        $this->candidateRepository = $candidateRepository;
-        $this->scoreRepository     = $scoreRepository;
-        $this->sourceRepository    = $sourceRepository;
-        $this->gateRepository      = $gateRepository;
-        $this->commandBus          = $commandBus;
-        $this->commandFactory      = $commandFactory;
+        $this->repository                = $repository;
+        $this->attributeRepository       = $attributeRepository;
+        $this->candidateRepository       = $candidateRepository;
+        $this->scoreRepository           = $scoreRepository;
+        $this->sourceRepository          = $sourceRepository;
+        $this->gateRepository            = $gateRepository;
+        $this->recommendationRepository  = $recommendationRepository;
+        $this->commandBus                = $commandBus;
+        $this->commandFactory            = $commandFactory;
     }
 
     /**
@@ -122,14 +134,21 @@ class Profiles implements ControllerInterface {
         $sources    = $this->sourceRepository->getByUserId($user->id);
         $gates      = $this->gateRepository->getByUserId($user->id);
 
+        try {
+            $recommendation = $this->recommendationRepository->findOne($user->id)->toArray();
+        } catch (NotFound $e) {
+            $recommendation = null;
+        }
+
         $data = [
-            'username'   => $user->username,
-            'attributes' => $attributes->toArray(),
-            'candidates' => $candidates->toArray(),
-            'scores'     => $scores->toArray(),
-            'gates'      => $gates->toArray(),
-            'sources'    => $sources->toArray(),
-            'created_at' => $user->createdAt
+            'username'       => $user->username,
+            'attributes'     => $attributes->toArray(),
+            'candidates'     => $candidates->toArray(),
+            'scores'         => $scores->toArray(),
+            'gates'          => $gates->toArray(),
+            'sources'        => $sources->toArray(),
+            'recommendation' => $recommendation,
+            'created_at'     => $user->createdAt
         ];
 
         $body = [
