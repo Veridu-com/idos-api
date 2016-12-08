@@ -17,22 +17,47 @@ class AttributeProvider extends Listener\AbstractListenerProvider {
         $eventLogger    = ($container->get('log'))('Event');
         $commandBus     = $container->get('commandBus');
         $commandFactory = $container->get('commandFactory');
+        $repositoryFactory = $container->get('repositoryFactory');
+
+        $credentialRepository     = $repositoryFactory->create('Company\Credential');
+        $settingRepository        = $repositoryFactory->create('Company\Setting');
+        $userRepository           = $repositoryFactory->create('User');
+        $serviceHandlerRepository = $repositoryFactory->create('ServiceHandler');
+
+        $eventFactory  = $container->get('eventFactory');
+        $emitter       = $container->get('eventEmitter');
+        $gearmanClient = $container->get('gearmanClient');
+
+        // Listeners
+        $evaluateRecommendationListener = new Listener\Profile\Recommendation\EvaluateRecommendationListener(
+            $settingRepository, 
+            $serviceHandlerRepository, 
+            $userRepository, 
+            $eventLogger, 
+            $eventFactory, 
+            $emitter,
+            $gearmanClient
+        );
 
         $this->events = [
             Attribute\Created::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                $evaluateRecommendationListener,
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Attribute\Updated::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                $evaluateRecommendationListener,
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Attribute\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                $evaluateRecommendationListener,
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Attribute\DeletedMulti::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                $evaluateRecommendationListener,
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];

@@ -122,11 +122,34 @@ class S11SettingsSeed extends AbstractSeed {
             ];
         }
 
+        // dashboard details
         $data[] = [
             'company_id' => 1,
             'section'    => 'company.details',
             'property'   => 'dashboardName',
             'value'      => 'Veridu Dashboard',
+            'created_at' => $now
+        ];
+
+        // company recommendation
+        $data[] = [
+            'company_id' => 1,
+            'section'    => 'recommendation',
+            'property'   => 'ruleset',
+            'value' => json_encode([ 
+                [
+                    "tag" => "Default rule",
+                    "tests" => [
+                        [
+                            "tag" => "default test #1",
+                            "category" => "gate",
+                            "slug" => "nochargebackgate-medium",
+                            "confidence_level" => "medium",
+                            "pass" => true
+                        ]
+                    ]
+                ]
+            ]),
             'created_at' => $now
         ];
 

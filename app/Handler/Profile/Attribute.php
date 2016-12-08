@@ -119,7 +119,7 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
-
+        
         $entity = $this->repository->create(
             [
             'user_id'    => $command->user->id,
@@ -157,7 +157,6 @@ class Attribute implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertLongName($command->name);
             $this->validator->assertString($command->value);
-            $this->validator->assertCredential($command->credential);
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(

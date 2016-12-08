@@ -10,12 +10,14 @@ namespace App\Event\Profile\Gate;
 
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Gate;
+use App\Entity\User;
 use App\Event\AbstractEvent;
+use App\Event\Interfaces\UserIdGetterInterface;
 
 /**
  * Updated event.
  */
-class Updated extends AbstractEvent {
+class Updated extends AbstractEvent implements UserIdGetterInterface {
     /**
      * Event related Gate.
      *
@@ -40,5 +42,21 @@ class Updated extends AbstractEvent {
     public function __construct(Gate $gate, Credential $credential) {
         $this->gate       = $gate;
         $this->credential = $credential;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId(): int {
+        return $this->gate->userId;
+    }
+    
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return     string  String representation of the object.
+     */
+    public function __toString() {
+        return sprintf('gate.updated.%s', $this->gate->slug);
     }
 }

@@ -19,7 +19,8 @@ use League\Event\Emitter;
 use League\Event\EventInterface;
 
 /**
- * Data Scraper Event Listener.
+ * This listener is responsible for sending to the "Manager"
+ * all Service relate tasks.
  */
 class QueueServiceTaskListener extends AbstractListener {
     use QueueCompanyServiceHandlers;

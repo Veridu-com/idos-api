@@ -11,11 +11,12 @@ namespace App\Event\Profile\Attribute;
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Attribute;
 use App\Event\AbstractEvent;
+use App\Event\Interfaces\UserIdGetterInterface;
 
 /**
  * Deleted event.
  */
-class Deleted extends AbstractEvent {
+class Deleted extends AbstractEvent implements UserIdGetterInterface {
     /**
      * Event related Attribute.
      *
@@ -40,5 +41,12 @@ class Deleted extends AbstractEvent {
     public function __construct(Attribute $attribute, Credential $credential) {
         $this->attribute  = $attribute;
         $this->credential = $credential;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId() : int {
+        return $this->attribute->userId;
     }
 }

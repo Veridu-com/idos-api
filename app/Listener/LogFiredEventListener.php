@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Listener;
 
+use App\Event\Manager\UnhandledEvent;
 use League\Event\EventInterface;
 use Monolog\Logger;
 
@@ -25,5 +26,9 @@ class LogFiredEventListener extends AbstractListener {
 
     public function handle(EventInterface $event) {
         $this->logger->debug(sprintf('%s was fired', $event->getName()));
+
+        if (is_a($event, UnhandledEvent::class)) {
+            $this->logger->debug((string) $event);
+        }
     }
 }
