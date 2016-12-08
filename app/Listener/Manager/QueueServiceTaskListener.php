@@ -20,7 +20,7 @@ use League\Event\EventInterface;
 
 /**
  * This listener is responsible for sending to the "Manager"
- * all Service relate tasks.
+ * all Service related tasks.
  */
 class QueueServiceTaskListener extends AbstractListener {
     use QueueCompanyServiceHandlers;
