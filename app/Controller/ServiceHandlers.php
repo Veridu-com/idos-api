@@ -135,7 +135,7 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
+        $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('ServiceHandler\\CreateNew');
@@ -177,7 +177,7 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
-        $identity = $request->getAttribute('identity');
+        $identity         = $request->getAttribute('identity');
         $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
@@ -216,7 +216,7 @@ class ServiceHandlers implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
-        $identity = $request->getAttribute('identity');
+        $identity         = $request->getAttribute('identity');
         $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
@@ -252,7 +252,7 @@ class ServiceHandlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
+        $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteAll');

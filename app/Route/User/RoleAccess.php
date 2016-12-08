@@ -20,7 +20,8 @@ use Slim\App;
  *
  * With Access Roles you can control exactly what information (e.g. last name, phone number, etc.)
  * is available to a Company Member.
- * **Note:** advanced usage only
+ *
+ * **Note:** advanced usage only.
  *
  * @apiDisabled
  *

@@ -149,7 +149,7 @@ class Reviews implements ControllerInterface {
         $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
         $identity = $request->getAttribute('identity');
 
-        $command  = $this->commandFactory->create('Profile\\Review\\CreateNew');
+        $command = $this->commandFactory->create('Profile\\Review\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
@@ -186,7 +186,7 @@ class Reviews implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $identity = $request->getAttribute('identity');
 
-        $user     = $this->userRepository->find($request->getAttribute('decodedUserId'));
+        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
 
         $command = $this->commandFactory->create('Profile\\Review\\UpdateOne');
         $command

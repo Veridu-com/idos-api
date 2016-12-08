@@ -22,7 +22,8 @@ use Slim\App;
  * Settings are used to change multiple aspects of the layout of the API dashboard, the way certain information
  * is displayed in order to tailor to a certain company's thematic requests, or to create different environments
  * suited to different purposes.
- * **Note:** advanced usage only
+ *
+ * **Note:** advanced usage only.
  *
  * @link docs/companies/settings/overview.md
  * @see \App\Controller\Company\Settings
@@ -94,11 +95,11 @@ class Settings implements RouteInterface {
             )
             ->add(
                 $permission(
-                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION,
+                EndpointPermission::SELF_ACTION | EndpointPermission::PARENT_ACTION | EndpointPermission::PRIVATE_ACTION,
                 Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
                 )
             )
-            ->add($auth(Auth::IDENTITY))
+            ->add($auth(Auth::IDENTITY | Auth::CREDENTIAL))
             ->setName('settings:listAll');
     }
 

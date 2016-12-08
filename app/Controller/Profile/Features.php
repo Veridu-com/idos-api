@@ -36,7 +36,7 @@ class Features implements ControllerInterface {
     /**
      * Source Repository instance.
      *
-     * @var \App\Repository\SourceInterface
+     * @var \App\Repository\Profile\SourceInterface
      */
     private $sourceRepository;
     /**
@@ -57,6 +57,7 @@ class Features implements ControllerInterface {
      *
      * @param \App\Repository\Profile\FeatureInterface $repository
      * @param \App\Repository\UserInterface            $userRepository
+     * @param \App\Repository\Profile\SourceRepository $sourceRepository
      * @param \League\Tactician\CommandBus             $commandBus
      * @param \App\Factory\Command                     $commandFactory
      *
@@ -346,15 +347,16 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user      = $request->getAttribute('targetUser');
-        $service   = $request->getAttribute('service');
-        $featureId = $request->getAttribute('decodedFeatureId');
+        $user         = $request->getAttribute('targetUser');
+        $service      = $request->getAttribute('service');
+        $credential   = $request->getAttribute('credential');
+        $featureId    = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
         $command
-            ->setParameter('credential', $credential)
             ->setParameter('user', $user)
             ->setParameter('service', $service)
+            ->setParameter('credential', $credential)
             ->setParameter('featureId', $featureId);
 
         $this->commandBus->handle($command);
@@ -384,8 +386,9 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
+        $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');
         $command

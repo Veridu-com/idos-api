@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /profiles/{userName}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Profile response payload",
+            "type": "object",
+            "$ref": "profileEntity.json"
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "status",
+        "data",
+        "updated"
+    ]
+}

@@ -70,13 +70,11 @@ class Settings implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $targetCompany = $request->getAttribute('targetCompany');
-        $identity      = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\ListAll');
         $command
             ->setParameter('hasParentAccess', $request->getAttribute('hasParentAccess'))
             ->setParameter('queryParams', $request->getQueryParams())
-            ->setParameter('identity', $identity)
             ->setParameter('company', $targetCompany);
 
         $result   = $this->commandBus->handle($command);
@@ -154,7 +152,7 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('targetCompany');
+        $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\CreateNew');
@@ -194,13 +192,15 @@ class Settings implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $settingId = $request->getAttribute('decodedSettingId');
-        $identity = $request->getAttribute('identity');
+        $settingId     = $request->getAttribute('decodedSettingId');
+        $identity      = $request->getAttribute('identity');
+        $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Company\\Setting\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('identity', $identity)
+            ->setParameter('company', $targetCompany)
             ->setParameter('settingId', $settingId);
 
         $setting = $this->commandBus->handle($command);
@@ -233,7 +233,7 @@ class Settings implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $settingId = $request->getAttribute('decodedSettingId');
-        $identity = $request->getAttribute('identity');
+        $identity  = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Setting\\DeleteOne');
         $command
@@ -243,40 +243,6 @@ class Settings implements ControllerInterface {
         $this->commandBus->handle($command);
         $body = [
             'status' => true
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes all Settings that belongs to the Target Company.
-     *
-     * @apiEndpointResponse 200 schema/setting/deleteAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see \App\Handler\Settings::handleDeleteAll
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company = $request->getAttribute('company');
-        $identity = $request->getAttribute('identity');
-
-        $command = $this->commandFactory->create('Company\\Setting\\DeleteAll');
-        $command
-            ->setParameter('identity', $identity)
-            ->setParameter('companyId', $company->id);
-
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

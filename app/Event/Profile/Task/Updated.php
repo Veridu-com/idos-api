@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Task;
 
-use App\Entity\Profile\Task;
 use App\Entity\Company\Credential;
+use App\Entity\Profile\Task;
 use App\Event\AbstractEvent;
 
 /**
@@ -32,13 +32,13 @@ class Updated extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Profile\Task $task
+     * @param \App\Entity\Profile\Task       $task
      * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */
     public function __construct(Task $task, Credential $credential) {
-        $this->task = $task;
+        $this->task       = $task;
         $this->credential = $credential;
     }
 }

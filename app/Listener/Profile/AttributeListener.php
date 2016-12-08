@@ -8,9 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Listener\Profile;
 
+use App\Entity\Company\Credential;
 use App\Entity\Profile\Candidate;
 use App\Entity\Profile\Feature;
-use App\Entity\Company\Credential;
 use App\Entity\User;
 use App\Factory\Command;
 use App\Listener;
@@ -28,13 +28,13 @@ class AttributeListener extends AbstractListener {
     /**
      * Candidate Repository instance.
      *
-     * @var \App\Repository\Profile\Candidate
+     * @var \App\Repository\Profile\CandidateInterface
      */
     private $candidateRepository;
     /**
      * Feature Repository instance.
      *
-     * @var \App\Repository\Profile\Feature
+     * @var \App\Repository\Profile\FeatureInterface
      */
     private $featureRepository;
     /**
@@ -193,7 +193,7 @@ class AttributeListener extends AbstractListener {
 
             foreach ($features as $feature) {
                 $candidate = $filteredCandidates[$feature->name]
-                    ->whereStrict('value', $feature->value)
+                    ->where('value', $feature->value)
                     ->first();
                 if (empty($candidate)) {
                     continue;
@@ -284,15 +284,15 @@ class AttributeListener extends AbstractListener {
             'profilePicture' => [
                 'profilePicture'
             ],
-            'fullName'    => [
+            'fullName' => [
                 'firstName',
                 'middleName',
                 'lastName'
             ],
-            'gender'       => [
+            'gender' => [
                 'gender'
             ],
-            'birthDate'   => [
+            'birthDate' => [
                 'birthDay',
                 'birthMonth',
                 'birthYear'
@@ -304,10 +304,10 @@ class AttributeListener extends AbstractListener {
                 'regionName',
                 'countryName'
             ],
-            'email'        => [
+            'email' => [
                 'email'
             ],
-            'phoneNumber'  => [
+            'phoneNumber' => [
                 'phoneCountryCode',
                 'phoneNumber'
             ]
@@ -364,5 +364,6 @@ class AttributeListener extends AbstractListener {
                 $this->formatCombination($composition, $combination)
             );
         }
+
     }
 }

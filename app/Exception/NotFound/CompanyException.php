@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Exception\NotFound\Company;
+namespace App\Exception\NotFound;
 
 use App\Exception\NotFound;
 

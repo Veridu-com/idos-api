@@ -13,6 +13,31 @@ use League\Event\EventInterface;
 
 trait QueueCompanyServiceHandlers {
     /**
+     * Service Handler Repository instance.
+     *
+     * @var \App\Repository\ServiceHandlerInterface
+     */
+    private $serviceHandlerRepository;
+    /**
+     * Event Factory instance.
+     *
+     * @var \App\Factory\Event
+     */
+    private $eventFactory;
+    /**
+     * Event Emitter instance.
+     *
+     * @var \League\Event\Emitter
+     */
+    private $emitter;
+    /**
+     * Gearman Client instance.
+     *
+     * @var \GearmanClient
+     */
+    private $gearmanClient;
+
+    /**
      * Queues Service Handlers' tasks for the given event and company.
      *
      * @param int                                   $companyId    Company identifier
@@ -69,7 +94,7 @@ trait QueueCompanyServiceHandlers {
      */
     private function queue(array $payload) : bool {
         $task = $this->gearmanClient->doBackground(
-            sprintf('idos-manager-%s', str_replace('.', '', __VERSION__)),
+            'manager',
             json_encode($payload)
         );
 

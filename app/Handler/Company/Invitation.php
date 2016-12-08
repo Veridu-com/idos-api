@@ -43,6 +43,18 @@ class Invitation implements HandlerInterface {
      */
     private $credentialRepository;
     /**
+     * Company Repository instance.
+     *
+     * @var \App\Repository\CompanyInterface
+     */
+    private $companyRepository;
+    /**
+     * Setting Repository instance.
+     *
+     * @var \App\Repository\Company\SettingInterface
+     */
+    private $settingRepository;
+    /**
      * Invitation Validator instance.
      *
      * @var \App\Validator\Company\Invitation
@@ -57,7 +69,7 @@ class Invitation implements HandlerInterface {
     /**
      * Event emitter instance.
      *
-     * @var League\Event\Emitter
+     * @var \League\Event\Emitter
      */
     private $emitter;
 
@@ -141,6 +153,7 @@ class Invitation implements HandlerInterface {
             if ($command->expires) {
                 $this->validator->assertDate($command->expires);
             }
+
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Company\InvitationException(

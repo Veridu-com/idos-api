@@ -137,6 +137,20 @@ class UserInit extends AbstractMigration {
             ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
+        $recommendations = $this->table('recommendations');
+        $recommendations
+            ->addColumn('user_id', 'integer', ['null' => false])
+            ->addColumn('creator', 'integer', ['null' => false])
+            ->addColumn('result', 'text', ['null' => false])
+            ->addColumn('passed', 'text', ['null' => false])
+            ->addColumn('failed', 'text', ['null' => false])
+            ->addTimestamps()
+            ->addIndex('user_id', ['unique' => true])
+            ->addIndex('creator')
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addForeignKey('creator', 'services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->create();
+
         $processes = $this->table('processes');
         $processes
             ->addColumn('user_id', 'integer', ['null' => false])

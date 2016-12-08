@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Repository\Metric;
 
-use App\Entity\Metric\System;
 use App\Entity\Identity;
+use App\Entity\Metric\System;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 
@@ -39,6 +39,7 @@ class DBSystem extends AbstractSQLDBRepository implements SystemInterface {
                 $this->tableName = 'metrics_hourly';
                 break;
             case 'daily':
+            case 'weekly':
                 $this->tableName = 'metrics_daily';
                 break;
             default:
@@ -74,15 +75,45 @@ class DBSystem extends AbstractSQLDBRepository implements SystemInterface {
             ->query()
             ->whereIn('credential_public', $keys);
 
+        $metricType = null;
+        $columns    = ['endpoint', 'action'];
+        if (isset($queryParams['interval']) && $queryParams['interval'] === 'weekly') {
+            $metricType = 'weekly';
+            $groupBy    = $this->dbConnection->raw('DATE_TRUNC(\'month\', "created_at")');
+
+            $columns[]  = $this->dbConnection->raw($groupBy . ' AS "created_at"');
+            $columns[]  = $this->dbConnection->raw('COUNT(*) AS "count"');
+            $columns[]  = $this->dbConnection->raw(
+                'json_build_object(
+                \'provider\', "data"->>\'provider\',
+                \'sso\', cast("data"->>\'sso\' as boolean)
+                ) AS "data"'
+            );
+
+            $query = $query->groupBy(
+                'endpoint',
+                $this->dbConnection->raw('"data"->>\'sso\''),
+                $this->dbConnection->raw('"data"->>\'provider\''),
+                'action',
+                $groupBy
+            );
+        } else {
+            $columns[] = 'data';
+            $columns[] = 'count';
+            $columns[] = 'created_at';
+        }
+
         if ($from !== null && $to !== null) {
             $query = $query->whereBetween('created_at', [date('Y-m-d H:i:s', $from), date('Y-m-d H:i:s', $to)]);
-        } else if ($from !== null) {
+        } elseif ($from !== null) {
             $query = $query->where('created_at', '>=', date('Y-m-d H:i:s', $from));
-        } else if ($to !== null) {
+        } elseif ($to !== null) {
             $query = $query->where('created_at', '<=', date('Y-m-d H:i:s', $to));
         }
 
-        $entities = $query->get(['*']);
+        $query = $query->orderBy('created_at', 'asc');
+
+        $entities = $query->get($columns);
         foreach ($entities as $entity) {
             if (! $entity->count) {
                 $entity->count = 1;

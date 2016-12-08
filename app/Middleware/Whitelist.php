@@ -40,15 +40,17 @@ class Whitelist implements MiddlewareInterface {
         callable $next
     ) : ResponseInterface {
         // Token based requests aren't subject to whitelisting
-        if (! empty($request->getAttribute('token')))
+        if (! empty($request->getAttribute('token'))) {
             return $next($request, $response);
+        }
 
         // Retrieves Key data from request
         $key = $request->getAttribute('key');
 
         // Development credentials aren't subject to whitelisting
-        if (! $key->isProduction())
+        if (! $key->isProduction()) {
             return $next($request, $response);
+        }
 
         // Loads whitelist data based on Client Id
         $repositoryFactory   = $this->container->get('repositoryFactory');
@@ -56,8 +58,9 @@ class Whitelist implements MiddlewareInterface {
         $whitelist           = $whitelistRepository->getAll($key->getClientId());
 
         // Checks request ip address
-        if ($whitelist->isListed($request->getIp()))
+        if ($whitelist->isListed($request->getIp())) {
             return $next($request, $response);
+        }
 
         throw new \Exception(sprintf('AccessDenied - You IP Address (%s) has not been whitelisted.' . $request->getIp()));
     }

@@ -21,8 +21,9 @@ class DeletedMultiTest extends AbstractUnit {
             ->getMock();
 
         $serviceHandlers = [];
-        for($i = 0; $i < 5; $i++)
+        for ($i = 0; $i < 5; $i++) {
             $serviceHandlers[] = new ServiceHandler([], $optimus);
+        }
 
         $collection = new Collection($serviceHandlers);
 

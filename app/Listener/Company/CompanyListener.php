@@ -601,26 +601,6 @@ class CompanyListener extends AbstractListener {
         $command
             ->setParameter('companyId', $event->company->id)
             ->setParameter('serviceId', 28)
-            ->setParameter('identity', $event->identity)
-            ->setParameter(
-                'listens',
-                [
-                    'idos:feature.amazon.created',
-                    'idos:feature.dropbox.created',
-                    'idos:feature.facebook.created',
-                    'idos:feature.google.created',
-                    'idos:feature.linkedin.created',
-                    'idos:feature.paypal.created',
-                    'idos:feature.spotify.created',
-                    'idos:feature.twitter.created',
-                    'idos:feature.yahoo.created'
-                ]
-            );
-        $this->commandBus->handle($command);
-
-        $command
-            ->setParameter('companyId', $event->company->id)
-            ->setParameter('serviceId', 29)
             ->setParameter(
                 'listens',
                 [
@@ -632,7 +612,7 @@ class CompanyListener extends AbstractListener {
 
         $command
             ->setParameter('companyId', $event->company->id)
-            ->setParameter('serviceId', 30)
+            ->setParameter('serviceId', 29)
             ->setParameter(
                 'listens',
                 [
@@ -643,7 +623,7 @@ class CompanyListener extends AbstractListener {
 
         $command
             ->setParameter('companyId', $event->company->id)
-            ->setParameter('serviceId', 31)
+            ->setParameter('serviceId', 30)
             ->setParameter(
                 'listens',
                 [

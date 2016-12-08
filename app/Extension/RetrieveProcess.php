@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Extension;
 
 use App\Entity\Profile\Process;
+use App\Exception\NotFound;
 use App\Repository\Profile\ProcessInterface;
 
 /**

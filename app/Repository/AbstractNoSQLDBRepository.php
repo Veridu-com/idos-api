@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\EntityInterface;
+use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Factory\Repository;

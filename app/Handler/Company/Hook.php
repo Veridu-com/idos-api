@@ -134,12 +134,21 @@ class Hook implements HandlerInterface {
      * @return int
      */
     public function handleGetOne(GetOne $command) : HookEntity {
-        $this->validator->assertId($command->hookId);
+        try {
+            $this->validator->assertId($command->hookId);
+            $this->validator->assertCompany($command->company);
+        } catch (ValidationException $e) {
+            throw new Validate\Company\HookException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
         $hook       = $this->repository->find($command->hookId);
 
-        if ($credential->id != $hook->credentialId || $credential->companyId != $command->companyId) {
+        if ($credential->id != $hook->credentialId || $credential->companyId != $command->company->id) {
             throw new NotFound\Company\HookException('Company not found', 404);
         }
 
@@ -166,6 +175,7 @@ class Hook implements HandlerInterface {
             $this->validator->assertTriggerName($command->trigger);
             $this->validator->assertUrl($command->url);
             $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company);
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),
@@ -176,7 +186,7 @@ class Hook implements HandlerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($credential->companyId != $command->companyId) {
+        if ($credential->companyId != $command->company->id) {
             throw new NotFound\Company\HookException('Company not found', 404);
         }
 
@@ -234,6 +244,7 @@ class Hook implements HandlerInterface {
             $this->validator->assertTriggerName($command->trigger);
             $this->validator->assertUrl($command->url);
             $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company);
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),
@@ -244,7 +255,7 @@ class Hook implements HandlerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($credential->companyId != $command->companyId) {
+        if ($credential->companyId != $command->company->id) {
             throw new NotFound\Company\HookException('Company not found', 404);
         }
 
@@ -301,6 +312,7 @@ class Hook implements HandlerInterface {
         try {
             $this->validator->assertId($command->hookId);
             $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company);
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),
@@ -311,7 +323,7 @@ class Hook implements HandlerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($credential->companyId != $command->companyId) {
+        if ($credential->companyId != $command->company->id) {
             throw new NotFound\Company\HookException('Company not found', 404);
         }
 

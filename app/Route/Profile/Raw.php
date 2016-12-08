@@ -18,7 +18,8 @@ use Slim\App;
  *
  * Profiles Raw is the raw data extracted from a Profile. This is what the API reads and extracts information in order
  * to process more complex requests.
- * **Note:** advanced usage only
+ *
+ * **Note:** advanced usage only.
  *
  * @link docs/profiles/sources/raw/overview.md
  * @see \App\Controller\Profile\Raw
@@ -31,6 +32,7 @@ class Raw implements RouteInterface {
         return [
             'raw:listAll',
             'raw:createNew',
+            'raw:deleteAll',
             'raw:upsert'
         ];
     }
@@ -121,6 +123,39 @@ class Raw implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::CREDENTIAL))
             ->setName('raw:createNew');
+    }
+
+    /**
+     * Deletes the raw data.
+     *
+     * Deletes the raw data of the given user.
+     *
+     * @apiEndpoint DELETE /profiles/{userName}/raw
+     * @apiGroup Profile
+     * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/sources/raw/deleteAll.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Raw::deleteAll
+     */
+    private static function deleteAll(App $app, callable $auth, callable $permission) {
+        $app
+            ->delete(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/raw',
+                'App\Controller\Profile\Raw:deleteAll'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::CREDENTIAL))
+            ->setName('raw:deleteAll');
     }
 
     /**

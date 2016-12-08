@@ -46,6 +46,13 @@ class UpdateOne extends AbstractCommand {
     public $enabled;
 
     /**
+     * Widget creator.
+     *
+     * @var \App\Entity\Identity
+     */
+    public $identity;
+
+    /**
      * {@inheritdoc}
      *
      * @return \App\Command\Company\Widget\UpdateOne

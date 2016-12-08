@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Source;
 
-use App\Entity\User;
 use App\Entity\Company\Credential;
+use App\Entity\User;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;
 
@@ -53,9 +53,9 @@ class DeletedMulti extends AbstractEvent {
      * @return void
      */
     public function __construct(User $user, Collection $sources, string $ipAddr, Credential $credential) {
-        $this->user    = $user;
-        $this->sources = $sources;
-        $this->ipAddr  = $ipAddr;
+        $this->user       = $user;
+        $this->sources    = $sources;
+        $this->ipAddr     = $ipAddr;
         $this->credential = $credential;
     }
 }

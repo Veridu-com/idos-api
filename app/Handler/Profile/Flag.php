@@ -12,6 +12,7 @@ use App\Command\Profile\Flag\CreateNew;
 use App\Command\Profile\Flag\DeleteAll;
 use App\Command\Profile\Flag\DeleteOne;
 use App\Entity\Profile\Flag as FlagEntity;
+use App\Exception\AppException;
 use App\Exception\Create;
 use App\Exception\Validate;
 use App\Factory\Event;
@@ -115,6 +116,7 @@ class Flag implements HandlerInterface {
             if (isset($command->attribute)) {
                 $this->validator->assertSlug($command->attribute);
             }
+
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FlagException(

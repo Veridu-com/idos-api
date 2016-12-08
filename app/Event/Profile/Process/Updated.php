@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Process;
 
-use App\Entity\Profile\Process;
 use App\Entity\Company\Credential;
+use App\Entity\Profile\Process;
 use App\Event\AbstractEvent;
 
 /**
@@ -32,13 +32,13 @@ class Updated extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Profile\Process $process
+     * @param \App\Entity\Profile\Process    $process
      * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */
     public function __construct(Process $process, Credential $credential) {
-        $this->process = $process;
+        $this->process    = $process;
         $this->credential = $credential;
     }
 }

@@ -293,7 +293,6 @@ class SettingTest extends AbstractUnit {
         $commandMock->companyId = 1;
 
         $handler->handleUpdateOne($commandMock);
-
     }
 
     public function testHandleUpdateOne() {

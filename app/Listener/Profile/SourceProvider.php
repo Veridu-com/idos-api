@@ -11,6 +11,7 @@ namespace App\Listener\Profile;
 use App\Event\Profile\Source;
 use App\Listener;
 use App\Listener\Manager\QueueServiceTaskListener;
+use App\Listener\Profile\Source\LogoutListener;
 use Interop\Container\ContainerInterface;
 
 class SourceProvider extends Listener\AbstractListenerProvider {
@@ -29,8 +30,8 @@ class SourceProvider extends Listener\AbstractListenerProvider {
         $emitter       = $container->get('eventEmitter');
         $gearmanClient = $container->get('gearmanClient');
 
-        $eventLogger = ($container->get('log'))('Event');
-        $commandBus = $container->get('commandBus');
+        $eventLogger    = ($container->get('log'))('Event');
+        $commandBus     = $container->get('commandBus');
         $commandFactory = $container->get('commandFactory');
 
         $this->events = [
@@ -41,10 +42,24 @@ class SourceProvider extends Listener\AbstractListenerProvider {
             Source\OTP::class => [
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory),
-                new QueueServiceTaskListener($credentialRepository, $serviceHandlerRepository, $eventFactory, $emitter, $gearmanClient)
+                new QueueServiceTaskListener(
+                    $credentialRepository,
+                    $serviceHandlerRepository,
+                    $eventFactory,
+                    $emitter,
+                    $gearmanClient
+                )
             ],
             Source\Created::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                new Listener\Manager\ScrapeEventListener(
+                    $credentialRepository,
+                    $serviceHandlerRepository,
+                    $settingRepository,
+                    $eventFactory,
+                    $emitter,
+                    $gearmanClient
+                ),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Source\Updated::class => [
@@ -53,10 +68,12 @@ class SourceProvider extends Listener\AbstractListenerProvider {
             ],
             Source\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                new LogoutListener($eventLogger, $commandBus, $commandFactory),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Source\DeletedMulti::class => [
                 new Listener\LogFiredEventListener($eventLogger),
+                new LogoutListener($eventLogger, $commandBus, $commandFactory),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];

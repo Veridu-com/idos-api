@@ -36,6 +36,7 @@ class EndpointPermission implements MiddlewareInterface {
     private $permissionRepository;
     private $companyRepository;
     private $permissionType;
+    private $allowedRolesBits;
 
     /**
      * Class constructor.
@@ -74,7 +75,8 @@ class EndpointPermission implements MiddlewareInterface {
          * Tags the response with an "allowed" header,
          * so the GateKeeper middleware lets the response go through
          */
-        $response = $response->withHeader('Allowed', 'true');
+        $response        = $response->withHeader('Allowed', 'true');
+        $identityMembers = [];
 
         // Public Actions do not need permission checking
         if ($this->permissionType === self::PUBLIC_ACTION) {
@@ -106,7 +108,7 @@ class EndpointPermission implements MiddlewareInterface {
         //          - if yep, check if has a register on DBPermission for this company and this routeName
         //          - if yep, check if that company is a parent or is the target company.
         // Remove this in case of keeping PRIVATE_ACTION
-        if ($this->permissionType === self::PRIVATE_ACTION) {
+        if (($this->permissionType & self::PRIVATE_ACTION) === self::PRIVATE_ACTION) {
             return $next($request, $response);
         }
 

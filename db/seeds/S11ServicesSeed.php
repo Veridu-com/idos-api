@@ -46,8 +46,8 @@ class S11ServicesSeed extends AbstractSeed {
                         'idos:source.yahoo.created'
                     ]
                 ),
-                'triggers'      => json_encode(['handler:scrape.completed']),
-                'enabled'       => true,
+                'triggers' => json_encode(['handler:scrape.completed']),
+                'enabled'  => true,
             ],
             [
                 'name'          => 'idOS Feature Extractor',
@@ -70,8 +70,8 @@ class S11ServicesSeed extends AbstractSeed {
                         'idos:raw.yahoo.created'
                     ]
                 ),
-                'triggers'      => json_encode(['handler:feature.completed']),
-                'enabled'       => true,
+                'triggers' => json_encode(['handler:feature.completed']),
+                'enabled'  => true,
             ],
             [
                 'name'          => 'idOS BirthYear Candidates',
@@ -387,8 +387,8 @@ class S11ServicesSeed extends AbstractSeed {
                         'idos:invitation.resend'
                     ]
                 ),
-                'triggers'      => json_encode([]),
-                'enabled'       => true,
+                'triggers' => json_encode([]),
+                'enabled'  => true,
             ],
             [
                 'name'          => 'idOS OTP E-mail Handler',
@@ -396,15 +396,15 @@ class S11ServicesSeed extends AbstractSeed {
                 'company_id'    => 1,
                 'auth_username' => '***REMOVED***',
                 'auth_password' => '***REMOVED***',
-                'public'        => md5('public-30'), // aafc17b2c826b02b9bec9de6e37d5ea9
-                'private'       => md5('private-30'), // d9288a19a2abe8351e12ce90bd761c42
+                'public'        => md5('otp-email'), // 9cafc5da23986acc339e67720027fa76
+                'private'       => md5('private-30'), // 5721e477350583248ac65ba24e1b2494
                 'listens'       => json_encode(
                     [
                         'idos:otp.email.created'
                     ]
                 ),
-                'triggers'      => json_encode([]),
-                'enabled'       => true,
+                'triggers' => json_encode([]),
+                'enabled'  => true,
             ],
             [
                 'name'          => 'idOS ProfilePicture Candidates',
@@ -414,21 +414,21 @@ class S11ServicesSeed extends AbstractSeed {
                 'auth_password' => '***REMOVED***',
                 'public'        => md5('public-31'), // 2f6b1872b112a131afa5f54ef2250dc8
                 'private'       => md5('private-31'), // 81ef395515f1e3261a4ee3f0e3ca48ba
-                'listens'       => json_encode(
-                    [
-                        'idos:feature.amazon.created',
-                        'idos:feature.dropbox.created',
-                        'idos:feature.facebook.created',
-                        'idos:feature.google.created',
-                        'idos:feature.linkedin.created',
-                        'idos:feature.paypal.created',
-                        'idos:feature.spotify.created',
-                        'idos:feature.twitter.created',
-                        'idos:feature.yahoo.created'
-                    ]
-                ),
-                'triggers' => json_encode(['handler:profilepicture-candidates.completed']),
-                'enabled'  => true
+                'listens'       => $featureListens,
+                'triggers'      => json_encode(['handler:profilepicture-candidates.completed']),
+                'enabled'       => true
+            ],
+            [
+                'name'          => 'idOS Widget Handler',
+                'url'           => 'https://widget.idos.io/1.0',
+                'company_id'    => 1,
+                'auth_username' => '***REMOVED***',
+                'auth_password' => '***REMOVED***',
+                'public'        => md5('public-32'), // 2f6b1872b112a131afa5f54ef2250dc8
+                'private'       => md5('private-32'), // 81ef395515f1e3261a4ee3f0e3ca48ba
+                'listens'       => json_encode([]),
+                'triggers'      => json_encode([]),
+                'enabled'       => true
             ]
         ];
 
@@ -436,6 +436,5 @@ class S11ServicesSeed extends AbstractSeed {
         $table
             ->insert($servicesData)
             ->save();
-
     }
 }

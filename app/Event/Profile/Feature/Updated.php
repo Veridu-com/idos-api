@@ -57,7 +57,7 @@ class Updated extends AbstractServiceQueueEvent {
      * @param \App\Entity\User                $user
      * @param \App\Entity\Company\Credential  $credential
      * @param \App\Entity\Profile\Process     $process
-     * @param \App\Entity\Company\Credential $credential
+     * @param \App\Entity\Company\Credential  $credential
      * @param \App\Entity\Profile\Source|null $source
      *
      * @return void
@@ -66,7 +66,7 @@ class Updated extends AbstractServiceQueueEvent {
         $this->feature     = $feature;
         $this->user        = $user;
         $this->process     = $process;
-        $this->credential = $credential;
+        $this->credential  = $credential;
         $this->source      = $source;
     }
 
@@ -74,7 +74,6 @@ class Updated extends AbstractServiceQueueEvent {
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-
         return array_merge(
             [
             'providerName' => $this->source ? $this->source->name : null,

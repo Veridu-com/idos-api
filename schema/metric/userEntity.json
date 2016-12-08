@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.idos.io/1.0/schema/metric/userEntity.json",
+    "title": "User",
+    "type": "object",
+    "properties": {
+        "sources": {
+            "description": "List of sources used for verification",
+            "type": "object"
+        },
+        "data": {
+            "description": "User data (this does not include PII)",
+            "type": "object"
+        },
+        "gates": {
+            "description": "List of gates passed associated with its corresponding attribute",
+            "type": "object"
+        },
+        "flags": {
+            "description": "List of flags raised",
+            "type": "object"
+        },
+        "count": {
+            "description":"Number of users",
+            "type": "integer",
+            "pattern": ""
+        },
+        "created_at": {
+            "description": "Metric's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Metric's last update unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+    ]
+}

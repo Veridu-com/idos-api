@@ -4,21 +4,20 @@ use Phinx\Migration\AbstractMigration;
 
 /**
  * Gates update:.
- * 
+ *
  * Gates needs to be grouped - they have a clear relationship with each other:
- * 		firstNameHigh, firstNameMedium, firstNameLow
- * 		
+ *      firstNameHigh, firstNameMedium, firstNameLow
+ *
  * At this point we could only group gates using regular expression - which is not the best thing to do.
  * Changes:
- * 		1. "gates"."name" should be a FK to "categories" table
- * 		2. "gates" should have a "conficence_level" string column
+ *      1. "gates"."name" should be a FK to "categories" table
+ *      2. "gates" should have a "conficence_level" string column
  *      3. "confidence_level" added to composite index
  */
-class GatesGroupUpdate extends AbstractMigration
-{
+class GatesGroupUpdate extends AbstractMigration {
     public function up() {
         $gates = $this->table('gates');
-        
+
         $this->query('DELETE FROM "gates"');
 
         $gates
@@ -44,7 +43,7 @@ class GatesGroupUpdate extends AbstractMigration
 
     /**
      * Updates the categories table.
-     * 
+     *
      * @return void
      */
     private function updateCategories() {
@@ -53,7 +52,7 @@ class GatesGroupUpdate extends AbstractMigration
         if (! count($categories)) {
             return;
         }
-        
+
         foreach ($categories as $category) {
             $sql = sprintf('UPDATE "%s" SET "name" = \'%s\' where id = \'%s\'', 'categories', $this->slugToCamelCase($category['name']), $category['id']);
             $this->query($sql);
@@ -63,7 +62,7 @@ class GatesGroupUpdate extends AbstractMigration
     /**
      * Transforms a "slugified-string" to a "camelCaseString".
      *
-     * @param string  $slug   The slug
+     * @param string $slug The slug
      *
      * @return string
      */
@@ -76,5 +75,4 @@ class GatesGroupUpdate extends AbstractMigration
 
         return lcfirst($return);
     }
-
 }

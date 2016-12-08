@@ -8,9 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Event\Profile\Candidate;
 
+use App\Entity\Company\Credential;
 use App\Entity\Profile\Candidate;
 use App\Entity\User;
-use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
 
 /**
@@ -39,15 +39,15 @@ class Created extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\User              $user
-     * @param \App\Entity\Profile\Attribute $candidate
+     * @param \App\Entity\User               $user
+     * @param \App\Entity\Profile\Attribute  $candidate
      * @param \App\Entity\Company\Credential $credential
      *
      * @return void
      */
     public function __construct(User $user, Candidate $candidate, Credential $credential) {
-        $this->user      = $user;
-        $this->candidate = $candidate;
+        $this->user       = $user;
+        $this->candidate  = $candidate;
         $this->credential = $credential;
     }
 }

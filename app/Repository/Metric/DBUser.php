@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Repository\Metric;
 
-use App\Entity\Metric\User;
 use App\Entity\Identity;
+use App\Entity\Metric\User;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 
@@ -58,72 +58,72 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
             ->query()
             ->whereIn('credential_public', $keys);
 
-        if ($from !== null && $to !== null) {
-            $query = $query->whereBetween('created_at', [date('Y-m-d H:i:s', $from), date('Y-m-d H:i:s', $to)]);
-        } else if ($from !== null) {
-            $query = $query->where('created_at', '>=', date('Y-m-d H:i:s', $from));
-        } else if ($to !== null) {
-            $query = $query->where('created_at', '<=', date('Y-m-d H:i:s', $to));
-        }
-
         if (isset($queryParams['source'])) {
             $sources = explode(',', $queryParams['source']);
 
-            $query = $query->where(function ($query) use ($sources) {
-                foreach ($sources as $source) {
-                    if (!in_array($source, [
-                        'amazon',
-                        'dropbox',
-                        'facebook',
-                        'foursquare',
-                        'google',
-                        'instagram',
-                        'linkedin',
-                        'paypal',
-                        'spotify',
-                        'twitter',
-                        'yahoo',
-                        'email',
-                        'sms',
-                        'spotafriend',
-                        'tracesmart',
-                        'submitted'
-                    ])
-                    ) {
-                        continue;
-                    }
+            $query = $query->where(
+                function ($query) use ($sources) {
+                    foreach ($sources as $source) {
+                        if (! in_array(
+                            $source, [
+                            'amazon',
+                            'dropbox',
+                            'facebook',
+                            'foursquare',
+                            'google',
+                            'instagram',
+                            'linkedin',
+                            'paypal',
+                            'spotify',
+                            'twitter',
+                            'yahoo',
+                            'email',
+                            'sms',
+                            'spotafriend',
+                            'tracesmart',
+                            'submitted'
+                            ]
+                        )
+                        ) {
+                            continue;
+                        }
 
-                    $query = $query->orWhereRaw('jsonb_exists(sources, \''. $source .'\')');
+                        $query = $query->orWhereRaw('jsonb_exists(sources, \'' . $source . '\')');
+                    }
                 }
-            });
+            );
         }
 
         if (isset($queryParams['gate'])) {
             $gates = explode(',', $queryParams['gate']);
 
-            $query = $query->where(function ($query) use ($gates) {
-                foreach ($gates as $gate) {
-                    if (preg_match('/[^a-zA-Z0-9-_.]/', $gate)) {
-                        continue;
-                    }
+            $query = $query->where(
+                function ($query) use ($gates) {
+                    foreach ($gates as $gate) {
+                        if (preg_match('/[^a-zA-Z0-9-_.]/', $gate)) {
+                            continue;
+                        }
 
-                    $query = $query->orWhereRaw('jsonb_exists(gates, \''. $gate .'\')');
+                        $query = $query->orWhereRaw('jsonb_exists(gates, \'' . $gate . '\')');
+                    }
                 }
-            });
+            );
         }
 
         if (isset($queryParams['flag'])) {
             $flags = explode(',', $queryParams['flag']);
 
-            $query = $query->where(function ($query) use ($flags) {
-                foreach ($flags as $flag) {
-                    if (preg_match('/[^a-zA-Z0-9-_]/', $flag)) {
-                        continue;
-                    }
+            $query = $query->where(
+                function ($query) use ($flags) {
+                    foreach ($flags as $flag) {
+                        if (preg_match('/[^a-zA-Z0-9-_]/', $flag)) {
+                            continue;
+                        }
 
-                    $query = $query->orWhereRaw('jsonb_exists(flags, \''. $flag .'\')');
+                        $query = $query->orWhereRaw('jsonb_exists(flags, \'' . $flag . '\')');
+                    }
                 }
-            });
+            );
         }
 
         foreach ($queryParams as $paramName => $paramValue) {
@@ -132,13 +132,13 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
                     if (substr_compare($paramValue, '>=', 0, 2) === 0) {
                         $value = (int) substr($paramValue, 2);
                         $query = $query->whereRaw('(data->>\'birthYear\')::int >= ?', [$value]);
-                    } else if (substr_compare($paramValue, '<=', 0, 2) === 0) {
+                    } elseif (substr_compare($paramValue, '<=', 0, 2) === 0) {
                         $value = (int) substr($paramValue, 2);
                         $query = $query->whereRaw('(data->>\'birthYear\')::int <= ?', [$value]);
-                    } else if (substr_compare($paramValue, '>', 0, 1) === 0) {
+                    } elseif (substr_compare($paramValue, '>', 0, 1) === 0) {
                         $value = (int) substr($paramValue, 1);
                         $query = $query->whereRaw('(data->>\'birthYear\')::int > ?', [$value]);
-                    } else if (substr_compare($paramValue, '<', 0, 1) === 0) {
+                    } elseif (substr_compare($paramValue, '<', 0, 1) === 0) {
                         $value = (int) substr($paramValue, 1);
                         $query = $query->whereRaw('(data->>\'birthYear\')::int < ?', [$value]);
                     } else {
@@ -148,8 +148,59 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
                     break;
             }
         }
-        
-        $entities = $query->get(['*']);
+
+        $count = 0;
+        if (isset($queryParams['cumulative'])) {
+            $countQuery = clone $query;
+
+            if ($from !== null) {
+                $countQuery = $countQuery->where('created_at', '<', date('Y-m-d H:i:s', $from));
+            }
+
+            $count = $countQuery->first([$this->dbConnection->raw('COUNT(*) AS count')])->count;
+        }
+
+        $metricType = null;
+        $columns    = ['sources', 'data', 'gates', 'flags'];
+        if (isset($queryParams['interval'])) {
+            switch ($queryParams['interval']) {
+                case 'hourly':
+                    $metricType = 'hourly';
+                    $groupBy    = $this->dbConnection->raw('DATE_TRUNC(\'hour\', "created_at")');
+                    $columns[]  = $this->dbConnection->raw($groupBy . ' AS "created_at"');
+                    $columns[]  = $this->dbConnection->raw('COUNT(*) AS "count"');
+                    $query      = $query->groupBy('data', 'flags', 'gates', 'sources', $groupBy);
+                    break;
+
+                case 'daily':
+                    $metricType = 'daily';
+                    $groupBy    = $this->dbConnection->raw('DATE_TRUNC(\'day\', "created_at")');
+                    $columns[]  = $this->dbConnection->raw($groupBy . ' AS "created_at"');
+                    $columns[]  = $this->dbConnection->raw('COUNT(*) AS "count"');
+                    $query      = $query->groupBy('data', 'flags', 'gates', 'sources', $groupBy);
+                    break;
+
+                default:
+            }
+        } else {
+            $columns[] = $this->dbConnection->raw('1 as "count"');
+            $columns[] = 'created_at';
+        }
+
+        if ($from !== null && $to !== null) {
+            $query = $query->whereBetween('created_at', [date('Y-m-d H:i:s', $from), date('Y-m-d H:i:s', $to)]);
+        } elseif ($from !== null) {
+            $query = $query->where('created_at', '>=', date('Y-m-d H:i:s', $from));
+        } elseif ($to !== null) {
+            $query = $query->where('created_at', '<=', date('Y-m-d H:i:s', $to));
+        }
+
+        $query = $query->orderBy('created_at', 'asc');
+
+        $entities = $query->get($columns);
+        foreach ($entities as $entity) {
+            $entity->count = ($count += $entity->count);
+        }
 
         return $entities;
     }

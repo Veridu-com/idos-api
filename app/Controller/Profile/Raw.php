@@ -10,6 +10,7 @@ namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
 use App\Entity\User;
+use App\Exception\AppException;
 use App\Factory\Command;
 use App\Repository\Profile\RawInterface;
 use App\Repository\Profile\SourceInterface;
@@ -260,7 +261,7 @@ class Raw implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user   = $request->getAttribute('targetUser');
+        $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
 
         $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
@@ -291,41 +292,40 @@ class Raw implements ControllerInterface {
     }
 
     /**
-     * Deletes all raw data from a given source.
+     * Deletes the raw data of a user.
      *
-     * @apiEndpointResponse 200 schema/raw/deleteAll.json
+     * @apiEndpointResponse 200 int
+     * @apiEndpointParam url string source source Source name
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\DBSource::findOne
-     * @see \App\Handler\Raw::handlerDeleteAll
-     * @see \App\Exception\AppException
+     * @see \App\Handler\Raw::handleDeleteAll
+     *
+     * @throws \App\Exception\AppException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user   = $request->getAttribute('targetUser');
-        $credential = $request->getAttribute('credential');
+        $user        = $request->getAttribute('targetUser');
+        $queryParams = $request->getQueryParams();
 
-        $source = $this->sourceRepository->findOne((int) $request->getAttribute('decodedSourceId'), $user->id);
-
-        if ($source->userId !== $user->id) {
-            throw new AppException('Source not found');
-        }
+        $source = $this->sourceRepository->findOne($sourceId, $user->id);
 
         $command = $this->commandFactory->create('Profile\\Raw\\DeleteAll');
         $command
-            ->setParameter('credential', $credential)
+            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('source', $source);
+            ->setParameter('queryParams', $queryParams);
 
         $body = [
+            'status'  => true,
             'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
+            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

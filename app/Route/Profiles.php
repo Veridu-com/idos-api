@@ -14,11 +14,12 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Profile routing definitions.
+ * Profile.
  *
- * Add Profile description here.
- *
- * @apiDisabled
+ * The User Profile is all of the data the API has collated from the Raw Data of one User.
+ * It contains all of the data points about this User (eg. Attributes, Candidates, Features, Gates,
+ * Flags, etc.) and all of their results. This is used to retrieve the complete information about one User
+ * once it has been processed by the API.
  *
  * @link docs/profiles/overview.md
  * @see \App\Controller\Profiles
@@ -29,7 +30,6 @@ class Profiles implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'profile:listAll',
             'profile:getOne'
         ];
     }
@@ -59,6 +59,9 @@ class Profiles implements RouteInterface {
                     ->get('repositoryFactory')
                     ->create('Profile\\Gate'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\\Recommendation'),
+                $container
                     ->get('commandBus'),
                 $container
                     ->get('commandFactory')
@@ -69,40 +72,7 @@ class Profiles implements RouteInterface {
         $authMiddleware       = $container->get('authMiddleware');
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
-        self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
-    }
-
-    /**
-     * List all Profiles.
-     *
-     * Retrieve a complete list of profiles that are visible to the requesting company.
-     *
-     * @apiEndpoint GET /profiles
-     * @apiGroup Profile
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/profiles/listAll.md
-     * @see \App\Middleware\Auth::__invoke
-     * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profiles::listAll
-     */
-    private static function listAll(App $app, callable $auth, callable $permission) {
-        $app
-            ->get(
-                '/profiles',
-                'App\Controller\Profiles:listAll'
-            )
-            ->add($permission(EndpointPermission::SELF_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
-            ->setName('profile:listAll');
     }
 
     /**
@@ -110,10 +80,11 @@ class Profiles implements RouteInterface {
      *
      * Retrieve all profile candidates, attributes, gates and flags.
      *
-     * @apiEndpoint GET /profiles
-     * @apiGroup Company
+     * @apiEndpoint GET /profiles/{userName}
+     * @apiGroup Profile
      * @apiAuth header token UserToken eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      * @apiAuth query token userToken eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -124,7 +95,7 @@ class Profiles implements RouteInterface {
      * @link docs/profiles/listAll.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profiles::listAll
+     * @see \App\Controller\Profiles::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app

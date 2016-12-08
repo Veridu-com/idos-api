@@ -8,7 +8,7 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Feature response payload",
+            "description": "Gate response payload",
             "type": "object",
             "$ref": "gateEntity.json"
         },

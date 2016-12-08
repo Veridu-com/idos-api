@@ -14,22 +14,26 @@ use Interop\Container\ContainerInterface;
 
 class HookProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
+        $eventLogger    = ($container->get('log'))('Event');
+        $commandBus     = $container->get('commandBus');
+        $commandFactory = $container->get('commandFactory');
+
         $this->events = [
             Hook\Created::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Hook\Updated::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Hook\Deleted::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Hook\DeletedMulti::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];
     }

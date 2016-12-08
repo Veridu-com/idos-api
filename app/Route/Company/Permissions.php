@@ -19,7 +19,8 @@ use Slim\App;
  * Permissions.
  *
  * Permissions control the level of access a Company has to specific features or information within the API.
- * **Note:** advanced usage only
+ *
+ * **Note:** advanced usage only.
  *
  * @apiDisabled
  *

@@ -44,6 +44,12 @@ class OTP extends AbstractServiceQueueEvent {
      */
     public $company;
     /**
+     * Event related Process.
+     *
+     * @var \App\Entity\Profile\Process
+     */
+    public $process;
+    /**
      * Event related IP Address.
      *
      * @var string
@@ -91,11 +97,12 @@ class OTP extends AbstractServiceQueueEvent {
         $sourceArray      = $source->serialize();
         $this->sourceTags = json_decode($sourceArray['tags']);
 
-        if(property_exists($this->sourceTags, 'email')) {
+        if (property_exists($this->sourceTags, 'email')) {
             $this->type   = 'email';
             $this->target = $this->sourceTags->email;
         }
-        if(property_exists($this->sourceTags, 'phone')) {
+
+        if (property_exists($this->sourceTags, 'phone')) {
             $this->type   = 'phone';
             $this->target = $this->sourceTags->phone;
         }
@@ -107,13 +114,13 @@ class OTP extends AbstractServiceQueueEvent {
     public function getServiceHandlerPayload(array $merge = []) : array {
         return array_merge(
             [
-                'target'        => $this->target,
-                'password'      => $this->sourceTags->otp_code,
-                'publicKey'     => $this->credential->public,
-                'sourceId'      => $this->source->getEncodedId(),
-                'processId'     => $this->process->getEncodedId(),
-                'company'       => $this->company->toArray(),
-                'userName'      => $this->user->username
+                'target'    => $this->target,
+                'password'  => $this->sourceTags->otp_code,
+                'publicKey' => $this->credential->public,
+                'sourceId'  => $this->source->getEncodedId(),
+                'processId' => $this->process->getEncodedId(),
+                'company'   => $this->company->toArray(),
+                'userName'  => $this->user->username
             ], $merge
         );
     }
@@ -121,8 +128,7 @@ class OTP extends AbstractServiceQueueEvent {
     /**
      * {inheritdoc}.
      */
-    public function __toString()
-    {
+    public function __toString() {
         return sprintf('idos:otp.%s.created', $this->type);
     }
 }

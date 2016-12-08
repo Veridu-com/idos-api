@@ -35,9 +35,9 @@ class Source extends AbstractEntity {
      * Gets the tags attribute.
      * Filters all "otp-*" tags.
      *
-     * @param null|stdClass $tags The tags
+     * @param null|\stdClass $tags The tags
      *
-     * @return null|stdClass The modified tags attribute.
+     * @return null|\stdClass The modified tags attribute.
      */
     public function getTagsAttribute($tags) {
         $otpAllowed = ['otp_verified', 'otp_voided'];
@@ -55,5 +55,21 @@ class Source extends AbstractEntity {
         }
 
         return $tags;
+    }
+
+    /**
+     * Sets the tag attribute.
+     *
+     * @param string $key   The key
+     * @param mixed  $value The value
+     *
+     * @return self
+     */
+    public function setTag(string $key, $value) : self {
+        $tags                     = $this->tags;
+        $tags->$key               = $value;
+        $this->attributes['tags'] = json_encode($tags);
+
+        return $this;
     }
 }

@@ -8,16 +8,16 @@ declare(strict_types = 1);
 
 namespace App\Handler;
 
+use App\Command\Metric\CreateNew;
 use App\Command\Metric\ListAllSystem;
 use App\Command\Metric\ListAllUser;
-use App\Command\Metric\CreateNew;
 use App\Exception\Validate;
 use App\Repository\Metric\SystemInterface;
 use App\Repository\Metric\UserInterface;
-use App\Entity\Metric as MetricEntity;
 use App\Validator\Metric as MetricValidator;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Metrics commands.
@@ -72,10 +72,10 @@ class Metric implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Metric\SystemInterface     $systemMetricsRepository
-     * @param \App\Repository\Metric\UserInterface       $userMetricsRepository
-     * @param \App\Validator\Metric                      $validator
-     * @param \GearmanClient                             $gearmanClient
+     * @param \App\Repository\Metric\SystemInterface $systemMetricsRepository
+     * @param \App\Repository\Metric\UserInterface   $userMetricsRepository
+     * @param \App\Validator\Metric                  $validator
+     * @param \GearmanClient                         $gearmanClient
      *
      * @return void
      */
@@ -117,6 +117,7 @@ class Metric implements HandlerInterface {
             switch ($command->queryParams['interval']) {
                 case 'hourly':
                 case 'daily':
+                case 'weekly':
                     $metricType = $command->queryParams['interval'];
                     break;
 
@@ -125,7 +126,7 @@ class Metric implements HandlerInterface {
         }
 
         $from = isset($command->queryParams['from']) ? (int) $command->queryParams['from'] : null;
-        $to = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
+        $to   = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
 
         $this->systemMetricsRepository->prepare($metricType);
         $entities = $this->systemMetricsRepository->getByIdentityAndDateInterval($command->identity, $from, $to, $command->queryParams);
@@ -147,7 +148,7 @@ class Metric implements HandlerInterface {
         $this->validator->assertIdentity($command->identity);
 
         $from = isset($command->queryParams['from']) ? (int) $command->queryParams['from'] : null;
-        $to = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
+        $to   = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
 
         $entities = $this->userMetricsRepository->getByIdentityAndDateInterval($command->identity, $from, $to, $command->queryParams);
 
@@ -167,7 +168,7 @@ class Metric implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : bool {
         try {
             $this->validator->assertEvent($command->event);
-        } catch (ValidateException $e) {
+        } catch (ValidationException $e) {
             throw new Validate\MetricException(
                 $e->getFullMessage(),
                 400,
@@ -176,8 +177,8 @@ class Metric implements HandlerInterface {
         }
 
         $eventClass = explode('\\', substr(get_class($command->event), strlen('App\\Event\\')));
-        $action = strtolower(array_pop($eventClass));
-        $endpoint = strtolower($eventClass[0]);
+        $action     = strtolower(array_pop($eventClass));
+        $endpoint   = strtolower($eventClass[0]);
         if (count($eventClass) > 1) {
             $endpoint .= ':' . strtolower($eventClass[1]);
         }
@@ -188,7 +189,7 @@ class Metric implements HandlerInterface {
         }
 
         if ($action === 'deletedmulti') {
-            $action = 'deleted';
+            $action   = 'deleted';
             $entities = $command->event->{$entityName . 's'};
         } else {
             $entities = [$command->event->$entityName];
@@ -196,7 +197,7 @@ class Metric implements HandlerInterface {
 
         $payload = [
             'endpoint' => $endpoint,
-            'action' => $action,
+            'action'   => $action,
             'created'  => time()
         ];
 
@@ -206,22 +207,21 @@ class Metric implements HandlerInterface {
                 case 'profile:attribute':
                 case 'profile:gate':
                 case 'profile:flag':
-
-                    $credential = $command->event->credential->toArray();
+                    $credential       = $command->event->credential->toArray();
                     $credential['id'] = $command->event->credential->id;
 
-                    $payload['user_id'] = $entity->user_id;
-                    $payload['credential'] = $credential;
-                    $payload[$entityName] = $entity->toArray();
+                    $payload['user_id']         = $entity->user_id;
+                    $payload['credential']      = $credential;
+                    $payload[$entityName]       = $entity->toArray();
                     $payload[$entityName]['id'] = $entity->id;
-                break;
+                    break;
 
                 default:
                     return false;
             }
 
             $this->gearmanClient->doBackground(
-                sprintf('idos-metrics-%s', str_replace('.', '', __VERSION__)),
+                'metrics',
                 json_encode($payload)
             );
         }

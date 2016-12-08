@@ -39,6 +39,6 @@ class Updated extends AbstractEvent {
      */
     public function __construct(Credential $credential, Identity $identity) {
         $this->credential = $credential;
-        $this->identity = $identity;
+        $this->identity   = $identity;
     }
 }

@@ -9,10 +9,12 @@ declare(strict_types = 1);
 namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
+use App\Exception\NotFound;
 use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\FlagInterface;
 use App\Repository\Profile\GateInterface;
+use App\Repository\Profile\RecommendationInterface;
 use App\Repository\Profile\ReviewInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Repository\Profile\TagInterface;
@@ -34,39 +36,45 @@ class Profiles implements ControllerInterface {
     /**
      * SourceRepository instance.
      *
-     * @var \App\Repository\SourceInterface
+     * @var \App\Repository\Profile\SourceInterface
      */
     private $sourceRepository;
     /**
      * TagRepository instance.
      *
-     * @var \App\Repository\TagInterface
+     * @var \App\Repository\Profile\TagInterface
      */
     private $tagRepository;
     /**
      * ReviewRepository instance.
      *
-     * @var \App\Repository\ReviewInterface
+     * @var \App\Repository\Profile\ReviewInterface
      */
     private $reviewRepository;
     /**
      * FlagRepository instance.
      *
-     * @var \App\Repository\FlagInterface
+     * @var \App\Repository\Profile\FlagInterface
      */
     private $flagRepository;
     /**
      * GateRepository instance.
      *
-     * @var \App\Repository\GateInterface
+     * @var \App\Repository\Profile\GateInterface
      */
     private $gateRepository;
     /**
      * AttributeRepository instance.
      *
-     * @var \App\Repository\AttributeInterface
+     * @var \App\Repository\Profile\AttributeInterface
      */
     private $attributeRepository;
+    /**
+     * RecommendationRepository instance.
+     *
+     * @var \App\Repository\Profile\RecommendationInterface
+     */
+    private $recommendationRepository;
     /**
      * Command Bus instance.
      *
@@ -83,15 +91,16 @@ class Profiles implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\UserInterface      $repository
-     * @param \App\Repository\SourceInterface    $sourceRepository
-     * @param \App\Repository\TagInterface       $tagRepository
-     * @param \App\Repository\ReviewInterface    $reviewRepository
-     * @param \App\Repository\FlagInterface      $flagRepository
-     * @param \App\Repository\GateInterface      $gateRepository
-     * @param \App\Repository\AttributeInterface $attributeRepository
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param \App\Factory\Command               $commandFactory
+     * @param \App\Repository\UserInterface                   $repository
+     * @param \App\Repository\Profile\SourceInterface         $sourceRepository
+     * @param \App\Repository\Profile\TagInterface            $tagRepository
+     * @param \App\Repository\Profile\ReviewInterface         $reviewRepository
+     * @param \App\Repository\Profile\FlagInterface           $flagRepository
+     * @param \App\Repository\Profile\GateInterface           $gateRepository
+     * @param \App\Repository\Profile\AttributeInterface      $attributeRepository
+     * @param \App\Repository\Profile\RecommendationInterface $recommendationRepository
+     * @param \League\Tactician\CommandBus                    $commandBus
+     * @param \App\Factory\Command                            $commandFactory
      *
      * @return void
      */
@@ -103,18 +112,20 @@ class Profiles implements ControllerInterface {
         FlagInterface $flagRepository,
         GateInterface $gateRepository,
         AttributeInterface $attributeRepository,
+        RecommendationInterface $recommendationRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository          = $repository;
-        $this->sourceRepository    = $sourceRepository;
-        $this->tagRepository       = $tagRepository;
-        $this->reviewRepository    = $reviewRepository;
-        $this->flagRepository      = $flagRepository;
-        $this->gateRepository      = $gateRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->commandBus          = $commandBus;
-        $this->commandFactory      = $commandFactory;
+        $this->repository                = $repository;
+        $this->sourceRepository          = $sourceRepository;
+        $this->tagRepository             = $tagRepository;
+        $this->reviewRepository          = $reviewRepository;
+        $this->flagRepository            = $flagRepository;
+        $this->gateRepository            = $gateRepository;
+        $this->attributeRepository       = $attributeRepository;
+        $this->recommendationRepository  = $recommendationRepository;
+        $this->commandBus                = $commandBus;
+        $this->commandFactory            = $commandFactory;
     }
 
     /**
@@ -134,39 +145,26 @@ class Profiles implements ControllerInterface {
         $profiles = $this->repository->findByCompanyId($company->id);
 
         foreach ($profiles as $profile) {
-            $sources    = $this->sourceRepository->getByUserId($profile->id);
-            $tags       = $this->tagRepository->getByUserId($profile->id);
-            $reviews    = $this->reviewRepository->getByUserId($profile->id);
-            $flags      = $this->flagRepository->getByUserId($profile->id);
-            $gates      = $this->gateRepository->getByUserId($profile->id);
-            $attributes = $this->attributeRepository->findByUserId($profile->id);
+            $sources        = $this->sourceRepository->getByUserId($profile->id);
+            $tags           = $this->tagRepository->getByUserId($profile->id);
+            $flags          = $this->flagRepository->getByUserId($profile->id);
+            $gates          = $this->gateRepository->getByUserId($profile->id);
+            $attributes     = $this->attributeRepository->findByUserId($profile->id);
 
-            foreach ($gates as $gate) {
-                $gateReview = null;
-                foreach ($reviews as $review) {
-                    if ($review->gateId === $gate->id) {
-                        $gateReview = $review->toArray();
-                        break;
-                    }
-                }
-
-                $gate->review = $gateReview;
-            }
-
-            $profileSources = [];
-            foreach ($sources as $source) {
-                if (! in_array($source->name, $profileSources)) {
-                    $profileSources[] = $source->name;
-                }
+            try {
+                $recommendation = $this->recommendationRepository->findOne($profile->id)->toArray();
+            } catch (NotFound $e) {
+                $recommendation = null;
             }
 
             $data[] = array_merge(
                 $profile->toArray(),
-                ['sources'     => $profileSources],
-                ['tags'        => $tags->toArray()],
-                ['flags'       => $flags->toArray()],
-                ['gates'       => $gates->toArray()],
-                ['attributes'  => $attributes->toArray()]
+                ['sources'        => $sources->toArray()],
+                ['tags'           => $tags->toArray()],
+                ['flags'          => $flags->toArray()],
+                ['gates'          => $gates->toArray()],
+                ['attributes'     => $attributes->toArray()],
+                ['recommendation' => $recommendation]
             );
         }
 
@@ -212,6 +210,12 @@ class Profiles implements ControllerInterface {
         $flags            = $this->flagRepository->getByUserId($profile->id);
         $gates            = $this->gateRepository->getByUserId($profile->id);
 
+        try {
+            $recommendation = $this->recommendationRepository->findOne($profile->id)->toArray();
+        } catch (NotFound $e) {
+            $recommendation = null;
+        }
+
         foreach ($gates as $gate) {
             $gateReview = null;
             foreach ($reviews as $review) {
@@ -224,20 +228,14 @@ class Profiles implements ControllerInterface {
             $gate->review = $gateReview;
         }
 
-        $profileSources = [];
-        foreach ($sources as $source) {
-            if (! in_array($source->name, $profileSources)) {
-                $profileSources[] = $source->name;
-            }
-        }
-
         $data = array_merge(
             $profile->toArray(),
-            ['attributes'  => $attributes->toArray()],
-            ['sources'     => $profileSources],
-            ['tags'        => $tags->toArray()],
-            ['flags'       => $flags->toArray()],
-            ['gates'       => $gates->toArray()]
+            ['attributes'     => $attributes->toArray()],
+            ['sources'        => $sources->toArray()],
+            ['tags'           => $tags->toArray()],
+            ['flags'          => $flags->toArray()],
+            ['gates'          => $gates->toArray()],
+            ['recommendation' => $recommendation]
         );
 
         $body = [
@@ -251,7 +249,6 @@ class Profiles implements ControllerInterface {
             ->setParameter('body', $body);
 
         return $this->commandBus->handle($command);
-
     }
 
     /**
@@ -267,7 +264,7 @@ class Profiles implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $userId = $request->getAttribute('decodedUserId');
+        $userId   = $request->getAttribute('decodedUserId');
         $identity = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Profile\\DeleteOne');

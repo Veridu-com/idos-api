@@ -14,69 +14,53 @@ use Interop\Container\ContainerInterface;
 
 class CandidateProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
+        $repositoryFactory   = $container->get('repositoryFactory');
+        $candidateRepository = $repositoryFactory->create('Profile\Candidate');
+        $featureRepository   = $repositoryFactory->create('Profile\Feature');
+
+        $eventLogger    = ($container->get('log'))('Event');
+        $commandBus     = $container->get('commandBus');
+        $commandFactory = $container->get('commandFactory');
+
         $this->events = [
             Candidate\Created::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory')),
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory),
                 new Listener\Profile\AttributeListener(
-                    $container
-                        ->get('repositoryFactory')
-                        ->create('Profile\\Candidate'),
-                    $container
-                        ->get('repositoryFactory')
-                        ->create('Profile\\Feature'),
-                    $container
-                        ->get('commandBus'),
-                    $container
-                        ->get('commandFactory')
+                    $candidateRepository,
+                    $featureRepository,
+                    $commandBus,
+                    $commandFactory
                 )
             ],
             Candidate\Updated::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory')),
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory),
                 new Listener\Profile\AttributeListener(
-                    $container
-                        ->get('repositoryFactory')
-                        ->create('Profile\\Candidate'),
-                    $container
-                        ->get('repositoryFactory')
-                        ->create('Profile\\Feature'),
-                    $container
-                        ->get('commandBus'),
-                    $container
-                        ->get('commandFactory')
+                    $candidateRepository,
+                    $featureRepository,
+                    $commandBus,
+                    $commandFactory
                 )
             ],
             Candidate\Deleted::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory')),
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory),
                 new Listener\Profile\AttributeListener(
-                    $container
-                        ->get('repositoryFactory')
-                        ->create('Profile\\Candidate'),
-                    $container
-                        ->get('repositoryFactory')
-                        ->create('Profile\\Feature'),
-                    $container
-                        ->get('commandBus'),
-                    $container
-                        ->get('commandFactory')
+                    $candidateRepository,
+                    $featureRepository,
+                    $commandBus,
+                    $commandFactory
                 )
             ],
             Candidate\DeletedMulti::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory')),
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory),
                 new Listener\Profile\AttributeListener(
-                    $container
-                        ->get('repositoryFactory')
-                        ->create('Profile\\Candidate'),
-                    $container
-                        ->get('repositoryFactory')
-                        ->create('Profile\\Feature'),
-                    $container
-                        ->get('commandBus'),
-                    $container
-                        ->get('commandFactory')
+                    $candidateRepository,
+                    $featureRepository,
+                    $commandBus,
+                    $commandFactory
                 )
             ]
         ];

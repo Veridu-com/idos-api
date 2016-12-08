@@ -180,7 +180,7 @@ class Widgets implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $widgetHash       = $request->getAttribute('widgetHash');
-        $identity = $request->getAttribute('identity');
+        $identity         = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Widget\\UpdateOne');
         $command

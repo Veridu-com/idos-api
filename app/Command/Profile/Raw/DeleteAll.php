@@ -21,17 +21,11 @@ class DeleteAll extends AbstractCommand {
      */
     public $user;
     /**
-     * Raw's Source.
+     * Query parameters.
      *
-     * @var \App\Entity\Profile\Source
+     * @var array
      */
-    public $source;
-    /**
-     * Credential.
-     *
-     * @var \App\Entity\Company\Credential
-     */
-    public $credential;
+    public $queryParams;
 
     /**
      * {@inheritdoc}
@@ -39,10 +33,6 @@ class DeleteAll extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
-        }
-
-        if (isset($parameters['source'])) {
-            $this->source = $parameters['source'];
         }
 
         return $this;

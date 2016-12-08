@@ -149,8 +149,8 @@ class Flags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Flag\\CreateNew');
@@ -190,9 +190,9 @@ class Flags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
-        $slug    = $request->getAttribute('flagSlug');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
+        $slug       = $request->getAttribute('flagSlug');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Flag\\DeleteOne');
@@ -229,8 +229,8 @@ class Flags implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $user       = $request->getAttribute('targetUser');
+        $service    = $request->getAttribute('service');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Flag\\DeleteAll');

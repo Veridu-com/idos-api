@@ -32,12 +32,6 @@ class ListAll extends AbstractCommand {
      * @var bool
      */
     public $hasParentAccess;
-    /**
-     * Identity.
-     *
-     * @var \App\Entity\Identity
-     */
-    public $identity;
 
     /**
      * {@inheritdoc}
@@ -45,7 +39,6 @@ class ListAll extends AbstractCommand {
      * @return \App\Command\Company\Setting\ListAll
      */
     public function setParameters(array $parameters) : self {
-
         return $this;
     }
 }

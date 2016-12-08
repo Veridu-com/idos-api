@@ -40,6 +40,18 @@ class Source implements HandlerInterface {
      */
     private $repository;
     /**
+     * Process Repository instance.
+     *
+     * @var \App\Repository\Profile\ProcessInterface
+     */
+    private $processRepository;
+    /**
+     * Company Repository instance.
+     *
+     * @var \App\Repository\CompanyInterface
+     */
+    private $companyRepository;
+    /**
      * Source Validator instance.
      *
      * @var \App\Validator\Profile\Source
@@ -132,6 +144,7 @@ class Source implements HandlerInterface {
             foreach ($command->tags as $key => $value) {
                 $this->validator->assertString($key);
             }
+
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
@@ -148,7 +161,7 @@ class Source implements HandlerInterface {
         if (isset($command->tags['otp_check'])) {
             $this->validator->validateFlag($command->tags['otp_check']);
 
-            if((! isset($command->tags['email'])) && (! isset($command->tags['phone']))) {
+            if ((! isset($command->tags['email'])) && (! isset($command->tags['phone']))) {
                 throw new ValidationException('OTP Checks must have "phone" or "email" fields.', 400);
             }
 
@@ -271,6 +284,7 @@ class Source implements HandlerInterface {
             foreach ($command->tags as $key => $value) {
                 $this->validator->assertString($key);
             }
+
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
@@ -294,7 +308,7 @@ class Source implements HandlerInterface {
             try {
                 $this->validator->assertOTPCode($command->otpCode);
                 $this->validator->assertCredential($command->credential);
-        } catch (ValidationException $e) {
+            } catch (ValidationException $e) {
                 throw new Validate\Profile\SourceException(
                     $e->getFullMessage(),
                     400,
@@ -394,12 +408,6 @@ class Source implements HandlerInterface {
             );
         }
 
-        $rowsAffected = $this->repository->delete($command->source->id);
-
-        if (! $rowsAffected) {
-            throw new NotFound\Profile\SourceException('No sources found for deletion', 404);
-        }
-
         $this->emitter->emit(
             $this->eventFactory->create(
                 'Profile\\Source\\Deleted',
@@ -409,6 +417,12 @@ class Source implements HandlerInterface {
                 $command->credential
             )
         );
+
+        $rowsAffected = $this->repository->delete($command->source->id);
+
+        if (! $rowsAffected) {
+            throw new NotFound\Profile\SourceException('No sources found for deletion', 404);
+        }
     }
 
     /**

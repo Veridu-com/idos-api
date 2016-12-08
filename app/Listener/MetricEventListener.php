@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Listener;
 
-use League\Event\EventInterface;
 use App\Factory\Command;
+use League\Event\EventInterface;
 use League\Tactician\CommandBus;
 
 class MetricEventListener extends AbstractListener {
@@ -26,15 +26,30 @@ class MetricEventListener extends AbstractListener {
      */
     private $commandFactory;
 
+    /**
+     * Class constructor.
+     *
+     * @param \League\Tactician\CommandBus $commandBus
+     * @param \App\Factory\Command         $commandFactory
+     *
+     * @return void
+     */
     public function __construct(CommandBus $commandBus, Command $commandFactory) {
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }
 
+    /**
+     * Handles the event.
+     *
+     * @param \League\Event\EventInterface $event
+     *
+     * @return void
+     */
     public function handle(EventInterface $event) {
-        $createMetricCommand = $this->commandFactory->create('Metric\CreateNew');
-        $createMetricCommand->setParameter('event', $event);
+        $command = $this->commandFactory->create('Metric\CreateNew');
+        $command->setParameter('event', $event);
 
-        $this->commandBus->handle($createMetricCommand);
+        $this->commandBus->handle($command);
     }
 }

@@ -18,7 +18,8 @@ use Slim\App;
  * Profile Tasks.
  *
  * A Profile Task is a request a Service makes to the API to extract and provide specific information from the Raw data.
- * **Note:** advanced usage only
+ *
+ * **Note:** advanced usage only.
  *
  * @link docs/profile/tasks/overview.md
  * @see \App\Controller\Profile\Tasks

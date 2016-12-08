@@ -51,9 +51,9 @@ class Created extends AbstractServiceQueueEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\User   $user
-     * @param \App\Entity\Source $source
-     * @param string             $ipAddr
+     * @param \App\Entity\User               $user
+     * @param \App\Entity\Source             $source
+     * @param string                         $ipAddr
      * @param \App\Entity\Company\Credential $credential
      *
      * @return void
@@ -75,12 +75,12 @@ class Created extends AbstractServiceQueueEvent {
 
         return array_merge(
             [
-            'accessToken'   => $this->source->tags->access_token,
-            'providerName'  => $this->source->name,
-            'publicKey'     => $this->credential->public,
-            'sourceId'      => $this->source->getEncodedId(),
-            'processId'     => $this->process->getEncodedId(),
-            'userName'      => $this->user->username
+            'accessToken'  => $this->source->tags->access_token,
+            'providerName' => $this->source->name,
+            'publicKey'    => $this->credential->public,
+            'sourceId'     => $this->source->getEncodedId(),
+            'processId'    => $this->process->getEncodedId(),
+            'userName'     => $this->user->username
             ], $merge
         );
     }

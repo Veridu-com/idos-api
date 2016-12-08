@@ -14,18 +14,22 @@ use Interop\Container\ContainerInterface;
 
 class FlagProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
+        $eventLogger    = ($container->get('log'))('Event');
+        $commandBus     = $container->get('commandBus');
+        $commandFactory = $container->get('commandFactory');
+
         $this->events = [
             Flag\Created::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Flag\Deleted::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Flag\DeletedMulti::class => [
-                new Listener\LogFiredEventListener(($container->get('log'))('Event')),
-                new Listener\MetricEventListener($container->get('commandBus'), $container->get('commandFactory'))
+                new Listener\LogFiredEventListener($eventLogger),
+                new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];
     }

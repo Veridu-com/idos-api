@@ -27,11 +27,11 @@ class DeleteOne extends AbstractCommand {
      */
     public $credentialPubKey;
     /**
-     * Target Company's id.
+     * Target Company.
      *
-     * @var int
+     * @var \App\Entity\Company
      */
-    public $companyId;
+    public $company;
     /**
      * Identity.
      *
@@ -43,7 +43,6 @@ class DeleteOne extends AbstractCommand {
      * {@inheritdoc}
      */
     public function setParameters(array $parameters) : self {
-
         return $this;
     }
 }

@@ -16,6 +16,19 @@ use App\Entity\User;
  */
 abstract class AbstractServiceQueueEvent extends AbstractEvent implements ServiceQueueEventInterface {
     /**
+     * Credential entity.
+     *
+     * @var \App\Entity\Company\Credential
+     */
+    private $credential;
+    /**
+     * User entity.
+     *
+     * @var \App\Entity\User
+     */
+    private $user;
+
+    /**
      * Retrieves the event related credential.
      *
      * @return \App\Entity\Company\Credential Credential entity

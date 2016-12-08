@@ -40,14 +40,14 @@ class Created extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\Company\Setting $setting
-     * @param \App\Entity\Company $company
-     * @param \App\Entity\Identity $identity
+     * @param \App\Entity\Company         $company
+     * @param \App\Entity\Identity        $identity
      *
      * @return void
      */
     public function __construct(Setting $setting, Company $company, Identity $identity) {
-        $this->setting = $setting;
-        $this->company = $company;
+        $this->setting  = $setting;
+        $this->company  = $company;
         $this->identity = $identity;
     }
 }

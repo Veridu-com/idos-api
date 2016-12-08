@@ -22,8 +22,7 @@ use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
 
-/**e/Tags.php
-    modified:   app/Route/Tasks.php
+/*
  * Handles Permission commands.
  */
 class Permission implements HandlerInterface {
@@ -172,39 +171,5 @@ class Permission implements HandlerInterface {
 
         $event = $this->eventFactory->create('Company\\Permission\\Deleted', $permission, $command->identity);
         $this->emitter->emit($event);
-    }
-
-    /**
-     * Deletes all permissions ($command->companyId).
-     *
-     * @param \App\Command\Company\Permission\DeleteAll $command
-     *
-     * @see \App\Repository\DBPermission::getAllByComanyId
-     * @see \App\Repository\DBPermission::deleteByCompanyId
-     *
-     * @throws \App\Exception\Validate\Company\PermissionException
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertId($command->companyId);
-            $this->validator->assertIdentity($command->identity);
-        } catch (ValidationException $e) {
-            throw new Validate\Company\PermissionException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $permissions = $this->repository->getByCompanyId($command->companyId);
-
-        $affectedRows = $this->repository->deleteByCompanyId($command->companyId);
-
-        $event = $this->eventFactory->create('Company\\Permission\\DeletedMulti', $permissions, $command->identity);
-        $this->emitter->emit($event);
-
-        return $affectedRows;
     }
 }

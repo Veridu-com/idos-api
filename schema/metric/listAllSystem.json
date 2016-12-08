@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "GET /profiles",
+    "title": "GET /metrics/system",
     "type": "object",
     "properties": {
         "status": {
@@ -8,23 +8,17 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Profile response payload",
+            "description": "System response payload",
             "type": "array",
             "items": {
-                "$ref": "profileEntity.json"
+                "$ref": "systemEntity.json"
             },
             "minItems": 0,
             "uniqueItems": true
-        },
-        "updated": {
-            "description": "Unixtime of the last update",
-            "type": "integer"
         }
     },
     "required": [
         "status",
-        "data",
-        "updated"
+        "data"
     ]
 }
-

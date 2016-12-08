@@ -57,7 +57,7 @@ class CreatedBulk extends AbstractServiceQueueEvent {
      * @param \App\Entity\User                $user
      * @param \App\Entity\Company\Credential  $credential
      * @param \App\Entity\Profile\Process     $process
-     * @param \App\Entity\Company\Credential $credential
+     * @param \App\Entity\Company\Credential  $credential
      * @param \App\Entity\Profile\Source|null $source
      *
      * @return void
@@ -66,7 +66,7 @@ class CreatedBulk extends AbstractServiceQueueEvent {
         $this->features    = $features;
         $this->user        = $user;
         $this->process     = $process;
-        $this->credential = $credential;
+        $this->credential  = $credential;
         $this->source      = $source;
     }
 
@@ -74,13 +74,12 @@ class CreatedBulk extends AbstractServiceQueueEvent {
      * {inheritdoc}.
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-
         return array_merge(
             [
-            'sourceId'     => $this->source ? $this->source->getEncodedId() : null,
-            'publicKey'    => $this->credential->public,
-            'processId'    => $this->process->getEncodedId(),
-            'userName'     => $this->user->username
+            'sourceId'  => $this->source ? $this->source->getEncodedId() : null,
+            'publicKey' => $this->credential->public,
+            'processId' => $this->process->getEncodedId(),
+            'userName'  => $this->user->username
             ], $merge
         );
     }

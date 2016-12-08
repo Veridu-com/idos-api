@@ -15,6 +15,7 @@ use App\Command\Company\Setting\ListAll;
 use App\Command\Company\Setting\UpdateOne;
 use App\Entity\Company\Setting as SettingEntity;
 use App\Exception\Create;
+use App\Exception\NotAllowed;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
@@ -109,7 +110,6 @@ class Setting implements HandlerInterface {
      */
     public function handleListAll(ListAll $command) : array {
         $this->validator->assertCompany($command->company);
-        $this->validator->assertIdentity($command->identity);
         $this->validator->assertArray($command->queryParams);
 
         if ($command->hasParentAccess) {
@@ -139,7 +139,7 @@ class Setting implements HandlerInterface {
         $setting = $this->repository->findOneByCompanyAndId($command->company->id, $command->settingId);
 
         if ($setting->protected && ! $command->hasParentAccess) {
-            throw new NotAllowed('Not allowed to access this Setting.');
+            throw new NotAllowed\SettingException('Not allowed to access this Setting.');
         }
 
         return $setting;
@@ -208,6 +208,7 @@ class Setting implements HandlerInterface {
         try {
             $this->validator->assertId($command->settingId);
             $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company);
         } catch (ValidationException $e) {
             throw new Validate\Company\SettingException(
                 $e->getFullMessage(),
@@ -264,36 +265,5 @@ class Setting implements HandlerInterface {
 
         $event = $this->eventFactory->create('Company\\Setting\\Deleted', $setting, $command->company, $command->identity);
         $this->emitter->emit($event);
-    }
-
-    /**
-     * Deletes all settings ($command->companyId).
-     *
-     * @param \App\Command\Company\Setting\DeleteAll $command
-     *
-     * @throws \App\Exception\Validate\Company\SettingException
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertId($command->companyId);
-            $this->validator->assertIdentity($command->identity);
-        } catch (ValidationException $e) {
-            throw new Validate\Company\SettingException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $settings = $this->repository->findByCompanyId($command->companyId);
-
-        $rowsAffected = $this->repository->deleteByCompanyId($command->companyId);
-
-        $event = $this->eventFactory->create('Company\\Setting\\DeletedMulti', $settings, $command->company, $command->identity);
-        $this->emitter->emit($event);
-
-        return $rowsAffected;
     }
 }

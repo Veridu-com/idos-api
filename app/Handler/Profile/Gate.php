@@ -39,6 +39,12 @@ class Gate implements HandlerInterface {
      */
     private $repository;
     /**
+     * Category Repository instance.
+     *
+     * @var \App\Repository\CategoryInterface
+     */
+    private $categoryRepository;
+    /**
      * Gate Validator instance.
      *
      * @var \App\Validator\Profile\Gate
@@ -138,12 +144,12 @@ class Gate implements HandlerInterface {
 
         $entity = $this->repository->create(
             [
-                'user_id'                => $command->user->id,
-                'creator'                => $command->service->id,
-                'name'                   => $command->name,
-                'confidence_level'       => $command->confidenceLevel,
-                'pass'                   => $this->validator->validateFlag($command->pass),
-                'created_at'             => time()
+                'user_id'          => $command->user->id,
+                'creator'          => $command->service->id,
+                'name'             => $command->name,
+                'confidence_level' => $command->confidenceLevel,
+                'pass'             => $this->validator->validateFlag($command->pass),
+                'created_at'       => time()
             ]
         );
 
@@ -236,29 +242,32 @@ class Gate implements HandlerInterface {
             $this->repository->beginTransaction();
             $this->upsertCategory($command->name, $command->service->id);
 
-            $entity = $this->repository->create([
+            $entity = $this->repository->create(
+                [
                 'name'             => $command->name,
                 'pass'             => $command->pass,
                 'confidence_level' => $command->confidenceLevel,
                 'user_id'          => $command->user->id,
-                'creator'          => $command->service->id,
-                'created_at'       => time()
-            ]);
+                'creator'          => $command->service->id
+                ]
+            );
 
-            $entity = $this->repository->upsert($entity, ['user_id', 'creator', 'name', 'confidence_level'], [
+            $this->repository->upsert(
+                $entity, ['user_id', 'creator', 'name', 'confidence_level'], [
                 'updated_at' => date('Y-m-d H:i:s'),
                 'pass'       => $entity->pass
-            ]);
+                ]
+            );
             $entity = $this->repository->findBySlug($entity->slug, $entity->creator, $entity->userId);
 
             $this->repository->commit();
 
             $entity = $this->repository->hydrateRelations($entity);
 
-            if ($entity->createdAt === $entity->updatedAt) {
-                $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity, $command->credential);
-            } else {
+            if ($entity->updatedAt) {
                 $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity, $command->credential);
+            } else {
+                $event = $this->eventFactory->create('Profile\\Gate\\Created', $entity, $command->credential);
             }
 
             $this->emitter->emit($event);
@@ -284,12 +293,14 @@ class Gate implements HandlerInterface {
      */
     private function upsertCategory(string $name, int $serviceId) : Category {
         try {
-            $category = $this->categoryRepository->create([
+            $category = $this->categoryRepository->create(
+                [
                 'display_name' => $name,
                 'name'         => $name,
                 'service_id'   => $serviceId,
                 'type'         => 'gate'
-            ]);
+                ]
+            );
 
             return $this->categoryRepository->upsert($category);
         } catch (\Exception $e) {

@@ -32,6 +32,5 @@ class DeleteOneTest extends AbstractCommandTest {
         ];
 
         $this->assertSetParameters(DeleteOne::class, $attributes);
-
     }
 }

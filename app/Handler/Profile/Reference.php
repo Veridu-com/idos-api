@@ -14,6 +14,7 @@ use App\Command\Profile\Reference\DeleteOne;
 use App\Command\Profile\Reference\UpdateOne;
 use App\Entity\Profile\Reference as ReferenceEntity;
 use App\Exception\Create;
+use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
@@ -215,7 +216,7 @@ class Reference implements HandlerInterface {
             throw new NotFound\Profile\ReferenceException('No references found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Profile\\Reference\\Deleted', $reference);
+        $event = $this->eventFactory->create('Profile\\Reference\\Deleted', $reference, $command->credential);
         $this->emitter->emit($event);
     }
 
