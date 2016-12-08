@@ -63,6 +63,7 @@
         "pdepend/pdepend": "@stable",
         "phploc/phploc": "@stable",
         "phpmd/phpmd" : "@stable",
+        "phpstan/phpstan": "@stable",
         "phpunit/dbunit": "@stable",
         "phpunit/phpunit": "@stable",
         "psy/psysh": "@stable",
