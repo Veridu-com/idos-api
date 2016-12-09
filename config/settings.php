@@ -35,7 +35,7 @@ $appSettings = [
         ],
         'nosql' => [
             'driver' => Env::asString('IDOS_NOSQL_DRIVER', 'mongodb'),
-            'host'   => Env::asString('IDOS_NOSQL_HOST', 'localhost'),
+            'host'   => Env::asArray('IDOS_NOSQL_HOST', ['localhost']),
             'port'   => Env::asInteger('IDOS_NOSQL_PORT', 27017)
         ]
     ],
@@ -54,7 +54,7 @@ $appSettings = [
     ],
     'gearman' => [
         'timeout' => 1000,
-        'servers' => Env::fromJson('IDOS_GEARMAN_SERVERS', [['localhost', 4730]])
+        'servers' => Env::asString('IDOS_GEARMAN_SERVERS', 'localhost:4730')
     ],
     'optimus' => [
         'prime'   => Env::asInteger('IDOS_OPTIMUS_PRIME', 0),
