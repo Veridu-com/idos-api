@@ -35,7 +35,7 @@ $appSettings = [
         ],
         'nosql' => [
             'driver' => Env::asString('IDOS_NOSQL_DRIVER', 'mongodb'),
-            'host'   => Env::asString('IDOS_NOSQL_HOST', 'localhost'),
+            'host'   => Env::asArray('IDOS_NOSQL_HOST', ['localhost']),
             'port'   => Env::asInteger('IDOS_NOSQL_PORT', 27017)
         ]
     ],
