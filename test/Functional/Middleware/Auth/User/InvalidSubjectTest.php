@@ -17,8 +17,8 @@ use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 class InvalidSubjectTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->httpMethod = 'GET';
-        $this->uri        = '/testInvalidSubject';
+        $this->httpMethod    = 'GET';
+        $this->uri           = '/testInvalidSubject';
     }
 
     public function testInvalidSubject() {

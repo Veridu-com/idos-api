@@ -26,9 +26,9 @@ class DeleteAllTest extends AbstractFunctional {
 
     public function testSuccess() {
         //retrieves all service-handlers to count the total number of service-handlers. 
-        $this->uri = '/1.0/companies/veridu-ltd/service-handlers';
+        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers';
         $this->httpMethod = 'GET';
-        
+
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
@@ -38,7 +38,7 @@ class DeleteAllTest extends AbstractFunctional {
         );
 
         $listAll = $this->process($request);
-        $body = json_decode((string) $listAll->getBody(), true);
+        $body    = json_decode((string) $listAll->getBody(), true);
         //total number of services
         $total = count($body['data']);
 
@@ -54,7 +54,7 @@ class DeleteAllTest extends AbstractFunctional {
             )
         );
 
-        $response = $this->process($request);   
+        $response = $this->process($request);
 
         $this->assertSame(200, $response->getStatusCode());
 

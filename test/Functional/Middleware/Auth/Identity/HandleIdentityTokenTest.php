@@ -17,8 +17,8 @@ use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 class SuccessQueryStringTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->httpMethod = 'GET';
-        $this->uri        = '/testSuccessQueryString';
+        $this->httpMethod    = 'GET';
+        $this->uri           = '/testSuccessQueryString';
     }
 
     public function testSuccessQueryString() {

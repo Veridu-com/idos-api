@@ -12,19 +12,17 @@ use App\Helper\Token;
 use App\Middleware\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Http\Response;
 use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 
 class InvalidTokenSign extends AbstractAuthFunctional {
-
     public static function setUpBeforeClass() {
         parent::setUpBeforeClass();
     }
 
     protected function setUp() {
         parent::setUp();
-        $this->uri        = '/testInvalidTokenSign';        
-        $this->httpMethod = 'GET';
+        $this->uri           = '/testInvalidTokenSign';
+        $this->httpMethod    = 'GET';
         $this->middlewareApp = $this->getApp();
     }
 
@@ -62,5 +60,5 @@ class InvalidTokenSign extends AbstractAuthFunctional {
         $this->assertFalse($body['status']);
         $this->assertSame('Token Verification Failed', $body['error']['message']);
     }
-    
+
 }

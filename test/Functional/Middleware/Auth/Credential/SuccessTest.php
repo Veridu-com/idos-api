@@ -12,14 +12,13 @@ use App\Helper\Token;
 use App\Middleware\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Http\Response;
 use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 
 class SuccessTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
         parent::setUp();
-        $this->uri = '/successTest';
+        $this->uri        = '/successTest';
         $this->httpMethod = 'GET';
     }
 

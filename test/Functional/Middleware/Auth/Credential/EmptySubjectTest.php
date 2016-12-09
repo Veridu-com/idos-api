@@ -12,20 +12,14 @@ use App\Helper\Token;
 use App\Middleware\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Http\Response;
 use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
-use Slim\App;
-use Phinx\Console\PhinxApplication;
-use Phinx\Wrapper\TextWrapper;
 
 class EmptySubjectTest extends AbstractAuthFunctional {
-
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->uri = '/testEmptySubject';
-        $this->httpMethod = 'GET';
+        $this->uri           = '/testEmptySubject';
+        $this->httpMethod    = 'GET';
     }
-
 
     public function testEmptySubject() {
         $token = Token::generateCredentialToken(

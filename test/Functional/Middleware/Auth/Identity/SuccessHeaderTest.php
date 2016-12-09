@@ -21,11 +21,11 @@ class SuccessHeaderTest extends AbstractAuthFunctional {
 
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->uri        = '/testSuccessHeader';
-        $this->httpMethod = 'GET';
+        $this->uri           = '/testSuccessHeader';
+        $this->httpMethod    = 'GET';
     }
 
-	public function testSuccessHeader() {
+    public function testSuccessHeader() {
         $token = Token::generateIdentityToken(
             '5d41402abc4b2a76b9719d911017c592',
             '7d793037a0760186574b0282f2f435e7'

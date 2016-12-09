@@ -35,7 +35,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $name    = 'Testing Gate';
-        $pass    = true;    
+        $pass    = true;
         $request = $this->createRequest(
             $environment, json_encode(
                 [

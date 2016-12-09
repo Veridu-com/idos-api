@@ -30,7 +30,6 @@ class UpsertTest extends AbstractRawFunctional {
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
 
-
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -127,7 +126,7 @@ class UpsertTest extends AbstractRawFunctional {
         );
 
         $request = $this->createRequest(
-            $environment,   
+            $environment,
             json_encode(
                 [
                     'source_id'  => null,

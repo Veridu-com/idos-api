@@ -16,8 +16,8 @@ use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 class InvalidTokenSignTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->httpMethod = 'GET';
-        $this->uri        = '/user';
+        $this->httpMethod    = 'GET';
+        $this->uri           = '/user';
     }
 
     public function testInvalidTokenSign() {

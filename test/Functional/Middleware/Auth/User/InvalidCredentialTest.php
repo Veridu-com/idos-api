@@ -17,8 +17,8 @@ use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 class InvalidCredentialTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->httpMethod = 'GET';
-        $this->uri        = '/testInvalidCredential';
+        $this->httpMethod    = 'GET';
+        $this->uri           = '/testInvalidCredential';
     }
 
     public function testInvalidCredential() {

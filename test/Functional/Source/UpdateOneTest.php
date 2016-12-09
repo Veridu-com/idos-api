@@ -71,7 +71,7 @@ class UpdateOneTest extends AbstractFunctional {
         $status1 = ($this->proccessDefaultRequest())->getStatusCode();
         $status2 = ($this->proccessDefaultRequest())->getStatusCode();
         $status3 = ($this->proccessDefaultRequest())->getStatusCode();
-        
+
         $this->assertSame(200, $status1);
         $this->assertSame(200, $status2);
         $this->assertSame(403, $status3);

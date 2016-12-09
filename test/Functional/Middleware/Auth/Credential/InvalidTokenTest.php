@@ -12,19 +12,17 @@ use App\Helper\Token;
 use App\Middleware\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Http\Response;
 use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 
 class InvalidTokenTest extends AbstractAuthFunctional {
-    
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->uri = '/testInvalidToken';
-        $this->httpMethod = 'GET';
+        $this->uri           = '/testInvalidToken';
+        $this->httpMethod    = 'GET';
     }
 
     public function testInvalidToken() {
-        $token = 'invalid.token';   
+        $token = 'invalid.token';
 
         $authMiddleware = $this->middlewareApp
             ->getContainer()

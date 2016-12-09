@@ -12,13 +12,12 @@ use App\Helper\Token;
 use App\Middleware\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 
 class InvalidTokenTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->httpMethod = 'GET';
-        $this->uri        = '/testInvalidToken';
+        $this->httpMethod    = 'GET';
+        $this->uri           = '/testInvalidToken';
     }
 
     public function testInvalidToken() {

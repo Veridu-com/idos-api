@@ -17,10 +17,10 @@ use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 class EmptySubjectTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->httpMethod = 'GET';
-        $this->uri        = '/testEmptySubject';
+        $this->httpMethod    = 'GET';
+        $this->uri           = '/testEmptySubject';
     }
-    
+
     public function testEmptySubject() {
         $token = Token::generateUserToken(
             '',

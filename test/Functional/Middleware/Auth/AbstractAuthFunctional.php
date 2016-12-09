@@ -44,7 +44,7 @@ abstract class AbstractAuthFunctional extends AbstractFunctional {
             $phinxTextWrapper->getRollback('testing', 0);
             $phinxTextWrapper->getMigrate();
             $phinxTextWrapper->getSeed();
-            
+
             $this->middlewarePhinxTextWrapper = $phinxTextWrapper;
         }
 

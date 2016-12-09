@@ -58,7 +58,7 @@
     },
     "require-dev": {
         "ext-xsl": "*",
-        "friendsofphp/php-cs-fixer": "^1.13",
+        "friendsofphp/php-cs-fixer": "1.13",
         "humbug/humbug": "dev-master",
         "pdepend/pdepend": "@stable",
         "phploc/phploc": "@stable",

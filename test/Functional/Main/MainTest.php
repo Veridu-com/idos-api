@@ -17,7 +17,7 @@ class MainTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment());
+        $request  = $this->createRequest($this->createEnvironment());
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 

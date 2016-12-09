@@ -17,8 +17,8 @@ use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 class SuccessTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->httpMethod = 'GET';
-        $this->uri        = '/testSuccess';
+        $this->httpMethod    = 'GET';
+        $this->uri           = '/testSuccess';
     }
 
     public function testSuccess() {
@@ -67,5 +67,5 @@ class SuccessTest extends AbstractAuthFunctional {
         $this->assertSame(md5('public'), $body['credential']['public']);
         $this->assertSame('secure:' . md5('private'), $body['credential']['private']);
         $this->assertSame($body['company']['id'], $body['credential']['company_id']);
-    }    
+    }
 }

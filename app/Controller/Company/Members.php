@@ -147,7 +147,7 @@ class Members implements ControllerInterface {
         $member = $this->commandBus->handle($command);
 
         $body = [
-            'data'   => $member->toArray(),
+            'data'    => $member->toArray(),
             'updated' => time()
         ];
 

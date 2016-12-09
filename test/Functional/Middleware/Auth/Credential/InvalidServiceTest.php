@@ -12,7 +12,6 @@ use App\Helper\Token;
 use App\Middleware\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Http\Response;
 use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 
 class InvalidServiceTest extends AbstractAuthFunctional {

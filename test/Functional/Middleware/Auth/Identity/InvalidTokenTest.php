@@ -15,11 +15,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 
 class InvalidTokenTest extends AbstractAuthFunctional {
-    
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->uri        = '/testInvalidToken';
-        $this->httpMethod = 'GET';
+        $this->uri           = '/testInvalidToken';
+        $this->httpMethod    = 'GET';
     }
 
     public function testInvalidToken() {
