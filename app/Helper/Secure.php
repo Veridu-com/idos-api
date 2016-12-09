@@ -58,7 +58,8 @@ class Secure {
         try {
             return Crypto::decrypt($cipherText, $this->key);
         } catch (WrongKeyOrModifiedCiphertextException $exception) {
-            // What to do here..?
+            //var_dump($cipherText);exit;
+            throw $exception;
         }
     }
 }

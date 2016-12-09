@@ -14,6 +14,7 @@ use App\Handler;
 use App\Middleware;
 use App\Middleware\Auth;
 use App\Repository;
+use App\Helper;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Connection;
@@ -308,7 +309,7 @@ $container['validatorFactory'] = function (ContainerInterface $container) : Fact
 
 // App Entity Factory
 $container['entityFactory'] = function (ContainerInterface $container) : Factory\Entity {
-    return new Factory\Entity($container->get('optimus'));
+    return new Factory\Entity($container->get('optimus'), $container->get('secure'));
 };
 
 // App Event Factory
@@ -373,6 +374,7 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
             $strategy = new Repository\DBStrategy(
                 $container->get('entityFactory'),
                 $container->get('optimus'),
+                $container->get('secure'),
                 $container->get('sql'),
                 $container->get('nosql')
             );
@@ -454,7 +456,9 @@ $container['globFiles'] = function () : array {
 };
 
 // Secure
-$container['secure'] = function (ContainerInterface $container) : Secure {
+$container['secure'] = function (ContainerInterface $container) : Helper\Secure {
+    $settings = $container->get('settings');
+    
     $fileName = __DIR__ . '/../resources/secure.key';
     if (! is_file($fileName)) {
         throw new RuntimeException('Secure key not found!');
@@ -465,7 +469,7 @@ $container['secure'] = function (ContainerInterface $container) : Secure {
         throw new RuntimeException('Secure key could not be loaded!');
     }
 
-    return new Secure($encoded, $settings['secure']);
+    return new Helper\Secure($encoded, $settings['secure']);
 };
 
 // SSO Auth

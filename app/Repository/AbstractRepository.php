@@ -12,6 +12,7 @@ use App\Entity\EntityInterface;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Factory\Repository;
+use App\Helper\Secure;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 
@@ -37,6 +38,12 @@ abstract class AbstractRepository implements RepositoryInterface {
      * @var \Jenssegers\Optimus\Optimus
      */
     protected $optimus;
+    /**
+     * Encryption helper.
+     *
+     * @var \App\Helper\Secure
+     */
+    protected $crypt;
     /**
      * Entity class name.
      *
@@ -65,10 +72,11 @@ abstract class AbstractRepository implements RepositoryInterface {
      *
      * @return void
      */
-    public function __construct(Entity $entityFactory, Repository $repositoryFactory, Optimus $optimus) {
+    public function __construct(Entity $entityFactory, Repository $repositoryFactory, Optimus $optimus, Secure $crypt) {
         $this->entityFactory     = $entityFactory;
         $this->repositoryFactory = $repositoryFactory;
         $this->optimus           = $optimus;
+        $this->crypt             = $crypt;
     }
 
     /**
