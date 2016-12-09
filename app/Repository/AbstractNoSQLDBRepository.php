@@ -218,6 +218,9 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
 
         if ($isUpdate) {
             $query   = $this->query();
+            
+            unset($serialized['id']);
+            unset($serialized['_id']);
             $success = $query->where('_id', '=', $query->convertKey(md5((string) $entity->id)))->update($serialized) > 0;
         } else {
             if ($entity->id) {

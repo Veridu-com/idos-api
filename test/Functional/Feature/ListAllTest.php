@@ -72,7 +72,7 @@ class ListAllTest extends AbstractFunctional {
 
         foreach ($body['data'] as $feature) {
             $this->assertContains($feature['name'], ['birthYear']);
-            $this->assertContains($feature['value'], ['1992']);
+            $this->assertContains($feature['value'], ['1985']);
         }
 
         /*
@@ -107,7 +107,7 @@ class ListAllTest extends AbstractFunctional {
 
         foreach ($body['data'] as $feature) {
             $this->assertContains($feature['name'], ['birthYear', 'birthMonth', 'birthDay']);
-            $this->assertContains($feature['value'], ['1992', '05', '22']);
+            $this->assertContains($feature['value'], ['1985', '10', '13']);
         }
 
         /*
@@ -142,7 +142,7 @@ class ListAllTest extends AbstractFunctional {
 
         foreach ($body['data'] as $feature) {
             $this->assertContains($feature['name'], ['birthYear', 'birthMonth', 'birthDay', 'numOfFriends', 'isVerified']);
-            $this->assertContains($feature['value'], ['1992', '5', '22', '4', 'false']);
+            $this->assertContains($feature['value'], ['1985', '10', '13', '4', 'false']);
         }
 
         /*
@@ -177,7 +177,7 @@ class ListAllTest extends AbstractFunctional {
 
         foreach ($body['data'] as $feature) {
             $this->assertContains($feature['name'], ['birthYear', 'birthMonth', 'birthDay', 'numOfFriends', 'isVerified', 'submittedName']);
-            $this->assertContains($feature['value'], ['1992', '5', '22', '4', 'false', 'John Doe']);
+            $this->assertContains($feature['value'], ['1985', '10', '13', '4', 'false', 'John Doe']);
         }
 
         /*
