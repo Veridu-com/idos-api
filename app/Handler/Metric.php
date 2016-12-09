@@ -222,7 +222,8 @@ class Metric implements HandlerInterface {
 
             $this->gearmanClient->doBackground(
                 'metrics',
-                json_encode($payload)
+                json_encode($payload),
+                uniqid('metrics-')
             );
         }
 

@@ -95,7 +95,8 @@ trait QueueCompanyServiceHandlers {
     private function queue(array $payload) : bool {
         $task = $this->gearmanClient->doBackground(
             'manager',
-            json_encode($payload)
+            json_encode($payload),
+            uniqid('manager-')
         );
 
         return $this->gearmanClient->returnCode() == \GEARMAN_SUCCESS;
