@@ -11,11 +11,12 @@ namespace App\Event\Profile\Score;
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Score;
 use App\Event\AbstractEvent;
+use App\Event\Interfaces\UserIdGetterInterface;
 
 /**
  * Updated event.
  */
-class Updated extends AbstractEvent {
+class Updated extends AbstractEvent implements UserIdGetterInterface {
     /**
      * Event related Score.
      *
@@ -40,5 +41,12 @@ class Updated extends AbstractEvent {
     public function __construct(Score $score, Credential $credential) {
         $this->score      = $score;
         $this->credential = $credential;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId() : int {
+        return $this->score->userId;
     }
 }

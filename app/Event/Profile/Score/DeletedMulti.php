@@ -10,12 +10,13 @@ namespace App\Event\Profile\Score;
 
 use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
+use App\Event\Interfaces\UserIdGetterInterface;
 use Illuminate\Support\Collection;
 
 /**
  * Deleted event for multiple scores.
  */
-class DeletedMulti extends AbstractEvent {
+class DeletedMulti extends AbstractEvent implements UserIdGetterInterface {
     /**
      * Event related Scores.
      *
@@ -40,5 +41,12 @@ class DeletedMulti extends AbstractEvent {
     public function __construct(Collection $scores, Credential $credential) {
         $this->scores     = $scores;
         $this->credential = $credential;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId() : int {
+        return $this->scores->first()->userId;
     }
 }
