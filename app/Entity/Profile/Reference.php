@@ -25,11 +25,11 @@ class Reference extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['name', 'value', 'created_at'];
+    protected $visible = ['name', 'value', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
-    protected $dates = ['created_at'];
+    protected $dates = ['created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */

@@ -429,6 +429,20 @@ class S11ServicesSeed extends AbstractSeed {
                 'listens'       => json_encode([]),
                 'triggers'      => json_encode([]),
                 'enabled'       => true
+            ],
+            [
+                'name'          => 'idOS Recommendation',
+                'url'           => 'https://handler.idos.io/morpheus/recommendation',
+                'company_id'    => 1,
+                'auth_username' => '***REMOVED***',
+                'auth_password' => '***REMOVED***',
+                'public'        => md5('idos-recommendation-public-1481029189'), // 84c25ea316c8887c276fedc9ef02c7b8
+                'private'       => md5('idos-recommendation-private-1481029189'), // f2d264d2d493869964332d1efdd1611e
+                'listens'       => json_encode([
+                    'idos.recommendation'
+                ]),
+                'triggers'      => json_encode([]),
+                'enabled'       => true
             ]
         ];
 

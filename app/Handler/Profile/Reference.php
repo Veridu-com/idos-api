@@ -234,8 +234,10 @@ class Reference implements HandlerInterface {
         $references   = $this->repository->getAllByUserId($command->user->id);
         $affectedRows = $this->repository->deleteByUserId($command->user->id);
 
-        $event = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references, $command->credential);
-        $this->emitter->emit($event);
+        if ($affectedRows) {
+            $event = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references, $command->credential);
+            $this->emitter->emit($event);
+        }
 
         return $affectedRows;
     }

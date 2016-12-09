@@ -15,7 +15,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'birthYear',
                 'creator'    => 1,
                 'type'       => 'integer',
-                'value'      => '1992',
+                'value'      => '1985',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -25,7 +25,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'birthMonth',
                 'creator'    => 1,
                 'type'       => 'integer',
-                'value'      => '5',
+                'value'      => '10',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -35,7 +35,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'birthDay',
                 'creator'    => 1,
                 'type'       => 'integer',
-                'value'      => '22',
+                'value'      => '13',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
