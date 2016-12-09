@@ -54,7 +54,7 @@ $appSettings = [
     ],
     'gearman' => [
         'timeout' => 1000,
-        'servers' => Env::fromJson('IDOS_GEARMAN_SERVERS', [['localhost', 4730]])
+        'servers' => Env::asString('IDOS_GEARMAN_SERVERS', 'localhost:4730')
     ],
     'optimus' => [
         'prime'   => Env::asInteger('IDOS_OPTIMUS_PRIME', 0),
