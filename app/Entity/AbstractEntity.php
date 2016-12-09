@@ -8,9 +8,9 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use App\Helper\Secure;
 use Illuminate\Contracts\Support\Arrayable;
 use Jenssegers\Optimus\Optimus;
-use App\Helper\Secure;
 
 /**
  * Abstract Entity Implementation.
@@ -306,7 +306,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     public function __construct(array $attributes, Optimus $optimus, Secure $crypt) {
         $this->crypt = $crypt;
-        
+
         if (! empty($attributes)) {
             $this
                 ->hydrate($attributes)

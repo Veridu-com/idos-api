@@ -11,10 +11,10 @@ use App\Command;
 use App\Exception\AppException;
 use App\Factory;
 use App\Handler;
+use App\Helper;
 use App\Middleware;
 use App\Middleware\Auth;
 use App\Repository;
-use App\Helper;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Connection;
@@ -458,7 +458,7 @@ $container['globFiles'] = function () : array {
 // Secure
 $container['secure'] = function (ContainerInterface $container) : Helper\Secure {
     $settings = $container->get('settings');
-    
+
     $fileName = __DIR__ . '/../resources/secure.key';
     if (! is_file($fileName)) {
         throw new RuntimeException('Secure key not found!');

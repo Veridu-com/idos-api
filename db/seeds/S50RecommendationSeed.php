@@ -36,7 +36,7 @@ class S50RecommendationSeed extends AbstractSeed {
                         'tag'       => 'Rule 2',
                         'connector' => 'OR',
                         'passed'    => [
-                            
+
                         ],
                         'failed'    => [
                             [
@@ -50,7 +50,7 @@ class S50RecommendationSeed extends AbstractSeed {
                     ]
                 ]),
                 'failed'     => json_encode([
-                    
+
                 ]),
                 'created_at' => date('Y-m-d H:i:s')
             ],
@@ -60,7 +60,7 @@ class S50RecommendationSeed extends AbstractSeed {
                 'creator'    => 1,
                 'result'     => 'fail',
                 'passed'     => json_encode([
-                    
+
                 ]),
                 'failed'     => json_encode([
                     [
@@ -83,7 +83,7 @@ class S50RecommendationSeed extends AbstractSeed {
                         'tag'       => 'Rule 2',
                         'connector' => 'AND',
                         'passed'    => [
-                            
+
                         ],
                         'failed'    => [
                             [
