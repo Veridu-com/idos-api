@@ -158,7 +158,6 @@ class Attribute implements HandlerInterface {
             $this->validator->assertLongName($command->name);
             $this->validator->assertString($command->value);
             $this->validator->assertCredential($command->credential);
-            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),

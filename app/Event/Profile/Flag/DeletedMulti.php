@@ -10,12 +10,13 @@ namespace App\Event\Profile\Flag;
 
 use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
+use App\Event\Interfaces\UserIdGetterInterface;
 use Illuminate\Support\Collection;
 
 /**
  * Deleted event for multiple flags.
  */
-class DeletedMulti extends AbstractEvent {
+class DeletedMulti extends AbstractEvent implements UserIdGetterInterface {
     /**
      * Event related Flags.
      *
@@ -40,5 +41,12 @@ class DeletedMulti extends AbstractEvent {
     public function __construct(Collection $flags, Credential $credential) {
         $this->flags      = $flags;
         $this->credential = $credential;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId() : int {
+        return $this->flags->first()->userId;
     }
 }

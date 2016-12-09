@@ -10,12 +10,13 @@ namespace App\Event\Profile\Attribute;
 
 use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
+use App\Event\Interfaces\UserIdGetterInterface;
 use Illuminate\Support\Collection;
 
 /**
  * Deleted event for multiple Attributes.
  */
-class DeletedMulti extends AbstractEvent {
+class DeletedMulti extends AbstractEvent implements UserIdGetterInterface {
     /**
      * Event related Attributes.
      *
@@ -40,5 +41,12 @@ class DeletedMulti extends AbstractEvent {
     public function __construct(Collection $attributes, Credential $credential) {
         $this->attributes = $attributes;
         $this->credential = $credential;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId() : int {
+        return $this->attributes->first()->userId;
     }
 }

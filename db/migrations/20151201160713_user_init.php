@@ -62,6 +62,7 @@ class UserInit extends AbstractMigration {
             ->addColumn('ipaddr', 'text', ['null' => false])
             ->addTimestamps()
             ->addIndex('user_id')
+            ->addIndex('name', ['unique' => true])
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 

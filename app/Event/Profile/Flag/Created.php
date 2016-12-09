@@ -11,11 +11,12 @@ namespace App\Event\Profile\Flag;
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Flag;
 use App\Event\AbstractEvent;
+use App\Event\Interfaces\UserIdGetterInterface;
 
 /**
  * Created event.
  */
-class Created extends AbstractEvent {
+class Created extends AbstractEvent implements UserIdGetterInterface {
     /**
      * Event related Flag.
      *
@@ -40,5 +41,12 @@ class Created extends AbstractEvent {
     public function __construct(Flag $flag, Credential $credential) {
         $this->flag       = $flag;
         $this->credential = $credential;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId() : int {
+        return $this->flag->userId;
     }
 }

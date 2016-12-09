@@ -510,13 +510,7 @@ $container['gearmanClient'] = function (ContainerInterface $container) : Gearman
             $gearman->setTimeout($settings['gearman']['timeout']);
         }
 
-        foreach ($settings['gearman']['servers'] as $server) {
-            if (is_array($server)) {
-                $gearman->addServer($server[0], $server[1]);
-            } else {
-                $gearman->addServer($server);
-            }
-        }
+        $gearman->addServers($settings['gearman']['servers']);
 
         return $gearman;
     } catch (\GearmanException $exception) {
