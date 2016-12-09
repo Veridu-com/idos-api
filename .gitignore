@@ -23,5 +23,3 @@ server/docker/
 sftp-config.json
 vendor/
 VeriduRuleset.xml
-config/settings.php
-
