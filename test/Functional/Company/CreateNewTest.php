@@ -14,14 +14,14 @@ use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
 class CreateNewTest extends AbstractFunctional {
-    use Traits\RequiresAuth,
-        Traits\RequiresIdentityToken,
-        Traits\RejectsUserToken,
-        Traits\RejectsCredentialToken;
+    // use Traits\RequiresAuth,
+    //     Traits\RequiresIdentityToken,
+    //     Traits\RejectsUserToken,
+    //     Traits\RejectsCredentialToken;
 
     protected function setUp() {
         parent::setUp();
-
+        
         $this->httpMethod = 'POST';
         $this->uri        = '/1.0/companies/veridu-ltd';
     }

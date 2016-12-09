@@ -37,7 +37,7 @@
         "guzzlehttp/guzzle": "^6.2.2",
         "illuminate/database": "5.3.16",
         "illuminate/pagination": "5.*",
-        "jenssegers/mongodb": "^3.1",
+        "jenssegers/mongodb": "^3.0",
         "jenssegers/optimus": "^0.2",
         "justinrainbow/json-schema": "^2.0",
         "lcobucci/jwt": "^3.1",

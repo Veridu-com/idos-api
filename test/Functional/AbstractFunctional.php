@@ -30,13 +30,6 @@ use Slim\Http\Uri;
  * Join all common methods of the other functional classes.
  */
 abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
-   
-   /**
-    * Username to be used in all endpoint testing under /profiles/{userName} route.
-    * 
-    * @var string userName
-    */
-    protected $userName = 'f67b96dcf96b49d713a520ce9f54053c';
     /**
      * Slim's Application Instance.
      *
@@ -103,6 +96,13 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     protected $uri;
 
     /**
+     * Username used in all routes under /profile route.
+     *
+     * @var string
+     */
+    protected $userName = 'f67b96dcf96b49d713a520ce9f54053c';
+
+    /**
      * Runs one time before any method of the Child classes.
      */
     public static function setUpBeforeClass() {
@@ -115,6 +115,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
             require_once __ROOT__ . '/../config/middleware.php';
             require_once __ROOT__ . '/../config/handlers.php';
             require_once __ROOT__ . '/../config/routes.php';
+            require_once __ROOT__ . '/../config/listeners.php';
 
             self::$app = $app;
         }

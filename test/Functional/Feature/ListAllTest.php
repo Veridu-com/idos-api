@@ -107,7 +107,7 @@ class ListAllTest extends AbstractFunctional {
 
         foreach ($body['data'] as $feature) {
             $this->assertContains($feature['name'], ['birthYear', 'birthMonth', 'birthDay']);
-            $this->assertContains($feature['value'], ['1992', '5', '22']);
+            $this->assertContains($feature['value'], ['1992', '05', '22']);
         }
 
         /*
