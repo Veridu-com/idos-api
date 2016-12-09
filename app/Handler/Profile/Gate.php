@@ -39,6 +39,12 @@ class Gate implements HandlerInterface {
      */
     private $repository;
     /**
+     * Category Repository instance.
+     *
+     * @var \App\Repository\CategoryInterface
+     */
+    private $categoryRepository;
+    /**
      * Gate Validator instance.
      *
      * @var \App\Validator\Profile\Gate
@@ -253,7 +259,7 @@ class Gate implements HandlerInterface {
                 ]
             );
             $entity = $this->repository->findBySlug($entity->slug, $entity->creator, $entity->userId);
-            
+
             $this->repository->commit();
 
             $entity = $this->repository->hydrateRelations($entity);

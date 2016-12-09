@@ -91,4 +91,36 @@ class Attributes implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
+
+    /**
+     * Retrieves an attribute of the profile.
+     *
+     * @apiEndpointResponse 200 schema/attribute/getOne.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Repository\DBAttribute::findOneByUserIdAndName
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $user          = $request->getAttribute('targetUser');
+        $attributeName = $request->getAttribute('attributeName');
+
+        $attribute = $this->repository->findOneByUserIdAndName($user->id, $attributeName);
+
+        $body = [
+            'data'    => $attribute->toArray(),
+            'updated' => $attribute->updated_at
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
 }

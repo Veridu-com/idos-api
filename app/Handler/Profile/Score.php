@@ -14,6 +14,7 @@ use App\Command\Profile\Score\DeleteOne;
 use App\Command\Profile\Score\UpdateOne;
 use App\Command\Profile\Score\Upsert;
 use App\Entity\Profile\Score as ScoreEntity;
+use App\Exception\AppException;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
@@ -169,10 +170,15 @@ class Score implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
-            $this->validator->assertName($command->attribute);
             $this->validator->assertName($command->name);
             $this->validator->assertScore($command->value);
             $this->validator->assertCredential($command->credential);
+
+            // optional parameters
+            if ($command->attribute) {
+                $this->validator->assertName($command->attribute);
+            }
+
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -183,7 +189,9 @@ class Score implements HandlerInterface {
 
         $entity = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
 
-        $entity->attribute = $command->attribute;
+        if ($command->attribute) {
+            $entity->attribute = $command->attribute;
+        }
         $entity->value     = $command->value;
         $entity->updatedAt = time();
 
@@ -233,18 +241,18 @@ class Score implements HandlerInterface {
 
         try {
             $score = $this->repository->create([
-                'creator' => $command->service->id,
-                'user_id' => $command->user->id,
-                'attribute' => $command->attribute,
-                'name' => $command->name,
-                'value' => $command->value,
+                'creator'    => $command->service->id,
+                'user_id'    => $command->user->id,
+                'attribute'  => $command->attribute,
+                'name'       => $command->name,
+                'value'      => $command->value,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
             $this->repository->beginTransaction();
             $this->repository->upsert($score, ['user_id', 'creator', 'name'], [
-                'attribute' => $command->attribute,
-                'value' => $command->value,
+                'attribute'  => $command->attribute,
+                'value'      => $command->value,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
@@ -301,7 +309,7 @@ class Score implements HandlerInterface {
             $event = $this->eventFactory->create('Profile\\Score\\Deleted', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new NotFound\ScoreException('No features found for deletion', 404);
+            throw new NotFound\Profile\ScoreException('No features found for deletion', 404);
         }
 
         return $affectedRows;

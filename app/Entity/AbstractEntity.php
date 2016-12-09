@@ -55,11 +55,17 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $secure = [];
     /**
-     * The relations of the entity.
+     * The entities that have a relationship with this entity.
      *
      * @var array
      */
     public $relations = [];
+    /**
+     * The relationships of the entity.
+     *
+     * @var array
+     */
+    public $relationships = [];
     /**
      * Attributes to obfuscate using Jenssegers\Optimus\Optimus.
      *
@@ -290,7 +296,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @return void
      */
-    public function __construct(array $attributes = [], Optimus $optimus) {
+    public function __construct(array $attributes, Optimus $optimus) {
         if (! empty($attributes)) {
             $this
                 ->hydrate($attributes)

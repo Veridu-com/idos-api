@@ -19,7 +19,8 @@ use League\Event\Emitter;
 use League\Event\EventInterface;
 
 /**
- * Data Scraper Event Listener.
+ * This listener is responsible for sending to the "Manager"
+ * all Service related tasks.
  */
 class QueueServiceTaskListener extends AbstractListener {
     use QueueCompanyServiceHandlers;
@@ -32,7 +33,7 @@ class QueueServiceTaskListener extends AbstractListener {
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**

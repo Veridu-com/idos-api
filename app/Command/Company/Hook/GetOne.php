@@ -15,11 +15,11 @@ use App\Command\AbstractCommand;
  */
 class GetOne extends AbstractCommand {
     /**
-     * Target Company's id.
+     * Target Company.
      *
-     * @var int
+     * @var \App\Entity\Company
      */
-    public $companyId;
+    public $company;
     /**
      * Target Credential's public key.
      *

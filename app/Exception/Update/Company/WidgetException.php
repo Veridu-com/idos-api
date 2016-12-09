@@ -6,14 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Exception\NotFound;
+namespace App\Exception\Update\Company;
 
-use App\Exception\NotFound;
+use App\Exception\AppException;
 
 /**
- * Company not found exception.
+ * Widget update exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class CompanyException extends NotFound {
+class WidgetException extends AppException {
 }

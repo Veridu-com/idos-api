@@ -31,10 +31,6 @@ class CompanyProvider extends Listener\AbstractListenerProvider {
             Company\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
-            ],
-            Company\DeletedMulti::class => [
-                new Listener\LogFiredEventListener($eventLogger),
-                new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];
     }

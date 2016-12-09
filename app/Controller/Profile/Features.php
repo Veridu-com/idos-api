@@ -36,7 +36,7 @@ class Features implements ControllerInterface {
     /**
      * Source Repository instance.
      *
-     * @var \App\Repository\SourceInterface
+     * @var \App\Repository\Profile\SourceInterface
      */
     private $sourceRepository;
     /**
@@ -57,6 +57,7 @@ class Features implements ControllerInterface {
      *
      * @param \App\Repository\Profile\FeatureInterface $repository
      * @param \App\Repository\UserInterface            $userRepository
+     * @param \App\Repository\Profile\SourceRepository $sourceRepository
      * @param \League\Tactician\CommandBus             $commandBus
      * @param \App\Factory\Command                     $commandFactory
      *

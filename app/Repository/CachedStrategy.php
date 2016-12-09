@@ -51,7 +51,7 @@ class CachedStrategy implements RepositoryStrategyInterface {
     /**
      * {@inheritdoc}
      */
-    public function build(string $className) : RepositoryInterface {
+    public function build(Repository $repositoryFactory, string $className) : RepositoryInterface {
         $repositoryName = preg_replace('/.*?Cached/', '', $className);
 
         return new $className(

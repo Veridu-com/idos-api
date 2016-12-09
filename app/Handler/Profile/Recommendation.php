@@ -10,6 +10,7 @@ namespace App\Handler\Profile;
 
 use App\Command\Profile\Recommendation\Upsert;
 use App\Entity\Profile\Recommendation as RecommendationEntity;
+use App\Exception\Create;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
@@ -115,19 +116,19 @@ class Recommendation implements HandlerInterface {
 
         try {
             $recommendation = $this->repository->create([
-                'creator' => $command->service->id,
-                'user_id' => $command->user->id,
-                'result' => $command->result,
-                'passed' => $command->passed,
-                'failed' => $command->failed,
+                'creator'    => $command->service->id,
+                'user_id'    => $command->user->id,
+                'result'     => $command->result,
+                'passed'     => $command->passed,
+                'failed'     => $command->failed,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
             $this->repository->beginTransaction();
             $this->repository->upsert($recommendation, ['user_id'], [
-                'result' => $command->result,
-                'passed' => json_encode($command->passed),
-                'failed' => json_encode($command->failed),
+                'result'     => $command->result,
+                'passed'     => json_encode($command->passed),
+                'failed'     => json_encode($command->failed),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 

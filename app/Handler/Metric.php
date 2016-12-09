@@ -17,6 +17,7 @@ use App\Repository\Metric\UserInterface;
 use App\Validator\Metric as MetricValidator;
 use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
+use Respect\Validation\Exceptions\ValidationException;
 
 /**
  * Handles Metrics commands.
@@ -167,7 +168,7 @@ class Metric implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : bool {
         try {
             $this->validator->assertEvent($command->event);
-        } catch (ValidateException $e) {
+        } catch (ValidationException $e) {
             throw new Validate\MetricException(
                 $e->getFullMessage(),
                 400,
@@ -221,7 +222,8 @@ class Metric implements HandlerInterface {
 
             $this->gearmanClient->doBackground(
                 'metrics',
-                json_encode($payload)
+                json_encode($payload),
+                uniqid('metrics-')
             );
         }
 

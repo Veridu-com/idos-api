@@ -43,7 +43,7 @@ class Members implements RouteInterface {
             'members:getMembership',
             'members:getOne',
             'members:updateOne',
-            'members:deleteOne',
+            'members:deleteOne'
         ];
     }
 

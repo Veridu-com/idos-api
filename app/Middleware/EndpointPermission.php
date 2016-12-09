@@ -36,6 +36,7 @@ class EndpointPermission implements MiddlewareInterface {
     private $permissionRepository;
     private $companyRepository;
     private $permissionType;
+    private $allowedRolesBits;
 
     /**
      * Class constructor.

@@ -44,6 +44,12 @@ class OTP extends AbstractServiceQueueEvent {
      */
     public $company;
     /**
+     * Event related Process.
+     *
+     * @var \App\Entity\Profile\Process
+     */
+    public $process;
+    /**
      * Event related IP Address.
      *
      * @var string

@@ -34,6 +34,12 @@ class Profiles implements ControllerInterface {
     /**
      * Attribute Repository instance.
      *
+     * @var \App\Repository\Profile\AttributeInterface
+     */
+    private $attributeRepository;
+    /**
+     * Candidate Repository instance.
+     *
      * @var \App\Repository\Profile\CandidateInterface
      */
     private $candidateRepository;
@@ -52,13 +58,13 @@ class Profiles implements ControllerInterface {
     /**
      * Source Repository instance.
      *
-     * @var \App\Repository\Profile\Gate
+     * @var \App\Repository\Profile\GateInterface
      */
     private $gateRepository;
     /**
      * Recommendation Repository instance.
      *
-     * @var \App\Repository\Profile\Recommendation
+     * @var \App\Repository\Profile\RecommendationInterface
      */
     private $recommendationRepository;
     /**
@@ -119,9 +125,9 @@ class Profiles implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\CandidateInterface::findByUserId
-     * @see \App\Repository\ScoreInterface::getByUserId
-     * @see \App\Repository\SourceInterface::getByUserId
+     * @see \App\Repository\Profile\CandidateInterface::findByUserId
+     * @see \App\Repository\Profile\ScoreInterface::getByUserId
+     * @see \App\Repository\Profile\SourceInterface::getByUserId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

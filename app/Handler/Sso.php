@@ -54,6 +54,24 @@ class Sso implements HandlerInterface {
      */
     private $credentialRepository;
     /**
+     * Member Repository instance.
+     *
+     * @var \App\Repository\Company\MemberInterface
+     */
+    private $memberRepository;
+    /**
+     * Company Repository instance.
+     *
+     * @var \App\Repository\CompanyInterface
+     */
+    private $companyRepository;
+    /**
+     * Invitation Repository instance.
+     *
+     * @var \App\Repository\Company\InvitationInterface
+     */
+    private $invitationRepository;
+    /**
      * Identity Repository instance.
      *
      * @var \App\Repository\IdentityInterface

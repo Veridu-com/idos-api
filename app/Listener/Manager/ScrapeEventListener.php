@@ -28,7 +28,7 @@ class ScrapeEventListener extends AbstractListener {
     /**
      * Credential Repository instance.
      *
-     * @var \App\Repository\CredentialInterface
+     * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
     /**
@@ -40,7 +40,7 @@ class ScrapeEventListener extends AbstractListener {
     /**
      * Setting Repository instance.
      *
-     * @var \App\Repository\SettingInterface
+     * @var \App\Repository\Company\SettingInterface
      */
     private $settingRepository;
     /**

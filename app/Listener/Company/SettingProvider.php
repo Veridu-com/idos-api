@@ -30,10 +30,6 @@ class SettingProvider extends Listener\AbstractListenerProvider {
             Setting\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
-            ],
-            Setting\DeletedMulti::class => [
-                new Listener\LogFiredEventListener($eventLogger),
-                new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];
     }

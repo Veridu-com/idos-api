@@ -53,6 +53,7 @@ class Attributes implements RouteInterface {
         $permissionMiddleware = $container->get('endpointPermissionMiddleware');
 
         self::listAll($app, $authMiddleware, $permissionMiddleware);
+        self::getOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -72,7 +73,7 @@ class Attributes implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/sources/candidate/listAll.md
+     * @link docs/profiles/attributes/listAll.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Attributes::listAll
@@ -86,5 +87,39 @@ class Attributes implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::USER))
             ->setName('attribute:listAll');
+    }
+
+    /**
+     * Retrieve a single attribute.
+     *
+     * Retrieves all public information from an attribute.
+     *
+     * @apiEndpoint GET /profiles/{userName}/attributes/{attributeName}
+     * @apiGroup Profile
+     * @apiAuth header token UserToken wqxehuwqwsthwosjbxwwsqwsdi A valid User Token
+     * @apiAuth query token UserToken wqxehuwqwsthwosjbxwwsqwsdi A valid User Token
+     * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
+     * @apiEndpointURIFragment string attributeName firstName
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/profiles/attributes/getOne.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Attributes::getOne
+     */
+    private static function getOne(App $app, callable $auth, callable $permission) {
+        $app
+            ->get(
+                '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[0-9a-zA-Z]+}',
+                'App\Controller\Profile\Attributes:getOne'
+            )
+            ->add($permission(EndpointPermission::PRIVATE_ACTION))
+            ->add($auth(Auth::USER))
+            ->setName('attributes:getOne');
     }
 }

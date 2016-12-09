@@ -12,6 +12,7 @@ use App\Command\Profile\Flag\CreateNew;
 use App\Command\Profile\Flag\DeleteAll;
 use App\Command\Profile\Flag\DeleteOne;
 use App\Entity\Profile\Flag as FlagEntity;
+use App\Exception\AppException;
 use App\Exception\Create;
 use App\Exception\Validate;
 use App\Factory\Event;

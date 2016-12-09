@@ -232,10 +232,18 @@ class S30ServiceHandlersSeed extends AbstractSeed {
                 'created_at' => $now
             ],
             [
-                'company_id' => 1,
-                'service_id' => 30, // idOS ProfilePicture Candidates
-                'listens'    => $featureListens,
-                'created_at' => $now
+                'company_id'    => 1,
+                'service_id'    => 30, // idOS ProfilePicture Candidates
+                'listens'       => $featureListens,
+                'created_at'    => $now
+            ],
+            [
+                'company_id'    => 1,
+                'service_id'    => 32, // idOS Recommendation
+                'listens'       => json_encode([
+                    'idos.recommendation'
+                ]),
+                'created_at'    => $now
             ]
         ];
 
@@ -251,15 +259,15 @@ class S30ServiceHandlersSeed extends AbstractSeed {
  *
  * id |            name
  * ----+----------------------------
- * 1 | idOS Scraper
- * 2 | idOS Feature Extractor
- * 3 | idOS BirthYear Candidates
- * 4 | idOS FirstName Candidates
- * 5 | idOS LastName Candidates
- * 6 | idOS BirthDay Candidates
- * 7 | idOS BirthMonth Candidates
- * 8 | idOS Country Candidates
- * 9 | idOS E-mail Candidates
+ *  1 | idOS Scraper
+ *  2 | idOS Feature Extractor
+ *  3 | idOS BirthYear Candidates
+ *  4 | idOS FirstName Candidates
+ *  5 | idOS LastName Candidates
+ *  6 | idOS BirthDay Candidates
+ *  7 | idOS BirthMonth Candidates
+ *  8 | idOS Country Candidates
+ *  9 | idOS E-mail Candidates
  * 10 | idOS City Candidates
  * 11 | idOS ZipCode Candidates
  * 12 | idOS Phone Candidates
@@ -279,4 +287,8 @@ class S30ServiceHandlersSeed extends AbstractSeed {
  * 26 | idOS Street
  * 27 | idOS Gender
  * 28 | idOS E-mail Handler
+ * 29 | idOS OTP E-mail Handler
+ * 30 | idOS ProfilePicture Candidates
+ * 31 | idOS Widget Handler
+ * 32 | idOS Recommendation
  */

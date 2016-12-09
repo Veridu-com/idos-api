@@ -14,6 +14,7 @@ use App\Command\Profile\Reference\DeleteOne;
 use App\Command\Profile\Reference\UpdateOne;
 use App\Entity\Profile\Reference as ReferenceEntity;
 use App\Exception\Create;
+use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
@@ -233,8 +234,10 @@ class Reference implements HandlerInterface {
         $references   = $this->repository->getAllByUserId($command->user->id);
         $affectedRows = $this->repository->deleteByUserId($command->user->id);
 
-        $event = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references, $command->credential);
-        $this->emitter->emit($event);
+        if ($affectedRows) {
+            $event = $this->eventFactory->create('Profile\\Reference\\DeletedMulti', $references, $command->credential);
+            $this->emitter->emit($event);
+        }
 
         return $affectedRows;
     }

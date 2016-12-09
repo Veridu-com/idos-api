@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
+use App\Exception\AppException;
 use App\Factory\Entity;
 use App\Factory\Repository;
 use Illuminate\Database\Connection as SQLConnection;

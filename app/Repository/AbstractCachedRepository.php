@@ -193,7 +193,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function save(EntityInterface &$entity) : EntityInterface {
+    public function save(EntityInterface $entity) : EntityInterface {
         $entity = $this->repository->save($entity);
 
         $this->deleteEntityCache($entity);
@@ -256,7 +256,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $constraints, array $queryParams) : Collection {
+    public function findBy(array $constraints, array $queryParams = [], array $columns = ['*']) : Collection {
         $constraintsKey = 'by';
         foreach ($constraints as $key => $value) {
             $constraintsKey .= sprintf('.%s.%s', $key, $value);
