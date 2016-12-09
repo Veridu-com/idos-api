@@ -32,7 +32,6 @@ class Raw implements RouteInterface {
         return [
             'raw:listAll',
             'raw:createNew',
-            'raw:deleteAll',
             'raw:upsert'
         ];
     }
