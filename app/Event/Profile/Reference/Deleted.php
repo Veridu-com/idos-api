@@ -11,11 +11,12 @@ namespace App\Event\Profile\Reference;
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Reference;
 use App\Event\AbstractEvent;
+use App\Event\Interfaces\UserIdGetterInterface;
 
 /**
  * Deleted event.
  */
-class Deleted extends AbstractEvent {
+class Deleted extends AbstractEvent implements UserIdGetterInterface {
     /**
      * Event related Reference.
      *
@@ -40,5 +41,12 @@ class Deleted extends AbstractEvent {
     public function __construct(Reference $reference, Credential $credential) {
         $this->reference  = $reference;
         $this->credential = $credential;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId() : int {
+        return $this->reference->userId;
     }
 }

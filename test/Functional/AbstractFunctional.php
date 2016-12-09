@@ -108,6 +108,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
             require_once __ROOT__ . '/../config/middleware.php';
             require_once __ROOT__ . '/../config/handlers.php';
             require_once __ROOT__ . '/../config/routes.php';
+            require_once __ROOT__ . '/../config/listeners.php';
 
             self::$app = $app;
         }
