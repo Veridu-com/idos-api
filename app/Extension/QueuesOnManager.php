@@ -22,7 +22,8 @@ trait QueuesOnManager {
     private function queueOnManager(\GearmanClient $gearmanClient, array $payload) : bool {
         $task = $gearmanClient->doBackground(
             'manager',
-            json_encode($payload)
+            json_encode($payload),
+            uniqid('manager-')
         );
 
         return $gearmanClient->returnCode() == \GEARMAN_SUCCESS;
