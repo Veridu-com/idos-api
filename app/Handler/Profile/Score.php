@@ -170,10 +170,15 @@ class Score implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
-            $this->validator->assertName($command->attribute);
             $this->validator->assertName($command->name);
             $this->validator->assertScore($command->value);
             $this->validator->assertCredential($command->credential);
+
+            // optional parameters
+            if ($command->attribute) {
+                $this->validator->assertName($command->attribute);
+            }
+
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -184,7 +189,9 @@ class Score implements HandlerInterface {
 
         $entity = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
 
-        $entity->attribute = $command->attribute;
+        if ($command->attribute) {
+            $entity->attribute = $command->attribute;
+        }
         $entity->value     = $command->value;
         $entity->updatedAt = time();
 

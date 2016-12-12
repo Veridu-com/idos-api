@@ -10,12 +10,13 @@ namespace App\Event\Profile\Reference;
 
 use App\Entity\Company\Credential;
 use App\Event\AbstractEvent;
+use App\Event\Interfaces\UserIdGetterInterface;
 use Illuminate\Support\Collection;
 
 /**
  * Deleted event for multiple references.
  */
-class DeletedMulti extends AbstractEvent {
+class DeletedMulti extends AbstractEvent implements UserIdGetterInterface {
     /**
      * Event related References.
      *
@@ -40,5 +41,12 @@ class DeletedMulti extends AbstractEvent {
     public function __construct(Collection $references, Credential $credential) {
         $this->references = $references;
         $this->credential = $credential;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUserId() : int {
+        return $this->references->first()->userId;
     }
 }
