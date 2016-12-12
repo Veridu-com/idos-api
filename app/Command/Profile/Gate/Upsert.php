@@ -32,7 +32,7 @@ class Upsert extends AbstractCommand {
      * @var string
      */
     public $name;
-        /**
+    /**
      * Gate's slug (user input).
      *
      * @var string
