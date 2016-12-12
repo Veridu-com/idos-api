@@ -64,7 +64,7 @@ class Secure {
         if ($this->key === null) {
             return $cipherText;
         }
-        
+
         try {
             return Crypto::decrypt($cipherText, $this->key);
         } catch (WrongKeyOrModifiedCiphertextException $exception) {

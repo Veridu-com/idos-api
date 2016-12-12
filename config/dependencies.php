@@ -416,8 +416,8 @@ $container['sql'] = function (ContainerInterface $container) : Connection {
 
 // MongoDB Access
 $container['nosql'] = function (ContainerInterface $container) : callable {
-    return function (string $database) use ($container) : Mongodb\Connection {
-        $config             = $container['settings']['db']['nosql'];
+    return function (string $database, array $config = []) use ($container) : Mongodb\Connection {
+        $config             = array_merge($container['settings']['db']['nosql'], $config);
         $config['database'] = $database;
 
         return new Mongodb\Connection($config);

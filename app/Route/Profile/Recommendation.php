@@ -84,7 +84,7 @@ class Recommendation implements RouteInterface {
                 'App\Controller\Profile\Recommendation:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER))
+            ->add($auth(Auth::USER | Auth::CREDENTIAL))
             ->setName('recommendation:getOne');
     }
 
