@@ -58,8 +58,4 @@ abstract class AbstractAuthFunctional extends AbstractFunctional {
 
         return $this->middlewareApp;
     }
-
-    // public function tearDown() {
-    //     $this->middlewareApp = [];
-    // }
 }

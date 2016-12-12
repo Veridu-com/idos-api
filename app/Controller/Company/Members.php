@@ -122,7 +122,7 @@ class Members implements ControllerInterface {
      * Updates a company member identified by the given id.
      *
      * @apiEndpointRequiredParam body string role company.owner Role type
-     * @apiEndpointResponse 201 schema/member/updateOne.json
+     * @apiEndpointResponse 200 schema/member/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -163,7 +163,7 @@ class Members implements ControllerInterface {
     /**
      * Deletes a Company member.
      *
-     * @apiEndpointResponse 201 schema/member/deleteOne.json
+     * @apiEndpointResponse 200 schema/member/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -204,7 +204,7 @@ class Members implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string role company.owner Role type
      * @apiEndpointRequiredParam body string email jhondoe@idos.io User's email
-     * @apiEndpointResponse 201 schema/member/createNewInvitation.json
+     * @apiEndpointResponse 200 schema/member/createNewInvitation.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
