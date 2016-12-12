@@ -127,7 +127,6 @@ class UserInit extends AbstractMigration {
             ->addColumn('creator', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('slug', 'text', ['null' => false])
-            ->addColumn('pass', 'boolean', ['null' => false, 'default' => 'FALSE'])
             ->addTimestamps()
             ->addIndex('user_id')
             ->addIndex('creator')

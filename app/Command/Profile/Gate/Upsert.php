@@ -27,31 +27,23 @@ class Upsert extends AbstractCommand {
      */
     public $service;
     /**
-     * Gate's slug (user input).
-     *
-     * @var string
-     */
-    public $slug;
-
-    /**
      * Gate's name (user input).
      *
      * @var string
      */
     public $name;
+        /**
+     * Gate's slug (user input).
+     *
+     * @var string
+     */
+    public $slug;
     /**
      * Gate's confidence level (user input).
      *
      * @var string
      */
     public $confidenceLevel;
-
-    /**
-     * Gate's value (user input).
-     *
-     * @var bool
-     */
-    public $pass;
     /**
      * Credential.
      *
@@ -73,20 +65,16 @@ class Upsert extends AbstractCommand {
             $this->service = $parameters['service'];
         }
 
-        if (isset($parameters['slug'])) {
-            $this->slug = $parameters['slug'];
-        }
-
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
 
-        if (isset($parameters['confidence_level'])) {
-            $this->confidenceLevel = $parameters['confidence_level'];
+        if (isset($parameters['slug'])) {
+            $this->slug = $parameters['slug'];
         }
 
-        if (isset($parameters['pass'])) {
-            $this->pass = $parameters['pass'];
+        if (isset($parameters['confidence_level'])) {
+            $this->confidenceLevel = $parameters['confidence_level'];
         }
 
         return $this;

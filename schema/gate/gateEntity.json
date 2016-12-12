@@ -18,9 +18,10 @@
             "type": "string",
             "pattern": "[a-zA-Z0-9_-]+"
         },
-        "pass": {
-            "description": "Gate value",
-            "type": "boolean"
+        "confidence_level": {
+            "description": "Gate's confidence level",
+            "type": ["string", "null"],
+            "pattern": "[a-zA-Z0-9_-]+"
         },
         "created_at": {
             "description": "Gate's creation unixtime",
@@ -32,13 +33,13 @@
         }
     },
     "dependencies": {
-        "slug": ["name", "confidence_level"]
+        "slug": ["name"]
     },
     "required": [
         "id",
         "name",
         "slug",
-        "pass",
+        "confidence_level",
         "created_at"
     ]
 }

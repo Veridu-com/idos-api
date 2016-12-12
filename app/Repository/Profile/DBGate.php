@@ -43,7 +43,6 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
     protected $orderableKeys = [
         'name',
         'slug',
-        'pass',
         'created_at',
         'updated_at'
     ];

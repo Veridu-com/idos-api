@@ -22,8 +22,6 @@ class GatesGroupUpdate extends AbstractMigration {
 
         $gates
             ->addColumn('confidence_level', 'text', ['null' => true])
-            ->removeIndex(['user_id', 'creator', 'name'], 'gates_user_id_creator_name')
-            ->addIndex(['user_id', 'creator', 'name', 'confidence_level'], ['unique' => true])
             ->addForeignKey('name', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
             ->save();
 
