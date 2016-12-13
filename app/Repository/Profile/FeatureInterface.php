@@ -40,6 +40,16 @@ interface FeatureInterface extends RepositoryInterface {
     public function findOneByName(string $name, int $serviceId, $sourceName, int $userId) : Feature;
 
     /**
+     * Returns a feature based on its user id and id.
+     *
+     * @param int $id        The feature id
+     * @param int $userId    The user id
+     *
+     * @return \App\Entity\Profile\Feature
+     */
+    public function findOneByIdAndUserId(int $id, int $userId) : Feature;
+
+    /**
      * Return features based on their user id and service id (creator).
      *
      * @param int   $serviceId
