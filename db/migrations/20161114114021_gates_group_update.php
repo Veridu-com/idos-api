@@ -21,7 +21,7 @@ class GatesGroupUpdate extends AbstractMigration {
         $this->query('DELETE FROM "gates"');
 
         $gates
-            ->addColumn('confidence_level', 'text', ['null' => true])
+            ->addColumn('confidence_level', 'text', ['null' => false])
             ->addForeignKey('name', 'categories', 'slug', ['delete' => 'NO ACTION', 'update' => 'CASCADE'])
             ->save();
 

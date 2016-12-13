@@ -129,10 +129,7 @@ class Gate implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertName($command->name);
             $this->validator->assertCredential($command->credential);
-
-            if ($command->confidenceLevel !== null) {
-                $this->validator->assertMediumName($command->confidenceLevel);
-            }
+            $this->validator->assertMediumName($command->confidenceLevel);
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -185,10 +182,7 @@ class Gate implements HandlerInterface {
             $this->validator->assertService($command->service);
             $this->validator->assertSlug($command->slug);
             $this->validator->assertCredential($command->credential);
-
-            if ($command->confidenceLevel !== null) {
-                $this->validator->assertMediumName($command->confidenceLevel);
-            }
+            $this->validator->assertMediumName($command->confidenceLevel);
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -227,10 +221,7 @@ class Gate implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertService($command->service);
             $this->validator->assertName($command->name);
-
-            if ($command->confidenceLevel !== null) {
-                $this->validator->assertMediumName($command->confidenceLevel);
-            }
+            $this->validator->assertMediumName($command->confidenceLevel);
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),

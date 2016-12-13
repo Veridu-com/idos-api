@@ -112,23 +112,17 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-        $this->assertSame('Name Test', $body['data']['name']);
-        $this->assertSame('name-test', $body['data']['slug']);
-        $this->assertNull($body['data']['confidence_level']);
+        $this->assertFalse($body['status']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
-            $this->validateSchema(
-                'gate/upsert.json',
-                json_decode((string) $response->getBody())
-            ),
+            $this->validateSchema('error.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
     }
