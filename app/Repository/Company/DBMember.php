@@ -12,6 +12,7 @@ use App\Entity\Company\Member;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Factory\Repository;
+use App\Helper\Secure;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
@@ -32,9 +33,10 @@ class DBMember extends AbstractSQLDBRepository implements MemberInterface {
         Entity $entityFactory,
         Repository $repositoryFactory,
         Optimus $optimus,
+        Secure $crypt,
         ConnectionInterface $sqlConnection
     ) {
-        parent::__construct($entityFactory, $repositoryFactory, $optimus, $sqlConnection);
+        parent::__construct($entityFactory, $repositoryFactory, $optimus, $crypt, $sqlConnection);
         $this->companyRepository = $this->repositoryFactory->create('Company');
     }
 
