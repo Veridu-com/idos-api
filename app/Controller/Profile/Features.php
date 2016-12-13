@@ -127,7 +127,7 @@ class Features implements ControllerInterface {
         $service   = $request->getAttribute('service');
         $featureId = $request->getAttribute('decodedFeatureId');
 
-        $feature = $this->repository->findOne($featureId, $service->id, $user->id);
+        $feature = $this->repository->findOneByIdAndUserId($featureId, $user->id);
 
         if ($feature->source !== null) {
             $this->sourceRepository->findOneByName($feature->source, $user->id);
