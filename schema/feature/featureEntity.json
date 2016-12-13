@@ -4,6 +4,11 @@
     "title": "Feature",
     "type": "object",
     "properties": {
+        "id": {
+            "description":"Feature Id",
+            "type": "number", 
+            "pattern": ""
+        },
         "name": {
             "description": "Feature Name",
             "type": "string",

@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "PUT /profiles/{userName}/features",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Feature response payload",
+            "type": "object",
+            "$ref": "featureEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

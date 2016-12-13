@@ -13,6 +13,7 @@ use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\CandidateInterface;
 use App\Repository\Profile\GateInterface;
+use App\Repository\Profile\FlagInterface;
 use App\Repository\Profile\RecommendationInterface;
 use App\Repository\Profile\ScoreInterface;
 use App\Repository\Profile\SourceInterface;
@@ -56,11 +57,17 @@ class Profiles implements ControllerInterface {
      */
     private $sourceRepository;
     /**
-     * Source Repository instance.
+     * Gate Repository instance.
      *
      * @var \App\Repository\Profile\GateInterface
      */
     private $gateRepository;
+    /**
+     * Flag Repository instance.
+     *
+     * @var \App\Repository\Profile\FlagInterface
+     */
+    private $flagRepository;
     /**
      * Recommendation Repository instance.
      *
@@ -102,6 +109,7 @@ class Profiles implements ControllerInterface {
         ScoreInterface $scoreRepository,
         SourceInterface $sourceRepository,
         GateInterface $gateRepository,
+        FlagInterface $flagRepository,
         RecommendationInterface $recommendationRepository,
         CommandBus $commandBus,
         Command $commandFactory
@@ -112,6 +120,7 @@ class Profiles implements ControllerInterface {
         $this->scoreRepository           = $scoreRepository;
         $this->sourceRepository          = $sourceRepository;
         $this->gateRepository            = $gateRepository;
+        $this->flagRepository            = $flagRepository;
         $this->recommendationRepository  = $recommendationRepository;
         $this->commandBus                = $commandBus;
         $this->commandFactory            = $commandFactory;
@@ -139,6 +148,7 @@ class Profiles implements ControllerInterface {
         $scores     = $this->scoreRepository->getByUserId($user->id);
         $sources    = $this->sourceRepository->getByUserId($user->id);
         $gates      = $this->gateRepository->getByUserId($user->id);
+        $flags      = $this->flagRepository->getByUserId($user->id);
 
         try {
             $recommendation = $this->recommendationRepository->findOne($user->id)->toArray();
@@ -153,6 +163,7 @@ class Profiles implements ControllerInterface {
             'scores'         => $scores->toArray(),
             'gates'          => $gates->toArray(),
             'sources'        => $sources->toArray(),
+            'flags'          => $flags->toArray(),
             'recommendation' => $recommendation,
             'created_at'     => $user->createdAt
         ];

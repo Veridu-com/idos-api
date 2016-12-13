@@ -204,7 +204,7 @@ class Members implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string role company.owner Role type
      * @apiEndpointRequiredParam body string email jhondoe@idos.io User's email
-     * @apiEndpointResponse 200 schema/member/createNewInvitation.json
+     * @apiEndpointResponse 200 schema/member/getMembership.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
