@@ -105,6 +105,18 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
+    public function findOneByIdAndUserId(int $id, int $userId) : Feature {
+        return $this->findOneBy(
+            [
+                'id'      => $id,
+                'user_id' => $userId
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection {
         return $this->findBy(
             [

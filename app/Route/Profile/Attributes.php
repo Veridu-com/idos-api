@@ -85,7 +85,7 @@ class Attributes implements RouteInterface {
                 'App\Controller\Profile\Attributes:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::USER))
+            ->add($auth(Auth::USER | Auth::CREDENTIAL))
             ->setName('attribute:listAll');
     }
 
@@ -119,7 +119,7 @@ class Attributes implements RouteInterface {
                 'App\Controller\Profile\Attributes:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::USER))
+            ->add($auth(Auth::USER | Auth::CREDENTIAL))
             ->setName('attributes:getOne');
     }
 }
