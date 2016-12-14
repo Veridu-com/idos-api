@@ -74,52 +74,120 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
     ];
 
     /**
+     * Returns the category associated with a gate.
+     *
+     * @param \App\Entity\Profile\Gate $gate The gate entity
+     *
+     * @return \App\Entity\Profile\Gate
+     */
+    public function findCategory(Gate $gate) {
+        $category = $this
+            ->repositoryFactory
+            ->create('Category')
+            ->getAll([
+                'type' => 'gate',
+                'name' => $gate->name
+            ]);
+
+        if (count($category) > 0) {
+            return $category->first();
+        }
+
+        return null;
+    }
+
+    /**
+     * Associate the categories with the given gates.
+     *
+     * @param \Illuminate\Support\Collection $gates The gates entities
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function associateCategories(Collection $gates) {
+        $categories = $this
+            ->repositoryFactory
+            ->create('Category')
+            ->getAll([
+                'type' => 'gate'
+            ]);
+
+        $gateCategories = [];
+        foreach ($categories as $category) {
+            $gateCategories[$category->name] = $category->toArray();
+        }
+
+        foreach ($gates as $gate) {
+            $gate->category = isset($gateCategories[$gate->name]) ? $gateCategories[$gate->name] : null;
+        }
+
+        return $gates;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function findBySlug(string $slug, int $serviceId, int $userId) : Gate {
-        return $this->findOneBy(
+        $gate = $this->findOneBy(
             [
                 'user_id' => $userId,
                 'creator' => $serviceId,
                 'slug'    => $slug
             ]
         );
+
+        $category = $this->findCategory($gate);
+        $gate->category = $category ? $category->toArray() : null;
+
+        return $gate;
     }
 
     /**
      * {@inheritdoc}
      */
     public function findByName(string $name, int $serviceId, int $userId) : Gate {
-        return $this->findOneBy(
+        $gate = $this->findOneBy(
             [
                 'user_id' => $userId,
                 'creator' => $serviceId,
                 'name'    => $name
             ]
         );
+
+        $category = $this->findCategory($gate);
+        $gate->category = $category ? $category->toArray() : null;
+
+        return $gate;
     }
 
     /**
      * {@inheritdoc}
      */
     public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection {
-        return $this->findBy(
+        $gates = $this->findBy(
             [
                 'creator' => $serviceId,
                 'user_id' => $userId
             ], $queryParams
         );
+
+        $gates = $this->associateCategories($gates);
+
+        return $gates;
     }
 
     /**
      * {@inheritdoc}
      */
     public function getByUserId(int $userId, array $queryParams = []) : Collection {
-        return $this->findBy(
+        $gates = $this->findBy(
             [
                 'user_id' => $userId
             ], $queryParams
         );
+
+        $gates = $this->associateCategories($gates);
+
+        return $gates;
     }
 
     /**

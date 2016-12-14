@@ -35,6 +35,7 @@ class Gate extends AbstractEntity {
         'confidence_level',
         'review',
         'creator',
+        'category',
         'created_at',
         'updated_at'
     ];

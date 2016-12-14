@@ -32,7 +32,8 @@ class DBCategory extends AbstractSQLDBRepository implements CategoryInterface {
      * {@inheritdoc}
      */
     protected $filterableKeys = [
-        'type' => 'string'
+        'type' => 'string',
+        'name' => 'string'
     ];
 
     /**
