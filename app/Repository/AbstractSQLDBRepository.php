@@ -13,7 +13,7 @@ use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Factory\Repository;
-use App\Helper\Secure;
+use App\Helper\Vault;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
@@ -70,7 +70,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             [
                 [],
                 $this->optimus,
-                $this->crypt
+                $this->vault
             ]
         );
 
@@ -155,7 +155,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @param \App\Factory\Entity                      $entityFactory
      * @param \App\Factory\Repository                  $repositoryFactory
      * @param \Jenssegers\Optimus\Optimus              $optimus
-     * @param \App\Helper\Secure                       $crypt
+     * @param \App\Helper\Vault                        $vault
      * @param \Illuminate\Database\ConnectionInterface $sqlConnection
      *
      * @return void
@@ -164,10 +164,10 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         Entity $entityFactory,
         Repository $repositoryFactory,
         Optimus $optimus,
-        Secure $crypt,
+        Vault $vault,
         ConnectionInterface $sqlConnection
     ) {
-        parent::__construct($entityFactory, $repositoryFactory, $optimus, $crypt);
+        parent::__construct($entityFactory, $repositoryFactory, $optimus, $vault);
         $this->dbConnection = $sqlConnection;
     }
 
