@@ -62,10 +62,10 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
         ],
         'creator' => [
             'type'       => 'MANY_TO_ONE',
-            'table'      => 'services',
+            'table'      => 'handlers',
             'foreignKey' => 'creator',
             'key'        => 'id',
-            'entity'     => 'Service',
+            'entity'     => 'Handler',
             'nullable'   => false,
             'hydrate'    => [
                 'name'
@@ -142,10 +142,10 @@ class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface 
         );
     }
 
-    public function getAllByUserIdAndServiceId(int $userId, int $serviceId) : Collection {
+    public function getAllByUserIdAndHandlerId(int $userId, int $handlerId) : Collection {
         return $this->query()
             ->where('user_id', $userId)
-            ->where('creator', $serviceId)
+            ->where('creator', $handlerId)
             ->get();
     }
 

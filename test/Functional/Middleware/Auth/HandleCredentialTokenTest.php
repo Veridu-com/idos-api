@@ -34,7 +34,7 @@ class HandleCredentialTokenTest extends AbstractAuthFunctional {
         $this->getApp()
             ->get(
                 '/', function (ServerRequestInterface $request, ResponseInterface $response) {
-                    $service = $request->getAttribute('service');
+                    $service = $request->getAttribute('handler');
                     $company = $request->getAttribute('company');
                     $credential = $request->getAttribute('credential');
 

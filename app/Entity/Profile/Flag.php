@@ -45,7 +45,6 @@ class Flag extends AbstractEntity {
      * {@inheritdoc}
      */
     public $relationships = [
-        'creator' => 'Service',
-        'review'  => 'Review'
+        'creator' => 'Handler'
     ];
 }

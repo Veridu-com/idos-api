@@ -9,15 +9,15 @@ declare(strict_types = 1);
 namespace Test\Unit\Controller;
 
 use App\Command\ResponseDispatch;
-use App\Command\ServiceHandler\CreateNew;
-use App\Command\ServiceHandler\DeleteAll;
-use App\Command\ServiceHandler\DeleteOne;
-use App\Command\ServiceHandler\UpdateOne;
-use App\Controller\ServiceHandlers;
+use App\Command\Service\CreateNew;
+use App\Command\Service\DeleteAll;
+use App\Command\Service\DeleteOne;
+use App\Command\Service\UpdateOne;
+use App\Controller\Services;
 use App\Entity\Company;
-use App\Entity\ServiceHandler as ServiceHandlerEntity;
+use App\Entity\Service as ServiceEntity;
 use App\Factory\Command;
-use App\Repository\DBServiceHandler;
+use App\Repository\DBService;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
@@ -25,7 +25,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Test\Unit\AbstractUnit;
 
-class ServiceHandlersTest extends AbstractUnit {
+class ServicesTest extends AbstractUnit {
     private function getCompanyEntity() {
         $optimus = $this->getMockBuilder(Optimus::class)
             ->disableOriginalConstructor()
@@ -48,7 +48,7 @@ class ServiceHandlersTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        return new ServiceHandlerEntity(
+        return new ServiceEntity(
             [
                 'name'         => 'New Service Handler',
                 'slug'         => 'new-service-handler',
@@ -76,11 +76,11 @@ class ServiceHandlersTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $dbServiceHandlerMock = $this->getMockBuilder(DBServiceHandler::class)
+        $dbServiceMock = $this->getMockBuilder(DBService::class)
             ->disableOriginalConstructor()
             ->setMethods(['getAllByCompanyId'])
             ->getMock();
-        $dbServiceHandlerMock
+        $dbServiceMock
             ->method('getAllByCompanyId')
             ->will($this->returnValue(new Collection([$this->getEntity(1), $this->getEntity(2)])));
 
@@ -102,8 +102,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->method('create')
             ->will($this->returnValue(new ResponseDispatch()));
 
-        $serviceHandlerMock = $this->getMockBuilder(ServiceHandlers::class)
-            ->setConstructorArgs([$dbServiceHandlerMock, $commandBus, $commandFactory])
+        $serviceHandlerMock = $this->getMockBuilder(Services::class)
+            ->setConstructorArgs([$dbServiceMock, $commandBus, $commandFactory])
             ->setMethods(null)
             ->getMock();
 
@@ -131,11 +131,11 @@ class ServiceHandlersTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $dbServiceHandlerMock = $this->getMockBuilder(DBServiceHandler::class)
+        $dbServiceMock = $this->getMockBuilder(DBService::class)
             ->disableOriginalConstructor()
             ->setMethods(['findOne'])
             ->getMock();
-        $dbServiceHandlerMock
+        $dbServiceMock
             ->expects($this->once())
             ->method('findOne')
             ->will($this->returnValue($this->getEntity(1)));
@@ -158,8 +158,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->method('create')
             ->will($this->returnValue(new ResponseDispatch()));
 
-        $serviceHandlerMock = $this->getMockBuilder(ServiceHandlers::class)
-            ->setConstructorArgs([$dbServiceHandlerMock, $commandBus, $commandFactory])
+        $serviceHandlerMock = $this->getMockBuilder(Services::class)
+            ->setConstructorArgs([$dbServiceMock, $commandBus, $commandFactory])
             ->setMethods(null)
             ->getMock();
 
@@ -187,7 +187,7 @@ class ServiceHandlersTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $dbServiceHandlerMock = $this->getMockBuilder(DBServiceHandler::class)
+        $dbServiceMock = $this->getMockBuilder(DBService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -209,8 +209,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->method('create')
             ->will($this->onConsecutiveCalls(new CreateNew(), new ResponseDispatch()));
 
-        $serviceHandlerMock = $this->getMockBuilder(ServiceHandlers::class)
-            ->setConstructorArgs([$dbServiceHandlerMock, $commandBus, $commandFactory])
+        $serviceHandlerMock = $this->getMockBuilder(Services::class)
+            ->setConstructorArgs([$dbServiceMock, $commandBus, $commandFactory])
             ->setMethods(null)
             ->getMock();
 
@@ -232,7 +232,7 @@ class ServiceHandlersTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $dbServiceHandlerMock = $this->getMockBuilder(DBServiceHandler::class)
+        $dbServiceMock = $this->getMockBuilder(DBService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -254,8 +254,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->method('create')
             ->will($this->onConsecutiveCalls(new DeleteAll(), new ResponseDispatch()));
 
-        $serviceHandlerMock = $this->getMockBuilder(ServiceHandlers::class)
-            ->setConstructorArgs([$dbServiceHandlerMock, $commandBus, $commandFactory])
+        $serviceHandlerMock = $this->getMockBuilder(Services::class)
+            ->setConstructorArgs([$dbServiceMock, $commandBus, $commandFactory])
             ->setMethods(null)
             ->getMock();
 
@@ -283,7 +283,7 @@ class ServiceHandlersTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $dbServiceHandlerMock = $this->getMockBuilder(DBServiceHandler::class)
+        $dbServiceMock = $this->getMockBuilder(DBService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -305,8 +305,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->method('create')
             ->will($this->onConsecutiveCalls(new DeleteOne(), new ResponseDispatch()));
 
-        $serviceHandlerMock = $this->getMockBuilder(ServiceHandlers::class)
-            ->setConstructorArgs([$dbServiceHandlerMock, $commandBus, $commandFactory])
+        $serviceHandlerMock = $this->getMockBuilder(Services::class)
+            ->setConstructorArgs([$dbServiceMock, $commandBus, $commandFactory])
             ->setMethods(null)
             ->getMock();
 
@@ -338,7 +338,7 @@ class ServiceHandlersTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
-        $dbServiceHandlerMock = $this->getMockBuilder(DBServiceHandler::class)
+        $dbServiceMock = $this->getMockBuilder(DBService::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -360,8 +360,8 @@ class ServiceHandlersTest extends AbstractUnit {
             ->method('create')
             ->will($this->onConsecutiveCalls(new UpdateOne(), new ResponseDispatch()));
 
-        $serviceHandlerMock = $this->getMockBuilder(ServiceHandlers::class)
-            ->setConstructorArgs([$dbServiceHandlerMock, $commandBus, $commandFactory])
+        $serviceHandlerMock = $this->getMockBuilder(Services::class)
+            ->setConstructorArgs([$dbServiceMock, $commandBus, $commandFactory])
             ->setMethods(null)
             ->getMock();
 

@@ -8,11 +8,11 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Entity;
 
-use App\Entity\ServiceHandler;
+use App\Entity\Handler;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
-class ServiceHandlerTest extends AbstractUnit {
+class HandlerTest extends AbstractUnit {
     /*
      * Jenssengers\Optimus\Optimus $optimus
      */
@@ -33,14 +33,14 @@ class ServiceHandlerTest extends AbstractUnit {
     }
 
     public function testSerialize() {
-        $abstractMock = $this->getMockBuilder(ServiceHandler::class)
+        $abstractMock = $this->getMockBuilder(Handler::class)
             ->setMethods(null)
             ->setConstructorArgs(
                 [
                 array_merge(
                     [
                         'companyId'    => 1,
-                        'serviceId'    => 2,
+                        'handlerId'    => 2,
                         'listens'      => ['listen1', 'listen2'],
                         'authUsername' => 'Auth Username',
                         'authPassword' => 'Auth Password'
@@ -77,14 +77,14 @@ class ServiceHandlerTest extends AbstractUnit {
     }
 
     public function testToArray() {
-        $abstractMock = $this->getMockBuilder(ServiceHandler::class)
+        $abstractMock = $this->getMockBuilder(Handler::class)
             ->setMethods(null)
             ->setConstructorArgs(
                 [
                 array_merge(
                     [
                         'companyId' => 1,
-                        'serviceId' => 2,
+                        'handlerId' => 2,
                         'listens'   => ['listen1', 'listen2']
                     ],
                     $this->getAttributes()

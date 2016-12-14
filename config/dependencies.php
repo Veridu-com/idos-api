@@ -327,7 +327,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
             $repositoryFactory->create('Identity'),
             $repositoryFactory->create('User'),
             $repositoryFactory->create('Company'),
-            $repositoryFactory->create('Service'),
+            $repositoryFactory->create('Handler'),
             $jwt('parser'),
             $jwt('validation'),
             $jwt('signer'),

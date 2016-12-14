@@ -9,15 +9,16 @@ declare(strict_types = 1);
 namespace App\Validator;
 
 /**
- * ServiceHandler Validation Rules.
+ * Handler Validation Rules.
  */
-class ServiceHandler implements ValidatorInterface {
-    use Traits\AssertType,
+class Handler implements ValidatorInterface {
+    use Traits\AssertAccessMode,
+        Traits\AssertType,
+        Traits\AssertEntity,
+        Traits\AssertFlag,
         Traits\AssertId,
         Traits\AssertName,
         Traits\AssertPassword,
-        Traits\AssertSlug,
         Traits\AssertUrl,
-        Traits\AssertUserName,
-        Traits\AssertEntity;
+        Traits\AssertUserName;
 }

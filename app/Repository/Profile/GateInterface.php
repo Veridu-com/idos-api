@@ -20,34 +20,34 @@ interface GateInterface extends RepositoryInterface {
      * Returns a gate based on its user id, source id, service id (creator) and slug.
      *
      * @param string $slug      The gate slug
-     * @param int    $serviceId The service id
+     * @param int    $handlerId The service id
      * @param int    $userId    The user id
      *
      * @return \App\Entity\Profile\Gate
      */
-    public function findBySlug(string $slug, int $serviceId, int $userId) : Gate;
+    public function findBySlug(string $slug, int $handlerId, int $userId) : Gate;
 
     /**
      * Returns a gate based on its user id, source id, service id (creator) and name.
      *
      * @param string $name      The gate name
-     * @param int    $serviceId The service id
+     * @param int    $handlerId The service id
      * @param int    $userId    The user id
      *
      * @return \App\Entity\Profile\Gate
      */
-    public function findByName(string $name, int $serviceId, int $userId) : Gate;
+    public function findByName(string $name, int $handlerId, int $userId) : Gate;
 
     /**
      * Return gates based on their user id and service id (creator).
      *
-     * @param int   $serviceId
+     * @param int   $handlerId
      * @param int   $userId
      * @param array $queryParams
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
+    public function getByHandlerIdAndUserId(int $handlerId, int $userId, array $queryParams = []) : Collection;
 
     /**
      * Return gates based on their user id.

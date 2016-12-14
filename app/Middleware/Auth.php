@@ -13,7 +13,7 @@ use App\Exception\NotFound;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\CompanyInterface;
 use App\Repository\IdentityInterface;
-use App\Repository\ServiceInterface;
+use App\Repository\HandlerInterface;
 use App\Repository\UserInterface;
 use Lcobucci\JWT\Parser as JWTParser;
 use Lcobucci\JWT\Signer\Hmac\Sha256 as JWTSigner;
@@ -50,9 +50,9 @@ class Auth implements MiddlewareInterface {
     /**
      * Service Repository.
      *
-     * @var \App\Repository\ServiceInterface
+     * @var \App\Repository\HandlerInterface
      */
-    private $serviceRepository;
+    private $handlerRepository;
     /**
      * Identity Repository.
      *
@@ -384,13 +384,13 @@ class Auth implements MiddlewareInterface {
         $servicePubKey = $token->getClaim('iss');
 
         try {
-            $issuerService = $this->serviceRepository->findByPubKey($servicePubKey);
+            $issuerHandler = $this->handlerRepository->findByPubKey($servicePubKey);
         } catch (NotFound $e) {
             throw new AppException('Invalid Service', 400);
         }
 
         // JWT Signature Verification
-        if (! $token->verify($this->jwtSigner, $issuerService->private)) {
+        if (! $token->verify($this->jwtSigner, $issuerHandler->private)) {
             throw new AppException('Token Verification Failed', 400);
         }
 
@@ -412,7 +412,7 @@ class Auth implements MiddlewareInterface {
 
         return $request
             // Stores Service for future use
-            ->withAttribute('service', $issuerService)
+            ->withAttribute('handler', $issuerHandler)
 
             // Stores Company for future use
             ->withAttribute('company', $company)
@@ -500,7 +500,7 @@ class Auth implements MiddlewareInterface {
         IdentityInterface $identityRepository,
         UserInterface $userRepository,
         CompanyInterface $companyRepository,
-        ServiceInterface $serviceRepository,
+        HandlerInterface $handlerRepository,
         JWTParser $jwtParser,
         JWTValidation $jwtValidation,
         JWTSigner $jwtSigner,
@@ -510,7 +510,7 @@ class Auth implements MiddlewareInterface {
         $this->identityRepository   = $identityRepository;
         $this->userRepository       = $userRepository;
         $this->companyRepository    = $companyRepository;
-        $this->serviceRepository    = $serviceRepository;
+        $this->handlerRepository    = $handlerRepository;
 
         $this->jwtParser     = $jwtParser;
         $this->jwtValidation = $jwtValidation;

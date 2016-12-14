@@ -113,6 +113,20 @@ trait AssertEntity {
     }
 
     /**
+     * Asserts a valid handler entity.
+     *
+     * @param mixed $handler
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertHandler($handler) {
+        Validator::instance('App\\Entity\\Handler')
+            ->assert($handler);
+    }
+
+    /**
      * Asserts a valid Service Handler entity.
      *
      * @param mixed $entity

@@ -8,10 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\Company;
 use App\Entity\Service;
-use App\Exception\NotFound;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -24,6 +21,7 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
      * @var string
      */
     protected $tableName = 'services';
+
     /**
      * The entity associated with the repository.
      *
@@ -32,30 +30,74 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
     protected $entityName = 'Service';
 
     /**
-     * {@inheritdoc}
+     * Query attributes, used to fetch attributes from database.
+     *
+     * @var array
      */
-    protected $filterableKeys = [
-        'created_at' => 'date'
+    private $queryAttributes = [
+        'services.*',
+        'handler_services.id as handler_service.id',
+        'handler_services.name as handler_service.name',
+        'handler_services.url as handler_service.url',
+        'handler_services.enabled as handler_service.enabled',
+        'handler_services.listens as handler_service.listens',
+        'handler_services.created_at as handler_service.created_at',
+        'handler_services.updated_at as handler_service.updated_at',
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function getByCompany(Company $company, array $queryParams = []) : Collection {
-        $query = $this->query();
-        $query = $this->scopeQuery($query, $company);
-        $query = $this->filter($query, $queryParams);
-
-        return $query->get();
-    }
+    protected $filterableKeys = [
+        /*'source.id' => 'decoded',
+        'source.name' => 'string',
+        'creator' => 'string',
+        'name' => 'string',
+        'type' => 'string',
+        'created_at' => 'date'*/
+    ];
 
     /**
      * {@inheritdoc}
      */
-    public function getAllByCompanyId(int $companyId) : Collection {
-        return $this->findBy(
+    protected $relationships = [
+        'company' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'companies',
+            'foreignKey' => 'company_id',
+            'key'        => 'id',
+            'entity'     => 'Company',
+            'hydrate'    => false,
+            'nullable'   => false
+        ],
+
+        'handler_service' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'handler_services',
+            'foreignKey' => 'handler_service_id',
+            'key'        => 'id',
+            'entity'     => 'HandlerService',
+            'hydrate'    => [
+                'id',
+                'name',
+                'url',
+                'listens',
+                'enabled',
+                'created_at',
+                'updated_at'
+            ],
+            'nullable' => false
+        ],
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOne(int $serviceId, int $companyId) : Service {
+        return $this->findOneBy(
             [
-                'company_id' => $companyId,
+            'id'         => $serviceId,
+            'company_id' => $companyId
             ]
         );
     }
@@ -63,88 +105,66 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $serviceId, Company $company) : Service {
-        $query = $this->query()->where('id', $serviceId);
-        $query = $this->scopeQuery($query, $company);
-
-        $entity = $query->first();
-
-        if (! $entity) {
-            throw new NotFound();
-        }
-
-        return $entity;
+    public function getByService(int $companyId, string $serviceSlug) : Collection {
+        return $this->findBy(
+            [
+                'company_id'   => $companyId,
+                'service.slug' => $serviceSlug,
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPubKey(string $key) : Service {
-        return $this->findOneBy(['public' => $key]);
+    public function getByCompanyId(int $companyId) : Collection {
+        return $this->findBy(
+            [
+                'company_id' => $companyId
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey(string $key) : Service {
-        return $this->findOneBy(['private' => $key]);
+    public function getByServiceCompanyId(int $companyId) : Collection {
+        return $this->findBy(['service.company_id' => $companyId]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteOne(int $serviceId, Company $company) : int {
-        $affectedRows = $this->query()
-            ->where('id', $serviceId)
-            ->where('company_id', $company->id)
-            ->delete();
-
-        if (! $affectedRows) {
-            throw new NotFound();
-        }
-
-        return $affectedRows;
+    public function deleteOne(int $companyId, int $serviceId) : int {
+        return $this->deleteBy(
+            [
+                'company_id' => $companyId,
+                'id'         => $serviceId
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
     public function deleteByCompanyId(int $companyId) : int {
-        $affectedRows = $this->deleteBy(
-            [
-                'company_id' => $companyId
-            ]
-        );
-
-        return $affectedRows;
+        return $this->deleteByKey('company_id', $companyId);
     }
 
     /**
-     * Scopes query given the service "access" attribute.
+     * Gets all by company identifier and listener.
      *
-     * @param \Illuminate\Database\Query\Builder $query   The query
-     * @param \App\Entity\Company                $company The company
-     *
-     * @return \Illuminate\Database\Query\Builder The mutated $query
+     * @param int    $companyId The company identifier
+     * @param string $event     The event to look on "listens" column
      */
-    private function scopeQuery(Builder $query, Company $company) : Builder {
-        return $query->where(
-            function ($q) use ($company) {
-                // or Visible because it's yours
-                $q->orWhere('company_id', $company->id);
-                // or Visible because access = 'public'
-                $q->orWhere('access', Service::ACCESS_PUBLIC);
+    public function getAllByCompanyIdAndListener(int $companyId, string $event) {
+        $collection = $this->query()
+            ->join('handler_services', 'handler_services.id', 'handler_service_id')
+            ->where('services.company_id', $companyId)
+            ->where('handler_services.enabled', true)
+            ->whereRaw('jsonb_exists(handler_services.listens, ?)', [$event])
+            ->get($this->queryAttributes);
 
-                if ($company->parentId) {
-                    // or Visible because it belongs to parent and has "protected" access
-                    $q->orWhere(
-                        function ($q1) use ($company) {
-                            $q1->where('company_id', $company->parentId);
-                            $q1->where('access', Service::ACCESS_PROTECTED);
-                        }
-                    );
-                }
-            }
-        );
+        return $this->castHydrate($collection);
     }
 }

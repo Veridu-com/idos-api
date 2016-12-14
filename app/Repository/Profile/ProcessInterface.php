@@ -29,7 +29,7 @@ interface ProcessInterface extends RepositoryInterface {
      * Returns a process based on its source id.
      *
      * @param int $id        The feature id
-     * @param int $serviceId The service id
+     * @param int $handlerId The service id
      * @param int $userId    The user id
      *
      * @return \App\Entity\Profile\Process

@@ -63,10 +63,10 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
 
         'creator' => [
             'type'       => 'MANY_TO_ONE',
-            'table'      => 'services',
+            'table'      => 'handlers',
             'foreignKey' => 'creator',
             'key'        => 'id',
-            'entity'     => 'Service',
+            'entity'     => 'Handler',
             'nullable'   => false,
             'hydrate'    => [
                 'name'
@@ -77,11 +77,11 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
     /**
      * {@inheritdoc}
      */
-    public function findBySlug(string $slug, int $serviceId, int $userId) : Gate {
+    public function findBySlug(string $slug, int $handlerId, int $userId) : Gate {
         return $this->findOneBy(
             [
                 'user_id' => $userId,
-                'creator' => $serviceId,
+                'creator' => $handlerId,
                 'slug'    => $slug
             ]
         );
@@ -90,11 +90,11 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByName(string $name, int $serviceId, int $userId) : Gate {
+    public function findByName(string $name, int $handlerId, int $userId) : Gate {
         return $this->findOneBy(
             [
                 'user_id' => $userId,
-                'creator' => $serviceId,
+                'creator' => $handlerId,
                 'name'    => $name
             ]
         );
@@ -103,10 +103,10 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
     /**
      * {@inheritdoc}
      */
-    public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection {
+    public function getByHandlerIdAndUserId(int $handlerId, int $userId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
-                'creator' => $serviceId,
+                'creator' => $handlerId,
                 'user_id' => $userId
             ], $queryParams
         );

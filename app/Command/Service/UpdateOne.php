@@ -19,7 +19,7 @@ class UpdateOne extends AbstractCommand {
      *
      * @var int
      */
-    public $serviceId;
+    public $handlerId;
     /**
      * Service's company's instance.
      *

@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Factory\Command;
-use App\Repository\ServiceHandlerInterface;
+use App\Repository\ServiceInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,11 +17,11 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Handles requests to /companies/{companySlug}/service-handlers and /companies/{companySlug}/service-handlers/{serviceHandlerId}.
  */
-class ServiceHandlers implements ControllerInterface {
+class Services implements ControllerInterface {
     /**
      * ServiceHandler Repository instance.
      *
-     * @var \App\Repository\ServiceHandlerInterface
+     * @var \App\Repository\ServiceInterface
      */
     private $repository;
     /**
@@ -40,14 +40,14 @@ class ServiceHandlers implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\ServiceHandlerInterface $repository
+     * @param \App\Repository\ServiceInterface $repository
      * @param \League\Tactician\CommandBus            $commandBus
      * @param \App\Factory\Command                    $commandFactory
      *
      * @return void
      */
     public function __construct(
-        ServiceHandlerInterface $repository,
+        ServiceInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
@@ -64,7 +64,7 @@ class ServiceHandlers implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\DBServiceHandler::getAllByCompanyId
+     * @see \App\Repository\DBService::getAllByCompanyId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -96,15 +96,15 @@ class ServiceHandlers implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\DBServiceHandler::findOne
+     * @see \App\Repository\DBService::findOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
-        $serviceHandlerId = (int) $request->getAttribute('decodedServiceHandlerId');
+        $handlerHandlerId = (int) $request->getAttribute('decodedServiceHandlerId');
 
-        $entity = $this->repository->findOne($serviceHandlerId, $company->id);
+        $entity = $this->repository->findOne($handlerHandlerId, $company->id);
 
         $body = [
             'data' => $entity->toArray()
@@ -178,12 +178,12 @@ class ServiceHandlers implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $identity         = $request->getAttribute('identity');
-        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
+        $handlerHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('serviceHandlerId', $serviceHandlerId)
+            ->setParameter('serviceHandlerId', $handlerHandlerId)
             ->setParameter('identity', $identity)
             ->setParameter('companyId', $company->id);
 
@@ -217,13 +217,13 @@ class ServiceHandlers implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $identity         = $request->getAttribute('identity');
-        $serviceHandlerId = $request->getAttribute('decodedServiceHandlerId');
+        $handlerHandlerId = $request->getAttribute('decodedServiceHandlerId');
 
         $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
         $command
             ->setParameter('companyId', $company->id)
             ->setParameter('identity', $identity)
-            ->setParameter('serviceHandlerId', $serviceHandlerId);
+            ->setParameter('serviceHandlerId', $handlerHandlerId);
 
         $this->commandBus->handle($command);
         $body = [

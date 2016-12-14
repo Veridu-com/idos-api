@@ -123,6 +123,7 @@ class DatabaseInit extends AbstractMigration {
         $handlers
             ->addColumn('company_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('role', 'text', ['null' => false])
             ->addColumn('auth_username', 'text', ['null' => false])
             ->addColumn('auth_password', 'text', ['null' => false])
             ->addColumn('public', 'text', ['null' => false])
@@ -153,12 +154,12 @@ class DatabaseInit extends AbstractMigration {
         // within handlers' services, from table 'handler_services'
         $services = $this->table('services');
         $services
-            ->addColumn('handler_services_id', 'integer', ['null' => false])
+            ->addColumn('handler_service_id', 'integer', ['null' => false])
             ->addColumn('company_id', 'integer', ['null' => false])
             ->addColumn('listens', 'jsonb', ['null' => false, 'default' => '[]']) // Must be in array "listens" of the the related "handler_services"
             ->addTimestamps()
-            ->addIndex(['handler_services_id', 'company_id'], ['unique' => true])
-            ->addForeignKey('handler_services_id', 'handler_services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
+            ->addIndex(['handler_service_id', 'company_id'], ['unique' => true])
+            ->addForeignKey('handler_service_id', 'handler_services', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 

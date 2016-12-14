@@ -23,7 +23,7 @@ class GateProvider extends Listener\AbstractListenerProvider {
         $credentialRepository     = $repositoryFactory->create('Company\Credential');
         $settingRepository        = $repositoryFactory->create('Company\Setting');
         $userRepository           = $repositoryFactory->create('User');
-        $serviceHandlerRepository = $repositoryFactory->create('ServiceHandler');
+        $serviceRepository = $repositoryFactory->create('Service');
 
         $eventFactory  = $container->get('eventFactory');
         $emitter       = $container->get('eventEmitter');
@@ -32,7 +32,7 @@ class GateProvider extends Listener\AbstractListenerProvider {
         // Listeners
         $evaluateRecommendationListener = new Listener\Profile\Recommendation\EvaluateRecommendationListener(
             $settingRepository,
-            $serviceHandlerRepository,
+            $serviceRepository,
             $userRepository,
             $eventLogger,
             $eventFactory,
@@ -42,7 +42,7 @@ class GateProvider extends Listener\AbstractListenerProvider {
 
         $queueServiceTaskListener = new QueueServiceTaskListener(
             $credentialRepository,
-            $serviceHandlerRepository,
+            $serviceRepository,
             $eventFactory,
             $emitter,
             $gearmanClient

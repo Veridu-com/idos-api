@@ -8,8 +8,6 @@ use Phinx\Seed\AbstractSeed;
 
 class S30ServicesSeed extends AbstractSeed {
     public function run() {
-        return;
-
         $now            = date('Y-m-d H:i:s');
 
         $scraperListens = json_encode(
@@ -57,169 +55,169 @@ class S30ServicesSeed extends AbstractSeed {
         $data = [
             [
                 'company_id' => 1,
-                'handler_services_id' => 1, // idOS Scraper
+                'handler_service_id' => 1, // idOS Scraper
                 'listens'    => $scraperListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 2, // idOS Feature Extractor
+                'handler_service_id' => 2, // idOS Feature Extractor
                 'listens'    => $featureListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 3, // idOS BirthYear Candidates
+                'handler_service_id' => 3, // idOS BirthYear Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 4, // idOS FirstName Candidates
+                'handler_service_id' => 4, // idOS FirstName Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 5, // idOS LastName Candidates
+                'handler_service_id' => 5, // idOS LastName Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 6, // idOS BirthDay Candidates
+                'handler_service_id' => 6, // idOS BirthDay Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 7, // idOS BirthMonth Candidates
+                'handler_service_id' => 7, // idOS BirthMonth Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 8, // idOS Country Candidates
+                'handler_service_id' => 8, // idOS Country Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 9, // idOS E-mail Candidates
+                'handler_service_id' => 9, // idOS E-mail Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 10, // idOS City Candidates
+                'handler_service_id' => 10, // idOS City Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 11, // idOS ZipCode Candidates
+                'handler_service_id' => 11, // idOS ZipCode Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 12, // idOS Phone Candidates
+                'handler_service_id' => 12, // idOS Phone Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 13, // idOS Street Candidates
+                'handler_service_id' => 13, // idOS Street Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 14, // idOS Gender Candidates
+                'handler_service_id' => 14, // idOS Gender Candidates
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 15, // idOS FirstName
+                'handler_service_id' => 15, // idOS FirstName
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 16, // idOS BirthYear
+                'handler_service_id' => 16, // idOS BirthYear
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 17, // idOS LastName
+                'handler_service_id' => 17, // idOS LastName
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 18, // idOS BirthDay
+                'handler_service_id' => 18, // idOS BirthDay
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 19, // idOS BirthMonth
+                'handler_service_id' => 19, // idOS BirthMonth
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 20, // idOS Country
+                'handler_service_id' => 20, // idOS Country
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 21, // idOS E-mail
+                'handler_service_id' => 21, // idOS E-mail
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 22, // idOS No Chargeback
+                'handler_service_id' => 22, // idOS No Chargeback
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 23, // idOS City
+                'handler_service_id' => 23, // idOS City
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 24, // idOS ZipCode
+                'handler_service_id' => 24, // idOS ZipCode
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 25, // idOS Phone
+                'handler_service_id' => 25, // idOS Phone
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 26, // idOS Street
+                'handler_service_id' => 26, // idOS Street
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 27, // idOS Gender
+                'handler_service_id' => 27, // idOS Gender
                 'listens'    => $mlListens,
                 'created_at' => $now
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 28, // idOS E-mail handler - Invitation e-mail
+                'handler_service_id' => 28, // idOS E-mail handler - Invitation e-mail
                 'listens'    => json_encode(
                     [
                         'idos:invitation.created',
@@ -230,7 +228,7 @@ class S30ServicesSeed extends AbstractSeed {
             ],
             [
                 'company_id' => 1,
-                'handler_services_id' => 29, // idOS OTP Email handler
+                'handler_service_id' => 29, // idOS OTP Email handler
                 'listens'    => json_encode(
                     [
                         'idos:otp.email.created',
@@ -240,13 +238,13 @@ class S30ServicesSeed extends AbstractSeed {
             ],
             [
                 'company_id'    => 1,
-                'handler_services_id'    => 30, // idOS ProfilePicture Candidates
+                'handler_service_id'    => 30, // idOS ProfilePicture Candidates
                 'listens'       => $mlListens,
                 'created_at'    => $now
             ],
             [
                 'company_id'    => 1,
-                'handler_services_id'    => 32, // idOS Recommendation
+                'handler_service_id'    => 32, // idOS Recommendation
                 'listens'       => json_encode([
                     'idos.recommendation'
                 ]),
@@ -254,8 +252,8 @@ class S30ServicesSeed extends AbstractSeed {
             ]
         ];
 
-        $service_handlers = $this->table('service_handlers');
-        $service_handlers
+        $services = $this->table('services');
+        $services
             ->insert($data)
             ->save();
     }

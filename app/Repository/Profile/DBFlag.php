@@ -60,10 +60,10 @@ class DBFlag extends AbstractSQLDBRepository implements FlagInterface {
 
         'creator' => [
             'type'       => 'MANY_TO_ONE',
-            'table'      => 'services',
+            'table'      => 'handlers',
             'foreignKey' => 'creator',
             'key'        => 'id',
-            'entity'     => 'Service',
+            'entity'     => 'Handler',
             'nullable'   => false,
             'hydrate'    => [
                 'name'
@@ -74,11 +74,11 @@ class DBFlag extends AbstractSQLDBRepository implements FlagInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne(string $slug, int $serviceId, int $userId) : Flag {
+    public function findOne(string $slug, int $handlerId, int $userId) : Flag {
         return $this->findOneBy(
             [
                 'user_id' => $userId,
-                'creator' => $serviceId,
+                'creator' => $handlerId,
                 'slug'    => $slug
             ]
         );
@@ -87,11 +87,11 @@ class DBFlag extends AbstractSQLDBRepository implements FlagInterface {
     /**
      * {@inheritdoc}
      */
-    public function getByUserIdAndServiceId(int $serviceId, int $userId, array $queryParams = []) : Collection {
+    public function getByUserIdAndHandlerId(int $handlerId, int $userId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
                 'user_id' => $userId,
-                'creator' => $serviceId
+                'creator' => $handlerId
             ], $queryParams
         );
     }

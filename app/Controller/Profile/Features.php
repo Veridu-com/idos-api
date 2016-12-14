@@ -92,7 +92,7 @@ class Features implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $handler = $request->getAttribute('handler');
 
         $entities = $this->repository->getByUserId($user->id, $request->getQueryParams());
 
@@ -124,7 +124,7 @@ class Features implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user      = $request->getAttribute('targetUser');
-        $service   = $request->getAttribute('service');
+        $handler   = $request->getAttribute('handler');
         $featureId = $request->getAttribute('decodedFeatureId');
 
         $feature = $this->repository->findOneByIdAndUserId($featureId, $user->id);
@@ -165,7 +165,7 @@ class Features implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $service     = $request->getAttribute('service');
+        $handler     = $request->getAttribute('handler');
         $credential  = $request->getAttribute('credential');
         $source      = null;
         $sourceId    = $request->getParsedBodyParam('source_id');
@@ -180,7 +180,7 @@ class Features implements ControllerInterface {
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
             ->setParameter('source', $source)
-            ->setParameter('service', $service);
+            ->setParameter('handler', $handler);
 
         $entity = $this->commandBus->handle($command);
 
@@ -217,7 +217,7 @@ class Features implements ControllerInterface {
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user         = $request->getAttribute('targetUser');
-        $service      = $request->getAttribute('service');
+        $handler      = $request->getAttribute('handler');
         $credential   = $request->getAttribute('credential');
         $featureId    = $request->getAttribute('decodedFeatureId');
 
@@ -225,7 +225,7 @@ class Features implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('service', $service)
+            ->setParameter('handler', $handler)
             ->setParameter('credential', $credential)
             ->setParameter('featureId', $featureId);
 
@@ -261,7 +261,7 @@ class Features implements ControllerInterface {
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $service     = $request->getAttribute('service');
+        $handler     = $request->getAttribute('handler');
         $credential  = $request->getAttribute('credential');
         $source      = null;
         $sourceId    = $request->getParsedBodyParam('source_id');
@@ -276,7 +276,7 @@ class Features implements ControllerInterface {
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
             ->setParameter('source', $source)
-            ->setParameter('service', $service);
+            ->setParameter('handler', $handler);
 
         $feature = $this->commandBus->handle($command);
 
@@ -308,7 +308,7 @@ class Features implements ControllerInterface {
      */
     public function upsertBulk(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $service     = $request->getAttribute('service');
+        $handler     = $request->getAttribute('handler');
         $credential  = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Feature\\UpsertBulk');
@@ -316,7 +316,7 @@ class Features implements ControllerInterface {
             ->setParameter('features', $request->getParsedBody())
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
-            ->setParameter('service', $service);
+            ->setParameter('handler', $handler);
 
         $success = $this->commandBus->handle($command);
 
@@ -348,14 +348,14 @@ class Features implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user         = $request->getAttribute('targetUser');
-        $service      = $request->getAttribute('service');
+        $handler      = $request->getAttribute('handler');
         $credential   = $request->getAttribute('credential');
         $featureId    = $request->getAttribute('decodedFeatureId');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteOne');
         $command
             ->setParameter('user', $user)
-            ->setParameter('service', $service)
+            ->setParameter('handler', $handler)
             ->setParameter('credential', $credential)
             ->setParameter('featureId', $featureId);
 
@@ -387,14 +387,14 @@ class Features implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $request->getAttribute('targetUser');
-        $service    = $request->getAttribute('service');
+        $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Feature\\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
-            ->setParameter('service', $service)
+            ->setParameter('handler', $handler)
             ->setParameter('queryParams', $request->getQueryParams());
 
         $body = [

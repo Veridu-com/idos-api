@@ -10,14 +10,14 @@ namespace Test\Unit\Repository;
 
 use App\Entity\Service as ServiceEntity;
 use App\Factory\Entity;
-use App\Repository\DBService;
+use App\Repository\DBHandler;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
-class DBServicesTest extends AbstractUnit {
+class DBHandlersTest extends AbstractUnit {
     /*
      * Jenssengers\Optimus\Optimus $optimus
      */
@@ -69,7 +69,7 @@ class DBServicesTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbService = new DBService(
+        $dbService = new DBHandler(
             new Entity($this->optimus),
             $this->optimus, $connectionMock
         );
@@ -98,7 +98,7 @@ class DBServicesTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbService = new DBService(
+        $dbService = new DBHandler(
             new Entity($this->optimus),
             $this->optimus, $connectionMock
         );

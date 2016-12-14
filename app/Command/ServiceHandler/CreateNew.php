@@ -25,7 +25,7 @@ class CreateNew extends AbstractCommand {
      *
      * @var string
      */
-    public $serviceId;
+    public $handlerId;
     /**
      * ServiceHandler's listens attribute.
      *
@@ -46,7 +46,7 @@ class CreateNew extends AbstractCommand {
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['decoded_service_id'])) {
-            $this->serviceId = $parameters['decoded_service_id'];
+            $this->handlerId = $parameters['decoded_service_id'];
         }
 
         if (isset($parameters['listens'])) {

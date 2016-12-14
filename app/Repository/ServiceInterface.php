@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\Company;
 use App\Entity\Service;
 use Illuminate\Support\Collection;
 
@@ -17,58 +16,59 @@ use Illuminate\Support\Collection;
  */
 interface ServiceInterface extends RepositoryInterface {
     /**
-     * Find one Service.
+     * Returns a service handler based on its id and company id.
      *
-     * @param int                 $serviceId The service identifier
-     * @param \App\Entity\Company $company   The company
-     *
-     * @throws \App\Exception\NotFound
+     * @param int $serviceHandlerId
+     * @param int $companyId
      *
      * @return \App\Entity\Service
      */
-    public function findOne(int $serviceId, Company $company) : Service;
+    public function findOne(int $serviceHandlerId, int $companyId) : Service;
 
     /**
-     * Return services based on their company.
+     * Return service handlers based on its slug and company id.
      *
-     * @param \App\Entity\Company $company     The company
-     * @param array               $queryParams The query parameters
+     * @param int    $companyId
+     * @param string $serviceSlug
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getByCompany(Company $company, array $queryParams = []) : Collection;
+    public function getByService(int $companyId, string $serviceSlug) : Collection;
 
     /**
-     * Finds a Service based on its Public Key.
-     *
-     * @param string $pubKey
-     *
-     * @throws \App\Exception\NotFound
-     *
-     * @return \App\Entity\Service
-     */
-    public function findByPubKey(string $pubKey) : Service;
-
-    /**
-     * Deletes one Service.
-     *
-     * @param int                 $serviceId The service identifier
-     * @param \App\Entity\Company $company   The company
-     *
-     * @throws \App\Exception\NotFound
-     *
-     * @return int
-     */
-    public function deleteOne(int $serviceId, Company $company) : int;
-
-    /**
-     * Deletes all Services that belongs to the Company.
+     * Return service handlers based on their company id.
      *
      * @param int $companyId The company identifier
      *
-     * @throws \App\Exception\NotFound
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByCompanyId(int $companyId) : Collection;
+
+    /**
+     * Gets all Services based on their Company Id.
      *
-     * @return int Number of deleted rows
+     * @param int $companyId
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getByServiceCompanyId(int $companyId) : Collection;
+
+    /**
+     * Deletes one setting based on their companyId, own slug and serviceSlug.
+     *
+     * @param int $companyId
+     * @param int $serviceHandlerId
+     *
+     * @return int
+     */
+    public function deleteOne(int $companyId, int $serviceHandlerId) : int;
+
+    /**
+     * Deletes all Services based on their Company Id.
+     *
+     * @param int $companyId
+     *
+     * @return int
      */
     public function deleteByCompanyId(int $companyId) : int;
 }

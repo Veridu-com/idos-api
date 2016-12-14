@@ -11,14 +11,14 @@ namespace Test\Unit\Repository;
 use App\Entity\ServiceHandler as ServiceHandlerEntity;
 use App\Exception\NotFound;
 use App\Factory\Entity;
-use App\Repository\DBServiceHandler;
+use App\Repository\DBService;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
-class DBServiceHandlerTest extends AbstractUnit {
+class DBServiceTest extends AbstractUnit {
     /*
      * Jenssengers\Optimus\Optimus $optimus
      */
@@ -108,7 +108,7 @@ class DBServiceHandlerTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbServiceHandler = new DBServiceHandler(
+        $dbServiceHandler = new DBService(
             new Entity($this->optimus),
             $this->optimus,
             $connectionMock
@@ -148,7 +148,7 @@ class DBServiceHandlerTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbServiceHandler = new DBServiceHandler(
+        $dbServiceHandler = new DBService(
             new Entity($this->optimus),
             $this->optimus,
             $connectionMock
@@ -184,7 +184,7 @@ class DBServiceHandlerTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbServiceHandler = new DBServiceHandler(
+        $dbServiceHandler = new DBService(
             new Entity($this->optimus),
             $this->optimus,
             $connectionMock
@@ -223,7 +223,7 @@ class DBServiceHandlerTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbServiceHandler = new DBServiceHandler(
+        $dbServiceHandler = new DBService(
             new Entity($this->optimus),
             $this->optimus,
             $connectionMock
@@ -255,7 +255,7 @@ class DBServiceHandlerTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
 
-        $dbServiceHandler = new DBServiceHandler(
+        $dbServiceHandler = new DBService(
             new Entity($this->optimus),
             $this->optimus,
             $connectionMock

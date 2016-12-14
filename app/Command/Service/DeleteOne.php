@@ -19,7 +19,7 @@ class DeleteOne extends AbstractCommand {
      *
      * @var int
      */
-    public $serviceId;
+    public $handlerId;
     /**
      * Acting company.
      *
