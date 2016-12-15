@@ -6,6 +6,14 @@
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
+
+// Loads .env if available
+if (is_file(__DIR__ . '/../.env')) {
+    $dotEnv = new Dotenv\Dotenv(__DIR__ . '/../');
+    $dotEnv->load();
+}
+
+// Load application settings
 require_once __DIR__ . '/../config/settings.php';
 
 use Defuse\Crypto\KeyProtectedByPassword;
