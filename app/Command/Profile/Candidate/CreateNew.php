@@ -25,7 +25,7 @@ class CreateNew extends AbstractCommand {
      *
      * @var \App\Entity\Service
      */
-    public $service;
+    public $handler;
     /**
      * Attribute name.
      *
@@ -59,8 +59,8 @@ class CreateNew extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['service'])) {
-            $this->service = $parameters['service'];
+        if (isset($parameters['handler'])) {
+            $this->handler = $parameters['handler'];
         }
 
         if (isset($parameters['attribute'])) {

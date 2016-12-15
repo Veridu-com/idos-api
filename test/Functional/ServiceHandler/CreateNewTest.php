@@ -62,7 +62,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame(201, $response->getStatusCode());
         $body = json_decode((string) $response->getBody(), true);
 
-        $serviceId = $body['data']['id'];
+        $handlerId = $body['data']['id'];
 
         /**
          * Creating a service-handler.
@@ -79,7 +79,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'service_id' => $serviceId,
+                    'service_id' => $handlerId,
                     'listens'    => [
                         'source.add.facebook'
                     ]

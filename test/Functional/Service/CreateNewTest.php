@@ -38,17 +38,11 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'          => 'New service name',
-                    'url'           => 'http://service-url.com',
-                    'enabled'       => true,
-                    'access'        => 1,
-                    'auth_username' => 'idos',
-                    'auth_password' => 'secret',
-                    'listens'       => [
-                        'source.add.facebook'
-                    ],
-                    'triggers' => [
-                        'source.scraper.facebook.finished'
+                    'company_id' => 1,
+                    'handler_service_id' => 28, // idOS E-mail handler - Invitation e-mail
+                    'listens' => [
+                        'idos:invitation.created',
+                        'idos:invitation.resend'
                     ]
                 ]
             )

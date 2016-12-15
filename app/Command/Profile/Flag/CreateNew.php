@@ -23,9 +23,9 @@ class CreateNew extends AbstractCommand {
     /**
      * Flag's creator.
      *
-     * @var \App\Entity\Service
+     * @var \App\Entity\Handler
      */
-    public $service;
+    public $handler;
     /**
      * Flag's slug (user input).
      *
@@ -54,11 +54,7 @@ class CreateNew extends AbstractCommand {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
         }
-
-        if (isset($parameters['service'])) {
-            $this->service = $parameters['service'];
-        }
-
+        
         if (isset($parameters['slug'])) {
             $this->slug = $parameters['slug'];
         }

@@ -412,8 +412,8 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         $handlerPrivKey = null
     ) {
         if ((empty($handlerPubKey)) || (empty($handlerPrivKey))) {
-            $handlerPubKey  = 'ef970ffad1f1253a2182a88667233991';
-            $handlerPrivKey = '213b83392b80ee98c8eb2a9fed9bb84d';
+            $handlerPubKey  = 'b16c931c061e14af275bd2c86d3cf48d';
+            $handlerPrivKey = '81197557e9117dfd6f16cb72a2710830';
         }
 
         return Token::generateCredentialToken(

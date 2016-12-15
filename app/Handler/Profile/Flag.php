@@ -110,7 +110,7 @@ class Flag implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : FlagEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertSlug($command->slug);
 
             if (isset($command->attribute)) {
@@ -129,7 +129,7 @@ class Flag implements HandlerInterface {
         $entity = $this->repository->create(
             [
                 'user_id'    => $command->user->id,
-                'creator'    => $command->service->id,
+                'creator'    => $command->handler->id,
                 'slug'       => $command->slug,
                 'attribute'  => $command->attribute,
                 'created_at' => time()
@@ -165,7 +165,7 @@ class Flag implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertSlug($command->slug);
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
@@ -176,7 +176,7 @@ class Flag implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->findOne($command->slug, $command->service->id, $command->user->id);
+        $entity = $this->repository->findOne($command->slug, $command->handler->id, $command->user->id);
 
         try {
             $affectedRows = $this->repository->delete($entity->id);
@@ -206,7 +206,7 @@ class Flag implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\FlagException(
@@ -216,8 +216,8 @@ class Flag implements HandlerInterface {
             );
         }
 
-        $entities = $this->repository->getByUserIdAndServiceId(
-            $command->service->id,
+        $entities = $this->repository->getByUserIdAndHandlerId(
+            $command->handler->id,
             $command->user->id,
             $command->queryParams
         );

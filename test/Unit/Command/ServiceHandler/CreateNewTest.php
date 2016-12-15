@@ -19,7 +19,7 @@ class CreateNewTest extends AbstractCommandTest {
                 'policy'   => 'private'
             ],
             'decoded_service_id' => [
-                'property' => 'serviceId',
+                'property' => 'handlerId',
                 'policy'   => 'public'
             ],
             'listens' => [

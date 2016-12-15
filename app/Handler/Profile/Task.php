@@ -109,7 +109,7 @@ class Task implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : TaskEntity {
         try {
             $this->validator->assertName($command->name);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertName($command->event);
             $this->validator->assertNullableBoolean($command->running);
             $this->validator->assertNullableBoolean($command->success);
@@ -128,7 +128,7 @@ class Task implements HandlerInterface {
             [
                 'name'       => $command->name,
                 'event'      => $command->event,
-                'creator'    => $command->service->id,
+                'creator'    => $command->handler->id,
                 'running'    => $command->running,
                 'success'    => $command->success,
                 'message'    => $command->message,

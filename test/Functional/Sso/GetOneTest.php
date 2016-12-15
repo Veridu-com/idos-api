@@ -15,7 +15,7 @@ use Slim\Http\Response;
 use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 
-class CreateNewTest extends AbstractFunctional {
+class GetOneTest extends AbstractFunctional {
     protected function setUp() {
         $this->httpMethod = 'GET';
         $this->uri        = '/1.0/sso/facebook';

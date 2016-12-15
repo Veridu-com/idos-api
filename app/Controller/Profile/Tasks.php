@@ -162,7 +162,7 @@ class Tasks implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
-            ->setParameter('service', $request->getAttribute('service'))
+            ->setParameter('handler', $request->getAttribute('handler'))
             ->setParameter('processId', $processId);
 
         $task = $this->commandBus->handle($command);

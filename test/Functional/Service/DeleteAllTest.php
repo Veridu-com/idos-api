@@ -36,9 +36,10 @@ class DeleteAllTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        
-        $totalServices = count($response['data']);
+        $body = json_decode((string) $response->getBody(), true);
 
+        $totalServices = count($body['data']);
+        
         //deleteAll()
         $this->httpMethod = 'DELETE';
         $this->uri        = '/1.0/companies/veridu-ltd/services';
@@ -57,6 +58,8 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertArrayHasKey('deleted', $body);
+        $this->assertEquals($totalServices, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.

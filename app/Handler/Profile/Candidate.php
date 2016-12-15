@@ -108,7 +108,7 @@ class Candidate implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : CandidateEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertLongName($command->attribute);
             $this->validator->assertValue($command->value);
             $this->validator->assertScore($command->support);
@@ -124,7 +124,7 @@ class Candidate implements HandlerInterface {
         $entity = $this->repository->create(
             [
             'user_id'    => $command->user->id,
-            'creator'    => $command->service->id,
+            'creator'    => $command->handler->id,
             'attribute'  => $command->attribute,
             'value'      => $command->value,
             'support'    => $command->support,
@@ -162,7 +162,7 @@ class Candidate implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertArray($command->queryParams);
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
@@ -177,7 +177,7 @@ class Candidate implements HandlerInterface {
         $entities = $this->repository->findBy(
             [
                 'user_id' => $command->user->id,
-                'creator' => $command->service->id
+                'creator' => $command->handler->id
             ],
             $command->queryParams
         );

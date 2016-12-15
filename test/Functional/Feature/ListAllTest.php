@@ -127,7 +127,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'creator:name=idOS Scraper'
+                    'QUERY_STRING'       => 'creator:name=idOS Feature Extractor'
                 ]
             )
         );
@@ -136,6 +136,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
+
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(5, $body['data']);

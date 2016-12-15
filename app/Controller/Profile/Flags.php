@@ -115,10 +115,10 @@ class Flags implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $handler = $request->getAttribute('handler');
         $slug    = $request->getAttribute('flagSlug');
 
-        $entity = $this->repository->findOne($slug, $service->id, $user->id);
+        $entity = $this->repository->findOne($slug, $handler->id, $user->id);
 
         $body = [
             'data'    => $entity->toArray(),
@@ -150,7 +150,7 @@ class Flags implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $request->getAttribute('targetUser');
-        $service    = $request->getAttribute('service');
+        $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Flag\\CreateNew');
@@ -158,7 +158,7 @@ class Flags implements ControllerInterface {
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
-            ->setParameter('service', $service);
+            ->setParameter('handler', $handler);
 
         $flag = $this->commandBus->handle($command);
 
@@ -191,7 +191,7 @@ class Flags implements ControllerInterface {
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $request->getAttribute('targetUser');
-        $service    = $request->getAttribute('service');
+        $handler    = $request->getAttribute('handler');
         $slug       = $request->getAttribute('flagSlug');
         $credential = $request->getAttribute('credential');
 
@@ -199,7 +199,7 @@ class Flags implements ControllerInterface {
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
-            ->setParameter('service', $service)
+            ->setParameter('handler', $handler)
             ->setParameter('slug', $slug);
 
         $this->commandBus->handle($command);
@@ -230,14 +230,14 @@ class Flags implements ControllerInterface {
      */
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $request->getAttribute('targetUser');
-        $service    = $request->getAttribute('service');
+        $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Flag\\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
-            ->setParameter('service', $service)
+            ->setParameter('handler', $handler)
             ->setParameter('queryParams', $request->getQueryParams());
 
         $body = [

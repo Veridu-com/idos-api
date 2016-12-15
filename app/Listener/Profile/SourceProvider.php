@@ -24,7 +24,7 @@ class SourceProvider extends Listener\AbstractListenerProvider {
         $repositoryFactory        = $container->get('repositoryFactory');
         $credentialRepository     = $repositoryFactory->create('Company\Credential');
         $settingRepository        = $repositoryFactory->create('Company\Setting');
-        $serviceHandlerRepository = $repositoryFactory->create('ServiceHandler');
+        $serviceRepository = $repositoryFactory->create('Service');
 
         $eventFactory  = $container->get('eventFactory');
         $emitter       = $container->get('eventEmitter');
@@ -44,7 +44,7 @@ class SourceProvider extends Listener\AbstractListenerProvider {
                 new Listener\MetricEventListener($commandBus, $commandFactory),
                 new QueueServiceTaskListener(
                     $credentialRepository,
-                    $serviceHandlerRepository,
+                    $serviceRepository,
                     $eventFactory,
                     $emitter,
                     $gearmanClient
@@ -54,7 +54,7 @@ class SourceProvider extends Listener\AbstractListenerProvider {
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\Manager\ScrapeEventListener(
                     $credentialRepository,
-                    $serviceHandlerRepository,
+                    $serviceRepository,
                     $settingRepository,
                     $eventFactory,
                     $emitter,

@@ -47,6 +47,6 @@ class Candidate extends AbstractEntity {
      * {@inheritdoc}
      */
     public $relationships = [
-        'creator' => 'Service'
+        'creator' => 'Handler'
     ];
 }

@@ -27,11 +27,11 @@ class UpsertBulk extends AbstractCommand {
      */
     public $features;
     /**
-     * Feature's Service (creator).
+     * Feature's Handler (creator).
      *
-     * @var \App\Entity\Service
+     * @var \App\Entity\Handler
      */
-    public $service;
+    public $handler;
     /**
      * Target Credential.
      *

@@ -12,13 +12,12 @@ namespace App\Validator;
  * Service Validation Rules.
  */
 class Service implements ValidatorInterface {
-    use Traits\AssertAccessMode,
-        Traits\AssertType,
-        Traits\AssertEntity,
-        Traits\AssertFlag,
+    use Traits\AssertType,
         Traits\AssertId,
         Traits\AssertName,
         Traits\AssertPassword,
+        Traits\AssertSlug,
         Traits\AssertUrl,
-        Traits\AssertUserName;
+        Traits\AssertUserName,
+        Traits\AssertEntity;
 }

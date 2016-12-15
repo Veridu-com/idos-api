@@ -17,13 +17,13 @@ class DeleteOne extends AbstractCommand {
     /**
      * Service's id.
      *
-     * @var int
+     * @var string
      */
     public $serviceId;
     /**
-     * Acting company.
+     * Service company's Id.
      *
-     * @var \App\Entity\Company
+     * @var int
      */
     public $company;
     /**
