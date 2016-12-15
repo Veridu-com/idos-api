@@ -23,7 +23,7 @@ class S50RecommendationSeed extends AbstractSeed {
                             [
                                 'tag'              => 'default test #1 for rule #1',
                                 'category'         => 'gate',
-                                'slug'             => 'nochargebackgate-medium',
+                                'slug'             => 'nochargebackgate',
                                 'confidence_level' => 'medium',
                                 'pass'             => true
                             ]
@@ -73,7 +73,7 @@ class S50RecommendationSeed extends AbstractSeed {
                             [
                                 'tag'              => 'default test #1 for rule #1',
                                 'category'         => 'gate',
-                                'slug'             => 'nochargebackgate-medium',
+                                'slug'             => 'nochargebackgate',
                                 'confidence_level' => 'medium',
                                 'pass'             => true
                             ]
