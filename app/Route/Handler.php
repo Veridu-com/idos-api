@@ -31,7 +31,6 @@ class Handler implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'handler:listAll',
-            'handler:deleteAll',
             'handler:createNew',
             'handler:getOne',
             'handler:updateOne',
@@ -59,7 +58,6 @@ class Handler implements RouteInterface {
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
     }
 
@@ -184,7 +182,7 @@ class Handler implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/handlers/{handlerId:[0-9]+}',
                 'App\Controller\Handlers:updateOne'
             )
@@ -224,38 +222,5 @@ class Handler implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('handler:deleteOne');
-    }
-
-    /**
-     * Deletes all handler.
-     *
-     * Deletes all handlers that belongs to the requesting company.
-     *
-     * @apiEndpoint DELETE /companies/{companySlug}/handlers
-     * @apiGroup Company
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/handlers/deleteAll.md
-     * @see \App\Middleware\Auth::__invoke
-     * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Handlers::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        // FIXME This should be removed!
-        $app
-            ->delete(
-                '/companies/{companySlug:[a-z0-9_-]+}/handlers',
-                'App\Controller\Handlers:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::IDENTITY))
-            ->setName('handler:deleteAll');
     }
 }

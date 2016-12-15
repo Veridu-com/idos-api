@@ -16,8 +16,6 @@ namespace App\Entity;
  * @property int        $id
  * @property int        $company_id
  * @property string     $name
- * @property string     $auth_username
- * @property string     $auth_password
  * @property string     $privacy
  * @property bool       $enabled
  * @property int        $created_at
@@ -38,6 +36,8 @@ class HandlerService extends AbstractEntity {
     protected $visible = [
         'id',
         'name',
+        'url',
+        'listens',
         'enabled',
         'created_at',
         'updated_at'
@@ -46,4 +46,8 @@ class HandlerService extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
+    /**
+     * {@inheritdoc}
+     */
+    protected $json = ['listens'];
 }

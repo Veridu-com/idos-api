@@ -41,12 +41,8 @@ class DBHandler extends AbstractSQLDBRepository implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function getByCompany(Company $company, array $queryParams = []) : Collection {
-        $query = $this->query();
-        $query = $this->scopeQuery($query, $company);
-        $query = $this->filter($query, $queryParams);
-
-        return $query->get();
+    public function getByCompanyId(int $companyId, array $queryParams = []) : Collection {
+        return $this->findBy(['company_id' => $companyId], $queryParams);
     }
 
     /**
@@ -58,22 +54,6 @@ class DBHandler extends AbstractSQLDBRepository implements HandlerInterface {
                 'company_id' => $companyId,
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOne(int $handlerId, Company $company) : Handler {
-        $query = $this->query()->where('id', $handlerId);
-        $query = $this->scopeQuery($query, $company);
-
-        $entity = $query->first();
-
-        if (! $entity) {
-            throw new NotFound();
-        }
-
-        return $entity;
     }
 
     /**
@@ -117,34 +97,5 @@ class DBHandler extends AbstractSQLDBRepository implements HandlerInterface {
         );
 
         return $affectedRows;
-    }
-
-    /**
-     * Scopes query given the service "access" attribute.
-     *
-     * @param \Illuminate\Database\Query\Builder $query   The query
-     * @param \App\Entity\Company                $company The company
-     *
-     * @return \Illuminate\Database\Query\Builder The mutated $query
-     */
-    private function scopeQuery(Builder $query, Company $company) : Builder {
-        return $query->where(
-            function ($q) use ($company) {
-                // or Visible because it's yours
-                $q->orWhere('company_id', $company->id);
-                // or Visible because access = 'public'
-                $q->orWhere('access', Handler::ACCESS_PUBLIC);
-
-                if ($company->parentId) {
-                    // or Visible because it belongs to parent and has "protected" access
-                    $q->orWhere(
-                        function ($q1) use ($company) {
-                            $q1->where('company_id', $company->parentId);
-                            $q1->where('access', Handler::ACCESS_PROTECTED);
-                        }
-                    );
-                }
-            }
-        );
     }
 }

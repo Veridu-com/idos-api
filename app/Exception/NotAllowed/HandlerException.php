@@ -6,14 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Exception\NotFound;
+namespace App\Exception\NotAllowed;
 
-use App\Exception\NotFound;
+use App\Exception\NotAllowed;
 
 /**
- * ServiceHandler not found exception.
+ * Handler not allowed exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */
-class ServiceHandlerException extends NotFound {
+class HandlerException extends NotAllowed {
 }

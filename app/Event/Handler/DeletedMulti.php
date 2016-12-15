@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Event\ServiceHandler;
+namespace App\Event\Handler;
 
 use App\Entity\Identity;
 use App\Event\AbstractEvent;
@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
  */
 class DeletedMulti extends AbstractEvent {
     /**
-     * Event related ServiceHandlers.
+     * Event related Handlers.
      *
      * @var \Illuminate\Support\Collection
      */

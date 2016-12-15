@@ -19,7 +19,7 @@ class UpdateOne extends AbstractCommand {
      *
      * @var int
      */
-    public $handlerId;
+    public $handlerServiceId;
     /**
      * HandlerService's company's instance.
      *
@@ -32,6 +32,12 @@ class UpdateOne extends AbstractCommand {
      * @var string
      */
     public $url;
+    /**
+     * HandlerService's name.
+     *
+     * @var string
+     */
+    public $name;
     /**
      * HandlerService's listens.
      *
@@ -51,23 +57,11 @@ class UpdateOne extends AbstractCommand {
      */
     public $enabled;
     /**
-     * HandlerService's access.
+     * HandlerService's privacy.
      *
      * @var int
      */
-    public $access;
-    /**
-     * HandlerService's authentication username.
-     *
-     * @var string
-     */
-    public $authUsername;
-    /**
-     * HandlerService's authentication password.
-     *
-     * @var string
-     */
-    public $authPassword;
+    public $privacy;
     /**
      * Identity.
      *
@@ -81,6 +75,9 @@ class UpdateOne extends AbstractCommand {
      * @return \App\Command\HandlerService\UpdateOne
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['name'])) {
+            $this->name = $parameters['name'];
+        }
         if (isset($parameters['url'])) {
             $this->url = $parameters['url'];
         }
@@ -89,24 +86,12 @@ class UpdateOne extends AbstractCommand {
             $this->listens = $parameters['listens'];
         }
 
-        if (isset($parameters['triggers'])) {
-            $this->triggers = $parameters['triggers'];
-        }
-
         if (isset($parameters['enabled'])) {
             $this->enabled = $parameters['enabled'];
         }
 
-        if (isset($parameters['access'])) {
-            $this->access = $parameters['access'];
-        }
-
-        if (isset($parameters['auth_username'])) {
-            $this->authUsername = $parameters['auth_username'];
-        }
-
-        if (isset($parameters['auth_password'])) {
-            $this->authPassword = $parameters['auth_password'];
+        if (isset($parameters['privacy'])) {
+            $this->privacy = $parameters['privacy'];
         }
 
         return $this;

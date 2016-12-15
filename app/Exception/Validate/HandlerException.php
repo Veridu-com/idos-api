@@ -6,14 +6,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Exception\Create;
+namespace App\Exception\Validate;
 
 use App\Exception\AppException;
 
 /**
- * ServiceHandler create exception.
+ * Handler validate exception.
  *
- * @apiEndpointResponse 500 schema/error.json
+ * @apiEndpointResponse 400 schema/error.json
  */
-class ServiceHandlerException extends AppException {
+class HandlerException extends AppException {
 }

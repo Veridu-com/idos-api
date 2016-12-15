@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class HandlerServices implements ControllerInterface {
     /**
-     * ServiceHandler Repository instance.
+     * HandlerService Repository instance.
      *
      * @var \App\Repository\HandlerServiceInterface
      */
@@ -70,7 +70,9 @@ class HandlerServices implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
-        $entities = $this->repository->getByCompanyId($company->id, $request->getQueryParams());
+        $handlerId = $request->getAttribute('decodedHandlerId');
+
+        $entities = $this->repository->getByHandlerId($handlerId, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),
@@ -102,9 +104,9 @@ class HandlerServices implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
-        $handlerHandlerId = (int) $request->getAttribute('decodedServiceHandlerId');
+        $handlerServiceId = (int) $request->getAttribute('decodedHandlerServiceId');
 
-        $entity = $this->repository->findOne($handlerHandlerId, $company->id);
+        $entity = $this->repository->find($handlerServiceId);
 
         $body = [
             'data' => $entity->toArray()
@@ -120,7 +122,7 @@ class HandlerServices implements ControllerInterface {
     }
 
     /**
-     * Creates a new ServiceHandler for the acting Company.
+     * Creates a new HandlerService for the acting Company.
      *
      * @apiEndpointRequiredParam    body    int     service_id   1325   Service's id.
      * @apiEndpointRequiredParam    body    array   listens     ['source.add.facebook']   Service handler's listens property.
@@ -130,19 +132,21 @@ class HandlerServices implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\ServiceHandler::handleCreateNew
+     * @see \App\Handler\HandlerService::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
+        $handlerId = $request->getAttribute('decodedHandlerId');
 
-        $command = $this->commandFactory->create('ServiceHandler\\CreateNew');
+        $command = $this->commandFactory->create('HandlerService\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('handlerId', $handlerId)
             ->setParameter('identity', $identity)
-            ->setParameter('companyId', $company->id);
+            ->setParameter('company', $company);
 
         $entity = $this->commandBus->handle($command);
 
@@ -171,21 +175,21 @@ class HandlerServices implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\ServiceHandler::handleUpdateOne
+     * @see \App\Handler\HandlerService::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $identity         = $request->getAttribute('identity');
-        $handlerHandlerId = $request->getAttribute('decodedServiceHandlerId');
+        $handlerServiceId = $request->getAttribute('decodedHandlerServiceId');
 
-        $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
+        $command = $this->commandFactory->create('HandlerService\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('handlerServiceId', $handlerHandlerId)
+            ->setParameter('handlerServiceId', $handlerServiceId)
             ->setParameter('identity', $identity)
-            ->setParameter('companyId', $company->id);
+            ->setParameter('company', $company);
 
         $entity = $this->commandBus->handle($command);
 
@@ -210,58 +214,24 @@ class HandlerServices implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\ServiceHandler::handleDeleteOne
+     * @see \App\Handler\HandlerService::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $identity         = $request->getAttribute('identity');
-        $handlerHandlerId = $request->getAttribute('decodedServiceHandlerId');
+        $handlerServiceId = $request->getAttribute('decodedHandlerServiceId');
 
-        $command = $this->commandFactory->create('ServiceHandler\\DeleteOne');
+        $command = $this->commandFactory->create('HandlerService\\DeleteOne');
         $command
-            ->setParameter('companyId', $company->id)
+            ->setParameter('company', $company)
             ->setParameter('identity', $identity)
-            ->setParameter('handlerServiceId', $handlerHandlerId);
+            ->setParameter('handlerServiceId', $handlerServiceId);
 
         $this->commandBus->handle($command);
         $body = [
             'status' => true
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes all Service handlers that belongs to the acting Company.
-     *
-     * @apiEndpointResponse 200 schema/handlerService/deleteAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @see \App\Handler\ServiceHandler::handleDeleteAll
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company  = $request->getAttribute('targetCompany');
-        $identity = $request->getAttribute('identity');
-
-        $command = $this->commandFactory->create('ServiceHandler\\DeleteAll');
-        $command
-            ->setParameter('identity', $identity)
-            ->setParameter('companyId', $company->id);
-
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

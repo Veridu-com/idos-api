@@ -6,20 +6,20 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\HandlerService;
+namespace App\Command\Handler;
 
 use App\Command\AbstractCommand;
 
 /**
- * HandlerService "Delete one" Command.
+ * Handler "Delete one" Command.
  */
 class DeleteOne extends AbstractCommand {
     /**
-     * HandlerService's id.
+     * Handler's id.
      *
      * @var int
      */
-    public $handlerServiceId;
+    public $handlerId;
     /**
      * Acting company.
      *
@@ -36,7 +36,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return \App\Command\HandlerService\DeleteOne
+     * @return \App\Command\Handler\DeleteOne
      */
     public function setParameters(array $parameters) : self {
         return $this;

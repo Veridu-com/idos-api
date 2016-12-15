@@ -193,7 +193,14 @@ class Company implements HandlerInterface {
         }
 
         try {
-            $handlerServices = $this->handlerServiceRepository->getAll();
+            $company = $this->repository->find($command->companyId);
+
+            if ($company->parentId) {
+                $handlerServices = $this->handlerServiceRepository->getByCompanyId($company->id);
+            } else {
+                $handlerServices = $this->handlerServiceRepository->getAll();
+            }
+
 
             // populate company services
             foreach ($handlerServices as $handlerService) {
@@ -209,7 +216,6 @@ class Company implements HandlerInterface {
                 $this->serviceRepository->upsert($service);
             }
 
-            $company = $this->repository->find($command->companyId);
             $event   = $this->eventFactory->create('Company\\Setup', $company, $command->identity);
             $this->emitter->emit($event);
 

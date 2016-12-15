@@ -6,56 +6,44 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\HandlerService;
+namespace App\Command\Handler;
 
 use App\Command\AbstractCommand;
 
 /**
- * HandlerService "Create new" Command.
+ * Handler "Create new" Command.
  */
 class CreateNew extends AbstractCommand {
     /**
-     * HandlerService's company's instance.
+     * Handler's company's instance.
      *
      * @var \App\Entity\Company
      */
     public $company;
     /**
-     * HandlerService's name.
+     * Handler's name.
      *
      * @var string
      */
     public $name;
     /**
-     * HandlerService's url.
-     *
-     * @var string
-     */
-    public $url;
-    /**
-     * HandlerService's privacy.
-     *
-     * @var int
-     */
-    public $privacy;
-    /**
-     * HandlerService's privacy.
-     *
-     * @var int
-     */
-    public $handlerId;
-    /**
-     * HandlerService's listens.
-     *
-     * @var array
-     */
-    public $listens;
-    /**
-     * HandlerService's enabled.
+     * Handler's enabled.
      *
      * @var bool
      */
     public $enabled;
+    /**
+     * Handler's authentication username.
+     *
+     * @var string
+     */
+    public $authUsername;
+    /**
+     * Handler's authentication password.
+     *
+     * @var string
+     */
+    public $authPassword;
     /**
      * Identity.
      *
@@ -66,33 +54,17 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      *
-     * @return \App\Command\HandlerService\CreateNew
+     * @return \App\Command\Handler\CreateNew
      */
     public function setParameters(array $parameters) : self {
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
 
-        if (isset($parameters['url'])) {
-            $this->url = $parameters['url'];
-        }
-
-        if (isset($parameters['listens'])) {
-            $this->listens = $parameters['listens'];
-        }
-
-        if (isset($parameters['triggers'])) {
-            $this->triggers = $parameters['triggers'];
-        }
-
         if (isset($parameters['enabled'])) {
             $this->enabled = $parameters['enabled'];
         }
-
-        if (isset($parameters['access'])) {
-            $this->access = $parameters['access'];
-        }
-
+        
         if (isset($parameters['auth_username'])) {
             $this->authUsername = $parameters['auth_username'];
         }

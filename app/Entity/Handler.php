@@ -33,8 +33,6 @@ class Handler extends AbstractEntity {
         'name',
         'public',
         'enabled',
-        'role',
-        'listens',
         'created_at',
         'updated_at'
     ];
@@ -42,10 +40,6 @@ class Handler extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $dates = ['created_at', 'updated_at'];
-    /**
-     * {@inheritdoc}
-     */
-    protected $json = ['listens', 'triggers'];
     /**
      * {@inheritdoc}
      */

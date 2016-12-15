@@ -17,26 +17,14 @@ use Illuminate\Support\Collection;
  */
 interface HandlerInterface extends RepositoryInterface {
     /**
-     * Find one Handler.
+     * Return handlers based on their company id.
      *
-     * @param int                 $handlerId The service identifier
-     * @param \App\Entity\Company $company   The company
-     *
-     * @throws \App\Exception\NotFound
-     *
-     * @return \App\Entity\Handler
-     */
-    public function findOne(int $handlerId, Company $company) : Handler;
-
-    /**
-     * Return services based on their company.
-     *
-     * @param \App\Entity\Company $company     The company
+     * @param int $companyId     The company identifier
      * @param array               $queryParams The query parameters
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getByCompany(Company $company, array $queryParams = []) : Collection;
+    public function getByCompanyId(int $companyId, array $queryParams = []) : Collection;
 
     /**
      * Finds a Handler based on its Public Key.
@@ -52,7 +40,7 @@ interface HandlerInterface extends RepositoryInterface {
     /**
      * Deletes one Handler.
      *
-     * @param int                 $handlerId The service identifier
+     * @param int                 $handlerId The handler identifier
      * @param \App\Entity\Company $company   The company
      *
      * @throws \App\Exception\NotFound

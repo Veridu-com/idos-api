@@ -46,4 +46,18 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
             'company_id' => $companyId
         ], $queryParams);
     }
+
+    /**
+     * Gets the by handler identifier.
+     *
+     * @param      integer  $handlerId    The handler identifier
+     * @param      array    $queryParams  The query parameters
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByHandlerId(int $handlerId, array $queryParams) : Collection {
+        return $this->findBy([
+            'handler_id' => $handlerId
+        ], $queryParams);
+    }
 }

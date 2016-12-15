@@ -8,37 +8,37 @@ declare(strict_types = 1);
 
 namespace App\Handler;
 
-use App\Command\Handler\CreateNew;
-use App\Command\Handler\DeleteAll;
-use App\Command\Handler\DeleteOne;
-use App\Command\Handler\UpdateOne;
-use App\Entity\Handler as HandlerEntity;
+use App\Command\HandlerService\CreateNew;
+use App\Command\HandlerService\DeleteAll;
+use App\Command\HandlerService\DeleteOne;
+use App\Command\HandlerService\UpdateOne;
+use App\Entity\HandlerService as HandlerServiceEntity;
 use App\Exception\Create;
 use App\Exception\NotAllowed;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
-use App\Repository\HandlerInterface as DataHandlerInterface;
-use App\Validator\Handler as HandlerValidator;
+use App\Repository\HandlerServiceInterface as DataHandlerServiceInterface;
+use App\Validator\HandlerService as HandlerServiceValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
 
 /**
- * Handles Handler commands.
+ * Handles HandlerService commands.
  */
-class Handler implements HandlerInterface {
+class HandlerService implements HandlerInterface {
     /**
-     * Handler Repository instance.
+     * HandlerService Repository instance.
      *
-     * @var \App\Repository\HandlerInterface
+     * @var \App\Repository\HandlerServiceInterface
      */
     private $repository;
     /**
-     * Handler Validator instance.
+     * HandlerService Validator instance.
      *
-     * @var \App\Validator\Handler
+     * @var \App\Validator\HandlerService
      */
     private $validator;
     /**
@@ -59,13 +59,13 @@ class Handler implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) {
         $container[self::class] = function (ContainerInterface $container) {
-            return new \App\Handler\Handler(
+            return new \App\Handler\HandlerService(
                 $container
                     ->get('repositoryFactory')
-                    ->create('Handler'),
+                    ->create('HandlerService'),
                 $container
                     ->get('validatorFactory')
-                    ->create('Handler'),
+                    ->create('HandlerService'),
                 $container
                     ->get('eventFactory'),
                 $container
@@ -77,16 +77,16 @@ class Handler implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\HandlerInterface $repository
-     * @param \App\Validator\Handler           $validator
+     * @param \App\Repository\HandlerServiceInterface $repository
+     * @param \App\Validator\HandlerService           $validator
      * @param \App\Factory\Event               $eventFactory
      * @param \League\Event\Emitter            $emitter
      *
      * @return void
      */
     public function __construct(
-        DataHandlerInterface $repository,
-        HandlerValidator $validator,
+        DataHandlerServiceInterface $repository,
+        HandlerServiceValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
@@ -97,80 +97,84 @@ class Handler implements HandlerInterface {
     }
 
     /**
-     * Creates a new Handler.
+     * Creates a new HandlerService.
      *
-     * @param \App\Command\Handler\CreateNew $command
+     * @param \App\Command\HandlerService\CreateNew $command
      *
-     * @return \App\Entity\Handler
+     * @return \App\Entity\HandlerService
      */
-    public function handleCreateNew(CreateNew $command) : HandlerEntity {
+    public function handleCreateNew(CreateNew $command) : HandlerServiceEntity {
         try {
+            $inputs = [
+                'name' => $command->name,
+                'handler_id' => $command->handlerId,
+                'url' => $command->url
+            ];
+
+            $this->validator->assertId($command->handlerId);
             $this->validator->assertCompany($command->company);
             $this->validator->assertName($command->name);
-            $this->validator->assertName($command->authUsername);
-            $this->validator->assertPassword($command->authPassword);
-            $this->validator->assertFlag($command->enabled);
+            $this->validator->assertUrl($command->url);
+
+
+            if (! is_null($command->privacy)) {
+                $this->validator->assertId($command->privacy);
+                $inputs['privacy'] = $command->privacy;
+            }
+
+            if (! is_null($command->enabled)) {
+                $this->validator->assertFlag($command->enabled);
+            }
+
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
-            throw new Validate\HandlerException(
+            throw new Validate\HandlerServiceException(
                 $e->getFullMessage(),
                 400,
                 $e
             );
         }
 
-        $entity = $this->repository->create(
-            [
-                'company_id'    => $command->company->id,
-                'name'          => $command->name,
-                'auth_username' => $command->authUsername,
-                'auth_password' => $command->authPassword,
-                'public'        => sha1('pub' . $command->company->id . microtime()),
-                'private'       => sha1('priv' . $command->company->id . microtime()),
-                'enabled'       => $command->enabled,
-                'created_at'    => time()
-            ]
-        );
+        $entity = $this->repository->create($inputs);
 
         try {
             $entity = $this->repository->save($entity);
-            $event  = $this->eventFactory->create('Handler\\Created', $entity, $command->identity);
+            $entity = $this->repository->find($entity->id);
+            $event  = $this->eventFactory->create('HandlerService\\Created', $entity, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            var_dump($e);die;
-            throw new Create\HandlerException('Error while trying to create a handler', 500, $e);
+            throw new Create\HandlerServiceException('Error while trying to create a handler', 500, $e);
         }
 
         return $entity;
     }
 
     /**
-     * Updates a Handler.
+     * Updates a HandlerService.
      *
-     * @param \App\Command\Handler\UpdateOne $command
+     * @param \App\Command\HandlerService\UpdateOne $command
      *
-     * @return \App\Entity\Handler
+     * @return \App\Entity\HandlerService
      */
-    public function handleUpdateOne(UpdateOne $command) : HandlerEntity {
+    public function handleUpdateOne(UpdateOne $command) : HandlerServiceEntity {
         try {
             $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->handlerId);
+            $this->validator->assertId($command->handlerServiceId);
 
             $input = [];
-
             if (! is_null($command->name)) {
                 $this->validator->assertName($command->name);
                 $input['name'] = $command->name;
             }
-            
-            if (! is_null($command->authUsername)) {
-                $this->validator->assertName($command->authUsername);
-                $input['auth_username'] = $command->authUsername;
+
+            if (! is_null($command->enabled)) {
+                $this->validator->assertFlag($command->enabled);
+                $input['enabled'] = $command->enabled;
             }
 
-            if (! is_null($command->authPassword)) {
-                $this->validator->assertName($command->authPassword);
-                $input['auth_password'] = $command->authPassword;
+            if (! is_null($command->listens)) {
+                $this->validator->assertArray($command->listens);
+                $input['listens'] = $command->listens;
             }
 
             if (! is_null($command->enabled)) {
@@ -178,52 +182,43 @@ class Handler implements HandlerInterface {
                 $input['enabled'] = $command->enabled;
             }
 
-
-            if (! is_null($command->enabled)) {
-                $this->validator->assertFlag($command->enabled);
-                $input['enabled'] = $command->enabled;
+            if (! is_null($command->privacy)) {
+                $this->validator->assertId($command->privacy);
+                $input['privacy'] = $command->privacy;
             }
 
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
-            throw new Validate\HandlerException(
+            throw new Validate\HandlerServiceException(
                 $e->getFullMessage(),
                 400,
                 $e
             );
         }
 
-        $entity = $this->repository->find($command->handlerId);
-
-        // Any thoughts on a better place of verifying this
-        if ($command->company->id != $entity->companyId) {
-            throw new NotAllowed\HandlerException("Handler doesn't belong to the given company", 403);
-        }
-
+        $entity = $this->repository->find($command->handlerServiceId);
         $backup = $entity->toArray();
 
         foreach ($input as $key => $value) {
             $entity->$key = $value;
         }
 
-        if ($backup != $entity->toArray()) {
-            try {
-                $entity->updatedAt = time();
-                $entity            = $this->repository->save($entity);
-                $event             = $this->eventFactory->create('Handler\\Updated', $entity, $command->identity);
-                $this->emitter->emit($event);
-            } catch (\Exception $e) {
-                throw new Update\HandlerException('Error while trying to update a service', 500, $e);
-            }
+        try {
+            $entity            = $this->repository->save($entity);
+            $event             = $this->eventFactory->create('HandlerService\\Updated', $entity, $command->identity);
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            var_dump($e);die;
+            throw new Update\HandlerServiceException('Error while trying to update a service', 500, $e);
         }
 
         return $entity;
     }
 
     /**
-     * Deletes a Handler.
+     * Deletes a HandlerService.
      *
-     * @param \App\Command\Handler\DeleteOne $command
+     * @param \App\Command\HandlerService\DeleteOne $command
      *
      * @throws \App\Exception\NotFound
      *
@@ -232,32 +227,32 @@ class Handler implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) {
         try {
             $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->handlerId);
+            $this->validator->assertId($command->handlerServiceId);
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
-            throw new Validate\HandlerException(
+            throw new Validate\HandlerServiceException(
                 $e->getFullMessage(),
                 400,
                 $e
             );
         }
 
-        $service = $this->repository->find($command->handlerId);
+        $service = $this->repository->find($command->handlerServiceId);
 
-        $rowsAffected = $this->repository->deleteOne($command->handlerId, $command->company);
+        $rowsAffected = $this->repository->delete($command->handlerServiceId);
 
         if (! $rowsAffected) {
-            throw new NotFound\HandlerException('No services found for deletion', 404);
+            throw new NotFound\HandlerServiceException('No services found for deletion', 404);
         }
 
-        $event = $this->eventFactory->create('Handler\\Deleted', $service, $command->identity);
+        $event = $this->eventFactory->create('HandlerService\\Deleted', $service, $command->identity);
         $this->emitter->emit($event);
     }
 
     /**
      * Deletes all service handlers ($command->companyId).
      *
-     * @param \App\Command\Handler\DeleteAll $command
+     * @param \App\Command\HandlerService\DeleteAll $command
      *
      * @return int
      */
@@ -266,7 +261,7 @@ class Handler implements HandlerInterface {
             $this->validator->assertCompany($command->company);
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
-            throw new Validate\HandlerException(
+            throw new Validate\HandlerServiceException(
                 $e->getFullMessage(),
                 400,
                 $e
@@ -277,7 +272,7 @@ class Handler implements HandlerInterface {
 
         $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
 
-        $event = $this->eventFactory->create('Handler\\DeletedMulti', $services, $command->identity);
+        $event = $this->eventFactory->create('HandlerService\\DeletedMulti', $services, $command->identity);
         $this->emitter->emit($event);
 
         return $affectedRows;

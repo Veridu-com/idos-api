@@ -123,7 +123,7 @@ class DatabaseInit extends AbstractMigration {
         $handlers
             ->addColumn('company_id', 'integer', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
-            ->addColumn('role', 'text', ['null' => false])
+            ->addColumn('role', 'text', ['null' => false, 'default' => 'none'])
             ->addColumn('auth_username', 'text', ['null' => false])
             ->addColumn('auth_password', 'text', ['null' => false])
             ->addColumn('public', 'text', ['null' => false])
