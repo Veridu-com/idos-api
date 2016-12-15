@@ -124,6 +124,12 @@ class HandlerService implements HandlerInterface {
 
             if (! is_null($command->enabled)) {
                 $this->validator->assertFlag($command->enabled);
+                $inputs['enabled'] = $command->enabled;
+            }
+
+            if (! is_null($command->listens)) {
+                $this->validator->assertArray($command->listens);
+                $inputs['listens'] = $command->listens;
             }
 
             $this->validator->assertIdentity($command->identity);

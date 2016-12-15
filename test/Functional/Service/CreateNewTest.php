@@ -27,6 +27,14 @@ class CreateNewTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
+        $this->uri = '/1.0/companies/veridu-ltd/handlers/2/handler-services';
+        $this->httpMethod = 'POST';
+
+        $array = [
+
+        ];
+
+
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
