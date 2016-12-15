@@ -454,15 +454,17 @@ class Source implements HandlerInterface {
         $sources = $this->repository->getByUserId($command->user->id);
         $deleted = $this->repository->deleteByUserId($command->user->id);
 
-        $this->emitter->emit(
-            $this->eventFactory->create(
-                'Profile\\Source\\DeletedMulti',
-                $command->user,
-                $sources,
-                $command->ipaddr,
-                $command->credential
-            )
-        );
+        if ($deleted) {
+            $this->emitter->emit(
+                $this->eventFactory->create(
+                    'Profile\\Source\\DeletedMulti',
+                    $command->user,
+                    $sources,
+                    $command->ipaddr,
+                    $command->credential
+                )
+            );
+        }
 
         return $deleted;
     }

@@ -177,7 +177,7 @@ class Candidate implements HandlerInterface {
         $entities = $this->repository->findBy(
             [
                 'user_id' => $command->user->id,
-                'creator' => $command->service->id
+                'creator' => $command->handler->id
             ],
             $command->queryParams
         );
