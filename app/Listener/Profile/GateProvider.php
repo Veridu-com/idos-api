@@ -23,7 +23,7 @@ class GateProvider extends Listener\AbstractListenerProvider {
         $credentialRepository     = $repositoryFactory->create('Company\Credential');
         $settingRepository        = $repositoryFactory->create('Company\Setting');
         $userRepository           = $repositoryFactory->create('User');
-        $serviceRepository = $repositoryFactory->create('Service');
+        $serviceRepository        = $repositoryFactory->create('Service');
 
         $eventFactory  = $container->get('eventFactory');
         $emitter       = $container->get('eventEmitter');

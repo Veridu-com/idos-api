@@ -99,12 +99,12 @@ class Company implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\CompanyInterface $repository
-     * @param \App\Repository\ServiceInterface $serviceRepository
+     * @param \App\Repository\CompanyInterface        $repository
+     * @param \App\Repository\ServiceInterface        $serviceRepository
      * @param \App\Repository\HandlerServiceInterface $handlerServiceRepository
-     * @param \App\Validator\Company           $validator
-     * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter            $emitter
+     * @param \App\Validator\Company                  $validator
+     * @param \App\Factory\Event                      $eventFactory
+     * @param \League\Event\Emitter                   $emitter
      *
      * @return void
      */
@@ -116,12 +116,12 @@ class Company implements HandlerInterface {
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository   = $repository;
-        $this->serviceRepository   = $serviceRepository;
+        $this->repository                 = $repository;
+        $this->serviceRepository          = $serviceRepository;
         $this->handlerServiceRepository   = $handlerServiceRepository;
-        $this->validator    = $validator;
-        $this->eventFactory = $eventFactory;
-        $this->emitter      = $emitter;
+        $this->validator                  = $validator;
+        $this->eventFactory               = $eventFactory;
+        $this->emitter                    = $emitter;
     }
 
     /**
@@ -163,7 +163,6 @@ class Company implements HandlerInterface {
             $event   = $this->eventFactory->create('Company\\Created', $company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            var_dump($e);die;
             throw new Create\CompanyException('Error while trying to create a company', 500, $e);
         }
 
@@ -201,22 +200,23 @@ class Company implements HandlerInterface {
                 $handlerServices = $this->handlerServiceRepository->getAll();
             }
 
-
             // populate company services
             foreach ($handlerServices as $handlerService) {
                 if ($handlerService->privacy === HandlerService::PRIVACY_PRIVATE) {
                     continue;
                 }
-                
-                $service = $this->serviceRepository->create([
-                    'company_id' => $command->companyId,
+
+                $service = $this->serviceRepository->create(
+                    [
+                    'company_id'         => $command->companyId,
                     'handler_service_id' => $handlerService->id,
-                    'listens' => $handlerService->listens
-                ]);
+                    'listens'            => $handlerService->listens
+                    ]
+                );
                 $this->serviceRepository->upsert($service);
             }
 
-            $event   = $this->eventFactory->create('Company\\Setup', $company, $command->identity);
+            $event = $this->eventFactory->create('Company\\Setup', $company, $command->identity);
             $this->emitter->emit($event);
 
             return $handlerServices;

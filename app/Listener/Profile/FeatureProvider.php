@@ -17,7 +17,7 @@ class FeatureProvider extends Listener\AbstractListenerProvider {
     public function __construct(ContainerInterface $container) {
         $repositoryFactory        = $container->get('repositoryFactory');
         $credentialRepository     = $repositoryFactory->create('Company\Credential');
-        $serviceRepository = $repositoryFactory->create('Service');
+        $serviceRepository        = $repositoryFactory->create('Service');
         $sourceRepository         = $repositoryFactory->create('Profile\Source');
 
         $eventFactory  = $container->get('eventFactory');

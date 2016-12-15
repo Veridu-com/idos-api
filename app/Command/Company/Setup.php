@@ -33,7 +33,7 @@ class Setup extends AbstractCommand {
      * @return \App\Command\Company\InitialSetup
      */
     public function setParameters(array $parameters) : self {
-        
+
         return $this;
     }
 }

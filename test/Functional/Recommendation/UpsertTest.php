@@ -35,11 +35,13 @@ class UpsertTest extends AbstractFunctional {
         );
 
         $request = $this->createRequest(
-            $environment, json_encode([
+            $environment, json_encode(
+                [
                 'result'  => 'result-test',
                 'passed'  => [],
                 'failed'  => []
-            ])
+                ]
+            )
         );
 
         $response = $this->process($request);
@@ -75,7 +77,8 @@ class UpsertTest extends AbstractFunctional {
         );
 
         $request = $this->createRequest(
-            $environment, json_encode([
+            $environment, json_encode(
+                [
                 'result'  => 'result-test-2',
                 'passed'  => [
                     'rule-1',
@@ -87,7 +90,8 @@ class UpsertTest extends AbstractFunctional {
                     'rule-5',
                     'rule-6'
                 ]
-            ])
+                ]
+            )
         );
 
         $response = $this->process($request);

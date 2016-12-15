@@ -64,7 +64,7 @@ class CreateNew extends AbstractCommand {
         if (isset($parameters['enabled'])) {
             $this->enabled = $parameters['enabled'];
         }
-        
+
         if (isset($parameters['auth_username'])) {
             $this->authUsername = $parameters['auth_username'];
         }

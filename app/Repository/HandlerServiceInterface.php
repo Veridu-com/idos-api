@@ -8,14 +8,12 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\HandlerService;
 use Illuminate\Support\Collection;
 
 /**
  * Handler Service Repository Interface.
  */
 interface HandlerServiceInterface extends RepositoryInterface {
-
     /**
      * Return handler services based on their company id.
      *

@@ -229,7 +229,7 @@ class Flag implements HandlerInterface {
             foreach ($entities as $entity) {
                 $affectedRows += $this->repository->delete($entity->id);
             }
-    
+
             if ($affectedRows) {
                 $event = $this->eventFactory->create('Profile\\Flag\\DeletedMulti', $entities, $command->credential);
                 $this->emitter->emit($event);

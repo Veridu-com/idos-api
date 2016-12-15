@@ -91,11 +91,13 @@ class Health implements ControllerInterface {
 
         try {
             $queueServerStatus = @$this->gearmanClient->ping('health-check');
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         try {
             $sqlDatabaseStatus = (bool) $this->sqlConnection->query()->get([$this->sqlConnection->raw('1')])->first();
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         try {
             $noSqlDatabaseStatus = (bool) ($this->noSqlConnector)('test', ['driver_options' => ['timeout' => 5]])
@@ -103,7 +105,8 @@ class Health implements ControllerInterface {
                 ->command(['ping' => 1])
                 ->toArray()[0]
                 ->ok;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $status = $queueServerStatus && $sqlDatabaseStatus && $noSqlDatabaseStatus;
         $body   = [

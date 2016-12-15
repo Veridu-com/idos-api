@@ -64,11 +64,11 @@ class QueueServiceTaskListener extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\CredentialInterface     $credentialRepository
-     * @param \App\Repository\ServiceInterface $serviceRepository
-     * @param \App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                   $emitter
-     * @param \GearmanClient                          $gearmanClient
+     * @param \App\Repository\CredentialInterface $credentialRepository
+     * @param \App\Repository\ServiceInterface    $serviceRepository
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
+     * @param \GearmanClient                      $gearmanClient
      *
      * @return void
      */
@@ -80,7 +80,7 @@ class QueueServiceTaskListener extends AbstractListener {
         \GearmanClient $gearmanClient
     ) {
         $this->credentialRepository     = $credentialRepository;
-        $this->serviceRepository = $serviceRepository;
+        $this->serviceRepository        = $serviceRepository;
         $this->eventFactory             = $eventFactory;
         $this->emitter                  = $emitter;
         $this->gearmanClient            = $gearmanClient;

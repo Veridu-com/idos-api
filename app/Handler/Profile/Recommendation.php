@@ -115,22 +115,26 @@ class Recommendation implements HandlerInterface {
         }
 
         try {
-            $recommendation = $this->repository->create([
+            $recommendation = $this->repository->create(
+                [
                 'creator'    => $command->handler->id,
                 'user_id'    => $command->user->id,
                 'result'     => $command->result,
                 'passed'     => $command->passed,
                 'failed'     => $command->failed,
                 'created_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $this->repository->beginTransaction();
-            $this->repository->upsert($recommendation, ['user_id'], [
+            $this->repository->upsert(
+                $recommendation, ['user_id'], [
                 'result'     => $command->result,
                 'passed'     => json_encode($command->passed),
                 'failed'     => json_encode($command->failed),
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $recommendation = $this->repository->findOne($command->user->id);
             $this->repository->commit();

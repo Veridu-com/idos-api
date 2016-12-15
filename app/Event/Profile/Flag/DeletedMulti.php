@@ -50,6 +50,7 @@ class DeletedMulti extends AbstractEvent implements UserIdGetterInterface {
         if ($this->flags->isEmpty()) {
             throw new \RuntimeException('No rows affected.');
         }
+
         return $this->flags->first()->userId;
     }
 }

@@ -42,8 +42,8 @@ interface FeatureInterface extends RepositoryInterface {
     /**
      * Returns a feature based on its user id and id.
      *
-     * @param int $id        The feature id
-     * @param int $userId    The user id
+     * @param int $id     The feature id
+     * @param int $userId The user id
      *
      * @return \App\Entity\Profile\Feature
      */
