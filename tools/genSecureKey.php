@@ -5,23 +5,30 @@
  * All rights reserved.
  */
 
-// Set the key password (must be set in the settings too!)
-define('PASSWORD', 'set-your-password-here');
-// Set the output location of your key
-define('OUTPUT', __DIR__ . '/../resources/secure.key');
-
-/*
- * DO NOT CHANGE ANYTHING BELOW THIS LINE
- */
-
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../config/settings.php';
 
 use Defuse\Crypto\KeyProtectedByPassword;
 
+// key location
+define('OUTPUT', __DIR__ . '/../resources/secure.key');
+
+if (is_file(OUTPUT)) {
+    echo 'A "secure.key" already exists, leaving.', PHP_EOL;
+    exit;
+}
+
+if (empty($appSettings['secure'])) {
+    echo 'Your secure passphrase is empty!', PHP_EOL;
+    echo 'Set IDOS_SECURE_KEY in your environment.', PHP_EOL;
+    exit;
+}
+
 echo 'Generating key..', PHP_EOL;
 
-$key = KeyProtectedByPassword::createRandomPasswordProtectedKey(PASSWORD);
-file_put_contents(OUTPUT, $key->saveToAsciiSafeString());
+$key = KeyProtectedByPassword::createRandomPasswordProtectedKey($appSettings['secure']);
+echo 'Key generated!', PHP_EOL;
 
-echo 'Key generated and saved!', PHP_EOL;
-echo 'Key location: ', OUTPUT, PHP_EOL;
+file_put_contents(OUTPUT, $key->saveToAsciiSafeString());
+echo 'Key saved!', PHP_EOL;
+echo 'Location: ', OUTPUT, PHP_EOL;
