@@ -34,25 +34,24 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name    = 'Testing Gate';
-        $pass    = true;
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                    'name' => $name,
-                    'pass' => $pass
+                    'name'             => 'Name Test',
+                    'confidence_level' => 'medium'
                 ]
             )
         );
         $response = $this->process($request);
+
         $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame($name, $body['data']['name']);
-        $this->assertSame('testing-gate', $body['data']['slug']);
-        $this->assertSame($pass, $body['data']['pass']);
+        $this->assertSame('Name Test', $body['data']['name']);
+        $this->assertSame('name-test', $body['data']['slug']);
+        $this->assertSame('medium', $body['data']['confidence_level']);
 
         /*
          * Validates Response using the Json Schema.
@@ -71,13 +70,11 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name    = '';
-        $pass    = true;
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                    'name' => $name,
-                    'pass' => $pass
+                    'name'             => '',
+                    'confidence_level' => 'high'
                 ]
             )
         );
@@ -97,7 +94,7 @@ class CreateNewTest extends AbstractFunctional {
         );
     }
 
-    public function testInvalidPass() {
+    public function testEmptyConfidenceLevel() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -105,16 +102,15 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name    = 'Name';
-        $pass    = 'words';
         $request = $this->createRequest(
-            $environment, json_encode(
+            $environment,
+            json_encode(
                 [
-                    'name' => $name,
-                    'pass' => $pass
+                    'name' => 'Name Test'
                 ]
             )
         );
+
         $response = $this->process($request);
         $this->assertSame(400, $response->getStatusCode());
 

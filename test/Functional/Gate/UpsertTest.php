@@ -38,8 +38,7 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'             => 'name-test',
-                    'pass'             => true,
+                    'name'             => 'Name Test',
                     'confidence_level' => 'high'
                 ]
             )
@@ -51,8 +50,9 @@ class UpsertTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('name-test', $body['data']['name']);
-        $this->assertTrue($body['data']['pass']);
+        $this->assertSame('Name Test', $body['data']['name']);
+        $this->assertSame('name-test', $body['data']['slug']);
+        $this->assertSame('high', $body['data']['confidence_level']);
 
         /*
          * Validates Response using the Json Schema.
@@ -78,9 +78,8 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'             => 'name-test',
-                    'pass'             => true,
-                    'confidence_level' => 'high'
+                    'name'             => 'Name Test',
+                    'confidence_level' => 'medium'
                 ]
             )
         );
@@ -91,8 +90,7 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'             => 'name-test',
-                    'pass'             => false,
+                    'name'             => 'Name Test',
                     'confidence_level' => 'high'
                 ]
             )
@@ -105,8 +103,9 @@ class UpsertTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('name-test', $body['data']['name']);
-        $this->assertFalse($body['data']['pass']);
+        $this->assertSame('Name Test', $body['data']['name']);
+        $this->assertSame('name-test', $body['data']['slug']);
+        $this->assertSame('high', $body['data']['confidence_level']);
 
         /*
          * Validates Response using the Json Schema.
@@ -132,8 +131,8 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name'  => '',
-                    'value' => 0.6
+                    'name'             => '',
+                    'confidence_level' => 'high'
                 ]
             )
         );
@@ -157,7 +156,7 @@ class UpsertTest extends AbstractFunctional {
         );
     }
 
-    public function testEmptyPass() {
+    public function testEmptyConfidenceLevel() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -169,60 +168,23 @@ class UpsertTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'name-value',
-                    'pass' => null
+                    'name' => 'Name Test'
                 ]
             )
         );
 
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
+        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
+
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
-            $this->validateSchema(
-                'error.json',
-                json_decode((string) $response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testInvalidPass() {
-        $environment = $this->createEnvironment(
-            [
-                'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-            ]
-        );
-
-        $request = $this->createRequest(
-            $environment,
-            json_encode(
-                [
-                    'name' => 'name-value',
-                    'pass' => 'test'
-                ]
-            )
-        );
-
-        $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
-
-        $this->assertTrue(
-            $this->validateSchema(
-                'error.json',
-                json_decode((string) $response->getBody())
-            ),
+            $this->validateSchema('error.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
     }

@@ -11,7 +11,7 @@ namespace App\Event\Profile\Recommendation;
 use App\Entity\Company;
 use App\Entity\Company\Credential;
 use App\Entity\Profile\Recommendation;
-use App\Entity\Service;
+use App\Entity\Handler;
 use App\Entity\User;
 use App\Event\AbstractEvent;
 
@@ -32,11 +32,11 @@ class Created extends AbstractEvent {
      */
     public $user;
     /**
-     * Event related Service.
+     * Event related Handler.
      *
-     * @var \App\Entity\Service
+     * @var \App\Entity\Handler
      */
-    public $service;
+    public $handler;
     /**
      * Event related Company.
      *
@@ -55,14 +55,16 @@ class Created extends AbstractEvent {
      *
      * @param \App\Entity\Profile\Recommendation $recommendation
      * @param \App\Entity\User                   $user
+     * @param \App\Entity\Handler                $handler
+     * @param \App\Entity\Company                $company
      * @param \App\Entity\Company\Credential     $credential
      *
      * @return void
      */
-    public function __construct(Recommendation $recommendation, User $user, Service $service, Company $company, Credential $credential) {
+    public function __construct(Recommendation $recommendation, User $user, Handler $handler, Company $company, Credential $credential) {
         $this->recommendation = $recommendation;
         $this->user           = $user;
-        $this->service        = $service;
+        $this->handler        = $handler;
         $this->company        = $company;
         $this->credential     = $credential;
     }

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use App\Helper\Vault;
 use Illuminate\Contracts\Support\Arrayable;
 use Jenssegers\Optimus\Optimus;
 
@@ -96,6 +97,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @var \Jenssegers\Optimus\Optimus
      */
     protected $optimus = null;
+    /**
+     * Vault helper.
+     *
+     * @var \App\Helper\Vault
+     */
+    protected $vault = null;
 
     /**
      * Formats a snake_case string to CamelCase.
@@ -206,8 +213,8 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) != 0)) {
                 $value = sprintf(
                     'secure:%s',
-                    // $this->secure->lock($value)
-                    $value
+                    $this->vault->lock($value)
+                    //$value
                 );
             }
         }
@@ -247,7 +254,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
             if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) === 0)) {
                 $value = substr($value, 7);
-                // $value = $this->secure->unlock($value);
+                $value = $this->vault->unlock($value);
             }
         }
 
@@ -293,10 +300,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @param array                       $attributes
      * @param \Jenssegers\Optimus\Optimus $optimus
+     * @param \App\Helper\Vault          $vault
      *
      * @return void
      */
-    public function __construct(array $attributes, Optimus $optimus) {
+    public function __construct(array $attributes, Optimus $optimus, Vault $vault) {
+        $this->vault = $vault;
+
         if (! empty($attributes)) {
             $this
                 ->hydrate($attributes)

@@ -143,9 +143,8 @@ class S11SettingsSeed extends AbstractSeed {
                         [
                             'tag'              => 'default test #1',
                             'category'         => 'gate',
-                            'slug'             => 'nochargebackgate-medium',
-                            'confidence_level' => 'medium',
-                            'pass'             => true
+                            'slug'             => 'nochargebackgate',
+                            'confidence_level' => 'medium'
                         ]
                     ]
                 ]
