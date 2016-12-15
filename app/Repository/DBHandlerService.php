@@ -30,4 +30,20 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
      * @var string
      */
     protected $entityName = 'HandlerService';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $filterableKeys = [
+        'name' => 'string'
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByCompanyId(int $companyId, array $queryParams) : Collection {
+        return $this->findBy([
+            'company_id' => $companyId
+        ], $queryParams);
+    }
 }

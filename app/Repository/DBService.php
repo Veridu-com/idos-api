@@ -96,8 +96,8 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
     public function findOne(int $serviceId, int $companyId) : Service {
         return $this->findOneBy(
             [
-            'id'         => $serviceId,
-            'company_id' => $companyId
+                'id'         => $serviceId,
+                'company_id' => $companyId
             ]
         );
     }

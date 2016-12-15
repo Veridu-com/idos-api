@@ -9,19 +9,19 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 use App\Factory\Command;
-use App\Repository\ServiceInterface;
+use App\Repository\HandlerServiceInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Handles requests to /companies/{companySlug}/handlers and /companies/{companySlug}/handlers/{handlerId}.
+ * Handles requests to /companies/{companySlug}/handler-services and /companies/{companySlug}/handler-services/{handlerServiceId}.
  */
-class Handlers implements ControllerInterface {
+class HandlerServices implements ControllerInterface {
     /**
      * ServiceHandler Repository instance.
      *
-     * @var \App\Repository\ServiceInterface
+     * @var \App\Repository\HandlerServiceInterface
      */
     private $repository;
     /**
@@ -40,14 +40,14 @@ class Handlers implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\ServiceInterface $repository
+     * @param \App\Repository\HandlerServiceInterface $repository
      * @param \League\Tactician\CommandBus            $commandBus
      * @param \App\Factory\Command                    $commandFactory
      *
      * @return void
      */
     public function __construct(
-        ServiceInterface $repository,
+        HandlerServiceInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
@@ -59,7 +59,7 @@ class Handlers implements ControllerInterface {
     /**
      * Lists all Service handlers that belongs to the acting Company.
      *
-     * @apiEndpointResponse 200 schema/handlers/listAll.json
+     * @apiEndpointResponse 200 schema/handlerServices/listAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -70,7 +70,7 @@ class Handlers implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
-        $entities = $this->repository->getByServiceCompanyId($company->id);
+        $entities = $this->repository->getByCompanyId($company->id, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),
@@ -91,7 +91,7 @@ class Handlers implements ControllerInterface {
     /**
      * Retrieves one Service handler of the acting Company.
      *
-     * @apiEndpointResponse 200 schema/handler/getOne.json
+     * @apiEndpointResponse 200 schema/handlerService/getOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -125,7 +125,7 @@ class Handlers implements ControllerInterface {
      * @apiEndpointRequiredParam    body    int     service_id   1325   Service's id.
      * @apiEndpointRequiredParam    body    array   listens     ['source.add.facebook']   Service handler's listens property.
      *
-     * @apiEndpointResponse 201 schema/handler/createNew.json
+     * @apiEndpointResponse 201 schema/handlerService/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -166,7 +166,7 @@ class Handlers implements ControllerInterface {
      *
      * @apiEndpointRequiredParam    body    array      listens          Service handler's listens.
      *
-     * @apiEndpointResponse 200 schema/handler/updateOne.json
+     * @apiEndpointResponse 200 schema/handlerService/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -183,7 +183,7 @@ class Handlers implements ControllerInterface {
         $command = $this->commandFactory->create('ServiceHandler\\UpdateOne');
         $command
             ->setParameters($request->getParsedBody() ?: [])
-            ->setParameter('handlerId', $handlerHandlerId)
+            ->setParameter('handlerServiceId', $handlerHandlerId)
             ->setParameter('identity', $identity)
             ->setParameter('companyId', $company->id);
 
@@ -205,7 +205,7 @@ class Handlers implements ControllerInterface {
     /**
      * Deletes one Service handler of the acting Company.
      *
-     * @apiEndpointResponse 200 schema/handler/deleteOne.json
+     * @apiEndpointResponse 200 schema/handlerService/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -223,7 +223,7 @@ class Handlers implements ControllerInterface {
         $command
             ->setParameter('companyId', $company->id)
             ->setParameter('identity', $identity)
-            ->setParameter('handlerId', $handlerHandlerId);
+            ->setParameter('handlerServiceId', $handlerHandlerId);
 
         $this->commandBus->handle($command);
         $body = [
@@ -242,7 +242,7 @@ class Handlers implements ControllerInterface {
     /**
      * Deletes all Service handlers that belongs to the acting Company.
      *
-     * @apiEndpointResponse 200 schema/handler/deleteAll.json
+     * @apiEndpointResponse 200 schema/handlerService/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

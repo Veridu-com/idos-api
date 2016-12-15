@@ -30,7 +30,6 @@ class Service implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'services:listAll',
-            'services:deleteAll',
             'services:createNew',
             'services:getOne',
             'services:updateOne',
@@ -44,8 +43,7 @@ class Service implements RouteInterface {
     public static function register(App $app) {
         $app->getContainer()[\App\Controller\Services::class] = function (ContainerInterface $container) {
             return new \App\Controller\Services(
-                $container->get('repositoryFactory')->create('Service'),
-                $container->get('commandBus'),
+                $container->get('repositoryFactory')->create('Service'), $container->get('commandBus'),
                 $container->get('commandFactory')
             );
         };
@@ -59,7 +57,6 @@ class Service implements RouteInterface {
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
         self::deleteOne($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -99,11 +96,11 @@ class Service implements RouteInterface {
      *
      * Retrieves all public information from a single Service handler.
      *
-     * @apiEndpoint GET /companies/{companySlug}/services/{serviceHandlerId}
+     * @apiEndpoint GET /companies/{companySlug}/services/{serviceId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment string serviceHandlerId 1
+     * @apiEndpointURIFragment string serviceId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -119,7 +116,7 @@ class Service implements RouteInterface {
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceHandlerId:[0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceId:[0-9]+}',
                 'App\Controller\Services:getOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -164,11 +161,11 @@ class Service implements RouteInterface {
      *
      * Updates the information for a single Service.
      *
-     * @apiEndpoint GET /companies/{companySlug}/services/{serviceHandlerId}
+     * @apiEndpoint GET /companies/{companySlug}/services/{serviceId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment  string  serviceHandlerId 1
+     * @apiEndpointURIFragment  string  serviceId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -184,7 +181,7 @@ class Service implements RouteInterface {
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->patch(
-                '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceHandlerId:[0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceId:[0-9]+}',
                 'App\Controller\Services:updateOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
@@ -197,11 +194,11 @@ class Service implements RouteInterface {
      *
      * Deletes a single Service handler that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/services/{serviceHandlerId}
+     * @apiEndpoint DELETE /companies/{companySlug}/services/{serviceId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment  string  serviceHandlerId 1
+     * @apiEndpointURIFragment  string  serviceId 1
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -217,44 +214,11 @@ class Service implements RouteInterface {
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceHandlerId:[0-9]+}',
+                '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceId:[0-9]+}',
                 'App\Controller\Services:deleteOne'
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('services:deleteOne');
-    }
-
-    /**
-     * Deletes all services.
-     *
-     * Deletes all services that belongs to the requesting company.
-     *
-     * @apiEndpoint DELETE /companies/{companySlug}/services
-     * @apiGroup Company
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/services/deleteAll.md
-     * @see \App\Middleware\Auth::__invoke
-     * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Services::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        // FIXME This should be removed!
-        $app
-            ->delete(
-                '/companies/{companySlug:[a-z0-9_-]+}/services',
-                'App\Controller\Services:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PRIVATE_ACTION))
-            ->add($auth(Auth::IDENTITY))
-            ->setName('services:deleteAll');
     }
 }

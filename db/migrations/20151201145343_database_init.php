@@ -143,6 +143,7 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('url', 'text', ['null' => false])
             ->addColumn('listens', 'jsonb', ['null' => false, 'default' => '[]'])
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
+            ->addColumn('privacy', 'integer', ['null' => false, 'default' => 0x00]) // 0x00 => public, 0x01 => private
             ->addTimestamps()
             ->addIndex([
                 'handler_id'

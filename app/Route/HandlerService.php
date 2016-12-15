@@ -14,28 +14,29 @@ use Interop\Container\ContainerInterface;
 use Slim\App;
 
 /**
- * Company Handlers.
+ * Company Handler Services.
  *
- * Company Handlers are what allows a company to add tailored functionality to the API in order to assess specific
- * information. A Company Handler has "Services" that can be triggered within idOS processes.
+ * Company Handler Services are what allows a company to add tailored functionality to the API in order to assess specific
+ * information. If a company wants to support a specific Profile Source, access a certain data point within a Profile,
+ * or change the way the API interprets data, Handler Services are a simple and direct way of doing this.
  *
  * @apiDisabled
  *
- * @link docs/handlers/overview.md
- * @see \App\Controller\Handlers
+ * @link docs/handler-services/overview.md
+ * @see \App\Controller\Handler Services
  */
-class Handler implements RouteInterface {
+class HandlerService implements RouteInterface {
     /**
      * {@inheritdoc}
      */
     public static function getPublicNames() : array {
         return [
-            'handler:listAll',
-            'handler:deleteAll',
-            'handler:createNew',
-            'handler:getOne',
-            'handler:updateOne',
-            'handler:deleteOne'
+            'handler-services:listAll',
+            'handler-services:deleteAll',
+            'handler-services:createNew',
+            'handler-services:getOne',
+            'handler-services:updateOne',
+            'handler-services:deleteOne'
         ];
     }
 
@@ -43,9 +44,9 @@ class Handler implements RouteInterface {
      * {@inheritdoc}
      */
     public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Handlers::class] = function (ContainerInterface $container) {
-            return new \App\Controller\Handlers(
-                $container->get('repositoryFactory')->create('Handler'),
+        $app->getContainer()[\App\Controller\HandlerServices::class] = function (ContainerInterface $container) {
+            return new \App\Controller\HandlerServices(
+                $container->get('repositoryFactory')->create('HandlerService'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );
@@ -64,11 +65,11 @@ class Handler implements RouteInterface {
     }
 
     /**
-     * List all Handlers.
+     * List all Handler Services.
      *
-     * Retrieves a complete list of all handlers.
+     * Retrieves a complete list of all handler-services.
      *
-     * @apiEndpoint GET /companies/{companySlug}/handlers
+     * @apiEndpoint GET /companies/{companySlug}/handler-services
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -79,32 +80,32 @@ class Handler implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/handlers/listAll.md
+     * @link docs/handler-services/listAll.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Handlers::listAll
+     * @see \App\Controller\Handler Services::listAll
      */
     private static function listAll(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-z0-9_-]+}/handlers',
-                'App\Controller\Handlers:listAll'
+                '/companies/{companySlug:[a-z0-9_-]+}/handler-services',
+                'App\Controller\HandlerServices:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
-            ->setName('handler:listAll');
+            ->setName('handler-services:listAll');
     }
 
     /**
-     * Retrieve a single Handler.
+     * Retrieve a single Handler Service.
      *
-     * Retrieves all public information from a Handler.
+     * Retrieves all public information from a Handler Service.
      *
-     * @apiEndpoint GET /companies/{companySlug}/handlers/{handlerId}
+     * @apiEndpoint GET /companies/{companySlug}/handler-services/{handler-servicesId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment  int  handlerId 1234
+     * @apiEndpointURIFragment  int  handler-servicesId 1234
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -112,28 +113,28 @@ class Handler implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/handlers/getOne.md
+     * @link docs/handler-services/getOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Handlers::getOne
+     * @see \App\Controller\Handler Services::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/companies/{companySlug:[a-z0-9_-]+}/handlers/{handlerId:[0-9]+}',
-                'App\Controller\Handlers:getOne'
+                '/companies/{companySlug:[a-z0-9_-]+}/handler-services/{handler-servicesId:[0-9]+}',
+                'App\Controller\Handler Services:getOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
-            ->setName('handler:getOne');
+            ->setName('handler-services:getOne');
     }
 
     /**
-     * Create new Handler.
+     * Create new Handler Service.
      *
-     * Create a new handler for the requesting company.
+     * Create a new handler-services for the requesting company.
      *
-     * @apiEndpoint POST /companies/{companySlug}/handlers
+     * @apiEndpoint POST /companies/{companySlug}/handler-services
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -144,32 +145,32 @@ class Handler implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/handlers/createNew.md
+     * @link docs/handler-services/createNew.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Handlers::createNew
+     * @see \App\Controller\Handler Services::createNew
      */
     private static function createNew(App $app, callable $auth, callable $permission) {
         $app
             ->post(
-                '/companies/{companySlug:[a-z0-9_-]+}/handlers',
-                'App\Controller\Handlers:createNew'
+                '/companies/{companySlug:[a-z0-9_-]+}/handler-services',
+                'App\Controller\Handler Services:createNew'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
-            ->setName('handler:createNew');
+            ->setName('handler-services:createNew');
     }
 
     /**
-     * Update a single Handler.
+     * Update a single Handler Service.
      *
-     * Updates Handler's specific information.
+     * Updates Handler Service's specific information.
      *
-     * @apiEndpoint PUT /companies/{companySlug}/handlers/{handlerId}
+     * @apiEndpoint PUT /companies/{companySlug}/handler-services/{handler-servicesId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment int handlerId 1234
+     * @apiEndpointURIFragment int handler-servicesId 1234
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -177,32 +178,32 @@ class Handler implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/handlers/updateOne.md
+     * @link docs/handler-services/updateOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Handlers::updateOne
+     * @see \App\Controller\Handler Services::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
             ->put(
-                '/companies/{companySlug:[a-z0-9_-]+}/handlers/{handlerId:[0-9]+}',
-                'App\Controller\Handlers:updateOne'
+                '/companies/{companySlug:[a-z0-9_-]+}/handler-services/{handler-servicesId:[0-9]+}',
+                'App\Controller\Handler Services:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
-            ->setName('handler:updateOne');
+            ->setName('handler-services:updateOne');
     }
 
     /**
-     * Deletes a single Handler.
+     * Deletes a single Handler Service.
      *
-     * Deletes a single Handler that belongs to the requesting company.
+     * Deletes a single Handler Service that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/handlers/{handlerId}
+     * @apiEndpoint DELETE /companies/{companySlug}/handler-services/{handler-servicesId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment int handlerId 1234
+     * @apiEndpointURIFragment int handler-servicesId 1234
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -210,28 +211,28 @@ class Handler implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/handlers/deleteOne.md
+     * @link docs/handler-services/deleteOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Handlers::deleteOne
+     * @see \App\Controller\Handler Services::deleteOne
      */
     private static function deleteOne(App $app, callable $auth, callable $permission) {
         $app
             ->delete(
-                '/companies/{companySlug:[a-z0-9_-]+}/handlers/{handlerId:[0-9]+}',
-                'App\Controller\Handlers:deleteOne'
+                '/companies/{companySlug:[a-z0-9_-]+}/handler-services/{handler-servicesId:[0-9]+}',
+                'App\Controller\Handler Services:deleteOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
-            ->setName('handler:deleteOne');
+            ->setName('handler-services:deleteOne');
     }
 
     /**
-     * Deletes all handler.
+     * Deletes all handler-services.
      *
-     * Deletes all handlers that belongs to the requesting company.
+     * Deletes all handler-services that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/handlers
+     * @apiEndpoint DELETE /companies/{companySlug}/handler-services
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -242,20 +243,20 @@ class Handler implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/handlers/deleteAll.md
+     * @link docs/handler-services/deleteAll.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Handlers::deleteAll
+     * @see \App\Controller\Handler Services::deleteAll
      */
     private static function deleteAll(App $app, callable $auth, callable $permission) {
         // FIXME This should be removed!
         $app
             ->delete(
-                '/companies/{companySlug:[a-z0-9_-]+}/handlers',
-                'App\Controller\Handlers:deleteAll'
+                '/companies/{companySlug:[a-z0-9_-]+}/handler-services',
+                'App\Controller\Handler Services:deleteAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
-            ->setName('handler:deleteAll');
+            ->setName('handler-services:deleteAll');
     }
 }

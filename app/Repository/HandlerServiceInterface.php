@@ -16,4 +16,12 @@ use Illuminate\Support\Collection;
  */
 interface HandlerServiceInterface extends RepositoryInterface {
 
+    /**
+     * Return handler services based on their company id.
+     *
+     * @param int $companyId The company identifier
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByCompanyId(int $companyId, array $queryParams) : Collection;
 }

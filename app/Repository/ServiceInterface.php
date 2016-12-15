@@ -36,7 +36,7 @@ interface ServiceInterface extends RepositoryInterface {
     public function getByService(int $companyId, string $serviceSlug) : Collection;
 
     /**
-     * Return service handlers based on their company id.
+     * Return services based on their company id.
      *
      * @param int $companyId The company identifier
      *

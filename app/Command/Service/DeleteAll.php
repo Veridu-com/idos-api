@@ -15,11 +15,11 @@ use App\Command\AbstractCommand;
  */
 class DeleteAll extends AbstractCommand {
     /**
-     * Service's company.
+     * Service company's Id.
      *
-     * @var \App\Entity\Company
+     * @var int
      */
-    public $company;
+    public $companyId;
     /**
      * Identity.
      *
@@ -33,6 +33,10 @@ class DeleteAll extends AbstractCommand {
      * @return \App\Command\Service\DeleteAll
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['companyId'])) {
+            $this->companyId = $parameters['companyId'];
+        }
+
         return $this;
     }
 }

@@ -13,6 +13,7 @@ use App\Command\Company\DeleteOne;
 use App\Command\Company\Setup;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
+use App\Entity\HandlerService;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
@@ -99,6 +100,8 @@ class Company implements HandlerInterface {
      * Class constructor.
      *
      * @param \App\Repository\CompanyInterface $repository
+     * @param \App\Repository\ServiceInterface $serviceRepository
+     * @param \App\Repository\HandlerServiceInterface $handlerServiceRepository
      * @param \App\Validator\Company           $validator
      * @param \App\Factory\Event               $eventFactory
      * @param \League\Event\Emitter            $emitter
@@ -194,6 +197,10 @@ class Company implements HandlerInterface {
 
             // populate company services
             foreach ($handlerServices as $handlerService) {
+                if ($handlerService->privacy === HandlerService::PRIVACY_PRIVATE) {
+                    continue;
+                }
+                
                 $service = $this->serviceRepository->create([
                     'company_id' => $command->companyId,
                     'handler_service_id' => $handlerService->id,

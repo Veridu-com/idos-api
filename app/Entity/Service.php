@@ -24,7 +24,7 @@ class Service extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'listens', 'service', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'listens', 'handler_service', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */
