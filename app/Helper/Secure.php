@@ -21,7 +21,7 @@ class Secure {
      *
      * @var \Defuse\Crypto\Key
      */
-    private $key;
+    private $key = null;
 
     /**
      * Class constructor.
@@ -31,9 +31,11 @@ class Secure {
      *
      * @return void
      */
-    public function __construct(string $encodedKey, string $secureKey) {
-        $protectedKey = KeyProtectedByPassword::loadFromAsciiSafeString($encodedKey);
-        $this->key    = $protectedKey->unlockKey($secureKey);
+    public function __construct(string $encodedKey, string $secureKey = '') {
+        if ($secureKey !== '') {
+            $protectedKey = KeyProtectedByPassword::loadFromAsciiSafeString($encodedKey);
+            $this->key    = $protectedKey->unlockKey($secureKey);
+        }
     }
 
     /**
@@ -44,6 +46,10 @@ class Secure {
      * @return string
      */
     public function lock(string $plainText) : string {
+        if ($this->key === null) {
+            return $plainText;
+        }
+
         return Crypto::encrypt($plainText, $this->key);
     }
 
@@ -55,10 +61,14 @@ class Secure {
      * @return string
      */
     public function unlock(string $cipherText) : string {
+        if ($this->key === null) {
+            return $cipherText;
+        }
+
         try {
             return Crypto::decrypt($cipherText, $this->key);
         } catch (WrongKeyOrModifiedCiphertextException $exception) {
-            // What to do here..?
+            // What to do here?
         }
     }
 }
