@@ -101,7 +101,6 @@ class EvaluateRecommendationListener extends AbstractListener {
     public function handle(EventInterface $event) {
         $services = $this->serviceRepository->getAllByCompanyIdAndListener($event->credential->companyId, 'idos.recommendation');
 
-
         if ($services->isEmpty()) {
             $this->dispatchUnhandledEvent($event, $this->eventFactory, $this->emitter);
 
