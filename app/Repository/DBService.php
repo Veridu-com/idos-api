@@ -43,6 +43,8 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
         'handler_services.listens as handler_service.listens',
         'handler_services.created_at as handler_service.created_at',
         'handler_services.updated_at as handler_service.updated_at',
+        'handlers.auth_password as handler_service.auth_password',
+        'handlers.auth_username as handler_service.auth_username',
     ];
 
     /**
@@ -160,6 +162,7 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
     public function getAllByCompanyIdAndListener(int $companyId, string $event) {
         $collection = $this->query()
             ->join('handler_services', 'handler_services.id', 'handler_service_id')
+            ->join('handlers', 'handler_services.handler_id', 'handlers.id')
             ->where('services.company_id', $companyId)
             ->where('handler_services.enabled', true)
             ->whereRaw('jsonb_exists(handler_services.listens, ?)', [$event])
