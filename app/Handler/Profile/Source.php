@@ -448,7 +448,7 @@ class Source implements HandlerInterface {
             );
         }
 
-        $sources = $this->repository->getByUserId($command->user->id);
+        $sources      = $this->repository->getByUserId($command->user->id);
         $rowsAffected = $this->repository->deleteByUserId($command->user->id);
 
         if ($rowsAffected) {

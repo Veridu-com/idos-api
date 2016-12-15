@@ -11,7 +11,6 @@ namespace App\Repository;
 use App\Entity\Company;
 use App\Entity\Handler;
 use App\Exception\NotFound;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 /**

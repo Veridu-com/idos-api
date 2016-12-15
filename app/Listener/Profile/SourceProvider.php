@@ -24,7 +24,7 @@ class SourceProvider extends Listener\AbstractListenerProvider {
         $repositoryFactory        = $container->get('repositoryFactory');
         $credentialRepository     = $repositoryFactory->create('Company\Credential');
         $settingRepository        = $repositoryFactory->create('Company\Setting');
-        $serviceRepository = $repositoryFactory->create('Service');
+        $serviceRepository        = $repositoryFactory->create('Service');
 
         $eventFactory  = $container->get('eventFactory');
         $emitter       = $container->get('eventEmitter');

@@ -300,7 +300,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @param array                       $attributes
      * @param \Jenssegers\Optimus\Optimus $optimus
-     * @param \App\Helper\Vault          $vault
+     * @param \App\Helper\Vault           $vault
      *
      * @return void
      */

@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\HandlerService;
 
-use App\Entity\Identity;
 use App\Entity\HandlerService;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -39,6 +39,6 @@ class Created extends AbstractEvent {
      */
     public function __construct(HandlerService $serviceHandlerService, Identity $identity) {
         $this->serviceHandlerService = $serviceHandlerService;
-        $this->identity       = $identity;
+        $this->identity              = $identity;
     }
 }

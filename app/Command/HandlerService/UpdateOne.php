@@ -78,6 +78,7 @@ class UpdateOne extends AbstractCommand {
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
+
         if (isset($parameters['url'])) {
             $this->url = $parameters['url'];
         }

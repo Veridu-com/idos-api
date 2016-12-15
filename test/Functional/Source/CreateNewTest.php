@@ -38,7 +38,7 @@ class CreateNewTest extends AbstractFunctional {
             'name' => 'email',
             'tags' => [
                 'otp_check' => 'email',
-                'email' => 'hi@veridu.com'
+                'email'     => 'hi@veridu.com'
             ]
         ];
 

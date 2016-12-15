@@ -81,7 +81,7 @@ class Gates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
+        $user     = $request->getAttribute('targetUser');
         $entities = $this->repository->getByUserId($user->id, $request->getQueryParams());
 
         $body = [

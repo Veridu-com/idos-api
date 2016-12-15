@@ -219,7 +219,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         }
 
         if ($isUpdate) {
-            $query   = $this->query();
+            $query = $this->query();
 
             unset($serialized['id']);
             unset($serialized['_id']);

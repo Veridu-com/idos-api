@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Listener\Company;
 
-use App\Entity\Profile\Feature;
 use App\Factory\Command;
 use App\Listener;
 use App\Listener\AbstractListener;

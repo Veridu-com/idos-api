@@ -15,7 +15,8 @@ class S50RecommendationSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'result'     => 'pass',
-                'passed'     => json_encode([
+                'passed'     => json_encode(
+                    [
                     [
                         'tag'       => 'Rule 1',
                         'connector' => 'AND',
@@ -48,10 +49,13 @@ class S50RecommendationSeed extends AbstractSeed {
                             ]
                         ]
                     ]
-                ]),
-                'failed'     => json_encode([
+                    ]
+                ),
+                'failed'     => json_encode(
+                    [
 
-                ]),
+                    ]
+                ),
                 'created_at' => date('Y-m-d H:i:s')
             ],
 
@@ -59,10 +63,13 @@ class S50RecommendationSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'result'     => 'fail',
-                'passed'     => json_encode([
+                'passed'     => json_encode(
+                    [
 
-                ]),
-                'failed'     => json_encode([
+                    ]
+                ),
+                'failed'     => json_encode(
+                    [
                     [
                         'tag'       => 'Rule 1',
                         'connector' => 'OR',
@@ -95,7 +102,8 @@ class S50RecommendationSeed extends AbstractSeed {
                             ]
                         ]
                     ]
-                ]),
+                    ]
+                ),
                 'created_at' => date('Y-m-d H:i:s')
             ],
         ];

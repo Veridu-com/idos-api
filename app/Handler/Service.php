@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\Service\CreateNew;
-use App\Command\Service\DeleteAll;
 use App\Command\Service\DeleteOne;
 use App\Command\Service\UpdateOne;
 use App\Entity\Service as ServiceEntity;
@@ -86,9 +85,9 @@ class Service implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\ServiceInterface $repository
+     * @param \App\Repository\ServiceInterface        $repository
      * @param \App\Repository\HandlerServiceInterface $handlerServiceRepository
-     * @param \App\Validator\Service           $validator
+     * @param \App\Validator\Service                  $validator
      * @param \App\Factory\Event                      $eventFactory
      * @param \League\Event\Emitter                   $emitter
      *
@@ -101,11 +100,11 @@ class Service implements HandlerInterface {
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository   = $repository;
+        $this->repository                 = $repository;
         $this->handlerServiceRepository   = $handlerServiceRepository;
-        $this->validator    = $validator;
-        $this->eventFactory = $eventFactory;
-        $this->emitter      = $emitter;
+        $this->validator                  = $validator;
+        $this->eventFactory               = $eventFactory;
+        $this->emitter                    = $emitter;
     }
 
     /**
@@ -122,6 +121,7 @@ class Service implements HandlerInterface {
             if ($command->listens) {
                 $this->validator->assertArray($command->listens);
             }
+
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\ServiceException(
@@ -132,17 +132,17 @@ class Service implements HandlerInterface {
         }
 
         if (is_null($command->listens)) {
-            $handlerService = $this->handlerServiceRepository->find($command->handlerServiceId);
+            $handlerService   = $this->handlerServiceRepository->find($command->handlerServiceId);
             $command->listens = $handlerService->listens;
         }
 
         $now    = time();
         $entity = $this->repository->create(
             [
-                'company_id' => $command->company->id,
+                'company_id'         => $command->company->id,
                 'handler_service_id' => $command->handlerServiceId,
-                'listens'    => $command->listens,
-                'created_at' => $now
+                'listens'            => $command->listens,
+                'created_at'         => $now
             ]
         );
 
@@ -229,7 +229,7 @@ class Service implements HandlerInterface {
             );
         }
 
-        $service = $this->repository->findOne($command->serviceId, $command->company->id);
+        $service      = $this->repository->findOne($command->serviceId, $command->company->id);
         $rowsAffected = $this->repository->delete($command->serviceId);
 
         if (! $rowsAffected) {

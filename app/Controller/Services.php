@@ -140,7 +140,7 @@ class Services implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
-        
+
         $command = $this->commandFactory->create('Service\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])

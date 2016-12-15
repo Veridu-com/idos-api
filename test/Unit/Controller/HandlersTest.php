@@ -8,11 +8,11 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Controller;
 
-use App\Command\ResponseDispatch;
 use App\Command\Handler\CreateNew;
 use App\Command\Handler\DeleteAll;
 use App\Command\Handler\DeleteOne;
 use App\Command\Handler\UpdateOne;
+use App\Command\ResponseDispatch;
 use App\Controller\Handlers;
 use App\Entity\Company;
 use App\Entity\Handler as HandlerEntity;

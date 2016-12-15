@@ -215,7 +215,7 @@ class Attribute implements HandlerInterface {
             foreach ($entities as $entity) {
                 $affectedRows += $this->repository->delete($entity->id);
             }
-            
+
             if ($affectedRows) {
                 $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->credential);
                 $this->emitter->emit($event);

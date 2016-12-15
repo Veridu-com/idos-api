@@ -280,7 +280,8 @@ class Feature implements HandlerInterface {
         }
 
         try {
-            $feature = $this->repository->create([
+            $feature = $this->repository->create(
+                [
                 'user_id'    => $command->user->id,
                 'source'     => $command->source ? $command->source->name : null,
                 'name'       => $command->name,
@@ -288,14 +289,17 @@ class Feature implements HandlerInterface {
                 'type'       => $command->type,
                 'value'      => $command->value,
                 'created_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $this->repository->beginTransaction();
-            $this->repository->upsert($feature, ['user_id', 'source', 'creator', 'name'], [
+            $this->repository->upsert(
+                $feature, ['user_id', 'source', 'creator', 'name'], [
                 'type'       => $command->type,
                 'value'      => $command->value,
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $feature = $this->repository->findOneByName($command->name, $command->handler->id, $command->source ? $command->source->name : null, $command->user->id);
             $this->repository->commit();

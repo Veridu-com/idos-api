@@ -84,16 +84,18 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
         $category = $this
             ->repositoryFactory
             ->create('Category')
-            ->getAll([
+            ->getAll(
+                [
                 'type' => 'gate',
                 'name' => $gate->name
-            ]);
+                ]
+            );
 
         if (count($category) > 0) {
             return $category->first();
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -107,9 +109,11 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
         $categories = $this
             ->repositoryFactory
             ->create('Category')
-            ->getAll([
+            ->getAll(
+                [
                 'type' => 'gate'
-            ]);
+                ]
+            );
 
         $gateCategories = [];
         foreach ($categories as $category) {
@@ -135,7 +139,7 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
             ]
         );
 
-        $category = $this->findCategory($gate);
+        $category       = $this->findCategory($gate);
         $gate->category = $category ? $category->toArray() : null;
 
         return $gate;
@@ -153,7 +157,7 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
             ]
         );
 
-        $category = $this->findCategory($gate);
+        $category       = $this->findCategory($gate);
         $gate->category = $category ? $category->toArray() : null;
 
         return $gate;
