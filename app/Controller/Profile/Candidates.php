@@ -96,7 +96,7 @@ class Candidates implements ControllerInterface {
     /**
      * Created a new candidate data for a given user.
      *
-     * @apiEndpointRequiredParam body string name firstName Attribute Name
+     * @apiEndpointRequiredParam body string attribute firstName Attribute Name
      * @apiEndpointRequiredParam body string value Jhon Candidate Value
      * @apiEndpointRequiredParam body float support 0.7 Candidate Support
      * @apiEndpointResponse 201 schema/candidate/candidateEntity.json
