@@ -339,8 +339,10 @@ class Gate implements HandlerInterface {
             $entity       = $this->repository->findBySlug($command->slug, $command->handler->id, $command->user->id);
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity, $command->credential);
-            $this->emitter->emit($event);
+            if ($affectedRows) {
+                $event = $this->eventFactory->create('Profile\\Gate\\Deleted', $entity, $command->credential);
+                $this->emitter->emit($event);
+            }
         } catch (\Exception $e) {
             throw new NotFound\Profile\GateException('No gates found for deletion', 404);
         }

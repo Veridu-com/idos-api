@@ -306,8 +306,10 @@ class Score implements HandlerInterface {
         try {
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = $this->eventFactory->create('Profile\\Score\\Deleted', $entity, $command->credential);
-            $this->emitter->emit($event);
+            if ($affectedRows) {
+                $event = $this->eventFactory->create('Profile\\Score\\Deleted', $entity, $command->credential);
+                $this->emitter->emit($event);
+            }
         } catch (\Exception $e) {
             throw new NotFound\Profile\ScoreException('No features found for deletion', 404);
         }

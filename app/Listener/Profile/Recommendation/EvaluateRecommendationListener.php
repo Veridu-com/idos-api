@@ -108,7 +108,12 @@ class EvaluateRecommendationListener extends AbstractListener {
         }
 
         
-        $user = $this->userRepository->find($event->getUserId());
+        try {
+            $user = $this->userRepository->find($event->getUserId());
+        } catch (\RuntimeException $e) {
+            // Fails silently
+            return;
+        }
 
         // tries to get by credential->public        
         $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(

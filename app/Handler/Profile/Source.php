@@ -408,6 +408,12 @@ class Source implements HandlerInterface {
             );
         }
 
+        $rowsAffected = $this->repository->delete($command->source->id);
+
+        if (! $rowsAffected) {
+            throw new NotFound\Profile\SourceException('No sources found for deletion', 404);
+        }
+
         $this->emitter->emit(
             $this->eventFactory->create(
                 'Profile\\Source\\Deleted',
@@ -417,12 +423,6 @@ class Source implements HandlerInterface {
                 $command->credential
             )
         );
-
-        $rowsAffected = $this->repository->delete($command->source->id);
-
-        if (! $rowsAffected) {
-            throw new NotFound\Profile\SourceException('No sources found for deletion', 404);
-        }
     }
 
     /**
@@ -452,9 +452,9 @@ class Source implements HandlerInterface {
         }
 
         $sources = $this->repository->getByUserId($command->user->id);
-        $deleted = $this->repository->deleteByUserId($command->user->id);
+        $rowsAffected = $this->repository->deleteByUserId($command->user->id);
 
-        if ($deleted) {
+        if ($rowsAffected) {
             $this->emitter->emit(
                 $this->eventFactory->create(
                     'Profile\\Source\\DeletedMulti',
@@ -466,6 +466,6 @@ class Source implements HandlerInterface {
             );
         }
 
-        return $deleted;
+        return $rowsAffected;
     }
 }

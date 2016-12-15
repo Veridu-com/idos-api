@@ -189,13 +189,15 @@ class Candidate implements HandlerInterface {
                 $entities->pluck('id')->all()
             );
 
-            $event = $this->eventFactory->create(
-                'Profile\\Candidate\\DeletedMulti',
-                $command->user,
-                $entities,
-                $command->credential
-            );
-            $this->emitter->emit($event);
+            if ($affectedRows) {
+                $event = $this->eventFactory->create(
+                    'Profile\\Candidate\\DeletedMulti',
+                    $command->user,
+                    $entities,
+                    $command->credential
+                );
+                $this->emitter->emit($event);
+            }
         } catch (\Exception $e) {
             throw new NotFound\Profile\CandidateException('Error while deleting all candidates', 500, $e);
         }
