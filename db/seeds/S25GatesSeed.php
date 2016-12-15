@@ -14,7 +14,6 @@ class S25GatesSeed extends AbstractSeed {
                 'creator'          => 1,
                 'name'             => 'firstName',
                 'slug'             => 'firstname-low',
-                'pass'             => true,
                 'confidence_level' => 'low',
                 'created_at'       => date('Y-m-d H:i:s'),
                 'updated_at'       => null
@@ -24,7 +23,6 @@ class S25GatesSeed extends AbstractSeed {
                 'creator'          => 1,
                 'name'             => 'middleName',
                 'slug'             => 'middlename-medium',
-                'pass'             => 'f',
                 'confidence_level' => 'medium',
                 'created_at'       => date('Y-m-d H:i:s'),
                 'updated_at'       => null
@@ -35,7 +33,6 @@ class S25GatesSeed extends AbstractSeed {
                 'name'             => 'lastName',
                 'slug'             => 'lastname-high',
                 'confidence_level' => 'high',
-                'pass'             => 'f',
                 'created_at'       => date('Y-m-d H:i:s'),
                 'updated_at'       => null
             ],

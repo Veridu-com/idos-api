@@ -309,7 +309,7 @@ $container['validatorFactory'] = function (ContainerInterface $container) : Fact
 
 // App Entity Factory
 $container['entityFactory'] = function (ContainerInterface $container) : Factory\Entity {
-    return new Factory\Entity($container->get('optimus'), $container->get('secure'));
+    return new Factory\Entity($container->get('optimus'), $container->get('vault'));
 };
 
 // App Event Factory
@@ -374,7 +374,7 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
             $strategy = new Repository\DBStrategy(
                 $container->get('entityFactory'),
                 $container->get('optimus'),
-                $container->get('secure'),
+                $container->get('vault'),
                 $container->get('sql'),
                 $container->get('nosql')
             );
@@ -455,8 +455,8 @@ $container['globFiles'] = function () : array {
     ];
 };
 
-// Secure
-$container['secure'] = function (ContainerInterface $container) : Helper\Secure {
+// Vault
+$container['vault'] = function (ContainerInterface $container) : Helper\Vault {
     $settings = $container->get('settings');
 
     $fileName = __DIR__ . '/../resources/secure.key';
@@ -469,7 +469,7 @@ $container['secure'] = function (ContainerInterface $container) : Helper\Secure 
         throw new RuntimeException('Secure key could not be loaded!');
     }
 
-    return new Helper\Secure($encoded, $settings['secure']);
+    return new Helper\Vault($encoded, $settings['secure']);
 };
 
 // SSO Auth

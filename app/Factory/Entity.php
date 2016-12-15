@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Factory;
 
 use App\Entity\EntityInterface;
-use App\Helper\Secure;
+use App\Helper\Vault;
 use Jenssegers\Optimus\Optimus;
 
 /**
@@ -23,15 +23,15 @@ class Entity extends AbstractFactory {
      */
     private $optimus;
     /**
-     * Encryption helper.
+     * Vault helper.
      *
-     * @var \App\Helper\Secure
+     * @var \App\Helper\Vault
      */
-    private $crypt;
+    private $vault;
 
-    public function __construct(Optimus $optimus, Secure $crypt) {
+    public function __construct(Optimus $optimus, Vault $vault) {
         $this->optimus = $optimus;
-        $this->crypt   = $crypt;
+        $this->vault   = $vault;
     }
     /**
      * {@inheritdoc}
@@ -54,7 +54,7 @@ class Entity extends AbstractFactory {
         $class = $this->getClassName($name);
 
         if (class_exists($class)) {
-            return new $class($attributes, $this->optimus, $this->crypt);
+            return new $class($attributes, $this->optimus, $this->vault);
         }
 
         throw new \RuntimeException(sprintf('Class (%s) not found.', $class));

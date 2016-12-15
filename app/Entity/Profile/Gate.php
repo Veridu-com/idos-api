@@ -20,7 +20,6 @@ use App\Helper\Utils;
  * @property string $name
  * @property string $slug
  * @property string $confidenceLevel
- * @property bool $pass
  * @property int    $user_id
  * @property int    $created_at
  * @property int    $updated_at
@@ -34,9 +33,9 @@ class Gate extends AbstractEntity {
         'name',
         'slug',
         'confidence_level',
-        'pass',
         'review',
         'creator',
+        'category',
         'created_at',
         'updated_at'
     ];
@@ -50,47 +49,7 @@ class Gate extends AbstractEntity {
      */
     public function setNameAttribute(string $value) : self {
         $this->attributes['name'] = $value;
-
-        $confidenceLevel = $this->attributes['confidence_level'] ?? '';
-
-        if (empty($value)) {
-            $this->attributes['slug'] = Utils::slugify($confidenceLevel);
-
-            return $this;
-        }
-
-        if (empty($confidenceLevel)) {
-            return $this;
-        }
-
-        $this->attributes['slug'] = Utils::slugify(sprintf('%s-%s', $confidenceLevel, $value));
-
-        return $this;
-    }
-
-    /**
-     * Sets the confidence level attribute.
-     *
-     * @param string $value The value
-     *
-     * @return self
-     */
-    public function setConfidenceLevelAttribute($value = null) : self {
-        $this->attributes['confidence_level'] = $value;
-
-        $name = $this->attributes['name'] ?? '';
-
-        if (empty($value)) {
-            $this->attributes['slug'] = Utils::slugify($name);
-
-            return $this;
-        }
-
-        if (empty($name)) {
-            return $this;
-        }
-
-        $this->attributes['slug'] = Utils::slugify(sprintf('%s-%s', $name, $value));
+        $this->attributes['slug'] = Utils::slugify($value);
 
         return $this;
     }

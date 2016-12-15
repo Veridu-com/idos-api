@@ -13,9 +13,9 @@ use Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException;
 use Defuse\Crypto\KeyProtectedByPassword;
 
 /**
- * Secure Class.
+ * Vault Class.
  */
-class Secure {
+class Vault {
     /**
      * Key instance used to encrypt/decrypt.
      *
