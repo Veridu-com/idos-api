@@ -8,8 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Event\Handler;
 
-use App\Entity\Identity;
 use App\Entity\Handler;
+use App\Entity\Identity;
 use App\Event\AbstractEvent;
 
 /**
@@ -32,8 +32,8 @@ class Created extends AbstractEvent {
     /**
      * Class constructor.
      *
-     * @param \App\Entity\Handler $serviceHandler
-     * @param \App\Entity\Identity       $identity
+     * @param \App\Entity\Handler  $serviceHandler
+     * @param \App\Entity\Identity $identity
      *
      * @return void
      */

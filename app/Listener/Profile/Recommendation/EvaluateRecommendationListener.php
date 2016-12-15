@@ -83,7 +83,7 @@ class EvaluateRecommendationListener extends AbstractListener {
         \GearmanClient $gearmanClient
     ) {
         $this->settingRepository        = $settingRepository;
-        $this->serviceRepository = $serviceRepository;
+        $this->serviceRepository        = $serviceRepository;
         $this->userRepository           = $userRepository;
         $this->logger                   = $logger;
         $this->eventFactory             = $eventFactory;
@@ -107,7 +107,6 @@ class EvaluateRecommendationListener extends AbstractListener {
             return false;
         }
 
-        
         try {
             $user = $this->userRepository->find($event->getUserId());
         } catch (\RuntimeException $e) {
@@ -115,7 +114,7 @@ class EvaluateRecommendationListener extends AbstractListener {
             return;
         }
 
-        // tries to get by credential->public        
+        // tries to get by credential->public
         $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
             $event->credential->companyId,
             'recommendation',
@@ -124,7 +123,6 @@ class EvaluateRecommendationListener extends AbstractListener {
             ]
         );
 
-
         if ($settings->isEmpty()) {
             // tries to get by company
             $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
@@ -132,7 +130,6 @@ class EvaluateRecommendationListener extends AbstractListener {
                 'recommendation',
                 ['ruleset']
             );
-            
         }
 
         // fails silently

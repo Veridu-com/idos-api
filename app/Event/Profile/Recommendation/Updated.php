@@ -10,8 +10,8 @@ namespace App\Event\Profile\Recommendation;
 
 use App\Entity\Company;
 use App\Entity\Company\Credential;
-use App\Entity\Profile\Recommendation;
 use App\Entity\Handler;
+use App\Entity\Profile\Recommendation;
 use App\Entity\User;
 use App\Event\AbstractEvent;
 

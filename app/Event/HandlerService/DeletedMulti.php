@@ -39,6 +39,6 @@ class DeletedMulti extends AbstractEvent {
      */
     public function __construct(Collection $serviceHandlerServices, Identity $identity) {
         $this->serviceHandlerServices = $serviceHandlerServices;
-        $this->identity        = $identity;
+        $this->identity               = $identity;
     }
 }

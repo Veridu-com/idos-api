@@ -41,8 +41,8 @@ class Handlers implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\HandlerInterface $repository
-     * @param \League\Tactician\CommandBus            $commandBus
-     * @param \App\Factory\Command                    $commandFactory
+     * @param \League\Tactician\CommandBus     $commandBus
+     * @param \App\Factory\Command             $commandFactory
      *
      * @return void
      */
@@ -102,7 +102,7 @@ class Handlers implements ControllerInterface {
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
-        $handlerId      = (int) $request->getAttribute('decodedHandlerId');
+        $handlerId        = (int) $request->getAttribute('decodedHandlerId');
 
         $entity = $this->repository->find($handlerId);
 
@@ -178,7 +178,7 @@ class Handlers implements ControllerInterface {
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $identity         = $request->getAttribute('identity');
-        $handlerId = $request->getAttribute('decodedHandlerId');
+        $handlerId        = $request->getAttribute('decodedHandlerId');
 
         $command = $this->commandFactory->create('Handler\\UpdateOne');
         $command
@@ -217,7 +217,7 @@ class Handlers implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company          = $request->getAttribute('targetCompany');
         $identity         = $request->getAttribute('identity');
-        $handlerId = $request->getAttribute('decodedHandlerId');
+        $handlerId        = $request->getAttribute('decodedHandlerId');
 
         $command = $this->commandFactory->create('Handler\\DeleteOne');
         $command

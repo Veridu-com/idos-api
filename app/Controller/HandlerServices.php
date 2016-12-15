@@ -69,7 +69,7 @@ class HandlerServices implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company  = $request->getAttribute('targetCompany');
+        $company   = $request->getAttribute('targetCompany');
         $handlerId = $request->getAttribute('decodedHandlerId');
 
         $entities = $this->repository->getByHandlerId($handlerId, $request->getQueryParams());
@@ -137,8 +137,8 @@ class HandlerServices implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company  = $request->getAttribute('targetCompany');
-        $identity = $request->getAttribute('identity');
+        $company   = $request->getAttribute('targetCompany');
+        $identity  = $request->getAttribute('identity');
         $handlerId = $request->getAttribute('decodedHandlerId');
 
         $command = $this->commandFactory->create('HandlerService\\CreateNew');

@@ -145,9 +145,11 @@ class DatabaseInit extends AbstractMigration {
             ->addColumn('enabled', 'boolean', ['null' => false, 'default' => true])
             ->addColumn('privacy', 'integer', ['null' => false, 'default' => 0x00]) // 0x00 => public, 0x01 => private
             ->addTimestamps()
-            ->addIndex([
+            ->addIndex(
+                [
                 'handler_id'
-            ])
+                ]
+            )
             ->addForeignKey('handler_id', 'handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
@@ -520,7 +522,6 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('creator_id', 'identities', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-
         // Metrics
         // @FIXME make the id bigserial
         // select * from categories;
@@ -575,5 +576,5 @@ class DatabaseInit extends AbstractMigration {
             ->addIndex(['credential_public'])
             ->create();
 
-        }
+    }
 }

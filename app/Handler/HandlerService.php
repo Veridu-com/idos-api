@@ -14,7 +14,6 @@ use App\Command\HandlerService\DeleteOne;
 use App\Command\HandlerService\UpdateOne;
 use App\Entity\HandlerService as HandlerServiceEntity;
 use App\Exception\Create;
-use App\Exception\NotAllowed;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
@@ -79,8 +78,8 @@ class HandlerService implements HandlerInterface {
      *
      * @param \App\Repository\HandlerServiceInterface $repository
      * @param \App\Validator\HandlerService           $validator
-     * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter            $emitter
+     * @param \App\Factory\Event                      $eventFactory
+     * @param \League\Event\Emitter                   $emitter
      *
      * @return void
      */
@@ -106,16 +105,15 @@ class HandlerService implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : HandlerServiceEntity {
         try {
             $inputs = [
-                'name' => $command->name,
+                'name'       => $command->name,
                 'handler_id' => $command->handlerId,
-                'url' => $command->url
+                'url'        => $command->url
             ];
 
             $this->validator->assertId($command->handlerId);
             $this->validator->assertCompany($command->company);
             $this->validator->assertName($command->name);
             $this->validator->assertUrl($command->url);
-
 
             if (! is_null($command->privacy)) {
                 $this->validator->assertId($command->privacy);
@@ -208,7 +206,6 @@ class HandlerService implements HandlerInterface {
             $event             = $this->eventFactory->create('HandlerService\\Updated', $entity, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            var_dump($e);die;
             throw new Update\HandlerServiceException('Error while trying to update a service', 500, $e);
         }
 

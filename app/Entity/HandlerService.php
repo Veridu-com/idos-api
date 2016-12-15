@@ -23,11 +23,11 @@ namespace App\Entity;
  */
 class HandlerService extends AbstractEntity {
     /**
-     * Privacy constants
-     * 
+     * Privacy constants.
+     *
      * @see \App\Handler\Company@setup
      */
-    const PRIVACY_PUBLIC = 0x00;
+    const PRIVACY_PUBLIC  = 0x00;
     const PRIVACY_PRIVATE = 0x01;
 
     /**

@@ -234,18 +234,21 @@ class Gate implements HandlerInterface {
             $this->repository->beginTransaction();
             $this->upsertCategory($command->name, $command->handler->id);
 
-            $entity = $this->repository->create([
+            $entity = $this->repository->create(
+                [
                 'creator'          => $command->handler->id,
                 'user_id'          => $command->user->id,
                 'name'             => $command->name,
                 'confidence_level' => $command->confidenceLevel
-            ]);
+                ]
+            );
 
             $this->repository->upsert(
                 $entity, ['user_id', 'creator', 'name'], [
                 'updated_at'       => date('Y-m-d H:i:s'),
                 'confidence_level' => $entity->confidenceLevel
-            ]);
+                ]
+            );
             $entity = $this->repository->findBySlug($entity->slug, $entity->creator, $entity->userId);
 
             $this->repository->commit();

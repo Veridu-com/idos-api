@@ -137,7 +137,6 @@ class Handler implements HandlerInterface {
             $event  = $this->eventFactory->create('Handler\\Created', $entity, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            var_dump($e);die;
             throw new Create\HandlerException('Error while trying to create a handler', 500, $e);
         }
 
@@ -162,7 +161,7 @@ class Handler implements HandlerInterface {
                 $this->validator->assertName($command->name);
                 $input['name'] = $command->name;
             }
-            
+
             if (! is_null($command->authUsername)) {
                 $this->validator->assertName($command->authUsername);
                 $input['auth_username'] = $command->authUsername;
@@ -177,7 +176,6 @@ class Handler implements HandlerInterface {
                 $this->validator->assertFlag($command->enabled);
                 $input['enabled'] = $command->enabled;
             }
-
 
             if (! is_null($command->enabled)) {
                 $this->validator->assertFlag($command->enabled);

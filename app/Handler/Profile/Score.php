@@ -178,7 +178,6 @@ class Score implements HandlerInterface {
             if ($command->attribute) {
                 $this->validator->assertName($command->attribute);
             }
-
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -192,6 +191,7 @@ class Score implements HandlerInterface {
         if ($command->attribute) {
             $entity->attribute = $command->attribute;
         }
+
         $entity->value     = $command->value;
         $entity->updatedAt = time();
 
@@ -240,21 +240,25 @@ class Score implements HandlerInterface {
         }
 
         try {
-            $score = $this->repository->create([
+            $score = $this->repository->create(
+                [
                 'creator'    => $command->handler->id,
                 'user_id'    => $command->user->id,
                 'attribute'  => $command->attribute,
                 'name'       => $command->name,
                 'value'      => $command->value,
                 'created_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $this->repository->beginTransaction();
-            $this->repository->upsert($score, ['user_id', 'creator', 'name'], [
+            $this->repository->upsert(
+                $score, ['user_id', 'creator', 'name'], [
                 'attribute'  => $command->attribute,
                 'value'      => $command->value,
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $score = $this->repository->findOne($command->name, $command->handler->id, $command->user->id);
             $this->repository->commit();

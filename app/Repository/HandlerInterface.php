@@ -19,8 +19,8 @@ interface HandlerInterface extends RepositoryInterface {
     /**
      * Return handlers based on their company id.
      *
-     * @param int $companyId     The company identifier
-     * @param array               $queryParams The query parameters
+     * @param int   $companyId   The company identifier
+     * @param array $queryParams The query parameters
      *
      * @return \Illuminate\Support\Collection
      */
