@@ -47,6 +47,9 @@ class DeletedMulti extends AbstractEvent implements UserIdGetterInterface {
      * {@inheritdoc}
      */
     public function getUserId() : int {
+        if ($this->attributes->isEmpty()) {
+            throw new \RuntimeException('No rows affected.');
+        }
         return $this->attributes->first()->userId;
     }
 }

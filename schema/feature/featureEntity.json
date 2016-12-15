@@ -27,7 +27,7 @@
         },
         "value": {
             "description": "Feature value",
-            "type": ["string", "number", "null"]
+            "type": ["string", "number", "boolean", "null"]
         },
         "source": {
             "description": "Source name",

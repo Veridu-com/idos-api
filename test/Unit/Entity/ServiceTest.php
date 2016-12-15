@@ -8,11 +8,11 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Entity;
 
-use App\Entity\Service;
+use App\Entity\Handler;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
-class ServiceTest extends AbstractUnit {
+class HandlerTest extends AbstractUnit {
     /*
      * Jenssengers\Optimus\Optimus $optimus
      */
@@ -28,13 +28,13 @@ class ServiceTest extends AbstractUnit {
         $updated = time();
         $array   = [
             'id'         => 1,
-            'name'       => 'My Service',
+            'name'       => 'My Handler',
             'enabled'    => true,
             'created_at' => time(),
             'updated_at' => time()
         ];
 
-        $abstractMock = $this->getMockBuilder(Service::class)
+        $abstractMock = $this->getMockBuilder(Handler::class)
             ->setMethods(null)
             ->setConstructorArgs([$array, $this->optimus])
             ->getMockForAbstractClass();
@@ -42,7 +42,7 @@ class ServiceTest extends AbstractUnit {
         $this->assertArrayHasKey('id', $array);
         $this->assertSame(1, $array['id']);
         $this->assertArrayHasKey('name', $array);
-        $this->assertSame('My Service', $array['name']);
+        $this->assertSame('My Handler', $array['name']);
         $this->assertArrayHasKey('enabled', $array);
         $this->assertTrue($array['enabled']);
         $this->assertArrayHasKey('created_at', $array);
@@ -54,13 +54,13 @@ class ServiceTest extends AbstractUnit {
     }
 
     public function testToArray() {
-        $abstractMock = $this->getMockBuilder(Service::class)
+        $abstractMock = $this->getMockBuilder(Handler::class)
             ->setMethods(null)
             ->setConstructorArgs(
                 [
                     [
                         'id'         => 1,
-                        'name'       => 'My Service',
+                        'name'       => 'My Handler',
                         'url'        => 'url',
                         'access'     => 0x01,
                         'enabled'    => true,
@@ -75,7 +75,7 @@ class ServiceTest extends AbstractUnit {
         $array = $abstractMock->toArray();
 
         $this->assertArrayHasKey('name', $array);
-        $this->assertSame('My Service', $array['name']);
+        $this->assertSame('My Handler', $array['name']);
 
         $this->assertArrayHasKey('enabled', $array);
         $this->assertTrue($array['enabled']);

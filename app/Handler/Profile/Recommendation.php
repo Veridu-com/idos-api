@@ -100,7 +100,7 @@ class Recommendation implements HandlerInterface {
     public function handleUpsert(Upsert $command) : RecommendationEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertCompany($command->company);
             $this->validator->assertCredential($command->credential);
             $this->validator->assertString($command->result);
@@ -116,7 +116,7 @@ class Recommendation implements HandlerInterface {
 
         try {
             $recommendation = $this->repository->create([
-                'creator'    => $command->service->id,
+                'creator'    => $command->handler->id,
                 'user_id'    => $command->user->id,
                 'result'     => $command->result,
                 'passed'     => $command->passed,
@@ -140,7 +140,7 @@ class Recommendation implements HandlerInterface {
                     'Profile\\Recommendation\\Updated',
                     $recommendation,
                     $command->user,
-                    $command->service,
+                    $command->handler,
                     $command->company,
                     $command->credential
                 );
@@ -149,7 +149,7 @@ class Recommendation implements HandlerInterface {
                     'Profile\\Recommendation\\Created',
                     $recommendation,
                     $command->user,
-                    $command->service,
+                    $command->handler,
                     $command->company,
                     $command->credential
                 );

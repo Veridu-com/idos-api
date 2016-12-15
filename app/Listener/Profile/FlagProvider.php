@@ -22,7 +22,7 @@ class FlagProvider extends Listener\AbstractListenerProvider {
         $credentialRepository     = $repositoryFactory->create('Company\Credential');
         $settingRepository        = $repositoryFactory->create('Company\Setting');
         $userRepository           = $repositoryFactory->create('User');
-        $serviceHandlerRepository = $repositoryFactory->create('ServiceHandler');
+        $serviceRepository = $repositoryFactory->create('Service');
 
         $eventFactory  = $container->get('eventFactory');
         $emitter       = $container->get('eventEmitter');
@@ -31,7 +31,7 @@ class FlagProvider extends Listener\AbstractListenerProvider {
         // Listeners
         $evaluateRecommendationListener = new Listener\Profile\Recommendation\EvaluateRecommendationListener(
             $settingRepository,
-            $serviceHandlerRepository,
+            $serviceRepository,
             $userRepository,
             $eventLogger,
             $eventFactory,

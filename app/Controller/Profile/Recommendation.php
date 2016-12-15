@@ -103,7 +103,7 @@ class Recommendation implements ControllerInterface {
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $service     = $request->getAttribute('service');
+        $handler     = $request->getAttribute('handler');
         $company     = $request->getAttribute('company');
         $credential  = $request->getAttribute('credential');
 
@@ -111,7 +111,7 @@ class Recommendation implements ControllerInterface {
         $command
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
-            ->setParameter('service', $service)
+            ->setParameter('handler', $handler)
             ->setParameter('company', $company)
             ->setParameter('credential', $credential);
 

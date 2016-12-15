@@ -60,10 +60,10 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
 
         'creator' => [
             'type'       => 'MANY_TO_ONE',
-            'table'      => 'services',
+            'table'      => 'handlers',
             'foreignKey' => 'creator',
             'key'        => 'id',
-            'entity'     => 'Service',
+            'entity'     => 'Handler',
             'nullable'   => false,
             'hydrate'    => [
                 'name'
@@ -74,11 +74,11 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne(string $name, int $serviceId, int $userId) : Score {
+    public function findOne(string $name, int $handlerId, int $userId) : Score {
         return $this->findOneBy(
             [
                 'user_id' => $userId,
-                'creator' => $serviceId,
+                'creator' => $handlerId,
                 'name'    => $name
             ]
         );
@@ -87,11 +87,11 @@ class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
     /**
      * {@inheritdoc}
      */
-    public function getByUserIdAndServiceId(int $serviceId, int $userId, array $queryParams = []) : Collection {
+    public function getByUserIdAndHandlerId(int $handlerId, int $userId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
                 'user_id' => $userId,
-                'creator' => $serviceId
+                'creator' => $handlerId
             ], $queryParams
         );
     }

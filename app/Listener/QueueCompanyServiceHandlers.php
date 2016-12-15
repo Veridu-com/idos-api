@@ -15,9 +15,9 @@ trait QueueCompanyServiceHandlers {
     /**
      * Service Handler Repository instance.
      *
-     * @var \App\Repository\ServiceHandlerInterface
+     * @var \App\Repository\ServiceInterface
      */
-    private $serviceHandlerRepository;
+    private $serviceRepository;
     /**
      * Event Factory instance.
      *
@@ -52,17 +52,17 @@ trait QueueCompanyServiceHandlers {
         array $mergePayload = []
     ) : bool {
         // find handlers
-        $handlers = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($companyId, (string) $event);
+        $services = $this->serviceRepository->getAllByCompanyIdAndListener($companyId, (string) $event);
 
-        if ($handlers->isEmpty()) {
+        if ($services->isEmpty()) {
             $this->dispatchUnhandleEvent($event);
 
             return false;
         }
 
         $success = true;
-        foreach ($handlers as $handler) {
-            $service = $handler->service();
+        foreach ($services as $service) {
+            $service = $service->handler_service();
 
             // create payload
             $payload = [

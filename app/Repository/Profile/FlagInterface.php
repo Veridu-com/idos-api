@@ -20,22 +20,22 @@ interface FlagInterface extends RepositoryInterface {
      * Return a flag based on its slug, service id and user id.
      *
      * @param string $slug
-     * @param int    $serviceId
+     * @param int    $handlerId
      * @param int    $userId
      *
      * @return \App\Entity\Profile\Flag
      */
-    public function findOne(string $slug, int $serviceId, int $userId) : Flag;
+    public function findOne(string $slug, int $handlerId, int $userId) : Flag;
 
     /**
      * Returns flags based on their service id and user id.
      *
-     * @param int $serviceId
+     * @param int $handlerId
      * @param int $userId
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getByUserIdAndServiceId(int $serviceId, int $userId, array $queryParams = []) : Collection;
+    public function getByUserIdAndHandlerId(int $handlerId, int $userId, array $queryParams = []) : Collection;
 
     /**
      * Returns flags based on their user id.

@@ -14,7 +14,7 @@ use App\Extension\QueuesOnManager;
 use App\Factory\Event as EventFactory;
 use App\Listener\AbstractListener;
 use App\Repository\Company\SettingInterface;
-use App\Repository\ServiceHandlerInterface;
+use App\Repository\ServiceInterface;
 use App\Repository\UserInterface;
 use League\Event\Emitter;
 use League\Event\EventInterface;
@@ -36,9 +36,9 @@ class EvaluateRecommendationListener extends AbstractListener {
     /**
      * Service handler repository.
      *
-     * @var \App\Repository\ServiceHandlerInterface
+     * @var \App\Repository\ServiceInterface
      */
-    private $serviceHandlerRepository;
+    private $serviceRepository;
     /**
      * User Repository.
      *
@@ -75,7 +75,7 @@ class EvaluateRecommendationListener extends AbstractListener {
      */
     public function __construct(
         SettingInterface $settingRepository,
-        ServiceHandlerInterface $serviceHandlerRepository,
+        ServiceInterface $serviceRepository,
         UserInterface $userRepository,
         Logger $logger,
         EventFactory $eventFactory,
@@ -83,7 +83,7 @@ class EvaluateRecommendationListener extends AbstractListener {
         \GearmanClient $gearmanClient
     ) {
         $this->settingRepository        = $settingRepository;
-        $this->serviceHandlerRepository = $serviceHandlerRepository;
+        $this->serviceRepository = $serviceRepository;
         $this->userRepository           = $userRepository;
         $this->logger                   = $logger;
         $this->eventFactory             = $eventFactory;
@@ -99,15 +99,21 @@ class EvaluateRecommendationListener extends AbstractListener {
      * @return void
      */
     public function handle(EventInterface $event) {
-        $handlers = $this->serviceHandlerRepository->getAllByCompanyIdAndListener($event->credential->companyId, 'idos.recommendation');
+        $services = $this->serviceRepository->getAllByCompanyIdAndListener($event->credential->companyId, 'idos.recommendation');
 
-        if ($handlers->isEmpty()) {
+        if ($services->isEmpty()) {
             $this->dispatchUnhandledEvent($event, $this->eventFactory, $this->emitter);
 
             return false;
         }
 
-        $user = $this->userRepository->find($event->getUserId());
+        
+        try {
+            $user = $this->userRepository->find($event->getUserId());
+        } catch (\RuntimeException $e) {
+            // Fails silently
+            return;
+        }
 
         // tries to get by credential->public        
         $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
@@ -118,6 +124,7 @@ class EvaluateRecommendationListener extends AbstractListener {
             ]
         );
 
+
         if ($settings->isEmpty()) {
             // tries to get by company
             $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
@@ -125,6 +132,7 @@ class EvaluateRecommendationListener extends AbstractListener {
                 'recommendation',
                 ['ruleset']
             );
+            
         }
 
         // fails silently
@@ -140,15 +148,16 @@ class EvaluateRecommendationListener extends AbstractListener {
         $rules = json_decode($settings->first()->value, true);
 
         $success = true;
-        foreach ($handlers as $handler) {
-            $service = $handler->service();
+
+        foreach ($services as $service) {
+            $handlerService = $service->handler_service();
 
             // create payload
             $payload = [
-                'name'    => $service->name,
-                'user'    => $service->authUsername,
-                'pass'    => $service->authPassword,
-                'url'     => $service->url,
+                'name'    => $handlerService->name,
+                'user'    => $handlerService->authUsername,
+                'pass'    => $handlerService->authPassword,
+                'url'     => $handlerService->url,
                 'handler' => [
                     'username'  => $user->username,
                     'publickey' => $event->credential->public,

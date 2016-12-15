@@ -36,7 +36,7 @@ class Score extends AbstractEntity {
      * {@inheritdoc}
      */
     public $relationships = [
-        'creator' => 'Service'
+        'creator' => 'Handler'
     ];
 
     /**

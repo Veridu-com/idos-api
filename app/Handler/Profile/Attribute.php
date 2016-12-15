@@ -215,9 +215,11 @@ class Attribute implements HandlerInterface {
             foreach ($entities as $entity) {
                 $affectedRows += $this->repository->delete($entity->id);
             }
-
-            $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->credential);
-            $this->emitter->emit($event);
+            
+            if ($affectedRows) {
+                $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->credential);
+                $this->emitter->emit($event);
+            }
         } catch (\Exception $e) {
             throw new NotFound\Profile\AttributeException('Error while deleting all attributes', 404);
         }

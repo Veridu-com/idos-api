@@ -72,7 +72,7 @@ class ListAllTest extends AbstractFunctional {
 
         foreach ($body['data'] as $feature) {
             $this->assertContains($feature['name'], ['birthYear']);
-            $this->assertContains($feature['value'], ['1992']);
+            $this->assertContains($feature['value'], ['1985']);
         }
 
         /*
@@ -107,7 +107,7 @@ class ListAllTest extends AbstractFunctional {
 
         foreach ($body['data'] as $feature) {
             $this->assertContains($feature['name'], ['birthYear', 'birthMonth', 'birthDay']);
-            $this->assertContains($feature['value'], ['1992', '5', '22']);
+            $this->assertContains($feature['value'], ['1985', '10', '13']);
         }
 
         /*
@@ -127,7 +127,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'creator:name=idOS Scraper'
+                    'QUERY_STRING'       => 'creator:name=idOS Feature Extractor'
                 ]
             )
         );
@@ -136,13 +136,14 @@ class ListAllTest extends AbstractFunctional {
         $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
+
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertCount(5, $body['data']);
 
         foreach ($body['data'] as $feature) {
             $this->assertContains($feature['name'], ['birthYear', 'birthMonth', 'birthDay', 'numOfFriends', 'isVerified']);
-            $this->assertContains($feature['value'], ['1992', '5', '22', '4', 'false']);
+            $this->assertContains($feature['value'], ['1985', '10', '13', '4', 'false']);
         }
 
         /*
@@ -177,7 +178,7 @@ class ListAllTest extends AbstractFunctional {
 
         foreach ($body['data'] as $feature) {
             $this->assertContains($feature['name'], ['birthYear', 'birthMonth', 'birthDay', 'numOfFriends', 'isVerified', 'submittedName']);
-            $this->assertContains($feature['value'], ['1992', '5', '22', '4', 'false', 'John Doe']);
+            $this->assertContains($feature['value'], ['1985', '10', '13', '4', 'false', 'John Doe']);
         }
 
         /*

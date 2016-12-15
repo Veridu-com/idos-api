@@ -23,7 +23,7 @@ class UpdateOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'PATCH';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/1321189817';
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/features/798119727';
     }
 
     public function testSuccess() {

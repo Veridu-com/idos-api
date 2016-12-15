@@ -10,16 +10,21 @@ namespace App\Handler;
 
 use App\Command\Company\CreateNew;
 use App\Command\Company\DeleteOne;
+use App\Command\Company\Setup;
 use App\Command\Company\UpdateOne;
 use App\Entity\Company as CompanyEntity;
+use App\Entity\HandlerService;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Repository\CompanyInterface;
+use App\Repository\HandlerServiceInterface;
+use App\Repository\ServiceInterface;
 use App\Validator\Company as CompanyValidator;
 use Defuse\Crypto\Key;
+use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
@@ -34,6 +39,18 @@ class Company implements HandlerInterface {
      * @var \App\Repository\CompanyInterface
      */
     private $repository;
+    /**
+     * Service Repository instance.
+     *
+     * @var \App\Repository\Service
+     */
+    private $serviceRepository;
+    /**
+     * Handler Service Repository instance.
+     *
+     * @var \App\Repository\HandlerService
+     */
+    private $handlerServiceRepository;
     /**
      * Company Validator instance.
      *
@@ -63,6 +80,12 @@ class Company implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Company'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Service'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('HandlerService'),
+                $container
                     ->get('validatorFactory')
                     ->create('Company'),
                 $container
@@ -77,6 +100,8 @@ class Company implements HandlerInterface {
      * Class constructor.
      *
      * @param \App\Repository\CompanyInterface $repository
+     * @param \App\Repository\ServiceInterface $serviceRepository
+     * @param \App\Repository\HandlerServiceInterface $handlerServiceRepository
      * @param \App\Validator\Company           $validator
      * @param \App\Factory\Event               $eventFactory
      * @param \League\Event\Emitter            $emitter
@@ -85,11 +110,15 @@ class Company implements HandlerInterface {
      */
     public function __construct(
         CompanyInterface $repository,
+        ServiceInterface $serviceRepository,
+        HandlerServiceInterface $handlerServiceRepository,
         CompanyValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository   = $repository;
+        $this->serviceRepository   = $serviceRepository;
+        $this->handlerServiceRepository   = $handlerServiceRepository;
         $this->validator    = $validator;
         $this->eventFactory = $eventFactory;
         $this->emitter      = $emitter;
@@ -134,10 +163,66 @@ class Company implements HandlerInterface {
             $event   = $this->eventFactory->create('Company\\Created', $company, $command->identity);
             $this->emitter->emit($event);
         } catch (\Exception $e) {
+            var_dump($e);die;
             throw new Create\CompanyException('Error while trying to create a company', 500, $e);
         }
 
         return $company;
+    }
+
+    /**
+     * ize a Company.
+     *
+     * @param \App\Command\Company\Setup $command
+     *
+     * @throws \App\Exception\Validate\CompanyException
+     * @throws \App\Exception\Create\CompanyException
+     *
+     * @return \Illuminate\Support\Collection of handlers
+     */
+    public function handleSetup(Setup $command) : Collection {
+        try {
+            $this->validator->assertId($command->companyId);
+            $this->validator->assertIdentity($command->identity);
+        } catch (ValidationException $e) {
+            throw new Validate\CompanyException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        try {
+            $company = $this->repository->find($command->companyId);
+
+            if ($company->parentId) {
+                $handlerServices = $this->handlerServiceRepository->getByCompanyId($company->id);
+            } else {
+                $handlerServices = $this->handlerServiceRepository->getAll();
+            }
+
+
+            // populate company services
+            foreach ($handlerServices as $handlerService) {
+                if ($handlerService->privacy === HandlerService::PRIVACY_PRIVATE) {
+                    continue;
+                }
+                
+                $service = $this->serviceRepository->create([
+                    'company_id' => $command->companyId,
+                    'handler_service_id' => $handlerService->id,
+                    'listens' => $handlerService->listens
+                ]);
+                $this->serviceRepository->upsert($service);
+            }
+
+            $event   = $this->eventFactory->create('Company\\Setup', $company, $command->identity);
+            $this->emitter->emit($event);
+
+            return $handlerServices;
+        } catch (\Exception $e) {
+            throw new Create\CompanyException('Error while trying to create a company', 500, $e);
+        }
     }
 
     /**

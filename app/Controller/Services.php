@@ -70,7 +70,7 @@ class Services implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
-        $entities = $this->repository->getByCompany($company, $request->getQueryParams());
+        $entities = $this->repository->getByCompanyId($company->id, $request->getQueryParams());
 
         $body = [
             'data'    => $entities->toArray(),
@@ -102,7 +102,7 @@ class Services implements ControllerInterface {
         $company   = $request->getAttribute('targetCompany');
         $serviceId = (int) $request->getAttribute('decodedServiceId');
 
-        $entity = $this->repository->findOne($serviceId, $company);
+        $entity = $this->repository->findOne($serviceId, $company->id);
 
         $body = [
             'data' => $entity->toArray()
@@ -140,7 +140,7 @@ class Services implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
         $identity = $request->getAttribute('identity');
-
+        
         $command = $this->commandFactory->create('Service\\CreateNew');
         $command
             ->setParameters($request->getParsedBody() ?: [])
@@ -233,38 +233,6 @@ class Services implements ControllerInterface {
         $this->commandBus->handle($command);
         $body = [
             'status' => true
-        ];
-
-        $command = $this->commandFactory->create('ResponseDispatch');
-        $command
-            ->setParameter('request', $request)
-            ->setParameter('response', $response)
-            ->setParameter('body', $body);
-
-        return $this->commandBus->handle($command);
-    }
-
-    /**
-     * Deletes all Services that belongs to the acting Company.
-     *
-     * @apiEndpointResponse 200 schema/service/deleteAll.json
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Message\ResponseInterface      $response
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company  = $request->getAttribute('targetCompany');
-        $identity = $request->getAttribute('identity');
-
-        $command = $this->commandFactory->create('Service\\DeleteAll');
-        $command
-            ->setParameter('identity', $identity)
-            ->setParameter('company', $company);
-
-        $body = [
-            'deleted' => $this->commandBus->handle($command)
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

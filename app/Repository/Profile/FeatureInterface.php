@@ -20,24 +20,24 @@ interface FeatureInterface extends RepositoryInterface {
      * Returns a feature based on its user id, service id (creator) and id.
      *
      * @param int $id        The feature id
-     * @param int $serviceId The service id
+     * @param int $handlerId The service id
      * @param int $userId    The user id
      *
      * @return \App\Entity\Profile\Feature
      */
-    public function findOne(int $id, int $serviceId, int $userId) : Feature;
+    public function findOne(int $id, int $handlerId, int $userId) : Feature;
 
     /**
      * Returns a feature based on its user id, source id, service id (creator) and name.
      *
      * @param string      $name       The feature name
-     * @param int         $serviceId  The service id
+     * @param int         $handlerId  The service id
      * @param string|null $sourceName The source name
      * @param int         $userId     The user id
      *
      * @return \App\Entity\Profile\Feature
      */
-    public function findOneByName(string $name, int $serviceId, $sourceName, int $userId) : Feature;
+    public function findOneByName(string $name, int $handlerId, $sourceName, int $userId) : Feature;
 
     /**
      * Returns a feature based on its user id and id.
@@ -52,13 +52,13 @@ interface FeatureInterface extends RepositoryInterface {
     /**
      * Return features based on their user id and service id (creator).
      *
-     * @param int   $serviceId
+     * @param int   $handlerId
      * @param int   $userId
      * @param array $queryParams
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection;
+    public function getByHandlerIdAndUserId(int $handlerId, int $userId, array $queryParams = []) : Collection;
 
     /**
      * Return features based on their user id.
@@ -83,13 +83,13 @@ interface FeatureInterface extends RepositoryInterface {
     /**
      * Upsert a bulk of features.
      *
-     * @param int   $serviceId The service identifier
+     * @param int   $handlerId The service identifier
      * @param int   $userId    The user identifier
      * @param array $features  The features
      *
      * @return bool Success of the transaction.
      */
-    public function upsertBulk(int $serviceId, int $userId, array $features) : bool;
+    public function upsertBulk(int $handlerId, int $userId, array $features) : bool;
 
     /**
      * Delete features based on their user id.

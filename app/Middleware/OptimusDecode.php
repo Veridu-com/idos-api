@@ -98,6 +98,7 @@ class OptimusDecode implements MiddlewareInterface {
 
         // decode request body parameters
         $parsedBody = $request->getParsedBody();
+
         if (is_array($parsedBody)) {
             // adds decoded values to $parsedBody
             foreach ($parsedBody as $key => $value) {
