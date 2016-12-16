@@ -350,7 +350,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertCredential($command->credential);
 
             if (count($this->command->features) > 100) {
-                throw new ValidationException('Exceeded maximum limit for bulk feature upsertion (100).');
+                throw new ValidationException('Your bulk upsert cannot exceed 100 items.');
             }
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
