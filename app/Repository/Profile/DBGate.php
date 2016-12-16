@@ -78,7 +78,7 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
             'foreignKey' => 'name',
             'key'        => 'name',
             'entity'     => 'Category',
-            'nullable'   => true,
+            'nullable'   => false,
             'hydrate'    => [
                 'display_name',
                 'description'
