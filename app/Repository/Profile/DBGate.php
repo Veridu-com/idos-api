@@ -71,61 +71,20 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
                 'name'
             ]
         ],
+
+        'category' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'categories',
+            'foreignKey' => 'name',
+            'key'        => 'name',
+            'entity'     => 'Category',
+            'nullable'   => false,
+            'hydrate'    => [
+                'display_name',
+                'description'
+            ]
+        ],
     ];
-
-    /**
-     * Returns the category associated with a gate.
-     *
-     * @param \App\Entity\Profile\Gate $gate The gate entity
-     *
-     * @return \App\Entity\Profile\Gate
-     */
-    public function findCategory(Gate $gate) {
-        $category = $this
-            ->repositoryFactory
-            ->create('Category')
-            ->getAll(
-                [
-                'type' => 'gate',
-                'name' => $gate->name
-                ]
-            );
-
-        if (count($category) > 0) {
-            return $category->first();
-        }
-
-        return;
-    }
-
-    /**
-     * Associate the categories with the given gates.
-     *
-     * @param \Illuminate\Support\Collection $gates The gates entities
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function associateCategories(Collection $gates) {
-        $categories = $this
-            ->repositoryFactory
-            ->create('Category')
-            ->getAll(
-                [
-                'type' => 'gate'
-                ]
-            );
-
-        $gateCategories = [];
-        foreach ($categories as $category) {
-            $gateCategories[$category->name] = $category->toArray();
-        }
-
-        foreach ($gates as $gate) {
-            $gate->category = isset($gateCategories[$gate->name]) ? $gateCategories[$gate->name] : null;
-        }
-
-        return $gates;
-    }
 
     /**
      * {@inheritdoc}
@@ -138,11 +97,6 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
                 'slug'    => $slug
             ]
         );
-
-        $category       = $this->findCategory($gate);
-        $gate->category = $category ? $category->toArray() : null;
-
-        return $gate;
     }
 
     /**
@@ -156,11 +110,6 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
                 'name'    => $name
             ]
         );
-
-        $category       = $this->findCategory($gate);
-        $gate->category = $category ? $category->toArray() : null;
-
-        return $gate;
     }
 
     /**
@@ -173,25 +122,17 @@ class DBGate extends AbstractSQLDBRepository implements GateInterface {
                 'user_id' => $userId
             ], $queryParams
         );
-
-        $gates = $this->associateCategories($gates);
-
-        return $gates;
     }
 
     /**
      * {@inheritdoc}
      */
     public function getByUserId(int $userId, array $queryParams = []) : Collection {
-        $gates = $this->findBy(
+        return $this->findBy(
             [
                 'user_id' => $userId
             ], $queryParams
         );
-
-        $gates = $this->associateCategories($gates);
-
-        return $gates;
     }
 
     /**

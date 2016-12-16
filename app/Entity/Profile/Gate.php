@@ -67,6 +67,7 @@ class Gate extends AbstractEntity {
      * {@inheritdoc}
      */
     public $relationships = [
-        'creator' => 'Handler'
+        'creator' => 'Handler',
+        'category' => 'Category'
     ];
 }
