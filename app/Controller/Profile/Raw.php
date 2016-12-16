@@ -248,7 +248,7 @@ class Raw implements ControllerInterface {
     /**
      * Deletes a raw data from a given source.
      *
-     * @apiEndpointResponse    200    schema/raw/deleteOne.json
+     * @apiEndpointResponse 200 schema/raw/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -294,8 +294,7 @@ class Raw implements ControllerInterface {
     /**
      * Deletes the raw data of a user.
      *
-     * @apiEndpointResponse 200 int
-     * @apiEndpointParam url string source source Source name
+     * @apiEndpointResponse 200 schema/raw/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -310,11 +309,8 @@ class Raw implements ControllerInterface {
         $user        = $request->getAttribute('targetUser');
         $queryParams = $request->getQueryParams();
 
-        $source = $this->sourceRepository->findOne($sourceId, $user->id);
-
         $command = $this->commandFactory->create('Profile\\Raw\\DeleteAll');
         $command
-            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('queryParams', $queryParams);
 

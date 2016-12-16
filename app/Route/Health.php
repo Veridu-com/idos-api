@@ -18,6 +18,8 @@ use Slim\App;
  *
  * This endpoint is used to ensure that the API and its services are responding properly.
  *
+ * @apiDisabled
+ *
  * @link docs/health/overview.md
  * @see \App\Controller\Health
  */
@@ -26,9 +28,7 @@ class Health implements RouteInterface {
      * {@inheritdoc}
      */
     public static function getPublicNames() : array {
-        return [
-            'health:check'
-        ];
+        return [];
     }
 
     /**
