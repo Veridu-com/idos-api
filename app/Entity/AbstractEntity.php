@@ -213,7 +213,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) != 0)) {
                 $value = sprintf(
                     'secure:%s',
-                    $this->vault->lock($value)
+                    $this->vault->lock((string)$value)
                     //$value
                 );
             }

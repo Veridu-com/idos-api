@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "PUT /companies/{companySlug}/handlers/{handlerId}/handler-services/{handlerServiceId}",
+    "title": "PATCH /companies/{companySlug}/handlers/{handlerId}",
     "type": "object",
     "properties": {
         "status": {
@@ -8,9 +8,9 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Handler Service response payload",
+            "description": "Handler response payload",
             "type": "object",
-            "$ref": "handlerServiceEntity.json"
+            "$ref": "handlerEntity.json"
         },
         "updated": {
             "description": "Unixtime of the last update",

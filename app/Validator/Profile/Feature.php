@@ -27,8 +27,7 @@ class Feature implements ValidatorInterface {
         Validator::arrayType()->assert($features);
         foreach ($features as $feature) {
             Validator::key('value')->assert($feature);
-
-            $this->assertName($feature['name']);
+            $this->assertLongName($feature['name']);
             $this->assertName($feature['type']);
 
             if (key_exists('source_id', $feature)) {

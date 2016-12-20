@@ -24,8 +24,8 @@ class InvalidSubjectTest extends AbstractAuthFunctional {
     public function testInvalidSubject() {
         $token = Token::generateUserToken(
             'invalid*subject',
-            md5('public'),
-            md5('private')
+            'b16c931c061e14af275bd2c86d3cf48d',
+            '81197557e9117dfd6f16cb72a2710830'
         );
 
         $authMiddleware = $this->middlewareApp
@@ -53,6 +53,6 @@ class InvalidSubjectTest extends AbstractAuthFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
-        $this->assertSame('Invalid Subject Claim', $body['error']['message']);
+        $this->assertSame('Invalid Credential', $body['error']['message']);
     }
 }

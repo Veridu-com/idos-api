@@ -65,9 +65,6 @@ class SuccessQueryStringTest extends AbstractAuthFunctional {
             $body['identity']['public_key']
         );
 
-        $this->assertSame(
-            'secure:7d793037a0760186574b0282f2f435e7',
-            $body['identity']['private_key']
-        );
+        $this->assertNotEmpty($body['identity']['private_key']);
     }
 }

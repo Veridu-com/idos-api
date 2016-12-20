@@ -25,7 +25,7 @@ class InvalidCredentialTest extends AbstractAuthFunctional {
         $token = Token::generateUserToken(
             'JohnDoe',
             md5('invalid-public'),
-            md5('private')
+            '81197557e9117dfd6f16cb72a2710830'
         );
 
         $authMiddleware = $this->middlewareApp

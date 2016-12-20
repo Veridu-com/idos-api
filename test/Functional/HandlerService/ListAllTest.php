@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\ServiceHandler;
+namespace Test\Functional\HandlerService;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
@@ -21,7 +21,7 @@ class ListAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers';
+        $this->uri        = '/1.0/companies/veridu-ltd/handlers/1321189817/handler-services';
     }
 
     public function testSuccess() {
@@ -46,7 +46,7 @@ class ListAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'serviceHandler/listAll.json',
+                'handlerService/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

@@ -23,9 +23,9 @@ class InvalidSubjectTest extends AbstractAuthFunctional {
 
     public function testInvalidSubject() {
         $token = Token::generateCredentialToken(
-            md5('invalid-credential-public'),
-            md5('public-1'),
-            md5('private-1')
+            'invalid-subject-public',
+            'b16c931c061e14af275bd2c86d3cf48d',
+            '81197557e9117dfd6f16cb72a2710830'
         );
         $app            = $this->middlewareApp;
         $authMiddleware = $this->middlewareApp
@@ -38,6 +38,7 @@ class InvalidSubjectTest extends AbstractAuthFunctional {
             )
             ->add($authMiddleware(Auth::CREDENTIAL));
 
+        // var_dump($token);
         $request = $this->createRequest(
             $this->createEnvironment(
                 [

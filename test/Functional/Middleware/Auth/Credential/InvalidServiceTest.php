@@ -25,9 +25,9 @@ class InvalidServiceTest extends AbstractAuthFunctional {
 
     public function testInvalidService() {
         $token = Token::generateCredentialToken(
-            md5('public'),
-            md5('invalid-service-public'),
-            md5('private-1')
+            'public',
+            'invalid-service-public',
+            'private-1'
         );
 
         $authMiddleware = $this->middlewareApp

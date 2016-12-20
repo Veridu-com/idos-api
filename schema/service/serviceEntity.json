@@ -5,18 +5,10 @@
     "title": "Service",
     "type": "object",
     "properties": {
-        "name": {
-            "description": "Service Name",
-            "type": "string",
+        "id": {
+            "description": "Service Id",
+            "type": "integer",
             "pattern": ""
-        },
-        "access": {
-            "description": "Access level of the service",
-            "type": "integer"
-        },
-        "enabled": {
-            "description": "If the service is enabled",
-            "type": "boolean"
         },
         "listens": {
             "description": "Listens attribute",
@@ -24,11 +16,10 @@
             "minItems": 0,
             "uniqueItems": true
         },
-        "triggers": {
-            "description": "Triggers attribute",
-            "type": "array",
-            "minItems": 0,
-            "uniqueItems": true
+        "handler_service": {
+            "description":"Handler Service", 
+            "type":"object", 
+            "$ref": "../handlerService/handlerServiceEntity.json"
         },
         "created_at": {
             "description": "Company's creation unixtime",
@@ -39,16 +30,10 @@
             "type": ["integer", "null"]
         }
     },
-    "dependencies": {
-        "slug": ["name"]
-    },
     "required": [
-        "name",
-        "access",
-        "enabled",
-        "triggers",
-        "triggers",
-        "enabled",
+        "id",
+        "listens",
+        "handler_service",
         "created_at",
         "updated_at"
     ]

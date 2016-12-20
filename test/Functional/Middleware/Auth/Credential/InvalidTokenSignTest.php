@@ -28,9 +28,9 @@ class InvalidTokenSign extends AbstractAuthFunctional {
 
  public function testInvalidTokenSign() {
         $token = Token::generateCredentialToken(
-            md5('public'),
-            md5('public-1'),
-            md5('invalid-service-private')
+            'public',
+            'b16c931c061e14af275bd2c86d3cf48d',
+            'invalid-service-private'
         );
 
         $authMiddleware = $this->middlewareApp

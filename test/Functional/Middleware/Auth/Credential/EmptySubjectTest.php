@@ -24,8 +24,8 @@ class EmptySubjectTest extends AbstractAuthFunctional {
     public function testEmptySubject() {
         $token = Token::generateCredentialToken(
             '',
-            md5('public-1'),
-            md5('private-1')
+            'b16c931c061e14af275bd2c86d3cf48d',
+            '81197557e9117dfd6f16cb72a2710830'
         );
 
         $authMiddleware = $this->middlewareApp

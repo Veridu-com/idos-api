@@ -170,6 +170,11 @@ class HandlerService implements HandlerInterface {
                 $this->validator->assertName($command->name);
                 $input['name'] = $command->name;
             }
+        
+            if (! is_null($command->url)) {
+                $this->validator->assertUrl($command->url);
+                $input['url'] = $command->url;
+            }
 
             if (! is_null($command->enabled)) {
                 $this->validator->assertFlag($command->enabled);
@@ -250,34 +255,5 @@ class HandlerService implements HandlerInterface {
 
         $event = $this->eventFactory->create('HandlerService\\Deleted', $service, $command->identity);
         $this->emitter->emit($event);
-    }
-
-    /**
-     * Deletes all service handlers ($command->companyId).
-     *
-     * @param \App\Command\HandlerService\DeleteAll $command
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->identity);
-        } catch (ValidationException $e) {
-            throw new Validate\HandlerServiceException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $services = $this->repository->getByCompany($command->company);
-
-        $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
-
-        $event = $this->eventFactory->create('HandlerService\\DeletedMulti', $services, $command->identity);
-        $this->emitter->emit($event);
-
-        return $affectedRows;
     }
 }

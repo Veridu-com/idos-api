@@ -17,30 +17,25 @@ use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 class SuccessTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        parent::setUp();
-        $this->uri        = '/successTest';
+        $this->uri        = '/testSuccess';
         $this->httpMethod = 'GET';
     }
 
     public function testSuccess() {
-        $token = Token::generateCredentialToken(
-            md5('public'),
-            md5('public-1'),
-            md5('private-1')
-        );
+        $token = $this->credentialToken();
 
         $authMiddleware = $this->middlewareApp
             ->getContainer()
-            ->get('authMiddleware');
+            ->get('authMiddleware');            
         $this->middlewareApp
             ->get(
-                '/successTest', function (ServerRequestInterface $request, ResponseInterface $response) {
-                    $service = $request->getAttribute('service');
+                '/testSuccess', function (ServerRequestInterface $request, ResponseInterface $response) {
                     $company = $request->getAttribute('company');
                     $credential = $request->getAttribute('credential');
+                    $handler = $request->getAttribute('handler');
 
                     $data = [
-                        'service'    => $service->serialize(),
+                        'handler'    => $handler->serialize(),
                         'company'    => $company->serialize(),
                         'credential' => $credential->serialize()
                     ];
@@ -63,10 +58,10 @@ class SuccessTest extends AbstractAuthFunctional {
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertSame(md5('public-1'), $body['service']['public']);
-        $this->assertSame('secure:' . md5('private-1'), $body['service']['private']);
-        $this->assertSame(md5('public'), $body['credential']['public']);
-        $this->assertSame('secure:' . md5('private'), $body['credential']['private']);
+        $this->assertSame('b16c931c061e14af275bd2c86d3cf48d', $body['handler']['public']);
+        $this->assertNotEmpty($body['handler']['private']);
+        $this->assertSame('4c9184f37cff01bcdc32dc486ec36961', $body['credential']['public']);
+        $this->assertNotEmpty($body['credential']['private']);
         $this->assertSame($body['company']['id'], $body['credential']['company_id']);
     }
 }

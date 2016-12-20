@@ -17,16 +17,12 @@ use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 class SuccessTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->httpMethod    = 'GET';
         $this->uri           = '/testSuccess';
+        $this->httpMethod    = 'GET';
     }
 
     public function testSuccess() {
-        $token = Token::generateUserToken(
-            'JohnDoe',
-            md5('public'),
-            md5('private')
-        );
+        $token = $this->userToken();
 
         $authMiddleware = $this->middlewareApp
             ->getContainer()
@@ -62,10 +58,10 @@ class SuccessTest extends AbstractAuthFunctional {
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertSame('JohnDoe', $body['user']['username']);
+        $this->assertSame('usr001', $body['user']['username']);
         $this->assertSame($body['credential']['id'], $body['user']['credential_id']);
         $this->assertSame(md5('public'), $body['credential']['public']);
-        $this->assertSame('secure:' . md5('private'), $body['credential']['private']);
+        $this->assertNotEmpty($body['credential']['private']);
         $this->assertSame($body['company']['id'], $body['credential']['company_id']);
     }
 }

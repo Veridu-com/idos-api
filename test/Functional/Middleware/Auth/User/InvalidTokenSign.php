@@ -23,7 +23,7 @@ class InvalidTokenSignTest extends AbstractAuthFunctional {
     public function testInvalidTokenSign() {
         $token = Token::generateUserToken(
             'JohnDoe',
-            md5('public'),
+            'b16c931c061e14af275bd2c86d3cf48d'
             md5('invalid-private')
         );
 

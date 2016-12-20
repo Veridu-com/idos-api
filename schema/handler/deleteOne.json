@@ -1,20 +1,14 @@
 {
     "$schema" : "http://json-schema.org/draft-04/schema#",
-    "title": "DELETE /service-handlers",
+    "title": "DELETE /companies/{companySlug}/handlers",
     "type": "object",
     "properties": {
         "status": {
           "description": "Response status flag",
           "type": "boolean"
-        },
-        "deleted": {
-          "description": "Number of sucessfully deleted service handlers",
-          "type": "integer",
-          "minimum": 0
         }
     },
     "required": [
-        "status",
-        "deleted"
+        "status"
     ]
 }

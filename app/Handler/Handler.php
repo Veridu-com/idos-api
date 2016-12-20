@@ -168,7 +168,7 @@ class Handler implements HandlerInterface {
             }
 
             if (! is_null($command->authPassword)) {
-                $this->validator->assertName($command->authPassword);
+                $this->validator->assertPassword($command->authPassword);
                 $input['auth_password'] = $command->authPassword;
             }
 
@@ -241,9 +241,8 @@ class Handler implements HandlerInterface {
         }
 
         $service = $this->repository->find($command->handlerId);
-
         $rowsAffected = $this->repository->deleteOne($command->handlerId, $command->company);
-
+    
         if (! $rowsAffected) {
             throw new NotFound\HandlerException('No services found for deletion', 404);
         }

@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "GET /companies/{companySlug}/handlers/{handlerId}/handler-services",
+    "title": "GET /companies/{companySlug}/handlers",
     "type": "object",
     "properties": {
         "status": {
@@ -8,10 +8,10 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Handler Service response payload",
+            "description": "Handler response payload",
             "type": "array",
             "items": {
-                "$ref": "handlerServiceEntity.json"
+                "$ref": "handlerEntity.json"
             },
             "minItems": 0,
             "uniqueItems": true

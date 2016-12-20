@@ -1,6 +1,6 @@
 {
     "$schema" : "http://json-schema.org/draft-04/schema#",
-    "title": "DELETE /service-handlers/{serviceSlug}/{serviceHandlerSlug}",
+    "title": "DELETE /companies/{companySlug}/handlers/{handlerId}/handler-services/{handleServiceId}",
     "type": "object",
     "properties": {
         "status": {

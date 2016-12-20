@@ -333,7 +333,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * @return string
      */
     protected function userToken(
-        $userName = 'f67b96dcf96b49d713a520ce9f54053c',
+        $userName = 'usr001',
         $credentialPubKey = null,
         $credentialPrivKey = null
     ) {

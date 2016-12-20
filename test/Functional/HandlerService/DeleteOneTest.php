@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\ServiceHandler;
+namespace Test\Functional\HandlerService;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
@@ -21,7 +21,7 @@ class DeleteOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers/1321189817';
+        $this->uri        = '/1.0/companies/veridu-ltd/handlers/1321189817/handler-services/1321189817';
     }
 
     public function testSuccess() {
@@ -44,7 +44,7 @@ class DeleteOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'service/deleteOne.json',
+                'handlerService/deleteOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -52,7 +52,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/companies/veridu-ltd/service-handlers/123');
+        $this->uri = sprintf('/1.0/companies/veridu-ltd/handlers/1321189817/handler-services/123');
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [

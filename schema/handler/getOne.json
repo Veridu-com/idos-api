@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "POST /services",
+    "title": "GET /companies/{companySlug}/handlers/{handlerId}",
     "type": "object",
     "properties": {
         "status": {
@@ -8,9 +8,9 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Service response payload",
+            "description": "Handler response payload",
             "type": "object",
-            "$ref": "serviceEntity.json"
+            "$ref": "handlerEntity.json"
         }
     },
     "required": [

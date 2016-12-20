@@ -6,32 +6,33 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Recommendation;
+namespace Test\Functional\Handler;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
-class GetOneTest extends AbstractFunctional {
+class ListAllTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresUserToken,
-        Traits\RejectsCredentialToken,
-        Traits\RejectsIdentityToken;
+        Traits\RequiresIdentityToken,
+        Traits\RejectsUserToken,
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = sprintf('/1.0/profiles/%s/recommendation', $this->userName);
+        $this->uri        = '/1.0/companies/veridu-ltd/handlers';
     }
 
     public function testSuccess() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->userTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
                 ]
             )
         );
+
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
@@ -39,12 +40,16 @@ class GetOneTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
+        $this->assertSame(1321189817, $body['data'][0]['id']);
+        $this->assertSame('idOS Machine Learning', $body['data'][0]['name']);
+        $this->assertTrue($body['data'][0]['enabled']);
+        
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'recommendation/getOne.json',
+                'handler/listAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

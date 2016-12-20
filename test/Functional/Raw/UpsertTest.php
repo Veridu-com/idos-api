@@ -23,12 +23,12 @@ class UpsertTest extends AbstractRawFunctional {
         $this->populateDb();
 
         $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
+        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
     }
 
     public function testCreated() {
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
+        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
 
         $environment = $this->createEnvironment(
             [
@@ -48,7 +48,7 @@ class UpsertTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'source_id'  => 1321189817,
-                    'collection' => 'name-test',
+                    'collection' => 'name-testing',
                     'data'       => ['test' => 'data']
                 ]
             )
@@ -60,7 +60,7 @@ class UpsertTest extends AbstractRawFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('name-test', $body['data']['collection']);
+        $this->assertSame('testing', $body['data']['collection']);
         $this->assertSame(['test' => 'data'], $body['data']['data']);
 
         /*
@@ -90,7 +90,7 @@ class UpsertTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'source_id'  => 1321189817,
-                    'collection' => 'name-test',
+                    'collection' => 'testing',
                     'data'       => ['test' => 'data']
                 ]
             )
@@ -102,7 +102,7 @@ class UpsertTest extends AbstractRawFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('name-test', $body['data']['collection']);
+        $this->assertSame('testing', $body['data']['collection']);
         $this->assertSame(['test' => 'data2'], $body['data']['data']);
 
         /*

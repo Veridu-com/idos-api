@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Score;
+namespace Test\Functional\HandlerService;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
@@ -15,22 +15,22 @@ use Test\Functional\Traits;
 
 class UpdateOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCredentialToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
-        Traits\RejectsIdentityToken;
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
         parent::setUp();
 
         $this->httpMethod = 'PATCH';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/scores/user-1-score-1';
+        $this->uri        = '/1.0/companies/veridu-ltd/handlers/1321189817/handler-services/1321189817';
     }
 
-    public function testSuccess() {
+    public function testUpdateListensSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -38,9 +38,9 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'attribute' => 'firstName',
-                    'name'      => 'name-test',
-                    'value'     => 0.6
+                    'listens' => [
+                        'idos:source.dropbox.created'
+                    ]
                 ]
             )
         );
@@ -51,27 +51,26 @@ class UpdateOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('firstName', $body['data']['attribute']);
-        $this->assertSame('user-1-score-1', $body['data']['name']);
-        $this->assertSame(0.6, $body['data']['value']);
+        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
+        $this->assertEquals(['idos:source.dropbox.created'], $body['data']['listens']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'score/updateOne.json',
+                'handlerService/updateOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
-    
-    public function testEmptyAttribute() {
+
+    public function testUpdateNameSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -79,9 +78,7 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'attribute' => '',
-                    'name'      => 'name-test',
-                    'value'     => 0.6
+                    'name' => 'New Name'
                 ]
             )
         );
@@ -92,25 +89,102 @@ class UpdateOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
+        $this->assertEquals('New Name', $body['data']['name']);
+
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'score/updateOne.json',
+                'handlerService/updateOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
         );
     }
+
+
+    public function testUpdateUrlSuccess() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'url' => 'https://gmail.com'
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertEquals('https://gmail.com', $body['data']['url']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'handlerService/updateOne.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testUpdatePrivacySuccess() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'privacy' => 5 
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'handlerService/updateOne.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
 
     public function testNotFound() {
-        $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/scores/000000';
+        $this->uri = '/1.0/companies/veridu-ltd/handlers/1321189817/handler-services/123';
 
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -118,9 +192,9 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'attribute' => 'firstName',
-                    'name'      => 'name-test',
-                    'value'     => 0.6
+                    'listens' => [
+                        'source.not.exists'
+                    ]
                 ]
             )
         );
@@ -131,6 +205,7 @@ class UpdateOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
+
         /*
          * Validates Response using the Json Schema.
          */
@@ -143,12 +218,11 @@ class UpdateOneTest extends AbstractFunctional {
         );
     }
 
-
-    public function testEmptyName() {
+    public function testInvalidListens() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -156,50 +230,7 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'attribute' => 'firstName',
-                    'name'      => '',
-                    'value'     => 0.6
-                ]
-            )
-        );
-
-        $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertTrue($body['status']);
-        $this->assertSame('firstName', $body['data']['attribute']);
-        $this->assertSame('user-1-score-1', $body['data']['name']);
-        $this->assertSame(0.6, $body['data']['value']);
-
-        /*
-         * Validates Response using the Json Schema.
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'score/updateOne.json',
-                json_decode((string) $response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testEmptyValue() {
-        $environment = $this->createEnvironment(
-            [
-                'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-            ]
-        );
-
-        $request = $this->createRequest(
-            $environment,
-            json_encode(
-                [
-                    'attribute' => 'firstName',
-                    'name'      => 'name-value',
-                    'value'     => null
+                    'listens' => 'not an array'
                 ]
             )
         );
@@ -210,6 +241,7 @@ class UpdateOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
+
         /*
          * Validates Response using the Json Schema.
          */
@@ -222,11 +254,11 @@ class UpdateOneTest extends AbstractFunctional {
         );
     }
 
-    public function testInvalidValue() {
+    public function testInvalidUrl() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -234,9 +266,7 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'attribute' => 'firstName',
-                    'name'      => 'name-value',
-                    'value'     => 2
+                    'url' => 'not an url'
                 ]
             )
         );
@@ -247,6 +277,43 @@ class UpdateOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'error.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+    
+    public function testInvalidFlag() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'enabled' => 'not a boolean'
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(400, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertFalse($body['status']);
+
         /*
          * Validates Response using the Json Schema.
          */

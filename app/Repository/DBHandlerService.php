@@ -38,12 +38,13 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
     /**
      * {@inheritdoc}
      */
-    public function getByCompanyId(int $companyId, array $queryParams) : Collection {
-        return $this->findBy(
-            [
-            'company_id' => $companyId
-            ], $queryParams
-        );
+    public function getByServiceCompanyId(int $companyId, array $queryParams = []) : Collection {
+        $query = $this->query()
+            ->join('services', 'services.id', 'handler_services.handler_id')
+            ->where('services.company_id', $companyId);
+        $query = $this->filter($query, $queryParams);
+
+        return $query->get(['handler_services.*']);
     }
 
     /**
@@ -54,11 +55,18 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getByHandlerId(int $handlerId, array $queryParams) : Collection {
+    public function getByHandlerId(int $handlerId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
             'handler_id' => $handlerId
             ], $queryParams
         );
+    }
+
+    /**
+     * @FIXME need to be implemmented
+     */
+    public function getByCompanyId(int $companyId, array $queryParams = [] ) : Collection {
+        return new Collection([]);
     }
 }

@@ -195,7 +195,7 @@ class Company implements HandlerInterface {
             $company = $this->repository->find($command->companyId);
 
             if ($company->parentId) {
-                $handlerServices = $this->handlerServiceRepository->getByCompanyId($company->id);
+                $handlerServices = $this->handlerServiceRepository->getByServiceCompanyId($company->id);
             } else {
                 $handlerServices = $this->handlerServiceRepository->getAll();
             }

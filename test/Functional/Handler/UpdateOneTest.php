@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\ServiceHandler;
+namespace Test\Functional\Handler;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
@@ -23,10 +23,10 @@ class UpdateOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'PATCH';
-        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers/1321189817';
+        $this->uri        = '/1.0/companies/veridu-ltd/handlers/1860914067';
     }
 
-    public function testSuccess() {
+    public function testUpdateNameSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -36,13 +36,9 @@ class UpdateOneTest extends AbstractFunctional {
 
         $request = $this->createRequest(
             $environment,
-            json_encode(
-                [
-                    'listens' => [
-                        'idos:source.dropbox.created'
-                    ]
-                ]
-            )
+            json_encode([
+                'name' => 'testingName'
+            ])
         );
 
         $response = $this->process($request);
@@ -51,15 +47,51 @@ class UpdateOneTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
-        $this->assertEquals(['idos:source.dropbox.created'], $body['data']['listens']);
+        $this->assertNotEmpty($body['data']);
+        $this->assertSame('testingName', $body['data']['name']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'serviceHandler/updateOne.json',
+                'handler/updateOne.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+
+    public function testUpdateAuthCredentialsSuccess() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode([
+                'auth_username' => 'testingUpdate', 
+                'auth_password' => 'testingPasswordUpdate'   
+            ])
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'handler/updateOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -67,7 +99,7 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/service-handlers/000000';
+        $this->uri = '/1.0/companies/veridu-ltd/handler/123';
 
         $environment = $this->createEnvironment(
             [
@@ -81,7 +113,7 @@ class UpdateOneTest extends AbstractFunctional {
             json_encode(
                 [
                     'listens' => [
-                        'source.not.exists'
+                        'dummy:listens'
                     ]
                 ]
             )
@@ -105,8 +137,8 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
-    public function testInvalidListens() {
+    
+    public function testInvalidPassword() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -118,7 +150,7 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'listens' => 'not an array'
+                    'auth_password' => 'abcd1'
                 ]
             )
         );

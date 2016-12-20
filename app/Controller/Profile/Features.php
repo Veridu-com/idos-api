@@ -319,7 +319,7 @@ class Features implements ControllerInterface {
             ->setParameter('handler', $handler);
 
         $success = $this->commandBus->handle($command);
-
+        
         $body = [
             'status' => $success
         ];

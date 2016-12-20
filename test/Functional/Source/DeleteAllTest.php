@@ -23,16 +23,7 @@ class DeleteAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-
-        $this->populate(
-            '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources',
-            'GET',
-            [
-                'HTTP_AUTHORIZATION' => $this->userTokenHeader()
-            ]
-        );
-        $this->entity = $this->getRandomEntity();
-        $this->uri    = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources';
+        $this->uri        = sprintf('/1.0/profiles/%s/sources', $this->userName);
     }
 
     public function testSuccess() {
@@ -49,10 +40,7 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        // refreshes the $entities prop
-        $this->populate($this->uri);
-        // checks if all entities were deleted
-        $this->assertCount(0, $this->entities);
+        $this->assertEquals(9, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.
