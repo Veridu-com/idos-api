@@ -68,7 +68,7 @@ class Vault {
         try {
             return Crypto::decrypt($cipherText, $this->key);
         } catch (WrongKeyOrModifiedCiphertextException $exception) {
-            // What to do here?
+            return $cipherText;
         }
     }
 }
