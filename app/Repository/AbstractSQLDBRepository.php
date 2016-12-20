@@ -725,7 +725,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             $requiresJoin = 'inner';
         }
 
-        if ($requiresJoin && $relationColumn === $relationTableKey && ($value === 0 || $this->optimus->encode($value) === 0)) {
+        if ($requiresJoin && $relationColumn === $relationTableKey && is_integer($value) && ($value === 0 || $this->optimus->encode($value) === 0)) {
             $requiresJoin = 'left';
             $value        = null;
         }
