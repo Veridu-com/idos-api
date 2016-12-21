@@ -23,7 +23,7 @@ class DeleteAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri    = sprintf('/1.0/profiles/%s/gates', $this->userName);
+        $this->uri        = sprintf('/1.0/profiles/%s/gates', $this->userName);
     }
 
     public function testSuccess() {

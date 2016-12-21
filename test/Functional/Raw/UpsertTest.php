@@ -104,7 +104,7 @@ class UpsertTest extends AbstractRawFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('testing', $body['data']['collection']);
-        $this->assertSame(['test' => 'data2'], $body['data']['data']);
+        $this->assertSame(['test' => 'data'], $body['data']['data']);
 
         /*
          * Validates Response using the Json Schema.
@@ -118,7 +118,7 @@ class UpsertTest extends AbstractRawFunctional {
         );
     }
 
-    public function testSourceName() {
+    public function testNoSource() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -130,7 +130,6 @@ class UpsertTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id'  => null,
                     'collection' => 'testName',
                     'data'       => ['test' => 'data']
                 ]
@@ -138,11 +137,7 @@ class UpsertTest extends AbstractRawFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
+        $this->assertSame(404, $response->getStatusCode());
 
         /*
          * Validates Response using the Json Schema.

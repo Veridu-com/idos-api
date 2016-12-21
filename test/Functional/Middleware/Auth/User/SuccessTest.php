@@ -58,7 +58,7 @@ class SuccessTest extends AbstractAuthFunctional {
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertSame('usr001', $body['user']['username']);
+        $this->assertSame('f67b96dcf96b49d713a520ce9f54053c', $body['user']['username']);
         $this->assertSame($body['credential']['id'], $body['user']['credential_id']);
         $this->assertSame(md5('public'), $body['credential']['public']);
         $this->assertNotEmpty($body['credential']['private']);
