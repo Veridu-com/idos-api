@@ -11,7 +11,7 @@ namespace Test\Functional\Raw;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
-class DeleteAllTest extends AbstractFunctional {
+class DeleteAllTest extends AbstractRawFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
@@ -19,6 +19,9 @@ class DeleteAllTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
+        $this->httpMethod = 'DELETE';
+        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
+        $this->populateDb();
     }
 
     public function testSuccess() {
@@ -29,7 +32,7 @@ class DeleteAllTest extends AbstractFunctional {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
                 ]
             )
         );
@@ -39,17 +42,18 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);        
         
         $totalMembers = count($body['data']);
-
-        $this->httpMethod = 'DELETE';
-        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
         
+        //DELETE ALL
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
                 ]
             )
         );
+
+        $this->httpMethod = 'DELETE';
+        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
 
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
@@ -68,36 +72,6 @@ class DeleteAllTest extends AbstractFunctional {
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
-        );
-    }
-
-    public function testNotFound() {
-        $this->uri = sprintf('/1.0/profiles/00000/raw');
-
-        $request   = $this->createRequest(
-            $this->createEnvironment(
-                [
-                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
-                ]
-            )
-        );
-        
-        $response = $this->process($request);
-        $this->assertSame(404, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
-
-        /*
-         * Validates Response using the Json Schema.
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'error.json',
-                json_decode((string) $response->getBody())
-            ),
-            $this->schemaErrors
-        );
+       );
     }
 }

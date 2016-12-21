@@ -36,6 +36,7 @@ class UpsertTest extends AbstractRawFunctional {
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
             ]
         );
+        
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
 
@@ -48,7 +49,7 @@ class UpsertTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'source_id'  => 1321189817,
-                    'collection' => 'name-testing',
+                    'collection' => 'testing',
                     'data'       => ['test' => 'data']
                 ]
             )
@@ -130,7 +131,7 @@ class UpsertTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'source_id'  => null,
-                    'collection' => 'name-test',
+                    'collection' => 'testName',
                     'data'       => ['test' => 'data']
                 ]
             )
