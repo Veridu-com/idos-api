@@ -230,12 +230,14 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $this->selectDatabase($source->name);
 
         $collections  = $this->listCollections();
+
         $affectedRows = 0;
 
         foreach ($collections as $collection) {
-            $affectedRows += $this->deleteOneBySourceAndCollection($collection->getName(), $source);
+            if (substr($collection->getName(), 0, 6) !== 'system')
+               $affectedRows += $this->deleteOneBySourceAndCollection($collection->getName(), $source);
         }
-
+        
         return $affectedRows;
     }
 }

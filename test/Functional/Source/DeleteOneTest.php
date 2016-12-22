@@ -21,7 +21,7 @@ class DeleteOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri    = sprintf('/1.0/profiles/%s/sources', $this->userName);
+        $this->uri    = sprintf('/1.0/profiles/%s/sources/email', $this->userName);
     }
 
     public function testSuccess() {

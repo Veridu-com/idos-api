@@ -31,7 +31,8 @@ class Attributes implements RouteInterface {
      */
     public static function getPublicNames() : array {
         return [
-            'attribute:listAll'
+            'attribute:listAll',
+            'attribute:getOne'
         ];
     }
 

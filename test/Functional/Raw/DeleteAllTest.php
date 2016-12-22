@@ -24,25 +24,7 @@ class DeleteAllTest extends AbstractRawFunctional {
         $this->populateDb();
     }
 
-    public function testSuccess() {
-        //lists all raw data to count number of data to be deleted
-        $this->httpMethod = 'GET';
-        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
-
-        $request = $this->createRequest(
-            $this->createEnvironment(
-                [
-                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-                ]
-            )
-        );
-
-        $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
-        $body = json_decode((string) $response->getBody(), true);        
-        
-        $totalMembers = count($body['data']);
-        
+    public function testSuccess() {        
         //DELETE ALL
         $request = $this->createRequest(
             $this->createEnvironment(
@@ -52,23 +34,19 @@ class DeleteAllTest extends AbstractRawFunctional {
             )
         );
 
-        $this->httpMethod = 'DELETE';
-        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
-
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertArrayHasKey('deleted', $body['data']);
-        $this->assertEquals($totalMembers, $body['data']['deleted']);
-
+        $this->assertArrayHasKey('deleted', $body);
+        $this->assertEquals(3, $body['deleted']);
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'member/deleteAll.json',
+                'raw/deleteAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
