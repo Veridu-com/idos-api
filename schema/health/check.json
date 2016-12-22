@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /health",
+    "type": "object",
+    "properties": {
+        "status": {
+          "description": "Response status flag",
+          "type": "boolean"
+        },
+        "queue_server": {
+          "description": "Queue server status",
+          "type": "boolean"
+        },
+        "sql_server": {
+          "description": "SQL database server status",
+          "type": "boolean"
+        },
+        "nosql_server": {
+          "description": "NoSQL database server status",
+          "type": "boolean"
+        }
+    },
+    "required": [
+        "status",
+        "queue_server",
+        "sql_server",
+        "nosql_server"
+    ]
+}

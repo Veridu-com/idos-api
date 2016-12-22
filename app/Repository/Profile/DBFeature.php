@@ -64,10 +64,10 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
 
         'creator' => [
             'type'       => 'MANY_TO_ONE',
-            'table'      => 'services',
+            'table'      => 'handlers',
             'foreignKey' => 'creator',
             'key'        => 'id',
-            'entity'     => 'Service',
+            'entity'     => 'Handler',
             'nullable'   => false,
             'hydrate'    => [
                 'name'
@@ -78,11 +78,11 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOne(int $id, int $serviceId, int $userId) : Feature {
+    public function findOne(int $id, int $handlerId, int $userId) : Feature {
         return $this->findOneBy(
             [
                 'id'      => $id,
-                'creator' => $serviceId,
+                'creator' => $handlerId,
                 'user_id' => $userId
             ]
         );
@@ -91,11 +91,11 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByName(string $name, int $serviceId, $sourceName, int $userId) : Feature {
+    public function findOneByName(string $name, int $handlerId, $sourceName, int $userId) : Feature {
         return $this->findOneBy(
             [
                 'name'    => $name,
-                'creator' => $serviceId,
+                'creator' => $handlerId,
                 'source'  => $sourceName,
                 'user_id' => $userId
             ]
@@ -105,10 +105,19 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function getByServiceIdAndUserId(int $serviceId, int $userId, array $queryParams = []) : Collection {
+    public function findOneByIdAndUserId(int $id, int $userId) : Feature {
+        return $this->findOneBy(
+            [
+                'id'      => $id,
+                'user_id' => $userId
+            ]
+        );
+    }
+
+    public function getByHandlerIdAndUserId(int $handlerId, int $userId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
-                'creator' => $serviceId,
+                'creator' => $handlerId,
                 'user_id' => $userId
             ], $queryParams
         );
@@ -139,7 +148,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function upsertBulk(int $serviceId, int $userId, array $features) : bool {
+    public function upsertBulk(int $handlerId, int $userId, array $features) : bool {
         $this->beginTransaction();
         $success = true;
 
@@ -157,7 +166,7 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
                         'user_id' => $userId,
                         'source'  => $feature['source'],
                         'name'    => $feature['name'],
-                        'creator' => $serviceId,
+                        'creator' => $handlerId,
                         'type'    => $feature['type'],
                         'value'   => $feature['value']
                     ]

@@ -21,11 +21,11 @@ class Upsert extends AbstractCommand {
      */
     public $user;
     /**
-     * Raw's Service.
+     * Raw's Handler.
      *
-     * @var \App\Entity\Service
+     * @var \App\Entity\Handler
      */
-    public $service;
+    public $handler;
     /**
      * Raw's Source.
      *

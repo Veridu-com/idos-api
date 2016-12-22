@@ -55,10 +55,12 @@ class Created extends AbstractEvent implements UserIdGetterInterface, ServiceQue
      * {@inheritdoc}
      */
     public function getServiceHandlerPayload(array $merge = []) : array {
-        return array_merge([
+        return array_merge(
+            [
             'username'  => $this->user->username,
             'publicKey' => $this->credential->public,
-        ], $merge);
+            ], $merge
+        );
     }
 
     /**

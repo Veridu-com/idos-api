@@ -11,6 +11,7 @@ namespace App\Repository;
 use App\Exception\AppException;
 use App\Factory\Entity;
 use App\Factory\Repository;
+use App\Helper\Vault;
 use Illuminate\Database\Connection as SQLConnection;
 use Jenssegers\Optimus\Optimus;
 
@@ -36,19 +37,25 @@ class DBStrategy implements RepositoryStrategyInterface {
      * @var callable
      */
     protected $noSqlConnector;
-
     /**
      * Optimus instance.
      *
      * @var \Jenssegers\Optimus\Optimus
      */
     protected $optimus;
+    /**
+     * Vault helper.
+     *
+     * @var \App\Helper\Vault
+     */
+    protected $vault;
 
     /**
      * Class constructor.
      *
      * @param \App\Factory\Entity             $entityFactory
      * @param \Jenssegers\Optimus\Optimus     $optimus
+     * @param \App\Helper\Vault               $vault
      * @param \Illuminate\Database\Connection $sqlConnection
      * @param callable                        $noSqlConnector
      *
@@ -57,11 +64,13 @@ class DBStrategy implements RepositoryStrategyInterface {
     public function __construct(
         Entity $entityFactory,
         Optimus $optimus,
+        Vault $vault,
         SQLConnection $sqlConnection,
         callable $noSqlConnector
     ) {
         $this->entityFactory  = $entityFactory;
         $this->optimus        = $optimus;
+        $this->vault          = $vault;
         $this->sqlConnection  = $sqlConnection;
         $this->noSqlConnector = $noSqlConnector;
     }
@@ -93,10 +102,10 @@ class DBStrategy implements RepositoryStrategyInterface {
 
         switch ($parentClass) {
             case 'App\Repository\AbstractSQLDBRepository':
-                return new $className($this->entityFactory, $repositoryFactory, $this->optimus, $this->sqlConnection);
+                return new $className($this->entityFactory, $repositoryFactory, $this->optimus, $this->vault, $this->sqlConnection);
 
             case 'App\Repository\AbstractNoSQLDBRepository':
-                return new $className($this->entityFactory, $repositoryFactory, $this->optimus, $this->noSqlConnector);
+                return new $className($this->entityFactory, $repositoryFactory, $this->optimus, $this->vault, $this->noSqlConnector);
 
             default:
                 throw new AppException('Invalid repository parent class');

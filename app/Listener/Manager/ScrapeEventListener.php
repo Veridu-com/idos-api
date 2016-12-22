@@ -15,7 +15,7 @@ use App\Listener\AbstractListener;
 use App\Listener\QueueCompanyServiceHandlers;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\SettingInterface;
-use App\Repository\ServiceHandlerInterface;
+use App\Repository\ServiceInterface;
 use League\Event\Emitter;
 use League\Event\EventInterface;
 
@@ -34,9 +34,9 @@ class ScrapeEventListener extends AbstractListener {
     /**
      * Service Handler Repository instance.
      *
-     * @var \App\Repository\ServiceHandlerInterface
+     * @var \App\Repository\ServiceInterface
      */
-    private $serviceHandlerRepository;
+    private $serviceRepository;
     /**
      * Setting Repository instance.
      *
@@ -128,25 +128,25 @@ class ScrapeEventListener extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\CredentialInterface     $credentialRepository
-     * @param \App\Repository\ServiceHandlerInterface $serviceHandlerRepository
-     * @param \App\Repository\SettingInterface        $settingRepository
-     * @param \App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                   $emitter
-     * @param \GearmanClient                          $gearmanClient
+     * @param \App\Repository\CredentialInterface $credentialRepository
+     * @param \App\Repository\ServiceInterface    $serviceRepository
+     * @param \App\Repository\SettingInterface    $settingRepository
+     * @param \App\Factory\Event                  $eventFactory
+     * @param \League\Event\Emitter               $emitter
+     * @param \GearmanClient                      $gearmanClient
      *
      * @return void
      */
     public function __construct(
         CredentialInterface $credentialRepository,
-        ServiceHandlerInterface $serviceHandlerRepository,
+        ServiceInterface $serviceRepository,
         SettingInterface $settingRepository,
         EventFactory $eventFactory,
         Emitter $emitter,
         \GearmanClient $gearmanClient
     ) {
         $this->credentialRepository     = $credentialRepository;
-        $this->serviceHandlerRepository = $serviceHandlerRepository;
+        $this->serviceRepository        = $serviceRepository;
         $this->settingRepository        = $settingRepository;
         $this->eventFactory             = $eventFactory;
         $this->emitter                  = $emitter;

@@ -142,7 +142,7 @@ class Feature implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertCredential($command->credential);
 
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertLongName($command->name);
 
             $this->validator->assertName($command->type);
@@ -172,7 +172,7 @@ class Feature implements HandlerInterface {
                 'user_id'    => $command->user->id,
                 'source'     => $sourceName,
                 'name'       => $command->name,
-                'creator'    => $command->service->id,
+                'creator'    => $command->handler->id,
                 'type'       => $command->type,
                 'value'      => $command->value,
                 'created_at' => time()
@@ -209,7 +209,7 @@ class Feature implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : FeatureEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertId($command->featureId);
             $this->validator->assertName($command->type);
             $this->validator->assertNullableValue($command->value);
@@ -222,7 +222,7 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOne($command->featureId, $command->service->id, $command->user->id);
+        $feature = $this->repository->findOne($command->featureId, $command->handler->id, $command->user->id);
 
         if (is_array($command->value)) {
             $command->value = json_encode($command->value);
@@ -256,7 +256,7 @@ class Feature implements HandlerInterface {
     public function handleUpsert(Upsert $command) : FeatureEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertLongName($command->name);
             $this->validator->assertName($command->type);
             $this->validator->assertNullableValue($command->value);
@@ -280,24 +280,28 @@ class Feature implements HandlerInterface {
         }
 
         try {
-            $feature = $this->repository->create([
+            $feature = $this->repository->create(
+                [
                 'user_id'    => $command->user->id,
                 'source'     => $command->source ? $command->source->name : null,
                 'name'       => $command->name,
-                'creator'    => $command->service->id,
+                'creator'    => $command->handler->id,
                 'type'       => $command->type,
                 'value'      => $command->value,
                 'created_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $this->repository->beginTransaction();
-            $this->repository->upsert($feature, ['user_id', 'source', 'creator', 'name'], [
+            $this->repository->upsert(
+                $feature, ['user_id', 'source', 'creator', 'name'], [
                 'type'       => $command->type,
                 'value'      => $command->value,
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
-            $feature = $this->repository->findOneByName($command->name, $command->service->id, $command->source ? $command->source->name : null, $command->user->id);
+            $feature = $this->repository->findOneByName($command->name, $command->handler->id, $command->source ? $command->source->name : null, $command->user->id);
             $this->repository->commit();
 
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
@@ -341,9 +345,13 @@ class Feature implements HandlerInterface {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertCredential($command->credential);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertFeatures($command->features);
             $this->validator->assertCredential($command->credential);
+
+            if (count($this->command->features) > 100) {
+                throw new ValidationException('Your bulk upsert cannot exceed 100 items.');
+            }
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -377,7 +385,7 @@ class Feature implements HandlerInterface {
             }
         }
 
-        $success = $this->repository->upsertBulk($command->service->id, $command->user->id, $features);
+        $success = $this->repository->upsertBulk($command->handler->id, $command->user->id, $features);
         if ($success) {
             // creates 1 event per source
             // sourceId will be 0 to null sources
@@ -408,7 +416,7 @@ class Feature implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertId($command->featureId);
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
@@ -419,7 +427,7 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOne($command->featureId, $command->service->id, $command->user->id);
+        $feature = $this->repository->findOne($command->featureId, $command->handler->id, $command->user->id);
 
         $affectedRows = $this->repository->delete($feature->id);
         if (! $affectedRows) {
@@ -447,7 +455,7 @@ class Feature implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertArray($command->queryParams);
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
@@ -458,8 +466,8 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $deletedFeatures = $this->repository->getByServiceIdAndUserId(
-            $command->service->id,
+        $deletedFeatures = $this->repository->getByHandlerIdAndUserId(
+            $command->handler->id,
             $command->user->id,
             $command->queryParams
         );

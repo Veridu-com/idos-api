@@ -23,9 +23,9 @@ class UpdateOne extends AbstractCommand {
     /**
      * Gate's creator.
      *
-     * @var \App\Entity\Service
+     * @var \App\Entity\Handler
      */
-    public $service;
+    public $handler;
     /**
      * Gate's slug.
      *
@@ -33,11 +33,11 @@ class UpdateOne extends AbstractCommand {
      */
     public $slug;
     /**
-     * Gate's property pass (user input).
+     * Gate's confidence level (user input).
      *
-     * @var object
+     * @var string
      */
-    public $pass;
+    public $confidenceLevel;
     /**
      * Credential.
      *
@@ -55,16 +55,16 @@ class UpdateOne extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['service'])) {
-            $this->service = $parameters['service'];
+        if (isset($parameters['handler'])) {
+            $this->handler = $parameters['handler'];
         }
 
         if (isset($parameters['slug'])) {
             $this->slug = $parameters['slug'];
         }
 
-        if (isset($parameters['pass'])) {
-            $this->pass = $parameters['pass'];
+        if (isset($parameters['confidence_level'])) {
+            $this->confidenceLevel = $parameters['confidence_level'];
         }
 
         return $this;

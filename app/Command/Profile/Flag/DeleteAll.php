@@ -23,9 +23,9 @@ class DeleteAll extends AbstractCommand {
     /**
      * Score's Creator.
      *
-     * @var \App\Entity\Service
+     * @var \App\Entity\Handler
      */
-    public $service;
+    public $handler;
     /**
      * Query Params.
      *
@@ -45,10 +45,6 @@ class DeleteAll extends AbstractCommand {
     public function setParameters(array $parameters) : self {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
-        }
-
-        if (isset($parameters['service'])) {
-            $this->service = $parameters['service'];
         }
 
         if (isset($parameters['queryParams'])) {

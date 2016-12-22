@@ -115,7 +115,7 @@ class Score implements HandlerInterface {
     public function handleCreateNew(CreateNew $command) : ScoreEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertName($command->attribute);
             $this->validator->assertName($command->name);
             $this->validator->assertScore($command->value);
@@ -131,7 +131,7 @@ class Score implements HandlerInterface {
         $entity = $this->repository->create(
             [
             'user_id'    => $command->user->id,
-            'creator'    => $command->service->id,
+            'creator'    => $command->handler->id,
             'attribute'  => $command->attribute,
             'name'       => $command->name,
             'value'      => $command->value,
@@ -169,7 +169,7 @@ class Score implements HandlerInterface {
     public function handleUpdateOne(UpdateOne $command) : ScoreEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertName($command->name);
             $this->validator->assertScore($command->value);
             $this->validator->assertCredential($command->credential);
@@ -178,7 +178,6 @@ class Score implements HandlerInterface {
             if ($command->attribute) {
                 $this->validator->assertName($command->attribute);
             }
-
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -187,11 +186,12 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
+        $entity = $this->repository->findOne($command->name, $command->handler->id, $command->user->id);
 
         if ($command->attribute) {
             $entity->attribute = $command->attribute;
         }
+
         $entity->value     = $command->value;
         $entity->updatedAt = time();
 
@@ -226,7 +226,7 @@ class Score implements HandlerInterface {
     public function handleUpsert(Upsert $command) : ScoreEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertName($command->attribute);
             $this->validator->assertName($command->name);
             $this->validator->assertScore($command->value);
@@ -240,23 +240,27 @@ class Score implements HandlerInterface {
         }
 
         try {
-            $score = $this->repository->create([
-                'creator'    => $command->service->id,
+            $score = $this->repository->create(
+                [
+                'creator'    => $command->handler->id,
                 'user_id'    => $command->user->id,
                 'attribute'  => $command->attribute,
                 'name'       => $command->name,
                 'value'      => $command->value,
                 'created_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $this->repository->beginTransaction();
-            $this->repository->upsert($score, ['user_id', 'creator', 'name'], [
+            $this->repository->upsert(
+                $score, ['user_id', 'creator', 'name'], [
                 'attribute'  => $command->attribute,
                 'value'      => $command->value,
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
-            $score = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
+            $score = $this->repository->findOne($command->name, $command->handler->id, $command->user->id);
             $this->repository->commit();
 
             if ($score->updatedAt) {
@@ -290,7 +294,7 @@ class Score implements HandlerInterface {
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertName($command->name);
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
@@ -301,13 +305,15 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->findOne($command->name, $command->service->id, $command->user->id);
+        $entity = $this->repository->findOne($command->name, $command->handler->id, $command->user->id);
 
         try {
             $affectedRows = $this->repository->delete($entity->id);
 
-            $event = $this->eventFactory->create('Profile\\Score\\Deleted', $entity, $command->credential);
-            $this->emitter->emit($event);
+            if ($affectedRows) {
+                $event = $this->eventFactory->create('Profile\\Score\\Deleted', $entity, $command->credential);
+                $this->emitter->emit($event);
+            }
         } catch (\Exception $e) {
             throw new NotFound\Profile\ScoreException('No features found for deletion', 404);
         }
@@ -320,7 +326,7 @@ class Score implements HandlerInterface {
      *
      * @param \App\Command\Profile\Score\DeleteAll $command
      *
-     * @see \App\Repository\DBScore::getByUserIdAndServiceId
+     * @see \App\Repository\DBScore::getByUserIdAndHandlerId
      * @see \App\Repository\DBScore::delete
      *
      * @throws \App\Exception\Validate\Profile\ScoreException
@@ -331,7 +337,7 @@ class Score implements HandlerInterface {
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
@@ -341,8 +347,8 @@ class Score implements HandlerInterface {
             );
         }
 
-        $entities = $this->repository->getByUserIdAndServiceId(
-            $command->service->id,
+        $entities = $this->repository->getByUserIdAndHandlerId(
+            $command->handler->id,
             $command->user->id,
             $command->queryParams
         );

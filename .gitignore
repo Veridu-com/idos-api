@@ -9,6 +9,8 @@
 .env.testing
 .idea
 .idea/
+.vscode
+.vscode/
 .php_cs
 composer.lock
 humbug.json

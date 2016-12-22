@@ -37,7 +37,8 @@ class CreateNewTest extends AbstractFunctional {
         $data = [
             'name' => 'email',
             'tags' => [
-                'otp_check' => 'email'
+                'otp_check' => 'email',
+                'email'     => 'hi@veridu.com'
             ]
         ];
 
@@ -54,7 +55,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame($data['name'], $body['data']['name']);
-        $this->assertEmpty($body['data']['tags']);
+        $this->assertNotEmpty($body['data']['tags']);
 
         /*
          * Validates Response using the Json Schema.

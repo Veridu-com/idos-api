@@ -21,11 +21,11 @@ class Upsert extends AbstractCommand {
      */
     public $user;
     /**
-     * Recommendation Service (creator).
+     * Recommendation Handler (creator).
      *
-     * @var \App\Entity\Service
+     * @var \App\Entity\Handler
      */
-    public $service;
+    public $handler;
     /**
      * Recommendation's Company.
      *

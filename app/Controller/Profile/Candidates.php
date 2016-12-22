@@ -73,7 +73,7 @@ class Candidates implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user    = $request->getAttribute('targetUser');
-        $service = $request->getAttribute('service');
+        $handler = $request->getAttribute('handler');
 
         $entities = $this->repository->findByUserId($user->id, $request->getQueryParams());
 
@@ -96,7 +96,7 @@ class Candidates implements ControllerInterface {
     /**
      * Created a new candidate data for a given user.
      *
-     * @apiEndpointRequiredParam body string name firstName Attribute Name
+     * @apiEndpointRequiredParam body string attribute firstName Attribute Name
      * @apiEndpointRequiredParam body string value Jhon Candidate Value
      * @apiEndpointRequiredParam body float support 0.7 Candidate Support
      * @apiEndpointResponse 201 schema/candidate/candidateEntity.json
@@ -110,7 +110,7 @@ class Candidates implements ControllerInterface {
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $request->getAttribute('targetUser');
-        $service    = $request->getAttribute('service');
+        $handler    = $request->getAttribute('handler');
         $credential = $request->getAttribute('credential');
 
         $command = $this->commandFactory->create('Profile\\Candidate\\CreateNew');
@@ -118,7 +118,7 @@ class Candidates implements ControllerInterface {
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
-            ->setParameter('service', $service);
+            ->setParameter('handler', $handler);
 
         $entity = $this->commandBus->handle($command);
 
@@ -152,13 +152,13 @@ class Candidates implements ControllerInterface {
     public function deleteAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
-        $service    = $request->getAttribute('service');
+        $handler    = $request->getAttribute('handler');
 
         $command = $this->commandFactory->create('Profile\\Candidate\\DeleteAll');
         $command
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
-            ->setParameter('service', $service)
+            ->setParameter('handler', $handler)
             ->setParameter('queryParams', $request->getQueryParams());
 
         $body = [

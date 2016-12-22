@@ -11,6 +11,7 @@ use App\Command;
 use App\Exception\AppException;
 use App\Factory;
 use App\Handler;
+use App\Helper;
 use App\Middleware;
 use App\Middleware\Auth;
 use App\Repository;
@@ -308,7 +309,7 @@ $container['validatorFactory'] = function (ContainerInterface $container) : Fact
 
 // App Entity Factory
 $container['entityFactory'] = function (ContainerInterface $container) : Factory\Entity {
-    return new Factory\Entity($container->get('optimus'));
+    return new Factory\Entity($container->get('optimus'), $container->get('vault'));
 };
 
 // App Event Factory
@@ -327,7 +328,7 @@ $container['authMiddleware'] = function (ContainerInterface $container) : callab
             $repositoryFactory->create('Identity'),
             $repositoryFactory->create('User'),
             $repositoryFactory->create('Company'),
-            $repositoryFactory->create('Service'),
+            $repositoryFactory->create('Handler'),
             $jwt('parser'),
             $jwt('validation'),
             $jwt('signer'),
@@ -373,6 +374,7 @@ $container['repositoryFactory'] = function (ContainerInterface $container) : Fac
             $strategy = new Repository\DBStrategy(
                 $container->get('entityFactory'),
                 $container->get('optimus'),
+                $container->get('vault'),
                 $container->get('sql'),
                 $container->get('nosql')
             );
@@ -414,8 +416,8 @@ $container['sql'] = function (ContainerInterface $container) : Connection {
 
 // MongoDB Access
 $container['nosql'] = function (ContainerInterface $container) : callable {
-    return function (string $database) use ($container) : Mongodb\Connection {
-        $config             = $container['settings']['db']['nosql'];
+    return function (string $database, array $config = []) use ($container) : Mongodb\Connection {
+        $config             = array_merge($container['settings']['db']['nosql'], $config);
         $config['database'] = $database;
 
         return new Mongodb\Connection($config);
@@ -453,8 +455,10 @@ $container['globFiles'] = function () : array {
     ];
 };
 
-// Secure
-$container['secure'] = function (ContainerInterface $container) : Secure {
+// Vault
+$container['vault'] = function (ContainerInterface $container) : Helper\Vault {
+    $settings = $container->get('settings');
+
     $fileName = __DIR__ . '/../resources/secure.key';
     if (! is_file($fileName)) {
         throw new RuntimeException('Secure key not found!');
@@ -465,7 +469,7 @@ $container['secure'] = function (ContainerInterface $container) : Secure {
         throw new RuntimeException('Secure key could not be loaded!');
     }
 
-    return new Secure($encoded, $settings['secure']);
+    return new Helper\Vault($encoded, $settings['secure']);
 };
 
 // SSO Auth

@@ -100,7 +100,7 @@ class Recommendation implements HandlerInterface {
     public function handleUpsert(Upsert $command) : RecommendationEntity {
         try {
             $this->validator->assertUser($command->user);
-            $this->validator->assertService($command->service);
+            $this->validator->assertHandler($command->handler);
             $this->validator->assertCompany($command->company);
             $this->validator->assertCredential($command->credential);
             $this->validator->assertString($command->result);
@@ -115,22 +115,26 @@ class Recommendation implements HandlerInterface {
         }
 
         try {
-            $recommendation = $this->repository->create([
-                'creator'    => $command->service->id,
+            $recommendation = $this->repository->create(
+                [
+                'creator'    => $command->handler->id,
                 'user_id'    => $command->user->id,
                 'result'     => $command->result,
                 'passed'     => $command->passed,
                 'failed'     => $command->failed,
                 'created_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $this->repository->beginTransaction();
-            $this->repository->upsert($recommendation, ['user_id'], [
+            $this->repository->upsert(
+                $recommendation, ['user_id'], [
                 'result'     => $command->result,
                 'passed'     => json_encode($command->passed),
                 'failed'     => json_encode($command->failed),
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+                ]
+            );
 
             $recommendation = $this->repository->findOne($command->user->id);
             $this->repository->commit();
@@ -140,7 +144,7 @@ class Recommendation implements HandlerInterface {
                     'Profile\\Recommendation\\Updated',
                     $recommendation,
                     $command->user,
-                    $command->service,
+                    $command->handler,
                     $command->company,
                     $command->credential
                 );
@@ -149,7 +153,7 @@ class Recommendation implements HandlerInterface {
                     'Profile\\Recommendation\\Created',
                     $recommendation,
                     $command->user,
-                    $command->service,
+                    $command->handler,
                     $command->company,
                     $command->credential
                 );

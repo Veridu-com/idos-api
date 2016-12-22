@@ -6,6 +6,7 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
     ->in('db')
     ->in('public')
     ->in('test')
+    ->in('tools')
     ->name('*.php');
 
 return Symfony\CS\Config\Config::create()

@@ -13,6 +13,7 @@ use App\Exception\AppException;
 use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Factory\Repository;
+use App\Helper\Vault;
 use Illuminate\Support\Collection;
 use Jenssegers\Mongodb\Query\Builder as QueryBuilder;
 use Jenssegers\Optimus\Optimus;
@@ -179,9 +180,10 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         Entity $entityFactory,
         Repository $repositoryFactory,
         Optimus $optimus,
+        Vault $vault,
         callable $noSqlConnector
     ) {
-        parent::__construct($entityFactory, $repositoryFactory, $optimus);
+        parent::__construct($entityFactory, $repositoryFactory, $optimus, $vault);
 
         $this->dbSelector   = $noSqlConnector;
         $this->dbConnection = null;
@@ -217,7 +219,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         }
 
         if ($isUpdate) {
-            $query   = $this->query();
+            $query = $this->query();
 
             unset($serialized['id']);
             unset($serialized['_id']);

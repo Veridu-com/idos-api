@@ -79,7 +79,7 @@ class Raw implements ControllerInterface {
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBSource::findOne
-     * @see \App\Repository\DBService::getAllBySourceAndCollections
+     * @see \App\Repository\DBHandler::getAllBySourceAndCollections
      *
      * @throws \App\Exception\AppException
      *
@@ -87,7 +87,7 @@ class Raw implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $service     = $request->getAttribute('service');
+        $handler     = $request->getAttribute('handler');
         $queryParams = $request->getQueryParams();
 
         $entities = $this->repository->getByUserId($user->id, $queryParams);
@@ -165,7 +165,7 @@ class Raw implements ControllerInterface {
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user       = $request->getAttribute('targetUser');
         $credential = $request->getAttribute('credential');
-        $service    = $request->getAttribute('service');
+        $handler    = $request->getAttribute('handler');
         $sourceId   = (int) $request->getParsedBodyParam('decoded_source_id');
 
         $source = $this->sourceRepository->findOne($sourceId, $user->id);
@@ -175,7 +175,7 @@ class Raw implements ControllerInterface {
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('credential', $credential)
-            ->setParameter('service', $service)
+            ->setParameter('handler', $handler)
             ->setParameter('source', $source);
 
         $raw = $this->commandBus->handle($command);
@@ -214,7 +214,7 @@ class Raw implements ControllerInterface {
      */
     public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $service     = $request->getAttribute('service');
+        $handler     = $request->getAttribute('handler');
         $credential  = $request->getAttribute('credential');
         $sourceId    = (int) $request->getParsedBodyParam('decoded_source_id');
 
@@ -225,7 +225,7 @@ class Raw implements ControllerInterface {
             ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('credential', $credential)
             ->setParameter('user', $user)
-            ->setParameter('service', $service)
+            ->setParameter('handler', $handler)
             ->setParameter('source', $source);
 
         $entity = $this->commandBus->handle($command);
@@ -248,7 +248,7 @@ class Raw implements ControllerInterface {
     /**
      * Deletes a raw data from a given source.
      *
-     * @apiEndpointResponse    200    schema/raw/deleteOne.json
+     * @apiEndpointResponse 200 schema/raw/deleteOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -294,8 +294,7 @@ class Raw implements ControllerInterface {
     /**
      * Deletes the raw data of a user.
      *
-     * @apiEndpointResponse 200 int
-     * @apiEndpointParam url string source source Source name
+     * @apiEndpointResponse 200 schema/raw/deleteAll.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -310,11 +309,8 @@ class Raw implements ControllerInterface {
         $user        = $request->getAttribute('targetUser');
         $queryParams = $request->getQueryParams();
 
-        $source = $this->sourceRepository->findOne($sourceId, $user->id);
-
         $command = $this->commandFactory->create('Profile\\Raw\\DeleteAll');
         $command
-            ->setParameters($request->getParsedBody() ?: [])
             ->setParameter('user', $user)
             ->setParameter('queryParams', $queryParams);
 

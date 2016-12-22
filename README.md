@@ -15,3 +15,11 @@
 
 This is the code repository for idOS API.
 
+## Documentation
+
+To generate the documentation, use [apiDoc](https://bitbucket.org/flavioheleno/apidoc).
+
+```
+#!bash
+./app/apiDoc.php doc:gen --blueprint -- /path/to/idos-api/app/ /path/to/idos-api/ "idOS - A flexible framework for identity solutions." /path/to/idos-api/docs/description.md "https://api.idos.io" "/1.0/" /path/to/idos-api/docs/overview.md
+```

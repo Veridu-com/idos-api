@@ -55,7 +55,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'creator:name=idOS Scraper'
+                    'QUERY_STRING'       => 'creator:name=idOS Machine Learning'
                 ]
             )
         );

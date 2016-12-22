@@ -21,11 +21,11 @@ class DeleteOne extends AbstractCommand {
      */
     public $user;
     /**
-     * Feature's Service (creator).
+     * Feature's Handler (creator).
      *
-     * @var \App\Entity\Service
+     * @var \App\Entity\Handler
      */
-    public $service;
+    public $handler;
     /**
      * Feature's id (user input).
      *
@@ -49,8 +49,8 @@ class DeleteOne extends AbstractCommand {
             $this->user = $parameters['user'];
         }
 
-        if (isset($parameters['service'])) {
-            $this->service = $parameters['service'];
+        if (isset($parameters['handler'])) {
+            $this->handler = $parameters['handler'];
         }
 
         if (isset($parameters['featureId'])) {

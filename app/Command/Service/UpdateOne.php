@@ -21,53 +21,17 @@ class UpdateOne extends AbstractCommand {
      */
     public $serviceId;
     /**
-     * Service's company's instance.
+     * Service's company.
      *
      * @var \App\Entity\Company
      */
     public $company;
     /**
-     * Service's url.
+     * Service's listens attribute.
      *
      * @var string
-     */
-    public $url;
-    /**
-     * Service's listens.
-     *
-     * @var array
      */
     public $listens;
-    /**
-     * Service's triggers.
-     *
-     * @var array
-     */
-    public $triggers;
-    /**
-     * Service's enabled.
-     *
-     * @var bool
-     */
-    public $enabled;
-    /**
-     * Service's access.
-     *
-     * @var int
-     */
-    public $access;
-    /**
-     * Service's authentication username.
-     *
-     * @var string
-     */
-    public $authUsername;
-    /**
-     * Service's authentication password.
-     *
-     * @var string
-     */
-    public $authPassword;
     /**
      * Identity.
      *
@@ -81,32 +45,8 @@ class UpdateOne extends AbstractCommand {
      * @return \App\Command\Service\UpdateOne
      */
     public function setParameters(array $parameters) : self {
-        if (isset($parameters['url'])) {
-            $this->url = $parameters['url'];
-        }
-
         if (isset($parameters['listens'])) {
             $this->listens = $parameters['listens'];
-        }
-
-        if (isset($parameters['triggers'])) {
-            $this->triggers = $parameters['triggers'];
-        }
-
-        if (isset($parameters['enabled'])) {
-            $this->enabled = $parameters['enabled'];
-        }
-
-        if (isset($parameters['access'])) {
-            $this->access = $parameters['access'];
-        }
-
-        if (isset($parameters['auth_username'])) {
-            $this->authUsername = $parameters['auth_username'];
-        }
-
-        if (isset($parameters['auth_password'])) {
-            $this->authPassword = $parameters['auth_password'];
         }
 
         return $this;

@@ -23,9 +23,9 @@ class CreateNew extends AbstractCommand {
     /**
      * Task's creator.
      *
-     * @var \App\Entity\Service
+     * @var \App\Entity\Handler
      */
-    public $service;
+    public $handler;
     /**
      * Task's trigger event.
      *
