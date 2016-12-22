@@ -102,7 +102,7 @@ class Metric implements HandlerInterface {
      */
     public function handleListAllSystem(ListAllSystem $command) : Collection {
         $this->validator->assertArray($command->queryParams);
-        $this->validator->assertIdentity($command->identity);
+        $this->validator->assertCompany($command->targetCompany);
 
         $endpoints = [
             'profile:source'
@@ -129,7 +129,7 @@ class Metric implements HandlerInterface {
         $to   = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
 
         $this->systemMetricsRepository->prepare($metricType);
-        $entities = $this->systemMetricsRepository->getByIdentityAndDateInterval($command->identity, $from, $to, $command->queryParams);
+        $entities = $this->systemMetricsRepository->getByCompanyAndDateInterval($command->targetCompany, $from, $to, $command->queryParams);
 
         return $entities;
     }
@@ -145,12 +145,12 @@ class Metric implements HandlerInterface {
      */
     public function handleListAllUser(ListAllUser $command) : Collection {
         $this->validator->assertArray($command->queryParams);
-        $this->validator->assertIdentity($command->identity);
+        $this->validator->assertCompany($command->targetCompany);
 
         $from = isset($command->queryParams['from']) ? (int) $command->queryParams['from'] : null;
         $to   = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
 
-        $entities = $this->userMetricsRepository->getByIdentityAndDateInterval($command->identity, $from, $to, $command->queryParams);
+        $entities = $this->userMetricsRepository->getByCompanyAndDateInterval($command->targetCompany, $from, $to, $command->queryParams);
 
         return $entities;
     }
