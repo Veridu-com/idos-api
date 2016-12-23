@@ -62,7 +62,6 @@ class UpdateOneTest extends AbstractFunctional {
         );
     }
 
-
     public function testUpdateAuthCredentialsSuccess() {
         $environment = $this->createEnvironment(
             [
@@ -74,8 +73,8 @@ class UpdateOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $environment,
             json_encode([
-                'auth_username' => 'testingUpdate', 
-                'auth_password' => 'testingPasswordUpdate'   
+                'auth_username' => 'testingUpdate',
+                'auth_password' => 'testingPasswordUpdate'
             ])
         );
 
@@ -137,7 +136,7 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-    
+
     public function testInvalidPassword() {
         $environment = $this->createEnvironment(
             [

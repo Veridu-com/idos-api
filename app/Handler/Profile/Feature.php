@@ -356,8 +356,8 @@ class Feature implements HandlerInterface {
             );
         }
 
-        if (count($command->features) > 100) {
-            throw new ValidationException('Your bulk upsert cannot exceed 100 items.');
+        if (count($command->features) > 500) {
+            throw new ValidationException('Your bulk upsert cannot exceed 500 items.');
         }
 
         $features          = $command->features;

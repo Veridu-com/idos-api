@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\HandlerService\CreateNew;
-use App\Command\HandlerService\DeleteAll;
 use App\Command\HandlerService\DeleteOne;
 use App\Command\HandlerService\UpdateOne;
 use App\Entity\HandlerService as HandlerServiceEntity;
@@ -170,7 +169,7 @@ class HandlerService implements HandlerInterface {
                 $this->validator->assertName($command->name);
                 $input['name'] = $command->name;
             }
-        
+
             if (! is_null($command->url)) {
                 $this->validator->assertUrl($command->url);
                 $input['url'] = $command->url;

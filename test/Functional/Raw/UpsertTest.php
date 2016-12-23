@@ -26,7 +26,7 @@ class UpsertTest extends AbstractRawFunctional {
         $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
     }
 
-    public function testCreated() {     
+    public function testCreated() {
         $this->httpMethod = 'DELETE';
         $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
 
@@ -36,14 +36,14 @@ class UpsertTest extends AbstractRawFunctional {
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
               ]
         );
-        
+
         $request  = $this->createRequest($environment);
         $response = $this->process($request);
 
         $this->assertSame(200, $response->getStatusCode());
 
         $this->httpMethod = 'PUT';
-        $environment = $this->createEnvironment(
+        $environment      = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()

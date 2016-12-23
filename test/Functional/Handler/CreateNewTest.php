@@ -18,12 +18,12 @@ class CreateNewTest extends AbstractFunctional {
         Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
-    
+
     protected function setUp() {
         parent::setUp();
 
         $this->httpMethod = 'POST';
-        $this->uri = '/1.0/companies/veridu-ltd/handlers';
+        $this->uri        = '/1.0/companies/veridu-ltd/handlers';
     }
 
     public function testSuccess() {
@@ -42,11 +42,11 @@ class CreateNewTest extends AbstractFunctional {
                 'auth_username' => '12change',
                 'auth_password' => '12change',
                 'enabled'       => true
-            ]) 
+            ])
         );
 
         $response = $this->process($request);
-        
+
         $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
@@ -56,7 +56,6 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertEquals(1584927448, $body['data']['id']);
         $this->assertSame('idOS Test handler 12x3change', $body['data']['name']);
         $this->assertTrue($body['data']['enabled']);
-
 
         /*
          * Validates Response using the Json Schema.

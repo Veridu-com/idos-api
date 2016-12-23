@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Middleware\Auth\Credential;
 
-use App\Helper\Token;
 use App\Middleware\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,8 +16,8 @@ use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 class SuccessTest extends AbstractAuthFunctional {
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
-        $this->uri        = '/testSuccess';
-        $this->httpMethod = 'GET';
+        $this->uri           = '/testSuccess';
+        $this->httpMethod    = 'GET';
     }
 
     public function testSuccess() {
@@ -26,7 +25,7 @@ class SuccessTest extends AbstractAuthFunctional {
 
         $authMiddleware = $this->middlewareApp
             ->getContainer()
-            ->get('authMiddleware');            
+            ->get('authMiddleware');
         $this->middlewareApp
             ->get(
                 '/testSuccess', function (ServerRequestInterface $request, ResponseInterface $response) {

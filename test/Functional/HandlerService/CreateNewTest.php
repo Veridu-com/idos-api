@@ -38,8 +38,8 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'idOS Test handler 12x3change',
-                    'url' => 'http://google.com',
+                    'name'    => 'idOS Test handler 12x3change',
+                    'url'     => 'http://google.com',
                     'listens' => [
                         'test',
                         'tes2'
@@ -84,7 +84,7 @@ class CreateNewTest extends AbstractFunctional {
             json_encode(
                 [
                     'name' => 'idOS Test handler 12x3change',
-                    'url' => 'http://google.com'
+                    'url'  => 'http://google.com'
                 ]
             )
         );
@@ -109,7 +109,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame('idOS Test handler 12x3change', $body['data']['name']);
         $this->assertSame('http://google.com', $body['data']['url']);
         $this->assertEmpty($body['data']['listens']);
-        $this->assertTrue($body['data']['enabled']);   
+        $this->assertTrue($body['data']['enabled']);
     }
 
     public function testNoNameThrowsException() {
@@ -124,7 +124,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'url' => 'http://google.com',
+                    'url'     => 'http://google.com',
                     'listens' => [
                         'test',
                         'tes2'
@@ -134,7 +134,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(400, $response->getStatusCode());   
+        $this->assertSame(400, $response->getStatusCode());
     }
 
     public function testNoUrlThrowsException() {
@@ -149,7 +149,7 @@ class CreateNewTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'idOS Test handler 12x3change',
+                    'name'    => 'idOS Test handler 12x3change',
                     'listens' => [
                         'test',
                         'tes2'
@@ -159,6 +159,6 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(400, $response->getStatusCode());   
+        $this->assertSame(400, $response->getStatusCode());
     }
 }

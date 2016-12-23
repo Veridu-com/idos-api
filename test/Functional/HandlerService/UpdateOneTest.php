@@ -103,7 +103,6 @@ class UpdateOneTest extends AbstractFunctional {
         );
     }
 
-
     public function testUpdateUrlSuccess() {
         $environment = $this->createEnvironment(
             [
@@ -153,7 +152,7 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'privacy' => 5 
+                    'privacy' => 5
                 ]
             )
         );
@@ -176,7 +175,6 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 
     public function testNotFound() {
         $this->uri = '/1.0/companies/veridu-ltd/handlers/1321189817/handler-services/123';
@@ -289,7 +287,7 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-    
+
     public function testInvalidFlag() {
         $environment = $this->createEnvironment(
             [

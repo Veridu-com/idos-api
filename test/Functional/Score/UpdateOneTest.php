@@ -66,7 +66,7 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-    
+
     public function testEmptyAttribute() {
         $environment = $this->createEnvironment(
             [
@@ -142,7 +142,6 @@ class UpdateOneTest extends AbstractFunctional {
             $this->schemaErrors
         );
     }
-
 
     public function testEmptyName() {
         $environment = $this->createEnvironment(

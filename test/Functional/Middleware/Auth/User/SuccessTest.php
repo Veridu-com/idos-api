@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Middleware\Auth\User;
 
-use App\Helper\Token;
 use App\Middleware\Auth;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

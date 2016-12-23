@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Sso;
 
-use Interop\Container\ContainerInterface;
-use OAuth\Common\Storage\Memory;
 use OAuth\OAuth2\Service\Facebook;
 use Slim\Http\Response;
 use Slim\Http\Uri;
@@ -28,7 +26,7 @@ class GetOneTest extends AbstractFunctional {
             ]
         );
 
-        $request = $this->createRequest($environment);
+        $request  = $this->createRequest($environment);
         $response = $this->process($request);
 
         $this->assertSame(200, $response->getStatusCode());

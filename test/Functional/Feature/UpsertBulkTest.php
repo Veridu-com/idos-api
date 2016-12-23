@@ -20,7 +20,7 @@ class UpsertBulkTest extends AbstractFunctional {
         Traits\RejectsIdentityToken;
 
     protected function setUp() {
-        parent::setUp();    
+        parent::setUp();
 
         $this->httpMethod = 'PUT';
         $this->uri        = sprintf('/1.0/profiles/%s/features/bulk', $this->userName);
@@ -50,7 +50,7 @@ class UpsertBulkTest extends AbstractFunctional {
         ];
 
         $request = $this->createRequest(
-            $environment, 
+            $environment,
             json_encode($array)
         );
 
@@ -60,7 +60,7 @@ class UpsertBulkTest extends AbstractFunctional {
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        
+
         $this->assertTrue($body['status']);
     }
 
@@ -88,7 +88,7 @@ class UpsertBulkTest extends AbstractFunctional {
         ];
 
         $request = $this->createRequest(
-            $environment, 
+            $environment,
             json_encode($array)
         );
         $response = $this->process($request);
@@ -130,7 +130,7 @@ class UpsertBulkTest extends AbstractFunctional {
         ];
 
         $request = $this->createRequest(
-            $environment, 
+            $environment,
             json_encode($array)
         );
 
@@ -166,7 +166,7 @@ class UpsertBulkTest extends AbstractFunctional {
         ];
 
         $request = $this->createRequest(
-            $environment, 
+            $environment,
             json_encode($array)
         );
 
@@ -202,7 +202,7 @@ class UpsertBulkTest extends AbstractFunctional {
         ];
 
         $request = $this->createRequest(
-            $environment, 
+            $environment,
             json_encode($array)
         );
 
@@ -238,10 +238,9 @@ class UpsertBulkTest extends AbstractFunctional {
         ];
 
         $request = $this->createRequest(
-            $environment, 
+            $environment,
             json_encode($array)
         );
-
 
         $response = $this->process($request);
         $this->assertSame(201, $response->getStatusCode());
@@ -269,7 +268,7 @@ class UpsertBulkTest extends AbstractFunctional {
         ];
 
         $request = $this->createRequest(
-            $environment, 
+            $environment,
             json_encode($array)
         );
 

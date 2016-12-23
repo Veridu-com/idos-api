@@ -237,7 +237,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
             if (substr($collection->getName(), 0, 6) !== 'system')
                $affectedRows += $this->deleteOneBySourceAndCollection($collection->getName(), $source);
         }
-        
+
         return $affectedRows;
     }
 }

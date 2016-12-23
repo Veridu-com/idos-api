@@ -226,7 +226,7 @@ class Members implements ControllerInterface {
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
-            
+
         return $this->commandBus->handle($command);
     }
 }

@@ -25,7 +25,7 @@ class ListAllTest extends AbstractFunctional {
     }
 
     public function testSuccess() {
-        
+
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',

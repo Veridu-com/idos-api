@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Raw;
 
-use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
 class DeleteAllTest extends AbstractRawFunctional {
@@ -24,7 +23,7 @@ class DeleteAllTest extends AbstractRawFunctional {
         $this->populateDb();
     }
 
-    public function testSuccess() {        
+    public function testSuccess() {
         //DELETE ALL
         $request = $this->createRequest(
             $this->createEnvironment(

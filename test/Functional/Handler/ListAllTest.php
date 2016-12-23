@@ -43,7 +43,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertSame(1321189817, $body['data'][0]['id']);
         $this->assertSame('idOS Machine Learning', $body['data'][0]['name']);
         $this->assertTrue($body['data'][0]['enabled']);
-        
+
         /*
          * Validates Response using the Json Schema.
          */

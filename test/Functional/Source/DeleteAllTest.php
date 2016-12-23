@@ -32,7 +32,7 @@ class DeleteAllTest extends AbstractFunctional {
         $this->uri        = sprintf('/index.php/1.0/profiles/%s/sources', $this->userName);
     }
 
-    public function testSuccess() {        
+    public function testSuccess() {
         //DELETE ALL
         $request = $this->createRequest(
             $this->createEnvironment(

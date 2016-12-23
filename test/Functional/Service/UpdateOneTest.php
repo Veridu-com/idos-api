@@ -71,7 +71,7 @@ class UpdateOneTest extends AbstractFunctional {
                 'idos:raw.spotify.created',
                 'idos:raw.twitter.created',
                 'idos:raw.yahoo.created'
-            ], 
+            ],
             $body['data']['listens']
         );
 

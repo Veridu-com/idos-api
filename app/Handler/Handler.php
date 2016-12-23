@@ -240,9 +240,9 @@ class Handler implements HandlerInterface {
             );
         }
 
-        $service = $this->repository->find($command->handlerId);
+        $service      = $this->repository->find($command->handlerId);
         $rowsAffected = $this->repository->deleteOne($command->handlerId, $command->company);
-    
+
         if (! $rowsAffected) {
             throw new NotFound\HandlerException('No services found for deletion', 404);
         }

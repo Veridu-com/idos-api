@@ -27,7 +27,7 @@ class CreateNewTest extends AbstractFunctional {
         $handler_service_id = 1321189817;
 
         $this->httpMethod = 'DELETE';
-        $this->uri = sprintf('/1.0/companies/veridu-ltd/services/%s', $handler_service_id);
+        $this->uri        = sprintf('/1.0/companies/veridu-ltd/services/%s', $handler_service_id);
 
         $environment = $this->createEnvironment(
             [
@@ -45,7 +45,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->uri        = '/1.0/companies/veridu-ltd/services';
 
         $environment = $this->createEnvironment(
-            [   
+            [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
@@ -56,7 +56,7 @@ class CreateNewTest extends AbstractFunctional {
             json_encode(
                 [
                     'handler_service_id' => $handler_service_id,
-                    'listens' => [
+                    'listens'            => [
                         'idos:source.amazon.created',
                         'idos:source.dropbox.created',
                         'idos:source.facebook.created',

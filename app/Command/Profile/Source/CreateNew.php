@@ -27,7 +27,7 @@ class CreateNew extends AbstractCommand {
      *  
      * @var string
      */
-    public $attibute; 
+    public $attibute;
     /**
      * Source ip address.
      *
@@ -86,4 +86,3 @@ class CreateNew extends AbstractCommand {
         return $this;
     }
 }
-    
