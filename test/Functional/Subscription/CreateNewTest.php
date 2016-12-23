@@ -35,7 +35,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            'category_slug' => 'first-name'
+            'category_name' => 'firstName'
         ];
 
         $request = $this->createRequest(
@@ -69,7 +69,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $data = [
-            'category_slug' => 'invalid-slug'
+            'category_name' => 'invalid-name'
         ];
 
         $request = $this->createRequest(

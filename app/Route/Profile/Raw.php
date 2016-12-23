@@ -32,7 +32,8 @@ class Raw implements RouteInterface {
         return [
             'raw:listAll',
             'raw:createNew',
-            'raw:upsert'
+            'raw:upsert',
+            'raw:deleteAll'
         ];
     }
 
@@ -56,6 +57,7 @@ class Raw implements RouteInterface {
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::upsert($app, $authMiddleware, $permissionMiddleware);
+        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**

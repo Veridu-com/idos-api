@@ -8,7 +8,7 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Company response payload",
+            "description": "Service response payload",
             "type": "object",
             "$ref": "serviceEntity.json"
         }

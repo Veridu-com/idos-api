@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\ServiceHandler;
+namespace Test\Functional\HandlerService;
 
 use Test\Functional\AbstractFunctional;
 
@@ -15,7 +15,7 @@ class GetOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers/1321189817';
+        $this->uri        = '/1.0/companies/veridu-ltd/handlers/1321189817/handler-services/1321189817';
     }
 
     public function testSuccess() {
@@ -38,7 +38,7 @@ class GetOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'serviceHandler/getOne.json',
+                'handlerService/getOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -46,7 +46,7 @@ class GetOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/service-handlers/13211898171';
+        $this->uri = '/1.0/companies/veridu-ltd/service-handlers/123';
 
         $request = $this->createRequest(
             $this->createEnvironment(

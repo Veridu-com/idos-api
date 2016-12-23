@@ -17,7 +17,7 @@ use App\Entity\AbstractEntity;
  *
  * @property int    $id
  * @property int    $gate_id
- * @property string $category_slug
+ * @property string $category_name
  * @property int    $credential_id
  * @property int    $identity_id
  * @property int    $created_at
@@ -27,7 +27,7 @@ class Subscription extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'category_slug', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'category_name', 'created_at', 'updated_at'];
     /**
      * {@inheritdoc}
      */

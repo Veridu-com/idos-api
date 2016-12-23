@@ -29,7 +29,6 @@
         "result",
         "passed",
         "failed",
-        "created_at",
-        "updated_at"
+        "created_at"
     ]
 }

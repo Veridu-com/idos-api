@@ -81,16 +81,12 @@ class CreateNew extends AbstractCommand {
             $this->listens = $parameters['listens'];
         }
 
-        if (isset($parameters['triggers'])) {
-            $this->triggers = $parameters['triggers'];
-        }
-
         if (isset($parameters['enabled'])) {
             $this->enabled = $parameters['enabled'];
         }
 
-        if (isset($parameters['access'])) {
-            $this->access = $parameters['access'];
+        if (isset($parameters['privacy'])) {
+            $this->privacy = $parameters['privacy'];
         }
 
         if (isset($parameters['auth_username'])) {

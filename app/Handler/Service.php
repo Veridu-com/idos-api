@@ -181,7 +181,7 @@ class Service implements HandlerInterface {
 
         $entity = $this->repository->findOne($command->serviceId, $command->company->id);
 
-        $allowedListeners = json_decode($entity->handler_service()->listens, true);
+        $allowedListeners = $entity->handler_service()->listens;
         // validates allowed listeners
         array_map(
             function ($listener) use ($allowedListeners) {

@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\ServiceHandler;
+namespace Test\Functional\Handler;
 
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
@@ -21,10 +21,11 @@ class DeleteOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'DELETE';
-        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers/1321189817';
     }
 
     public function testSuccess() {
+        $this->uri = '/1.0/companies/veridu-ltd/handlers/1860914067/handler-services/1860914067';
+
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
@@ -32,6 +33,19 @@ class DeleteOneTest extends AbstractFunctional {
                 ]
             )
         );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+        $this->uri        = '/1.0/companies/veridu-ltd/handlers/1860914067';
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+                ]
+            )
+        );
+
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
@@ -44,7 +58,7 @@ class DeleteOneTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'service/deleteOne.json',
+                'handler/deleteOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -52,7 +66,7 @@ class DeleteOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = sprintf('/1.0/companies/veridu-ltd/service-handlers/123');
+        $this->uri = sprintf('/1.0/companies/veridu-ltd/handlers/123');
         $request   = $this->createRequest(
             $this->createEnvironment(
                 [

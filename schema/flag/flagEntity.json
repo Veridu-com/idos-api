@@ -4,6 +4,10 @@
     "title": "Flag",
     "type": "object",
     "properties": {
+        "id": {
+            "description": "Flag id",
+            "type": "integer"
+        },
         "slug": {
             "description": "Slug that references a category",
             "type": "string",

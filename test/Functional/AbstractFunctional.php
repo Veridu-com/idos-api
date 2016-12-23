@@ -96,6 +96,13 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     protected $uri;
 
     /**
+     * Username used in all routes under /profile route.
+     *
+     * @var string
+     */
+    protected $userName = 'f67b96dcf96b49d713a520ce9f54053c';
+
+    /**
      * Runs one time before any method of the Child classes.
      */
     public static function setUpBeforeClass() {

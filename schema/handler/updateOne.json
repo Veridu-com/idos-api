@@ -1,20 +1,20 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "GET /profiles/{userName}/sources/{sourceId}/raw/{rawName}",
+    "title": "PATCH /companies/{companySlug}/handlers/{handlerId}",
     "type": "object",
     "properties": {
         "status": {
-          "description": "Response status flag",
-          "type": "boolean"
+            "description": "Response status flag",
+            "type": "boolean"
         },
         "data": {
-            "description": "Raw response payload",
+            "description": "Handler response payload",
             "type": "object",
-            "$ref": "rawEntity.json"
+            "$ref": "handlerEntity.json"
         },
         "updated": {
             "description": "Unixtime of the last update",
-            "type": "integer"
+            "type": ["integer", "null"]
         }
     },
     "required": [

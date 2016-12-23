@@ -6,43 +6,39 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\Raw;
+namespace Test\Functional\Handler;
 
 use Slim\Http\Response;
 use Slim\Http\Uri;
+use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
-class UpdateOneTest extends AbstractRawFunctional {
+class UpdateOneTest extends AbstractFunctional {
     use Traits\RequiresAuth,
-        Traits\RequiresCredentialToken,
+        Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
-        Traits\RejectsIdentityToken;
+        Traits\RejectsCredentialToken;
 
     protected function setUp() {
         parent::setUp();
-        $this->populateDb();
 
-        $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
+        $this->httpMethod = 'PATCH';
+        $this->uri        = '/1.0/companies/veridu-ltd/handlers/1860914067';
     }
 
-    public function testSuccess() {
+    public function testUpdateNameSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
         $request = $this->createRequest(
             $environment,
-            json_encode(
-                [
-                    'source_id'  => 1321189817,
-                    'collection' => 'raw-1',
-                    'data'       => ['test' => 'data2']
-                ]
-            )
+            json_encode([
+                'name' => 'testingName'
+            ])
         );
 
         $response = $this->process($request);
@@ -51,15 +47,50 @@ class UpdateOneTest extends AbstractRawFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('raw-1', $body['data']['collection']);
-        $this->assertSame(['test' => 'data2'], $body['data']['data']);
+        $this->assertNotEmpty($body['data']);
+        $this->assertSame('testingName', $body['data']['name']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'raw/upsert.json',
+                'handler/updateOne.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testUpdateAuthCredentialsSuccess() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode([
+                'auth_username' => 'testingUpdate',
+                'auth_password' => 'testingPasswordUpdate'
+            ])
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'handler/updateOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
@@ -67,11 +98,12 @@ class UpdateOneTest extends AbstractRawFunctional {
     }
 
     public function testNotFound() {
-        $this->uri   = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
+        $this->uri = '/1.0/companies/veridu-ltd/handler/123';
+
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -79,9 +111,9 @@ class UpdateOneTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id'  => 00000,
-                    'collection' => 'raw-1',
-                    'data'       => ['test' => 'data']
+                    'listens' => [
+                        'dummy:listens'
+                    ]
                 ]
             )
         );
@@ -92,6 +124,7 @@ class UpdateOneTest extends AbstractRawFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
+
         /*
          * Validates Response using the Json Schema.
          */
@@ -104,11 +137,11 @@ class UpdateOneTest extends AbstractRawFunctional {
         );
     }
 
-    public function testEmptyCollection() {
+    public function testInvalidPassword() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+                'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
             ]
         );
 
@@ -116,9 +149,7 @@ class UpdateOneTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id'  => 1321189817,
-                    'collection' => '',
-                    'data'       => ['test' => 'data']
+                    'auth_password' => 'abcd1'
                 ]
             )
         );
@@ -129,6 +160,7 @@ class UpdateOneTest extends AbstractRawFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertFalse($body['status']);
+
         /*
          * Validates Response using the Json Schema.
          */

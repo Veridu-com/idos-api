@@ -234,9 +234,11 @@ class Settings implements ControllerInterface {
     public function deleteOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $settingId = $request->getAttribute('decodedSettingId');
         $identity  = $request->getAttribute('identity');
+        $company   = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Company\\Setting\\DeleteOne');
         $command
+            ->setParameter('company', $company)
             ->setParameter('identity', $identity)
             ->setParameter('settingId', $settingId);
 

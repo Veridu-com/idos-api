@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Handler;
 
 use App\Command\HandlerService\CreateNew;
-use App\Command\HandlerService\DeleteAll;
 use App\Command\HandlerService\DeleteOne;
 use App\Command\HandlerService\UpdateOne;
 use App\Entity\HandlerService as HandlerServiceEntity;
@@ -122,6 +121,12 @@ class HandlerService implements HandlerInterface {
 
             if (! is_null($command->enabled)) {
                 $this->validator->assertFlag($command->enabled);
+                $inputs['enabled'] = $command->enabled;
+            }
+
+            if (! is_null($command->listens)) {
+                $this->validator->assertArray($command->listens);
+                $inputs['listens'] = $command->listens;
             }
 
             $this->validator->assertIdentity($command->identity);
@@ -163,6 +168,11 @@ class HandlerService implements HandlerInterface {
             if (! is_null($command->name)) {
                 $this->validator->assertName($command->name);
                 $input['name'] = $command->name;
+            }
+
+            if (! is_null($command->url)) {
+                $this->validator->assertUrl($command->url);
+                $input['url'] = $command->url;
             }
 
             if (! is_null($command->enabled)) {
@@ -244,34 +254,5 @@ class HandlerService implements HandlerInterface {
 
         $event = $this->eventFactory->create('HandlerService\\Deleted', $service, $command->identity);
         $this->emitter->emit($event);
-    }
-
-    /**
-     * Deletes all service handlers ($command->companyId).
-     *
-     * @param \App\Command\HandlerService\DeleteAll $command
-     *
-     * @return int
-     */
-    public function handleDeleteAll(DeleteAll $command) : int {
-        try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->identity);
-        } catch (ValidationException $e) {
-            throw new Validate\HandlerServiceException(
-                $e->getFullMessage(),
-                400,
-                $e
-            );
-        }
-
-        $services = $this->repository->getByCompany($command->company);
-
-        $affectedRows = $this->repository->deleteByCompanyId($command->company->id);
-
-        $event = $this->eventFactory->create('HandlerService\\DeletedMulti', $services, $command->identity);
-        $this->emitter->emit($event);
-
-        return $affectedRows;
     }
 }

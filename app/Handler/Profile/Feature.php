@@ -347,17 +347,17 @@ class Feature implements HandlerInterface {
             $this->validator->assertCredential($command->credential);
             $this->validator->assertHandler($command->handler);
             $this->validator->assertFeatures($command->features);
-            $this->validator->assertCredential($command->credential);
 
-            if (count($this->command->features) > 100) {
-                throw new ValidationException('Your bulk upsert cannot exceed 100 items.');
-            }
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
                 400,
                 $e
             );
+        }
+
+        if (count($command->features) > 500) {
+            throw new ValidationException('Your bulk upsert cannot exceed 500 items.');
         }
 
         $features          = $command->features;

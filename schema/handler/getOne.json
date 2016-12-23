@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /companies/{companySlug}/handlers/{handlerId}",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Handler response payload",
+            "type": "object",
+            "$ref": "handlerEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}
