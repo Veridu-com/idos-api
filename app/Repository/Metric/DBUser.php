@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Repository\Metric;
 
-use App\Entity\Identity;
+use App\Entity\Company;
 use App\Entity\Metric\User;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
@@ -33,11 +33,10 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
     /**
      * {@inheritdoc}
      */
-    public function getByIdentityAndDateInterval(Identity $identity, int $from = null, int $to = null, array $queryParams = []) : Collection {
+    public function getByCompanyAndDateInterval(Company $company, int $from = null, int $to = null, array $queryParams = []) : Collection {
         $credentials = $this
             ->query('credentials', 'App\Entity\Company\Credential')
-            ->join('members', 'members.company_id', '=', 'credentials.company_id')
-            ->where('members.identity_id', '=', $identity->id)
+            ->where('company_id', '=', $company->id)
             ->get(['credentials.public']);
 
         $allowedKeys = [];

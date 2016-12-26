@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
@@ -85,10 +86,13 @@ class Metrics implements RouteInterface {
     private static function listAllSystem(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/metrics/system',
+                '/companies/{companySlug:[a-z0-9_-]+}/metrics/system',
                 'App\Controller\Metrics:listAllSystem'
             )
-            ->add($permission(EndpointPermission::SELF_ACTION))
+            ->add($permission(
+                EndpointPermission::PARENT_ACTION | EndpointPermission::SELF_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
             ->add($auth(Auth::IDENTITY))
             ->setName('metric:listAllSystem');
     }
@@ -117,10 +121,13 @@ class Metrics implements RouteInterface {
     private static function listAllUser(App $app, callable $auth, callable $permission) {
         $app
             ->get(
-                '/metrics/user',
+                '/companies/{companySlug:[a-z0-9_-]+}/metrics/user',
                 'App\Controller\Metrics:listAllUser'
             )
-            ->add($permission(EndpointPermission::SELF_ACTION))
+            ->add($permission(
+                EndpointPermission::PARENT_ACTION | EndpointPermission::SELF_ACTION,
+                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+            ))
             ->add($auth(Auth::IDENTITY))
             ->setName('metric:listAllUser');
     }
