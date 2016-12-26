@@ -10,6 +10,7 @@ namespace App\Handler\Profile;
 
 use App\Command\Profile\Review\CreateNew;
 use App\Command\Profile\Review\UpdateOne;
+use App\Command\Profile\Review\Upsert;
 use App\Entity\Profile\Review as ReviewEntity;
 use App\Exception\Create;
 use App\Exception\Update;
@@ -17,6 +18,7 @@ use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\ReviewInterface;
+use App\Repository\Profile\RecommendationInterface;
 use App\Validator\Profile\Review as ReviewValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -32,6 +34,12 @@ class Review implements HandlerInterface {
      * @var \App\Repository\Profile\ReviewInterface
      */
     private $repository;
+    /**
+     * Recommendation Repository instance.
+     *
+     * @var \App\Repository\Profile\RecommendationInterface
+     */
+    private $recommendationRepository;
     /**
      * Review Validator instance.
      *
@@ -61,6 +69,9 @@ class Review implements HandlerInterface {
                     ->get('repositoryFactory')
                     ->create('Profile\Review'),
                 $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Recommendation'),
+                $container
                     ->get('validatorFactory')
                     ->create('Profile\Review'),
                 $container
@@ -74,23 +85,26 @@ class Review implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\ReviewInterface $repository
-     * @param \App\Validator\Review           $validator
-     * @param \App\Factory\Event              $eventFactory
-     * @param \League\Event\Emitter           $emitter
+     * @param \App\Repository\ReviewInterface         $repository
+     * @param \App\Repository\RecommendationInterface $recommendationRepository
+     * @param \App\Validator\Review                   $validator
+     * @param \App\Factory\Event                      $eventFactory
+     * @param \League\Event\Emitter                   $emitter
      *
      * @return void
      */
     public function __construct(
         ReviewInterface $repository,
+        RecommendationInterface $recommendationRepository,
         ReviewValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository   = $repository;
-        $this->validator    = $validator;
-        $this->eventFactory = $eventFactory;
-        $this->emitter      = $emitter;
+        $this->repository               = $repository;
+        $this->recommendationRepository = $recommendationRepository;
+        $this->validator                = $validator;
+        $this->eventFactory             = $eventFactory;
+        $this->emitter                  = $emitter;
     }
 
     /**
@@ -178,6 +192,85 @@ class Review implements HandlerInterface {
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\ReviewException('Error while trying to update a review', 500, $e);
+        }
+
+        return $review;
+    }
+
+    /**
+     * Create or update a review from a given user.
+     *
+     * @param \App\Command\Profile\Review\Upsert $command
+     *
+     * @see \App\Repository\DBReview::findOneByUserIdAndId
+     * @see \App\Repository\DBReview::save
+     *
+     * @throws \App\Exception\Validate\Profile\ReviewException
+     * @throws \App\Exception\Update\Profile\ReviewException
+     *
+     * @return \App\Entity\Profile\Review
+     */
+    public function handleUpsert(Upsert $command) : ReviewEntity {
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertFlag($command->positive);
+            $this->validator->assertIdentity($command->identity);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\ReviewException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+
+        if ($command->gateId === null) {
+            $recommendation = $this->recommendationRepository->findOne($command->user->id);
+        }
+
+        try {
+            if ($command->gateId === null) {
+                $review = $this->repository->findOneByRecommendationId($recommendation->id, $command->identity->id, $command->user->id);
+            } else {
+                $review = $this->repository->findOneByGateId($command->gateId, $command->identity->id, $command->user->id);
+            }
+
+            $review->positive = $this->validator->validateFlag($command->positive);
+            $updated = true;
+        } catch (\Exception $e) {
+            if ($command->gateId === null) {
+                $review = $this->repository->create(
+                [
+                    'user_id'           => $command->user->id,
+                    'identity_id'       => $command->identity->id,
+                    'recommendation_id' => $recommendation->id, 
+                    'positive'          => $this->validator->validateFlag($command->positive),
+                    'created_at'        => time()
+                ]);
+            } else {
+                $review = $this->repository->create(
+                [
+                    'user_id'     => $command->user->id,
+                    'identity_id' => $command->identity->id,
+                    'gate_id'     => $command->gateId,
+                    'positive'    => $this->validator->validateFlag($command->positive),
+                    'created_at'  => time()
+                ]);
+            }
+
+            $updated = false;
+        }
+
+        try {
+            $review = $this->repository->save($review);
+
+            if ($updated) {
+                $event  = $this->eventFactory->create('Profile\\Review\\Updated', $review, $command->identity);
+            } else {
+                $event  = $this->eventFactory->create('Profile\\Review\\Created', $review, $command->identity);
+            }
+            $this->emitter->emit($event);
+        } catch (\Exception $e) {
+            throw new Update\Profile\ReviewException('Error while trying to upsert a review', 500, $e);
         }
 
         return $review;
