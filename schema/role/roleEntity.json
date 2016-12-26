@@ -1,0 +1,25 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.idos.io/1.0/schema/user/roleEntity.json",
+    "title": "Role",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "Role's name",
+            "type": "string"
+        },
+        "created_at": {
+            "description": "Role's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Role's last updated unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "name",
+        "created_at",
+        "update_at"
+    ]
+}

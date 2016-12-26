@@ -19,14 +19,18 @@ use App\Exception\NotAllowed;
 use App\Exception\NotFound;
 use App\Exception\Update;
 use App\Exception\Validate;
+use App\Factory\Command as CommandFactory;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\CompanyInterface;
+use App\Repository\Company\SettingInterface;
+use App\Repository\IdentityInterface;
 use App\Repository\Profile\ProcessInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Validator\Profile\Source as SourceValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
+use League\Tactician\CommandBus;
 use Respect\Validation\Exceptions\ValidationException;
 
 /**
@@ -52,11 +56,35 @@ class Source implements HandlerInterface {
      */
     private $companyRepository;
     /**
+     * Setting Repository instance.
+     *
+     * @var \App\Repository\Company\SettingInterface
+     */
+    private $settingRepository;
+    /**
+     * Identity Repository instance.
+     *
+     * @var \App\Repository\IdentityInterface
+     */
+    private $identityRepository;
+    /**
      * Source Validator instance.
      *
      * @var \App\Validator\Profile\Source
      */
     private $validator;
+    /**
+     * Command factory instance.
+     *
+     * @var \App\Factory\Command
+     */
+    private $commandFactory;
+    /**
+     * Command bus instance.
+     *
+     * @var \League\Tactician\CommandBus
+     */
+    private $commendBus;
     /**
      * Event factory instance.
      *
@@ -84,10 +112,20 @@ class Source implements HandlerInterface {
                     ->create('Profile\Process'),
                 $container
                     ->get('repositoryFactory')
+                    ->create('Identity'),
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company\Setting'),
+                $container
+                    ->get('repositoryFactory')
                     ->create('Company'),
                 $container
                     ->get('validatorFactory')
                     ->create('Profile\Source'),
+                $container
+                    ->get('commandFactory'),
+                $container
+                    ->get('commandBus'),
                 $container
                     ->get('eventFactory'),
                 $container
@@ -101,23 +139,35 @@ class Source implements HandlerInterface {
      *
      * @param \App\Repository\Profile\SourceInterface  $repository        The repository
      * @param \App\Repository\Profile\ProcessInterface $processRepository The process repository
+     * @param \App\Repository\IdentityInterface        $identityRepository The identity repository
+     * @param \App\Repository\SettingInterface         $settingRepository The setting repository
      * @param \App\Repository\CompanyInterface         $companyRepository The company repository
      * @param \App\Handler\Profile\SourceValidator     $validator         The validator
+     * @param \App\Factory\Command                     $commandFactory    The command factory
+     * @param \League\Tactician\CommandBus             $commandBus    The command bus instance.
      * @param \App\Factory\Event                       $eventFactory      The event factory
      * @param \League\Event\Emitter                    $emitter           The emitter
      */
     public function __construct(
         SourceInterface $repository,
         ProcessInterface $processRepository,
+        IdentityInterface $identityRepository,
+        SettingInterface $settingRepository,
         CompanyInterface $companyRepository,
         SourceValidator $validator,
+        CommandFactory $commandFactory,
+        CommandBus $commandBus,
         Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository        = $repository;
         $this->processRepository = $processRepository;
+        $this->identityRepository = $identityRepository;
+        $this->settingRepository = $settingRepository;
         $this->companyRepository = $companyRepository;
         $this->validator         = $validator;
+        $this->commandFactory = $commandFactory;
+        $this->commandBus = $commandBus;
         $this->eventFactory      = $eventFactory;
         $this->emitter           = $emitter;
     }
@@ -197,6 +247,33 @@ class Source implements HandlerInterface {
             ]
         );
 
+        // if it is a social media Source
+        if (isset($command->tags['profile_id']) && isset($command->tags['access_token'])) {
+            $keys = $this->settingRepository->getSourceTokens($command->credential->companyId, $command->credential->public, $command->name);
+            $key = $keys->where('property', sprintf('%s.%s.key', $command->credential->public, $command->name));
+            
+            // main variables
+            $appKey = strlen($key->first()->value) ? $key->first()->value : 'Veridu';
+            $profileId = $command->tags['profile_id'];
+            $sourceName = $command->name;
+
+            try {
+                $identity = $this->identityRepository->findOneBySourceNameAndProfileId(
+                    $sourceName,
+                    $profileId,
+                    $appKey
+                );
+            } catch (NotFound $e) {
+                $identityCommand = $this->commandFactory->create('Identity\\CreateNew');
+                $identityCommand
+                    ->setParameter('sourceName', $sourceName)
+                    ->setParameter('profileId', $profileId)
+                    ->setParameter('appKey', $appKey);
+
+                $identity = $this->commandBus->handle($identityCommand);
+            }
+        }
+        
         try {
             $source = $this->repository->save($source);
         } catch (\Exception $e) {

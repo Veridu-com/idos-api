@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "GET /profiles/{userName}/roleAccesss",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "booleAccessan"
+        },
+        "data": {
+            "description": "RoleAccesss response payload",
+            "type": "array",
+            "items": {
+                "$ref": "roleAccessEntity.json"
+            },
+            "minItems": 0,
+            "uniqueItems": true
+        },
+        "updated": {
+            "description": "Unixtime of the last update",
+            "type": "integer"
+        }
+    },
+    "required": [
+        "status",
+        "data",
+        "updated"
+    ]
+}

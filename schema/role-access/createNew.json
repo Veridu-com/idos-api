@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "POST /profiles/{userName}/roleAccesss",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "booleAccessan"
+        },
+        "data": {
+            "description": "RoleAccess response payload",
+            "type": "object",
+            "$ref": "roleAccessEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

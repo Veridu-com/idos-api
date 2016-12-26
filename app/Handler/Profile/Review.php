@@ -14,11 +14,12 @@ use App\Command\Profile\Review\Upsert;
 use App\Entity\Profile\Review as ReviewEntity;
 use App\Exception\Create;
 use App\Exception\Update;
+use App\Exception\Upsert\Profile\ReviewException as UpsertException;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\Profile\ReviewInterface;
 use App\Repository\Profile\RecommendationInterface;
+use App\Repository\Profile\ReviewInterface;
 use App\Validator\Profile\Review as ReviewValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -128,7 +129,7 @@ class Review implements HandlerInterface {
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReviewException(
-                $e->getFullMessage(),
+                $e->getMessage(),
                 400,
                 $e
             );
@@ -177,7 +178,7 @@ class Review implements HandlerInterface {
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReviewException(
-                $e->getFullMessage(),
+                $e->getMessage(),
                 400,
                 $e
             );
@@ -215,9 +216,13 @@ class Review implements HandlerInterface {
             $this->validator->assertUser($command->user);
             $this->validator->assertFlag($command->positive);
             $this->validator->assertIdentity($command->identity);
+
+            if ((bool) $command->gateId  === (bool) $command->recommendationId) {
+                throw new ValidationException('A review should belong to strictly one Gate or Review');
+            }
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReviewException(
-                $e->getFullMessage(),
+                $e->getMessage(),
                 400,
                 $e
             );
@@ -227,50 +232,42 @@ class Review implements HandlerInterface {
             $recommendation = $this->recommendationRepository->findOne($command->user->id);
         }
 
+        $review = $this->repository->create([
+            'user_id'           => $command->user->id,
+            'identity_id'       => $command->identity->id,
+            'recommendation_id' => $command->recommendationId, 
+            'gate_id'           => $command->gateId, 
+            'description'       => $command->description, 
+            'positive'          => $this->validator->validateFlag($command->positive)
+        ]);
+
+
+        $this->repository->beginTransaction();
+        
         try {
-            if ($command->gateId === null) {
-                $review = $this->repository->findOneByRecommendationId($recommendation->id, $command->identity->id, $command->user->id);
-            } else {
-                $review = $this->repository->findOneByGateId($command->gateId, $command->identity->id, $command->user->id);
-            }
 
-            $review->positive = $this->validator->validateFlag($command->positive);
-            $updated = true;
-        } catch (\Exception $e) {
-            if ($command->gateId === null) {
-                $review = $this->repository->create(
-                [
-                    'user_id'           => $command->user->id,
-                    'identity_id'       => $command->identity->id,
-                    'recommendation_id' => $recommendation->id, 
-                    'positive'          => $this->validator->validateFlag($command->positive),
-                    'created_at'        => time()
+            if (isset($command->gateId)) {
+                $this->repository->upsert($review, ['user_id', 'gate_id'], [
+                    'positive' => $review->positive,
+                    'description' => $review->description
                 ]);
-            } else {
-                $review = $this->repository->create(
-                [
-                    'user_id'     => $command->user->id,
-                    'identity_id' => $command->identity->id,
-                    'gate_id'     => $command->gateId,
-                    'positive'    => $this->validator->validateFlag($command->positive),
-                    'created_at'  => time()
+                $review = $this->repository->findOneByGateIdAndUserId($command->gateId, $command->user->id);
+            }
+
+            if (isset($command->recommendationId)) {
+                $this->repository->upsert($review, ['user_id', 'recommendation_id'], [
+                    'positive' => $review->positive,
+                    'description' => $review->description
                 ]);
+                $review = $this->repository->findOneByRecommendationIdAndUserId($command->recommendationId, $command->user->id);
             }
+            
 
-            $updated = false;
-        }
+            $this->repository->commit();
 
-        try {
-            $review = $this->repository->save($review);
-
-            if ($updated) {
-                $event  = $this->eventFactory->create('Profile\\Review\\Updated', $review, $command->identity);
-            } else {
-                $event  = $this->eventFactory->create('Profile\\Review\\Created', $review, $command->identity);
-            }
-            $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw new Update\Profile\ReviewException('Error while trying to upsert a review', 500, $e);
+            $this->repository->rollBack();
+            throw new UpsertException($e->getMessage());
         }
 
         return $review;

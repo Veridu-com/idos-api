@@ -41,6 +41,57 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     ];
 
     /**
+     * Gets the source tokens.
+     *
+     * @param      integer  $companyId         The company identifier
+     * @param      string   $credentialPubKey  The credential pub key
+     * @param      string   $sourceName        The source name
+     *
+     * @return     Collection   The source tokens.
+     */
+    public function getSourceTokens(int $companyId, string $credentialPubKey, string $sourceName) : Collection {
+        // hosted social application (credential based)
+        $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $sourceName);
+        $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $sourceName);
+        $credentialSettingVer = sprintf('%s.%s.version', $credentialPubKey, $sourceName);
+
+        // hosted social application (company based)
+        $providerSettingKey = sprintf('%s.key', $sourceName);
+        $providerSettingSec = sprintf('%s.secret', $sourceName);
+        $providerSettingVer = sprintf('%s.version', $sourceName);
+
+        $settings = $this->findByCompanyIdSectionAndProperties(
+            $companyId,
+            'AppTokens',
+            [
+                $credentialSettingKey,
+                $credentialSettingSec,
+                $credentialSettingVer
+            ]
+        );
+
+        if (count($settings)) {
+            return $settings;
+        }
+
+        $settings = $this->findByCompanyIdSectionAndProperties(
+            $companyId,
+            'AppTokens',
+            [
+                $providerSettingKey,
+                $providerSettingSec,
+                $providerSettingVer
+            ]
+        );
+
+        if (count($settings)) {
+            return $settings;
+        }
+
+        return new Collection();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getByCompanyId(int $companyId, array $queryParams = []) : array {
