@@ -313,6 +313,8 @@ class AttributeListener extends AbstractListener {
             ]
         ];
 
+        $attributesToCreate = [];
+
         foreach ($compositions as $composition => $attributes) {
             $candidates = $this->candidateRepository->getAllByUserIdAndAttributeNames(
                 $event->user->id,
@@ -325,15 +327,11 @@ class AttributeListener extends AbstractListener {
 
             if (count($attributes) == 1) {
                 // single attribute
-                $this->createAttribute(
-                    $event->user,
-                    $event->credential,
-                    $attributes[0],
-                    $candidates
-                        ->sortBy('support')
-                        ->last()
-                        ->value
-                );
+                $attributesToCreate[] = [
+                    'user_id' => $event->user->id,
+                    'name'    => $attributes[0],
+                    'value'   => $candidates->sortBy('support')->last()->value
+                ];
                 continue;
             }
 
@@ -354,16 +352,25 @@ class AttributeListener extends AbstractListener {
                     continue;
                 }
 
-                $this->createAttribute($event->user, $event->credential, $attribute, $value);
+                $attributesToCreate[] = [
+                    'user_id' => $event->user->id,
+                    'name'    => $attribute,
+                    'value'   => $value
+                ];
             }
 
-            $this->createAttribute(
-                $event->user,
-                $event->credential,
-                $composition,
-                $this->formatCombination($composition, $combination)
-            );
+            $attributesToCreate[] = [
+                'user_id' => $event->user->id,
+                'name'    => $composition,
+                'value'   => $this->formatCombination($composition, $combination)
+            ];
         }
 
+        $command = $this->commandFactory->create('Profile\\Attribute\\UpsertBulk');
+        $command
+            ->setParameter('user', $event->user)
+            ->setParameter('credential', $event->credential)
+            ->setParameter('attributes', $attributesToCreate);
+        $this->commandBus->handle($command);
     }
 }

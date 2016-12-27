@@ -10,6 +10,7 @@ namespace App\Validator\Profile;
 
 use App\Validator\Traits;
 use App\Validator\ValidatorInterface;
+use Respect\Validation\Validator;
 
 /**
  * Attribute Validation Rules.
@@ -19,4 +20,14 @@ class Attribute implements ValidatorInterface {
         Traits\AssertName,
         Traits\AssertValue,
         Traits\AssertType;
+
+    public function assertAttributeArray($attributes) {
+        Validator::arrayType()->assert($attributes);
+
+        foreach ($attributes as $attribute) {
+            Validator::key('user_id')->assert($attribute);
+            Validator::key('name')->assert($attribute);
+            Validator::key('value')->assert($attribute);
+        }
+    }
 }
