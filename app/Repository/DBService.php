@@ -165,7 +165,7 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
             ->join('handlers', 'handler_services.handler_id', 'handlers.id')
             ->where('services.company_id', $companyId)
             ->where('handler_services.enabled', true)
-            ->whereRaw('jsonb_exists(handler_services.listens, ?)', [$event])
+            ->whereRaw("handler_services.listens::text like '%$event%'")
             ->get($this->queryAttributes);
 
         return $this->castHydrate($collection);
