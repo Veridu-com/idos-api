@@ -43,11 +43,11 @@ class DBSetting extends AbstractSQLDBRepository implements SettingInterface {
     /**
      * Gets the source tokens.
      *
-     * @param      integer  $companyId         The company identifier
-     * @param      string   $credentialPubKey  The credential pub key
-     * @param      string   $sourceName        The source name
+     * @param int    $companyId        The company identifier
+     * @param string $credentialPubKey The credential pub key
+     * @param string $sourceName       The source name
      *
-     * @return     Collection   The source tokens.
+     * @return Collection The source tokens.
      */
     public function getSourceTokens(int $companyId, string $credentialPubKey, string $sourceName) : Collection {
         // hosted social application (credential based)

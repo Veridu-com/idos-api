@@ -151,7 +151,7 @@ class Sso implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $sourceName     = $request->getParsedBodyParam('provider');
+        $sourceName       = $request->getParsedBodyParam('provider');
         $credentialPubKey = $request->getParsedBodyParam('credential');
         $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
 
@@ -159,7 +159,6 @@ class Sso implements ControllerInterface {
         if (! in_array($sourceName, $availableProviders)) {
             throw new AppException('Unsupported Provider', 400);
         }
-
 
         // hosted social application (credential based)
         $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $sourceName);

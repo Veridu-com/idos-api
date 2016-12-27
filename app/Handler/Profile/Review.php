@@ -217,7 +217,7 @@ class Review implements HandlerInterface {
             $this->validator->assertFlag($command->positive);
             $this->validator->assertIdentity($command->identity);
 
-            if ((bool) $command->gateId  === (bool) $command->recommendationId) {
+            if ((bool) $command->gateId === (bool) $command->recommendationId) {
                 throw new ValidationException('A review should belong to strictly one Gate or Review');
             }
         } catch (ValidationException $e) {
@@ -235,20 +235,19 @@ class Review implements HandlerInterface {
         $review = $this->repository->create([
             'user_id'           => $command->user->id,
             'identity_id'       => $command->identity->id,
-            'recommendation_id' => $command->recommendationId, 
-            'gate_id'           => $command->gateId, 
-            'description'       => $command->description, 
+            'recommendation_id' => $command->recommendationId,
+            'gate_id'           => $command->gateId,
+            'description'       => $command->description,
             'positive'          => $this->validator->validateFlag($command->positive)
         ]);
 
-
         $this->repository->beginTransaction();
-        
+
         try {
 
             if (isset($command->gateId)) {
                 $this->repository->upsert($review, ['user_id', 'gate_id'], [
-                    'positive' => $review->positive,
+                    'positive'    => $review->positive,
                     'description' => $review->description
                 ]);
                 $review = $this->repository->findOneByGateIdAndUserId($command->gateId, $command->user->id);
@@ -256,12 +255,11 @@ class Review implements HandlerInterface {
 
             if (isset($command->recommendationId)) {
                 $this->repository->upsert($review, ['user_id', 'recommendation_id'], [
-                    'positive' => $review->positive,
+                    'positive'    => $review->positive,
                     'description' => $review->description
                 ]);
                 $review = $this->repository->findOneByRecommendationIdAndUserId($command->recommendationId, $command->user->id);
             }
-            
 
             $this->repository->commit();
 

@@ -20,10 +20,10 @@ interface UserInterface extends RepositoryInterface {
     /**
      * Return user metrics.
      *
-     * @param \App\Entity\Company  $company
-     * @param int                  $from
-     * @param int                  $to
-     * @param array                $queryParams
+     * @param \App\Entity\Company $company
+     * @param int                 $from
+     * @param int                 $to
+     * @param array               $queryParams
      *
      * @return \Illuminate\Support\Collection
      */

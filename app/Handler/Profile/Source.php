@@ -22,8 +22,8 @@ use App\Exception\Validate;
 use App\Factory\Command as CommandFactory;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
-use App\Repository\CompanyInterface;
 use App\Repository\Company\SettingInterface;
+use App\Repository\CompanyInterface;
 use App\Repository\IdentityInterface;
 use App\Repository\Profile\ProcessInterface;
 use App\Repository\Profile\SourceInterface;
@@ -137,16 +137,16 @@ class Source implements HandlerInterface {
     /**
      * Class Constructor.
      *
-     * @param \App\Repository\Profile\SourceInterface  $repository        The repository
-     * @param \App\Repository\Profile\ProcessInterface $processRepository The process repository
+     * @param \App\Repository\Profile\SourceInterface  $repository         The repository
+     * @param \App\Repository\Profile\ProcessInterface $processRepository  The process repository
      * @param \App\Repository\IdentityInterface        $identityRepository The identity repository
-     * @param \App\Repository\SettingInterface         $settingRepository The setting repository
-     * @param \App\Repository\CompanyInterface         $companyRepository The company repository
-     * @param \App\Handler\Profile\SourceValidator     $validator         The validator
-     * @param \App\Factory\Command                     $commandFactory    The command factory
-     * @param \League\Tactician\CommandBus             $commandBus    The command bus instance.
-     * @param \App\Factory\Event                       $eventFactory      The event factory
-     * @param \League\Event\Emitter                    $emitter           The emitter
+     * @param \App\Repository\SettingInterface         $settingRepository  The setting repository
+     * @param \App\Repository\CompanyInterface         $companyRepository  The company repository
+     * @param \App\Handler\Profile\SourceValidator     $validator          The validator
+     * @param \App\Factory\Command                     $commandFactory     The command factory
+     * @param \League\Tactician\CommandBus             $commandBus         The command bus instance.
+     * @param \App\Factory\Event                       $eventFactory       The event factory
+     * @param \League\Event\Emitter                    $emitter            The emitter
      */
     public function __construct(
         SourceInterface $repository,
@@ -160,16 +160,16 @@ class Source implements HandlerInterface {
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository        = $repository;
-        $this->processRepository = $processRepository;
+        $this->repository         = $repository;
+        $this->processRepository  = $processRepository;
         $this->identityRepository = $identityRepository;
-        $this->settingRepository = $settingRepository;
-        $this->companyRepository = $companyRepository;
-        $this->validator         = $validator;
-        $this->commandFactory = $commandFactory;
-        $this->commandBus = $commandBus;
-        $this->eventFactory      = $eventFactory;
-        $this->emitter           = $emitter;
+        $this->settingRepository  = $settingRepository;
+        $this->companyRepository  = $companyRepository;
+        $this->validator          = $validator;
+        $this->commandFactory     = $commandFactory;
+        $this->commandBus         = $commandBus;
+        $this->eventFactory       = $eventFactory;
+        $this->emitter            = $emitter;
     }
 
     /**
@@ -250,11 +250,11 @@ class Source implements HandlerInterface {
         // if it is a social media Source
         if (isset($command->tags['profile_id']) && isset($command->tags['access_token'])) {
             $keys = $this->settingRepository->getSourceTokens($command->credential->companyId, $command->credential->public, $command->name);
-            $key = $keys->where('property', sprintf('%s.%s.key', $command->credential->public, $command->name));
-            
+            $key  = $keys->where('property', sprintf('%s.%s.key', $command->credential->public, $command->name));
+
             // main variables
-            $appKey = strlen($key->first()->value) ? $key->first()->value : 'Veridu';
-            $profileId = $command->tags['profile_id'];
+            $appKey     = strlen($key->first()->value) ? $key->first()->value : 'Veridu';
+            $profileId  = $command->tags['profile_id'];
             $sourceName = $command->name;
 
             try {
@@ -273,7 +273,7 @@ class Source implements HandlerInterface {
                 $identity = $this->commandBus->handle($identityCommand);
             }
         }
-        
+
         try {
             $source = $this->repository->save($source);
         } catch (\Exception $e) {
