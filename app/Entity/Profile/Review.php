@@ -16,7 +16,8 @@ use App\Entity\AbstractEntity;
  * @apiEntity schema/review/reviewEntity.json
  *
  * @property int    $id
- * @property bool $positive
+ * @property bool   $positive
+ * @property string $description
  * @property int    $created_at
  * @property int    $updated_at
  */
@@ -24,7 +25,7 @@ class Review extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
-    protected $visible = ['id', 'gate_id', 'recommendation_id', 'user_id', 'positive', 'created_at'];
+    protected $visible = ['id', 'positive', 'description', 'gate_id', 'recommendation_id', 'user_id', 'created_at'];
     /**
      * {@inheritdoc}
      */

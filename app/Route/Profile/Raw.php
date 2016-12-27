@@ -89,7 +89,7 @@ class Raw implements RouteInterface {
                 'App\Controller\Profile\Raw:listAll'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::CREDENTIAL))
+            ->add($auth(Auth::CREDENTIAL | Auth::IDENTITY))
             ->setName('raw:listAll');
     }
 

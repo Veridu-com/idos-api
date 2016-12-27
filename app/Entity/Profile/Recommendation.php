@@ -29,6 +29,7 @@ class Recommendation extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $visible = [
+        'id',
         'result',
         'passed',
         'failed',

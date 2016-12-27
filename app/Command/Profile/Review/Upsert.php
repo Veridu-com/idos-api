@@ -27,11 +27,23 @@ class Upsert extends AbstractCommand {
      */
     public $gateId;
     /**
+     * Review recommendation id.
+     *
+     * @var int
+     */
+    public $recommendationId;
+    /**
      * Review positive.
+     *
+     * @var bool
+     */
+    public $positive;
+    /**
+     * Review description.
      *
      * @var string
      */
-    public $positive;
+    public $description;
     /**
      * Identity.
      *
@@ -49,6 +61,18 @@ class Upsert extends AbstractCommand {
 
         if (isset($parameters['positive'])) {
             $this->positive = $parameters['positive'];
+        }
+
+        if (isset($parameters['description'])) {
+            $this->description = $parameters['description'];
+        }
+
+        if (isset($parameters['decoded_gate_id'])) {
+            $this->gateId = $parameters['decoded_gate_id'];
+        }
+
+        if (isset($parameters['decoded_recommendation_id'])) {
+            $this->recommendationId = $parameters['decoded_recommendation_id'];
         }
 
         return $this;

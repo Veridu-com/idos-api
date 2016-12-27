@@ -369,7 +369,7 @@ class S12CategoriesSeed extends AbstractSeed {
                 'display_name' => 'No Chargeback',
                 'name'         => 'noChargebackGate',
                 'type'         => 'gate',
-                'description'  => 'No Chargeback gate.',
+                'description'  => 'Displays the likelihood a user will not commit chargeback fraud.',
                 'handler_id'   => 1
             ],
             [

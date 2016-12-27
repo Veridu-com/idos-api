@@ -45,12 +45,11 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByRecommendationId(int $recommendationId, int $identityId, int $userId) : Review {
+    public function findOneByRecommendationIdAndUserId(int $recommendationId, int $userId) : Review {
         return $this->findOneBy(
             [
             'recommendation_id' => $recommendationId,
-            'user_id'           => $userId,
-            'identity_id'       => $identityId
+            'user_id'           => $userId
             ]
         );
     }
@@ -58,12 +57,11 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
     /**
      * {@inheritdoc}
      */
-    public function findOneByGateId(int $gateId, int $identityId, int $userId) : Review {
+    public function findOneByGateIdAndUserId(int $gateId, int $userId) : Review {
         return $this->findOneBy(
             [
             'gate_id'     => $gateId,
-            'user_id'     => $userId,
-            'identity_id' => $identityId
+            'user_id'     => $userId
             ]
         );
     }
