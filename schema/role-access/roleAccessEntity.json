@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.idos.io/1.0/schema/user/roleAccessEntity.json",
+    "title": "RoleAccess",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "RoleAccess's id",
+            "type": "integer"
+        },
+        "role": {
+            "description": "RoleAccess's role",
+            "type": "string"
+        },
+        "access": {
+            "description": "RoleAccess's access",
+            "type": "integer"
+        },
+        "resource": {
+            "description": "RoleAccess's resource",
+            "type": "string"
+        },
+        "created_at": {
+            "description": "RoleAccess's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "RoleAccess's last updated unixtime",
+            "type": ["integer", "null"]
+        }
+    },
+    "required": [
+        "name",
+        "created_at",
+        "update_at"
+    ]
+}

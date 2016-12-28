@@ -22,7 +22,7 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
+        $this->httpMethod = 'PATCH';
         $this->uri        = sprintf('/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources/%s', 1321189817);
     }
 
@@ -38,13 +38,13 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'test',
                     'tags' => [
-                        'tagTest' => 123456
+                        'access_token' => 'token'
                     ]
                 ]
             )
         );
+
         $response = $this->process($request);
         $status   = $response->getStatusCode();
         $this->assertSame(200, $status);
@@ -89,9 +89,8 @@ class UpdateOneTest extends AbstractFunctional {
             $environment,
             json_encode(
                 [
-                    'name' => 'test',
                     'tags' => [
-                        'tagTest' => 123456
+                        'otp_code' => 123456
                     ]
                 ]
             )

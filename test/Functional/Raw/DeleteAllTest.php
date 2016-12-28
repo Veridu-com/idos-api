@@ -6,12 +6,11 @@
 
 declare(strict_types = 1);
 
-namespace Test\Functional\ServiceHandler;
+namespace Test\Functional\Raw;
 
-use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
-class ListAllTest extends AbstractFunctional {
+class DeleteAllTest extends AbstractRawFunctional {
     use Traits\RequiresAuth,
         Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
@@ -19,37 +18,37 @@ class ListAllTest extends AbstractFunctional {
 
     protected function setUp() {
         parent::setUp();
-
-        $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/companies/veridu-ltd/service-handlers';
+        $this->httpMethod = 'DELETE';
+        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
+        $this->populateDb();
     }
 
     public function testSuccess() {
+        //DELETE ALL
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
-                    'HTTP_AUTHORIZATION' => $this->identityTokenHeader()
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
                 ]
             )
         );
 
         $response = $this->process($request);
-
         $this->assertSame(200, $response->getStatusCode());
-
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-
+        $this->assertArrayHasKey('deleted', $body);
+        $this->assertEquals(3, $body['deleted']);
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'serviceHandler/listAll.json',
+                'raw/deleteAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
-        );
+       );
     }
 }

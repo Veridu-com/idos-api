@@ -21,10 +21,11 @@ class ListAllTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/scores';
+        $this->uri        = sprintf('/1.0/profiles/%s/scores', $this->userName);
     }
 
     public function testSuccess() {
+
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -183,7 +184,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'creator:name=idOS Scraper'
+                    'QUERY_STRING'       => 'creator:name=idOS Machine Learning'
                 ]
             )
         );

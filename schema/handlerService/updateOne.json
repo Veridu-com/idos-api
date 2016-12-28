@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "PUT /service-handlers/{serviceSlug}",
+    "title": "PUT /companies/{companySlug}/handlers/{handlerId}/handler-services/{handlerServiceId}",
     "type": "object",
     "properties": {
         "status": {
@@ -8,9 +8,9 @@
             "type": "boolean"
         },
         "data": {
-            "description": "Service Handler response payload",
+            "description": "Handler Service response payload",
             "type": "object",
-            "$ref": "serviceHandlerEntity.json"
+            "$ref": "handlerServiceEntity.json"
         },
         "updated": {
             "description": "Unixtime of the last update",

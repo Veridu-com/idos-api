@@ -36,14 +36,20 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
     ];
 
     /**
-     * {@inheritdoc}
+     * Retrieves collection of Handler Services by companyId.
+     * 
+     * @param int   $companyId   The company id
+     * @param array $queryParams The query parameters
+     * 
+     * @return \Illuminate\Support\Collection
      */
-    public function getByCompanyId(int $companyId, array $queryParams) : Collection {
-        return $this->findBy(
-            [
-            'company_id' => $companyId
-            ], $queryParams
-        );
+    public function getByServiceCompanyId(int $companyId, array $queryParams = []) : Collection {
+        $query = $this->query()
+            ->join('services', 'services.id', 'handler_services.handler_id')
+            ->where('services.company_id', $companyId);
+        $query = $this->filter($query, $queryParams);
+
+        return $query->get(['handler_services.*']);
     }
 
     /**
@@ -54,11 +60,29 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getByHandlerId(int $handlerId, array $queryParams) : Collection {
+    public function getByHandlerId(int $handlerId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
             'handler_id' => $handlerId
             ], $queryParams
         );
+    }
+
+    /**
+     * Retrieves collection of Handler Services by companyId.
+     * 
+     * @param int   $companyId   The company id
+     * @param array $queryParams The query parameters
+     * 
+     * @return \Illuminate\Support\Collection
+     */
+    public function getByHandlerCompanyId(int $companyId, array $queryParams = []) : Collection {
+        $query = $this->query()
+            ->join('handlers', 'handlers.id', 'handler_services.handler_id')
+            ->where('handlers.company_id', $companyId);
+
+        $query = $this->filter($query, $queryParams);
+
+        return $query->get(['handler_services.*']);
     }
 }

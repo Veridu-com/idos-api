@@ -45,6 +45,30 @@ class DBReview extends AbstractSQLDBRepository implements ReviewInterface {
     /**
      * {@inheritdoc}
      */
+    public function findOneByRecommendationIdAndUserId(int $recommendationId, int $userId) : Review {
+        return $this->findOneBy(
+            [
+            'recommendation_id' => $recommendationId,
+            'user_id'           => $userId
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByGateIdAndUserId(int $gateId, int $userId) : Review {
+        return $this->findOneBy(
+            [
+            'gate_id'     => $gateId,
+            'user_id'     => $userId
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getByUserIdAndIdentityId(int $identityId, int $userId, array $queryParams = []) : Collection {
         return $this->findBy(
             [

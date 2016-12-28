@@ -23,15 +23,31 @@ class UpsertTest extends AbstractRawFunctional {
         $this->populateDb();
 
         $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/raw';
+        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
     }
 
     public function testCreated() {
+        $this->httpMethod = 'DELETE';
+        $this->uri        = sprintf('/1.0/profiles/%s/raw', $this->userName);
+
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
                 'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-            ]
+              ]
+        );
+
+        $request  = $this->createRequest($environment);
+        $response = $this->process($request);
+
+        $this->assertSame(200, $response->getStatusCode());
+
+        $this->httpMethod = 'PUT';
+        $environment      = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+              ]
         );
 
         $request = $this->createRequest(
@@ -39,7 +55,7 @@ class UpsertTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'source_id'  => 1321189817,
-                    'collection' => 'name-test',
+                    'collection' => 'testing',
                     'data'       => ['test' => 'data']
                 ]
             )
@@ -51,7 +67,7 @@ class UpsertTest extends AbstractRawFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('name-test', $body['data']['collection']);
+        $this->assertSame('testing', $body['data']['collection']);
         $this->assertSame(['test' => 'data'], $body['data']['data']);
 
         /*
@@ -67,8 +83,6 @@ class UpsertTest extends AbstractRawFunctional {
     }
 
     public function testUpdated() {
-        $this->testCreated();
-
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -81,20 +95,22 @@ class UpsertTest extends AbstractRawFunctional {
             json_encode(
                 [
                     'source_id'  => 1321189817,
-                    'collection' => 'name-test',
-                    'data'       => ['test' => 'data2']
+                    'collection' => 'testing',
+                    'data'       => ['test' => 'data']
                 ]
             )
         );
 
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('name-test', $body['data']['collection']);
-        $this->assertSame(['test' => 'data2'], $body['data']['data']);
+        $this->assertSame('testing', $body['data']['collection']);
+        $this->assertSame(['test' => 'data'], $body['data']['data']);
 
         /*
          * Validates Response using the Json Schema.
@@ -108,7 +124,7 @@ class UpsertTest extends AbstractRawFunctional {
         );
     }
 
-    public function testSourceName() {
+    public function testNoSource() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
@@ -120,19 +136,14 @@ class UpsertTest extends AbstractRawFunctional {
             $environment,
             json_encode(
                 [
-                    'source_id'  => null,
-                    'collection' => 'name-test',
+                    'collection' => 'testName',
                     'data'       => ['test' => 'data']
                 ]
             )
         );
 
         $response = $this->process($request);
-        $this->assertSame(500, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
+        $this->assertSame(404, $response->getStatusCode());
 
         /*
          * Validates Response using the Json Schema.

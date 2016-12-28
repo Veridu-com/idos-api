@@ -30,6 +30,7 @@ class Flag extends AbstractEntity {
         'creator',
         'slug',
         'attribute',
+        'category',
         'created_at',
         'updated_at'
     ];
@@ -45,6 +46,7 @@ class Flag extends AbstractEntity {
      * {@inheritdoc}
      */
     public $relationships = [
-        'creator' => 'Handler'
+        'creator'  => 'Handler',
+        'category' => 'Category'
     ];
 }

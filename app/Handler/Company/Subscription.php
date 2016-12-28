@@ -105,7 +105,7 @@ class Subscription implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : SubscriptionEntity {
         try {
-            $this->validator->assertSlug($command->categorySlug);
+            $this->validator->assertString($command->categoryName);
             $this->validator->assertCredential($command->credential);
             $this->validator->assertIdentity($command->identity);
         } catch (ValidationException $e) {
@@ -118,10 +118,10 @@ class Subscription implements HandlerInterface {
 
         $subscription = $this->repository->create(
             [
-                'identity_id'   => $command->identity->id,
-                'category_slug' => $command->categorySlug,
-                'credential_id' => $command->credential->id,
-                'created_at'    => time()
+                'identity_id'      => $command->identity->id,
+                'category_name'    => $command->categoryName,
+                'credential_id'    => $command->credential->id,
+                'created_at'       => time()
             ]
         );
 

@@ -67,6 +67,43 @@ class UpdateOneTest extends AbstractFunctional {
         );
     }
 
+    public function testEmptyAttribute() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode(
+                [
+                    'attribute' => '',
+                    'name'      => 'name-test',
+                    'value'     => 0.6
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'score/updateOne.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
     public function testNotFound() {
         $this->uri = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/scores/000000';
 
@@ -90,43 +127,6 @@ class UpdateOneTest extends AbstractFunctional {
 
         $response = $this->process($request);
         $this->assertSame(404, $response->getStatusCode());
-
-        $body = json_decode((string) $response->getBody(), true);
-        $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
-        /*
-         * Validates Response using the Json Schema.
-         */
-        $this->assertTrue(
-            $this->validateSchema(
-                'error.json',
-                json_decode((string) $response->getBody())
-            ),
-            $this->schemaErrors
-        );
-    }
-
-    public function testEmptyAttribute() {
-        $environment = $this->createEnvironment(
-            [
-                'HTTP_CONTENT_TYPE'  => 'application/json',
-                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
-            ]
-        );
-
-        $request = $this->createRequest(
-            $environment,
-            json_encode(
-                [
-                    'attribute' => '',
-                    'name'      => 'name-test',
-                    'value'     => 0.6
-                ]
-            )
-        );
-
-        $response = $this->process($request);
-        $this->assertSame(400, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

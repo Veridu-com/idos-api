@@ -69,6 +69,19 @@ class DBFlag extends AbstractSQLDBRepository implements FlagInterface {
                 'name'
             ]
         ],
+
+        'category' => [
+            'type'       => 'MANY_TO_ONE',
+            'table'      => 'categories',
+            'foreignKey' => 'slug',
+            'key'        => 'name',
+            'entity'     => 'Category',
+            'nullable'   => false,
+            'hydrate'    => [
+                'display_name',
+                'description'
+            ]
+        ],
     ];
 
     /**

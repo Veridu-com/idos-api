@@ -210,4 +210,43 @@ class Reviews implements ControllerInterface {
 
         return $this->commandBus->handle($command);
     }
+
+    /**
+     * Update or create a review for the given user.
+     *
+     * @apiEndpointRequiredParam body int gate_id 1
+     * @apiEndpointRequiredParam body boolean positive false
+     * @apiEndpointResponse 200 schema/review/upsert.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function upsert(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $identity = $request->getAttribute('identity');
+
+        $user = $this->userRepository->find($request->getAttribute('decodedUserId'));
+
+        $command = $this->commandFactory->create('Profile\\Review\\Upsert');
+        $command
+            ->setParameters($request->getParsedBody() ?: [])
+            ->setParameter('user', $user)
+            ->setParameter('identity', $identity);
+
+        $review = $this->commandBus->handle($command);
+
+        $body = [
+            'data'    => $review->toArray(),
+            'updated' => $review->updatedAt
+        ];
+
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
 }

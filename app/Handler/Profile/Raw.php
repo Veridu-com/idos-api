@@ -251,7 +251,7 @@ class Raw implements HandlerInterface {
             $this->validator->assertCredential($command->credential);
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
-                $e->getFullMessage(),
+                $e->getMessage(),
                 400,
                 $e
             );

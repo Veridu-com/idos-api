@@ -22,8 +22,8 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
-        $this->uri        = '/1.0/companies/veridu-ltd/services/1321189817';
+        $this->httpMethod = 'PATCH';
+        $this->uri        = '/1.0/companies/veridu-ltd/services/517015180';
     }
 
     public function testSuccess() {
@@ -39,7 +39,15 @@ class UpdateOneTest extends AbstractFunctional {
             json_encode(
                 [
                     'listens' => [
-                        'idos:source.facebook.added'
+                        'idos:raw.amazon.created',
+                        'idos:raw.dropbox.created',
+                        'idos:raw.facebook.created',
+                        'idos:raw.google.created',
+                        'idos:raw.linkedin.created',
+                        'idos:raw.paypal.created',
+                        'idos:raw.spotify.created',
+                        'idos:raw.twitter.created',
+                        'idos:raw.yahoo.created'
                     ]
                 ]
             )
@@ -52,7 +60,20 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         // assertEquals: we want the array key => value combinations to be the same, but not necessarily in the same order
-        $this->assertEquals(['idos:source.facebook.added'], $body['data']['listens']);
+        $this->assertEquals(
+            [
+                'idos:raw.amazon.created',
+                'idos:raw.dropbox.created',
+                'idos:raw.facebook.created',
+                'idos:raw.google.created',
+                'idos:raw.linkedin.created',
+                'idos:raw.paypal.created',
+                'idos:raw.spotify.created',
+                'idos:raw.twitter.created',
+                'idos:raw.yahoo.created'
+            ],
+            $body['data']['listens']
+        );
 
         /*
          * Validates Response using the Json Schema.
@@ -67,7 +88,7 @@ class UpdateOneTest extends AbstractFunctional {
     }
 
     public function testNotFound() {
-        $this->uri = '/1.0/companies/veridu-ltd/services/13211898171';
+        $this->uri = '/1.0/companies/veridu-ltd/services/123';
 
         $environment = $this->createEnvironment(
             [

@@ -21,5 +21,5 @@ interface HandlerServiceInterface extends RepositoryInterface {
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getByCompanyId(int $companyId, array $queryParams) : Collection;
+    public function getByHandlerCompanyId(int $companyId, array $queryParams) : Collection;
 }

@@ -35,7 +35,7 @@
         "fzaninotto/faker": "^1.6",
         "giggsey/libphonenumber-for-php": "^7.3",
         "guzzlehttp/guzzle": "^6.2.2",
-        "illuminate/database": "5.*",
+        "illuminate/database": "5.3.16",
         "illuminate/pagination": "5.*",
         "jenssegers/mongodb": "^3.0",
         "jenssegers/optimus": "^0.2",
@@ -58,7 +58,7 @@
     },
     "require-dev": {
         "ext-xsl": "*",
-        "friendsofphp/php-cs-fixer": "^1.13",
+        "friendsofphp/php-cs-fixer": "1.13",
         "humbug/humbug": "dev-master",
         "pdepend/pdepend": "@stable",
         "phploc/phploc": "@stable",

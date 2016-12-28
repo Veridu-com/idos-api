@@ -21,11 +21,11 @@ class ListAllSystem extends AbstractCommand {
      */
     public $queryParams;
     /**
-     * Identity.
+     * Target company.
      *
-     * @var \App\Entity\Identity
+     * @var \App\Entity\Company
      */
-    public $identity;
+    public $targetCompany;
 
     /**
      * {@inheritdoc}

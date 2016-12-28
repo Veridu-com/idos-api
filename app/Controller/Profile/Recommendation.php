@@ -77,7 +77,7 @@ class Recommendation implements ControllerInterface {
 
         $body = [
             'data'    => $recommendation->toArray(),
-            'updated' => $recommendation->updated_at
+            'updated' => $recommendation->updatedAt
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');

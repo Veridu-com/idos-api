@@ -21,7 +21,7 @@ class GetOneTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/recommendation';
+        $this->uri        = sprintf('/1.0/profiles/%s/recommendation', $this->userName);
     }
 
     public function testSuccess() {
@@ -33,18 +33,18 @@ class GetOneTest extends AbstractFunctional {
             )
         );
         $response = $this->process($request);
-        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
-        $this->assertFalse($body['status']);
+        $this->assertTrue($body['status']);
 
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'error.json',
+                'recommendation/getOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

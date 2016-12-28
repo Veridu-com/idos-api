@@ -34,7 +34,8 @@ class Reviews implements RouteInterface {
             'review:listAll',
             'review:getOne',
             'review:createNew',
-            'review:updateOne'
+            'review:updateOne',
+            'review:upsert'
         ];
     }
 
@@ -59,6 +60,7 @@ class Reviews implements RouteInterface {
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
+        self::upsert($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -187,12 +189,46 @@ class Reviews implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
                 'App\Controller\Profile\Reviews:updateOne'
             )
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('review:updateOne');
+    }
+
+    /**
+     * Create or update a review.
+     *
+     * Creates or updates a new review for the given user.
+     *
+     * @apiEndpoint POST /companies/{companySlug}/profiles/{userId}/reviews
+     * @apiGroup Profile
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int userId 1827452
+     *
+     * @param \Slim\App $app
+     * @param \callable $auth
+     * @param \callable $permission
+     *
+     * @return void
+     *
+     * @link docs/sources/review/upsert.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
+     * @see \App\Controller\Profile\Reviews::upsert
+     */
+    private static function upsert(App $app, callable $auth, callable $permission) {
+        $app
+            ->put(
+                '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews',
+                'App\Controller\Profile\Reviews:upsert'
+            )
+            ->add($permission(EndpointPermission::PUBLIC_ACTION))
+            ->add($auth(Auth::IDENTITY))
+            ->setName('review:upsert');
     }
 }

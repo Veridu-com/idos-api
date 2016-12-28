@@ -80,12 +80,12 @@ class Metrics implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAllSystem(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $identity = $request->getAttribute('identity');
+        $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Metric\\ListAllSystem');
         $command
             ->setParameter('queryParams', $request->getQueryParams())
-            ->setParameter('identity', $identity);
+            ->setParameter('targetCompany', $targetCompany);
 
         $entities = $this->commandBus->handle($command);
 
@@ -119,12 +119,12 @@ class Metrics implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAllUser(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $identity = $request->getAttribute('identity');
+        $targetCompany = $request->getAttribute('targetCompany');
 
         $command = $this->commandFactory->create('Metric\\ListAllUser');
         $command
             ->setParameter('queryParams', $request->getQueryParams())
-            ->setParameter('identity', $identity);
+            ->setParameter('targetCompany', $targetCompany);
 
         $entities = $this->commandBus->handle($command);
 

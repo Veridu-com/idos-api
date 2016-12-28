@@ -151,47 +151,27 @@ class Sso implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function createNew(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $providerName     = $request->getParsedBodyParam('provider');
+        $sourceName       = $request->getParsedBodyParam('provider');
         $credentialPubKey = $request->getParsedBodyParam('credential');
         $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
 
         $availableProviders = $this->settings['sso_providers'];
-        if (! in_array($providerName, $availableProviders)) {
+        if (! in_array($sourceName, $availableProviders)) {
             throw new AppException('Unsupported Provider', 400);
         }
 
         // hosted social application (credential based)
-        $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $providerName);
-        $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $providerName);
-        $credentialSettingVer = sprintf('%s.%s.version', $credentialPubKey, $providerName);
+        $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $sourceName);
+        $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $sourceName);
+        $credentialSettingVer = sprintf('%s.%s.version', $credentialPubKey, $sourceName);
         // hosted social application (company based)
-        $providerSettingKey = sprintf('%s.key', $providerName);
-        $providerSettingSec = sprintf('%s.secret', $providerName);
-        $providerSettingVer = sprintf('%s.version', $providerName);
+        $providerSettingKey = sprintf('%s.key', $sourceName);
+        $providerSettingSec = sprintf('%s.secret', $sourceName);
+        $providerSettingVer = sprintf('%s.version', $sourceName);
 
-        $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
-            $credential->companyId,
-            'AppTokens',
-            [
-                $credentialSettingKey,
-                $credentialSettingSec,
-                $credentialSettingVer
-            ]
-        );
+        $settings = $this->settingRepository->getSourceTokens($credential->companyId, $credentialPubKey, $sourceName);
 
-        if (count($settings) < 2) {
-            $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
-                $credential->companyId,
-                'AppTokens',
-                [
-                    $providerSettingKey,
-                    $providerSettingSec,
-                    $providerSettingVer
-                ]
-            );
-        }
-
-        switch ($providerName) {
+        switch ($sourceName) {
             case 'amazon':
                 $command = $this->commandFactory->create('Sso\\CreateNewAmazon');
                 break;

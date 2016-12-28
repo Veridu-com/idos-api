@@ -13,12 +13,11 @@ class MainTest extends AbstractFunctional {
         parent::setUp();
 
         $this->httpMethod = 'GET';
-        $this->uri        = '/';
+        $this->uri        = '/1.0/';
     }
 
     public function testSuccess() {
-        $request = $this->createRequest($this->createEnvironment());
-
+        $request  = $this->createRequest($this->createEnvironment());
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
 

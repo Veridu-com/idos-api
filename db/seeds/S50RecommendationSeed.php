@@ -14,7 +14,7 @@ class S50RecommendationSeed extends AbstractSeed {
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'result'     => 'pass',
+                'result'     => 'true',
                 'passed'     => json_encode(
                     [
                     [
@@ -62,7 +62,7 @@ class S50RecommendationSeed extends AbstractSeed {
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'result'     => 'fail',
+                'result'     => 'false',
                 'passed'     => json_encode(
                     [
 

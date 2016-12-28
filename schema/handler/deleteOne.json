@@ -1,11 +1,11 @@
 {
     "$schema" : "http://json-schema.org/draft-04/schema#",
-    "title": "DELETE /profiles/{userName}/sources/{sourceId}/raw/{rawName}",
+    "title": "DELETE /companies/{companySlug}/handlers",
     "type": "object",
     "properties": {
         "status": {
-            "description": "Response status flag",
-            "type": "boolean"
+          "description": "Response status flag",
+          "type": "boolean"
         }
     },
     "required": [

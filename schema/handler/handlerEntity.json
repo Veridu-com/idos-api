@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "https://api.idos.io/1.0/schema/handler/handlerEntity.json",
+    "title": "Handler",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "Handler Id",
+            "type": "integer",
+            "pattern": ""
+        }, 
+        "name": {
+            "description": "Handler Name",
+            "type": "string",
+            "pattern": ""
+        }, 
+        "public": {
+            "description": "Handler Url",
+            "type": "string",
+            "pattern": ""
+        },
+        "enabled": {
+            "description": "Handler enabled",
+            "type": "boolean",
+            "pattern": "" 
+        },
+        "created_at": {
+            "description": "Handler's creation unixtime",
+            "type": "integer"
+        },
+        "updated_at": {
+            "description": "Unixtime of the last update",
+            "type": ["integer", "null"]
+        }
+    },
+    "dependencies": {
+    },
+    "required": [
+        "id",
+        "name",
+        "public",
+        "enabled",
+        "created_at",
+        "updated_at"
+    ]
+}

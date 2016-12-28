@@ -45,6 +45,22 @@ class UpsertBulk extends AbstractCommand {
      * @return \App\Command\Profile\Feature\UpsertBulk
      */
     public function setParameters(array $parameters) : self {
+        if (isset($parameters['user'])) {
+            $this->user = $parameters['user'];
+        }
+
+        if (isset($parameters['features'])) {
+            $this->features = $parameters['features'];
+        }
+
+        if (isset($parameters['handler'])) {
+            $this->handler = $parameters['handler'];
+        }
+
+        if (isset($parameters['credential'])) {
+            $this->credential = $parameters['credential'];
+        }
+
         return $this;
     }
 }

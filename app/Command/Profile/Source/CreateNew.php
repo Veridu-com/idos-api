@@ -21,6 +21,13 @@ class CreateNew extends AbstractCommand {
      * @var string
      */
     public $name;
+
+    /**
+     * Attribute name.
+     *  
+     * @var string
+     */
+    public $attibute;
     /**
      * Source ip address.
      *
@@ -70,6 +77,10 @@ class CreateNew extends AbstractCommand {
 
         if (isset($parameters['ipaddr'])) {
             $this->ipaddr = $parameters['ipaddr'];
+        }
+
+        if (isset($parameters['attribute'])) {
+            $this->attribute = $parameters['attribute'];
         }
 
         return $this;

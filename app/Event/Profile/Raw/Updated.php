@@ -88,6 +88,6 @@ class Updated extends AbstractServiceQueueEvent {
      * {inheritdoc}.
      **/
     public function __toString() {
-        return sprintf('idos:raw.%s.updated', $this->source->name);
+        return sprintf('idos:raw.%s', $this->source->name);
     }
 }
