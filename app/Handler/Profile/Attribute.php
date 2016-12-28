@@ -11,9 +11,11 @@ namespace App\Handler\Profile;
 use App\Command\Profile\Attribute\CreateNew;
 use App\Command\Profile\Attribute\DeleteAll;
 use App\Command\Profile\Attribute\Upsert;
+use App\Command\Profile\Attribute\UpsertBulk;
 use App\Entity\Profile\Attribute as AttributeEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
+use App\Exception\Upsert\Profile\AttributeException as UpsertException;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
@@ -173,6 +175,58 @@ class Attribute implements HandlerInterface {
         );
         $event = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->credential);
         $this->emitter->emit($event);
+
+        return $entity;
+    }
+
+    /**
+     * Creates or updates attribute bulk data for the given user.
+     *
+     * @param \App\Command\Profile\Attribute\UpsertBulk $command
+     *
+     * @see \App\Repository\DBAttribute::save
+     *
+     * @throws \App\Exception\Validade\AttributeExceptions
+     * @throws \App\Exception\Create\AttributeExceptions
+     *
+     * @return \App\Entity\Attribute
+     */
+    public function handleUpsertBulk(UpsertBulk $command) : AttributeEntity {
+        try {
+            $this->validator->assertUser($command->user);
+            $this->validator->assertAttributeArray($command->attributes);
+            $this->validator->assertCredential($command->credential);
+        } catch (ValidationException $e) {
+            throw new Validate\Profile\AttributeException(
+                $e->getFullMessage(),
+                400,
+                $e
+            );
+        }
+        $entities = [];
+        foreach ($command->attributes as $attribute) {
+            $entities[] = $this->repository->create($attribute);
+        }
+
+        try {
+            $this->repository->beginTransaction();
+            $now = date('Y-m-d H:i:s');
+
+            foreach ($entities as $entity) {
+                $this->repository->upsert($entity, ['user_id', 'name'], [
+                    'value'      => $entity->value,
+                    'updated_at' => $now
+                ]);
+            }
+
+            $event = $this->eventFactory->create('Profile\\Attribute\\UpsertedBulk', $command->attributes, $command->user, $command->credential);
+            $this->emitter->emit($event);
+
+            $this->repository->commit();
+        } catch (\Exception $e) {
+            $this->repository->rollBack();
+            throw new UpsertException('Error while upserting attributes.');
+        }
 
         return $entity;
     }
