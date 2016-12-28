@@ -189,9 +189,9 @@ class Attribute implements HandlerInterface {
      * @throws \App\Exception\Validade\AttributeExceptions
      * @throws \App\Exception\Create\AttributeExceptions
      *
-     * @return \App\Entity\Attribute
+     * @return array entities
      */
-    public function handleUpsertBulk(UpsertBulk $command) : AttributeEntity {
+    public function handleUpsertBulk(UpsertBulk $command) : array {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertAttributeArray($command->attributes);
@@ -228,7 +228,7 @@ class Attribute implements HandlerInterface {
             throw new UpsertException('Error while upserting attributes.');
         }
 
-        return $entity;
+        return $entities;
     }
 
     /**
