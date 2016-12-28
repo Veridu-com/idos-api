@@ -66,10 +66,10 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $flag) {
-            $this->assertContains($flag['slug'], ['first-name-mismatch', 'last-name-mismatch']);
+            $this->assertContains($flag['slug'], ['firstNameMismatch', 'lastNameMismatch']);
             $this->assertContains($flag['attribute'], ['first-name', 'last-name']);
         }
 
@@ -101,10 +101,10 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $flag) {
-            $this->assertContains($flag['slug'], ['first-name-mismatch', 'last-name-mismatch']);
+            $this->assertContains($flag['slug'], ['firstNameMismatch', 'lastNameMismatch']);
             $this->assertContains($flag['attribute'], ['first-name', 'last-name']);
         }
 
@@ -139,7 +139,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $flag) {
-            $this->assertContains($flag['slug'], ['first-name-mismatch']);
+            $this->assertContains($flag['slug'], ['firstNameMismatch']);
             $this->assertContains($flag['attribute'], ['first-name']);
         }
 
@@ -171,10 +171,10 @@ class ListAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $flag) {
-            $this->assertContains($flag['slug'], ['first-name-mismatch', 'last-name-mismatch']);
+            $this->assertContains($flag['slug'], ['firstNameMismatch', 'lastNameMismatch']);
             $this->assertContains($flag['attribute'], ['first-name', 'last-name']);
         }
 
@@ -216,7 +216,7 @@ class ListAllTest extends AbstractFunctional {
                 $body = json_decode((string) $response->getBody(), true);
                 $this->assertNotEmpty($body);
                 $this->assertTrue($body['status']);
-                $this->assertCount(2, $body['data']);
+                $this->assertCount(1, $body['data']);
 
                 $keys = [];
 

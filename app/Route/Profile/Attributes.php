@@ -121,6 +121,6 @@ class Attributes implements RouteInterface {
             )
             ->add($permission(EndpointPermission::PRIVATE_ACTION))
             ->add($auth(Auth::USER | Auth::CREDENTIAL))
-            ->setName('attributes:getOne');
+            ->setName('attribute:getOne');
     }
 }
