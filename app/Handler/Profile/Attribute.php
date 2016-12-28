@@ -253,22 +253,13 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
-
-        // FIXME replace this with a query that is inside the fuckin' repository
-        $entities = $this->repository->findBy(
-            [
-                'user_id' => $command->user->id
-            ],
-            $command->queryParams
-        );
+        
+        $entities = $this->repository->findByUserId($command->user->id, $command->queryParams);
 
         $affectedRows = 0;
 
         try {
-            // FIXME replace this with a deleteBy
-            foreach ($entities as $entity) {
-                $affectedRows += $this->repository->delete($entity->id);
-            }
+            $affectedRows = $this->repository->deleteByUserId($command->user->id);
 
             if ($affectedRows) {
                 $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->credential);

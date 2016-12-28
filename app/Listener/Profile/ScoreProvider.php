@@ -28,36 +28,21 @@ class ScoreProvider extends Listener\AbstractListenerProvider {
         $emitter       = $container->get('eventEmitter');
         $gearmanClient = $container->get('gearmanClient');
 
-        // Listeners
-        $evaluateRecommendationListener = new Listener\Profile\Recommendation\EvaluateRecommendationListener(
-            $settingRepository,
-            $serviceRepository,
-            $userRepository,
-            $eventLogger,
-            $eventFactory,
-            $emitter,
-            $gearmanClient
-        );
-
         $this->events = [
             Score\Created::class => [
                 new Listener\LogFiredEventListener($eventLogger),
-                $evaluateRecommendationListener,
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Score\Updated::class => [
                 new Listener\LogFiredEventListener($eventLogger),
-                $evaluateRecommendationListener,
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Score\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),
-                $evaluateRecommendationListener,
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Score\DeletedMulti::class => [
                 new Listener\LogFiredEventListener($eventLogger),
-                $evaluateRecommendationListener,
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ]
         ];
