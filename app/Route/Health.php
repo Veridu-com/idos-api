@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
-use App\Middleware\Auth;
-use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -45,11 +43,8 @@ class Health implements RouteInterface {
             );
         };
 
-        $container            = $app->getContainer();
-        $authMiddleware       = $container->get('authMiddleware');
-        $permissionMiddleware = $container->get('endpointPermissionMiddleware');
-
-        self::check($app, $authMiddleware, $permissionMiddleware);
+        self::check($app);
+        self::status($app);
     }
 
     /**
@@ -61,24 +56,42 @@ class Health implements RouteInterface {
      * @apiGroup Health
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
      *
      * @return void
      *
      * @link docs/health/check.md
-     * @see \App\Middleware\Auth::__invoke
-     * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Health::check
      */
-    private static function check(App $app, callable $auth, callable $permission) {
+    private static function check(App $app) {
         $app
             ->get(
-                '/health',
+                '/health/check',
                 'App\Controller\Health:check'
             )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::NONE))
             ->setName('health:check');
+    }
+
+    /**
+     * API internal status.
+     *
+     * Returns the API internal status such as application opcode cache.
+     *
+     * @apiEndpoint GET /health/status
+     * @apiGroup Health
+     *
+     * @param \Slim\App $app
+     *
+     * @return void
+     *
+     * @link docs/health/status.md
+     * @see \App\Controller\Health::status
+     */
+    private static function status(App $app) {
+        $app
+            ->get(
+                '/health/status',
+                'App\Controller\Health:status'
+            )
+            ->setName('health:status');
     }
 }

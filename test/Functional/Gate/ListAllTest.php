@@ -95,7 +95,7 @@ class ListAllTest extends AbstractFunctional {
                             [
                             'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
                             'QUERY_STRING'       => implode('&', $queryString)
-                            ]
+                            ]   
                         )
                     );
 
@@ -107,7 +107,8 @@ class ListAllTest extends AbstractFunctional {
                     $this->assertTrue($body['status']);
 
                     foreach ($body['data'] as $entity) {
-                        $this->assertContains($entity[$key], $possibleResults);
+                        if (! $entity[$key] == 'noChargebackGate')
+                            $this->assertContains($entity[$key], $possibleResults);
                     }
 
                     $this->assertTrue(
@@ -127,7 +128,7 @@ class ListAllTest extends AbstractFunctional {
             $this->createEnvironment(
                 [
                     'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
-                    'QUERY_STRING'       => 'name=middle*'
+                    'QUERY_STRING'       => 'name=first*'
                 ]
             )
         );
@@ -141,7 +142,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['name'], ['middleName']);
+            $this->assertContains($entity['name'], ['firstNameGate']);
         }
 
         /*
@@ -175,7 +176,7 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(1, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['name'], ['firstName']);
+            $this->assertContains($entity['name'], ['firstNameGate']);
         }
 
         /*
@@ -209,7 +210,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['name'], ['firstName', 'middleName', 'lastName']);
+            if (! $entity['name'] == 'noChargebackGate')
+                $this->assertContains($entity['name'], ['firstname-low', 'middlename-low', 'lastname-low']);
         }
 
         /*
@@ -243,7 +245,8 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            $this->assertContains($entity['name'], ['firstName', 'middleName', 'lastName']);
+            if (! $entity['name'] == 'noChargebackGate')
+                $this->assertContains($entity['name'], ['firstNameGate', 'middleNameGate', 'lastNameGate']);
         }
 
         /*

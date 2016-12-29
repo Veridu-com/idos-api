@@ -70,7 +70,7 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(3, $body['deleted']);
+        $this->assertSame(2, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.
@@ -100,7 +100,7 @@ class DeleteAllTest extends AbstractFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame(3, $body['deleted']);
+        $this->assertSame(2, $body['deleted']);
 
         /*
          * Validates Response using the Json Schema.

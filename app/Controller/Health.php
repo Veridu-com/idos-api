@@ -110,14 +110,38 @@ class Health implements ControllerInterface {
 
         $status = $queueServerStatus && $sqlDatabaseStatus && $noSqlDatabaseStatus;
         $body   = [
-            'queue_server' => $queueServerStatus,
-            'sql_server'   => $sqlDatabaseStatus,
-            'nosql_server' => $noSqlDatabaseStatus
+            'queue' => $queueServerStatus,
+            'sql'   => $sqlDatabaseStatus,
+            'nosql' => $noSqlDatabaseStatus
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('statusCode', $status === true ? 200 : 503)
+            ->setParameter('request', $request)
+            ->setParameter('response', $response)
+            ->setParameter('body', $body);
+
+        return $this->commandBus->handle($command);
+    }
+
+    /**
+     * API internal status.
+     *
+     * @apiEndpointResponse 200 schema/health/status.json
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    public function status(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
+        $body = [
+            'opcache' => extension_loaded('Zend OPcache') ? opcache_get_status() : [],
+            'cache'   => []
+        ];
+        $command = $this->commandFactory->create('ResponseDispatch');
+        $command
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

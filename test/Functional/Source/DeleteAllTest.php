@@ -48,16 +48,17 @@ class DeleteAllTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertArrayHasKey('deleted', $body);
-        $this->assertEquals(3, $body['deleted']);
+        $this->assertEquals(8, $body['deleted']);
+
         /*
          * Validates Response using the Json Schema.
          */
         $this->assertTrue(
             $this->validateSchema(
-                'sources/deleteAll.json',
+                'source/deleteOne.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
-       );
+        );
     }
 }
