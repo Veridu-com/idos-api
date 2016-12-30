@@ -139,7 +139,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
             $identityCompanies = $identityCompanies->merge($children->toArray());
         }
 
-        $identity->relations['company'] = $identityCompanies->unique('slug');
+        $identity->relations['company'] = $identityCompanies->unique('slug')->values();
 
         return $identity;
     }

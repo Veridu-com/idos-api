@@ -43,19 +43,19 @@ class AddSourceTagFromUpsertBulkFeatureListener extends AbstractListener {
                 continue;
             }
 
-            if ($feature['name'] === 'profilePicture') {
+            if ($feature['name'] === 'profilePicture' && $feature['value']) {
                 $event->source->setTag('profile_picture', $feature['value']);
                 $this->sourceRepository->save($event->source);
                 continue;
             }
 
-            if ($feature['name'] === 'profileId') {
+            if ($feature['name'] === 'profileId' && $feature['value']) {
                 $event->source->setTag('profile_id', $feature['value']);
                 $this->sourceRepository->save($event->source);
                 continue;
             }
 
-            if ($feature['name'] === 'profileURL') {
+            if ($feature['name'] === 'profileURL' && $feature['value']) {
                 $event->source->setTag('profile_url', $feature['value']);
                 $this->sourceRepository->save($event->source);
                 continue;
