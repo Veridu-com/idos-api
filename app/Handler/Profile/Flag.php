@@ -142,7 +142,7 @@ class Flag implements HandlerInterface {
 
             $event = $this->eventFactory->create('Profile\\Flag\\Created', $entity, $command->credential);
             $this->emitter->emit($event);
-        } catch (\Exception $exception) {
+        } catch (\Exception $e) {
             throw new Create\Profile\FlagException('Error while trying to create a flag', 500, $e);
         }
 

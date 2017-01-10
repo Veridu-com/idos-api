@@ -189,9 +189,9 @@ class Attribute implements HandlerInterface {
      * @throws \App\Exception\Validade\AttributeExceptions
      * @throws \App\Exception\Create\AttributeExceptions
      *
-     * @return \App\Entity\Attribute
+     * @return array entities
      */
-    public function handleUpsertBulk(UpsertBulk $command) : AttributeEntity {
+    public function handleUpsertBulk(UpsertBulk $command) : array {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertAttributeArray($command->attributes);
@@ -228,7 +228,7 @@ class Attribute implements HandlerInterface {
             throw new UpsertException('Error while upserting attributes.');
         }
 
-        return $entity;
+        return $entities;
     }
 
     /**
@@ -253,22 +253,13 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
-
-        // FIXME replace this with a query that is inside the fuckin' repository
-        $entities = $this->repository->findBy(
-            [
-                'user_id' => $command->user->id
-            ],
-            $command->queryParams
-        );
+        
+        $entities = $this->repository->findByUserId($command->user->id, $command->queryParams);
 
         $affectedRows = 0;
 
         try {
-            // FIXME replace this with a deleteBy
-            foreach ($entities as $entity) {
-                $affectedRows += $this->repository->delete($entity->id);
-            }
+            $affectedRows = $this->repository->deleteByUserId($command->user->id);
 
             if ($affectedRows) {
                 $event = $this->eventFactory->create('Profile\\Attribute\\DeletedMulti', $entities, $command->credential);

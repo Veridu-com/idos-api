@@ -32,8 +32,8 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name      = 'middle-name-mismatch';
-        $attribute = 'middle-name';
+        $name      = 'first-name-mismatch';
+        $attribute = 'first-name';
         $request   = $this->createRequest(
             $environment, json_encode(
                 [
