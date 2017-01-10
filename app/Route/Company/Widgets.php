@@ -18,7 +18,7 @@ use Slim\App;
 /**
  * Company Widget.
  *
- * A Widget is a out of the box, one line of code integration that we provided for customers.
+ * A Widget is a out of the box, one line of code integration that we provide for customers.
  *
  * @link docs/management/widgets/overview.md
  * @see \App\Controller\Company\Widgets
