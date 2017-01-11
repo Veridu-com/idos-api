@@ -117,7 +117,7 @@ class Features implements RouteInterface {
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission
-     *
+     *  
      * @return void
      *
      * @link docs/profile/features/getOne.md
@@ -220,10 +220,10 @@ class Features implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profile/features/createNew.md
+     * @link docs/profile/features/upsert.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profile\Features::createNew
+     * @see \App\Controller\Profile\Features::upsert
      */
     private static function upsert(App $app, callable $auth, callable $permission) {
         $app
@@ -253,10 +253,10 @@ class Features implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profile/features/createNew.md
+     * @link docs/profile/features/upsertBulk.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profile\Features::createNew
+     * @see \App\Controller\Profile\Features::upsertBulk
      */
     private static function upsertBulk(App $app, callable $auth, callable $permission) {
         $app
