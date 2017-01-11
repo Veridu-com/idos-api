@@ -190,7 +190,7 @@ class Members implements RouteInterface {
      *
      * Updates one member data.
      *
-     * @apiEndpoint PUT /companies/{companySlug}/members/{memberId}
+     * @apiEndpoint PATCH /companies/{companySlug}/members/{memberId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -210,7 +210,7 @@ class Members implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/members/{memberId:[0-9]+}',
                 'App\Controller\Company\Members:updateOne'
             )
