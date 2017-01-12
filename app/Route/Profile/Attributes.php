@@ -64,8 +64,8 @@ class Attributes implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/attributes
      * @apiGroup Profile
-     * @apiAuth header token CredentialToken|UserToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential|User Token
-     * @apiAuth query token credentialToken|userToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential|User Token
+     * @apiAuth header token CredentialToken|UserToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential or User Token
+     * @apiAuth query token credentialToken|userToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential or User Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app

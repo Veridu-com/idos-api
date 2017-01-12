@@ -67,8 +67,8 @@ class Raw implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/raw
      * @apiGroup Profile
-     * @apiAuth header token CredentialToken|IdentityToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential|Identity Token
-     * @apiAuth query token credentialToken|identityToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential|Identity Token
+     * @apiAuth header token CredentialToken|IdentityToken  wqxehuwqwsthwosjbxwwsqwsdi A valid Credential or Identity Token
+     * @apiAuth query token credentialToken|identityToken  wqxehuwqwsthwosjbxwwsqwsdi A valid Credential or Identity Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
