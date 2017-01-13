@@ -76,7 +76,8 @@ class Hooks implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\DBHook::getAllByCredentialPubKey
+     * @see \App\Repository\DBHook::findByPubKey
+     * @see \App\Repository\DBHook::getAllByCredentialPubKeyAndCompanyId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
