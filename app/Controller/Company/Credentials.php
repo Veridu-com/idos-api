@@ -74,6 +74,8 @@ class Credentials implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
+     * @see \App\Repository\DBCredential::findByCompanyId
+     *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
