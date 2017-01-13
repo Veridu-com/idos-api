@@ -68,6 +68,7 @@ class Service implements RouteInterface {
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -100,6 +101,7 @@ class Service implements RouteInterface {
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment string serviceId 1
      *
      * @param \Slim\App $app
@@ -133,6 +135,7 @@ class Service implements RouteInterface {
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -161,10 +164,11 @@ class Service implements RouteInterface {
      *
      * Updates the information for a single Service.
      *
-     * @apiEndpoint GET /companies/{companySlug}/services/{serviceId}
+     * @apiEndpoint PATCH /companies/{companySlug}/services/{serviceId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment  string  serviceId 1
      *
      * @param \Slim\App $app
@@ -198,6 +202,7 @@ class Service implements RouteInterface {
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment  string  serviceId 1
      *
      * @param \Slim\App $app
