@@ -45,8 +45,9 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
      */
     public function getByServiceCompanyId(int $companyId, array $queryParams = []) : Collection {
         $query = $this->query()
-            ->join('services', 'services.id', 'handler_services.handler_id')
+            ->join('services', 'services.handler_service_id', 'handler_services.id')
             ->where('services.company_id', $companyId);
+
         $query = $this->filter($query, $queryParams);
 
         return $query->get(['handler_services.*']);
