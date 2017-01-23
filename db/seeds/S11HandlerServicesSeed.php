@@ -264,6 +264,17 @@ class S11HandlerServicesSeed extends AbstractSeed {
                 'enabled'  => true,
             ],
             [
+                'name'          => 'idOS OTP SMS Handler',
+                'url'           => 'https://sms.idos.io/1.0/sms/otp',
+                'handler_id'    => 4,
+                'listens'       => json_encode(
+                    [
+                        'idos:otp.phone.created'
+                    ]
+                ),
+                'enabled'  => true,
+            ],
+            [
                 'name'          => 'idOS ProfilePicture Candidates',
                 'url'           => 'https://model.idos.io/morpheus/profilepic-candidates',
                 'handler_id'    => 1,
