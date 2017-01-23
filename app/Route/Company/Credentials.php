@@ -152,6 +152,7 @@ class Credentials implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -181,7 +182,7 @@ class Credentials implements RouteInterface {
      *
      * Updates Credential's specific information
      *
-     * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}
+     * @apiEndpoint PATCH /companies/{companySlug}/credentials/{pubKey}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -190,6 +191,7 @@ class Credentials implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *
@@ -200,7 +202,7 @@ class Credentials implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
                 'App\Controller\Company\Credentials:updateOne'
             )
@@ -228,6 +230,7 @@ class Credentials implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

@@ -97,7 +97,7 @@ class Processes implements RouteInterface {
      * @apiEndpoint GET /profiles/{userName}/processes/{processId}
      * @apiGroup Profile
      * @apiAuth header token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
-     * @apiAuth query token CredentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
+     * @apiAuth query token credentialToken  wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int processId 3412
      *

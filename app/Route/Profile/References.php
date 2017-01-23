@@ -95,6 +95,7 @@ class References implements RouteInterface {
             ->add($auth(Auth::CREDENTIAL))
             ->setName('reference:listAll');
     }
+
     /**
      * Retrieves a reference.
      *
@@ -167,7 +168,7 @@ class References implements RouteInterface {
      *
      * Updates a reference for the given user.
      *
-     * @apiEndpoint PUT /profiles/{userName}/references/{referenceName}
+     * @apiEndpoint PATCH /profiles/{userName}/references/{referenceName}
      * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token

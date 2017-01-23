@@ -178,7 +178,7 @@ class Companies implements RouteInterface {
      *
      * Updates the information for a single Company.
      *
-     * @apiEndpoint PUT /companies/{companySlug}
+     * @apiEndpoint PATCH /companies/{companySlug}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
