@@ -35,7 +35,7 @@ class HandlerService implements RouteInterface {
             'handler-services:getOne',
             'handler-services:createNew',
             'handler-services:updateOne',
-            'handler-services:deleteOne',
+            'handler-services:deleteOne'
         ];
     }
 
