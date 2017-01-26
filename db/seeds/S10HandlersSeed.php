@@ -50,6 +50,16 @@ class S10HandlersSeed extends AbstractSeed {
                 'enabled'       => true,
             ],
             [
+                'name'          => 'idOS Widget',
+                'company_id'    => 1,
+                'role'          => 'standalone',
+                'auth_username' => '***REMOVED***',
+                'auth_password' => '***REMOVED***',
+                'public'        => 'fc67686377379aa3e61220b663630759',
+                'private'       => '75ccf03ad65d10878a4efa73a228c239',
+                'enabled'       => true,
+            ],
+            [
                 'name'          => 'idOS SMS',
                 'company_id'    => 1,
                 'role'          => 'sms-sender',
@@ -68,17 +78,7 @@ class S10HandlersSeed extends AbstractSeed {
                 'public'        => '07e39b8686a34adef8ec913e074d6274',
                 'private'       => 'e18db301f4a6d99985f8ced05fa41ae7',
                 'enabled'       => true,
-            ],
-            [
-                'name'          => 'idOS Widget',
-                'company_id'    => 1,
-                'role'          => 'standalone',
-                'auth_username' => '***REMOVED***',
-                'auth_password' => '***REMOVED***',
-                'public'        => 'fc67686377379aa3e61220b663630759',
-                'private'       => '75ccf03ad65d10878a4efa73a228c239',
-                'enabled'       => true,
-            ],
+            ]
         ];
 
         $table = $this->table('handlers');

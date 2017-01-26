@@ -266,28 +266,6 @@ class S11HandlerServicesSeed extends AbstractSeed {
                 'enabled'  => true,
             ],
             [
-                'name'          => 'idOS OTP SMS Handler',
-                'url'           => 'https://sms.idos.io/1.0/sms/otp',
-                'handler_id'    => 5,
-                'listens'       => json_encode(
-                    [
-                        'idos:otp.phone.created'
-                    ]
-                ),
-                'enabled'  => true,
-            ],
-            [
-                'name'          => 'idOS CRA Handler for TraceSmart',
-                'url'           => 'https://cra.idos.io/1.0/cra/tracesmart',
-                'handler_id'    => 6,
-                'listens'       => json_encode(
-                    [
-                        'idos:cra.tracesmart'
-                    ]
-                ),
-                'enabled'  => true,
-            ],
-            [
                 'name'          => 'idOS ProfilePicture Candidates',
                 'url'           => 'https://model.idos.io/morpheus/profilepic-candidates',
                 'handler_id'    => 1,
@@ -296,7 +274,7 @@ class S11HandlerServicesSeed extends AbstractSeed {
             ],
             [
                 'name'          => 'idOS Widget Handler',
-                'handler_id'    => 7,
+                'handler_id'    => 5,
                 'url'           => 'https://widget.idos.io/1.0',
                 'listens'       => json_encode([]),
                 'enabled'       => true
@@ -307,7 +285,29 @@ class S11HandlerServicesSeed extends AbstractSeed {
                 'handler_id'    => 3,
                 'listens'       => json_encode(['idos.recommendation']),
                 'enabled'       => true
-            ]
+            ],
+            [
+                'name'          => 'idOS OTP SMS Handler',
+                'url'           => 'https://sms.idos.io/1.0/sms/otp',
+                'handler_id'    => 6,
+                'listens'       => json_encode(
+                    [
+                        'idos:otp.phone.created'
+                    ]
+                ),
+                'enabled'  => true,
+            ],
+            [
+                'name'          => 'idOS CRA Handler for TraceSmart',
+                'url'           => 'https://cra.idos.io/1.0/cra/tracesmart',
+                'handler_id'    => 7,
+                'listens'       => json_encode(
+                    [
+                        'idos:cra.tracesmart'
+                    ]
+                ),
+                'enabled'  => true,
+            ],
         ];
 
         $table = $this->table('handler_services');
