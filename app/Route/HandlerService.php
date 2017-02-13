@@ -32,9 +32,8 @@ class HandlerService implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'handler-services:listAll',
-            'handler-services:deleteAll',
-            'handler-services:createNew',
             'handler-services:getOne',
+            'handler-services:createNew',
             'handler-services:updateOne',
             'handler-services:deleteOne'
         ];
@@ -59,9 +58,8 @@ class HandlerService implements RouteInterface {
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteOne($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
