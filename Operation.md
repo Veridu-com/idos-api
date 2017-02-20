@@ -27,4 +27,10 @@ You may also set these variables using a `.env` file in the project root.
 
 # Running
 
-In order to run the idOS API you should setup a web server supporting PHP 7.1.
+In order to run the idOS API you should have PHP 7.1. To start the application you can run in the terminal:
+
+```
+php -S 127.0.0.1:8080 -t public/index.php
+```
+
+You can then open `http://localhost/` on your browser.
