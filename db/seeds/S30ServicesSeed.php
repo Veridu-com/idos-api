@@ -228,7 +228,7 @@ class S30ServicesSeed extends AbstractSeed {
             ],
             [
                 'company_id'         => 1,
-                'handler_service_id' => 28, // idOS OTP Email handler
+                'handler_service_id' => 29, // idOS OTP Email handler
                 'listens'            => json_encode(
                     [
                         'idos:otp.email.created',
@@ -238,13 +238,13 @@ class S30ServicesSeed extends AbstractSeed {
             ],
             [
                 'company_id'            => 1,
-                'handler_service_id'    => 29, // idOS ProfilePicture Candidates
+                'handler_service_id'    => 30, // idOS ProfilePicture Candidates
                 'listens'               => $mlListens,
                 'created_at'            => $now
             ],
             [
                 'company_id'            => 1,
-                'handler_service_id'    => 31, // idOS Recommendation
+                'handler_service_id'    => 32, // idOS Recommendation
                 'listens'               => json_encode(
                     [
                     'idos.recommendation'
@@ -254,7 +254,7 @@ class S30ServicesSeed extends AbstractSeed {
             ],
             [
                 'company_id'         => 1,
-                'handler_service_id' => 32, // idOS OTP SMS handler
+                'handler_service_id' => 33, // idOS OTP SMS handler
                 'listens'            => json_encode(
                     [
                         'idos:otp.phone.created',
@@ -264,7 +264,7 @@ class S30ServicesSeed extends AbstractSeed {
             ],
             [
                 'company_id'         => 1,
-                'handler_service_id' => 33, // idOS CRA handler - tracesmart
+                'handler_service_id' => 34, // idOS CRA handler - tracesmart
                 'listens'            => json_encode(
                     [
                         'idos:cra.tracesmart',
