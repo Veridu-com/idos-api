@@ -33,4 +33,4 @@ In order to run the idOS API you should have PHP 7.1. To start the application y
 php -S 127.0.0.1:8080 -t public/index.php
 ```
 
-You can then open `http://localhost/` on your browser.
+You can then open `http://localhost:8080/` on your browser.
