@@ -251,6 +251,26 @@ class S30ServicesSeed extends AbstractSeed {
                     ]
                 ),
                 'created_at'    => $now
+            ],
+            [
+                'company_id'         => 1,
+                'handler_service_id' => 33, // idOS OTP SMS handler
+                'listens'            => json_encode(
+                    [
+                        'idos:otp.phone.created',
+                    ]
+                ),
+                'created_at' => $now
+            ],
+            [
+                'company_id'         => 1,
+                'handler_service_id' => 34, // idOS CRA handler - tracesmart
+                'listens'            => json_encode(
+                    [
+                        'idos:cra.tracesmart',
+                    ]
+                ),
+                'created_at' => $now
             ]
         ];
 

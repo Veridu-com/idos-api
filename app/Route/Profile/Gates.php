@@ -173,7 +173,7 @@ class Gates implements RouteInterface {
      *
      * Updates Gate's specific information.
      *
-     * @apiEndpoint PUT /profiles/{userName}/gates/{gateSlug}
+     * @apiEndpoint PATCH /profiles/{userName}/gates/{gateSlug}
      * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
@@ -203,9 +203,9 @@ class Gates implements RouteInterface {
     }
 
     /**
-     * Update a single Gate.
+     * Creates or updates a single Gate.
      *
-     * Updates Gate's specific information.
+     * Creates or updates gate's specific information.
      *
      * @apiEndpoint PUT /profiles/{userName}/gates/{gateSlug}
      * @apiGroup Profile
@@ -219,10 +219,10 @@ class Gates implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profile/gates/updateOne.md
+     * @link docs/profile/gates/upsert.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Gates::updateOne
+     * @see \App\Controller\Gates::upsert
      */
     private static function upsert(App $app, callable $auth, callable $permission) {
         $app

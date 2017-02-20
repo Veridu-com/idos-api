@@ -62,12 +62,12 @@ class Subscriptions implements RouteInterface {
      *
      * Retrieves a complete list of all subscriptions that belong to the requesting credential.
      *
-     * @apiEndpoint GET /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions
+     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/subscriptions
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string credentialPubKey g89d7fg9d87gf9d8fgdfgadasd
+     * @apiEndpointURIFragment string pubKey g89d7fg9d87gf9d8fgdfgadasd
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -101,12 +101,12 @@ class Subscriptions implements RouteInterface {
      *
      * Creates a new subscription for the requesting company.
      *
-     * @apiEndpoint POST /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions
+     * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}/subscriptions
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string credentialPubKey SDFSDGDHG67567567
+     * @apiEndpointURIFragment string pubKey SDFSDGDHG67567567
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -140,16 +140,17 @@ class Subscriptions implements RouteInterface {
      *
      * Deletes a single Subscription that belongs to the target company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{credentialPubKey}/subscriptions/{subscriptionId}
+     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/subscriptions/{subscriptionId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string credentialPubKey SDFSDGDHG67567567
+     * @apiEndpointURIFragment string pubKey SDFSDGDHG67567567
      * @apiEndpointURIFragment int subscriptionId 321654
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

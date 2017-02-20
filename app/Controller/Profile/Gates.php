@@ -76,7 +76,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\DBGate::getAllByUserId
+     * @see \App\Repository\Profile\DBGate::getByUserId
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -108,7 +108,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Repository\DBGate::findByUserIdAndSlug
+     * @see \App\Repository\Profile\DBGate::findBySlug
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -137,13 +137,13 @@ class Gates implements ControllerInterface {
      * Creates a new Feture for the given user.
      *
      * @apiEndpointRequiredParam body string name 18+ Gate name
-     * @apiEndpointRequiredParam body boolean pass true Gate pass
+     * @apiEndpointRequiredParam body string confidence_level medium Gate confidence level
      * @apiEndpointResponse 201 schema/gate/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\Gate::handleCreateNew
+     * @see \App\Handler\Profile\Gate::handleCreateNew
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -179,7 +179,7 @@ class Gates implements ControllerInterface {
     /**
      * Updates one Gate of the User.
      *
-     * @apiEndpointRequiredParam body boolean pass false Gate pass
+     * @apiEndpointRequiredParam body string confidence_level medium Gate confidence level
      * @apiEndpointResponse 200 schema/gate/updateOne.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -223,11 +223,13 @@ class Gates implements ControllerInterface {
      * Creates a new Gate for the given user.
      *
      * @apiEndpointRequiredParam body string name 18+ Gate name
-     * @apiEndpointRequiredParam body boolean pass true Gate pass
+     * @apiEndpointRequiredParam body string confidence_level medium Gate confidence level
      * @apiEndpointResponse 201 schema/gate/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
+     *
+     * @see \App\Handler\Profile\Gate::handleUpsert
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -268,7 +270,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\Gate::handleDeleteOne
+     * @see \App\Handler\Profile\Gate::handleDeleteOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -307,7 +309,7 @@ class Gates implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @see \App\Handler\Gate::handleDeleteAll
+     * @see \App\Handler\Profile\Gate::handleDeleteAll
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

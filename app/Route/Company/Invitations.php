@@ -179,7 +179,7 @@ class Invitations implements RouteInterface {
      *
      * Updates a single Invitation that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/invitation/{invitationId}
+     * @apiEndpoint PATCH /companies/{companySlug}/invitation/{invitationId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -195,7 +195,7 @@ class Invitations implements RouteInterface {
      * @link docs/companies/invitations/updateOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Company\Invitations::deleteOne
+     * @see \App\Controller\Company\Invitations::updateOne
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app

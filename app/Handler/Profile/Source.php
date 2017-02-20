@@ -225,7 +225,7 @@ class Source implements HandlerInterface {
         // CRA check
         $sendCRA = false;
         if ((isset($command->tags['cra_check']))
-            && ($this->validator->flagValue($command->tags['cra_check']))
+            && ($this->validator->validateFlag($command->tags['cra_check']))
         ) {
             // Reference code for tracking the CRA Result
             $command->tags['cra_reference'] = md5(

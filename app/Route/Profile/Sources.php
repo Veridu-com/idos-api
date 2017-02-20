@@ -168,7 +168,7 @@ class Sources implements RouteInterface {
      *
      * Updates a Source's specific information.
      *
-     * @apiEndpoint PUT /profiles/{userName}/sources/{sourceId}
+     * @apiEndpoint PATCH /profiles/{userName}/sources/{sourceId}
      * @apiGroup Profile
      * @apiAuth header token UserToken|CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
      * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid User's|Credential's Token
@@ -181,7 +181,7 @@ class Sources implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profiles/sources/deleteAll.md
+     * @link docs/profiles/sources/updateOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Sources::updateOne
@@ -215,7 +215,7 @@ class Sources implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profiles/sources/deleteAll.md
+     * @link docs/profiles/sources/deleteOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Sources::deleteOne

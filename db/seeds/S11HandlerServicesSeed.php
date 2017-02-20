@@ -32,7 +32,8 @@ class S11HandlerServicesSeed extends AbstractSeed {
                 'idos:feature.paypal.created',
                 'idos:feature.spotify.created',
                 'idos:feature.twitter.created',
-                'idos:feature.yahoo.created'
+                'idos:feature.yahoo.created',
+                'idos:feature.tracesmart.created'
             ]
         );
 
@@ -46,7 +47,8 @@ class S11HandlerServicesSeed extends AbstractSeed {
                 'idos:raw.paypal.created',
                 'idos:raw.spotify.created',
                 'idos:raw.twitter.created',
-                'idos:raw.yahoo.created'
+                'idos:raw.yahoo.created',
+                'idos:raw.tracesmart.created'
             ]
         );
 
@@ -283,7 +285,29 @@ class S11HandlerServicesSeed extends AbstractSeed {
                 'handler_id'    => 3,
                 'listens'       => json_encode(['idos.recommendation']),
                 'enabled'       => true
-            ]
+            ],
+            [
+                'name'          => 'idOS OTP SMS Handler',
+                'url'           => 'https://sms.idos.io/1.0/sms/otp',
+                'handler_id'    => 6,
+                'listens'       => json_encode(
+                    [
+                        'idos:otp.phone.created'
+                    ]
+                ),
+                'enabled'  => true,
+            ],
+            [
+                'name'          => 'idOS CRA Handler for TraceSmart',
+                'url'           => 'https://cra.idos.io/1.0/cra/tracesmart',
+                'handler_id'    => 7,
+                'listens'       => json_encode(
+                    [
+                        'idos:cra.tracesmart'
+                    ]
+                ),
+                'enabled'  => true,
+            ],
         ];
 
         $table = $this->table('handler_services');

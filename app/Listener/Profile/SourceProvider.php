@@ -62,6 +62,16 @@ class SourceProvider extends Listener\AbstractListenerProvider {
                 ),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
+            Source\CRA::class => [
+                new Listener\LogFiredEventListener($eventLogger),
+                new QueueServiceTaskListener(
+                    $credentialRepository,
+                    $serviceRepository,
+                    $eventFactory,
+                    $emitter,
+                    $gearmanClient
+                )
+            ],
             Source\Updated::class => [
                 new Listener\LogFiredEventListener($eventLogger),
                 new Listener\MetricEventListener($commandBus, $commandFactory)
