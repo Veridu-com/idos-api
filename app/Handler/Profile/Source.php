@@ -253,7 +253,7 @@ class Source implements HandlerInterface {
             $key  = $keys->where('property', sprintf('%s.%s.key', $command->credential->public, $command->name));
 
             // main variables
-            $appKey     = strlen($key->first()->value) ? $key->first()->value : 'Veridu';
+            $appKey     = (! empty($key->first()->value)) ? $key->first()->value : 'Veridu';
             $profileId  = $command->tags['profile_id'];
             $sourceName = $command->name;
 
