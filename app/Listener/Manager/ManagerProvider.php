@@ -14,13 +14,13 @@ use App\Listener\AbstractListenerProvider;
 use Interop\Container\ContainerInterface;
 
 class ManagerProvider extends AbstractListenerProvider {
-  /**
-   * Class constructor.
-   *
-   * @param \Interop\Container\ContainerInterface  $container
-   *
-   * @return void
-   */
+    /**
+     * Class constructor.
+     *
+     * @param \Interop\Container\ContainerInterface $container
+     *
+     * @return void
+     */
     public function __construct(ContainerInterface $container) {
         $eventLogger = ($container->get('log'))('Event');
 

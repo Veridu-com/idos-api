@@ -16,7 +16,7 @@ class HookProvider extends Listener\AbstractListenerProvider {
     /**
      * Class constructor.
      *
-     * @param \Interop\Container\ContainerInterface  $container
+     * @param \Interop\Container\ContainerInterface $container
      *
      * @return void
      */

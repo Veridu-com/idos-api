@@ -13,13 +13,13 @@ use App\Listener;
 use Interop\Container\ContainerInterface;
 
 class ProcessProvider extends Listener\AbstractListenerProvider {
-  /**
-   * Class constructor.
-   *
-   * @param \Interop\Container\ContainerInterface  $container
-   *
-   * @return void
-   */
+    /**
+     * Class constructor.
+     *
+     * @param \Interop\Container\ContainerInterface $container
+     *
+     * @return void
+     */
     public function __construct(ContainerInterface $container) {
         $eventLogger    = ($container->get('log'))('Event');
         $commandBus     = $container->get('commandBus');
