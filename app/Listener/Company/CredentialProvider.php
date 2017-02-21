@@ -13,6 +13,13 @@ use App\Listener;
 use Interop\Container\ContainerInterface;
 
 class CredentialProvider extends Listener\AbstractListenerProvider {
+  /**
+   * Class constructor.
+   *
+   * @param \Interop\Container\ContainerInterface  $container
+   *
+   * @return void
+   */
     public function __construct(ContainerInterface $container) {
         $eventLogger    = ($container->get('log'))('Event');
         $commandBus     = $container->get('commandBus');

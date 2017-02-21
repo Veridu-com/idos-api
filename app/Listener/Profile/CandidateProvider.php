@@ -13,6 +13,13 @@ use App\Listener;
 use Interop\Container\ContainerInterface;
 
 class CandidateProvider extends Listener\AbstractListenerProvider {
+  /**
+   * Class constructor.
+   *
+   * @param \Interop\Container\ContainerInterface  $container
+   *
+   * @return void
+   */
     public function __construct(ContainerInterface $container) {
         $repositoryFactory   = $container->get('repositoryFactory');
         $candidateRepository = $repositoryFactory->create('Profile\Candidate');

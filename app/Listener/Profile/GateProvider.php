@@ -14,6 +14,13 @@ use App\Listener\Manager\QueueServiceTaskListener;
 use Interop\Container\ContainerInterface;
 
 class GateProvider extends Listener\AbstractListenerProvider {
+  /**
+   * Class constructor.
+   *
+   * @param \Interop\Container\ContainerInterface  $container
+   *
+   * @return void
+   */
     public function __construct(ContainerInterface $container) {
         $eventLogger       = ($container->get('log'))('Event');
         $commandBus        = $container->get('commandBus');

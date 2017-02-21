@@ -14,6 +14,13 @@ use App\Listener\Manager\QueueServiceTaskListener;
 use Interop\Container\ContainerInterface;
 
 class FeatureProvider extends Listener\AbstractListenerProvider {
+  /**
+   * Class constructor.
+   *
+   * @param \Interop\Container\ContainerInterface  $container
+   *
+   * @return void
+   */
     public function __construct(ContainerInterface $container) {
         $repositoryFactory        = $container->get('repositoryFactory');
         $credentialRepository     = $repositoryFactory->create('Company\Credential');
