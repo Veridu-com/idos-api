@@ -114,10 +114,10 @@ class Features implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      * @apiEndpointURIFragment int featureId 3214
      *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *  
+     * @param  \Slim\App $app
+     * @param  \callable $auth
+     * @param  \callable $permission
+     *                                
      * @return void
      *
      * @link docs/profile/features/getOne.md

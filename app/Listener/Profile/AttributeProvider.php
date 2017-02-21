@@ -13,6 +13,13 @@ use App\Listener;
 use Interop\Container\ContainerInterface;
 
 class AttributeProvider extends Listener\AbstractListenerProvider {
+    /**
+     * Class constructor.
+     *
+     * @param \Interop\Container\ContainerInterface $container
+     *
+     * @return void
+     */
     public function __construct(ContainerInterface $container) {
         $eventLogger       = ($container->get('log'))('Event');
         $commandBus        = $container->get('commandBus');
@@ -54,7 +61,7 @@ class AttributeProvider extends Listener\AbstractListenerProvider {
                 new Listener\LogFiredEventListener($eventLogger),
                 $evaluateRecommendationListener,
                 // @FIXME talk with team about it.
-                // new Listener\MetricEventListener($commandBus, $commandFactory) 
+                // new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Attribute\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),

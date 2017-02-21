@@ -192,8 +192,8 @@ class Settings implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
      *
-     * @param \Slim\App $app
-     * @param \callable $auth
+     * @param \Slim\App  $app
+     * @param \callable  $auth
      * @param \calllable $permission
      *
      * @return void
