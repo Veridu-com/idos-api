@@ -204,8 +204,8 @@ class Sso implements ControllerInterface {
         $socialTokens = $this->settings['social_tokens'][$sourceName] ?? null;
 
         if ($socialTokens) {
-            $command->setParameter('appKey', $socialTokens['key']);
-            $command->setParameter('appSecret', $socialTokens['secret']);
+            $command->setParameter('appKey', $socialTokens['key'] ?? null);
+            $command->setParameter('appSecret', $socialTokens['secret'] ?? null);
         }
 
         foreach ($settings as $setting) {
