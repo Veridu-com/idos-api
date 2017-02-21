@@ -253,7 +253,7 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
-        
+
         $entities = $this->repository->findByUserId($command->user->id, $command->queryParams);
 
         $affectedRows = 0;

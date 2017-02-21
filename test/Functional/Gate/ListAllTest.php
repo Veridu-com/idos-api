@@ -95,7 +95,7 @@ class ListAllTest extends AbstractFunctional {
                             [
                             'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
                             'QUERY_STRING'       => implode('&', $queryString)
-                            ]   
+                            ]
                         )
                     );
 
