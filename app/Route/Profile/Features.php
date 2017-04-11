@@ -117,7 +117,7 @@ class Features implements RouteInterface {
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission
-     *  
+     *
      * @return void
      *
      * @link docs/profile/features/getOne.md
