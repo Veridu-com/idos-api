@@ -124,10 +124,10 @@ class Widgets implements ControllerInterface {
      * Creates a new widget for the given credential.
      *
      * @apiEndpointRequiredParam body string hash abcd1234 Hash
-     * @apiEndpointRequiredParam body string label Widget Label 
+     * @apiEndpointRequiredParam body string label Widget Label
      * @apiEndpointRequiredParam body string type embedded-widget Type
-     * @apiEndpointParam body boolean enabled true Enabled 
-     * @apiEndpointParam body string config ['gates' => '18+'] Settings 
+     * @apiEndpointParam body boolean enabled true Enabled
+     * @apiEndpointParam body string config ['gates' => '18+'] Settings
      * @apiEndpointResponse 201 schema/widget/widgetEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
@@ -169,10 +169,10 @@ class Widgets implements ControllerInterface {
      * Updates a widget from the given credential.
      *
      * @apiEndpointRequiredParam body string hash abcd1234 Hash
-     * @apiEndpointRequiredParam body string label Widget Label 
+     * @apiEndpointRequiredParam body string label Widget Label
      * @apiEndpointRequiredParam body string type embedded-widget Type
      * @apiEndpointResponse 200 schema/widget/updateOne.json
-     * @apiEndpointParam body boolean enabled true Enabled 
+     * @apiEndpointParam body boolean enabled true Enabled
      * @apiEndpointParam body string config ['gates' => '18+'] Settings
      *
      * @param \Psr\ServerRequestInterface $request

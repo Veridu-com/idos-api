@@ -24,7 +24,7 @@ class CreateNew extends AbstractCommand {
 
     /**
      * Attribute name.
-     *  
+     *
      * @var string
      */
     public $attibute;

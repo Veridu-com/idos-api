@@ -90,10 +90,12 @@ class Metrics implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/metrics/system',
                 'App\Controller\Metrics:listAllSystem'
             )
-            ->add($permission(
-                EndpointPermission::PARENT_ACTION | EndpointPermission::SELF_ACTION,
-                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+            ->add(
+                $permission(
+                    EndpointPermission::PARENT_ACTION | EndpointPermission::SELF_ACTION,
+                    Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('metric:listAllSystem');
     }
@@ -126,10 +128,12 @@ class Metrics implements RouteInterface {
                 '/companies/{companySlug:[a-z0-9_-]+}/metrics/user',
                 'App\Controller\Metrics:listAllUser'
             )
-            ->add($permission(
-                EndpointPermission::PARENT_ACTION | EndpointPermission::SELF_ACTION,
-                Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
-            ))
+            ->add(
+                $permission(
+                    EndpointPermission::PARENT_ACTION | EndpointPermission::SELF_ACTION,
+                    Role::COMPANY_OWNER_BIT | Role::COMPANY_ADMIN_BIT
+                )
+            )
             ->add($auth(Auth::IDENTITY))
             ->setName('metric:listAllUser');
     }

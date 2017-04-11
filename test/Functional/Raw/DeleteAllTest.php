@@ -49,6 +49,6 @@ class DeleteAllTest extends AbstractRawFunctional {
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors
-       );
+        );
     }
 }

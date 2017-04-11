@@ -347,7 +347,6 @@ class Feature implements HandlerInterface {
             $this->validator->assertCredential($command->credential);
             $this->validator->assertHandler($command->handler);
             $this->validator->assertFeatures($command->features);
-
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),

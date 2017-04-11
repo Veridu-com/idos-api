@@ -124,10 +124,10 @@ class Attribute implements HandlerInterface {
 
         $entity = $this->repository->create(
             [
-            'user_id'    => $command->user->id,
-            'name'       => $command->name,
-            'value'      => $command->value,
-            'created_at' => time()
+                'user_id'    => $command->user->id,
+                'name'       => $command->name,
+                'value'      => $command->value,
+                'created_at' => time()
             ]
         );
 
@@ -203,6 +203,7 @@ class Attribute implements HandlerInterface {
                 $e
             );
         }
+
         $entities = [];
         foreach ($command->attributes as $attribute) {
             $entities[] = $this->repository->create($attribute);
@@ -213,10 +214,17 @@ class Attribute implements HandlerInterface {
             $now = date('Y-m-d H:i:s');
 
             foreach ($entities as $entity) {
-                $this->repository->upsert($entity, ['user_id', 'name'], [
-                    'value'      => $entity->value,
-                    'updated_at' => $now
-                ]);
+                $this->repository->upsert(
+                    $entity,
+                    [
+                        'user_id',
+                        'name'
+                    ],
+                    [
+                        'value'      => $entity->value,
+                        'updated_at' => $now
+                    ]
+                );
             }
 
             $event = $this->eventFactory->create('Profile\\Attribute\\UpsertedBulk', $command->attributes, $command->user, $command->credential);

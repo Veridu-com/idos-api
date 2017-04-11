@@ -36,9 +36,11 @@ class UpdateOneTest extends AbstractFunctional {
 
         $request = $this->createRequest(
             $environment,
-            json_encode([
+            json_encode(
+                [
                 'name' => 'testingName'
-            ])
+                ]
+            )
         );
 
         $response = $this->process($request);
@@ -72,10 +74,12 @@ class UpdateOneTest extends AbstractFunctional {
 
         $request = $this->createRequest(
             $environment,
-            json_encode([
+            json_encode(
+                [
                 'auth_username' => 'testingUpdate',
                 'auth_password' => 'testingPasswordUpdate'
-            ])
+                ]
+            )
         );
 
         $response = $this->process($request);

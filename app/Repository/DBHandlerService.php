@@ -37,10 +37,10 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
 
     /**
      * Retrieves collection of Handler Services by companyId.
-     * 
+     *
      * @param int   $companyId   The company id
      * @param array $queryParams The query parameters
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getByServiceCompanyId(int $companyId, array $queryParams = []) : Collection {
@@ -71,10 +71,10 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
 
     /**
      * Retrieves collection of Handler Services by companyId.
-     * 
+     *
      * @param int   $companyId   The company id
      * @param array $queryParams The query parameters
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getByHandlerCompanyId(int $companyId, array $queryParams = []) : Collection {

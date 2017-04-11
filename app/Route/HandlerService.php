@@ -108,7 +108,7 @@ class HandlerService implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int handlerId 1234
      * @apiEndpointURIFragment int handlerServiceId 9564
-     * 
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission
@@ -142,7 +142,7 @@ class HandlerService implements RouteInterface {
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int handlerId 1234
-     * 
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission
@@ -177,7 +177,7 @@ class HandlerService implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int handlerId 1234
      * @apiEndpointURIFragment int handlerServiceId 9564
-     * 
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission
@@ -212,7 +212,7 @@ class HandlerService implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int handlerId 1234
      * @apiEndpointURIFragment int handlerServiceId 9564
-     * 
+     *
      * @param \Slim\App $app
      * @param \callable $auth
      * @param \callable $permission

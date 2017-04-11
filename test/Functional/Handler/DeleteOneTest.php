@@ -36,7 +36,7 @@ class DeleteOneTest extends AbstractFunctional {
 
         $response = $this->process($request);
         $this->assertSame(200, $response->getStatusCode());
-        $this->uri        = '/1.0/companies/veridu-ltd/handlers/1860914067';
+        $this->uri = '/1.0/companies/veridu-ltd/handlers/1860914067';
 
         $request = $this->createRequest(
             $this->createEnvironment(

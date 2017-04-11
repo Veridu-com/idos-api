@@ -37,12 +37,14 @@ class CreateNewTest extends AbstractFunctional {
 
         $request = $this->createRequest(
             $environment,
-            json_encode([
+            json_encode(
+                [
                 'name'          => 'idOS Test handler 12x3change',
                 'auth_username' => '12change',
                 'auth_password' => '12change',
                 'enabled'       => true
-            ])
+                ]
+            )
         );
 
         $response = $this->process($request);
