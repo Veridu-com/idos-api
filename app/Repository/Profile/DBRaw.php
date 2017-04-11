@@ -229,7 +229,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
     public function deleteBySource(Source $source) : int {
         $this->selectDatabase($source->name);
 
-        $collections  = $this->listCollections();
+        $collections = $this->listCollections();
 
         $affectedRows = 0;
 

@@ -54,7 +54,7 @@ class AttributeProvider extends Listener\AbstractListenerProvider {
                 new Listener\LogFiredEventListener($eventLogger),
                 $evaluateRecommendationListener,
                 // @FIXME talk with team about it.
-                // new Listener\MetricEventListener($commandBus, $commandFactory) 
+                // new Listener\MetricEventListener($commandBus, $commandFactory)
             ],
             Attribute\Deleted::class => [
                 new Listener\LogFiredEventListener($eventLogger),

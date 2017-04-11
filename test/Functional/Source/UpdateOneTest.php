@@ -34,7 +34,7 @@ class UpdateOneTest extends AbstractFunctional {
             ]
         );
 
-        $request  = $this->createRequest(
+        $request = $this->createRequest(
             $environment,
             json_encode(
                 [

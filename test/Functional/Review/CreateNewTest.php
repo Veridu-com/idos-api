@@ -41,7 +41,7 @@ class CreateNewTest extends AbstractFunctional {
                 ]
             )
         );
-        
+
         $response = $this->process($request);
         $body     = json_decode($response->getBody(), true);
 

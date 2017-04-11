@@ -232,37 +232,51 @@ class Review implements HandlerInterface {
             $recommendation = $this->recommendationRepository->findOne($command->user->id);
         }
 
-        $review = $this->repository->create([
-            'user_id'           => $command->user->id,
-            'identity_id'       => $command->identity->id,
-            'recommendation_id' => $command->recommendationId,
-            'gate_id'           => $command->gateId,
-            'description'       => $command->description,
-            'positive'          => $this->validator->validateFlag($command->positive)
-        ]);
+        $review = $this->repository->create(
+            [
+                'user_id'           => $command->user->id,
+                'identity_id'       => $command->identity->id,
+                'recommendation_id' => $command->recommendationId,
+                'gate_id'           => $command->gateId,
+                'description'       => $command->description,
+                'positive'          => $this->validator->validateFlag($command->positive)
+            ]
+        );
 
         $this->repository->beginTransaction();
 
         try {
-
             if (isset($command->gateId)) {
-                $this->repository->upsert($review, ['user_id', 'gate_id'], [
-                    'positive'    => $review->positive,
-                    'description' => $review->description
-                ]);
+                $this->repository->upsert(
+                    $review,
+                    [
+                        'user_id',
+                        'gate_id'
+                    ],
+                    [
+                        'positive'    => $review->positive,
+                        'description' => $review->description
+                    ]
+                );
                 $review = $this->repository->findOneByGateIdAndUserId($command->gateId, $command->user->id);
             }
 
             if (isset($command->recommendationId)) {
-                $this->repository->upsert($review, ['user_id', 'recommendation_id'], [
-                    'positive'    => $review->positive,
-                    'description' => $review->description
-                ]);
+                $this->repository->upsert(
+                    $review,
+                    [
+                        'user_id',
+                        'recommendation_id'
+                    ],
+                    [
+                        'positive'    => $review->positive,
+                        'description' => $review->description
+                    ]
+                );
                 $review = $this->repository->findOneByRecommendationIdAndUserId($command->recommendationId, $command->user->id);
             }
 
             $this->repository->commit();
-
         } catch (\Exception $e) {
             $this->repository->rollBack();
             throw new UpsertException($e->getMessage());

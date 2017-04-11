@@ -26,7 +26,7 @@ class InvalidTokenSign extends AbstractAuthFunctional {
         $this->middlewareApp = $this->getApp();
     }
 
- public function testInvalidTokenSign() {
+    public function testInvalidTokenSign() {
         $token = Token::generateCredentialToken(
             'public',
             'b16c931c061e14af275bd2c86d3cf48d',
@@ -60,5 +60,4 @@ class InvalidTokenSign extends AbstractAuthFunctional {
         $this->assertFalse($body['status']);
         $this->assertSame('Token Verification Failed', $body['error']['message']);
     }
-
 }
