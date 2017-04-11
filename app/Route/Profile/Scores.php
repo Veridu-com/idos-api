@@ -170,7 +170,7 @@ class Scores implements RouteInterface {
      *
      * Updates a score for the given attribute.
      *
-     * @apiEndpoint PUT /profiles/{userName}/scores/{scoreName}
+     * @apiEndpoint PATCH /profiles/{userName}/scores/{scoreName}
      * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
@@ -216,10 +216,10 @@ class Scores implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/attributes/score/updateOne.md
+     * @link docs/attributes/score/upsert.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\Profile\Scores::updateOne
+     * @see \App\Controller\Profile\Scores::upsert
      */
     private static function upsert(App $app, callable $auth, callable $permission) {
         $app

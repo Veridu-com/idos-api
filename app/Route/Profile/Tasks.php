@@ -65,7 +65,7 @@ class Tasks implements RouteInterface {
      *
      * Create a new task for the given process.
      *
-     * @apiEndpoint POST /profiles/{userName}/processes//{processId}/tasks
+     * @apiEndpoint POST /profiles/{userName}/processes/{processId}/tasks
      * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
@@ -134,7 +134,7 @@ class Tasks implements RouteInterface {
      *
      * Updates Task's specific information.
      *
-     * @apiEndpoint PUT /profiles/{userName}/processes/{processId}/tasks/{taskId}
+     * @apiEndpoint PATCH /profiles/{userName}/processes/{processId}/tasks/{taskId}
      * @apiGroup Profile
      * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token
      * @apiAuth query token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A Valid Credential Token

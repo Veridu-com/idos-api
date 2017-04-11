@@ -18,7 +18,7 @@ use Slim\App;
 /**
  * Company Widget.
  *
- * A Widget is a out of the box, one line of code integration that we provied for customers.
+ * A Widget is a out of the box, one line of code integration that we provide for customers.
  *
  * @link docs/management/widgets/overview.md
  * @see \App\Controller\Company\Widgets
@@ -65,12 +65,11 @@ class Widgets implements RouteInterface {
      *
      * Retrieves a complete list of all widgets that belong to the requesting credential.
      *
-     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/widgets
+     * @apiEndpoint GET /companies/{companySlug}/widgets
      * @apiGroup Company
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -103,12 +102,11 @@ class Widgets implements RouteInterface {
      *
      * Create a new widget for the target company.
      *
-     * @apiEndpoint POST /companies/{companySlug}/credentials/{pubKey}/widgets
+     * @apiEndpoint POST /companies/{companySlug}/widgets
      * @apiGroup Company
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -142,13 +140,12 @@ class Widgets implements RouteInterface {
      *
      * Updates a widget that belongs to the requesting credential.
      *
-     * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}/widgets/{widgetId}
+     * @apiEndpoint PUT /companies/{companySlug}/widgets/{widgetHash}
      * @apiGroup Company
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
-     * @apiEndpointURIFragment int widgetId 1
+     * @apiEndpointURIFragment string widgetHash 23sadje320sfa12584jhhqw1q
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -182,13 +179,12 @@ class Widgets implements RouteInterface {
      *
      * Retrieves all public information from a widget
      *
-     * @apiEndpoint GET /companies/{companySlug}/credentials/{pubKey}/widgets/{widgetId}
+     * @apiEndpoint GET /companies/{companySlug}/widgets/{widgetHash}
      * @apiGroup Company
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
-     * @apiEndpointURIFragment int widgetId 1
+     * @apiEndpointURIFragment string widgetHash 23sadje320sfa12584jhhqw1q
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -215,13 +211,12 @@ class Widgets implements RouteInterface {
      *
      * Deletes a widget that belongs to the requesting credential.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/credentials/{pubKey}/widgets/{widgetId}
+     * @apiEndpoint DELETE /companies/{companySlug}/widgets/{widgetHash}
      * @apiGroup Company
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
-     * @apiEndpointURIFragment string pubKey 8b5fe9db84e338b424ed6d59da3254a0
-     * @apiEndpointURIFragment int widgetId 1
+     * @apiEndpointURIFragment string widgetHash 23sadje320sfa12584jhhqw1q
      *
      * @param \Slim\App $app
      * @param \callable $auth

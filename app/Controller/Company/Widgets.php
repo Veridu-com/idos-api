@@ -123,15 +123,18 @@ class Widgets implements ControllerInterface {
     /**
      * Creates a new widget for the given credential.
      *
-     * @apiEndpointRequiredParam body string trigger company.create Trigger
-     * @apiEndpointRequiredParam body string url http://test.com/example.php Url
-     * @apiEndpointRequiredParam body boolean subscribed false Subscribed
+     * @apiEndpointRequiredParam body string hash abcd1234 Hash
+     * @apiEndpointRequiredParam body string label Widget Label 
+     * @apiEndpointRequiredParam body string type embedded-widget Type
+     * @apiEndpointParam body boolean enabled true Enabled 
+     * @apiEndpointParam body string config ['gates' => '18+'] Settings 
      * @apiEndpointResponse 201 schema/widget/widgetEntity.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Handler\Widget::handleCreateNew
+     * @see \/app\
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -165,10 +168,12 @@ class Widgets implements ControllerInterface {
     /**
      * Updates a widget from the given credential.
      *
-     * @apiEndpointRequiredParam body string trigger company.create Trigger
-     * @apiEndpointRequiredParam body string url http://test.com/example.php Url
-     * @apiEndpointRequiredParam body boolean subscribed false Subscribed
+     * @apiEndpointRequiredParam body string hash abcd1234 Hash
+     * @apiEndpointRequiredParam body string label Widget Label 
+     * @apiEndpointRequiredParam body string type embedded-widget Type
      * @apiEndpointResponse 200 schema/widget/updateOne.json
+     * @apiEndpointParam body boolean enabled true Enabled 
+     * @apiEndpointParam body string config ['gates' => '18+'] Settings
      *
      * @param \Psr\ServerRequestInterface $request
      * @param \Psr\ResponseInterface      $response
