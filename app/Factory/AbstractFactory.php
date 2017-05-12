@@ -45,13 +45,25 @@ abstract class AbstractFactory implements FactoryInterface {
      * @return string
      */
     protected function getClassName(string $name) : string {
+        static $cache = [];
+
+        if (isset($cache[$name])) {
+            return $cache[$name];
+        }
+
         $name = $this->getFormattedName($name);
 
         if (isset($this->classMap[$name])) {
-            return $this->classMap[$name];
+            $className    = $this->classMap[$name];
+            $cache[$name] = $className;
+
+            return $className;
         }
 
-        return sprintf('%s%s', $this->getNamespace(), $name);
+        $className    = sprintf('%s%s', $this->getNamespace(), $name);
+        $cache[$name] = $className;
+
+        return $className;
     }
 
     /**

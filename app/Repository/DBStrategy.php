@@ -79,33 +79,59 @@ class DBStrategy implements RepositoryStrategyInterface {
      * {@inheritdoc}
      */
     public function getFormattedName(string $repositoryName) : string {
-        $splitName = preg_split("/\\\/", $repositoryName);
+        static $cache = [];
 
-        if (is_array($splitName) && count($splitName) > 1) {
-            $namespacePrefix = implode('\\', array_slice($splitName, 0, -1));
-            if (substr($namespacePrefix, -1) == '\\') {
-                $namespacePrefix = substr($namespacePrefix, 0, strlen($namespacePrefix) - 1);
-            }
-
-            return sprintf("%s\DB%s", $namespacePrefix, ucfirst(end($splitName)));
+        if (isset($cache[$repositoryName])) {
+            return $cache[$repositoryName];
         }
 
-        return sprintf('DB%s', ucfirst($repositoryName));
+        $splitName = explode('\\', $repositoryName);
+
+        if (is_array($splitName) && count($splitName) > 1) {
+            $name                   = array_pop($splitName);
+            $namespace              = implode('\\', $splitName);
+            $formattedName          = sprintf('%s\\DB%s', $namespace, ucfirst($name));
+            $cache[$repositoryName] = $formattedName;
+
+            return $formattedName;
+        }
+
+        $formattedName          = sprintf('DB%s', ucfirst($repositoryName));
+        $cache[$repositoryName] = $formattedName;
+
+        return $formattedName;
     }
 
     /**
      * {@inheritdoc}
      */
     public function build(Repository $repositoryFactory, string $className) : RepositoryInterface {
-        $reflectionClass = new \ReflectionClass($className);
-        $parentClass     = $reflectionClass->getParentClass()->getName();
+        static $cache = [];
 
-        switch ($parentClass) {
+        if (! isset($cache[$className])) {
+            $reflectionClass   = new \ReflectionClass($className);
+            $parentClass       = $reflectionClass->getParentClass()->getName();
+            $cache[$className] = $parentClass;
+        }
+
+        switch ($cache[$className]) {
             case 'App\Repository\AbstractSQLDBRepository':
-                return new $className($this->entityFactory, $repositoryFactory, $this->optimus, $this->vault, $this->sqlConnection);
+                return new $className(
+                    $this->entityFactory,
+                    $repositoryFactory,
+                    $this->optimus,
+                    $this->vault,
+                    $this->sqlConnection
+                );
 
             case 'App\Repository\AbstractNoSQLDBRepository':
-                return new $className($this->entityFactory, $repositoryFactory, $this->optimus, $this->vault, $this->noSqlConnector);
+                return new $className(
+                    $this->entityFactory,
+                    $repositoryFactory,
+                    $this->optimus,
+                    $this->vault,
+                    $this->noSqlConnector
+                );
 
             default:
                 throw new AppException('Invalid repository parent class');
