@@ -277,7 +277,7 @@ class Source implements HandlerInterface {
         try {
             $source = $this->repository->save($source);
         } catch (\Exception $e) {
-            throw new Create\Profile\SourceException('Error while trying to create a setting', 500, $e);
+            throw new Create\Profile\SourceException('Error while trying to create a source', 500, $e);
         }
 
         $event = $this->eventFactory->create(
