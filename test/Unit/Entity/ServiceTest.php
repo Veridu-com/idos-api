@@ -12,7 +12,7 @@ use App\Entity\Handler;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;
 
-class HandlerTest extends AbstractUnit {
+class ServiceTest extends AbstractUnit {
     /*
      * Jenssengers\Optimus\Optimus $optimus
      */
