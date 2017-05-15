@@ -39,6 +39,11 @@ class Raw extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
+    protected $compressed = ['data'];
+
+    /**
+     * {@inheritdoc}
+     */
     protected $secure = ['data'];
 
     /**
