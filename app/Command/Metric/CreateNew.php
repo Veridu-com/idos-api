@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Metric;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Metric CreateNew Command.
@@ -23,10 +24,8 @@ class CreateNew extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Metric\CreateNew
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['event'])) {
             $this->event = $parameters['event'];
         }

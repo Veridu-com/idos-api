@@ -59,7 +59,7 @@ class Score implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) {
             return new \App\Handler\Profile\Score(
                 $container

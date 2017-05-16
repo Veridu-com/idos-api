@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
@@ -37,8 +38,8 @@ class Sso implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Sso::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Sso::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Sso(
                 $container->get('repositoryFactory')->create('Company\Setting'),
                 $container->get('repositoryFactory')->create('Company\Credential'),

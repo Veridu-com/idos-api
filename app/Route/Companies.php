@@ -43,7 +43,7 @@ class Companies implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
+    public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Companies::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Companies(
                 $container

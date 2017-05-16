@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Widget;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Widget "Delete One" Command.
@@ -29,10 +30,8 @@ class DeleteOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Company\Widget\DeleteOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         return $this;
     }
 }

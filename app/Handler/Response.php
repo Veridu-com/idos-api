@@ -134,7 +134,7 @@ class Response implements HandlerInterface {
      *
      * @return void
      */
-    public static function register(ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) {
             return new \App\Handler\Response(
                 $container->get('httpCache'),

@@ -42,7 +42,7 @@ class Sources implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
+    public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Sources::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Sources(
                 $container->get('repositoryFactory')->create('Profile\Source'),

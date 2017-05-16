@@ -101,7 +101,7 @@ class Source implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Source(
                 $container
@@ -138,14 +138,14 @@ class Source implements HandlerInterface {
      * Class Constructor.
      *
      * @param \App\Repository\Profile\SourceInterface  $repository         The repository
-     * @param \App\Repository\Profile\ProcessInterface $processRepository  The process repository
-     * @param \App\Repository\IdentityInterface        $identityRepository The identity repository
-     * @param \App\Repository\SettingInterface         $settingRepository  The setting repository
-     * @param \App\Repository\CompanyInterface         $companyRepository  The company repository
+     * @param \App\Repository\Profile\ProcessInterface $processRepository  The process    repository
+     * @param \App\Repository\IdentityInterface        $identityRepository The identity   repository
+     * @param \App\Repository\Company\SettingInterface $settingRepository  The setting    repository
+     * @param \App\Repository\CompanyInterface         $companyRepository  The company    repository
      * @param \App\Handler\Profile\SourceValidator     $validator          The validator
-     * @param \App\Factory\Command                     $commandFactory     The command factory
-     * @param \League\Tactician\CommandBus             $commandBus         The command bus instance.
-     * @param \App\Factory\Event                       $eventFactory       The event factory
+     * @param \App\Factory\Command                     $commandFactory     The command    factory
+     * @param \League\Tactician\CommandBus             $commandBus         The command    bus        instance.
+     * @param \App\Factory\Event                       $eventFactory       The event      factory
      * @param \League\Event\Emitter                    $emitter            The emitter
      */
     public function __construct(

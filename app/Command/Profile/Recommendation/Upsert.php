@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Profile\Recommendation;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Recommendation "Upsert" Command.
@@ -59,10 +60,8 @@ class Upsert extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Profile\Recommendation\Upsert
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['result'])) {
             $this->result = $parameters['result'];
         }

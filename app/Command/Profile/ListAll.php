@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Profile;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Profile ListAll Command.
@@ -29,10 +30,8 @@ class ListAll extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Profile\ListAll
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['company'])) {
             $this->company = $parameters['company'];
         }

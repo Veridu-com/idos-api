@@ -40,7 +40,7 @@ class Candidates implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
+    public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Candidates::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Candidates(
                 $container->get('repositoryFactory')->create('Profile\Candidate'),

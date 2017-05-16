@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use App\Route\RouteInterface;
@@ -44,8 +45,8 @@ class Features implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profile\Features::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Profile\Features::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Features(
                 $container->get('repositoryFactory')->create('Profile\Feature'),
                 $container->get('repositoryFactory')->create('User'),

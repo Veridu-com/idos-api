@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Member;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Member "Delete One" Command.
@@ -48,7 +49,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['role'])) {
             $this->role = $parameters['role'];
         }

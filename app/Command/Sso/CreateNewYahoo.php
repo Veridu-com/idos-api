@@ -11,15 +11,5 @@ namespace App\Command\Sso;
 /**
  * Sso "Create New Yahoo" Command.
  */
-class CreateNewYahoo extends CreateNew {
-    /**
-     * {@inheritdoc}
-     *
-     * @return self
-     */
-    public function setParameters(array $parameters) : self {
-        parent::setParameters($parameters);
-
-        return $this;
-    }
+class CreateNewYahoo extends AbstractCreateNew {
 }

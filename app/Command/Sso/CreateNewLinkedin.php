@@ -11,15 +11,5 @@ namespace App\Command\Sso;
 /**
  * Sso "Create New LinkedIn" Command.
  */
-class CreateNewLinkedin extends CreateNew {
-    /**
-     * {@inheritdoc}
-     *
-     * @return self
-     */
-    public function setParameters(array $parameters) : self {
-        parent::setParameters($parameters);
-
-        return $this;
-    }
+class CreateNewLinkedin extends AbstractCreateNew {
 }

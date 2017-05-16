@@ -11,15 +11,5 @@ namespace App\Command\Sso;
 /**
  * Sso "Create New Spotify" Command.
  */
-class CreateNewSpotify extends CreateNew {
-    /**
-     * {@inheritdoc}
-     *
-     * @return self
-     */
-    public function setParameters(array $parameters) : self {
-        parent::setParameters($parameters);
-
-        return $this;
-    }
+class CreateNewSpotify extends AbstractCreateNew {
 }

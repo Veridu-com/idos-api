@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Hook;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Hook "Update One" Command.
@@ -60,7 +61,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['hookId'])) {
             $this->hookId = $parameters['hookId'];
         }

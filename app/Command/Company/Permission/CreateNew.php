@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Permission;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Permission "Create New" Command.
@@ -35,10 +36,8 @@ class CreateNew extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Company\Permission\CreateNew
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['routeName'])) {
             $this->routeName = $parameters['routeName'];
         }

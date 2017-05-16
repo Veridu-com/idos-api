@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Widget;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Widget "Update one" Command.
@@ -54,10 +55,8 @@ class UpdateOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Company\Widget\UpdateOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['label'])) {
             $this->label = $parameters['label'];
         }

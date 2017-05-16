@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Service;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Service "Create new" Command.
@@ -41,10 +42,8 @@ class CreateNew extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Service\CreateNew
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['decoded_handler_service_id'])) {
             $this->handlerServiceId = $parameters['decoded_handler_service_id'];
         }

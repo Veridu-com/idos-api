@@ -11,15 +11,5 @@ namespace App\Command\Sso;
 /**
  * Sso "Create New Amazon" Command.
  */
-class CreateNewAmazon extends CreateNew {
-    /**
-     * {@inheritdoc}
-     *
-     * @return self
-     */
-    public function setParameters(array $parameters) : self {
-        parent::setParameters($parameters);
-
-        return $this;
-    }
+class CreateNewAmazon extends AbstractCreateNew {
 }

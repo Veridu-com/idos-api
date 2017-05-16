@@ -40,7 +40,7 @@ class Profiles implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
+    public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Company\Profiles::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Profiles(
                 $container->get('repositoryFactory')->create('User'),

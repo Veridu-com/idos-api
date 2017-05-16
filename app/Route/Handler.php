@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
@@ -41,8 +42,8 @@ class Handler implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Handlers::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Handlers::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Handlers(
                 $container->get('repositoryFactory')->create('Handler'),
                 $container->get('commandBus'),

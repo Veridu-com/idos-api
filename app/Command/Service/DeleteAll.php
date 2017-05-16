@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Service;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Service "Delete all" Command.
@@ -29,10 +30,8 @@ class DeleteAll extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Service\DeleteAll
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['companyId'])) {
             $this->companyId = $parameters['companyId'];
         }

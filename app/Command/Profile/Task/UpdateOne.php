@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Profile\Task;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Task "Update One" Command.
@@ -54,7 +55,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['running'])) {
             $this->running = $parameters['running'];
         }

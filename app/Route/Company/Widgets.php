@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Company;
 
+use App\Controller\ControllerInterface;
 use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
@@ -40,8 +41,8 @@ class Widgets implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Company\Widgets::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Company\Widgets::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Widgets(
                 $container->get('repositoryFactory')->create('Company\Widget'),
                 $container->get('commandBus'),

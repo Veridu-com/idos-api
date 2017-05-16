@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Hook;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Hook "Delete All" Command.
@@ -36,7 +37,7 @@ class DeleteAll extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['credentialPubKey'])) {
             $this->credentialPubKey = $parameters['credentialPubKey'];
         }

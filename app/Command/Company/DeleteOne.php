@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Company "Delete One" Command.
@@ -29,10 +30,8 @@ class DeleteOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Company\DeleteOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         return $this;
     }
 }

@@ -17,7 +17,7 @@ interface CommandInterface {
      *
      * @return \App\Command\CommandInterface
      */
-    public function setParameters(array $parameters);
+    public function setParameters(array $parameters) : CommandInterface;
     /**
      * Sets a command parameter.
      *
@@ -28,5 +28,5 @@ interface CommandInterface {
      *
      * @return \App\Command\CommandInterface
      */
-    public function setParameter(string $name, $value);
+    public function setParameter(string $name, $value) : CommandInterface;
 }

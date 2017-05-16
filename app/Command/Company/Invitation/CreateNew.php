@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Invitation;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Invitation "Create New" Command.
@@ -68,7 +69,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['email'])) {
             $this->email = $parameters['email'];
         }
