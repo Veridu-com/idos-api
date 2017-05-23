@@ -64,16 +64,43 @@ class Gate implements HandlerInterface {
     private $emitter;
 
     /**
+     * Upserts a category.
+     *
+     * @param string $name      The name
+     * @param int    $handlerId The handler identifier
+     *
+     * @throws \App\Exception\Update\Profile\GateException
+     *
+     * @return \App\Entity\Category
+     */
+    private function upsertCategory(string $name, int $handlerId) : Category {
+        try {
+            $category = $this->categoryRepository->create(
+                [
+                'display_name' => $name,
+                'name'         => $name,
+                'handler_id'   => $handlerId,
+                'type'         => 'gate'
+                ]
+            );
+
+            return $this->categoryRepository->upsert($category);
+        } catch (\Exception $e) {
+            throw new Update\Profile\GateException('Error while trying to upsert a Gate category', 500, $e);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) {
         $container[self::class] = function (ContainerInterface $container) {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Profile\Gate(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\Gate'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Category'),
                 $container
                     ->get('validatorFactory')
@@ -268,35 +295,6 @@ class Gate implements HandlerInterface {
         }
 
         return $entity;
-    }
-
-    /**
-     * Upserts a category.
-     *
-     * @param string $name      The name
-     * @param int    $handlerId The handler identifier
-     *
-     * @throws \App\Exception\NotFound\Profile\GateException
-     * @throws \App\Exception\Update\Profile\GateException
-     * @throws \App\Exception\Validate\Profile\GateException
-     *
-     * @return \App\Entity\Category
-     */
-    private function upsertCategory(string $name, int $handlerId) : Category {
-        try {
-            $category = $this->categoryRepository->create(
-                [
-                'display_name' => $name,
-                'name'         => $name,
-                'handler_id'   => $handlerId,
-                'type'         => 'gate'
-                ]
-            );
-
-            return $this->categoryRepository->upsert($category);
-        } catch (\Exception $e) {
-            throw new Update\Profile\GateException('Error while trying to upsert a Gate category', 500, $e);
-        }
     }
 
     /**
