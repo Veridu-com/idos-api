@@ -57,7 +57,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Returns a repository instance based on its name.
      *
-     * @param  string $repositoryName
+     * @param string $repositoryName
      *
      * @return \App\Repository\RepositoryInterface
      */
@@ -389,8 +389,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function find(int $id) : EntityInterface {
-        $result = $this->query()
-            ->find($id);
+        $result = $this->query()->find($id);
         if (empty($result)) {
             throw new NotFound();
         }
@@ -577,10 +576,12 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     public function findBy(array $constraints, array $queryParams = [], array $columns = ['*']) : Collection {
         $query = $this->query();
 
-        $constraints = array_merge(
-            $constraints,
-            $this->getFilterConstraints($queryParams)
-        );
+        if (count($queryParams)) {
+            $constraints = array_merge(
+                $constraints,
+                $this->getFilterConstraints($queryParams)
+            );
+        }
 
         foreach ($constraints as $column => $value) {
             if (is_array($value)) {

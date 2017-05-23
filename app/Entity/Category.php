@@ -8,20 +8,25 @@ declare(strict_types = 1);
 
 namespace App\Entity;
 
+use App\Extension\SlugMutator;
+
 /**
  * Category's Entity.
  *
  * @apiEntity schema/service/serviceEntity.json
  *
- * @property int        $id
- * @property string     $displayName
- * @property string     $name
- * @property string     $type
- * @property string     $description
- * @property int        $created_at
- * @property int        $updated_at
+ * @property int    $id
+ * @property string $displayName
+ * @property string $name
+ * @property string $slug
+ * @property string $type
+ * @property string $description
+ * @property int    $created_at
+ * @property int    $updated_at
  */
 class Category extends AbstractEntity {
+    use SlugMutator;
+
     /**
      * {@inheritdoc}
      */

@@ -74,7 +74,7 @@ class DBFlag extends AbstractSQLDBRepository implements FlagInterface {
             'type'       => 'MANY_TO_ONE',
             'table'      => 'categories',
             'foreignKey' => 'slug',
-            'key'        => 'name',
+            'key'        => 'slug',
             'entity'     => 'Category',
             'nullable'   => false,
             'hydrate'    => [
@@ -105,7 +105,8 @@ class DBFlag extends AbstractSQLDBRepository implements FlagInterface {
             [
                 'user_id' => $userId,
                 'creator' => $handlerId
-            ], $queryParams
+            ],
+            $queryParams
         );
     }
 
@@ -115,8 +116,9 @@ class DBFlag extends AbstractSQLDBRepository implements FlagInterface {
     public function getByUserId(int $userId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
-            'user_id' => $userId
-            ], $queryParams
+                'user_id' => $userId
+            ],
+            $queryParams
         );
     }
 }
