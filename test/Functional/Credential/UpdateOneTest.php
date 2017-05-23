@@ -22,7 +22,7 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
+        $this->httpMethod = 'PATCH';
         $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961';
     }
 
@@ -37,7 +37,7 @@ class UpdateOneTest extends AbstractFunctional {
         $request = $this->createRequest($environment, json_encode(['name' => 'New Key Name']));
 
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode(), (string) $response->getBody());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
