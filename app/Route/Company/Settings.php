@@ -155,6 +155,7 @@ class Settings implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callabe  $permission
      *
      * @return void
      *
@@ -184,15 +185,16 @@ class Settings implements RouteInterface {
      *
      * Updates the specific information for a single Setting.
      *
-     * @apiEndpoint PUT /companies/{companySlug}/settings/{settingId}
+     * @apiEndpoint PATCH /companies/{companySlug}/settings/{settingId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
      *
-     * @param \Slim\App $app
-     * @param \callable $auth
+     * @param \Slim\App  $app
+     * @param \callable  $auth
+     * @param \calllable $permission
      *
      * @return void
      *
@@ -203,7 +205,7 @@ class Settings implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
                 'App\Controller\Company\Settings:updateOne'
             )
@@ -231,6 +233,7 @@ class Settings implements RouteInterface {
      *
      * @param \Slim\App $app
      * @param \callable $auth
+     * @param \callable $permission
      *
      * @return void
      *

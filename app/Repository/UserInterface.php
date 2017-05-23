@@ -28,29 +28,64 @@ interface UserInterface extends RepositoryInterface {
      */
     public function findByCompanyId(int $companyId) : Collection;
 
-    // FIXME Whoever coded me didn't put love in my documentation </3
+    /**
+     * Finds users by its userName and companyId.
+     *
+     * @param string $userName
+     * @param int    $companyId
+     *
+     * @throws \App\Exception\NotFound
+     *
+     * @return \App\Entity\User
+     */
     public function findByUserNameAndCompany(string $userName, int $companyId) : User;
 
-/**
- * Finds a user by its $userName and $credentialId.
- *
- * @param string $userName
- * @param int    $credentialId
- *
- * @throws \App\Exception\NotFound
- *
- * @return \App\Entity\User
- */
-    // FIXME Whoever coded me didn't put love in my documentation </3
+    /**
+     * Finds users by its userName and credentialId.
+     *
+     * @param string $userName
+     * @param int    $credentialId
+     *
+     * @throws \App\Exception\NotFound
+     *
+     * @return \App\Entity\User
+     */
     public function findByUserName(string $userName, int $credentialId) : User;
 
-    // FIXME Whoever coded me didn't put love in my documentation </3
+    /**
+     * Finds or creates a user by its userName and credentialId.
+     *
+     * @param string $userName
+     * @param int    $credentialId
+     *
+     * @throws \App\Exception\NotFound
+     *
+     * @return \App\Entity\User
+     */
     public function findOrCreate(string $userName, int $credentialId) : User;
 
-    // FIXME Whoever coded me didn't put love in my documentation </3
+    /**
+     * Finds a user by its userName and credentialId.
+     *
+     * @param string $userName
+     * @param int    $credentialId
+     *
+     * @throws \App\Exception\NotFound
+     *
+     * @return \App\Entity\User
+     */
     public function findOneByUsernameAndCredentialId(string $userName, int $credentialId) : User;
 
-    // FIXME Whoever coded me didn't put love in my documentation </3
+    /**
+     * Finds users that have a membership in the given company.
+     *
+     * @param \App\Entity\User    $user
+     * @param \App\Entity\Company $company
+     *
+     * @throws \App\Exception\NotFound
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function findAllRelatedToCompany(User $user, Company $company) : Collection;
 
     /**

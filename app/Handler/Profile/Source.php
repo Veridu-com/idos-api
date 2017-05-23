@@ -225,7 +225,7 @@ class Source implements HandlerInterface {
         // CRA check
         $sendCRA = false;
         if ((isset($command->tags['cra_check']))
-            && ($this->validator->flagValue($command->tags['cra_check']))
+            && ($this->validator->validateFlag($command->tags['cra_check']))
         ) {
             // Reference code for tracking the CRA Result
             $command->tags['cra_reference'] = md5(
@@ -253,7 +253,7 @@ class Source implements HandlerInterface {
             $key  = $keys->where('property', sprintf('%s.%s.key', $command->credential->public, $command->name));
 
             // main variables
-            $appKey     = strlen($key->first()->value) ? $key->first()->value : 'Veridu';
+            $appKey     = (! empty($key->first()->value)) ? $key->first()->value : 'Veridu';
             $profileId  = $command->tags['profile_id'];
             $sourceName = $command->name;
 
@@ -277,7 +277,7 @@ class Source implements HandlerInterface {
         try {
             $source = $this->repository->save($source);
         } catch (\Exception $e) {
-            throw new Create\Profile\SourceException('Error while trying to create a setting', 500, $e);
+            throw new Create\Profile\SourceException('Error while trying to create a source', 500, $e);
         }
 
         $event = $this->eventFactory->create(

@@ -117,6 +117,8 @@ class Profiles implements RouteInterface {
      * @return void
      *
      * @link docs/companyProfiles/getOne.md
+     * @see \App\Middleware\Auth::__invoke
+     * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Profiles::getOne
      */
     private static function getOne(App $app, callable $auth, callable $permission) {

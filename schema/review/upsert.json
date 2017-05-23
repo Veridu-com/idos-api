@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "PUT /profiles/{userName}/reviews",
+    "type": "object",
+    "properties": {
+        "status": {
+            "description": "Response status flag",
+            "type": "boolean"
+        },
+        "data": {
+            "description": "Review response payload",
+            "type": "object",
+            "$ref": "reviewEntity.json"
+        }
+    },
+    "required": [
+        "status",
+        "data"
+    ]
+}

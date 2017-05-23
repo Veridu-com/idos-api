@@ -50,6 +50,12 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected $json = [];
     /**
+     * The attributes that should be compressed.
+     *
+     * @var array
+     */
+    protected $compressed = [];
+    /**
      * The attributes that should be secure.
      *
      * @var array
@@ -204,6 +210,24 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = date($this->dateFormat, $value);
         }
 
+        // Tests if it is a compressed field
+        if ((isset($this->compressed)) && (in_array($key, $this->compressed))) {
+            if (is_resource($value)) {
+                $value = stream_get_contents($value, -1, 0);
+            }
+
+            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) != 0)) {
+                $compressed = gzcompress($value);
+                if ($compressed !== false) {
+                    $value = sprintf(
+                        'compressed:%s',
+                        $compressed
+                    );
+                    unset($compressed);
+                }
+            }
+        }
+
         // Tests if it is a secure field
         if ((isset($this->secure)) && (in_array($key, $this->secure))) {
             if (is_resource($value)) {
@@ -214,7 +238,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 $value = sprintf(
                     'secure:%s',
                     $this->vault->lock((string) $value)
-                    //$value
                 );
             }
         }
@@ -223,9 +246,11 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $split = explode('.', $key);
         if (count($split) > 1) {
             $this->relations[$split[0]][$split[1]] = $value;
-        } else {
-            $this->attributes[$key] = $value;
+
+            return $this;
         }
+
+        $this->attributes[$key] = $value;
 
         return $this;
     }
@@ -255,6 +280,21 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) === 0)) {
                 $value = substr($value, 7);
                 $value = $this->vault->unlock($value);
+            }
+        }
+
+        if ((isset($this->compressed)) && (in_array($key, $this->compressed))) {
+            if (is_resource($value)) {
+                $value = stream_get_contents($value, -1, 0);
+            }
+
+            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) === 0)) {
+                $value = substr($value, 11);
+                $uncompressed = gzuncompress($value);
+                if ($uncompressed !== false) {
+                    $value = $uncompressed;
+                    unset($uncompressed);
+                }
             }
         }
 

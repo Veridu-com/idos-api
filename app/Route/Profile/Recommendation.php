@@ -62,8 +62,8 @@ class Recommendation implements RouteInterface {
      *
      * @apiEndpoint GET /profiles/{userName}/recommendation
      * @apiGroup Profile
-     * @apiAuth header token UserToken wqxehuwqwsthwosjbxwwsqwsdi A valid User Token
-     * @apiAuth query token userToken wqxehuwqwsthwosjbxwwsqwsdi A valid User Token
+     * @apiAuth header token UserToken|CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid User|Credential Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid User|Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
@@ -95,8 +95,8 @@ class Recommendation implements RouteInterface {
      *
      * @apiEndpoint PUT /profiles/{userName}/recommendation
      * @apiGroup Profile
-     * @apiAuth header token CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
-     * @apiAuth query token credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid Credential Token
+     * @apiAuth header token UserToken|CredentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid User|Credential Token
+     * @apiAuth query token userToken|credentialToken wqxehuwqwsthwosjbxwwsqwsdi A valid User|Credential Token
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app

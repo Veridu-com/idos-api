@@ -143,12 +143,12 @@ class Gate implements HandlerInterface {
      *
      * @param \App\Command\Profile\Gate\CreateNew $command
      *
-     * @see \App\Repository\DBGate::save
+     * @see \App\Repository\Profile\DBGate::save
      *
      * @throws \App\Exception\Validate\GateException
      * @throws \App\Exception\Create\GateException
      *
-     * @return \App\Entity\Gate
+     * @return \App\Entity\Profile\Gate
      */
     public function handleCreateNew(CreateNew $command) : GateEntity {
         try {
@@ -191,17 +191,17 @@ class Gate implements HandlerInterface {
     }
 
     /**
-     * Updates a Gate.
+     * Updates a gate.
      *
      * @param \App\Command\Profile\Gate\UpdateOne $command
      *
-     * @see \App\Repository\DBGate::findByUserIdAndSlug
-     * @see \App\Repository\DBGate::save
+     * @see \App\Repository\Profile\DBGate::findBySlug
+     * @see \App\Repository\Profile\DBGate::save
      *
      * @throws \App\Exception\Validate\GateException
      * @throws \App\Exception\Update\Profile\GateException
      *
-     * @return \App\Entity\Gate
+     * @return \App\Entity\Profile\Gate
      */
     public function handleUpdateOne(UpdateOne $command) : GateEntity {
         try {
@@ -237,7 +237,7 @@ class Gate implements HandlerInterface {
     }
 
     /**
-     * Updates a score for a given attribute.
+     * Creates or updates a gate.
      *
      * @param \App\Command\Score\Upsert $command
      *
@@ -302,8 +302,8 @@ class Gate implements HandlerInterface {
      *
      * @param \App\Command\Profile\Gate\DeleteOne $command
      *
-     * @see \App\Repository\DBGate::findByUserIdAndSlug
-     * @see \App\Repository\DBGate::delete
+     * @see \App\Repository\Profile\DBGate::findBySlug
+     * @see \App\Repository\Profile\DBGate::delete
      *
      * @throws \App\Exception\Validate\GateException
      * @throws \App\Exception\NotFound\GateException
@@ -344,8 +344,8 @@ class Gate implements HandlerInterface {
      *
      * @param \App\Command\Profile\Gate\DeleteAll $command
      *
-     * @see \App\Repository\DBGate::findByUserId
-     * @see \App\Repository\DBGate::deleteByUserId
+     * @see \App\Repository\Profile\DBGate::getByHandlerIdAndUserId
+     * @see \App\Repository\Profile\DBGate::delete
      *
      * @throws \App\Exception\Validate\GateException
      *

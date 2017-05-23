@@ -144,7 +144,7 @@ class Hooks implements RouteInterface {
      *
      * Updates a hook that belongs to the requesting credential.
      *
-     * @apiEndpoint PUT /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
+     * @apiEndpoint PATCH /companies/{companySlug}/credentials/{pubKey}/hooks/{hookId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -165,7 +165,7 @@ class Hooks implements RouteInterface {
      */
     private static function updateOne(App $app, callable $auth, callable $permission) {
         $app
-            ->put(
+            ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}/hooks/{hookId:[0-9]+}',
                 'App\Controller\Company\Hooks:updateOne'
             )

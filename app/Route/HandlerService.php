@@ -32,9 +32,8 @@ class HandlerService implements RouteInterface {
     public static function getPublicNames() : array {
         return [
             'handler-services:listAll',
-            'handler-services:deleteAll',
-            'handler-services:createNew',
             'handler-services:getOne',
+            'handler-services:createNew',
             'handler-services:updateOne',
             'handler-services:deleteOne'
         ];
@@ -59,9 +58,8 @@ class HandlerService implements RouteInterface {
         self::listAll($app, $authMiddleware, $permissionMiddleware);
         self::getOne($app, $authMiddleware, $permissionMiddleware);
         self::createNew($app, $authMiddleware, $permissionMiddleware);
-        self::deleteOne($app, $authMiddleware, $permissionMiddleware);
-        self::deleteAll($app, $authMiddleware, $permissionMiddleware);
         self::updateOne($app, $authMiddleware, $permissionMiddleware);
+        self::deleteOne($app, $authMiddleware, $permissionMiddleware);
     }
 
     /**
@@ -69,10 +67,12 @@ class HandlerService implements RouteInterface {
      *
      * Retrieves a complete list of all handler-services.
      *
-     * @apiEndpoint GET /companies/{companySlug}/handler-services
+     * @apiEndpoint GET /companies/{companySlug}/handlers/{handlerId}/handler-services
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int handlerId 1234
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -101,11 +101,13 @@ class HandlerService implements RouteInterface {
      *
      * Retrieves all public information from a Handler Service.
      *
-     * @apiEndpoint GET /companies/{companySlug}/handler-services/{handlerServiceId}
+     * @apiEndpoint GET /companies/{companySlug}/handlers/{handlerId}/handler-services/{handlerServiceId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment  int  handlerServiceId 1234
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int handlerId 1234
+     * @apiEndpointURIFragment int handlerServiceId 9564
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -134,10 +136,12 @@ class HandlerService implements RouteInterface {
      *
      * Create a new handler-services for the requesting company.
      *
-     * @apiEndpoint POST /companies/{companySlug}/handler-services
+     * @apiEndpoint POST /companies/{companySlug}/handlers/{handlerId}/handler-services
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int handlerId 1234
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -166,11 +170,13 @@ class HandlerService implements RouteInterface {
      *
      * Updates Handler Service's specific information.
      *
-     * @apiEndpoint PUT /companies/{companySlug}/handler-services/{handlerServiceId}
+     * @apiEndpoint PATCH /companies/{companySlug}/handlers/{handlerId}/handler-services/{handlerServiceId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment int handlerServiceId 1234
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int handlerId 1234
+     * @apiEndpointURIFragment int handlerServiceId 9564
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -199,11 +205,13 @@ class HandlerService implements RouteInterface {
      *
      * Deletes a single Handler Service that belongs to the requesting company.
      *
-     * @apiEndpoint DELETE /companies/{companySlug}/handler-services/{handlerServiceId}
+     * @apiEndpoint DELETE /companies/{companySlug}/handlers/{handlerId}/handler-services/{handlerServiceId}
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment int handlerServiceId 1234
+     * @apiEndpointURIFragment string companySlug veridu-ltd
+     * @apiEndpointURIFragment int handlerId 1234
+     * @apiEndpointURIFragment int handlerServiceId 9564
      *
      * @param \Slim\App $app
      * @param \callable $auth
@@ -225,38 +233,5 @@ class HandlerService implements RouteInterface {
             ->add($permission(EndpointPermission::PUBLIC_ACTION))
             ->add($auth(Auth::IDENTITY))
             ->setName('handler-services:deleteOne');
-    }
-
-    /**
-     * Deletes all handler-services.
-     *
-     * Deletes all handler-services that belongs to the requesting company.
-     *
-     * @apiEndpoint DELETE /companies/{companySlug}/handler-services
-     * @apiGroup Company
-     * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     *
-     * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
-     *
-     * @return void
-     *
-     * @link docs/handler-services/deleteAll.md
-     * @see \App\Middleware\Auth::__invoke
-     * @see \App\Middleware\Permission::__invoke
-     * @see \App\Controller\HandlerServices::deleteAll
-     */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
-        // FIXME This should be removed!
-        $app
-            ->delete(
-                '/companies/{companySlug:[a-z0-9_-]+}/handler-services',
-                'App\Controller\HandlerServices:deleteAll'
-            )
-            ->add($permission(EndpointPermission::PUBLIC_ACTION))
-            ->add($auth(Auth::IDENTITY))
-            ->setName('handler-services:deleteAll');
     }
 }

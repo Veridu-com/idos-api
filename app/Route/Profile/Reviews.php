@@ -81,6 +81,7 @@ class Reviews implements RouteInterface {
      *
      * @return void
      *
+     * @link docs/sources/review/listAll.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Reviews::listAll
@@ -114,6 +115,7 @@ class Reviews implements RouteInterface {
      *
      * @return void
      *
+     * @link docs/sources/review/getOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Reviews::getOne
@@ -168,7 +170,7 @@ class Reviews implements RouteInterface {
      *
      * Updates a review for the given user and reference.
      *
-     * @apiEndpoint PUT /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
+     * @apiEndpoint PATCH /companies/{companySlug}/profiles/{userId}/reviews/{reviewId}
      * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
@@ -203,7 +205,7 @@ class Reviews implements RouteInterface {
      *
      * Creates or updates a new review for the given user.
      *
-     * @apiEndpoint POST /companies/{companySlug}/profiles/{userId}/reviews
+     * @apiEndpoint PUT /companies/{companySlug}/profiles/{userId}/reviews
      * @apiGroup Profile
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token

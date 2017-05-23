@@ -15,7 +15,19 @@
 
 This is the code repository for idOS API.
 
-## Documentation
+# Setup
+
+You can read how to setup the idOS API in the [Setup Manual](Setup.md)
+
+# Operation
+
+You can read how to operate the idOS API in the [Operation Manual](Operation.md)
+
+# Extending
+
+You can read how to extend the idOS API in the [Extension Manual](Extend.md)
+
+# External Documentation
 
 To generate the documentation, use [apiDoc](https://bitbucket.org/flavioheleno/apidoc).
 
@@ -23,3 +35,17 @@ To generate the documentation, use [apiDoc](https://bitbucket.org/flavioheleno/a
 #!bash
 ./app/apiDoc.php doc:gen --blueprint -- /path/to/idos-api/app/ /path/to/idos-api/ "idOS - A flexible framework for identity solutions." /path/to/idos-api/docs/description.md "https://api.idos.io" "/1.0/" /path/to/idos-api/docs/overview.md
 ```
+
+# Internal Documentation
+
+To generate the internal documentation, run:
+
+
+```bash
+./vendor/bin/phploc --log-xml=build/phploc.xml app/
+./vendor/bin/phpmd app/ xml cleancode,codesize,controversial,design,naming,unusedcode --reportfile build/pmd.xml
+./vendor/bin/phpcs --standard=VeriduRuleset.xml --report=xml --report-file=build/phpcs.xml app/
+./vendor/bin/phpdox --file phpdox.xml.dist
+```
+
+The files will be stored at [docs/](docs/).

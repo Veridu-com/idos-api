@@ -92,8 +92,9 @@ class Recommendation implements ControllerInterface {
     /**
      * Creates or updates the profile recommendation.
      *
-     * @apiEndpointRequiredParam body bool result true Recommendation result
-     * @apiEndpointRequiredParam body string reason first-name-mismatch The reason the recommendation is negative (if it is)
+     * @apiEndpointRequiredParam body string result pass Recommendation result
+     * @apiEndpointRequiredParam body string passed rules-passed The rules that the profile have passed
+     * @apiEndpointRequiredParam body string failed rules-failed The rules that the profile have failed to pass
      * @apiEndpointResponse 201 schema/recommendation/upsert.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request

@@ -91,7 +91,7 @@ class Recommendation implements HandlerInterface {
     }
 
     /**
-     * Creates or update a recommendation.
+     * Creates or updates a recommendation.
      *
      * @param \App\Command\Profile\Recommendation\Upsert $command
      *

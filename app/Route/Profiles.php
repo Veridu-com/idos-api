@@ -95,7 +95,7 @@ class Profiles implements RouteInterface {
      *
      * @return void
      *
-     * @link docs/profiles/listAll.md
+     * @link docs/profiles/getOne.md
      * @see \App\Middleware\Auth::__invoke
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profiles::getOne
