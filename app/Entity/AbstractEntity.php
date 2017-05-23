@@ -289,7 +289,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             }
 
             if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) === 0)) {
-                $value = substr($value, 11);
+                $value        = substr($value, 11);
                 $uncompressed = gzuncompress($value);
                 if ($uncompressed !== false) {
                     $value = $uncompressed;
