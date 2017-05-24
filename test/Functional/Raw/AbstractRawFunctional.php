@@ -41,8 +41,8 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
                 json_encode(
                     [
                         'source_id'  => 1321189817,
-                        'collection' => 'raw-1',
-                        'data'       => ['test' => 'data']
+                        'collection' => 'rawTest1',
+                        'data'       => ['test' => 'data1']
                     ]
                 )
             )
@@ -54,7 +54,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
                 json_encode(
                     [
                         'source_id'  => 1321189817,
-                        'collection' => 'raw-2',
+                        'collection' => 'rawTest2',
                         'data'       => ['test' => 'data2']
                     ]
                 )
@@ -67,7 +67,7 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
                 json_encode(
                     [
                         'source_id'  => 1321189817,
-                        'collection' => 'raw-3',
+                        'collection' => 'rawTest3',
                         'data'       => ['test' => 'data3']
                     ]
                 )

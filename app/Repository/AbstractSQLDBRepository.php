@@ -195,6 +195,15 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function create(array $attributes) : EntityInterface {
+        $entity = $this->entityFactory->create($this->getEntityName());
+
+        return $entity->hydrate($attributes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function load(array $attributes) : EntityInterface {
         return $this->entityFactory->create(
             $this->getEntityName(),
             $attributes
