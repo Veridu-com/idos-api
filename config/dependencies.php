@@ -289,9 +289,9 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
                 continue;
             }
 
-            if (preg_match('/.*Command\/(.*)\/(.*).php/', $commandFile->getPathname(), $matches) == 1) {
-                $resource = str_replace('/', '\\', $matches[1][0]);
-                $command  = sprintf('App\\Command\\%s\\%s', $resource, $matches[2][0]);
+            if (preg_match('/Command\/(.*)\/(.*).php$/', $commandFile->getPathname(), $matches) == 1) {
+                $resource = str_replace('/', '\\', $matches[1]);
+                $command  = sprintf('App\\Command\\%s\\%s', $resource, $matches[2]);
                 $handler  = sprintf('App\\Handler\\%s', $resource);
 
                 $commandList[$command] = $handler;
