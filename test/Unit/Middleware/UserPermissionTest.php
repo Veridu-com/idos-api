@@ -234,7 +234,7 @@ class UserPermissionTest extends AbstractUnit {
                 )
             );
 
-        $this->setExpectedException('RuntimeException');
+        $this->expectedException('RuntimeException');
         $userPermissionMiddleware($requestMock, $responseMock, $nextMock);
     }
 

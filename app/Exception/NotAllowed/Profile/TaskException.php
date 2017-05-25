@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Exception\NotAllowed\Profile;
 
+use App\Exception\NotAllowed;
+
 /**
  * Task not allowed exception.
  *

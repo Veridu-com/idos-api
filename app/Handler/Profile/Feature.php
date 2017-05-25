@@ -15,7 +15,6 @@ use App\Command\Profile\Feature\UpdateOne;
 use App\Command\Profile\Feature\Upsert;
 use App\Command\Profile\Feature\UpsertBulk;
 use App\Entity\Profile\Feature as FeatureEntity;
-use App\Entity\Profile\Process;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
@@ -77,7 +76,7 @@ class Feature implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Feature(
                 $container
                     ->get('repositoryFactory')
@@ -204,7 +203,7 @@ class Feature implements HandlerInterface {
      * @throws \App\Exception\Validate\Profile\FeatureException
      * @throws \App\Exception\Update\Profile\FeatureException
      *
-     * @return \App\Entity\Feature
+     * @return \App\Entity\Profile\Feature
      */
     public function handleUpdateOne(UpdateOne $command) : FeatureEntity {
         try {
@@ -368,7 +367,7 @@ class Feature implements HandlerInterface {
         // add to featuresPerSource so we can send events by source
         foreach ($features as $key => $feature) {
             // sourceId => sourceEntity - if source is null add to the index 0
-            $sourceId                       = isset($feature['source_id']) ? $feature['source_id'] : 0;
+            $sourceId                       = $feature['source_id'] ?? 0;
             $featuresPerSource[$sourceId][] = $feature;
 
             // gets the source name for every feature that has a source

@@ -21,12 +21,12 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testAssertProductionEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertFlag([]);
     }
 
     public function testAssertProductionInvalid() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertFlag('dummy');
     }
 

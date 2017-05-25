@@ -46,11 +46,17 @@ class Scores implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Scores::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Scores(
-                $container->get('repositoryFactory')->create('Profile\Score'),
-                $container->get('repositoryFactory')->create('Profile\Attribute'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Score'),
+                $repositoryFactory
+                    ->create('Profile\Attribute'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

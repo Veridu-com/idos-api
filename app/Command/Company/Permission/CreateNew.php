@@ -18,7 +18,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Permission's route name (user input).
      *
-     * @var object
+     * @var string
      */
     public $routeName;
     /**

@@ -203,7 +203,7 @@ class MemberTest extends AbstractUnit {
             $emitterMock
         );
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(CreateNew::class)

@@ -30,7 +30,7 @@ class Feature implements ValidatorInterface {
             $this->assertLongName($feature['name']);
             $this->assertName($feature['type']);
 
-            if (key_exists('source_id', $feature)) {
+            if (array_key_exists('source_id', $feature)) {
                 $this->assertId($feature['source_id']);
             }
         }

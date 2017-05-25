@@ -8,11 +8,11 @@ declare(strict_types = 1);
 
 namespace App\Listener\Profile\Recommendation;
 
-use App\Entity\User;
 use App\Extension\DispatchesUnhandledEvents;
 use App\Extension\QueuesOnManager;
 use App\Factory\Event as EventFactory;
 use App\Listener\AbstractListener;
+use App\Listener\ListenerInterface;
 use App\Repository\Company\SettingInterface;
 use App\Repository\ServiceInterface;
 use App\Repository\UserInterface;
@@ -24,7 +24,7 @@ use Monolog\Logger;
 /**
  * This listener is responsible to trigger the evaluation of a recommendation for a user.
  */
-class EvaluateRecommendationListener extends AbstractListener {
+class EvaluateRecommendation extends AbstractListener {
     use DispatchesUnhandledEvents;
     use QueuesOnManager;
 
@@ -75,18 +75,24 @@ class EvaluateRecommendationListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : EvaluateRecommendationListener {
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
             $repositoryFactory = $container->get('repositoryFactory');
             $log               = $container->get('log');
 
-            return new \App\Listener\Profile\Recommendation\EvaluateRecommendationListener(
-                $repositoryFactory->create('Company\Setting'),
-                $repositoryFactory->create('Service'),
-                $repositoryFactory->create('User'),
+            return new \App\Listener\Profile\Recommendation\EvaluateRecommendation(
+                $repositoryFactory
+                    ->create('Company\Setting'),
+                $repositoryFactory
+                    ->create('Service'),
+                $repositoryFactory
+                    ->create('User'),
                 $log('Event'),
-                $container->get('eventFactory'),
-                $container->get('eventEmitter'),
-                $container->get('gearmanClient')
+                $container
+                    ->get('eventFactory'),
+                $container
+                    ->get('eventEmitter'),
+                $container
+                    ->get('gearmanClient')
             );
         };
     }

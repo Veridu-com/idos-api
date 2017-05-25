@@ -42,17 +42,29 @@ class Profiles implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Company\Profiles::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Company\Profiles(
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('repositoryFactory')->create('Profile\Source'),
-                $container->get('repositoryFactory')->create('Profile\Tag'),
-                $container->get('repositoryFactory')->create('Profile\Review'),
-                $container->get('repositoryFactory')->create('Profile\Flag'),
-                $container->get('repositoryFactory')->create('Profile\Gate'),
-                $container->get('repositoryFactory')->create('Profile\Attribute'),
-                $container->get('repositoryFactory')->create('Profile\Recommendation'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('User'),
+                $repositoryFactory
+                    ->create('Profile\\Source'),
+                $repositoryFactory
+                    ->create('Profile\\Tag'),
+                $repositoryFactory
+                    ->create('Profile\\Review'),
+                $repositoryFactory
+                    ->create('Profile\\Flag'),
+                $repositoryFactory
+                    ->create('Profile\\Gate'),
+                $repositoryFactory
+                    ->create('Profile\\Attribute'),
+                $repositoryFactory
+                    ->create('Profile\\Recommendation'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

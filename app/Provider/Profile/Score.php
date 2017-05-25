@@ -8,13 +8,17 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
+use App\Event\Profile\Score\Created;
+use App\Event\Profile\Score\Deleted;
+use App\Event\Profile\Score\DeletedMulti;
+use App\Event\Profile\Score\Updated;
+use App\Listener\EventLogger;
+use App\Listener\MetricGenerator;
 use App\Provider\AbstractProvider;
-use App\Event\Profile\Score;
-use App\Listener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class ScoreProvider extends AbstractProvider {
+class Score extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -24,43 +28,43 @@ class ScoreProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Score\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Score\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Score\Deleted::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Score\DeletedMulti::class => [
+            DeletedMulti::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

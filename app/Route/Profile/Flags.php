@@ -44,10 +44,13 @@ class Flags implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Flags::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Flags(
-                $container->get('repositoryFactory')->create('Profile\Flag'),
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Flag'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

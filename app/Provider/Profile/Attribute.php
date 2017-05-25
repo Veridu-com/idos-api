@@ -8,14 +8,19 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
-use App\Event\Profile\Attribute;
+use App\Event\Profile\Attribute\Created;
+use App\Event\Profile\Attribute\Deleted;
+use App\Event\Profile\Attribute\DeletedMulti;
+use App\Event\Profile\Attribute\Updated;
+use App\Event\Profile\Attribute\UpsertedBulk;
+use App\Listener\EventLogger;
+use App\Listener\MetricGenerator;
+use App\Listener\Profile\Recommendation\EvaluateRecommendation;
 use App\Provider\AbstractProvider;
-use App\Listener;
-use App\Listener\Profile\Recommendation\EvaluateRecommendationListener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class AttributeProvider extends AbstractProvider {
+class Attribute extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -25,71 +30,71 @@ class AttributeProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Attribute\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Attribute\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Attribute\UpsertedBulk::class => [
+            UpsertedBulk::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 // @FIXME talk with team about it.
-                // new Listener\MetricEventListener($commandBus, $commandFactory)
+                // new MetricGenerator($commandBus, $commandFactory)
             ],
-            Attribute\Deleted::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Attribute\DeletedMulti::class => [
+            DeletedMulti::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

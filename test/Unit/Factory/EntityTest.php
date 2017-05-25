@@ -27,7 +27,7 @@ class EntityClass extends AbstractUnit {
 
     public function testCreateNotFound() {
         $entity = new Entity($this->optimus);
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $entity->create('Dummy', []);
     }
 

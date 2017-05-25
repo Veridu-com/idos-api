@@ -11,5 +11,5 @@ namespace App\Command\Sso;
 /**
  * Sso "Create New Spotify" Command.
  */
-class CreateNewSpotify extends AbstractCreateNew {
+class CreateNewSpotify extends CreateNew {
 }

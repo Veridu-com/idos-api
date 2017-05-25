@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\ServiceHandler;
 
-use App\Command\ServiceHandler\CreateNew;
+use App\Command\Service\CreateNew;
 use Test\Unit\Command\AbstractCommandTest;
 
 class CreateNewTest extends AbstractCommandTest {

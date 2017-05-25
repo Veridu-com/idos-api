@@ -9,9 +9,7 @@ declare(strict_types = 1);
 namespace App\Event\Profile\Feature;
 
 use App\Entity\Company\Credential;
-use App\Entity\Profile\Feature;
 use App\Entity\Profile\Process;
-use App\Entity\Profile\Source;
 use App\Entity\User;
 use App\Event\AbstractServiceQueueEvent;
 

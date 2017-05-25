@@ -47,9 +47,13 @@ class Permissions implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Company\Permissions::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Permissions(
-                $container->get('repositoryFactory')->create('Company\Permission'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company\Permission'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

@@ -10,11 +10,14 @@ namespace App\Handler;
 
 use App\Command\Sso\CreateNew;
 use App\Command\Sso\CreateNewAmazon;
+use App\Command\Sso\CreateNewDropbox;
 use App\Command\Sso\CreateNewFacebook;
 use App\Command\Sso\CreateNewGoogle;
 use App\Command\Sso\CreateNewLinkedin;
 use App\Command\Sso\CreateNewPaypal;
+use App\Command\Sso\CreateNewSpotify;
 use App\Command\Sso\CreateNewTwitter;
+use App\Command\Sso\CreateNewYahoo;
 use App\Entity\Company as CompanyEntity;
 use App\Entity\Company\Credential;
 use App\Entity\Company\Member as MemberEntity;
@@ -112,7 +115,7 @@ class Sso implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Sso(
                 $container
                     ->get('repositoryFactory')
@@ -153,7 +156,7 @@ class Sso implements HandlerInterface {
      * @param \App\Repository\UserInterface               $userRepository
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \App\Repository\Company\MemberInterface     $memberRepository
-     * @param \App\Repository\Company                     $companyRepository
+     * @param \App\Repository\CompanyInterface            $companyRepository
      * @param \App\Repository\Company\InvitationInterface $invitationRepository
      * @param \App\Repository\IdentityInterface           $identityRepository
      * @param \App\Factory\Event                          $eventFactory
@@ -193,9 +196,9 @@ class Sso implements HandlerInterface {
     /**
      * Creates a new user.
      *
-     * @param \App\Entity\Credential $credential The credential
-     * @param string                 $role       The role
-     * @param string                 $username   The username
+     * @param \App\Entity\Company\Credential $credential The credential
+     * @param string                         $role       The role
+     * @param string                         $username   The username
      *
      * @return \App\Entity\User The created user
      */

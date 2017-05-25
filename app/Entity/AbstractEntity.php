@@ -102,13 +102,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @var \Jenssegers\Optimus\Optimus
      */
-    protected $optimus = null;
+    protected $optimus;
     /**
      * Vault helper.
      *
      * @var \App\Helper\Vault
      */
-    protected $vault = null;
+    protected $vault;
 
     /**
      * Formats a snake_case string to CamelCase.
@@ -289,7 +289,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             }
 
             if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) === 0)) {
-                $value = substr($value, 11);
+                $value        = substr($value, 11);
                 $uncompressed = gzuncompress($value);
                 if ($uncompressed !== false) {
                     $value = $uncompressed;
@@ -345,15 +345,14 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __construct(array $attributes, Optimus $optimus, Vault $vault) {
-        $this->vault = $vault;
+        $this->vault   = $vault;
+        $this->optimus = $optimus;
 
         if (! empty($attributes)) {
             $this
                 ->hydrate($attributes)
                 ->exists = true;
         }
-
-        $this->optimus = $optimus;
     }
 
     /**
@@ -380,7 +379,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             $value = null;
-            if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
+            if ($this->relationships && isset($this->relationships[$attribute], $this->relations[$attribute])) {
                 // populating relations
                 $relationEntity = $this->$attribute();
                 $value          = $this->$attribute()->toArray();
@@ -451,7 +450,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @throws \RuntimeException
      *
-     * @return void
+     * @return mixed
      */
     public function __call(string $methodName, array $args) {
         if (! isset($this->relationships[$methodName])) {

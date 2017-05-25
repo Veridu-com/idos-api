@@ -44,8 +44,13 @@ class Service implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Services::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Services(
-                $container->get('repositoryFactory')->create('Service'), $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Service'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

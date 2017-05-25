@@ -8,13 +8,15 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
+use App\Event\Profile\Process\Created;
+use App\Event\Profile\Process\Updated;
+use App\Listener\EventLogger;
+use App\Listener\MetricGenerator;
 use App\Provider\AbstractProvider;
-use App\Event\Profile\Process;
-use App\Listener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class ProcessProvider extends AbstractProvider {
+class Process extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -24,23 +26,23 @@ class ProcessProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Process\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Process\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

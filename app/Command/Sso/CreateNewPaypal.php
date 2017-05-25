@@ -11,5 +11,5 @@ namespace App\Command\Sso;
 /**
  * Sso "Create New PayPal" Command.
  */
-class CreateNewPaypal extends AbstractCreateNew {
+class CreateNewPaypal extends CreateNew {
 }

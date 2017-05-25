@@ -43,9 +43,13 @@ class Candidates implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Candidates::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Candidates(
-                $container->get('repositoryFactory')->create('Profile\Candidate'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Candidate'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

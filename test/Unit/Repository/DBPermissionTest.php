@@ -58,7 +58,7 @@ class DBPermissionTest extends AbstractUnit {
             $this->optimus, $connectionMock
         );
 
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $dbPermission->findOne(1, 'notAExistingRoutName');
     }
 

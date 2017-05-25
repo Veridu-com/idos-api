@@ -44,9 +44,13 @@ class Widgets implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Company\Widgets::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Widgets(
-                $container->get('repositoryFactory')->create('Company\Widget'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company\Widget'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

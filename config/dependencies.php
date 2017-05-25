@@ -257,26 +257,59 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
     $settings = $container->get('settings');
     $log      = $container->get('log');
 
-    $commandPaths = array_merge(glob(__DIR__ . '/../app/Command/*/*.php'), glob(__DIR__ . '/../app/Command/*/*/*.php'));
-    $commands     = [];
-    foreach ($commandPaths as $commandPath) {
-        $matches = [];
-        preg_match_all('/.*Command\/(.*)\/(.*).php/', $commandPath, $matches);
+    $commandList = [];
+    if ((! empty($settings['boot']['commandsCache'])) && (is_file($settings['boot']['commandsCache']))) {
+        $cache = file_get_contents($settings['boot']['commandsCache']);
+        if ($cache !== false) {
+            $cache = unserialize($cache);
+        }
 
-        $resource = preg_replace("/\//", '\\', $matches[1][0]);
-        // $resource = $matches[1][0];
-        $command = $matches[2][0];
-
-        $commands[sprintf('App\\Command\\%s\\%s', $resource, $command)] = sprintf('App\\Handler\\%s', $resource);
+        if ($cache !== false) {
+            $commandList = $cache;
+        }
     }
 
-    $commands[Command\ResponseDispatch::class] = Handler\Response::class;
+    if (empty($commandList)) {
+        $commandFiles = new RegexIterator(
+            new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(
+                    __ROOT__ . '/app/Command/'
+                )
+            ),
+            '/^.+\.php$/i',
+            RecursiveRegexIterator::MATCH
+        );
+
+        foreach ($commandFiles as $commandFile) {
+            if (strpos($commandFile->getBasename(), 'Abstract') !== false) {
+                continue;
+            }
+
+            if (strpos($commandFile->getBasename(), 'Interface') !== false) {
+                continue;
+            }
+
+            if (preg_match('/.*Command\/(.*)\/(.*).php/', $commandFile->getPathname(), $matches) == 1) {
+                $resource = str_replace('/', '\\', $matches[1][0]);
+                $command  = sprintf('App\\Command\\%s\\%s', $resource, $matches[2][0]);
+                $handler  = sprintf('App\\Handler\\%s', $resource);
+
+                $commandList[$command] = $handler;
+            }
+        }
+
+        $commandList[Command\ResponseDispatch::class] = Handler\Response::class;
+
+        if (! empty($settings['boot']['commandsCache'])) {
+            file_put_contents($settings['boot']['commandsCache'], serialize($commandList));
+        }
+    }
 
     $handlerMiddleware = new CommandHandlerMiddleware(
         new ClassNameExtractor(),
         new ContainerLocator(
             $container,
-            $commands
+            $commandList
         ),
         new HandleClassNameInflector()
     );
@@ -444,14 +477,21 @@ $container['optimus'] = function (ContainerInterface $container) : Optimus {
 $container['globFiles'] = function () : array {
     return [
         'routes' => array_merge(
-            glob(__DIR__ . '/../app/Route/*.php'),
-            glob(__DIR__ . '/../app/Route/*/*.php')
+            glob(__ROOT__ . '/app/Route/*.php'),
+            glob(__ROOT__ . '/app/Route/*/*.php')
         ),
         'handlers' => array_merge(
-            glob(__DIR__ . '/../app/Handler/*.php'),
-            glob(__DIR__ . '/../app/Handler/*/*.php')
+            glob(__ROOT__ . '/app/Handler/*.php'),
+            glob(__ROOT__ . '/app/Handler/*/*.php')
         ),
-        'listenerProviders' => glob(__DIR__ . '/../app/Listener/*/*Provider.php'),
+        'eventListeners' => array_merge(
+            glob(__ROOT__ . '/app/Listener/*Listener.php'),
+            glob(__ROOT__ . '/app/Listener/*/*Listener.php')
+        ),
+        'listenerProviders' => array_merge(
+            glob(__ROOT__ . '/app/Listener/*Provider.php'),
+            glob(__ROOT__ . '/app/Listener/*/*Provider.php')
+        )
     ];
 };
 
@@ -459,7 +499,7 @@ $container['globFiles'] = function () : array {
 $container['vault'] = function (ContainerInterface $container) : Helper\Vault {
     $settings = $container->get('settings');
 
-    $fileName = __DIR__ . '/../resources/secure.key';
+    $fileName = __ROOT__ . '/resources/secure.key';
     if (! is_file($fileName)) {
         throw new RuntimeException('Secure key not found!');
     }

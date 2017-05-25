@@ -8,13 +8,17 @@ declare(strict_types = 1);
 
 namespace App\Provider\Company;
 
+use App\Event\Company\Hook\Created;
+use App\Event\Company\Hook\Deleted;
+use App\Event\Company\Hook\DeletedMulti;
+use App\Event\Company\Hook\Updated;
+use App\Listener\EventLogger;
+use App\Listener\MetricGenerator;
 use App\Provider\AbstractProvider;
-use App\Event\Company\Hook;
-use App\Listener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class HookProvider extends AbstractProvider {
+class Hook extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -24,43 +28,43 @@ class HookProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Hook\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Hook\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Hook\Deleted::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Hook\DeletedMulti::class => [
+            DeletedMulti::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

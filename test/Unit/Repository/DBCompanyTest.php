@@ -54,7 +54,7 @@ class DBCompanyTest extends AbstractUnit {
             ->method('table')
             ->will($this->returnValue($queryMock));
         $dbCompany = new DBCompany($factory, $this->optimus, $connectionMock);
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $dbCompany->findBySlug('');
     }
 
@@ -134,7 +134,7 @@ class DBCompanyTest extends AbstractUnit {
             $this->optimus, $connectionMock
         );
 
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $dbCompany->findByPubKey('');
     }
 

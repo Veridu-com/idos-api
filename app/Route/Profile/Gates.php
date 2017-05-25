@@ -49,10 +49,13 @@ class Gates implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Gates::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Gates(
-                $container->get('repositoryFactory')->create('Profile\Gate'),
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Gate'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

@@ -55,7 +55,7 @@ class DBCredentialTest extends AbstractUnit {
             ->will($this->returnValue($queryMock));
         $dbCredential = new DBCredential($factory, $this->optimus, $connectionMock);
 
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $dbCredential->findByPubKey('x');
     }
 

@@ -8,14 +8,17 @@ declare(strict_types = 1);
 
 namespace App\Provider\Company;
 
+use App\Event\Company\Invitation\Created;
+use App\Event\Company\Invitation\Resend;
+use App\Event\Company\Invitation\Updated;
+use App\Listener\EventLogger;
+use App\Listener\Manager\ServiceScheduler;
+use App\Listener\MetricGenerator;
 use App\Provider\AbstractProvider;
-use App\Event\Company\Invitation;
-use App\Listener;
-use App\Listener\Manager\QueueServiceTaskListener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class InvitationProvider extends AbstractProvider {
+class Invitation extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -25,33 +28,33 @@ class InvitationProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Invitation\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    QueueServiceTaskListener::class,
+                    ServiceScheduler::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Invitation\Resend::class => [
+            Resend::class => [
                 LazyListener::fromAlias(
-                    QueueServiceTaskListener::class,
+                    ServiceScheduler::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 )
             ],
-            Invitation\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 )
             ]

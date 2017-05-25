@@ -28,25 +28,13 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      *
      * @var string
      */
-    protected $tableName = null;
-    /**
-     * Entity Name.
-     *
-     * @var string
-     */
-    protected $entityName = null;
+    protected $tableName;
     /**
      * DB Connection.
      *
      * @var \Illuminate\Database\ConnectionInterface
      */
     protected $dbConnection;
-    /**
-     * Filterable keys of the repository.
-     *
-     * @var array
-     */
-    protected $filterableKeys = [];
     /**
      * Orderable keys of the repository.
      *
@@ -57,9 +45,12 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Begin a fluent query against a database table.
      *
+     * @param string|null $table
+     * @param string|null $entityName
+     *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function query($table = null, $entityName = null) : Builder {
+    protected function query( ? string $table = null, ? string $entityName = null) : Builder {
         if ($entityName === null) {
             $entityName = $this->getEntityClassName();
         }
@@ -303,8 +294,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $keys        = $values = [];
 
         foreach ($serialized as $key => $value) {
-            array_push($keys, $key);
-            array_push($values, $value);
+            $keys[]   = $key;
+            $values[] = $value;
         }
 
         $conflictSQL = 'DO NOTHING';
@@ -550,7 +541,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @param array $queryParams The query parameters
      * @param array $columns     The columns to fetch
      *
-     * @return \Illuminate\Database\Collection The collection of fetched entities
+     * @return \Illuminate\Support\Collection The collection of fetched entities
      */
     public function findBy(array $constraints, array $queryParams = [], array $columns = ['*']) : Collection {
         $query = $this->query();
@@ -606,7 +597,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      *
      * @return \Illuminate\Database\Query\Builder The query builder
      */
-    protected function where($query, string $column, $value, $operator = '=') {
+    protected function where(Builder $query, string $column, $value, string $operator = '=') : Builder {
         $isRelationConstraint = false;
         $relationName         = null;
         $relationColumn       = null;
@@ -725,7 +716,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             $requiresJoin = 'inner';
         }
 
-        if ($requiresJoin && $relationColumn === $relationTableKey && is_integer($value) && ($value === 0 || $this->optimus->encode($value) === 0)) {
+        if ($requiresJoin && $relationColumn === $relationTableKey && is_int($value) && ($value === 0 || $this->optimus->encode($value) === 0)) {
             $requiresJoin = 'left';
             $value        = null;
         }
@@ -878,8 +869,6 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                 return $relationName;
             }
         }
-
-        return;
     }
 
     /**
@@ -933,8 +922,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @return array
      */
     protected function paginate(Builder $query, array $queryParams = [], array $columns = ['*']) : array {
-        $page    = isset($queryParams['page']) ? $queryParams['page'] : 1;
-        $perPage = isset($queryParams['perPage']) ? $queryParams['perPage'] : 15;
+        $page    = $queryParams['page'] ?? 1;
+        $perPage = $queryParams['perPage'] ?? 15;
 
         $pagination = $query->paginate($perPage, $columns, 'page', $page);
 
@@ -979,7 +968,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             $keyParts = explode(':', $key);
             $value    = $filter['value'];
             $type     = $filter['type'];
-            $column   = isset($this->keyAlias[$key]) ? $this->keyAlias[$key] : ($this->getTableName() . '.' . $key);
+            $column   = $this->keyAlias[$key] ?? ($this->getTableName() . '.' . $key);
 
             if (count($keyParts) == 2 && $keyParts[1] === 'id' && (int) $value === 0) {
                 return $query->whereNull($column);

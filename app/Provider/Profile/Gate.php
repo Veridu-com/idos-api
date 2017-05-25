@@ -8,15 +8,19 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
+use App\Event\Profile\Gate\Created;
+use App\Event\Profile\Gate\Deleted;
+use App\Event\Profile\Gate\DeletedMulti;
+use App\Event\Profile\Gate\Updated;
+use App\Listener\EventLogger;
+use App\Listener\Manager\ServiceScheduler;
+use App\Listener\MetricGenerator;
+use App\Listener\Profile\Recommendation\EvaluateRecommendation;
 use App\Provider\AbstractProvider;
-use App\Event\Profile\Gate;
-use App\Listener;
-use App\Listener\Manager\QueueServiceTaskListener;
-use App\Listener\Profile\Recommendation\EvaluateRecommendationListener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class GateProvider extends AbstractProvider {
+class Gate extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -26,63 +30,63 @@ class GateProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Gate\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    QueueServiceTaskListener::class,
+                    ServiceScheduler::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Gate\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Gate\Deleted::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Gate\DeletedMulti::class => [
+            DeletedMulti::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

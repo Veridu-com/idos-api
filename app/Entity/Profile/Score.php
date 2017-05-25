@@ -45,6 +45,6 @@ class Score extends AbstractEntity {
      * @return float
      */
     public function getValueAttribute($value) : float {
-        return floatval($value);
+        return (float) $value;
     }
 }

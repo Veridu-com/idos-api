@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\ServiceHandler;
 
-use App\Command\ServiceHandler\DeleteAll;
+use App\Command\Service\DeleteAll;
 use Test\Unit\AbstractUnit;
 
 class DeleteAllTest extends AbstractUnit {

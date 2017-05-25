@@ -45,11 +45,17 @@ class Reviews implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Reviews::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Reviews(
-                $container->get('repositoryFactory')->create('Profile\Review'),
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Review'),
+                $repositoryFactory
+                    ->create('User'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

@@ -64,7 +64,7 @@ class Review implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Review(
                 $container
                     ->get('repositoryFactory')
@@ -86,11 +86,11 @@ class Review implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\ReviewInterface         $repository
-     * @param \App\Repository\RecommendationInterface $recommendationRepository
-     * @param \App\Validator\Review                   $validator
-     * @param \App\Factory\Event                      $eventFactory
-     * @param \League\Event\Emitter                   $emitter
+     * @param \App\Repository\Profile\ReviewInterface         $repository
+     * @param \App\Repository\Profile\RecommendationInterface $recommendationRepository
+     * @param \App\Validator\Profile\Review                   $validator
+     * @param \App\Factory\Event                              $eventFactory
+     * @param \League\Event\Emitter                           $emitter
      *
      * @return void
      */

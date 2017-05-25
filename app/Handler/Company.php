@@ -42,13 +42,13 @@ class Company implements HandlerInterface {
     /**
      * Service Repository instance.
      *
-     * @var \App\Repository\Service
+     * @var \App\Repository\ServiceInterface
      */
     private $serviceRepository;
     /**
      * Handler Service Repository instance.
      *
-     * @var \App\Repository\HandlerService
+     * @var \App\Repository\HandlerServiceInterface
      */
     private $handlerServiceRepository;
     /**

@@ -8,13 +8,18 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
+use App\Event\Profile\Candidate\Created;
+use App\Event\Profile\Candidate\Deleted;
+use App\Event\Profile\Candidate\DeletedMulti;
+use App\Event\Profile\Candidate\Updated;
+use App\Listener\EventLogger;
+use App\Listener\MetricGenerator;
+use App\Listener\Profile\Attribute;
 use App\Provider\AbstractProvider;
-use App\Event\Profile\Candidate;
-use App\Listener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class CandidateProvider extends AbstractProvider {
+class Candidate extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -24,59 +29,59 @@ class CandidateProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Candidate\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\Profile\AttributeListener::class,
+                    Attribute::class,
                     $container
                 )
             ],
-            Candidate\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\Profile\AttributeListener::class,
+                    Attribute::class,
                     $container
                 )
             ],
-            Candidate\Deleted::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\Profile\AttributeListener::class,
+                    Attribute::class,
                     $container
                 )
             ],
-            Candidate\DeletedMulti::class => [
+            DeletedMulti::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\Profile\AttributeListener::class,
+                    Attribute::class,
                     $container
                 )
             ]

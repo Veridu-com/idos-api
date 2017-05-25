@@ -8,13 +8,16 @@ declare(strict_types = 1);
 
 namespace App\Provider\Company;
 
+use App\Event\Company\Credential\Created;
+use App\Event\Company\Credential\Deleted;
+use App\Event\Company\Credential\Updated;
+use App\Listener\EventLogger;
+use App\Listener\MetricGenerator;
 use App\Provider\AbstractProvider;
-use App\Event\Company\Credential;
-use App\Listener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class CredentialProvider extends AbstractProvider {
+class Credential extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -24,33 +27,33 @@ class CredentialProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Credential\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Credential\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Credential\Deleted::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

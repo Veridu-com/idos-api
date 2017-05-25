@@ -145,7 +145,7 @@ abstract class AbstractRepository implements RepositoryInterface {
      *
      * @return \App\Entity\EntityInterface
      */
-    public function castHydrateEntity(EntityInterface &$entity) : EntityInterface {
+    public function castHydrateEntity(EntityInterface $entity) : EntityInterface {
         $relationships = $entity->relationships;
 
         if (! $relationships) {

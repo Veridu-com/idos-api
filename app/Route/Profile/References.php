@@ -46,9 +46,13 @@ class References implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\References::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\References(
-                $container->get('repositoryFactory')->create('Profile\Reference'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Reference'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

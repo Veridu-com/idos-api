@@ -50,6 +50,7 @@ class Debugger implements MiddlewareInterface {
             $item = ucfirst(strtolower($item));
         }
 
+        unset($item);
         $class = sprintf('\\App\\Exception\\%s', implode('', $class));
         if ((! $this->protectedException($class)) && (class_exists($class))) {
             throw new $class();

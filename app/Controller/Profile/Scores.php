@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
-use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\Profile\AttributeInterface;
 use App\Repository\Profile\ScoreInterface;

@@ -43,11 +43,17 @@ class Raw implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Raw::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Raw(
-                $container->get('repositoryFactory')->create('Profile\Raw'),
-                $container->get('repositoryFactory')->create('Profile\Source'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Raw'),
+                $repositoryFactory
+                    ->create('Profile\Source'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

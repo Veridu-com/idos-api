@@ -58,7 +58,7 @@ class Reference implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Reference(
                 $container
                     ->get('repositoryFactory')

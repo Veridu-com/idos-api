@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
-use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\Company\InvitationInterface;
 use League\Tactician\CommandBus;

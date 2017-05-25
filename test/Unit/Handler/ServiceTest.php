@@ -8,10 +8,10 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Handler;
 
-use App\Command\ServiceHandler\CreateNew;
-use App\Command\ServiceHandler\DeleteAll;
-use App\Command\ServiceHandler\DeleteOne;
-use App\Command\ServiceHandler\UpdateOne;
+use App\Command\Service\CreateNew;
+use App\Command\Service\DeleteAll;
+use App\Command\Service\DeleteOne;
+use App\Command\Service\UpdateOne;
 use App\Entity\Service;
 use App\Entity\ServiceHandler as ServiceHandlerEntity;
 use App\Factory\Entity as EntityFactory;
@@ -123,7 +123,7 @@ class ServiceHandlerTest extends AbstractUnit {
             new ServiceHandlerValidator(),
             $emitterMock
         );
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(CreateNew::class)
@@ -272,7 +272,7 @@ class ServiceHandlerTest extends AbstractUnit {
             $emitterMock
         );
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(DeleteOne::class)
@@ -343,7 +343,7 @@ class ServiceHandlerTest extends AbstractUnit {
             $emitterMock
         );
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(DeleteAll::class)
@@ -376,7 +376,7 @@ class ServiceHandlerTest extends AbstractUnit {
 
         $commandMock->companyId = null;
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
         $handler->handleDeleteAll($commandMock);
     }
 

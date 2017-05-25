@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Listener\Profile\Source;
 
 use App\Listener\AbstractListener;
+use App\Listener\ListenerInterface;
 use App\Repository\Profile\SourceInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\EventInterface;
@@ -19,7 +20,7 @@ use League\Event\EventInterface;
  *
  * This listener is called after \App\Event\Profile\Feature\CreatedBulk event was fired.
  */
-class AddSourceTagFromUpsertBulkFeatureListener extends AbstractListener {
+class AddSourceTagFromUpsertBulkFeature extends AbstractListener {
     /**
      * Source repository.
      *
@@ -31,11 +32,13 @@ class AddSourceTagFromUpsertBulkFeatureListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : AddSourceTagFromUpsertBulkFeatureListener {
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
             $repositoryFactory = $container->get('repositoryFactory');
 
-            return new \App\Listener\Profile\Source\AddSourceTagFromUpsertBulkFeatureListener(
-                $repositoryFactory->create('Profile\Source')
+            return new \App\Listener\Profile\Source\AddSourceTagFromUpsertBulkFeature(
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\\Source')
             );
         };
     }

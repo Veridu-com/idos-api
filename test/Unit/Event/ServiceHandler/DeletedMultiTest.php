@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace Test\Unit\Event\ServiceHandler;
 
 use App\Entity\ServiceHandler;
-use App\Event\ServiceHandler\DeletedMulti;
+use App\Event\Service\DeletedMulti;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use Test\Unit\AbstractUnit;

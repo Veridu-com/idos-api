@@ -11,8 +11,8 @@ namespace App\Listener\Manager;
 use App\Entity\Company\Credential;
 use App\Extension\QueueCompanyServiceHandlers;
 use App\Factory\Event as EventFactory;
-use App\Listener;
 use App\Listener\AbstractListener;
+use App\Listener\ListenerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\SettingInterface;
 use App\Repository\ServiceInterface;
@@ -23,7 +23,7 @@ use League\Event\EventInterface;
 /**
  * Data Scraper Event Listener.
  */
-class ScrapeEventListener extends AbstractListener {
+class ScrapeScheduler extends AbstractListener {
     use QueueCompanyServiceHandlers;
 
     /**
@@ -130,18 +130,24 @@ class ScrapeEventListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : ScrapeEventListener {
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
             $repositoryFactory = $container->get('repositoryFactory');
             $log               = $container->get('log');
 
-            return new \App\Listener\Manager\ScrapeEventListener(
-                $repositoryFactory->create('Company\Credential'),
-                $repositoryFactory->create('Service'),
-                $repositoryFactory->create('Company\Setting'),
+            return new \App\Listener\Manager\ScrapeScheduler(
+                $repositoryFactory
+                    ->create('Company\Credential'),
+                $repositoryFactory
+                    ->create('Service'),
+                $repositoryFactory
+                    ->create('Company\Setting'),
                 $log('Event'),
-                $container->get('eventFactory'),
-                $container->get('eventEmitter'),
-                $container->get('gearmanClient')
+                $container
+                    ->get('eventFactory'),
+                $container
+                    ->get('eventEmitter'),
+                $container
+                    ->get('gearmanClient')
             );
         };
     }
@@ -190,8 +196,8 @@ class ScrapeEventListener extends AbstractListener {
             return;
         }
 
-        $credential                            = $this->credentialRepository->find($event->user->credentialId);
-        list($appKey, $appSecret, $apiVersion) = $this->loadSettings($credential, $event->source->name);
+        $credential                        = $this->credentialRepository->find($event->user->credentialId);
+        [$appKey, $appSecret, $apiVersion] = $this->loadSettings($credential, $event->source->name);
 
         $mergePayload = [
             'appKey'     => $appKey,

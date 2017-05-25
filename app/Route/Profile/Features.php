@@ -47,12 +47,17 @@ class Features implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Features::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Features(
-                $container->get('repositoryFactory')->create('Profile\Feature'),
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('repositoryFactory')->create('Profile\Source'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Feature'),
+                $repositoryFactory
+                    ->create('Profile\Source'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

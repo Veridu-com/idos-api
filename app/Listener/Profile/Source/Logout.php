@@ -9,13 +9,12 @@ declare(strict_types = 1);
 namespace App\Listener\Profile\Source;
 
 use App\Entity\Profile\Source;
-use App\Entity\User;
 use App\Factory\Command;
 use App\Listener\AbstractListener;
+use App\Listener\ListenerInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\EventInterface;
 use League\Tactician\CommandBus;
-use Monolog\Logger;
 
 /**
  * This listener is responsible to remove the source data that has been
@@ -24,7 +23,7 @@ use Monolog\Logger;
  * This listener is called after the \App\Event\Profile\Source\Deleted or
  * the \App\Event\Profile\Source\DeletedMulti is fired.
  */
-class LogoutListener extends AbstractListener {
+class Logout extends AbstractListener {
     /**
      * Command Bus instance.
      *
@@ -37,12 +36,6 @@ class LogoutListener extends AbstractListener {
      * @var \App\Factory\Command
      */
     private $commandFactory;
-    /**
-     * Event Logger.
-     *
-     * @var \Monolog\Logger
-     */
-    private $logger;
 
     /**
      * Deletes raw entry of a user.
@@ -74,13 +67,15 @@ class LogoutListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : LogoutListener {
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
             $log = $container->get('log');
 
-            return new \App\Listener\Profile\Source\LogoutListener(
+            return new \App\Listener\Profile\Source\Logout(
                 $log('Event'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
     }
@@ -88,12 +83,12 @@ class LogoutListener extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param \Monolog\Logger $logger
+     * @param \League\Tactician\CommandBus $commandBus
+     * @param \App\Factory\Command         $command
      *
      * @return void
      */
-    public function __construct(Logger $logger, CommandBus $commandBus, Command $commandFactory) {
-        $this->logger         = $logger;
+    public function __construct(CommandBus $commandBus, Command $commandFactory) {
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }

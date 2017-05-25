@@ -13,7 +13,7 @@ use App\Command\CommandInterface;
 /**
  * Sso "Create New Twitter" Command.
  */
-class CreateNewTwitter extends AbstractCreateNew {
+class CreateNewTwitter extends CreateNew {
     /**
      * Provider token secret.
      *

@@ -42,9 +42,13 @@ class Recommendation implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Recommendation::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Recommendation(
-                $container->get('repositoryFactory')->create('Profile\Recommendation'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Recommendation'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

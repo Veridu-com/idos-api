@@ -140,8 +140,8 @@ class Permission implements HandlerInterface {
      *
      * @param \App\Command\Company\Permission\DeleteOne $command
      *
-     * @throws \App\Exception\Validate\PermissionException
-     * @throws \App\Exception\NotFound\PermissionException
+     * @throws \App\Exception\Validate\Company\PermissionException
+     * @throws \App\Exception\NotFound\Company\PermissionException
      *
      * @see \App\Repository\DBPermission::findOne
      * @see \App\Repository\DBPermission::deleteOne

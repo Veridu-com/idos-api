@@ -21,7 +21,7 @@ class ServiceHandlerTest extends AbstractUnit {
 
     // What is the source after all..?
     // public function testAssertSourceInvalid() {
-    //     $this->setExpectedException(ExceptionInterface::class);
+    //     $this->expectedException(ExceptionInterface::class);
     //     $this->validator->assertName([]);
     // }
 
@@ -31,7 +31,7 @@ class ServiceHandlerTest extends AbstractUnit {
     // }
 
     public function testAssertLocationInvalidUrl() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertUrl('url');
     }
 
@@ -41,7 +41,7 @@ class ServiceHandlerTest extends AbstractUnit {
     }
 
     public function testAuthUsernameInvalid() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertUserName([]);
     }
 
@@ -51,7 +51,7 @@ class ServiceHandlerTest extends AbstractUnit {
     }
 
     public function testAuthPasswordInvalid() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertPassword([]);
     }
 

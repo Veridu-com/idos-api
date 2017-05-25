@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Listener;
+namespace App\Extension;
 
 use App\Event\ServiceQueueEventInterface;
 use League\Event\EventInterface;
@@ -93,7 +93,7 @@ trait QueueCompanyServiceHandlers {
      * @return bool
      */
     private function queue(array $payload) : bool {
-        $task = $this->gearmanClient->doBackground(
+        $this->gearmanClient->doBackground(
             'manager',
             json_encode($payload),
             uniqid('manager-')

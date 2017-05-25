@@ -109,7 +109,7 @@ class Invitation implements HandlerInterface {
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \App\Repository\CompanyInterface            $companyRepository
      * @param \App\Repository\Company\SettingInterface    $settingRepository
-     * @param \App\Validator\Invitation                   $validator
+     * @param \App\Validator\Company\Invitation                   $validator
      * @param \App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                       $emitter
      *
@@ -138,8 +138,8 @@ class Invitation implements HandlerInterface {
      *
      * @param \App\Command\Company\Invitation\CreateNew $command
      *
-     * @throws \App\Exception\Validate\InvitationException
-     * @throws \App\Exception\Create\InvitationException
+     * @throws \App\Exception\Validate\Company\InvitationException
+     * @throws \App\Exception\Create\Company\InvitationException
      *
      * @return \App\Entity\Company\Invitation
      */
@@ -176,7 +176,7 @@ class Invitation implements HandlerInterface {
         $credential           = $this->credentialRepository->findByPubKey($command->credentialPubKey);
         $dashboardNameSetting = $this->settingRepository->findByCompanyIdSectionAndProperties($credential->companyId, 'company.details', ['dashboardName'])->first();
 
-        $dashboardName = (! $dashboardNameSetting) ? sprintf('%s idOS Dashboard', $company->name) : $dashboardNameSetting->value;
+        $dashboardName = (! $dashboardNameSetting) ? sprintf('%s idOS Dashboard', $command->company->name) : $dashboardNameSetting->value;
         $signupHash    = md5($command->email . $command->company->id . microtime());
 
         $invitation = $this->repository->create(
@@ -209,8 +209,8 @@ class Invitation implements HandlerInterface {
      *
      * @param \App\Command\Company\Invitation\UpdateOne $command
      *
-     * @throws \App\Exception\Validate\InvitationException
-     * @throws \App\Exception\Create\InvitationException
+     * @throws \App\Exception\Validate\Company\InvitationException
+     * @throws \App\Exception\Create\Company\InvitationException
      *
      * @return \App\Entity\Company\Invitation
      */
@@ -290,8 +290,8 @@ class Invitation implements HandlerInterface {
      *
      * @param \App\Command\Company\Invitation\DeleteOne $command
      *
-     * @throws \App\Exception\Validate\InvitationException
-     * @throws \App\Exception\NotFound\InvitationException
+     * @throws \App\Exception\Validate\Company\InvitationException
+     * @throws \App\Exception\NotFound\Company\InvitationException
      *
      * @return int
      */

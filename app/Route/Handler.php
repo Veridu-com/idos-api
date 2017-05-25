@@ -45,9 +45,13 @@ class Handler implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Handlers::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Handlers(
-                $container->get('repositoryFactory')->create('Handler'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Handler'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

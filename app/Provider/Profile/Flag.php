@@ -8,14 +8,17 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
-use App\Event\Profile\Flag;
+use App\Event\Profile\Flag\Created;
+use App\Event\Profile\Flag\Deleted;
+use App\Event\Profile\Flag\DeletedMulti;
+use App\Listener\EventLogger;
+use App\Listener\MetricGenerator;
+use App\Listener\Profile\Recommendation\EvaluateRecommendation;
 use App\Provider\AbstractProvider;
-use App\Listener;
-use App\Listener\Profile\Recommendation\EvaluateRecommendationListener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class FlagProvider extends AbstractProvider {
+class Flag extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -25,45 +28,45 @@ class FlagProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Flag\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Flag\Deleted::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Flag\DeletedMulti::class => [
+            DeletedMulti::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    EvaluateRecommendationListener::class,
+                    EvaluateRecommendation::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

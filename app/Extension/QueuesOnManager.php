@@ -20,7 +20,7 @@ trait QueuesOnManager {
      * @return bool
      */
     private function queueOnManager(\GearmanClient $gearmanClient, array $payload) : bool {
-        $task = $gearmanClient->doBackground(
+        $gearmanClient->doBackground(
             'manager',
             json_encode($payload),
             uniqid('manager-')

@@ -11,5 +11,5 @@ namespace App\Command\Sso;
 /**
  * Sso "Create New Yahoo" Command.
  */
-class CreateNewYahoo extends AbstractCreateNew {
+class CreateNewYahoo extends CreateNew {
 }

@@ -56,7 +56,7 @@ class HandlerService implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\HandlerService(
                 $container
                     ->get('repositoryFactory')
@@ -114,17 +114,17 @@ class HandlerService implements HandlerInterface {
             $this->validator->assertName($command->name);
             $this->validator->assertUrl($command->url);
 
-            if (! is_null($command->privacy)) {
+            if ($command->privacy !== null) {
                 $this->validator->assertId($command->privacy);
                 $inputs['privacy'] = $command->privacy;
             }
 
-            if (! is_null($command->enabled)) {
+            if ($command->enabled !== null) {
                 $this->validator->assertFlag($command->enabled);
                 $inputs['enabled'] = $command->enabled;
             }
 
-            if (! is_null($command->listens)) {
+            if ($command->listens !== null) {
                 $this->validator->assertArray($command->listens);
                 $inputs['listens'] = $command->listens;
             }
@@ -165,32 +165,32 @@ class HandlerService implements HandlerInterface {
             $this->validator->assertId($command->handlerServiceId);
 
             $input = [];
-            if (! is_null($command->name)) {
+            if ($command->name !== null) {
                 $this->validator->assertName($command->name);
                 $input['name'] = $command->name;
             }
 
-            if (! is_null($command->url)) {
+            if ($command->url !== null) {
                 $this->validator->assertUrl($command->url);
                 $input['url'] = $command->url;
             }
 
-            if (! is_null($command->enabled)) {
+            if ($command->enabled !== null) {
                 $this->validator->assertFlag($command->enabled);
                 $input['enabled'] = $command->enabled;
             }
 
-            if (! is_null($command->listens)) {
+            if ($command->listens !== null) {
                 $this->validator->assertArray($command->listens);
                 $input['listens'] = $command->listens;
             }
 
-            if (! is_null($command->enabled)) {
+            if ($command->enabled !== null) {
                 $this->validator->assertFlag($command->enabled);
                 $input['enabled'] = $command->enabled;
             }
 
-            if (! is_null($command->privacy)) {
+            if ($command->privacy !== null) {
                 $this->validator->assertId($command->privacy);
                 $input['privacy'] = $command->privacy;
             }

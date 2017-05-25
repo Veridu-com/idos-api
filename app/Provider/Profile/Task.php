@@ -8,14 +8,17 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
-use App\Event\Profile\Task;
+use App\Event\Profile\Task\Completed;
+use App\Event\Profile\Task\Created;
+use App\Event\Profile\Task\Updated;
+use App\Listener\EventLogger;
+use App\Listener\Manager\ServiceScheduler;
+use App\Listener\MetricGenerator;
 use App\Provider\AbstractProvider;
-use App\Listener;
-use App\Listener\Manager\QueueServiceTaskListener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class TaskProvider extends AbstractProvider {
+class Task extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -25,13 +28,13 @@ class TaskProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Task\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
@@ -41,23 +44,23 @@ class TaskProvider extends AbstractProvider {
             //  'onCompleted': [ event3, event4]
             // ]
             // Uses: Scraper calling other servies.
-            Task\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Task\Completed::class => [
+            Completed::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    QueueServiceTaskListener::class,
+                    ServiceScheduler::class,
                     $container
                 )
             ]

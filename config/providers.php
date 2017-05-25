@@ -18,8 +18,8 @@ $container = $app->getContainer();
 $settings  = $container->get('settings');
 
 $classList = [];
-if ((! empty($settings['boot']['listenersCache'])) && (is_file($settings['boot']['listenersCache']))) {
-    $cache = file_get_contents($settings['boot']['listenersCache']);
+if ((! empty($settings['boot']['providersCache'])) && (is_file($settings['boot']['providersCache']))) {
+    $cache = file_get_contents($settings['boot']['providersCache']);
     if ($cache !== false) {
         $cache = unserialize($cache);
     }
@@ -30,23 +30,23 @@ if ((! empty($settings['boot']['listenersCache'])) && (is_file($settings['boot']
 }
 
 if (empty($classList)) {
-    $listenerFiles = new RegexIterator(
+    $providerFiles = new RegexIterator(
         new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator(
-                __ROOT__ . '/app/Listener/'
+                __ROOT__ . '/app/Provider/'
             )
         ),
         '/^.+\.php$/i',
         RecursiveRegexIterator::MATCH
     );
 
-    $pathLen = strlen(__ROOT__ . '/app/Listener/');
-    foreach ($listenerFiles as $listenerFile) {
-        if (strpos($listenerFile->getBasename(), 'Abstract') !== false) {
+    $pathLen = strlen(__ROOT__ . '/app/Provider/');
+    foreach ($providerFiles as $providerFile) {
+        if (strpos($providerFile->getBasename(), 'Abstract') !== false) {
             continue;
         }
 
-        if (strpos($listenerFile->getBasename(), 'Interface') !== false) {
+        if (strpos($providerFile->getBasename(), 'Interface') !== false) {
             continue;
         }
 
@@ -60,9 +60,9 @@ if (empty($classList)) {
                 ''
             ],
             sprintf(
-                'App\\Listener\\%s',
+                'App\\Provider\\%s',
                 substr(
-                    $listenerFile->getPathname(),
+                    $providerFile->getPathname(),
                     $pathLen
                 )
             )
@@ -71,13 +71,14 @@ if (empty($classList)) {
         $classList[] = $className;
     }
 
-    if (! empty($settings['boot']['listenersCache'])) {
-        file_put_contents($settings['boot']['listenersCache'], serialize($classList));
+    if (! empty($settings['boot']['providersCache'])) {
+        file_put_contents($settings['boot']['providersCache'], serialize($classList));
     }
 }
 
-foreach ($classList as $className) {
-    if (class_exists($className)) {
-        $className::register($container);
+$emitter = $container->get('eventEmitter');
+if (empty($emitter->listeners)) {
+    foreach ($classList as $className) {
+        $emitter->useListenerProvider(new $className($container));
     }
 }

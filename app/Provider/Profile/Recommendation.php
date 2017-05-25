@@ -8,13 +8,15 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
+use App\Event\Profile\Recommendation\Created;
+use App\Event\Profile\Recommendation\Updated;
+use App\Listener\EventLogger;
+use App\Listener\MetricGenerator;
 use App\Provider\AbstractProvider;
-use App\Event\Profile\Recommendation;
-use App\Listener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class RecommendationProvider extends AbstractProvider {
+class Recommendation extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -24,23 +26,23 @@ class RecommendationProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Recommendation\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Recommendation\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

@@ -6,10 +6,6 @@
 
 declare(strict_types = 1);
 
-namespace App\Command\Sso;
+namespace App\Listener;
 
-/**
- * Sso "Create New Amazon" Command.
- */
-class CreateNewAmazon extends CreateNew {
-}
+interface ListenerInterface {}

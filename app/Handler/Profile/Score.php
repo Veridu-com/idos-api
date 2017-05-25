@@ -60,7 +60,7 @@ class Score implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Score(
                 $container
                     ->get('repositoryFactory')
@@ -271,7 +271,6 @@ class Score implements HandlerInterface {
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw $e;
             throw new Update\Profile\ScoreException('Error while trying to upsert a score', 500, $e);
         }
 

@@ -57,9 +57,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $this->selectDatabase($source->name);
         $this->selectCollection($collection);
 
-        $entity = $this->find($source->id);
-
-        return $entity;
+        return $this->find($source->id);
     }
 
     /**
@@ -158,9 +156,9 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
 
                         if ($sort === 'ASC') {
                             return ($a['timestamp'] < $b['timestamp']) ? -1 : 1;
-                        } else {
-                            return ($a['timestamp'] > $b['timestamp']) ? -1 : 1;
                         }
+
+                        return ($a['timestamp'] > $b['timestamp']) ? -1 : 1;
                     };
 
                     usort($keys, $comp);
@@ -218,9 +216,7 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $this->selectDatabase($source->name);
         $this->selectCollection($collection);
 
-        $affectedRows = (int) $this->delete($source->id);
-
-        return $affectedRows;
+        return (int) $this->delete($source->id);
     }
 
     /**
@@ -234,8 +230,9 @@ class DBRaw extends AbstractNoSQLDBRepository implements RawInterface {
         $affectedRows = 0;
 
         foreach ($collections as $collection) {
-            if (substr($collection->getName(), 0, 6) !== 'system')
-               $affectedRows += $this->deleteOneBySourceAndCollection($collection->getName(), $source);
+            if (substr($collection->getName(), 0, 6) !== 'system') {
+                $affectedRows += $this->deleteOneBySourceAndCollection($collection->getName(), $source);
+            }
         }
 
         return $affectedRows;

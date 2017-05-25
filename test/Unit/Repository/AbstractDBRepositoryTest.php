@@ -50,7 +50,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
             ->getMock();
 
         $getTableName = $this->setProtectedMethod($abstractMock, 'getTableName');
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $getTableName->invoke($abstractMock);
     }
 
@@ -105,7 +105,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
             ->method('query')
             ->will($this->returnValue($queryMock));
 
-        $this->setExpectedException(\Exception::class);
+        $this->expectedException(\Exception::class);
         $entity = $this->getEntity(1);
         $abstractDBMock->save($entity);
     }
@@ -150,7 +150,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
             ->getMock();
 
         $getEntityName = $this->setProtectedMethod($abstractMock, 'getEntityName');
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $getEntityName->invoke($abstractMock);
     }
 
@@ -170,7 +170,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
             ->getMock();
 
         $getEntityClassName = $this->setProtectedMethod($abstractMock, 'getEntityClassName');
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $getEntityClassName->invoke($abstractMock);
     }
 
@@ -211,7 +211,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
             ->method('query')
             ->will($this->returnValue($queryMock));
 
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $abstractMock->find(0);
     }
 
@@ -263,7 +263,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
             ->setConstructorArgs([$entityFactory, $this->optimus, $dbConnectionMock])
             ->getMockForAbstractClass();
 
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $abstractDBMock->deleteBy([]);
     }
 

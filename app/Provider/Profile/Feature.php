@@ -8,14 +8,21 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
-use App\Event\Profile\Feature;
+use App\Event\Profile\Feature\Created;
+use App\Event\Profile\Feature\CreatedBulk;
+use App\Event\Profile\Feature\Deleted;
+use App\Event\Profile\Feature\DeletedMulti;
+use App\Event\Profile\Feature\Updated;
+use App\Listener\EventLogger;
+use App\Listener\Manager\ServiceScheduler;
+use App\Listener\MetricGenerator;
+use App\Listener\Profile\Source\AddSourceTagFromCreateFeature;
+use App\Listener\Profile\Source\AddSourceTagFromUpsertBulkFeature;
 use App\Provider\AbstractProvider;
-use App\Listener;
-use App\Listener\Manager\QueueServiceTaskListener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class FeatureProvider extends AbstractProvider {
+class Feature extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -25,69 +32,69 @@ class FeatureProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Feature\CreatedBulk::class => [
+            CreatedBulk::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\Profile\Source\AddSourceTagFromUpsertBulkFeatureListener::class,
+                    AddSourceTagFromUpsertBulkFeature::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    QueueServiceTaskListener::class,
+                    ServiceScheduler::class,
                     $container
                 )
             ],
-            Feature\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\Profile\Source\AddSourceTagFromCreateFeatureListener::class,
+                    AddSourceTagFromCreateFeature::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    QueueServiceTaskListener::class,
+                    ServiceScheduler::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Feature\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    QueueServiceTaskListener::class,
+                    ServiceScheduler::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Feature\Deleted::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Feature\DeletedMulti::class => [
+            DeletedMulti::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

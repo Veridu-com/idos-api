@@ -24,7 +24,7 @@ trait AssertIpAddr {
      * @return void
      */
     public function assertIpAddr($ipAddr) {
-        Validator::Ip()
+        Validator::ip()
             ->assert($ipAddr);
     }
 }

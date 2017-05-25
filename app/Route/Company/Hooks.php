@@ -44,11 +44,17 @@ class Hooks implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Company\Hooks::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Company\Hooks(
-                $container->get('repositoryFactory')->create('Company\Hook'),
-                $container->get('repositoryFactory')->create('Company\Credential'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Company\Hook'),
+                $repositoryFactory
+                    ->create('Company\Credential'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

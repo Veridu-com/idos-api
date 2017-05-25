@@ -48,7 +48,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Feature's value (user input).
      *
-     * @var object
+     * @var mixed
      */
     public $value;
 

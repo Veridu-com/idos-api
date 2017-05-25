@@ -20,7 +20,7 @@ class AbstractFactoryTest extends AbstractUnit {
 
         $method = $this->setProtectedMethod($abstractMock, 'getFormattedName');
 
-        $this->setExpectedException(\TypeError::class);
+        $this->expectedException(\TypeError::class);
         $method->invoke($abstractMock, new \stdClass());
     }
 
@@ -47,7 +47,7 @@ class AbstractFactoryTest extends AbstractUnit {
             ->setMethods(['getNamespace'])
             ->getMockForAbstractClass();
 
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $abstractMock->register('dummy', 'App\Entity\Dummy');
     }
 
@@ -64,7 +64,7 @@ class AbstractFactoryTest extends AbstractUnit {
             ->setMethods(['getNamespace'])
             ->getMockForAbstractClass();
 
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $abstractMock->create('dummy');
     }
 

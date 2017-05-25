@@ -144,7 +144,7 @@ class DBHookTest extends AbstractUnit {
             $this->optimus, $connectionMock
         );
 
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $dbHook->find(1);
     }
 

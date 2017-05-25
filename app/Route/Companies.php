@@ -47,9 +47,6 @@ class Companies implements RouteInterface {
         $app->getContainer()[\App\Controller\Companies::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Companies(
                 $container
-                    ->get('repositoryFactory')
-                    ->create('Company'),
-                $container
                     ->get('commandBus'),
                 $container
                     ->get('commandFactory')

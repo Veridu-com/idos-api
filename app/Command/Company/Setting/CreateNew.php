@@ -18,13 +18,13 @@ class CreateNew extends AbstractCommand {
     /**
      * Setting's section name (user input).
      *
-     * @var object
+     * @var string
      */
     public $section;
     /**
      * Setting's property name (user input).
      *
-     * @var object
+     * @var string
      */
     public $property;
     /**
@@ -36,8 +36,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Setting's property value (user input).
      *
-     *
-     * @var object
+     * @var mixed
      */
     public $value;
     /**

@@ -31,12 +31,6 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      */
     protected $collectionName = null;
     /**
-     * Entity Name.
-     *
-     * @var string
-     */
-    protected $entityName = null;
-    /**
      * NoSQL DB Connection.
      *
      * @var \Jenssegers\Mongodb\Connection
@@ -48,13 +42,6 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      * @var callable
      */
     protected $dbSelector;
-
-    /**
-     * Filterable keys of the repository.
-     *
-     * @var array
-     */
-    protected $filterableKeys = [];
 
     /**
      * Select the database.
@@ -103,6 +90,8 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      * @param string $entityName The entity name
      * @param string $database   The database name
      *
+     * @throws \App\Exception\AppException
+     *
      * @return \Jenssegers\Mongodb\Query\Builder The query builder
      */
     protected function query(string $collection = null, string $entityName = null, string $database = null) : QueryBuilder {
@@ -112,13 +101,17 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
 
         $this->checkDatabaseSelected();
 
-        $collection = ($collection === null) ? $this->getCollectionName() : $collection;
+        $collection = $collection ?? $this->getCollectionName();
 
         return $this->dbConnection->collection($collection);
     }
 
     /**
      * List all databases.
+     *
+     * @throws \MongoDB\Exception\UnexpectedValueException
+     * @throws \MongoDB\Exception\InvalidArgumentException
+     * @throws \MongoDB\Driver\Exception\RuntimeException
      *
      * @return \MongoDB\Model\DatabaseInfoIterator A iterator for the databases
      */
@@ -161,7 +154,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     }
 
     protected function dropCollection($collection = null) {
-        $collection = ($collection === null) ? $this->getCollectionName() : $collection;
+        $collection = $collection ?? $this->getCollectionName();
 
         return $this->dbConnection->getCollection($collection)->drop();
     }
@@ -221,8 +214,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         if ($isUpdate) {
             $query = $this->query();
 
-            unset($serialized['id']);
-            unset($serialized['_id']);
+            unset($serialized['id'], $serialized['_id']);
             $success = $query->where('_id', '=', $query->convertKey(md5((string) $entity->id)))->update($serialized) > 0;
         } else {
             if ($entity->id) {

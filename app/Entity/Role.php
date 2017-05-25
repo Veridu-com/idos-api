@@ -11,7 +11,8 @@ namespace App\Entity;
 /**
  * Role Entity.
  *
- * @apiEntity schema/role/roleEntity.json
+ * @FIXME Schema does not exist!
+ * @FIXME @apiEntity schema/role/roleEntity.json
  *
  * @property int        $id
  * @property string     $name

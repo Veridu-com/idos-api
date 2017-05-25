@@ -76,7 +76,7 @@ class Member implements HandlerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Company\MemberInterface $repository
-     * @param \App\Validator\Member                   $validator
+     * @param \App\Validator\Company\Member           $validator
      * @param \App\Factory\Event                      $eventFactory
      * @param \League\Event\Emitter                   $emitter
      *
@@ -141,10 +141,10 @@ class Member implements HandlerInterface {
      *
      * @param \App\Command\Company\Member\UpdateOne $command
      *
-     * @throws \App\Exception\Validate\MemberException
-     * @throws \App\Exception\Create\MemberException
+     * @throws \App\Exception\Validate\Company\MemberException
+     * @throws \App\Exception\Create\Company\MemberException
      *
-     * @return \App\Entity\Member
+     * @return \App\Entity\Company\Member
      */
     public function handleUpdateOne(UpdateOne $command) : MemberEntity {
         try {
@@ -183,8 +183,8 @@ class Member implements HandlerInterface {
      *
      * @param \App\Command\Company\Member\DeleteOne $command
      *
-     * @throws \App\Exception\Validate\MemberException
-     * @throws \App\Exception\NotFound\MemberException
+     * @throws \App\Exception\Validate\Company\MemberException
+     * @throws \App\Exception\NotFound\Company\MemberException
      *
      * @return void
      */

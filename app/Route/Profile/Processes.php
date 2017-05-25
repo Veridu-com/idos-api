@@ -43,9 +43,13 @@ class Processes implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Processes::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Processes(
-                $container->get('repositoryFactory')->create('Profile\Process'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Process'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

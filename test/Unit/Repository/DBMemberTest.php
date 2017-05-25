@@ -193,7 +193,7 @@ class DBMemberTest extends AbstractUnit {
             $connectionMock
         );
 
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $dbMember->findOne(0, 1);
     }
 

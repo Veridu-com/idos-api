@@ -19,7 +19,7 @@ class AbstractCommandTest extends AbstractUnit {
         $abstractMock = $this->getMockBuilder(AbstractCommand::class)
             ->getMockForAbstractclass();
         $property = $this->setProtectedMethod($abstractMock, 'setParameter');
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $property->invoke($abstractMock, 'prop', 'value');
     }
 

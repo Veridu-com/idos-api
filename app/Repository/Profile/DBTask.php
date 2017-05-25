@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Repository\Profile;
 
-use App\Entity\Profile\Task;
 use App\Repository\AbstractSQLDBRepository;
 
 /**

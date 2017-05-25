@@ -9,12 +9,10 @@ declare(strict_types = 1);
 namespace App\Listener\Profile;
 
 use App\Entity\Company\Credential;
-use App\Entity\Profile\Candidate;
-use App\Entity\Profile\Feature;
 use App\Entity\User;
 use App\Factory\Command;
-use App\Listener;
 use App\Listener\AbstractListener;
+use App\Listener\ListenerInterface;
 use App\Repository\Profile\CandidateInterface;
 use App\Repository\Profile\FeatureInterface;
 use Illuminate\Support\Collection;
@@ -25,7 +23,7 @@ use League\Tactician\CommandBus;
 /**
  * Attribute Event Listener.
  */
-class AttributeListener extends AbstractListener {
+class Attribute extends AbstractListener {
     /**
      * Candidate Repository instance.
      *
@@ -55,14 +53,18 @@ class AttributeListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : AttributeListener {
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
             $repositoryFactory = $container->get('repositoryFactory');
 
-            return new \App\Listener\Profile\AttributeListener(
-                $repositoryFactory->create('Profile\Candidate'),
-                $repositoryFactory->create('Profile\Feature'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+            return new \App\Listener\Profile\Attribute(
+                $repositoryFactory
+                    ->create('Profile\Candidate'),
+                $repositoryFactory
+                    ->create('Profile\Feature'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
     }
@@ -80,20 +82,20 @@ class AttributeListener extends AbstractListener {
             case 'profilePicture':
                 return $items[0];
             case 'fullName':
-                $name = [];
+                $composition = [];
                 if (! empty($items['firstName'])) {
-                    $name[] = $items['firstName'];
+                    $composition[] = $items['firstName'];
                 }
 
                 if (! empty($items['middleName'])) {
-                    $name[] = $items['middleName'];
+                    $composition[] = $items['middleName'];
                 }
 
                 if (! empty($items['lastName'])) {
-                    $name[] = $items['lastName'];
+                    $composition[] = $items['lastName'];
                 }
 
-                return implode(' ', $name);
+                return implode(' ', $composition);
             case 'gender':
                 $value = strtolower($items[0]);
                 if (! in_array(strtolower($value), ['male', 'female'])) {
@@ -263,10 +265,10 @@ class AttributeListener extends AbstractListener {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\CandidateInterface $candidateRepository
-     * @param \App\Repository\FeatureInterface   $featureRepository
-     * @param \League\Tactician\CommandBus       $commandBus
-     * @param \App\Factory\Command               $commandFactory
+     * @param \App\Repository\Profile\CandidateInterface $candidateRepository
+     * @param \App\Repository\Profile\FeatureInterface   $featureRepository
+     * @param \League\Tactician\CommandBus               $commandBus
+     * @param \App\Factory\Command                       $commandFactory
      *
      * @return void
      */

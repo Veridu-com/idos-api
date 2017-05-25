@@ -43,11 +43,17 @@ class Tasks implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Tasks::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Tasks(
-                $container->get('repositoryFactory')->create('Profile\Task'),
-                $container->get('repositoryFactory')->create('Profile\Process'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Task'),
+                $repositoryFactory
+                    ->create('Profile\Process'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

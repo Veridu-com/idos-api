@@ -13,7 +13,7 @@ use Interop\Container\ContainerInterface;
 use League\Event\EventInterface;
 use Monolog\Logger;
 
-class LogFiredEventListener extends AbstractListener {
+class EventLogger extends AbstractListener {
     /**
      * Event logger.
      *
@@ -25,10 +25,10 @@ class LogFiredEventListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : LogFiredEventListener {
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
             $log = $container->get('log');
 
-            return new \App\Listener\LogFiredEventListener($log('Event'));
+            return new \App\Listener\EventLogger($log('Event'));
         };
     }
 

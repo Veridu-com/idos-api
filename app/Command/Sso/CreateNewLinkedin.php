@@ -11,5 +11,5 @@ namespace App\Command\Sso;
 /**
  * Sso "Create New LinkedIn" Command.
  */
-class CreateNewLinkedin extends AbstractCreateNew {
+class CreateNewLinkedin extends CreateNew {
 }

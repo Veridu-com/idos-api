@@ -69,7 +69,6 @@ class HandlerServices implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company   = $request->getAttribute('targetCompany');
         $handlerId = $request->getAttribute('decodedHandlerId');
 
         $entities = $this->repository->getByHandlerId($handlerId, $request->getQueryParams());
@@ -103,7 +102,6 @@ class HandlerServices implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company          = $request->getAttribute('targetCompany');
         $handlerServiceId = (int) $request->getAttribute('decodedHandlerServiceId');
 
         $entity = $this->repository->find($handlerServiceId);

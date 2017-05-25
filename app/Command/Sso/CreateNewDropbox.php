@@ -11,5 +11,5 @@ namespace App\Command\Sso;
 /**
  * Sso "Create New Dropbox" Command.
  */
-class CreateNewDropbox extends AbstractCreateNew {
+class CreateNewDropbox extends CreateNew {
 }

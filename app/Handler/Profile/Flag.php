@@ -56,7 +56,7 @@ class Flag implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Flag(
                 $container
                     ->get('repositoryFactory')
@@ -154,7 +154,7 @@ class Flag implements HandlerInterface {
      *
      * @param \App\Command\Profile\Flag\DeleteOne $command
      *
-     * @throws \App\Exception\Validate\FlagException
+     * @throws \App\Exception\Validate\Profile\FlagException
      * @throws \App\Exception\AppException
      *
      * @see \App\Repository\DBFlag::findOneBySlug

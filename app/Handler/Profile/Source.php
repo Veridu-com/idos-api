@@ -84,7 +84,7 @@ class Source implements HandlerInterface {
      *
      * @var \League\Tactician\CommandBus
      */
-    private $commendBus;
+    private $commandBus;
     /**
      * Event factory instance.
      *
@@ -142,7 +142,7 @@ class Source implements HandlerInterface {
      * @param \App\Repository\IdentityInterface        $identityRepository The identity   repository
      * @param \App\Repository\Company\SettingInterface $settingRepository  The setting    repository
      * @param \App\Repository\CompanyInterface         $companyRepository  The company    repository
-     * @param \App\Handler\Profile\SourceValidator     $validator          The validator
+     * @param \App\Validator\Profile\Source            $validator          The validator
      * @param \App\Factory\Command                     $commandFactory     The command    factory
      * @param \League\Tactician\CommandBus             $commandBus         The command    bus        instance.
      * @param \App\Factory\Event                       $eventFactory       The event      factory
@@ -216,7 +216,7 @@ class Source implements HandlerInterface {
                 $this->validator->assertEmail($command->tags['email']);
             }
 
-            $command->tags['otp_code']     = mt_rand(100000, 999999);
+            $command->tags['otp_code']     = random_int(100000, 999999);
             $command->tags['otp_verified'] = false;
             $command->tags['otp_attempts'] = 0;
             $sendOTP                       = true;
@@ -248,7 +248,7 @@ class Source implements HandlerInterface {
         );
 
         // if it is a social media Source
-        if (isset($command->tags['profile_id']) && isset($command->tags['access_token'])) {
+        if (isset($command->tags['profile_id'], $command->tags['access_token'])) {
             $keys = $this->settingRepository->getSourceTokens($command->credential->companyId, $command->credential->public, $command->name);
             $key  = $keys->where('property', sprintf('%s.%s.key', $command->credential->public, $command->name));
 

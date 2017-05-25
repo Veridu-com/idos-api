@@ -139,7 +139,7 @@ class Setting implements HandlerInterface {
         $setting = $this->repository->findOneByCompanyAndId($command->company->id, $command->settingId);
 
         if ($setting->protected && ! $command->hasParentAccess) {
-            throw new NotAllowed\SettingException('Not allowed to access this Setting.');
+            throw new NotAllowed\Company\SettingException('Not allowed to access this Setting.');
         }
 
         return $setting;

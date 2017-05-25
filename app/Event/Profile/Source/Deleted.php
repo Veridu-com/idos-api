@@ -46,7 +46,7 @@ class Deleted extends AbstractEvent {
      * Class constructor.
      *
      * @param \App\Entity\User               $user
-     * @param \App\Entity\Source             $source
+     * @param \App\Entity\Profile\Source     $source
      * @param string                         $ipAddr
      * @param \App\Entity\Company\Credential $credential
      *

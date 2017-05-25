@@ -11,16 +11,18 @@ setlocale(LC_ALL, 'en_US.UTF8');
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
 
-require_once __DIR__ . '/../vendor/autoload.php';
+define('__ROOT__', __DIR__ . '/..');
+
+require_once __ROOT__ . '/vendor/autoload.php';
 
 // Loads .env if available
-if (is_file(__DIR__ . '/../.env')) {
-    $dotEnv = new Dotenv\Dotenv(__DIR__ . '/../');
+if (is_file(__ROOT__ . '/.env')) {
+    $dotEnv = new Dotenv\Dotenv(__ROOT__);
     $dotEnv->load();
 }
 
 // Load application settings
-require_once __DIR__ . '/../config/settings.php';
+require_once __ROOT__ . '/config/settings.php';
 
 // Increase error reporting
 if ($appSettings['debug']) {
@@ -34,19 +36,22 @@ $app = new Slim\App(
 );
 
 // Dependency Injection
-require_once __DIR__ . '/../config/dependencies.php';
+require_once __ROOT__ . '/config/dependencies.php';
 
 // Application Middleware
-require_once __DIR__ . '/../config/middleware.php';
+require_once __ROOT__ . '/config/middleware.php';
 
 // Command Handlers
-require_once __DIR__ . '/../config/handlers.php';
+require_once __ROOT__ . '/config/handlers.php';
 
 // Route definition
-require_once __DIR__ . '/../config/routes.php';
+require_once __ROOT__ . '/config/routes.php';
 
 // Event Listeners
-require_once __DIR__ . '/../config/listeners.php';
+require_once __ROOT__ . '/config/listeners.php';
+
+// Listener Providers
+require_once __ROOT__ . '/config/providers.php';
 
 // Application Execution
 $app->run();

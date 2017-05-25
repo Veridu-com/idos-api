@@ -41,12 +41,12 @@ class Metrics implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Metrics::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Metrics(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Metric\System'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Metric\User'),
                 $container
                     ->get('commandBus'),

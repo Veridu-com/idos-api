@@ -46,9 +46,13 @@ class HandlerService implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\HandlerServices::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\HandlerServices(
-                $container->get('repositoryFactory')->create('HandlerService'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('HandlerService'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

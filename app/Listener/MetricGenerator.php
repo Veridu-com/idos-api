@@ -13,7 +13,7 @@ use Interop\Container\ContainerInterface;
 use League\Event\EventInterface;
 use League\Tactician\CommandBus;
 
-class MetricEventListener extends AbstractListener {
+class MetricGenerator extends AbstractListener {
     /**
      * Command Bus instance.
      *
@@ -31,10 +31,12 @@ class MetricEventListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : MetricEventListener {
-            return new \App\Listener\MetricEventListener(
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
+            return new \App\Listener\MetricGenerator(
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
     }

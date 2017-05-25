@@ -8,16 +8,22 @@ declare(strict_types = 1);
 
 namespace App\Provider\Profile;
 
-use App\Event\Profile\Source;
+use App\Event\Profile\Source\CRA;
+use App\Event\Profile\Source\Created;
+use App\Event\Profile\Source\Deleted;
+use App\Event\Profile\Source\DeletedMulti;
+use App\Event\Profile\Source\OTP;
+use App\Event\Profile\Source\Updated;
+use App\Listener\EventLogger;
+use App\Listener\Manager\ScrapeScheduler;
+use App\Listener\Manager\ServiceScheduler;
+use App\Listener\MetricGenerator;
+use App\Listener\Profile\Source\Logout;
 use App\Provider\AbstractProvider;
-use App\Listener;
-use App\Listener\Manager\QueueServiceTaskListener;
-use App\Listener\Manager\ScrapeEventListener;
-use App\Listener\Profile\Source\LogoutListener;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class SourceProvider extends AbstractProvider {
+class Source extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -25,89 +31,83 @@ class SourceProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Source\CRA::class => [
+            CRA::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
+                    $container
+                ),
+                LazyListener::fromAlias(
+                    ServiceScheduler::class,
                     $container
                 )
             ],
-            Source\OTP::class => [
+            OTP::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    QueueServiceTaskListener::class,
+                    ServiceScheduler::class,
                     $container
                 )
             ],
-            Source\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    ScrapeEventListener::class,
+                    ScrapeScheduler::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Source\CRA::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    QueueServiceTaskListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Source\Updated::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    Logout::class,
+                    $container
+                ),
+                LazyListener::fromAlias(
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Source\Deleted::class => [
+            DeletedMulti::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    LogoutListener::class,
+                    Logout::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
-                    $container
-                )
-            ],
-            Source\DeletedMulti::class => [
-                LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
-                    $container
-                ),
-                LazyListener::fromAlias(
-                    LogoutListener::class,
-                    $container
-                ),
-                LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

@@ -14,42 +14,42 @@ use Test\Unit\AbstractUnit;
 
 class AssertUserNameTest extends AbstractUnit {
     public function testAssertUserNameNull() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertUserName::class);
         $traitMock->assertUserName(null);
     }
 
     public function testAssertUserNameEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertUserName::class);
         $traitMock->assertUserName('');
     }
 
     public function testAssertUserNameWhitespace() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertUserName::class);
         $traitMock->assertUserName('ab cd');
     }
 
     public function testAssertUserNameSpecialChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertUserName::class);
         $traitMock->assertUserName('LKM@#$%4;');
     }
 
     public function testAssertUserNameInvalid() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertUserName::class);
         $traitMock->assertUserName('a' . chr(127) . chr(127));
     }
 
     public function testAssertUserNameTooLong() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertUserName::class);
         $traitMock->assertUserName(str_repeat('x', 51));

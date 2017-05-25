@@ -8,11 +8,10 @@ declare(strict_types = 1);
 
 namespace App\Listener\Manager;
 
-use App\Entity\Company\Credential;
 use App\Extension\QueueCompanyServiceHandlers;
 use App\Factory\Event as EventFactory;
-use App\Listener;
 use App\Listener\AbstractListener;
+use App\Listener\ListenerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\ServiceInterface;
 use Interop\Container\ContainerInterface;
@@ -23,7 +22,7 @@ use League\Event\EventInterface;
  * This listener is responsible for sending to the "Manager"
  * all Service related tasks.
  */
-class QueueServiceTaskListener extends AbstractListener {
+class ServiceScheduler extends AbstractListener {
     use QueueCompanyServiceHandlers;
     /**
      * Company id.
@@ -66,15 +65,20 @@ class QueueServiceTaskListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : QueueServiceTaskListener {
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
             $repositoryFactory = $container->get('repositoryFactory');
 
-            return new \App\Listener\Manager\QueueServiceTaskListener(
-                $repositoryFactory->create('Company\Credential'),
-                $repositoryFactory->create('Service'),
-                $container->get('eventFactory'),
-                $container->get('eventEmitter'),
-                $container->get('gearmanClient')
+            return new \App\Listener\Manager\ServiceScheduler(
+                $repositoryFactory
+                    ->create('Company\Credential'),
+                $repositoryFactory
+                    ->create('Service'),
+                $container
+                    ->get('eventFactory'),
+                $container
+                    ->get('eventEmitter'),
+                $container
+                    ->get('gearmanClient')
             );
         };
     }

@@ -13,7 +13,8 @@ use App\Entity\AbstractEntity;
 /**
  * RoleAccesss Entity.
  *
- * @apiEntity schema/role-access/roleAccessEntity.json
+ * @FIXME Schema does not exist!
+ * @FIXME @apiEntity schema/role-access/roleAccessEntity.json
  *
  * @property int        $id
  * @property int        $identity_id

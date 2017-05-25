@@ -8,13 +8,17 @@ declare(strict_types = 1);
 
 namespace App\Provider\Company;
 
-use App\Event\Profile\Tag;
-use App\Listener;
+use App\Event\Profile\Tag\Created;
+use App\Event\Profile\Tag\Deleted;
+use App\Event\Profile\Tag\DeletedMulti;
+use App\Event\Profile\Tag\Updated;
+use App\Listener\EventLogger;
+use App\Listener\MetricGenerator;
+use App\Provider\AbstractProvider;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
-use App\Provider\AbstractProvider;
 
-class TagProvider extends AbstractProvider {
+class Tag extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -24,43 +28,43 @@ class TagProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Tag\Created::class => [
+            Created::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Tag\Updated::class => [
+            Updated::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Tag\Deleted::class => [
+            Deleted::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ],
-            Tag\DeletedMulti::class => [
+            DeletedMulti::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 ),
                 LazyListener::fromAlias(
-                    Listener\MetricEventListener::class,
+                    MetricGenerator::class,
                     $container
                 )
             ]

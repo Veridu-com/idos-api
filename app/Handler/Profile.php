@@ -49,7 +49,7 @@ class Profile implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile(
                 $container
                     ->get('repositoryFactory')
@@ -99,8 +99,6 @@ class Profile implements HandlerInterface {
     public function handleListAll(ListAll $command) : Collection {
         $this->validator->assertCompany($command->company);
 
-        $entities = $this->repository->findByCompanyId($command->company->id);
-
-        return $entities;
+        return $this->repository->findByCompanyId($command->company->id);
     }
 }

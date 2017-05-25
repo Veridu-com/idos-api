@@ -42,10 +42,13 @@ class Attributes implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Attributes::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Attributes(
-                $container->get('repositoryFactory')
+                $container
+                    ->get('repositoryFactory')
                     ->create('Profile\Attribute'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

@@ -6,15 +6,15 @@
 
 declare(strict_types = 1);
 
-namespace App\Provider\Manager;
+namespace App\Provider;
 
-use App\Event\Manager;
-use App\Listener;
-use App\Provider\AbstractProvider;
+use App\Event\Manager\UnhandledEvent;
+use App\Event\Manager\WorkQueued;
+use App\Listener\EventLogger;
 use Interop\Container\ContainerInterface;
 use Refinery29\Event\LazyListener;
 
-class ManagerProvider extends AbstractProvider {
+class Manager extends AbstractProvider {
     /**
      * Class constructor.
      *
@@ -24,16 +24,16 @@ class ManagerProvider extends AbstractProvider {
      */
     public function __construct(ContainerInterface $container) {
         $this->events = [
-            Manager\UnhandledEvent::class => [
+            UnhandledEvent::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 )
             ],
 
-            Manager\WorkQueued::class => [
+            WorkQueued::class => [
                 LazyListener::fromAlias(
-                    Listener\LogFiredEventListener::class,
+                    EventLogger::class,
                     $container
                 )
             ]

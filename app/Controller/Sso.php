@@ -199,6 +199,8 @@ class Sso implements ControllerInterface {
             case 'yahoo':
                 $command = $this->commandFactory->create('Sso\\CreateNewYahoo');
                 break;
+            default:
+                throw new \Exception('Invalid provider.');
         }
 
         $socialTokens = $this->settings['social_tokens'][$sourceName] ?? null;

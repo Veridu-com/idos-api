@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Event\Company\Widget;
 
-use App\Entity\Company\Widget;
 use App\Entity\Identity;
 use App\Event\AbstractEvent;
 use Illuminate\Support\Collection;

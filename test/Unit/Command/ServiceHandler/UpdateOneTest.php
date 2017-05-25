@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\ServiceHandler;
 
-use App\Command\ServiceHandler\UpdateOne;
+use App\Command\Service\UpdateOne;
 use Test\Unit\Command\AbstractCommandTest;
 
 class UpdateOneTest extends AbstractCommandTest {

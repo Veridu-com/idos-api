@@ -20,17 +20,17 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testAssertRouteNameEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertRouteName('');
     }
 
     public function testAssertRouteNameLessThanOneChar() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertRouteName('');
     }
 
     public function testAssertRouteNameThirdyChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertRouteName('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
     }
 }

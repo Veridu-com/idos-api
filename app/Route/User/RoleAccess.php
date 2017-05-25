@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Route\User;
 
 use App\Controller\ControllerInterface;
-use App\Entity\Role;
 use App\Entity\User\RoleAccess as RoleAccessEntity;
 use App\Middleware\Auth;
 use App\Route\RouteInterface;
@@ -50,9 +49,13 @@ class RoleAccess implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\User\RoleAccess::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\User\RoleAccess(
-                $container->get('repositoryFactory')->create('User\RoleAccess'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('User\RoleAccess'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

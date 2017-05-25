@@ -58,7 +58,7 @@ class Handler implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Handler(
                 $container
                     ->get('repositoryFactory')
@@ -157,27 +157,27 @@ class Handler implements HandlerInterface {
 
             $input = [];
 
-            if (! is_null($command->name)) {
+            if ($command->name !== null) {
                 $this->validator->assertName($command->name);
                 $input['name'] = $command->name;
             }
 
-            if (! is_null($command->authUsername)) {
+            if ($command->authUsername !== null) {
                 $this->validator->assertName($command->authUsername);
                 $input['auth_username'] = $command->authUsername;
             }
 
-            if (! is_null($command->authPassword)) {
+            if ($command->authPassword !== null) {
                 $this->validator->assertPassword($command->authPassword);
                 $input['auth_password'] = $command->authPassword;
             }
 
-            if (! is_null($command->enabled)) {
+            if ($command->enabled !== null) {
                 $this->validator->assertFlag($command->enabled);
                 $input['enabled'] = $command->enabled;
             }
 
-            if (! is_null($command->enabled)) {
+            if ($command->enabled !== null) {
                 $this->validator->assertFlag($command->enabled);
                 $input['enabled'] = $command->enabled;
             }

@@ -55,7 +55,7 @@ class Candidate implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Candidate(
                 $container
                     ->get('repositoryFactory')
@@ -74,10 +74,10 @@ class Candidate implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\CandidateInterface $repository
-     * @param \App\Validator\Candidate           $validator
-     * @param \App\Factory\Event                 $eventFactory
-     * @param \League\Event\Emitter              $emitter
+     * @param \App\Repository\Profile\CandidateInterface $repository
+     * @param \App\Validator\Profile\Candidate           $validator
+     * @param \App\Factory\Event                         $eventFactory
+     * @param \League\Event\Emitter                      $emitter
      *
      * @return void
      */
@@ -100,10 +100,10 @@ class Candidate implements HandlerInterface {
      *
      * @see \App\Repository\DBCandidate::save
      *
-     * @throws \App\Exception\Validade\Profile\CandidateException
+     * @throws \App\Exception\Validate\Profile\CandidateException
      * @throws \App\Exception\Create\Profile\CandidateException
      *
-     * @return \App\Entity\Candidate
+     * @return \App\Entity\Profile\Candidate
      */
     public function handleCreateNew(CreateNew $command) : CandidateEntity {
         try {

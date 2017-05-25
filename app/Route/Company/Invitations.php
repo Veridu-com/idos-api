@@ -44,9 +44,13 @@ class Invitations implements RouteInterface {
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Company\Invitations::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Invitations(
-                $container->get('repositoryFactory')->create('Company\Invitation'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company\Invitation'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

@@ -154,7 +154,7 @@ class Limit implements MiddlewareInterface {
                     'Limit: over hard threhold: %s (%s %s) [%d]',
                     $key->getPublicKey(),
                     $request->getMethod(),
-                    $request->getURI()->getPath(),
+                    $request->getUri()->getPath(),
                     $this->limitType
                 )
             );
@@ -169,7 +169,7 @@ class Limit implements MiddlewareInterface {
                     'Limit: over soft threshold: %s (%s %s) [%d]',
                     $key->getPublicKey(),
                     $request->getMethod(),
-                    $request->getURI()->getPath(),
+                    $request->getUri()->getPath(),
                     $this->limitType
                 )
             );

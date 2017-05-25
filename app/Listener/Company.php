@@ -9,8 +9,6 @@ declare(strict_types = 1);
 namespace App\Listener;
 
 use App\Factory\Command;
-use App\Listener;
-use App\Listener\AbstractListener;
 use Interop\Container\ContainerInterface;
 use League\Event\EventInterface;
 use League\Tactician\CommandBus;
@@ -18,7 +16,7 @@ use League\Tactician\CommandBus;
 /**
  * Company Event Listener.
  */
-class CompanyListener extends AbstractListener {
+class Company extends AbstractListener {
     /**
      * Command Bus instance.
      *
@@ -36,10 +34,12 @@ class CompanyListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : CompanyListener {
-            return new \App\Listener\CompanyListener(
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
+            return new \App\Listener\Company(
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
     }

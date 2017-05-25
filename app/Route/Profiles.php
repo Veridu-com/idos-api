@@ -40,30 +40,24 @@ class Profiles implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profiles::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profiles(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('User'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Attribute'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Candidate'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Score'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Source'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Gate'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Flag'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Recommendation'),
                 $container
                     ->get('commandBus'),

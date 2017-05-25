@@ -12,7 +12,6 @@ use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\Profile\FeatureInterface;
 use App\Repository\Profile\SourceInterface;
-use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,12 +26,6 @@ class Features implements ControllerInterface {
      * @var \App\Repository\Profile\FeatureInterface
      */
     private $repository;
-    /**
-     * User Repository instance.
-     *
-     * @var \App\Repository\UserInterface
-     */
-    private $userRepository;
     /**
      * Source Repository instance.
      *
@@ -56,8 +49,7 @@ class Features implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Profile\FeatureInterface $repository
-     * @param \App\Repository\UserInterface            $userRepository
-     * @param \App\Repository\Profile\SourceRepository $sourceRepository
+     * @param \App\Repository\Profile\SourceInterface  $sourceRepository
      * @param \League\Tactician\CommandBus             $commandBus
      * @param \App\Factory\Command                     $commandFactory
      *
@@ -65,13 +57,11 @@ class Features implements ControllerInterface {
      */
     public function __construct(
         FeatureInterface $repository,
-        UserInterface $userRepository,
         SourceInterface $sourceRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->repository       = $repository;
-        $this->userRepository   = $userRepository;
         $this->sourceRepository = $sourceRepository;
         $this->commandBus       = $commandBus;
         $this->commandFactory   = $commandFactory;
@@ -91,8 +81,7 @@ class Features implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $handler = $request->getAttribute('handler');
+        $user = $request->getAttribute('targetUser');
 
         $entities = $this->repository->getByUserId($user->id, $request->getQueryParams());
 
@@ -326,7 +315,6 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', isset($feature->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

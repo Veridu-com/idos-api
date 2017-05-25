@@ -67,7 +67,7 @@ class Gate implements HandlerInterface {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Gate(
                 $container
                     ->get('repositoryFactory')
@@ -89,11 +89,11 @@ class Gate implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\GateInterface     $repository
-     * @param \App\Repository\CategoryInterface $categoryRepository
-     * @param \App\Validator\Gate               $validator
-     * @param \App\Factory\Event                $eventFactory
-     * @param \League\Event\Emitter             $emitter
+     * @param \App\Repository\Profile\GateInterface $repository
+     * @param \App\Repository\CategoryInterface     $categoryRepository
+     * @param \App\Validator\Profile\Gate           $validator
+     * @param \App\Factory\Event                    $eventFactory
+     * @param \League\Event\Emitter                 $emitter
      *
      * @return void
      */
@@ -118,8 +118,8 @@ class Gate implements HandlerInterface {
      *
      * @see \App\Repository\Profile\DBGate::save
      *
-     * @throws \App\Exception\Validate\GateException
-     * @throws \App\Exception\Create\GateException
+     * @throws \App\Exception\Validate\Profile\GateException
+     * @throws \App\Exception\Create\Profile\GateException
      *
      * @return \App\Entity\Profile\Gate
      */
@@ -171,7 +171,7 @@ class Gate implements HandlerInterface {
      * @see \App\Repository\Profile\DBGate::findBySlug
      * @see \App\Repository\Profile\DBGate::save
      *
-     * @throws \App\Exception\Validate\GateException
+     * @throws \App\Exception\Validate\Profile\GateException
      * @throws \App\Exception\Update\Profile\GateException
      *
      * @return \App\Entity\Profile\Gate
@@ -203,7 +203,7 @@ class Gate implements HandlerInterface {
             $event = $this->eventFactory->create('Profile\\Gate\\Updated', $entity, $command->credential);
             $this->emitter->emit($event);
         } catch (\Exception $exception) {
-            throw new Update\Profile\GateException('Error while trying to update a gate', 500, $e);
+            throw new Update\Profile\GateException('Error while trying to update a gate', 500, $exception);
         }
 
         return $entity;
@@ -212,9 +212,9 @@ class Gate implements HandlerInterface {
     /**
      * Creates or updates a gate.
      *
-     * @param \App\Command\Score\Upsert $command
+     * @param \App\Command\Profile\Score\Upsert $command
      *
-     * @return \App\Entity\Score
+     * @return \App\Entity\Profile\Score
      */
     public function handleUpsert(Upsert $command) : GateEntity {
         try {
@@ -307,8 +307,8 @@ class Gate implements HandlerInterface {
      * @see \App\Repository\Profile\DBGate::findBySlug
      * @see \App\Repository\Profile\DBGate::delete
      *
-     * @throws \App\Exception\Validate\GateException
-     * @throws \App\Exception\NotFound\GateException
+     * @throws \App\Exception\Validate\Profile\GateException
+     * @throws \App\Exception\NotFound\Profile\GateException
      *
      * @return int
      */
@@ -349,7 +349,7 @@ class Gate implements HandlerInterface {
      * @see \App\Repository\Profile\DBGate::getByHandlerIdAndUserId
      * @see \App\Repository\Profile\DBGate::delete
      *
-     * @throws \App\Exception\Validate\GateException
+     * @throws \App\Exception\Validate\Profile\GateException
      *
      * @return int
      */

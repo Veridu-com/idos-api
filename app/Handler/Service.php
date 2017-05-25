@@ -131,7 +131,7 @@ class Service implements HandlerInterface {
             );
         }
 
-        if (is_null($command->listens)) {
+        if ($command->listens === null) {
             $handlerService   = $this->handlerServiceRepository->find($command->handlerServiceId);
             $command->listens = $handlerService->listens;
         }

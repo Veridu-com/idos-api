@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\Handler;
 use Illuminate\Support\Collection;
 
 /**

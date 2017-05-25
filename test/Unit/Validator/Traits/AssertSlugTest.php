@@ -14,7 +14,7 @@ use Test\Unit\AbstractUnit;
 
 class AssertSlugTest extends AbstractUnit {
     public function testAssertSlugEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertSlug::class);
         $traitMock->assertSlug('');
@@ -54,14 +54,14 @@ class AssertSlugTest extends AbstractUnit {
     }
 
     public function testAssertSlugSixteenChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertSlug::class);
         $traitMock->assertSlug(str_repeat('a', 16));
     }
 
     public function testAssertSlugInvalidInput() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertSlug::class);
         $traitMock->assertSlug('Invalid Slug');

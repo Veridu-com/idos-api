@@ -41,11 +41,17 @@ class Subscriptions implements RouteInterface {
      */
     public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Company\Subscriptions::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Company\Subscriptions(
-                $container->get('repositoryFactory')->create('Company\Subscription'),
-                $container->get('repositoryFactory')->create('Company\Credential'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Company\Subscription'),
+                $repositoryFactory
+                    ->create('Company\Credential'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 

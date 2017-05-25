@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Repository\Metric;
 
 use App\Entity\Company;
-use App\Entity\Metric\System;
 use App\Repository\AbstractSQLDBRepository;
 use Illuminate\Support\Collection;
 

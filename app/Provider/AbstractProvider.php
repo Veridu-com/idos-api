@@ -6,7 +6,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Listener;
+namespace App\Provider;
 
 use League\Event\ListenerAcceptorInterface;
 use League\Event\ListenerProviderInterface;
@@ -14,7 +14,7 @@ use League\Event\ListenerProviderInterface;
 /**
  * Abstract Listener Provider Implementation.
  */
-abstract class AbstractListenerProvider implements ListenerProviderInterface {
+abstract class AbstractProvider implements ListenerProviderInterface {
     /**
      * Associative array defining events and their listeners
      * initialized on constructor.

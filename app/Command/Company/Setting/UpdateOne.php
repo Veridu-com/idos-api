@@ -18,13 +18,13 @@ class UpdateOne extends AbstractCommand {
     /**
      * Setting's id.
      *
-     * @var object
+     * @var int
      */
     public $settingId;
     /**
      * Setting's property value (user input).
      *
-     * @var object
+     * @var mixed
      */
     public $value;
     /**

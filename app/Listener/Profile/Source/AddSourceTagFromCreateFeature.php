@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Listener\Profile\Source;
 
 use App\Listener\AbstractListener;
+use App\Listener\ListenerInterface;
 use App\Repository\Profile\SourceInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\EventInterface;
@@ -19,7 +20,7 @@ use League\Event\EventInterface;
  *
  * This listener is called after the \App\Event\Profile\Feature\Created event was fired.
  */
-class AddSourceTagFromCreateFeatureListener extends AbstractListener {
+class AddSourceTagFromCreateFeature extends AbstractListener {
     /**
      * Source repository.
      *
@@ -31,11 +32,11 @@ class AddSourceTagFromCreateFeatureListener extends AbstractListener {
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
-        $container[self::class] = function (ContainerInterface $container) : AddSourceTagFromCreateFeatureListener {
-            $repositoryFactory = $container->get('repositoryFactory');
-
-            return new \App\Listener\Profile\Source\AddSourceTagFromCreateFeatureListener(
-                $repositoryFactory->create('Profile\Source')
+        $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
+            return new \App\Listener\Profile\Source\AddSourceTagFromCreateFeature(
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\\Source')
             );
         };
     }

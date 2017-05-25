@@ -21,7 +21,7 @@ class Vault {
      *
      * @var \Defuse\Crypto\Key
      */
-    private $key = null;
+    private $key;
 
     /**
      * Class constructor.
