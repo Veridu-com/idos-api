@@ -15,7 +15,7 @@ if (! defined('__VERSION__')) {
 $appSettings = [
     'debug'                             => Env::asBool('IDOS_DEBUG', false),
     'displayErrorDetails'               => Env::asBool('IDOS_DEBUG', false),
-    'routerCacheFile'                   => Env::asString('IDOS_ROUTER_CACHE', '/tmp/router.cache'),
+    'routerCacheFile'                   => Env::asString('IDOS_ROUTER_CACHE', 'false'),
     'determineRouteBeforeAppMiddleware' => true,
     'trustedProxies'                    => Env::asArray('IDOS_TRUSTED_PROXIES', ['127.0.0.1']),
     'db'                                => [
