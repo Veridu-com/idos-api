@@ -55,7 +55,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertNotEmpty($body['data']);
-        $this->assertEquals(1584927448, $body['data']['id']);
+        $this->assertEquals(2142737458, $body['data']['id']);
         $this->assertSame('idOS Test handler 12x3change', $body['data']['name']);
         $this->assertTrue($body['data']['enabled']);
 

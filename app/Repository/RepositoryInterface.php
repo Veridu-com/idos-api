@@ -25,6 +25,15 @@ interface RepositoryInterface {
     public function create(array $attributes) : EntityInterface;
 
     /**
+     * Loads an entity.
+     *
+     * @param array $attributes
+     *
+     * @return \App\Entity\EntityInterface
+     */
+    public function load(array $attributes) : EntityInterface;
+
+    /**
      * Saves a new entity.
      *
      * @param \App\Entity\EntityInterface $entity

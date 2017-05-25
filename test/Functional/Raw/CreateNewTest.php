@@ -33,26 +33,29 @@ class CreateNewTest extends AbstractRawFunctional {
             ]
         );
 
+        $collection = 'rawTest';
+        $data       = [
+            'value' => 'test'
+        ];
         $request = $this->createRequest(
             $environment,
             json_encode(
                 [
                     'source_id'  => 1321189817,
-                    'collection' => 'collection-test',
-                    'data'       => ['value' => 'test']
+                    'collection' => $collection,
+                    'data'       => $data
                 ]
             )
         );
 
         $response = $this->process($request);
-
         $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertSame('collection-test', $body['data']['collection']);
-        $this->assertSame(['value' => 'test'], $body['data']['data']);
+        $this->assertSame($collection, $body['data']['collection']);
+        $this->assertSame($data, $body['data']['data']);
 
         /*
          * Validates Response using the Json Schema.

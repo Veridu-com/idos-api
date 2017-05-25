@@ -186,6 +186,15 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function create(array $attributes) : EntityInterface {
+        $entity = $this->entityFactory->create($this->getEntityName());
+
+        return $entity->hydrate($attributes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function load(array $attributes) : EntityInterface {
         return $this->entityFactory->create(
             $this->getEntityName(),
             $attributes
@@ -227,7 +236,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
             }
         }
 
-        return $this->create($entity->serialize());
+        return $this->load($entity->serialize());
     }
 
     /**
@@ -243,7 +252,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
             throw new NotFound();
         }
 
-        return $this->create(array_pop($result));
+        return $this->load(array_pop($result));
     }
 
     /**

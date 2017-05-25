@@ -11,12 +11,14 @@ namespace App\Handler\Profile;
 use App\Command\Profile\Flag\CreateNew;
 use App\Command\Profile\Flag\DeleteAll;
 use App\Command\Profile\Flag\DeleteOne;
+use App\Entity\Category;
 use App\Entity\Profile\Flag as FlagEntity;
 use App\Exception\AppException;
 use App\Exception\Create;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
+use App\Repository\CategoryInterface;
 use App\Repository\Profile\FlagInterface;
 use App\Validator\Profile\Flag as FlagValidator;
 use Interop\Container\ContainerInterface;
@@ -33,6 +35,12 @@ class Flag implements HandlerInterface {
      * @var \App\Repository\Profile\FlagInterface
      */
     private $repository;
+    /**
+     * Category Repository instance.
+     *
+     * @var \App\Repository\CategoryInterface
+     */
+    private $categoryRepository;
     /**
      * Flag Validator instance.
      *
@@ -53,14 +61,44 @@ class Flag implements HandlerInterface {
     private $emitter;
 
     /**
+     * Upserts a category.
+     *
+     * @param string $name      The name
+     * @param int    $handlerId The handler identifier
+     *
+     * @throws \App\Exception\Update\Profile\FlagException
+     *
+     * @return \App\Entity\Category
+     */
+    private function upsertCategory(string $name, int $handlerId) : Category {
+        try {
+            $category = $this->categoryRepository->create(
+                [
+                'display_name' => $name,
+                'name'         => $name,
+                'handler_id'   => $handlerId,
+                'type'         => 'gate'
+                ]
+            );
+
+            return $this->categoryRepository->upsert($category);
+        } catch (\Exception $e) {
+            throw new Update\Profile\FlagException('Error while trying to upsert a Flag category', 500, $e);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Profile\Flag(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\Flag'),
+                $repositoryFactory
+                    ->create('Category'),
                 $container
                     ->get('validatorFactory')
                     ->create('Profile\Flag'),
@@ -76,6 +114,7 @@ class Flag implements HandlerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Profile\FlagInterface $repository
+     * @param \App\Repository\CategoryInterface     $categoryRepository
      * @param \App\Validator\Profile\Flag           $validator
      * @param \App\Factory\Event                    $eventFactory
      * @param \League\Event\Emitter                 $emitter
@@ -84,14 +123,16 @@ class Flag implements HandlerInterface {
      */
     public function __construct(
         FlagInterface $repository,
+        CategoryInterface $categoryRepository,
         FlagValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
-        $this->repository   = $repository;
-        $this->validator    = $validator;
-        $this->eventFactory = $eventFactory;
-        $this->emitter      = $emitter;
+        $this->repository         = $repository;
+        $this->categoryRepository = $categoryRepository;
+        $this->validator          = $validator;
+        $this->eventFactory       = $eventFactory;
+        $this->emitter            = $emitter;
     }
 
     /**
@@ -137,6 +178,8 @@ class Flag implements HandlerInterface {
         );
 
         try {
+            $this->upsertCategory($command->slug, $command->handler->id);
+
             $entity = $this->repository->save($entity);
             $entity = $this->repository->hydrateRelations($entity);
 

@@ -13,7 +13,7 @@ namespace App\Entity;
  */
 interface EntityInterface {
     /**
-     * Initialize the entity from plain array.
+     * Initialize entity attributes from a plain array.
      *
      * @param array $attributes
      *

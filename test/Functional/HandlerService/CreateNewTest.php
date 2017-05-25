@@ -53,7 +53,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertSame(201, $response->getStatusCode());
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body['data']);
-        $this->assertEquals(1246176217, $body['data']['id']);
+        $this->assertEquals(1806869811, $body['data']['id']);
         $this->assertSame('idOS Test handler 12x3change', $body['data']['name']);
         $this->assertSame('http://google.com', $body['data']['url']);
         $this->assertSame(['test', 'tes2'], $body['data']['listens']);
@@ -105,7 +105,7 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $this->assertNotEmpty($body['data']);
-        $this->assertEquals(463036460, $body['data']['id']);
+        $this->assertEquals(1003809286, $body['data']['id']);
         $this->assertSame('idOS Test handler 12x3change', $body['data']['name']);
         $this->assertSame('http://google.com', $body['data']['url']);
         $this->assertEmpty($body['data']['listens']);

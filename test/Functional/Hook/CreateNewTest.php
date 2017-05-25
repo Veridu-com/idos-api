@@ -40,7 +40,7 @@ class CreateNewTest extends AbstractFunctional {
             json_encode(
                 [
                     'trigger'    => 'trigger.test',
-                    'url'        => 'http://127.0.0.1:8080/index.php/1.0/callback',
+                    'url'        => 'http://127.0.0.1/hook.php',
                     'subscribed' => false
                 ]
             )
@@ -53,7 +53,7 @@ class CreateNewTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('trigger.test', $body['data']['trigger']);
-        $this->assertSame('http://127.0.0.1:8080/index.php/1.0/callback', $body['data']['url']);
+        $this->assertSame('http://127.0.0.1/hook.php', $body['data']['url']);
         $this->assertFalse($body['data']['subscribed']);
 
         /*

@@ -22,7 +22,7 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
+        $this->httpMethod = 'PATCH';
         $this->populate(
             '/1.0/companies/veridu-ltd/settings',
             'GET',

@@ -43,6 +43,26 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     protected $orderableKeys = [];
 
     /**
+     * Returns a repository instance based on its name.
+     *
+     * @param string $repositoryName
+     *
+     * @return \App\Repository\RepositoryInterface
+     */
+    private function getRepository(string $repositoryName) : RepositoryInterface {
+        static $cache = [];
+
+        if (isset($cache[$repositoryName])) {
+            return $cache[$repositoryName];
+        }
+
+        $repository             = $this->repositoryFactory->create($repositoryName);
+        $cache[$repositoryName] = $repository;
+
+        return $repository;
+    }
+
+    /**
      * Begin a fluent query against a database table.
      *
      * @param string|null $table
@@ -166,6 +186,15 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function create(array $attributes) : EntityInterface {
+        $entity = $this->entityFactory->create($this->getEntityName());
+
+        return $entity->hydrate($attributes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function load(array $attributes) : EntityInterface {
         return $this->entityFactory->create(
             $this->getEntityName(),
             $attributes
@@ -202,11 +231,9 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
             switch ($properties['type']) {
                 case 'ONE_TO_ONE':
-                    // FIXME This should throw a RuntimeException if it must be implemented
-                    break;
+                    throw new \RuntimeException('ONE_TO_ONE Relationship not implemented!');
                 case 'ONE_TO_MANY':
-                    // FIXME This should throw a RuntimeException if it must be implemented
-                    break;
+                    throw new \RuntimeException('ONE_TO_MANY Relationship not implemented!');
                 case 'MANY_TO_ONE':
                     $relationEntityName = $properties['entity'];
                     $tableForeignKey    = $properties['foreignKey'];
@@ -215,21 +242,25 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
                     $relationEntity = null;
                     if ($entities->$tableForeignKey !== null && $hydrateColumns) {
-                        $relationRepository = $this->repositoryFactory->create($relationEntityName);
-                        $relationEntity     = $relationRepository->findOneBy(
-                            [
-                                $relationTableKey => $entities->$tableForeignKey
-                            ],
-                            [],
-                            $hydrateColumns
-                        );
+                        try {
+                            $relationRepository = $this->getRepository($relationEntityName);
+                            $relationEntity     = $relationRepository->findOneBy(
+                                [
+                                    $relationTableKey => $entities->$tableForeignKey
+                                ],
+                                [],
+                                $hydrateColumns
+                            );
+                        } catch (NotFound $exception) {
+                        }
                     }
 
                     $entities->relations[$relation] = $relationEntity;
                     break;
                 case 'MANY_TO_MANY':
-                    // FIXME This should throw a RuntimeException if it must be implemented
-                    break;
+                    throw new \RuntimeException('MANY_TO_MANY Relationship not implemented!');
+                default:
+                    throw new \RuntimeException('Invalid Relationship!');
             }
         }
 
@@ -358,8 +389,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * {@inheritdoc}
      */
     public function find(int $id) : EntityInterface {
-        $result = $this->query()
-            ->find($id);
+        $result = $this->query()->find($id);
         if (empty($result)) {
             throw new NotFound();
         }
@@ -546,10 +576,12 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     public function findBy(array $constraints, array $queryParams = [], array $columns = ['*']) : Collection {
         $query = $this->query();
 
-        $constraints = array_merge(
-            $constraints,
-            $this->getFilterConstraints($queryParams)
-        );
+        if (count($queryParams)) {
+            $constraints = array_merge(
+                $constraints,
+                $this->getFilterConstraints($queryParams)
+            );
+        }
 
         foreach ($constraints as $column => $value) {
             if (is_array($value)) {

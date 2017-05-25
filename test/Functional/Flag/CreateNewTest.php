@@ -32,8 +32,43 @@ class CreateNewTest extends AbstractFunctional {
             ]
         );
 
-        $name      = 'first-name-mismatch';
-        $attribute = 'first-name';
+        $name      = 'middle-name-mismatch';
+        $attribute = 'middle-name';
+        $request   = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'slug'      => $name,
+                    'attribute' => $attribute
+                ]
+            )
+        );
+        $response = $this->process($request);
+        $body     = json_decode((string) $response->getBody(), true);
+
+        $this->assertNotEmpty($body);
+        $this->assertSame(201, $response->getStatusCode());
+        $this->assertTrue($body['status']);
+        $this->assertSame($name, $body['data']['slug']);
+        $this->assertSame($attribute, $body['data']['attribute']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('flag/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
+    public function testNewCategory() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name      = 'bla-di-blah';
+        $attribute = 'bla-di-blah';
         $request   = $this->createRequest(
             $environment, json_encode(
                 [
