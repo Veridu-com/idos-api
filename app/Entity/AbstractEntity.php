@@ -173,15 +173,6 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     }
 
     /**
-     * Gets the encoded id.
-     *
-     * @param int
-     */
-    public function getEncodedId() : int {
-        return $this->optimus->encode($this->id);
-    }
-
-    /**
      * Set a given attribute on the entity.
      *
      * @param string $key
@@ -203,7 +194,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         // Tests if it is not a encoded json
         // how: a decoded json is never a string.
         if ((in_array($key, $this->json)) && (! is_string($value))) {
-            $value = json_encode($value);
+            $encoded = json_encode($value);
+            if ($encoded === false) {
+                throw new \RuntimeException('json_encode failed');
+            }
+
+            $value = $encoded;
+            unset($encoded);
         }
 
         if ((in_array($key, $this->dates)) && (is_int($value))) {
@@ -211,25 +208,27 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         }
 
         // Tests if it is a compressed field
-        if ((isset($this->compressed)) && (in_array($key, $this->compressed))) {
+        if ((in_array($key, $this->compressed)) && ($value)) {
             if (is_resource($value)) {
                 $value = stream_get_contents($value, -1, 0);
             }
 
             if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) != 0)) {
                 $compressed = gzcompress($value);
-                if ($compressed !== false) {
-                    $value = sprintf(
-                        'compressed:%s',
-                        $compressed
-                    );
-                    unset($compressed);
+                if ($compressed === false) {
+                    throw new \RuntimeException('compressed failed');
                 }
+
+                $value = sprintf(
+                    'compressed:%s',
+                    $compressed
+                );
+                unset($compressed);
             }
         }
 
         // Tests if it is a secure field
-        if ((isset($this->secure)) && (in_array($key, $this->secure))) {
+        if ((in_array($key, $this->secure)) && ($value)) {
             if (is_resource($value)) {
                 $value = stream_get_contents($value, -1, 0);
             }
@@ -272,44 +271,53 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
             $value = $this->attributes[$key];
         }
 
-        if ((isset($this->secure)) && (in_array($key, $this->secure))) {
+        if ((in_array($key, $this->secure)) && ($value)) {
             if (is_resource($value)) {
                 $value = stream_get_contents($value, -1, 0);
             }
 
-            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) === 0)) {
-                $value = substr($value, 7);
-                $value = $this->vault->unlock($value);
-            }
-        }
-
-        if ((isset($this->compressed)) && (in_array($key, $this->compressed))) {
-            if (is_resource($value)) {
-                $value = stream_get_contents($value, -1, 0);
-            }
-
-            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) === 0)) {
-                $value = substr($value, 11);
-                $uncompressed = gzuncompress($value);
-                if ($uncompressed !== false) {
-                    $value = $uncompressed;
-                    unset($uncompressed);
+            if (substr_compare((string) $value, 'secure:', 0, 7) === 0) {
+                $unlocked = $this->vault->unlock(substr($value, 7));
+                if ($unlocked === null) {
+                    throw new \RuntimeException('decrypt failed');
                 }
+
+                $value = $unlocked;
+                unset($unlocked);
             }
         }
 
-        if ((in_array($key, $this->dates)) && ($value !== null)) {
+        if ((in_array($key, $this->compressed)) && ($value)) {
+            if (is_resource($value)) {
+                $value = stream_get_contents($value, -1, 0);
+            }
+
+            if (substr_compare((string) $value, 'compressed:', 0, 11) === 0) {
+                $uncompressed = gzuncompress(substr($value, 11));
+                if ($uncompressed === false) {
+                    throw new \RuntimeException('uncompress failed');
+                }
+
+                $value = $uncompressed;
+                unset($uncompressed);
+            }
+        }
+
+        if ((in_array($key, $this->dates)) && ($value)) {
             $value = strtotime($value);
         }
 
-        if ((in_array($key, $this->json)) && ($value !== null)) {
-            $value = json_decode($value);
-            if ($value === null) {
-                $value = [];
+        if ((in_array($key, $this->json)) && ($value)) {
+            $decoded = json_decode($value);
+            if ($decoded === null) {
+                throw new \RuntimeException('json_decode failed');
             }
+
+            $value = $decoded;
+            unset($decoded);
         }
 
-        if ((isset($this->cast[$key])) && ($value !== null)) {
+        if ((isset($this->cast[$key])) && ($value)) {
             switch ($this->cast[$key]) {
                 case 'int':
                     $value = (int) $value;
@@ -345,15 +353,32 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return void
      */
     public function __construct(array $attributes, Optimus $optimus, Vault $vault) {
-        $this->vault = $vault;
-
         if (! empty($attributes)) {
-            $this
-                ->hydrate($attributes)
-                ->exists = true;
+            foreach ($attributes as $key => $value) {
+                $key = $this->toSnakeCase($key);
+                if ((in_array($key, $this->json)) || (in_array($key, $this->compressed)) || (in_array($key, $this->secure))) {
+                    $this->attributes[$key] = $value;
+
+                    continue;
+                }
+
+                $this->setAttribute($key, $value);
+            }
+
+            $this->exists = true;
         }
 
         $this->optimus = $optimus;
+        $this->vault   = $vault;
+    }
+
+    /**
+     * Gets the encoded id.
+     *
+     * @param int
+     */
+    public function getEncodedId() : int {
+        return $this->optimus->encode($this->id);
     }
 
     /**
@@ -371,10 +396,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * {@inheritdoc}
      */
     public function toArray() : array {
-        if (empty($this->visible)) {
+        $attributes = $this->visible;
+        if (empty($attributes)) {
             $attributes = array_keys($this->attributes);
-        } else {
-            $attributes = $this->visible;
         }
 
         $return = [];

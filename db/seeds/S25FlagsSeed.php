@@ -12,7 +12,7 @@ class S25FlagsSeed extends AbstractSeed {
             [
                 'user_id'    => 1,
                 'creator'    => 1,
-                'slug'       => 'firstNameMismatch',
+                'slug'       => 'first-name-mismatch',
                 'attribute'  => 'first-name',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
@@ -20,7 +20,7 @@ class S25FlagsSeed extends AbstractSeed {
             [
                 'user_id'    => 2,
                 'creator'    => 1,
-                'slug'       => 'lastNameMismatch',
+                'slug'       => 'last-name-mismatch',
                 'attribute'  => 'last-name',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
@@ -29,7 +29,7 @@ class S25FlagsSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'slug'       => 'last-name-mismatch',
-                'attribute'  => 'middleNameMismatch',
+                'attribute'  => 'last-name',
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],

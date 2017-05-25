@@ -170,6 +170,7 @@ class DatabaseInit extends AbstractMigration {
         $categories
             ->addColumn('display_name', 'text', ['null' => false])
             ->addColumn('name', 'text', ['null' => false])
+            ->addColumn('slug', 'text', ['null' => false])
             ->addColumn('type', 'text', ['null' => true])
             ->addColumn('description', 'text', ['null' => true])
             ->addColumn('handler_id', 'integer', ['null' => false])

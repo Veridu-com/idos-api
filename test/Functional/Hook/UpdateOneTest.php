@@ -22,7 +22,7 @@ class UpdateOneTest extends AbstractFunctional {
     protected function setUp() {
         parent::setUp();
 
-        $this->httpMethod = 'PUT';
+        $this->httpMethod = 'PATCH';
         $this->uri        = '/1.0/companies/veridu-ltd/credentials/4c9184f37cff01bcdc32dc486ec36961/hooks/1321189817';
     }
 
@@ -39,20 +39,20 @@ class UpdateOneTest extends AbstractFunctional {
             json_encode(
                 [
                     'trigger'    => 'trigger.changed',
-                    'url'        => 'http://127.0.0.1:8080/index.php/1.0/callback',
+                    'url'        => 'http://127.0.0.1/hook.php',
                     'subscribed' => false
                 ]
             )
         );
 
         $response = $this->process($request);
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode(), (string) $response->getBody());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertSame('trigger.changed', $body['data']['trigger']);
-        $this->assertSame('http://127.0.0.1:8080/index.php/1.0/callback', $body['data']['url']);
+        $this->assertSame('http://127.0.0.1/hook.php', $body['data']['url']);
         $this->assertFalse($body['data']['subscribed']);
 
         /*

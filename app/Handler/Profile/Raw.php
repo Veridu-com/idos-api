@@ -150,7 +150,7 @@ class Raw implements HandlerInterface {
         // We must assert thet there is no raw data with the given source and collection
         try {
             $entity = $this->repository->findOne($command->collection, $command->source);
-            throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
+            throw new Create\Profile\RawException('Error while trying to create raw', 500);
         } catch (NotFound $e) {
         }
 

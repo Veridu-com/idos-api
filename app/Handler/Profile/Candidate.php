@@ -123,12 +123,12 @@ class Candidate implements HandlerInterface {
 
         $entity = $this->repository->create(
             [
-            'user_id'    => $command->user->id,
-            'creator'    => $command->handler->id,
-            'attribute'  => $command->attribute,
-            'value'      => $command->value,
-            'support'    => $command->support,
-            'created_at' => time()
+                'user_id'    => $command->user->id,
+                'creator'    => $command->handler->id,
+                'attribute'  => $command->attribute,
+                'value'      => $command->value,
+                'support'    => $command->support,
+                'created_at' => time()
             ]
         );
 

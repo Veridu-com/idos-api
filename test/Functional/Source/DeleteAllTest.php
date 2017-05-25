@@ -29,7 +29,7 @@ class DeleteAllTest extends AbstractFunctional {
         );
 
         $this->httpMethod = 'DELETE';
-        $this->uri        = sprintf('/index.php/1.0/profiles/%s/sources', $this->userName);
+        $this->uri        = '/1.0/profiles/f67b96dcf96b49d713a520ce9f54053c/sources';
     }
 
     public function testSuccess() {
@@ -43,8 +43,9 @@ class DeleteAllTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
+        $body     = json_decode((string) $response->getBody(), true);
+
         $this->assertSame(200, $response->getStatusCode());
-        $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
         $this->assertArrayHasKey('deleted', $body);
@@ -55,7 +56,7 @@ class DeleteAllTest extends AbstractFunctional {
          */
         $this->assertTrue(
             $this->validateSchema(
-                'source/deleteOne.json',
+                'source/deleteAll.json',
                 json_decode((string) $response->getBody())
             ),
             $this->schemaErrors

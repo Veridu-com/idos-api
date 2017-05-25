@@ -50,11 +50,11 @@ class LogoutListener extends AbstractListener {
      *
      * @return int
      */
-    private function deleteRaw(EventInterface $event) {
+    private function deleteRaw(User $user, Source $source) {
         $command = $this->commandFactory->create('Profile\Raw\DeleteAll');
         $command
-            ->setParameter('user', $event->user)
-            ->setParameter('queryParams', ['source' => $event->source->name]);
+            ->setParameter('user', $user)
+            ->setParameter('queryParams', ['source' => $source->name]);
 
         return $this->commandBus->handle($command);
     }
@@ -91,14 +91,14 @@ class LogoutListener extends AbstractListener {
      */
     public function handle(EventInterface $event) {
         if (property_exists($event, 'source')) {
-            $this->deleteRaw($event);
+            $this->deleteRaw($event->user, $event->source);
             // FIXME add $this->deleteFeature
             return;
         }
 
         if (property_exists($event, 'sources')) {
             foreach ($event->sources as $source) {
-                $this->deleteRaw($event);
+                $this->deleteRaw($event->user, $source);
                 // FIXME add $this->deleteFeature
             }
         }
