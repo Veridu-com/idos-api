@@ -8,4 +8,5 @@ declare(strict_types = 1);
 
 namespace App\Listener;
 
-interface ListenerInterface {}
+interface ListenerInterface {
+}

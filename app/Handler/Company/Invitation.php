@@ -109,7 +109,7 @@ class Invitation implements HandlerInterface {
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \App\Repository\CompanyInterface            $companyRepository
      * @param \App\Repository\Company\SettingInterface    $settingRepository
-     * @param \App\Validator\Company\Invitation                   $validator
+     * @param \App\Validator\Company\Invitation           $validator
      * @param \App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                       $emitter
      *

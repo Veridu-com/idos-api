@@ -99,7 +99,7 @@ class Main implements ControllerInterface {
         $publicRoutes = [];
 
         foreach ($this->router->getRoutes() as $route) {
-            $routeName = $route->getName();
+            $routeName             = $route->getName();
             $routeList[$routeName] = [
                 'name'    => $routeName,
                 'uri'     => $route->getPattern(),

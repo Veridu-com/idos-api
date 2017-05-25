@@ -132,7 +132,6 @@ class ScrapeScheduler extends AbstractListener {
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
             $repositoryFactory = $container->get('repositoryFactory');
-            $log               = $container->get('log');
 
             return new \App\Listener\Manager\ScrapeScheduler(
                 $repositoryFactory
@@ -141,7 +140,6 @@ class ScrapeScheduler extends AbstractListener {
                     ->create('Service'),
                 $repositoryFactory
                     ->create('Company\Setting'),
-                $log('Event'),
                 $container
                     ->get('eventFactory'),
                 $container

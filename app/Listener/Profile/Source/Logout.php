@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Listener\Profile\Source;
 
 use App\Entity\Profile\Source;
+use App\Entity\User;
 use App\Factory\Command;
 use App\Listener\AbstractListener;
 use App\Listener\ListenerInterface;
@@ -68,10 +69,7 @@ class Logout extends AbstractListener {
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : ListenerInterface {
-            $log = $container->get('log');
-
             return new \App\Listener\Profile\Source\Logout(
-                $log('Event'),
                 $container
                     ->get('commandBus'),
                 $container

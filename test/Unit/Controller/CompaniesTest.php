@@ -18,7 +18,6 @@ use App\Entity\Company as CompanyEntity;
 use App\Factory\Command;
 use App\Helper\Vault;
 use App\Repository\DBCompany;
-use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Slim\Http\Request;
