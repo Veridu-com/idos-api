@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Invitation;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Invitation "Update one" Command.
@@ -37,7 +38,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['expires'])) {
             $this->expires = $parameters['expires'];
         }

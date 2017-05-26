@@ -54,8 +54,8 @@ class Task implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Task(
                 $container
                     ->get('repositoryFactory')
@@ -74,10 +74,10 @@ class Task implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\TaskInterface $repository
-     * @param \App\Validator\Task           $validator
-     * @param \App\Factory\Event            $eventFactory
-     * @param \League\Event\Emitter         $emitter
+     * @param \App\Repository\Profile\TaskInterface $repository
+     * @param \App\Validator\Profile\Task           $validator
+     * @param \App\Factory\Event                    $eventFactory
+     * @param \League\Event\Emitter                 $emitter
      *
      * @return void
      */

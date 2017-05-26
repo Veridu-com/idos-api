@@ -51,8 +51,8 @@ class Metric implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Metric(
                 $container
                     ->get('repositoryFactory')
@@ -227,6 +227,6 @@ class Metric implements HandlerInterface {
             );
         }
 
-        return $this->gearmanClient->returnCode() == \GEARMAN_SUCCESS;
+        return $this->gearmanClient->returnCode() === \GEARMAN_SUCCESS;
     }
 }

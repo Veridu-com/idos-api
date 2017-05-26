@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Handler;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Handler "Delete all" Command.
@@ -29,10 +30,8 @@ class DeleteAll extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Handler\DeleteAll
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         return $this;
     }
 }

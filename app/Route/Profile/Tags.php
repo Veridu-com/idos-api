@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use App\Route\RouteInterface;
@@ -41,13 +42,19 @@ class Tags implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profile\Tags::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Profile\Tags::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Tags(
-                $container->get('repositoryFactory')->create('Profile\Tag'),
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Tag'),
+                $repositoryFactory
+                    ->create('User'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -75,8 +82,8 @@ class Tags implements RouteInterface {
      * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -85,7 +92,7 @@ class Tags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Tags::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
@@ -110,8 +117,8 @@ class Tags implements RouteInterface {
      * @apiEndpointURIFragment string tagSlug tag-test
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -120,7 +127,7 @@ class Tags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Tags::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags/{tagSlug:[a-z0-9_-]+}',
@@ -144,8 +151,8 @@ class Tags implements RouteInterface {
      * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -154,7 +161,7 @@ class Tags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Tags::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',
@@ -179,8 +186,8 @@ class Tags implements RouteInterface {
      * @apiEndpointURIFragment string tagSlug tag-test
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -189,7 +196,7 @@ class Tags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Tags::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags/{tagSlug:[a-z0-9_-]+}',
@@ -213,8 +220,8 @@ class Tags implements RouteInterface {
      * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -223,7 +230,7 @@ class Tags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Tags::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/tags',

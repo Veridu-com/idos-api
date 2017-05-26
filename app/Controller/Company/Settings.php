@@ -10,7 +10,6 @@ namespace App\Controller\Company;
 
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
-use App\Repository\Company\SettingInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -19,12 +18,6 @@ use Psr\Http\Message\ServerRequestInterface;
  * Handles requests to /companies/{companySlug}/settings and /companies/{companySlug}/settings/{settingId}.
  */
 class Settings implements ControllerInterface {
-    /**
-     * Setting Repository instance.
-     *
-     * @var \App\Repository\Company\SettingInterface
-     */
-    private $repository;
     /**
      * Command Bus instance.
      *
@@ -41,18 +34,15 @@ class Settings implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\SettingInterface $repository
-     * @param \League\Tactician\CommandBus             $commandBus
-     * @param \App\Factory\Command                     $commandFactory
+     * @param \League\Tactician\CommandBus $commandBus
+     * @param \App\Factory\Command         $commandFactory
      *
      * @return void
      */
     public function __construct(
-        SettingInterface $repository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository     = $repository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }

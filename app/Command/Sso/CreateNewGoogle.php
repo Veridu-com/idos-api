@@ -12,14 +12,4 @@ namespace App\Command\Sso;
  * Sso "Create New Google" Command.
  */
 class CreateNewGoogle extends CreateNew {
-    /**
-     * {@inheritdoc}
-     *
-     * @return self
-     */
-    public function setParameters(array $parameters) : self {
-        parent::setParameters($parameters);
-
-        return $this;
-    }
 }

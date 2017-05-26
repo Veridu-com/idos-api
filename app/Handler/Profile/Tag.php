@@ -18,7 +18,6 @@ use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\TagInterface;
-use App\Repository\UserInterface;
 use App\Validator\Profile\Tag as TagValidator;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -34,12 +33,6 @@ class Tag implements HandlerInterface {
      * @var \App\Repository\Profile\TagInterface
      */
     private $repository;
-    /**
-     * User Repository instance.
-     *
-     * @var \App\Repository\UserInterface
-     */
-    private $userRepository;
     /**
      * Tag Validator instance.
      *
@@ -62,15 +55,12 @@ class Tag implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Tag(
                 $container
                     ->get('repositoryFactory')
                     ->create('Profile\Tag'),
-                $container
-                    ->get('repositoryFactory')
-                    ->create('User'),
                 $container
                     ->get('validatorFactory')
                     ->create('Profile\Tag'),
@@ -86,7 +76,6 @@ class Tag implements HandlerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Profile\TagInterface $repository
-     * @param \App\Repository\UserInterface        $userRepository
      * @param \App\Validator\Profile\Tag           $validator
      * @param \App\Factory\Event                   $eventFactory
      * @param \League\Event\Emitter                $emitter
@@ -95,13 +84,11 @@ class Tag implements HandlerInterface {
      */
     public function __construct(
         TagInterface $repository,
-        UserInterface $userRepository,
         TagValidator $validator,
         Event $eventFactory,
         Emitter $emitter
     ) {
         $this->repository     = $repository;
-        $this->userRepository = $userRepository;
         $this->validator      = $validator;
         $this->eventFactory   = $eventFactory;
         $this->emitter        = $emitter;

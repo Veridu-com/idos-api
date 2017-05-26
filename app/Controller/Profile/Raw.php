@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
-use App\Entity\User;
 use App\Exception\AppException;
 use App\Factory\Command;
 use App\Repository\Profile\RawInterface;
@@ -87,7 +86,6 @@ class Raw implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $user        = $request->getAttribute('targetUser');
-        $handler     = $request->getAttribute('handler');
         $queryParams = $request->getQueryParams();
 
         $entities = $this->repository->getByUserId($user->id, $queryParams);

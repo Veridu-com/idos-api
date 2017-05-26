@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use App\Route\RouteInterface;
@@ -43,13 +44,19 @@ class Scores implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profile\Scores::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Profile\Scores::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Scores(
-                $container->get('repositoryFactory')->create('Profile\Score'),
-                $container->get('repositoryFactory')->create('Profile\Attribute'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Score'),
+                $repositoryFactory
+                    ->create('Profile\Attribute'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -78,8 +85,8 @@ class Scores implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -88,7 +95,7 @@ class Scores implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Scores::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
@@ -111,8 +118,8 @@ class Scores implements RouteInterface {
      * @apiEndpointURIFragment string scoreName overall
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -121,7 +128,7 @@ class Scores implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Scores::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9_-]+}',
@@ -144,8 +151,8 @@ class Scores implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -154,7 +161,7 @@ class Scores implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Scores::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
@@ -178,8 +185,8 @@ class Scores implements RouteInterface {
      * @apiEndpointURIFragment string scoreName overall
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -188,7 +195,7 @@ class Scores implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Scores::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9_-]+}',
@@ -211,8 +218,8 @@ class Scores implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -221,7 +228,7 @@ class Scores implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Scores::upsert
      */
-    private static function upsert(App $app, callable $auth, callable $permission) {
+    private static function upsert(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',
@@ -245,8 +252,8 @@ class Scores implements RouteInterface {
      * @apiEndpointURIFragment string scoreName overall
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -255,7 +262,7 @@ class Scores implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Scores::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/scores/{scoreName:[a-zA-Z0-9_-]+}',
@@ -278,8 +285,8 @@ class Scores implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -288,7 +295,7 @@ class Scores implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Scores::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/scores',

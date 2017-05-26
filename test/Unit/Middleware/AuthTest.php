@@ -236,7 +236,7 @@ class AuthTest extends AbstractUnit {
     // public function testHandleUserTokenErrorInvalidToken() {
     //     $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::USER);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, 'jwt.invalid.token']);
     // }
 
@@ -254,7 +254,7 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken('test', $claims);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     // }
 
@@ -314,7 +314,7 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken('wrong-sign-key', $claims);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     // }
 
@@ -359,7 +359,7 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken($credential->private, $claims);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     // }
 
@@ -415,7 +415,7 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken($credential->private, $claims);
 
-    //     $this->setExpectedException(NotFound::class);
+    //     $this->expectedException(NotFound::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     // }
 
@@ -475,7 +475,7 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken($credential->private, $claims);
 
-    //     $this->setExpectedException(NotFound::class);
+    //     $this->expectedException(NotFound::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserToken', [$this->requestMock, $token]);
     // }
 
@@ -548,7 +548,7 @@ class AuthTest extends AbstractUnit {
     //         ->method('findByPubKey')
     //         ->will($this->throwException(new NotFound()));
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserPubKey', [$this->requestMock, $credential->public]);
     // }
 
@@ -621,7 +621,7 @@ class AuthTest extends AbstractUnit {
     //         ->method('findByPrivKey')
     //         ->will($this->throwException(new NotFound()));
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleUserPrivKey', [$this->requestMock, $credential->private]);
     // }
 
@@ -670,7 +670,7 @@ class AuthTest extends AbstractUnit {
     //         ->method('findByPubKey')
     //         ->will($this->throwException(new NotFound()));
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCompanyPubKey', [$this->requestMock, $company->public_key]);
     // }
 
@@ -719,7 +719,7 @@ class AuthTest extends AbstractUnit {
     //         ->method('findByPubKey')
     //         ->will($this->throwException(new NotFound()));
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCompanyPrivKey', [$this->requestMock, $company->private_key]);
     // }
 
@@ -805,7 +805,7 @@ class AuthTest extends AbstractUnit {
     // public function testHandleCredentialTokenErrorInvalidToken() {
     //     $authMiddleware = $this->getAuthMiddleware(AuthMiddleware::CREDENTIAL);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleHandlerToken', [$this->requestMock, 'invalid.token']);
     // }
 
@@ -875,7 +875,7 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken($issuerCredential->private, $claims);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleHandlerToken', [$this->requestMock, $token]);
     // }
 
@@ -948,7 +948,7 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken($issuerCredential->private, $claims);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleHandlerToken', [$this->requestMock, $token]);
     // }
 
@@ -1022,7 +1022,7 @@ class AuthTest extends AbstractUnit {
 
     //     $token = $this->generateToken($issuerCredential->private, $claims);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleHandlerToken', [$this->requestMock, $token]);
     // }
 
@@ -1106,7 +1106,7 @@ class AuthTest extends AbstractUnit {
     //         ->method('findById')
     //         ->willReturn($company);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPubKey', [$this->requestMock, $credential->public]);
     // }
 
@@ -1146,7 +1146,7 @@ class AuthTest extends AbstractUnit {
     //         ->method('findById')
     //         ->will($this->throwException(new NotFound()));
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPubKey', [$this->requestMock, $credential->public]);
     // }
 
@@ -1230,7 +1230,7 @@ class AuthTest extends AbstractUnit {
     //         ->method('findById')
     //         ->willReturn($company);
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPrivKey', [$this->requestMock, $credential->public]);
     // }
 
@@ -1270,7 +1270,7 @@ class AuthTest extends AbstractUnit {
     //         ->method('findById')
     //         ->will($this->throwException(new NotFound()));
 
-    //     $this->setExpectedException(AppException::class);
+    //     $this->expectedException(AppException::class);
     //     $this->requestMock = $this->invokePrivateMethod($authMiddleware, 'handleCredentialPrivKey', [$this->requestMock, $credential->public]);
     // }
 }

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use App\Route\RouteInterface;
@@ -40,13 +41,19 @@ class Tasks implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profile\Tasks::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Profile\Tasks::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Tasks(
-                $container->get('repositoryFactory')->create('Profile\Task'),
-                $container->get('repositoryFactory')->create('Profile\Process'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Task'),
+                $repositoryFactory
+                    ->create('Profile\Process'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -73,8 +80,8 @@ class Tasks implements RouteInterface {
      * @apiEndpointURIFragment int processId 1325
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -83,7 +90,7 @@ class Tasks implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Tasks::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}/tasks',
@@ -108,8 +115,8 @@ class Tasks implements RouteInterface {
      * @apiEndpointURIFragment int taskId 1
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -118,7 +125,7 @@ class Tasks implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Tasks::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}/tasks/{taskId:[0-9]+}',
@@ -143,8 +150,8 @@ class Tasks implements RouteInterface {
      * @apiEndpointURIFragment int taskId 1
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -153,7 +160,7 @@ class Tasks implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Tasks::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}/tasks/{taskId:[0-9]+}',
@@ -177,8 +184,8 @@ class Tasks implements RouteInterface {
      * @apiEndpointURIFragment int processId 1325
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -187,7 +194,7 @@ class Tasks implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Tasks::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/processes/{processId:[0-9]+}/tasks',

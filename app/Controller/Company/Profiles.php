@@ -192,7 +192,7 @@ class Profiles implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws \App\Exception\NotFound\CompanyProfileException
+     * @throws \App\Exception\NotFound\Company\ProfileException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -259,7 +259,7 @@ class Profiles implements ControllerInterface {
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
-     * @throws \App\Exception\NotFound\CompanyProfileException
+     * @throws \App\Exception\NotFound\Company\ProfileException
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

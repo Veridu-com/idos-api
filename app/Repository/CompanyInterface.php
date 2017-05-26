@@ -75,6 +75,8 @@ interface CompanyInterface extends RepositoryInterface {
      * @param \App\Entity\Company  $company  The company
      * @param \App\Entity\Identity $identity The identity
      * @param string               $role     The role
+     *
+     * @return \App\Entity\Company\Member
      */
     public function createNewMember(Company $company, Identity $identity, string $role) : Member;
 

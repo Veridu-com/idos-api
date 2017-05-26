@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\User;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * User "Create New" Command.
@@ -35,10 +36,8 @@ class CreateNew extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\User\CreateNew
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['username'])) {
             $this->username = $parameters['username'];
         }

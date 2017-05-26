@@ -14,28 +14,28 @@ use Test\Unit\AbstractUnit;
 
 class AssertNameTest extends AbstractUnit {
     public function testAssertNameEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertName('');
     }
 
     public function testAssertShortNameEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertShortName('');
     }
 
     public function testAssertMediumNameEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertMediumName('');
     }
 
     public function testAssertLongNameEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertLongName('');
@@ -60,7 +60,7 @@ class AssertNameTest extends AbstractUnit {
     }
 
     public function testAssertShortNameSixteenChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertShortName(str_repeat('a', 16));
@@ -75,14 +75,14 @@ class AssertNameTest extends AbstractUnit {
     }
 
     public function testAssertShortNameThirtyOneChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertShortName(str_repeat('a', 31));
     }
 
     public function testAssertMediumNameThirtyOneChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertMediumName(str_repeat('a', 31));
@@ -96,21 +96,21 @@ class AssertNameTest extends AbstractUnit {
     }
 
     public function testAssertShortNameSixtyOneChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertShortName(str_repeat('a', 61));
     }
 
     public function testAssertMediumNameSixtyOneChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertMediumName(str_repeat('a', 61));
     }
 
     public function testAssertLongNameSixtyOneChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertLongName(str_repeat('a', 61));
@@ -123,28 +123,28 @@ class AssertNameTest extends AbstractUnit {
     }
 
     public function testAssertNameInvalidInput() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertName(chr(20) . chr(127));
     }
 
     public function testAssertShortNameInvalidInput() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertShortName(chr(20) . chr(127));
     }
 
     public function testAssertMediumNameInvalidInput() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertMediumName(chr(20) . chr(127));
     }
 
     public function testAssertLongNameInvalidInput() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertName::class);
         $traitMock->assertLongName(chr(20) . chr(127));

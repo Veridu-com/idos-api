@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Setting;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Setting "List All" Command.
@@ -35,10 +36,8 @@ class ListAll extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Company\Setting\ListAll
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         return $this;
     }
 }

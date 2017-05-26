@@ -15,7 +15,7 @@ class Command extends AbstractFactory {
     /**
      * {@inheritdoc}
      */
-    protected function getNamespace() {
+    protected function getNamespace() : string {
         return '\\App\\Command\\';
     }
 }

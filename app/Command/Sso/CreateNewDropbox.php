@@ -12,14 +12,4 @@ namespace App\Command\Sso;
  * Sso "Create New Dropbox" Command.
  */
 class CreateNewDropbox extends CreateNew {
-    /**
-     * {@inheritdoc}
-     *
-     * @return self
-     */
-    public function setParameters(array $parameters) : self {
-        parent::setParameters($parameters);
-
-        return $this;
-    }
 }

@@ -62,16 +62,15 @@ class Widgets implements ControllerInterface {
      *
      * @apiEndpointResponse 200 schema/widget/listAll.json
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Repository\DBWidget::getAllByCredentialPubKey
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $credentialPubKey = $request->getAttribute('pubKey');
-        $targetCompany    = $request->getAttribute('targetCompany');
+        $targetCompany = $request->getAttribute('targetCompany');
 
         $widgets = $this->repository->getByCompanyId($targetCompany->id);
 
@@ -102,8 +101,7 @@ class Widgets implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company          = $request->getAttribute('targetCompany');
-        $widgetHash       = $request->getAttribute('widgetHash');
+        $widgetHash = $request->getAttribute('widgetHash');
 
         $widget = $this->repository->findByHash($widgetHash);
 
@@ -175,17 +173,16 @@ class Widgets implements ControllerInterface {
      * @apiEndpointParam body boolean enabled true Enabled
      * @apiEndpointParam body string config ['gates' => '18+'] Settings
      *
-     * @param \Psr\ServerRequestInterface $request
-     * @param \Psr\ResponseInterface      $response
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Handler\Widget::handleUpdateOne
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function updateOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company          = $request->getAttribute('targetCompany');
-        $widgetHash       = $request->getAttribute('widgetHash');
-        $identity         = $request->getAttribute('identity');
+        $widgetHash = $request->getAttribute('widgetHash');
+        $identity   = $request->getAttribute('identity');
 
         $command = $this->commandFactory->create('Company\\Widget\\UpdateOne');
         $command

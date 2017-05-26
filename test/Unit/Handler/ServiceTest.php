@@ -8,19 +8,21 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Handler;
 
-use App\Command\ServiceHandler\CreateNew;
-use App\Command\ServiceHandler\DeleteAll;
-use App\Command\ServiceHandler\DeleteOne;
-use App\Command\ServiceHandler\UpdateOne;
+use App\Command\Service\CreateNew;
+use App\Command\Service\DeleteAll;
+use App\Command\Service\DeleteOne;
+use App\Command\Service\UpdateOne;
 use App\Entity\Service;
 use App\Entity\ServiceHandler as ServiceHandlerEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
+use App\Handler\HandlerInterface;
 use App\Handler\ServiceHandler;
 use App\Repository\DBService;
 use App\Repository\ServiceInterface;
 use App\Validator\ServiceHandler as ServiceHandlerValidator;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -53,7 +55,7 @@ class ServiceHandlerTest extends AbstractUnit {
             ->getMock();
 
         $this->assertInstanceOf(
-            'App\\Handler\\HandlerInterface',
+            HandlerInterface::class,
             new ServiceHandler(
                 $repositoryMock,
                 $validatorMock,
@@ -123,7 +125,7 @@ class ServiceHandlerTest extends AbstractUnit {
             new ServiceHandlerValidator(),
             $emitterMock
         );
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(CreateNew::class)
@@ -146,7 +148,7 @@ class ServiceHandlerTest extends AbstractUnit {
             $this->optimus
         );
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -204,7 +206,7 @@ class ServiceHandlerTest extends AbstractUnit {
             $this->optimus
         );
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -272,7 +274,7 @@ class ServiceHandlerTest extends AbstractUnit {
             $emitterMock
         );
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(DeleteOne::class)
@@ -284,7 +286,7 @@ class ServiceHandlerTest extends AbstractUnit {
     }
 
     public function testHandleDeleteOne() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -343,7 +345,7 @@ class ServiceHandlerTest extends AbstractUnit {
             $emitterMock
         );
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(DeleteAll::class)
@@ -376,12 +378,12 @@ class ServiceHandlerTest extends AbstractUnit {
 
         $commandMock->companyId = null;
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
         $handler->handleDeleteAll($commandMock);
     }
 
     public function testHandleDeleteAll() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use App\Route\RouteInterface;
@@ -40,13 +41,16 @@ class Flags implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profile\Flags::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Profile\Flags::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Flags(
-                $container->get('repositoryFactory')->create('Profile\Flag'),
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Profile\Flag'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -73,8 +77,8 @@ class Flags implements RouteInterface {
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -83,7 +87,7 @@ class Flags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Flags::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/flags',
@@ -107,8 +111,8 @@ class Flags implements RouteInterface {
      * @apiEndpointURIFragment string flagSlug flag-test
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -117,7 +121,7 @@ class Flags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Flags::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/flags/{flagSlug:[a-z0-9_-]+}',
@@ -140,8 +144,8 @@ class Flags implements RouteInterface {
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -150,7 +154,7 @@ class Flags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Flags::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/flags',
@@ -174,8 +178,8 @@ class Flags implements RouteInterface {
      * @apiEndpointURIFragment string flagSlug flag-test
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -184,7 +188,7 @@ class Flags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Flags::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/flags/{flagSlug:[a-z0-9_-]+}',
@@ -207,8 +211,8 @@ class Flags implements RouteInterface {
      * @apiEndpointURIFragment string userName f67b96dcf96b49d713a520ce9f54053c
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -217,7 +221,7 @@ class Flags implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Flags::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/flags',

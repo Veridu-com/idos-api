@@ -44,6 +44,7 @@ class EndpointPermission implements MiddlewareInterface {
      * @param \App\Repository\Company\PermissionInterface $permissionRepository
      * @param \App\Repository\CompanyInterface            $companyRepository
      * @param int                                         $permissionType
+     * @param int                                         $allowedRolesBits
      *
      * @return void
      */
@@ -134,7 +135,7 @@ class EndpointPermission implements MiddlewareInterface {
         if (($this->permissionType & self::SELF_ACTION) === self::SELF_ACTION) {
             // searches for a membership within the company
             foreach ($identityMembers as $member) {
-                if ($this->roleHasAccess($member->role()->bit) && $member->company()->id == $targetCompany->id) {
+                if ($this->roleHasAccess($member->role()->bit) && $member->company()->id === $targetCompany->id) {
                     $allowed = true;
                 }
             }
@@ -168,6 +169,8 @@ class EndpointPermission implements MiddlewareInterface {
      * Returns if role is contained on instance bitmask.
      *
      * @param int $role The role
+     *
+     * @return bool
      */
     private function roleHasAccess(int $role) : bool {
         return ($this->allowedRolesBits & $role) === $role;
@@ -178,6 +181,8 @@ class EndpointPermission implements MiddlewareInterface {
      * This is needed for having Veridu protected settings visible.
      *
      * @param \App\Entity\Company\Member $member The member
+     *
+     * @return bool
      */
     private function isVeriduMember(Member $member) : bool {
         return $member->company()->id === 1;

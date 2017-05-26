@@ -30,8 +30,9 @@ interface FlagInterface extends RepositoryInterface {
     /**
      * Returns flags based on their service id and user id.
      *
-     * @param int $handlerId
-     * @param int $userId
+     * @param int   $handlerId
+     * @param int   $userId
+     * @param array $queryParams
      *
      * @return \Illuminate\Support\Collection
      */
@@ -40,7 +41,8 @@ interface FlagInterface extends RepositoryInterface {
     /**
      * Returns flags based on their user id.
      *
-     * @param int $userId
+     * @param int   $userId
+     * @param array $queryParams
      *
      * @return \Illuminate\Support\Collection
      */

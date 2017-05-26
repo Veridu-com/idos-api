@@ -15,10 +15,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 
 class InvalidTokenSign extends AbstractAuthFunctional {
-    public static function setUpBeforeClass() {
-        parent::setUpBeforeClass();
-    }
-
     protected function setUp() {
         parent::setUp();
         $this->uri           = '/testInvalidTokenSign';

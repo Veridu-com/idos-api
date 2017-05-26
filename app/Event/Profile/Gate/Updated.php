@@ -46,7 +46,7 @@ class Updated extends AbstractEvent implements UserIdGetterInterface {
     /**
      * {@inheritdoc}
      */
-    public function getUserId(): int {
+    public function getUserId() : int {
         return $this->gate->userId;
     }
 

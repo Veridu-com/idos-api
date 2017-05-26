@@ -62,7 +62,7 @@ class Service implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Service(
                 $container
@@ -131,7 +131,7 @@ class Service implements HandlerInterface {
             );
         }
 
-        if (is_null($command->listens)) {
+        if ($command->listens === null) {
             $handlerService   = $this->handlerServiceRepository->find($command->handlerServiceId);
             $command->listens = $handlerService->listens;
         }
@@ -214,9 +214,9 @@ class Service implements HandlerInterface {
      *
      * @throws \App\Exception\NotFound
      *
-     * @return void
+     * @return int
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         try {
             $this->validator->assertCompany($command->company);
             $this->validator->assertId($command->serviceId);

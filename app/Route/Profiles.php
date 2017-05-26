@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
@@ -37,32 +38,26 @@ class Profiles implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profiles::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Profiles::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profiles(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('User'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Attribute'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Candidate'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Score'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Source'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Gate'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Flag'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\\Recommendation'),
                 $container
                     ->get('commandBus'),
@@ -90,8 +85,8 @@ class Profiles implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -100,7 +95,7 @@ class Profiles implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profiles::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}',

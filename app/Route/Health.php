@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Controller\ControllerInterface;
 use Interop\Container\ContainerInterface;
 use Slim\App;
 
@@ -32,8 +33,8 @@ class Health implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Health::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Health::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Health(
                 $container->get('gearmanClient'),
                 $container->get('sql'),
@@ -62,7 +63,7 @@ class Health implements RouteInterface {
      * @link docs/health/check.md
      * @see \App\Controller\Health::check
      */
-    private static function check(App $app) {
+    private static function check(App $app) : void {
         $app
             ->get(
                 '/health/check',
@@ -86,7 +87,7 @@ class Health implements RouteInterface {
      * @link docs/health/status.md
      * @see \App\Controller\Health::status
      */
-    private static function status(App $app) {
+    private static function status(App $app) : void {
         $app
             ->get(
                 '/health/status',

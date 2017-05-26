@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Controller\ControllerInterface;
 use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
@@ -38,14 +39,14 @@ class Metrics implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Metrics::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Metrics::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Metrics(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Metric\System'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Metric\User'),
                 $container
                     ->get('commandBus'),
@@ -74,8 +75,8 @@ class Metrics implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -84,7 +85,7 @@ class Metrics implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Metrics::listAllSystem
      */
-    private static function listAllSystem(App $app, callable $auth, callable $permission) {
+    private static function listAllSystem(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/metrics/system',
@@ -112,8 +113,8 @@ class Metrics implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -122,7 +123,7 @@ class Metrics implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Metrics::listAllUser
      */
-    private static function listAllUser(App $app, callable $auth, callable $permission) {
+    private static function listAllUser(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/metrics/user',

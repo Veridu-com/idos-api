@@ -19,7 +19,7 @@ abstract class AbstractCacheableEntity extends AbstractEntity implements Cacheab
      *
      * @var bool
      */
-    protected $cachePrefix = null;
+    protected $cachePrefix;
 
     /**
      * {@inheritdoc}

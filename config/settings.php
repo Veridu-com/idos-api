@@ -18,6 +18,13 @@ $appSettings = [
     'routerCacheFile'                   => Env::asString('IDOS_ROUTER_CACHE', '') ?: false,
     'determineRouteBeforeAppMiddleware' => true,
     'trustedProxies'                    => Env::asArray('IDOS_TRUSTED_PROXIES', ['127.0.0.1']),
+    'boot'                              => [
+        'commandsCache'  => Env::asString('IDOS_COMMANDS_CACHE', ''),
+        'handlersCache'  => Env::asString('IDOS_HANDLERS_CACHE', ''),
+        'listenersCache' => Env::asString('IDOS_LISTENERS_CACHE', ''),
+        'providersCache' => Env::asString('IDOS_PROVIDERS_CACHE', ''),
+        'routesCache'    => Env::asString('IDOS_ROUTES_CACHE', '')
+    ],
     'db'                                => [
         'sql' => [
             'driver'    => Env::asString('IDOS_SQL_DRIVER', 'pgsql'),

@@ -43,12 +43,9 @@ class Companies implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
+    public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Companies::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Companies(
-                $container
-                    ->get('repositoryFactory')
-                    ->create('Company'),
                 $container
                     ->get('commandBus'),
                 $container
@@ -78,8 +75,8 @@ class Companies implements RouteInterface {
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -88,7 +85,7 @@ class Companies implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Companies::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies',
@@ -114,8 +111,8 @@ class Companies implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -124,7 +121,7 @@ class Companies implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Companies::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}',
@@ -147,8 +144,8 @@ class Companies implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd Parent company
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -157,7 +154,7 @@ class Companies implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Companies::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/companies/{companySlug:[a-z0-9_-]+}',
@@ -185,8 +182,8 @@ class Companies implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -195,7 +192,7 @@ class Companies implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Companies::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}',
@@ -223,8 +220,8 @@ class Companies implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -233,7 +230,7 @@ class Companies implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Companies::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-z0-9_-]+}',

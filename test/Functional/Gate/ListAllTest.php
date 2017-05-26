@@ -70,7 +70,8 @@ class ListAllTest extends AbstractFunctional {
             ]
         ];
 
-        for ($i = 1; $i < count($filterableKeys); $i++) {
+        $count = count($filterableKeys);
+        for ($i = 1; $i < $count; $i++) {
             $this->combinatorics(
                 array_keys($filterableKeys), 0, $i,
                 function (array $filters) use ($key, $filterableKeys) {
@@ -107,8 +108,9 @@ class ListAllTest extends AbstractFunctional {
                     $this->assertTrue($body['status']);
 
                     foreach ($body['data'] as $entity) {
-                        if (! $entity[$key] == 'noChargebackGate')
+                        if (! $entity[$key] == 'noChargebackGate') {
                             $this->assertContains($entity[$key], $possibleResults);
+                        }
                     }
 
                     $this->assertTrue(
@@ -210,8 +212,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            if (! $entity['name'] == 'noChargebackGate')
+            if (! $entity['name'] == 'noChargebackGate') {
                 $this->assertContains($entity['name'], ['firstname-low', 'middlename-low', 'lastname-low']);
+            }
         }
 
         /*
@@ -245,8 +248,9 @@ class ListAllTest extends AbstractFunctional {
         $this->assertCount(3, $body['data']);
 
         foreach ($body['data'] as $entity) {
-            if (! $entity['name'] == 'noChargebackGate')
+            if (! $entity['name'] == 'noChargebackGate') {
                 $this->assertContains($entity['name'], ['firstNameGate', 'middleNameGate', 'lastNameGate']);
+            }
         }
 
         /*
@@ -294,7 +298,7 @@ class ListAllTest extends AbstractFunctional {
                     $orderableKey = explode(':', $orderableKey);
                 } else {
                     foreach ($body['data'] as $entity) {
-                        $keys[] = isset($entity[$orderableKey]) ? $entity[$orderableKey] : null;
+                        $keys[] = $entity[$orderableKey] ?? null;
                     }
 
                     $orderedKeys = $keys;

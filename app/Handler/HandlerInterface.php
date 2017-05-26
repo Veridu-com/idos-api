@@ -21,5 +21,5 @@ interface HandlerInterface {
      *
      * @return void
      */
-    public static function register(ContainerInterface $container);
+    public static function register(ContainerInterface $container) : void;
 }

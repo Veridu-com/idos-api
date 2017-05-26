@@ -35,7 +35,7 @@ class HookTest extends AbstractUnit {
     }
 
     public function testAssertTriggerFiftyOneChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $trigger = '';
         for ($i = 0; $i < 51; $i++) {
             $trigger .= 'a';
@@ -45,7 +45,7 @@ class HookTest extends AbstractUnit {
     }
 
     public function testAssertTriggerInvalidInput() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertTriggerName(chr(20) . chr(127));
     }
 

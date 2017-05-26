@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\User\RoleAccess;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * RoleAccess "Update One" Command.
@@ -38,7 +39,7 @@ class UpdateOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['access'])) {
             $this->access = $parameters['access'];
         }

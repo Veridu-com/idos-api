@@ -14,35 +14,35 @@ use Test\Unit\AbstractUnit;
 
 class AssertIdTest extends AbstractUnit {
     public function testAssertIdEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertId::class);
         $traitMock->assertId('');
     }
 
     public function testAssertIdInvalidValue() {
-        $this->setExpectedException(Exceptioninterface::class);
+        $this->expectedException(Exceptioninterface::class);
 
         $traitMock = $this->getMockForTrait(AssertId::class);
         $traitMock->assertId('0a');
     }
 
     public function testAssertIdInvalidNumberWithString() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertId::class);
         $traitMock->assertId('dummy');
     }
 
     public function testAssertIdInvalidNumberWithBoolean() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
 
         $traitMock = $this->getMockForTrait(AssertId::class);
         $traitMock->assertId(false);
     }
 
     public function testAssertIdNegativeValue() {
-        $this->setExpectedException(Exceptioninterface::class);
+        $this->expectedException(Exceptioninterface::class);
 
         $traitMock = $this->getMockForTrait(AssertId::class);
         $traitMock->assertId(-1);

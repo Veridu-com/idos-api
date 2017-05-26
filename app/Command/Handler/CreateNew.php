@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Handler;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Handler "Create new" Command.
@@ -53,10 +54,8 @@ class CreateNew extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Handler\CreateNew
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }

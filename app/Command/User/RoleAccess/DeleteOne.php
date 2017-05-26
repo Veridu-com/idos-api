@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\User\RoleAccess;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * RoleAccess "Delete One" Command.
@@ -31,7 +32,7 @@ class DeleteOne extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) {
+    public function setParameters(array $parameters) : CommandInterface {
         return $this;
     }
 }

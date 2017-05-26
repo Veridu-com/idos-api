@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\User;
 
-use App\Entity\Role;
+use App\Controller\ControllerInterface;
 use App\Entity\User\RoleAccess as RoleAccessEntity;
 use App\Middleware\Auth;
 use App\Route\RouteInterface;
@@ -46,12 +46,16 @@ class RoleAccess implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\User\RoleAccess::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\User\RoleAccess::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\User\RoleAccess(
-                $container->get('repositoryFactory')->create('User\RoleAccess'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('User\RoleAccess'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -78,8 +82,8 @@ class RoleAccess implements RouteInterface {
      * @apiAuth header  token userToken  eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -88,7 +92,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $userPermission) {
+    private static function listAll(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->get(
                 '/access/roles',
@@ -110,8 +114,8 @@ class RoleAccess implements RouteInterface {
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -120,7 +124,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $userPermission) {
+    private static function createNew(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->post(
                 '/access/roles',
@@ -142,8 +146,8 @@ class RoleAccess implements RouteInterface {
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -152,7 +156,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth, callable $userPermission) {
+    private static function deleteAll(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->delete(
                 '/access/roles',
@@ -175,8 +179,8 @@ class RoleAccess implements RouteInterface {
      * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -185,7 +189,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $userPermission) {
+    private static function getOne(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->get(
                 '/access/roles/{roleAccessId:[0-9]+}',
@@ -208,8 +212,8 @@ class RoleAccess implements RouteInterface {
      * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -218,7 +222,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::getOne
      */
-    private static function updateOne(App $app, callable $auth, callable $userPermission) {
+    private static function updateOne(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->put(
                 '/access/roles/{roleAccessId:[0-9]+}',
@@ -241,8 +245,8 @@ class RoleAccess implements RouteInterface {
      * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -251,7 +255,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $userPermission) {
+    private static function deleteOne(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->delete(
                 '/access/roles/{roleAccessId:[0-9]+}',

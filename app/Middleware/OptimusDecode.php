@@ -51,7 +51,7 @@ class OptimusDecode implements MiddlewareInterface {
      * @return bool
      */
     private function matchDecodableKey(string $key) : bool {
-        return (bool) preg_match('/.*?Id$/', $key);
+        return (bool) preg_match('/Id$/', $key);
     }
 
     /**
@@ -62,7 +62,7 @@ class OptimusDecode implements MiddlewareInterface {
      * @return bool
      */
     private function matchDecodableBodyKey(string $key) : bool {
-        return (bool) preg_match('/.*?_id$/', $key);
+        return (bool) preg_match('/_id$/', $key);
     }
 
     public function __construct(Optimus $optimus) {

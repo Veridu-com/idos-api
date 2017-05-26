@@ -23,7 +23,7 @@ trait AssertPassword {
      *
      * @return void
      */
-    public function assertPassword($password) {
+    public function assertPassword($password) : void {
         Validator::graph()
             ->length(6, null)
             ->assert($password);

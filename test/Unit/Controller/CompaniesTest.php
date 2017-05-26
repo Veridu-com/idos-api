@@ -16,8 +16,8 @@ use App\Command\ResponseDispatch;
 use App\Controller\Companies;
 use App\Entity\Company as CompanyEntity;
 use App\Factory\Command;
+use App\Helper\Vault;
 use App\Repository\DBCompany;
-use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Tactician\CommandBus;
 use Slim\Http\Request;
@@ -30,6 +30,10 @@ class CompaniesTest extends AbstractUnit {
             ->disableOriginalConstructor()
             ->getMock();
 
+        $vault = $this->getMockBuilder(Vault::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         return new CompanyEntity(
             [
                 'name'       => 'New Company',
@@ -38,7 +42,8 @@ class CompaniesTest extends AbstractUnit {
                 'created_at' => time(),
                 'updated_at' => time()
             ],
-            $optimus
+            $optimus,
+            $vault
         );
     }
 
@@ -54,14 +59,6 @@ class CompaniesTest extends AbstractUnit {
         $responseMock = $this->getMockBuilder(Response::class)
             ->disableOriginalConstructor()
             ->getMock();
-
-        $dbCompanyMock = $this->getMockBuilder(DBCompany::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getAllByParentId'])
-            ->getMock();
-        $dbCompanyMock
-            ->method('getAllByParentId')
-            ->will($this->returnValue(new Collection(['id' => 0])));
 
         $commandBus = $this->getMockBuilder(CommandBus::class)
             ->disableOriginalConstructor()
@@ -81,12 +78,8 @@ class CompaniesTest extends AbstractUnit {
             ->method('create')
             ->will($this->returnValue(new ResponseDispatch()));
 
-        $optimus = $this->getMockBuilder(Optimus::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $companyMock = $this->getMockBuilder(Companies::class)
-            ->setConstructorArgs([$dbCompanyMock, $commandBus, $commandFactory, $optimus])
+            ->setConstructorArgs([$commandBus, $commandFactory])
             ->setMethods(null)
             ->getMock();
 

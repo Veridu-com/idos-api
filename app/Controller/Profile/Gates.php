@@ -11,7 +11,6 @@ namespace App\Controller\Profile;
 use App\Controller\ControllerInterface;
 use App\Factory\Command;
 use App\Repository\Profile\GateInterface;
-use App\Repository\UserInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -26,12 +25,6 @@ class Gates implements ControllerInterface {
      * @var \App\Repository\Profile\GateInterface
      */
     private $repository;
-    /**
-     * User Repository instance.
-     *
-     * @var \App\Repository\UserInterface
-     */
-    private $userRepository;
     /**
      * Command Bus instance.
      *
@@ -49,7 +42,6 @@ class Gates implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Profile\GateInterface $repository
-     * @param \App\Repository\UserInterface         $userRepository
      * @param \League\Tactician\CommandBus          $commandBus
      * @param \App\Factory\Command                  $commandFactory
      *
@@ -57,12 +49,10 @@ class Gates implements ControllerInterface {
      */
     public function __construct(
         GateInterface $repository,
-        UserInterface $userRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
         $this->repository     = $repository;
-        $this->userRepository = $userRepository;
         $this->commandBus     = $commandBus;
         $this->commandFactory = $commandFactory;
     }

@@ -173,7 +173,7 @@ class DBTagTest extends AbstractUnit {
             $this->optimus, $connectionMock
         );
 
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $dbTag->findOneByUserIdAndSlug(1, 'test-tag');
     }
 

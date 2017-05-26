@@ -61,7 +61,7 @@ class DBSettingTest extends AbstractUnit {
             $this->optimus, $connectionMock
         );
 
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $dbSetting->find(0);
     }
 

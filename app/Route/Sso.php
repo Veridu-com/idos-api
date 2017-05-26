@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use Interop\Container\ContainerInterface;
@@ -37,14 +38,21 @@ class Sso implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Sso::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Sso::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Sso(
-                $container->get('repositoryFactory')->create('Company\Setting'),
-                $container->get('repositoryFactory')->create('Company\Credential'),
-                $container->get('settings'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Company\Setting'),
+                $repositoryFactory
+                    ->create('Company\Credential'),
+                $container
+                    ->get('settings'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -66,8 +74,8 @@ class Sso implements RouteInterface {
      * @apiGroup SSO
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -76,7 +84,7 @@ class Sso implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Sso::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/sso',
@@ -95,8 +103,8 @@ class Sso implements RouteInterface {
      * @apiEndpointURIFragment string providerName facebook
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -105,7 +113,7 @@ class Sso implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Sso::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/sso/{providerName:[a-zA-Z0-9]+}',
@@ -125,8 +133,8 @@ class Sso implements RouteInterface {
      * @apiGroup SSO
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -135,7 +143,7 @@ class Sso implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Sso::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/sso',

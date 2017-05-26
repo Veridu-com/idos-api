@@ -15,17 +15,18 @@ trait QueuesOnManager {
     /**
      * Queue work on the "manager" work queue.
      *
-     * @param string $payload Payload to be sent
+     * @param \GearmanClient $gearmanClient
+     * @param string         $payload       Payload to be sent
      *
      * @return bool
      */
     private function queueOnManager(\GearmanClient $gearmanClient, array $payload) : bool {
-        $task = $gearmanClient->doBackground(
+        $gearmanClient->doBackground(
             'manager',
             json_encode($payload),
             uniqid('manager-')
         );
 
-        return $gearmanClient->returnCode() == \GEARMAN_SUCCESS;
+        return $gearmanClient->returnCode() === \GEARMAN_SUCCESS;
     }
 }

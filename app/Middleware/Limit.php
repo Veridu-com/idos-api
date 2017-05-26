@@ -102,14 +102,14 @@ class Limit implements MiddlewareInterface {
         callable $next
     ) : ResponseInterface {
         $key = $request->getAttribute('key');
-        if ($this->limitType == self::KEYLIMIT) {
+        if ($this->limitType === self::KEYLIMIT) {
             // The limit is based on the key / route identifier
             $controlKey = sprintf(
                 '/limit/key/%d/%s',
                 $key->getId(),
                 $request->getAttribute('route')->getIdentifier()
             );
-        } elseif ($this->limitType == self::USRLIMIT) {
+        } elseif ($this->limitType === self::USRLIMIT) {
             // The limit is based on the key / user / route identifier
             $controlKey = sprintf(
                 '/limit/user/%d/%s/%s',
@@ -154,7 +154,7 @@ class Limit implements MiddlewareInterface {
                     'Limit: over hard threhold: %s (%s %s) [%d]',
                     $key->getPublicKey(),
                     $request->getMethod(),
-                    $request->getURI()->getPath(),
+                    $request->getUri()->getPath(),
                     $this->limitType
                 )
             );
@@ -169,7 +169,7 @@ class Limit implements MiddlewareInterface {
                     'Limit: over soft threshold: %s (%s %s) [%d]',
                     $key->getPublicKey(),
                     $request->getMethod(),
-                    $request->getURI()->getPath(),
+                    $request->getUri()->getPath(),
                     $this->limitType
                 )
             );

@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Setting;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Setting "Create New" Command.
@@ -17,13 +18,13 @@ class CreateNew extends AbstractCommand {
     /**
      * Setting's section name (user input).
      *
-     * @var object
+     * @var string
      */
     public $section;
     /**
      * Setting's property name (user input).
      *
-     * @var object
+     * @var string
      */
     public $property;
     /**
@@ -35,8 +36,7 @@ class CreateNew extends AbstractCommand {
     /**
      * Setting's property value (user input).
      *
-     *
-     * @var object
+     * @var mixed
      */
     public $value;
     /**
@@ -54,10 +54,8 @@ class CreateNew extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Company\Setting\CreateNew
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['section'])) {
             $this->section = $parameters['section'];
         }

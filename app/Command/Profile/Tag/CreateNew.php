@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Profile\Tag;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Tag "Create New" Command.
@@ -42,7 +43,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
         }

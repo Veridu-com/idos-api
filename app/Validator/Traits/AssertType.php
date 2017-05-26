@@ -23,7 +23,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertArray($array) {
+    public function assertArray($array) : void {
         Validator::arrayType()
             ->assert($array);
     }
@@ -37,7 +37,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertNullableArray($array) {
+    public function assertNullableArray($array) : void {
         Validator::oneOf(
             Validator::arrayType(),
             Validator::nullType()
@@ -53,7 +53,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertBoolean($boolean) {
+    public function assertBoolean($boolean) : void {
         Validator::boolType()
             ->assert($boolean);
     }
@@ -67,7 +67,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertNullableBoolean($boolean) {
+    public function assertNullableBoolean($boolean) : void {
         Validator::oneOf(
             Validator::boolType(),
             Validator::nullType()
@@ -83,7 +83,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertFloat($value) {
+    public function assertFloat($value) : void {
         Validator::floatType()
             ->assert($value);
     }
@@ -96,7 +96,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertString($string) {
+    public function assertString($string) : void {
         Validator::stringType()
             ->length(1, null)
             ->assert($string);
@@ -111,7 +111,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertNullableString($string) {
+    public function assertNullableString($string) : void {
         Validator::oneOf(
             Validator::stringType(),
             Validator::nullType()
@@ -127,7 +127,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertShortString($string) {
+    public function assertShortString($string) : void {
         Validator::stringType()
             ->length(1, 50)
             ->assert($string);
@@ -142,7 +142,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertMediumString($string) {
+    public function assertMediumString($string) : void {
         Validator::stringType()
             ->length(1, 100)
             ->assert($string);
@@ -157,7 +157,7 @@ trait AssertType {
      *
      * @return void
      */
-    public function assertLongString($string) {
+    public function assertLongString($string) : void {
         Validator::stringType()
             ->length(1, 255)
             ->assert($string);

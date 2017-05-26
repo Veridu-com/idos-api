@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Exception\NotAllowed\Company;
 
+use App\Exception\NotAllowed;
+
 /**
  * Credential not allowed exception.
  *

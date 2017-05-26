@@ -40,19 +40,31 @@ class Profiles implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
+    public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Company\Profiles::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Company\Profiles(
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('repositoryFactory')->create('Profile\Source'),
-                $container->get('repositoryFactory')->create('Profile\Tag'),
-                $container->get('repositoryFactory')->create('Profile\Review'),
-                $container->get('repositoryFactory')->create('Profile\Flag'),
-                $container->get('repositoryFactory')->create('Profile\Gate'),
-                $container->get('repositoryFactory')->create('Profile\Attribute'),
-                $container->get('repositoryFactory')->create('Profile\Recommendation'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('User'),
+                $repositoryFactory
+                    ->create('Profile\\Source'),
+                $repositoryFactory
+                    ->create('Profile\\Tag'),
+                $repositoryFactory
+                    ->create('Profile\\Review'),
+                $repositoryFactory
+                    ->create('Profile\\Flag'),
+                $repositoryFactory
+                    ->create('Profile\\Gate'),
+                $repositoryFactory
+                    ->create('Profile\\Attribute'),
+                $repositoryFactory
+                    ->create('Profile\\Recommendation'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -77,8 +89,8 @@ class Profiles implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -87,7 +99,7 @@ class Profiles implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Profiles::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/profiles',
@@ -111,8 +123,8 @@ class Profiles implements RouteInterface {
      * @apiEndpointURIFragment int userId 3215132
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -121,7 +133,7 @@ class Profiles implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Profiles::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/profiles/{userId:[0-9_-]+}',
@@ -145,8 +157,8 @@ class Profiles implements RouteInterface {
      * @apiEndpointURIFragment int userId 3215132
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -155,7 +167,7 @@ class Profiles implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Profiles::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-z0-9_-]+}/profiles/{userId:[0-9_-]+}',

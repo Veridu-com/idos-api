@@ -8,6 +8,8 @@ declare(strict_types = 1);
 
 namespace App\Command\Sso;
 
+use App\Command\CommandInterface;
+
 /**
  * Sso "Create New Twitter" Command.
  */
@@ -21,10 +23,8 @@ class CreateNewTwitter extends CreateNew {
 
     /**
      * {@inheritdoc}
-     *
-     * @return self
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         parent::setParameters($parameters);
 
         if (isset($parameters['tokenSecret'])) {

@@ -40,21 +40,21 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
     /**
      * Phinx Application Instance.
      *
-     * @var Phinx\Console\PhinxApplication
+     * @var \Phinx\Console\PhinxApplication
      */
     protected static $phinxApp;
 
     /**
      * Phinx TextWrapper Instance.
      *
-     * @var Phinx\Wrapper\TextWrapper
+     * @var \Phinx\Wrapper\TextWrapper
      */
     protected static $phinxTextWrapper;
 
     /**
      * SQL Database Connection.
      *
-     * @var Illuminate\Database\Connection
+     * @var \Illuminate\Database\Connection
      */
     protected static $sqlConnection;
 
@@ -111,11 +111,12 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
                 ['settings' => $GLOBALS['appSettings']]
             );
 
-            require_once __ROOT__ . '/../config/dependencies.php';
-            require_once __ROOT__ . '/../config/middleware.php';
-            require_once __ROOT__ . '/../config/handlers.php';
-            require_once __ROOT__ . '/../config/routes.php';
-            require_once __ROOT__ . '/../config/listeners.php';
+            require_once __ROOT__ . '/config/dependencies.php';
+            require_once __ROOT__ . '/config/middleware.php';
+            require_once __ROOT__ . '/config/handlers.php';
+            require_once __ROOT__ . '/config/routes.php';
+            require_once __ROOT__ . '/config/listeners.php';
+            require_once __ROOT__ . '/config/providers.php';
 
             self::$app = $app;
         }
@@ -158,13 +159,13 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * Rollback the SQL database transaction.
      */
     protected function tearDown() {
-        self::$sqlConnection->rollback();
+        self::$sqlConnection->rollBack();
     }
 
     /**
      * Load all the dependencies for the aplication.
      *
-     * @return Slim\App $app
+     * @return \Slim\App $app
      */
     protected function getApp() : App {
         return self::$app;
@@ -207,6 +208,8 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         $body     = json_decode((string) $response->getBody(), true);
 
         if ($response->getStatusCode() >= 400) {
+            // var_dump((string) $response->getBody());
+            // throw new \RuntimeException('Failed to retrieve entities!');
             $this->entities = [];
         } else {
             $this->entities = $body['data'];
@@ -226,7 +229,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         }
 
         if ($index === false) {
-            $index = mt_rand(0, (count($this->entities) - 1));
+            $index = random_int(0, (count($this->entities) - 1));
         }
 
         return $this->entities[$index];

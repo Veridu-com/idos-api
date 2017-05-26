@@ -6,8 +6,6 @@
 
 namespace Test\Functional\Flag;
 
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 

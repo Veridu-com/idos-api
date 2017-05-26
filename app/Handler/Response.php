@@ -36,13 +36,13 @@ class Response implements HandlerInterface {
         int $statusCode = 200
     ) : ResponseInterface {
         unset($body['list'][0]['private_key']);
-        $body     = json_encode($body);
-        $response = $this->httpCache->withEtag($response, sha1($body), 'weak');
+        $encodedBody = json_encode($body);
+        $response    = $this->httpCache->withEtag($response, sha1($encodedBody), 'weak');
 
         return $response
             ->withStatus($statusCode)
             ->withHeader('Content-Type', 'application/json; charset=utf-8')
-            ->write($body);
+            ->write($encodedBody);
     }
 
     /**
@@ -61,13 +61,13 @@ class Response implements HandlerInterface {
         int $statusCode = 200,
         string $callback = 'jsonp'
     ) : ResponseInterface {
-        $body     = sprintf('/**/%s(%s)', $callback, json_encode($body));
-        $response = $this->httpCache->withEtag($response, sha1($body), 'weak');
+        $encodedBody = sprintf('/**/%s(%s)', $callback, json_encode($body));
+        $response    = $this->httpCache->withEtag($response, sha1($encodedBody), 'weak');
 
         return $response
             ->withStatus($statusCode)
             ->withHeader('Content-Type', 'application/javascript')
-            ->write($body);
+            ->write($encodedBody);
     }
 
     /**
@@ -95,13 +95,13 @@ class Response implements HandlerInterface {
                 }
             }
         );
-        $body     = $xml->asXML();
-        $response = $this->httpCache->withEtag($response, sha1($body), 'weak');
+        $encodedBody = $xml->asXML();
+        $response    = $this->httpCache->withEtag($response, sha1($encodedBody), 'weak');
 
         return $response
             ->withStatus($statusCode)
             ->withHeader('Content-Type', 'application/xml; charset=utf-8')
-            ->write($body);
+            ->write($encodedBody);
     }
 
     /**
@@ -118,13 +118,13 @@ class Response implements HandlerInterface {
         array $body,
         int $statusCode = 200
     ) : ResponseInterface {
-        $body     = http_build_query($body);
-        $response = $this->httpCache->withEtag($response, sha1($body), 'weak');
+        $encodedBody = http_build_query($body);
+        $response    = $this->httpCache->withEtag($response, sha1($encodedBody), 'weak');
 
         return $response
             ->withStatus($statusCode)
             ->withHeader('Content-Type', 'text/plain')
-            ->write($body);
+            ->write($encodedBody);
     }
 
     /**
@@ -134,11 +134,13 @@ class Response implements HandlerInterface {
      *
      * @return void
      */
-    public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Response(
-                $container->get('httpCache'),
-                $container->get('validator')
+                $container
+                    ->get('httpCache'),
+                $container
+                    ->get('validator')
             );
         };
     }
@@ -183,14 +185,14 @@ class Response implements HandlerInterface {
         // Forces HTTP errors (4xx and 5xx) to be suppressed
         if (($statusCode >= 400)
             && (isset($queryParams['failSilently']))
-            && ($this->validator->trueVal()->validate($queryParams['failSilently']))
+            && ($this->validator::trueVal()->validate($queryParams['failSilently']))
         ) {
             $statusCode = 200;
         }
 
         // Suppresses links field on response body
         if ((isset($body['links'], $queryParams['hideLinks']))
-            && ($this->validator->trueVal()->validate($queryParams['hideLinks']))
+            && ($this->validator::trueVal()->validate($queryParams['hideLinks']))
         ) {
             unset($body['links']);
         }
@@ -243,12 +245,9 @@ class Response implements HandlerInterface {
         // 	return $this->xmlResponse($response, $body, $statusCode);
 
         if (in_array('application/javascript', $accept)) {
-            if (empty($queryParams['callback'])) {
-                $callback = 'jsonp';
-            }
-
-            if (! preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $callback)) {
-                $callback = 'jsonp';
+            $callback = 'jsonp';
+            if ((! empty($queryParams['callback'])) && (preg_match('/^[a-zA-Z_][a-zA-Z0-9_]*$/', $queryParams['callback']))) {
+                $callback = $queryParams['callback'];
             }
 
             return $this->javascriptResponse($response, $body, $statusCode, $callback);

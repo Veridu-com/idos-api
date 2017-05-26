@@ -9,7 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Profile\Source;
 
 use App\Command\AbstractCommand;
-use App\Entity\User;
+use App\Command\CommandInterface;
 
 /**
  * Source "Delete One" Command.
@@ -42,10 +42,8 @@ class DeleteOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Profile\Source\DeleteOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         return $this;
     }
 }

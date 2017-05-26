@@ -8,6 +8,15 @@ declare(strict_types = 1);
 
 namespace App\Validator\Traits;
 
+use App\Entity\Company;
+use App\Entity\Company\Credential;
+use App\Entity\Company\Hook;
+use App\Entity\Handler;
+use App\Entity\Identity;
+use App\Entity\Profile\Source;
+use App\Entity\Service;
+use App\Entity\User;
+use League\Event\EventInterface;
 use Respect\Validation\Validator;
 
 /**
@@ -23,8 +32,8 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertCompany($company) {
-        Validator::instance('App\\Entity\\Company')
+    public function assertCompany($company) : void {
+        Validator::instance(Company::class)
             ->assert($company);
     }
 
@@ -37,8 +46,8 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertIdentity($identity) {
-        Validator::instance('App\\Entity\\Identity')
+    public function assertIdentity($identity) : void {
+        Validator::instance(Identity::class)
             ->assert($identity);
     }
 
@@ -51,8 +60,8 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertCredential($credential) {
-        Validator::instance('App\\Entity\\Company\\Credential')
+    public function assertCredential($credential) : void {
+        Validator::instance(Credential::class)
             ->assert($credential);
     }
 
@@ -65,8 +74,8 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertHook($hook) {
-        Validator::instance('App\\Entity\\Company\\Hook')
+    public function assertHook($hook) : void {
+        Validator::instance(Hook::class)
             ->assert($hook);
     }
 
@@ -79,8 +88,8 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertSource($source) {
-        Validator::instance('App\\Entity\\Profile\\Source')
+    public function assertSource($source) : void {
+        Validator::instance(Source::class)
             ->assert($source);
     }
 
@@ -93,8 +102,8 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertUser($user) {
-        Validator::instance('App\\Entity\\User')
+    public function assertUser($user) : void {
+        Validator::instance(User::class)
             ->assert($user);
     }
 
@@ -107,8 +116,8 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertService($service) {
-        Validator::instance('App\\Entity\\Service')
+    public function assertService($service) : void {
+        Validator::instance(Service::class)
             ->assert($service);
     }
 
@@ -121,8 +130,8 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertHandler($handler) {
-        Validator::instance('App\\Entity\\Handler')
+    public function assertHandler($handler) : void {
+        Validator::instance(Handler::class)
             ->assert($handler);
     }
 
@@ -135,7 +144,7 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertServiceHandler($entity) {
+    public function assertServiceHandler($entity) : void {
         Validator::instance('App\\Entity\\ServiceHandler')
             ->assert($entity);
     }
@@ -149,8 +158,8 @@ trait AssertEntity {
      *
      * @return void
      */
-    public function assertEvent($entity) {
-        Validator::instance('\\League\\Event\\EventInterface')
+    public function assertEvent($entity) : void {
+        Validator::instance(EventInterface::class)
             ->assert($entity);
     }
 }

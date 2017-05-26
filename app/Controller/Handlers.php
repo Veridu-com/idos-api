@@ -101,8 +101,7 @@ class Handlers implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $company          = $request->getAttribute('targetCompany');
-        $handlerId        = (int) $request->getAttribute('decodedHandlerId');
+        $handlerId = (int) $request->getAttribute('decodedHandlerId');
 
         $entity = $this->repository->find($handlerId);
 

@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Service;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Service "Update one" Command.
@@ -41,10 +42,8 @@ class UpdateOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Service\UpdateOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['listens'])) {
             $this->listens = $parameters['listens'];
         }

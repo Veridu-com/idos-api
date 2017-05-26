@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\User\RoleAccess;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * RoleAccess "Create new" Command.
@@ -45,7 +46,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['role'])) {
             $this->role = $parameters['role'];
         }

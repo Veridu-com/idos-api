@@ -23,7 +23,7 @@ trait AssertScore {
      *
      * @return void
      */
-    public function assertScore($score) {
+    public function assertScore($score) : void {
         Validator::oneOf(
             Validator::intType(),
             Validator::floatType()

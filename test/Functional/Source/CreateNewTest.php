@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Source;
 
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
@@ -47,7 +45,6 @@ class CreateNewTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-
         $this->assertSame(201, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);

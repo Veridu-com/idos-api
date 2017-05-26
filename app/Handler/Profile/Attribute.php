@@ -57,8 +57,8 @@ class Attribute implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Attribute(
                 $container
                     ->get('repositoryFactory')
@@ -77,10 +77,10 @@ class Attribute implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\AttributeInterface $repository
-     * @param \App\Validator\Attribute           $validator
-     * @param \App\Factory\Event                 $eventFactory
-     * @param \League\Event\Emitter              $emitter
+     * @param \App\Repository\Profile\AttributeInterface $repository
+     * @param \App\Validator\Profile\Attribute           $validator
+     * @param \App\Factory\Event                         $eventFactory
+     * @param \League\Event\Emitter                      $emitter
      *
      * @return void
      */
@@ -103,10 +103,10 @@ class Attribute implements HandlerInterface {
      *
      * @see \App\Repository\DBAttribute::save
      *
-     * @throws \App\Exception\Validade\AttributeExceptions
-     * @throws \App\Exception\Create\AttributeExceptions
+     * @throws \App\Exception\Validate\Profile\AttributeException
+     * @throws \App\Exception\Create\Profile\AttributeException
      *
-     * @return \App\Entity\Attribute
+     * @return \App\Entity\Profile\Attribute
      */
     public function handleCreateNew(CreateNew $command) : AttributeEntity {
         try {
@@ -149,10 +149,10 @@ class Attribute implements HandlerInterface {
      *
      * @see \App\Repository\DBAttribute::save
      *
-     * @throws \App\Exception\Validade\AttributeExceptions
-     * @throws \App\Exception\Create\AttributeExceptions
+     * @throws \App\Exception\Validate\Profile\AttributeException
+     * @throws \App\Exception\Create\Profile\AttributeException
      *
-     * @return \App\Entity\Attribute
+     * @return \App\Entity\Profile\Attribute
      */
     public function handleUpsert(Upsert $command) : AttributeEntity {
         try {
@@ -186,8 +186,8 @@ class Attribute implements HandlerInterface {
      *
      * @see \App\Repository\DBAttribute::save
      *
-     * @throws \App\Exception\Validade\AttributeExceptions
-     * @throws \App\Exception\Create\AttributeExceptions
+     * @throws \App\Exception\Validate\Profile\AttributeException
+     * @throws \App\Exception\Create\Profile\AttributeException
      *
      * @return array entities
      */

@@ -21,7 +21,7 @@ class Vault {
      *
      * @var \Defuse\Crypto\Key
      */
-    private $key = null;
+    private $key;
 
     /**
      * Class constructor.
@@ -58,9 +58,9 @@ class Vault {
      *
      * @param string $cipherText
      *
-     * @return string
+     * @return string|null
      */
-    public function unlock(string $cipherText) : string {
+    public function unlock(string $cipherText) : ?string {
         if ($this->key === null) {
             return $cipherText;
         }

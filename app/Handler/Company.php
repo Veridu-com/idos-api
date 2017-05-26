@@ -42,13 +42,13 @@ class Company implements HandlerInterface {
     /**
      * Service Repository instance.
      *
-     * @var \App\Repository\Service
+     * @var \App\Repository\ServiceInterface
      */
     private $serviceRepository;
     /**
      * Handler Service Repository instance.
      *
-     * @var \App\Repository\HandlerService
+     * @var \App\Repository\HandlerServiceInterface
      */
     private $handlerServiceRepository;
     /**
@@ -73,7 +73,7 @@ class Company implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Company(
                 $container

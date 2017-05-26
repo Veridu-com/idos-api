@@ -24,7 +24,7 @@ abstract class AbstractFactory implements FactoryInterface {
      *
      * @return string
      */
-    abstract protected function getNamespace();
+    abstract protected function getNamespace() : string;
 
     /**
      * Returns the formatted name.

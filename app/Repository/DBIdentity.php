@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Repository;
 
-use App\Entity\Company;
 use App\Entity\Identity;
 use App\Exception\NotFound;
 use Illuminate\Support\Collection;
@@ -95,7 +94,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
                 );
 
                 $companies['ids'][$company->id] = $company;
-                array_push($companies['entities'], $company);
+                $companies['entities'][]        = $company;
             }
 
             if ((! empty($member['id'])) && (! in_array($member, $members['ids']))) {
@@ -104,7 +103,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
                     $member
                 );
                 $members['ids'][$member->id] = $member;
-                array_push($members['entities'], $member);
+                $members['entities'][]       = $member;
             }
 
             if ((! empty($role['name'])) && (! in_array($role, $roles['ids']))) {
@@ -113,7 +112,7 @@ class DBIdentity extends AbstractSQLDBRepository implements IdentityInterface {
                     $role
                 );
                 $roles['ids'][$role->name] = $role;
-                array_push($roles['entities'], $role);
+                $roles['entities'][]       = $role;
             }
         }
 

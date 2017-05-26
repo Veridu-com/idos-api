@@ -16,7 +16,7 @@ class S11SettingsSeed extends AbstractSeed {
         for ($i = 0; $i < 35; $i++) {
             $data = [
                 [
-                    'company_id' => mt_rand(1, 2),
+                    'company_id' => random_int(1, 2),
                     'section'    => $faker->countryCode,
                     'property'   => $faker->word . '' . $i,
                     'value'      => $faker->colorName,

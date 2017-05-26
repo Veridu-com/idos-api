@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Profile\Raw;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Raw "Create New" Command.
@@ -54,7 +55,7 @@ class CreateNew extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
         }

@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
-use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\Profile\CandidateInterface;
 use League\Tactician\CommandBus;
@@ -72,8 +71,7 @@ class Candidates implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user    = $request->getAttribute('targetUser');
-        $handler = $request->getAttribute('handler');
+        $user = $request->getAttribute('targetUser');
 
         $entities = $this->repository->findByUserId($user->id, $request->getQueryParams());
 

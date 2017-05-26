@@ -15,7 +15,7 @@ abstract class AbstractCommand implements CommandInterface {
     /**
      * {@inheritdoc}
      */
-    public function setParameter(string $name, $value) {
+    public function setParameter(string $name, $value) : CommandInterface {
         if (property_exists($this, $name)) {
             $this->{$name} = $value;
 

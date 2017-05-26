@@ -17,13 +17,6 @@ use Illuminate\Support\Collection;
  */
 abstract class AbstractCachedRepository extends AbstractRepository {
     /**
-     * The entity associated with the repository.
-     *
-     * @var string
-     */
-    protected $entityName;
-
-    /**
      * Repository Instance.
      *
      * @var \App\Repository\RepositoryInterface
@@ -73,7 +66,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      *
      * @return void
      */
-    public function cacheEntity(EntityInterface $entity) {
+    public function cacheEntity(EntityInterface $entity) : void {
         $keys       = $entity->getCacheKeys();
         $tags       = array_merge($keys, [$this->cachePrefix]);
         $serialized = $entity->serialize();
@@ -88,7 +81,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      *
      * @return void
      */
-    public function cacheEntities(Collection $entities) {
+    public function cacheEntities(Collection $entities) : void {
         foreach ($entities as $entity) {
             $this->cacheEntity($entity);
         }
@@ -99,7 +92,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      *
      * @return void
      */
-    public function deleteEntityCache(EntityInterface $entity) {
+    public function deleteEntityCache(EntityInterface $entity) : void {
         $keys = $entity->getReferenceCacheKeys();
         $tags = $entity->getCacheKeys();
 
@@ -112,9 +105,9 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      *
      * @return void
      */
-    public function deleteEntitiesFromCache(Collection $entities) {
+    public function deleteEntitiesFromCache(Collection $entities) : void {
         foreach ($entities as $entity) {
-            $this->deleteEntityCache($entities);
+            $this->deleteEntityCache($entity);
         }
     }
 
@@ -130,6 +123,8 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * Removes entity from cache then deletes an entity.
      *
+     * @throws \App\Exception\NotFound
+     *
      * @return int number of affected rows
      */
     public function delete(int $id, string $key = 'id') : int {
@@ -141,7 +136,9 @@ abstract class AbstractCachedRepository extends AbstractRepository {
     /**
      * Removes entity from cache then deletes an entity.
      *
-     * @param array constraints
+     * @param array $constraints
+     *
+     * @throws \App\Exception\NotFound
      *
      * @return int number of affected rows
      */
@@ -158,7 +155,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      *
      * @return void
      */
-    protected function invalidateCacheTag(string $tag) {
+    protected function invalidateCacheTag(string $tag) : void {
         return $this->cache->clearByTags([$tag]);
     }
 
@@ -169,7 +166,7 @@ abstract class AbstractCachedRepository extends AbstractRepository {
      *
      * @return void
      */
-    protected function invalidateCacheTags(array $tags) {
+    protected function invalidateCacheTags(array $tags) : void {
         return $this->cache->clearByTags($tags);
     }
 

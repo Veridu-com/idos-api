@@ -31,12 +31,6 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      */
     protected $collectionName = null;
     /**
-     * Entity Name.
-     *
-     * @var string
-     */
-    protected $entityName = null;
-    /**
      * NoSQL DB Connection.
      *
      * @var \Jenssegers\Mongodb\Connection
@@ -50,20 +44,13 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     protected $dbSelector;
 
     /**
-     * Filterable keys of the repository.
-     *
-     * @var array
-     */
-    protected $filterableKeys = [];
-
-    /**
      * Select the database.
      *
      * @param string $database
      *
      * @return void
      */
-    public function selectDatabase(string $database) {
+    public function selectDatabase(string $database) : void {
         $this->dbConnection = ($this->dbSelector)($database);
     }
 
@@ -72,7 +59,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      *
      * @param string $collection The collection name
      */
-    public function selectCollection(string $collection) {
+    public function selectCollection(string $collection) : void {
         $this->collectionName = $collection;
     }
 
@@ -90,7 +77,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      *
      * @throws \App\Exception\AppException If no database was selected
      */
-    public function checkDatabaseSelected() {
+    public function checkDatabaseSelected() : void {
         if (! $this->dbConnection) {
             throw new AppException('No NoSQL database selected');
         }
@@ -103,22 +90,32 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      * @param string $entityName The entity name
      * @param string $database   The database name
      *
+     * @throws \App\Exception\AppException
+     *
      * @return \Jenssegers\Mongodb\Query\Builder The query builder
      */
-    protected function query(string $collection = null, string $entityName = null, string $database = null) : QueryBuilder {
+    protected function query(
+        string $collection = null,
+        string $entityName = null,
+        string $database = null
+    ) : QueryBuilder {
         if ($database !== null) {
             $this->selectDatabase($database);
         }
 
         $this->checkDatabaseSelected();
 
-        $collection = ($collection === null) ? $this->getCollectionName() : $collection;
+        $collection = $collection ?? $this->getCollectionName();
 
         return $this->dbConnection->collection($collection);
     }
 
     /**
      * List all databases.
+     *
+     * @throws \MongoDB\Exception\UnexpectedValueException
+     * @throws \MongoDB\Exception\InvalidArgumentException
+     * @throws \MongoDB\Driver\Exception\RuntimeException
      *
      * @return \MongoDB\Model\DatabaseInfoIterator A iterator for the databases
      */
@@ -150,7 +147,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
      *
      * @return mixed
      */
-    protected function dropDatabase(string $database = null) {
+    protected function dropDatabase(string $database = null) : bool {
         if ($database !== null) {
             $this->selectDatabase($database);
         }
@@ -160,8 +157,8 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         return $this->dbConnection->getMongoDB()->drop();
     }
 
-    protected function dropCollection($collection = null) {
-        $collection = ($collection === null) ? $this->getCollectionName() : $collection;
+    protected function dropCollection($collection = null) : bool {
+        $collection = $collection ?? $this->getCollectionName();
 
         return $this->dbConnection->getCollection($collection)->drop();
     }
@@ -169,10 +166,11 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
     /**
      * Class constructor.
      *
-     * @param \App\Factory\Entity                      $entityFactory
-     * @param \App\Factory\Repository                  $repositoryFactory
-     * @param \Jenssegers\Optimus\Optimus              $optimus
-     * @param \Illuminate\Database\ConnectionInterface $dbConnection
+     * @param \App\Factory\Entity         $entityFactory
+     * @param \App\Factory\Repository     $repositoryFactory
+     * @param \Jenssegers\Optimus\Optimus $optimus
+     * @param \App\Helper\Vault           $vault
+     * @param callable                    $noSqlConnector
      *
      * @return void
      */
@@ -230,8 +228,7 @@ abstract class AbstractNoSQLDBRepository extends AbstractRepository {
         if ($isUpdate) {
             $query = $this->query();
 
-            unset($serialized['id']);
-            unset($serialized['_id']);
+            unset($serialized['id'], $serialized['_id']);
             $success = $query->where('_id', '=', $query->convertKey(md5((string) $entity->id)))->update($serialized) > 0;
         } else {
             if ($entity->id) {

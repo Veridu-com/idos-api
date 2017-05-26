@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Metric;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Metric ListAllUser Command.
@@ -29,10 +30,8 @@ class ListAllUser extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Metric\ListAllUser
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['queryParams'])) {
             $this->queryParams = $parameters['queryParams'];
         }

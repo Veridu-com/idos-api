@@ -71,8 +71,8 @@ class Hook implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Company\Hook(
                 $container
                     ->get('repositoryFactory')
@@ -97,7 +97,7 @@ class Hook implements HandlerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Company\HookInterface       $repository
-     * @param \App\Repository\Company\CredentialInterface $repository
+     * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \App\Validator\Company\Hook                 $validator
      * @param \App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                       $emitter
@@ -131,7 +131,7 @@ class Hook implements HandlerInterface {
      *
      * @throws \App\Exception\NotFound\Company\HookException
      *
-     * @return int
+     * @return \App\Entity\Company\Hook
      */
     public function handleGetOne(GetOne $command) : HookEntity {
         try {
@@ -148,7 +148,7 @@ class Hook implements HandlerInterface {
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
         $hook       = $this->repository->find($command->hookId);
 
-        if ($credential->id != $hook->credentialId || $credential->companyId != $command->company->id) {
+        if ($credential->id !== $hook->credentialId || $credential->companyId !== $command->company->id) {
             throw new NotFound\Company\HookException('Company not found', 404);
         }
 
@@ -186,7 +186,7 @@ class Hook implements HandlerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($credential->companyId != $command->company->id) {
+        if ($credential->companyId !== $command->company->id) {
             throw new NotFound\Company\HookException('Company not found', 404);
         }
 
@@ -255,14 +255,14 @@ class Hook implements HandlerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($credential->companyId != $command->company->id) {
+        if ($credential->companyId !== $command->company->id) {
             throw new NotFound\Company\HookException('Company not found', 404);
         }
 
         $hook       = $this->repository->find($command->hookId);
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($hook->credential_id != $credential->id) {
+        if ($hook->credential_id !== $credential->id) {
             throw new NotFound\Company\HookException('Credential not found', 404);
         }
 
@@ -323,14 +323,14 @@ class Hook implements HandlerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($credential->companyId != $command->company->id) {
+        if ($credential->companyId !== $command->company->id) {
             throw new NotFound\Company\HookException('Company not found', 404);
         }
 
         $hook       = $this->repository->find($command->hookId);
         $credential = $this->credentialRepository->findByPubKey($command->credentialPubKey);
 
-        if ($hook->credential_id != $credential->id) {
+        if ($hook->credential_id !== $credential->id) {
             throw new NotFound\Company\HookException('Credential not found', 404);
         }
 

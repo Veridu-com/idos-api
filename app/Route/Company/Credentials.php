@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Company;
 
+use App\Controller\ControllerInterface;
 use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
@@ -41,13 +42,16 @@ class Credentials implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Company\Credentials::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Company\Credentials::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Credentials(
-                $container->get('repositoryFactory')->create('Company\Credential'),
-                $container->get('repositoryFactory')->create('Company\Subscription'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company\Credential'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -74,8 +78,8 @@ class Credentials implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -84,7 +88,7 @@ class Credentials implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Credentials::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials',
@@ -112,8 +116,8 @@ class Credentials implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -122,7 +126,7 @@ class Credentials implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Credentials::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials',
@@ -151,8 +155,8 @@ class Credentials implements RouteInterface {
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -161,7 +165,7 @@ class Credentials implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Credentials::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
@@ -190,8 +194,8 @@ class Credentials implements RouteInterface {
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -200,7 +204,7 @@ class Credentials implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Credentials::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',
@@ -229,8 +233,8 @@ class Credentials implements RouteInterface {
      * @apiEndpointURIFragment string pubKey FEDCBA
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -239,7 +243,7 @@ class Credentials implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Credentials::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-z0-9_-]+}/credentials/{pubKey:[a-zA-Z0-9]+}',

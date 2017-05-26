@@ -18,14 +18,14 @@ abstract class AbstractAuthFunctional extends AbstractFunctional {
     protected $middlewarePhinxApp;
     protected $middlewarePhinxTextWrapper;
 
-    public function getApp() : \Slim\App {
+    public function getApp() : App {
         if ((! $this->middlewareApp) || (empty($this->middlewareApp))) {
             $app = new App(
                 ['settings' => $GLOBALS['appSettings']]
             );
 
-            require __ROOT__ . '/../config/dependencies.php';
-            require __ROOT__ . '/../config/handlers.php';
+            require __ROOT__ . '/config/dependencies.php';
+            require __ROOT__ . '/config/handlers.php';
 
             $this->middlewareApp = $app;
         }

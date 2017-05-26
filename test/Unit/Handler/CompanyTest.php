@@ -18,9 +18,11 @@ use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Company;
+use App\Handler\HandlerInterface;
 use App\Repository\CompanyInterface;
 use App\Repository\DBCompany;
 use App\Validator\Company as CompanyValidator;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -53,7 +55,7 @@ class CompanyTest extends AbstractUnit {
             ->getMock();
 
         $this->assertInstanceOf(
-            'App\\Handler\\HandlerInterface',
+            HandlerInterface::class,
             new Company(
                 $repositoryMock,
                 $validatorMock,
@@ -141,7 +143,7 @@ class CompanyTest extends AbstractUnit {
             new CompanyValidator(),
             $emitterMock
         );
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(CreateNew::class)
@@ -161,7 +163,7 @@ class CompanyTest extends AbstractUnit {
             $this->optimus
         );
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $emitterMock = $this
@@ -219,7 +221,7 @@ class CompanyTest extends AbstractUnit {
             $this->optimus
         );
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -277,7 +279,7 @@ class CompanyTest extends AbstractUnit {
             $emitterMock
         );
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(DeleteOne::class)
@@ -304,7 +306,7 @@ class CompanyTest extends AbstractUnit {
             $emitterMock
         );
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(DeleteAll::class)
@@ -316,7 +318,7 @@ class CompanyTest extends AbstractUnit {
     }
 
     public function testHandleDeleteOne() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -367,7 +369,7 @@ class CompanyTest extends AbstractUnit {
             $emitterMock
         );
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(DeleteAll::class)
@@ -380,7 +382,7 @@ class CompanyTest extends AbstractUnit {
     }
 
     public function testHandleDeleteAll() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);

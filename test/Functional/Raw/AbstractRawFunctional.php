@@ -11,7 +11,7 @@ namespace Test\Functional\Raw;
 use Test\Functional\AbstractFunctional;
 
 abstract class AbstractRawFunctional extends AbstractFunctional {
-    protected function populateDb() {
+    protected function populateDb(): void {
         /*$response = $this->process(
             $this->createRequest(
                 $this->createEnvironment(

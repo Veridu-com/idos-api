@@ -54,8 +54,8 @@ class Process implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Process(
                 $container
                     ->get('repositoryFactory')
@@ -74,10 +74,10 @@ class Process implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\ProcessInterface $repository
-     * @param \App\Validator\Process           $validator
-     * @param \App\Factory\Event               $eventFactory
-     * @param \League\Event\Emitter            $emitter
+     * @param \App\Repository\Profile\ProcessInterface $repository
+     * @param \App\Validator\Profile\Process           $validator
+     * @param \App\Factory\Event                       $eventFactory
+     * @param \League\Event\Emitter                    $emitter
      *
      * @return void
      */
@@ -101,10 +101,10 @@ class Process implements HandlerInterface {
      * @see \App\Repository\DBProcess::create
      * @see \App\Repository\DBProcess::save
      *
-     * @throws \App\Exception\Validate\ProcessException
-     * @throws \App\Exception\Create\ProcessException
+     * @throws \App\Exception\Validate\Profile\ProcessException
+     * @throws \App\Exception\Create\Profile\ProcessException
      *
-     * @return \App\Entity\Process
+     * @return \App\Entity\Profile\Process
      */
     public function handleCreateNew(CreateNew $command) : ProcessEntity {
         try {
@@ -148,10 +148,10 @@ class Process implements HandlerInterface {
      * @see \App\Repository\DBProcess::find
      * @see \App\Repository\DBProcess::save
      *
-     * @throws \App\Exception\Validate\ProcessException
-     * @throws \App\Exception\Update\ProcessException
+     * @throws \App\Exception\Validate\Profile\ProcessException
+     * @throws \App\Exception\Update\Profile\ProcessException
      *
-     * @return \App\Entity\Process
+     * @return \App\Entity\Profile\Process
      */
     public function handleUpdateOne(UpdateOne $command) : ProcessEntity {
         try {

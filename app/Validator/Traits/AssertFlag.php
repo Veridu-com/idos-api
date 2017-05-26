@@ -23,7 +23,7 @@ trait AssertFlag {
      *
      * @return void
      */
-    public function assertFlag($flag) {
+    public function assertFlag($flag) : void {
         Validator::boolVal()
             ->assert($flag);
     }

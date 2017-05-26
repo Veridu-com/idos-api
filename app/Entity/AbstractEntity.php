@@ -102,13 +102,13 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @var \Jenssegers\Optimus\Optimus
      */
-    protected $optimus = null;
+    protected $optimus;
     /**
      * Vault helper.
      *
      * @var \App\Helper\Vault
      */
-    protected $vault = null;
+    protected $vault;
 
     /**
      * Formats a snake_case string to CamelCase.
@@ -213,7 +213,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 $value = stream_get_contents($value, -1, 0);
             }
 
-            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) != 0)) {
+            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) !== 0)) {
                 $compressed = gzcompress($value);
                 if ($compressed === false) {
                     throw new \RuntimeException('compressed failed');
@@ -233,7 +233,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 $value = stream_get_contents($value, -1, 0);
             }
 
-            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) != 0)) {
+            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) !== 0)) {
                 $value = sprintf(
                     'secure:%s',
                     $this->vault->lock((string) $value)
@@ -276,7 +276,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 $value = stream_get_contents($value, -1, 0);
             }
 
-            if (substr_compare((string) $value, 'secure:', 0, 7) === 0) {
+            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) === 0)) {
                 $unlocked = $this->vault->unlock(substr($value, 7));
                 if ($unlocked === null) {
                     throw new \RuntimeException('decrypt failed');
@@ -292,7 +292,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 $value = stream_get_contents($value, -1, 0);
             }
 
-            if (substr_compare((string) $value, 'compressed:', 0, 11) === 0) {
+            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) === 0)) {
                 $uncompressed = gzuncompress(substr($value, 11));
                 if ($uncompressed === false) {
                     throw new \RuntimeException('uncompress failed');
@@ -375,7 +375,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * Gets the encoded id.
      *
-     * @param int
+     * @return int
      */
     public function getEncodedId() : int {
         return $this->optimus->encode($this->id);
@@ -404,7 +404,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         $return = [];
         foreach ($attributes as $attribute) {
             $value = null;
-            if ($this->relationships && isset($this->relationships[$attribute]) && isset($this->relations[$attribute])) {
+            if ($this->relationships && isset($this->relationships[$attribute], $this->relations[$attribute])) {
                 // populating relations
                 $relationEntity = $this->$attribute();
                 $value          = $this->$attribute()->toArray();
@@ -475,7 +475,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      *
      * @throws \RuntimeException
      *
-     * @return void
+     * @return mixed
      */
     public function __call(string $methodName, array $args) {
         if (! isset($this->relationships[$methodName])) {

@@ -23,11 +23,13 @@ use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Company\Hook;
+use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\HookInterface;
 use App\Repository\DBCredential;
 use App\Repository\DBHook;
 use App\Validator\Company\Hook as HookValidator;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -105,7 +107,7 @@ class HookTest extends AbstractUnit {
             ->getMock();
 
         $this->assertInstanceOf(
-            'App\\Handler\\HandlerInterface',
+            HandlerInterface::class,
             new Hook(
                 $repositoryMock,
                 $credentialRepositoryMock,
@@ -181,7 +183,7 @@ class HookTest extends AbstractUnit {
             $emitterMock
         );
 
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectedException('InvalidArgumentException');
 
         $commandMock = $this
             ->getMockBuilder(CreateNew::class)
@@ -197,7 +199,7 @@ class HookTest extends AbstractUnit {
 
     public function testHandleCreateNew() {
         $hookEntity       = $this->getEntity();
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -250,7 +252,7 @@ class HookTest extends AbstractUnit {
 
     public function testHandleUpdateOne() {
         $hookEntity       = $this->getEntity();
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -308,7 +310,7 @@ class HookTest extends AbstractUnit {
 
     public function testHandleDeleteOne() {
         $hookEntity       = $this->getEntity();
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -361,7 +363,7 @@ class HookTest extends AbstractUnit {
 
     public function testHandleDeleteAll() {
         $hookEntity       = $this->getEntity();
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);

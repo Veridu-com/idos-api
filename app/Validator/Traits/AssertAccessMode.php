@@ -23,7 +23,7 @@ trait AssertAccessMode {
      *
      * @return void
      */
-    public function assertAccessMode($accessMode) {
+    public function assertAccessMode($accessMode) : void {
         Validator::intType()->in(
             [
                 0x00,

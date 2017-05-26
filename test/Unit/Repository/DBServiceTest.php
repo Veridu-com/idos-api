@@ -50,7 +50,6 @@ class DBServiceTest extends AbstractUnit {
               'service.triggers'   => ['trigger1', 'trigger2'],
               'service.created_at' => $this->created_at,
               'service.updated_at' => $this->updated_at,
-              'service.name'       => 'name',
               'created_at'         => $this->created_at,
               'updated_at'         => $this->updated_at
             ],
@@ -113,7 +112,7 @@ class DBServiceTest extends AbstractUnit {
             $this->optimus,
             $connectionMock
         );
-        $this->setExpectedException(NotFound::class);
+        $this->expectedException(NotFound::class);
         $dbServiceHandler->findOne(1, 0);
     }
 

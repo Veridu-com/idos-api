@@ -23,7 +23,7 @@ trait AssertOTPCode {
      *
      * @return void
      */
-    public function assertOTPCode($code) {
+    public function assertOTPCode($code) : void {
         Validator::digit()
             ->length(6, null)
             ->assert($code);

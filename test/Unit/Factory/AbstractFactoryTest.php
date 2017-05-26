@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Factory;
 
+use App\Entity\Company;
 use App\Factory\AbstractFactory;
 use App\Factory\Command;
 use Test\Unit\AbstractUnit;
@@ -20,7 +21,7 @@ class AbstractFactoryTest extends AbstractUnit {
 
         $method = $this->setProtectedMethod($abstractMock, 'getFormattedName');
 
-        $this->setExpectedException(\TypeError::class);
+        $this->expectedException(\TypeError::class);
         $method->invoke($abstractMock, new \stdClass());
     }
 
@@ -47,7 +48,7 @@ class AbstractFactoryTest extends AbstractUnit {
             ->setMethods(['getNamespace'])
             ->getMockForAbstractClass();
 
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $abstractMock->register('dummy', 'App\Entity\Dummy');
     }
 
@@ -56,7 +57,7 @@ class AbstractFactoryTest extends AbstractUnit {
             ->setMethods(['getNamespace'])
             ->getMockForAbstractClass();
 
-        $this->assertInstanceOf(AbstractFactory::class, $abstractMock->register('Company', 'App\Entity\Company'));
+        $this->assertInstanceOf(AbstractFactory::class, $abstractMock->register('Company', Company::class));
     }
 
     public function testCreateNotFound() {
@@ -64,7 +65,7 @@ class AbstractFactoryTest extends AbstractUnit {
             ->setMethods(['getNamespace'])
             ->getMockForAbstractClass();
 
-        $this->setExpectedException(\RuntimeException::class);
+        $this->expectedException(\RuntimeException::class);
         $abstractMock->create('dummy');
     }
 

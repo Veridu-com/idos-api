@@ -24,9 +24,9 @@ interface RoleAccessInterface extends RepositoryInterface {
      *
      * @throws \App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return \Illuminate\Support\Collection
      */
-    public function findByIdentityAndRole(int $identityId, string $role) :  Collection;
+    public function findByIdentityAndRole(int $identityId, string $role) : Collection;
 
     /**
      * Find role accesses by the user's identity id.
@@ -35,7 +35,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      *
      * @throws \App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return \Illuminate\Support\Collection
      */
     public function findByIdentity(int $identityId) : Collection;
 
@@ -47,7 +47,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      *
      * @throws \App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model|0
+     * @return \App\Entity\User\RoleAccess
      */
     public function findOne(int $identityId, int $roleAccessId) :  RoleAccess;
 
@@ -70,7 +70,7 @@ interface RoleAccessInterface extends RepositoryInterface {
      *
      * @throws \App\Exception\NotFound
      *
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return int
      */
     public function deleteAllFromIdentity(int $identityId) : int;
 }

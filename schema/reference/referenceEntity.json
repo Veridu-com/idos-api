@@ -19,10 +19,6 @@
             "type": "integer"
         },
         "updated_at": {
-            "description": "Reference's updated unixtime",
-            "type": "integer"
-        },
-        "updated_at": {
             "description": "Reference's last updated unixtime",
             "type": ["integer", "null"]
         }

@@ -224,7 +224,7 @@ class ListAllTest extends AbstractFunctional {
                     $orderableKey = explode(':', $orderableKey);
                 } else {
                     foreach ($body['data'] as $entity) {
-                        $keys[] = isset($entity[$orderableKey]) ? $entity[$orderableKey] : null;
+                        $keys[] = $entity[$orderableKey] ?? null;
                     }
 
                     $orderedKeys = $keys;

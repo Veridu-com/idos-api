@@ -59,7 +59,7 @@ class Setting implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Company\Setting(
                 $container
@@ -106,7 +106,7 @@ class Setting implements HandlerInterface {
      * @see \App\Repository\DBSetting::getAllByCompanyId
      * @see \App\Repository\DBSetting::getAllPublicByCompanyId
      *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
     public function handleListAll(ListAll $command) : array {
         $this->validator->assertCompany($command->company);
@@ -139,7 +139,7 @@ class Setting implements HandlerInterface {
         $setting = $this->repository->findOneByCompanyAndId($command->company->id, $command->settingId);
 
         if ($setting->protected && ! $command->hasParentAccess) {
-            throw new NotAllowed\SettingException('Not allowed to access this Setting.');
+            throw new NotAllowed\Company\SettingException('Not allowed to access this Setting.');
         }
 
         return $setting;

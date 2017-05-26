@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Subscription;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Subscription "Delete One" Command.
@@ -29,10 +30,8 @@ class DeleteOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Company\Subscription\DeleteOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['subscriptionId'])) {
             $this->subscriptionId = $parameters['subscriptionId'];
         }

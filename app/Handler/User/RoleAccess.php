@@ -57,7 +57,7 @@ class RoleAccess implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\User\RoleAccess(
                 $container
@@ -77,10 +77,10 @@ class RoleAccess implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\RoleAccessInterface $repository
-     * @param \App\Validator\RoleAccess           $validator
-     * @param \App\Factory\Event                  $eventFactory
-     * @param \League\Event\Emitter               $emitter
+     * @param \App\Repository\User\RoleAccessInterface $repository
+     * @param \App\Validator\User\RoleAccess           $validator
+     * @param \App\Factory\Event                       $eventFactory
+     * @param \League\Event\Emitter                    $emitter
      *
      * @return void
      */
@@ -101,10 +101,10 @@ class RoleAccess implements HandlerInterface {
      *
      * @param \App\Command\User\RoleAccess\CreateNew $command
      *
-     * @throws \App\Exception\Validate\RoleAccessException
-     * @throws \App\Exception\Create\RoleAccessException
+     * @throws \App\Exception\Validate\User\RoleAccessException
+     * @throws \App\Exception\Create\User\RoleAccessException
      *
-     * @return \App\Entity\RoleAccess
+     * @return \App\Entity\User\RoleAccess
      */
     public function handleCreateNew(CreateNew $command) : RoleAccessEntity {
         try {
@@ -149,7 +149,7 @@ class RoleAccess implements HandlerInterface {
      *
      * @param \App\Command\User\RoleAccess\DeleteAll $command
      *
-     * @throws \App\Exception\Validate\RoleAccessException
+     * @throws \App\Exception\Validate\User\RoleAccessException
      *
      * @return int number of affected rows
      */
@@ -179,10 +179,10 @@ class RoleAccess implements HandlerInterface {
      *
      * @param \App\Command\User\RoleAccess\UpdateOne $command
      *
-     * @throws \App\Exception\Validate\RoleAccessException
-     * @throws \App\Exception\Update\RoleAccessException
+     * @throws \App\Exception\Validate\User\RoleAccessException
+     * @throws \App\Exception\Update\User\RoleAccessException
      *
-     * @return \App\Entity\RoleAccess
+     * @return \App\Entity\User\RoleAccess
      */
     public function handleUpdateOne(UpdateOne $command) : RoleAccessEntity {
         try {
@@ -219,8 +219,8 @@ class RoleAccess implements HandlerInterface {
      *
      * @param \App\Command\User\RoleAccess\DeleteOne $command
      *
-     * @throws \App\Exception\Validate\RoleAccessException
-     * @throws \App\Exception\NotFound\RoleAccessException
+     * @throws \App\Exception\Validate\User\RoleAccessException
+     * @throws \App\Exception\NotFound\User\RoleAccessException
      *
      * @return void
      */

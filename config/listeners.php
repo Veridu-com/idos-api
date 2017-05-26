@@ -15,21 +15,69 @@ if (! isset($app)) {
  * variable that will be inject through the application.
  **/
 $container = $app->getContainer();
-$emitter   = $container->get('eventEmitter');
+$settings  = $container->get('settings');
 
-$providers = array_map(
-    function ($providerFile) {
-        return preg_replace(
-            '/.*?Listener\/(.*)\/(.*)Provider.php/',
-            'App\\Listener\\\$1\\\$2Provider',
-            $providerFile
+$classList = [];
+if ((! empty($settings['boot']['listenersCache'])) && (is_file($settings['boot']['listenersCache']))) {
+    $cache = file_get_contents($settings['boot']['listenersCache']);
+    if ($cache !== false) {
+        $cache = unserialize($cache);
+    }
+
+    if ($cache !== false) {
+        $classList = $cache;
+    }
+}
+
+if (empty($classList)) {
+    $listenerFiles = new RegexIterator(
+        new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator(
+                __ROOT__ . '/app/Listener/'
+            )
+        ),
+        '/^.+\.php$/i',
+        RecursiveRegexIterator::MATCH
+    );
+
+    $pathLen = strlen(__ROOT__ . '/app/Listener/');
+    foreach ($listenerFiles as $listenerFile) {
+        if (strpos($listenerFile->getBasename(), 'Abstract') !== false) {
+            continue;
+        }
+
+        if (strpos($listenerFile->getBasename(), 'Interface') !== false) {
+            continue;
+        }
+
+        $className = str_replace(
+            [
+                '/',
+                '.php'
+            ],
+            [
+                '\\',
+                ''
+            ],
+            sprintf(
+                'App\\Listener\\%s',
+                substr(
+                    $listenerFile->getPathname(),
+                    $pathLen
+                )
+            )
         );
-    },
-    $container->get('globFiles')['listenerProviders']
-);
 
-if (empty($emitter->listeners)) {
-    foreach ($providers as $provider) {
-        $emitter->useListenerProvider(new $provider($container));
+        $classList[] = $className;
+    }
+
+    if (! empty($settings['boot']['listenersCache'])) {
+        file_put_contents($settings['boot']['listenersCache'], serialize($classList));
+    }
+}
+
+foreach ($classList as $className) {
+    if (class_exists($className)) {
+        $className::register($container);
     }
 }

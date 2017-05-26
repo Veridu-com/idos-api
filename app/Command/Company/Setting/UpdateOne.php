@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Setting;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Setting "Update One" Command.
@@ -17,13 +18,13 @@ class UpdateOne extends AbstractCommand {
     /**
      * Setting's id.
      *
-     * @var object
+     * @var int
      */
     public $settingId;
     /**
      * Setting's property value (user input).
      *
-     * @var object
+     * @var mixed
      */
     public $value;
     /**
@@ -41,10 +42,8 @@ class UpdateOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Company\Setting\UpdateOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['value'])) {
             $this->value = $parameters['value'];
         }

@@ -21,7 +21,7 @@ interface RouteInterface {
      *
      * @return void
      */
-    public static function register(App $app);
+    public static function register(App $app) : void;
     /**
      * Returns all public route names.
      *

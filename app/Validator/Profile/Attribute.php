@@ -21,7 +21,7 @@ class Attribute implements ValidatorInterface {
         Traits\AssertValue,
         Traits\AssertType;
 
-    public function assertAttributeArray($attributes) {
+    public function assertAttributeArray($attributes) : void {
         Validator::arrayType()->assert($attributes);
 
         foreach ($attributes as $attribute) {

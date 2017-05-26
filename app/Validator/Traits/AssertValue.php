@@ -23,7 +23,7 @@ trait AssertValue {
      *
      * @return void
      */
-    public function assertValue($value) {
+    public function assertValue($value) : void {
         Validator::oneOf(
             Validator::floatVal(),
             Validator::intVal(),
@@ -39,7 +39,7 @@ trait AssertValue {
      *
      * @return void
      */
-    public function assertNullableValue($value) {
+    public function assertNullableValue($value) : void {
         Validator::oneOf(
             Validator::floatVal(),
             Validator::intVal(),

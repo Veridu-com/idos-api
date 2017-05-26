@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Profile\Feature;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Feature "Delete All" Command.
@@ -43,10 +44,8 @@ class DeleteAll extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Profile\Feature\DeleteAll
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['user'])) {
             $this->user = $parameters['user'];
         }

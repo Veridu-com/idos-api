@@ -69,6 +69,7 @@ abstract class AbstractRepository implements RepositoryInterface {
      * @param \App\Factory\Entity         $entityFactory
      * @param \App\Factory\Repository     $repositoryFactory
      * @param \Jenssegers\Optimus\Optimus $optimus
+     * @param \App\Helper\Vault           $vault
      *
      * @return void
      */
@@ -145,7 +146,7 @@ abstract class AbstractRepository implements RepositoryInterface {
      *
      * @return \App\Entity\EntityInterface
      */
-    public function castHydrateEntity(EntityInterface &$entity) : EntityInterface {
+    public function castHydrateEntity(EntityInterface $entity) : EntityInterface {
         $relationships = $entity->relationships;
 
         if (! $relationships) {

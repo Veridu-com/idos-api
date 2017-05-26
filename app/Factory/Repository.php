@@ -24,7 +24,7 @@ class Repository extends AbstractFactory {
     /**
      * {@inheritdoc}
      */
-    protected function getNamespace() {
+    protected function getNamespace() : string {
         return '\\App\\Repository\\';
     }
 
@@ -38,7 +38,7 @@ class Repository extends AbstractFactory {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\RepositoryStrategy $strategy
+     * @param \App\Repository\RepositoryStrategyInterface $strategy
      *
      * @return void
      */

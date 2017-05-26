@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Company;
 
+use App\Controller\ControllerInterface;
 use App\Entity\Role;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
@@ -43,12 +44,16 @@ class Permissions implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Company\Permissions::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Company\Permissions::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Permissions(
-                $container->get('repositoryFactory')->create('Company\Permission'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('repositoryFactory')
+                    ->create('Company\Permission'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -74,7 +79,8 @@ class Permissions implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -83,7 +89,7 @@ class Permissions implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Permissions::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions',
@@ -111,7 +117,8 @@ class Permissions implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -120,7 +127,7 @@ class Permissions implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Permissions::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions',
@@ -149,7 +156,8 @@ class Permissions implements RouteInterface {
      * @apiEndpointURIFragment string routeName attribute:listAll
      *
      * @param \Slim\App $app
-     * @param \callable $auth
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -158,7 +166,7 @@ class Permissions implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Permissions::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 // TODO: Regex that matches route:Names
@@ -189,7 +197,8 @@ class Permissions implements RouteInterface {
      * @apiEndpointURIFragment string routeName attribute:listAll
      *
      * @param \Slim\App $app
-     * @param \callable $auth
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -198,7 +207,7 @@ class Permissions implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Permissions::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-z0-9_-]+}/permissions/{routeName:[a-zA-Z]+\:[a-zA-Z]+}',

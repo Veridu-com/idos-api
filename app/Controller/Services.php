@@ -70,7 +70,7 @@ class Services implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $company  = $request->getAttribute('targetCompany');
-        $entities = $this->repository->getByCompanyId($company->id, $request->getQueryParams());
+        $entities = $this->repository->getByCompanyId($company->id);
 
         $body = [
             'data'    => $entities->toArray(),

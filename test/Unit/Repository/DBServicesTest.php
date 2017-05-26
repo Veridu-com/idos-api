@@ -39,7 +39,6 @@ class DBHandlersTest extends AbstractUnit {
             'public'     => 'publicKey',
             'listens'    => ['listen1', 'listen2'],
             'triggers'   => ['trigger1', 'trigger2'],
-            'enabled'    => true,
             'created_at' => time(),
             'updated_at' => time()
         ];

@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use App\Route\RouteInterface;
@@ -42,13 +43,19 @@ class Reviews implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profile\Reviews::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Profile\Reviews::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Reviews(
-                $container->get('repositoryFactory')->create('Profile\Review'),
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Review'),
+                $repositoryFactory
+                    ->create('User'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -76,8 +83,8 @@ class Reviews implements RouteInterface {
      * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -86,7 +93,7 @@ class Reviews implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Reviews::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews',
@@ -110,8 +117,8 @@ class Reviews implements RouteInterface {
      * @apiEndpointURIFragment int reviewId 21494
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -120,7 +127,7 @@ class Reviews implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Reviews::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
@@ -144,8 +151,8 @@ class Reviews implements RouteInterface {
      * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -154,7 +161,7 @@ class Reviews implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Reviews::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews',
@@ -179,8 +186,8 @@ class Reviews implements RouteInterface {
      * @apiEndpointURIFragment int reviewId 21494
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -189,7 +196,7 @@ class Reviews implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Reviews::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews/{reviewId:[0-9]+}',
@@ -213,8 +220,8 @@ class Reviews implements RouteInterface {
      * @apiEndpointURIFragment int userId 1827452
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -223,7 +230,7 @@ class Reviews implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Reviews::upsert
      */
-    private static function upsert(App $app, callable $auth, callable $permission) {
+    private static function upsert(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/companies/{companySlug:[a-zA-Z0-9_-]+}/profiles/{userId:[0-9]+}/reviews',

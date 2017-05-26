@@ -70,8 +70,8 @@ class Raw implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             return new \App\Handler\Profile\Raw(
                 $container
                     ->get('repositoryFactory')
@@ -96,10 +96,12 @@ class Raw implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\RawInterface $repository
-     * @param \App\Validator\Raw           $validator
-     * @param \App\Factory\Event           $eventFactory
-     * @param \League\Event\Emitter        $emitter
+     * @param \App\Repository\Profile\RawInterface     $repository
+     * @param \App\Repository\Profile\SourceInterface  $sourceRepository
+     * @param \App\Repository\Profile\ProcessInterface $processRepository
+     * @param \App\Validator\Profile\Raw               $validator
+     * @param \App\Factory\Event                       $eventFactory
+     * @param \League\Event\Emitter                    $emitter
      *
      * @return void
      */
@@ -131,7 +133,7 @@ class Raw implements HandlerInterface {
      * @throws \App\Exception\Validate\Profile\RawException
      * @throws \App\Exception\Create\Profile\RawException
      *
-     * @return \App\Entity\Raw
+     * @return \App\Entity\Profile\Raw
      */
     public function handleCreateNew(CreateNew $command) : RawEntity {
         try {
@@ -214,9 +216,9 @@ class Raw implements HandlerInterface {
             $sourceNameInput = $command->queryParams['source'] ?? null;
 
             if ($sourceNameInput) {
-                $userSources = $this->sourceRepository->getbyUserIdAndName($command->user->id, $sourceNameInput);
+                $userSources = $this->sourceRepository->getByUserIdAndName($command->user->id, $sourceNameInput);
             } else {
-                $userSources = $this->sourceRepository->getbyUserId($command->user->id);
+                $userSources = $this->sourceRepository->getByUserId($command->user->id);
             }
 
             $affectedRows = 0;
@@ -242,7 +244,7 @@ class Raw implements HandlerInterface {
      * @throws \App\Exception\Validate\Profile\RawException
      * @throws \App\Exception\Create\Profile\RawException
      *
-     * @return \App\Entity\Raw
+     * @return \App\Entity\Profile\Raw
      */
     public function handleUpsert(Upsert $command) : RawEntity {
         try {
@@ -311,9 +313,9 @@ class Raw implements HandlerInterface {
         } catch (\Exception $e) {
             if ($inserting) {
                 throw new Create\Profile\RawException('Error while trying to create raw', 500, $e);
-            } else {
-                throw new Update\Profile\RawException('Error while trying to update raw', 500, $e);
             }
+
+            throw new Update\Profile\RawException('Error while trying to update raw', 500, $e);
         }
 
         return $entity;

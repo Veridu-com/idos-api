@@ -9,8 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Profile\Source;
 
 use App\Command\AbstractCommand;
-use App\Entity\Profile\Source;
-use App\Entity\User;
+use App\Command\CommandInterface;
 
 /**
  * Source "Update One" Command.
@@ -55,10 +54,8 @@ class UpdateOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Profile\Source\UpdateOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['tags'])) {
             $this->tags = $parameters['tags'];
         }

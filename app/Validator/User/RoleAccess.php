@@ -23,11 +23,13 @@ class RoleAccess implements ValidatorInterface {
     /**
      * Asserts a valid role name.
      *
+     * @param string $value
+     *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertRoleName(string $value) {
+    public function assertRoleName(string $value) : void {
         Validator::in(
             [
             Role::COMPANY,
@@ -42,11 +44,13 @@ class RoleAccess implements ValidatorInterface {
     /**
      * Asserts a valid access value.
      *
+     * @param int $value
+     *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertAccess(int $value) {
+    public function assertAccess(int $value) : void {
         Validator::digit()->length(1, 1)->in(
             [
             RoleAccessEntity::ACCESS_NONE,
@@ -64,11 +68,13 @@ class RoleAccess implements ValidatorInterface {
     /**
      * Asserts a valid resource value.
      *
+     * @param mixed $value
+     *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertResource($value) {
+    public function assertResource($value) : void {
         Validator::stringType()->assert($value);
     }
 }

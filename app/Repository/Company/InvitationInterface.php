@@ -30,7 +30,7 @@ interface InvitationInterface extends RepositoryInterface {
      *
      * @param int $companyId The company identifier
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllByCompanyId(int $companyId) : Collection;
 }

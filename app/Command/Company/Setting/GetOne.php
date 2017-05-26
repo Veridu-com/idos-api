@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\Company\Setting;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * Setting "Get One" Command.
@@ -41,10 +42,8 @@ class GetOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\Company\Setting\GetOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         return $this;
     }
 }

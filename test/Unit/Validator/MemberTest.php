@@ -30,7 +30,7 @@ class MemberTest extends AbstractUnit {
     }
 
     public function testAssertNameFiftyOneChars() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $username = '';
         for ($i = 0; $i < 51; $i++) {
             $username .= 'a';
@@ -40,7 +40,7 @@ class MemberTest extends AbstractUnit {
     }
 
     public function testAssertNameInvalidInput() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertUserName(chr(20) . chr(127));
     }
 }

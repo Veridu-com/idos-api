@@ -158,8 +158,10 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
      *
      * @param int    $companyId The company identifier
      * @param string $event     The event to look on "listens" column
+     *
+     * @return \Illuminate\Support\Collection
      */
-    public function getAllByCompanyIdAndListener(int $companyId, string $event) {
+    public function getAllByCompanyIdAndListener(int $companyId, string $event) : Collection {
         $collection = $this->query()
             ->join('handler_services', 'handler_services.id', 'handler_service_id')
             ->join('handlers', 'handler_services.handler_id', 'handlers.id')

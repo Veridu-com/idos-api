@@ -70,8 +70,7 @@ class Recommendation implements ControllerInterface {
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function getOne(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
-        $user      = $request->getAttribute('targetUser');
-        $company   = $request->getAttribute('company');
+        $user = $request->getAttribute('targetUser');
 
         $recommendation = $this->repository->findOne($user->id);
 

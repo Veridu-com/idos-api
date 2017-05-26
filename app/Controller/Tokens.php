@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Exception\AppException;
 use App\Factory\Command;
 use App\Repository\CompanyInterface;

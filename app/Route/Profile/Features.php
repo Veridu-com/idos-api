@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Route\Profile;
 
+use App\Controller\ControllerInterface;
 use App\Middleware\Auth;
 use App\Middleware\EndpointPermission;
 use App\Route\RouteInterface;
@@ -44,14 +45,19 @@ class Features implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
-        $app->getContainer()[\App\Controller\Profile\Features::class] = function (ContainerInterface $container) {
+    public static function register(App $app) : void {
+        $app->getContainer()[\App\Controller\Profile\Features::class] = function (ContainerInterface $container) : ControllerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Controller\Profile\Features(
-                $container->get('repositoryFactory')->create('Profile\Feature'),
-                $container->get('repositoryFactory')->create('User'),
-                $container->get('repositoryFactory')->create('Profile\Source'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $repositoryFactory
+                    ->create('Profile\Feature'),
+                $repositoryFactory
+                    ->create('Profile\Source'),
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -81,8 +87,8 @@ class Features implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -91,7 +97,7 @@ class Features implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Features::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
@@ -115,8 +121,8 @@ class Features implements RouteInterface {
      * @apiEndpointURIFragment int featureId 3214
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -125,7 +131,7 @@ class Features implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Features::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureId:[0-9]+}',
@@ -148,8 +154,8 @@ class Features implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -158,7 +164,7 @@ class Features implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Features::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
@@ -182,8 +188,8 @@ class Features implements RouteInterface {
      * @apiEndpointURIFragment int featureId 3214
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -192,7 +198,7 @@ class Features implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Features::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureId:[0-9]+}',
@@ -215,8 +221,8 @@ class Features implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -225,7 +231,7 @@ class Features implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Features::upsert
      */
-    private static function upsert(App $app, callable $auth, callable $permission) {
+    private static function upsert(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features',
@@ -248,8 +254,8 @@ class Features implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -258,7 +264,7 @@ class Features implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Features::upsertBulk
      */
-    private static function upsertBulk(App $app, callable $auth, callable $permission) {
+    private static function upsertBulk(App $app, callable $auth, callable $permission) : void {
         $app
             ->put(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features/bulk',
@@ -282,8 +288,8 @@ class Features implements RouteInterface {
      * @apiEndpointURIFragment int featureId 3214
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -292,7 +298,7 @@ class Features implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Features::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features/{featureId:[0-9]+}',
@@ -315,8 +321,8 @@ class Features implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -325,7 +331,7 @@ class Features implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Features::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth, callable $permission) {
+    private static function deleteAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/features',

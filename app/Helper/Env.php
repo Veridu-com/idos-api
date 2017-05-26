@@ -60,7 +60,7 @@ class Env {
             return $default;
         }
 
-        return intval($value);
+        return (int) $value;
     }
 
     /**
@@ -77,7 +77,7 @@ class Env {
             return $default;
         }
 
-        return floatval($value);
+        return (float) $value;
     }
 
     /**
@@ -94,7 +94,7 @@ class Env {
             return $default;
         }
 
-        return boolval($value);
+        return (bool) $value;
     }
 
     /**

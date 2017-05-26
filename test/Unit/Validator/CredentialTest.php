@@ -10,7 +10,6 @@ namespace Test\Unit\Validator;
 
 use App\Validator\Company\Credential;
 use Respect\Validation\Exceptions\ExceptionInterface;
-use Respect\Validation\Validator;
 use Test\Unit\AbstractUnit;
 
 class CredentialTest extends AbstractUnit {
@@ -21,12 +20,12 @@ class CredentialTest extends AbstractUnit {
     }
 
     public function testAssertProductionEmpty() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertFlag([]);
     }
 
     public function testAssertProductionInvalid() {
-        $this->setExpectedException(ExceptionInterface::class);
+        $this->expectedException(ExceptionInterface::class);
         $this->validator->assertFlag('dummy');
     }
 

@@ -15,10 +15,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Test\Functional\Middleware\Auth\AbstractAuthFunctional;
 
 class SuccessHeaderTest extends AbstractAuthFunctional {
-    public static function setUpBeforeClass() {
-        parent::setUpBeforeClass();
-    }
-
     protected function setUp() {
         $this->middlewareApp = parent::getApp();
         $this->uri           = '/testSuccessHeader';

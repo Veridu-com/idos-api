@@ -52,8 +52,8 @@ class DBPermission extends AbstractSQLDBRepository implements PermissionInterfac
     /**
      * Deletes one permissions from company.
      *
-     * @param int    companyId permission's company_id
-     * @param string routeName   permission's routeName
+     * @param int    $companyId permission's company_id
+     * @param string $routeName permission's routeName
      *
      * @return int
      */

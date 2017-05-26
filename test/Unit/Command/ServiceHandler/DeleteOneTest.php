@@ -8,7 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Command\ServiceHandler;
 
-use App\Command\ServiceHandler\DeleteOne;
+use App\Command\Service\DeleteOne;
 use Test\Unit\Command\AbstractCommandTest;
 
 class DeleteOneTest extends AbstractCommandTest {

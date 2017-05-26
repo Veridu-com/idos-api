@@ -31,7 +31,7 @@ interface ServiceInterface extends RepositoryInterface {
      * @param int    $companyId
      * @param string $serviceSlug
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByService(int $companyId, string $serviceSlug) : Collection;
 
@@ -49,7 +49,7 @@ interface ServiceInterface extends RepositoryInterface {
      *
      * @param int $companyId
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByServiceCompanyId(int $companyId) : Collection;
 

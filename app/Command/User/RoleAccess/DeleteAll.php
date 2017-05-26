@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\User\RoleAccess;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * RoleAccess "Delete All" Command.
@@ -24,7 +25,7 @@ class DeleteAll extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['identityId'])) {
             $this->identityId = $parameters['identityId'];
         }

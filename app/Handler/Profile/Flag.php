@@ -15,6 +15,7 @@ use App\Entity\Category;
 use App\Entity\Profile\Flag as FlagEntity;
 use App\Exception\AppException;
 use App\Exception\Create;
+use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
@@ -90,8 +91,8 @@ class Flag implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(ContainerInterface $container) {
-        $container[self::class] = function (ContainerInterface $container) {
+    public static function register(ContainerInterface $container) : void {
+        $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
             $repositoryFactory = $container->get('repositoryFactory');
 
             return new \App\Handler\Profile\Flag(
@@ -197,13 +198,13 @@ class Flag implements HandlerInterface {
      *
      * @param \App\Command\Profile\Flag\DeleteOne $command
      *
-     * @throws \App\Exception\Validate\FlagException
+     * @throws \App\Exception\Validate\Profile\FlagException
      * @throws \App\Exception\AppException
      *
      * @see \App\Repository\DBFlag::findOneBySlug
      * @see \App\Repository\DBFlag::delete
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {

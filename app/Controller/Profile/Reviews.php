@@ -9,7 +9,6 @@ declare(strict_types = 1);
 namespace App\Controller\Profile;
 
 use App\Controller\ControllerInterface;
-use App\Entity\User;
 use App\Factory\Command;
 use App\Repository\Profile\ReviewInterface;
 use App\Repository\UserInterface;
@@ -50,6 +49,7 @@ class Reviews implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Profile\ReviewInterface $repository
+     * @param \App\Repository\UserInterface           $userRepository
      * @param \League\Tactician\CommandBus            $commandBus
      * @param \App\Factory\Command                    $commandFactory
      *

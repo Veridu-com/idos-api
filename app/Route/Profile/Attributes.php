@@ -39,13 +39,16 @@ class Attributes implements RouteInterface {
     /**
      * {@inheritdoc}
      */
-    public static function register(App $app) {
+    public static function register(App $app) : void {
         $app->getContainer()[\App\Controller\Profile\Attributes::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Profile\Attributes(
-                $container->get('repositoryFactory')
+                $container
+                    ->get('repositoryFactory')
                     ->create('Profile\Attribute'),
-                $container->get('commandBus'),
-                $container->get('commandFactory')
+                $container
+                    ->get('commandBus'),
+                $container
+                    ->get('commandFactory')
             );
         };
 
@@ -69,8 +72,8 @@ class Attributes implements RouteInterface {
      * @apiEndpointURIFragment string userName 9fd9f63e0d6487537569075da85a0c7f2
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -79,7 +82,7 @@ class Attributes implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Attributes::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes',
@@ -103,8 +106,8 @@ class Attributes implements RouteInterface {
      * @apiEndpointURIFragment string attributeName firstName
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -113,7 +116,7 @@ class Attributes implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Profile\Attributes::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/profiles/{userName:[a-zA-Z0-9_-]+}/attributes/{attributeName:[0-9a-zA-Z]+}',

@@ -40,7 +40,7 @@ class ResponseDispatch extends AbstractCommand {
     /**
      * {@inheritdoc}
      */
-    public function setParameters(array $parameters) {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['request'])) {
             $this->request = $parameters['request'];
         }

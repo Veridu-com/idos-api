@@ -9,6 +9,7 @@ declare(strict_types = 1);
 namespace App\Command\HandlerService;
 
 use App\Command\AbstractCommand;
+use App\Command\CommandInterface;
 
 /**
  * HandlerService "Update one" Command.
@@ -71,10 +72,8 @@ class UpdateOne extends AbstractCommand {
 
     /**
      * {@inheritdoc}
-     *
-     * @return \App\Command\HandlerService\UpdateOne
      */
-    public function setParameters(array $parameters) : self {
+    public function setParameters(array $parameters) : CommandInterface {
         if (isset($parameters['name'])) {
             $this->name = $parameters['name'];
         }
