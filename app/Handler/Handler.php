@@ -194,7 +194,7 @@ class Handler implements HandlerInterface {
         $entity = $this->repository->find($command->handlerId);
 
         // Any thoughts on a better place of verifying this
-        if ($command->company->id != $entity->companyId) {
+        if ($command->company->id !== $entity->companyId) {
             throw new NotAllowed\HandlerException("Handler doesn't belong to the given company", 403);
         }
 
@@ -204,7 +204,7 @@ class Handler implements HandlerInterface {
             $entity->$key = $value;
         }
 
-        if ($backup != $entity->toArray()) {
+        if ($backup !== $entity->toArray()) {
             try {
                 $entity->updatedAt = time();
                 $entity            = $this->repository->save($entity);

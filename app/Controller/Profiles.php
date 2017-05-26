@@ -96,6 +96,7 @@ class Profiles implements ControllerInterface {
      * @param \App\Repository\Profile\ScoreInterface          $scoreRepository
      * @param \App\Repository\Profile\SourceInterface         $sourceRepository
      * @param \App\Repository\Profile\GateInterface           $gateRepository
+     * @param \App\Repository\Profile\FlagInterface           $flagRepository
      * @param \App\Repository\Profile\RecommendationInterface $recommendationRepository
      * @param \League\Tactician\CommandBus                    $commandBus
      * @param \App\Factory\Command                            $commandFactory

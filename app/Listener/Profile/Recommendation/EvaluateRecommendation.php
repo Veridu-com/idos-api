@@ -106,6 +106,7 @@ class EvaluateRecommendation extends AbstractListener {
      * @param \Monolog\Logger                          $logger
      * @param \App\Factory\Event                       $eventFactory
      * @param \League\Event\Emitter                    $emitter
+     * @param \GearmanClient                           $gearmanClient
      *
      * @return void
      */
@@ -172,7 +173,7 @@ class EvaluateRecommendation extends AbstractListener {
         if ($settings->isEmpty()) {
             $this->logger->debug('Unhandled recommendation process - no rules defined.');
 
-            return false;
+            return;
         }
 
         $this->logger->debug('Recommendation process started.');

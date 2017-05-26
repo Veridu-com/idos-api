@@ -50,9 +50,6 @@ class Settings implements RouteInterface {
         $app->getContainer()[\App\Controller\Company\Settings::class] = function (ContainerInterface $container) : ControllerInterface {
             return new \App\Controller\Company\Settings(
                 $container
-                    ->get('repositoryFactory')
-                    ->create('Company\Setting'),
-                $container
                     ->get('commandBus'),
                 $container
                     ->get('commandFactory')
@@ -82,8 +79,8 @@ class Settings implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -92,7 +89,7 @@ class Settings implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Settings::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/settings',
@@ -120,8 +117,8 @@ class Settings implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callabe  $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -130,7 +127,7 @@ class Settings implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Settings::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/companies/{companySlug:[a-z0-9_-]+}/settings',
@@ -159,8 +156,8 @@ class Settings implements RouteInterface {
      * @apiEndpointURIFragment int settingId 1
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callabe  $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -169,7 +166,7 @@ class Settings implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Settings::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
@@ -197,9 +194,9 @@ class Settings implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      * @apiEndpointURIFragment int settingId 1
      *
-     * @param \Slim\App  $app
-     * @param \callable  $auth
-     * @param \calllable $permission
+     * @param \Slim\App $app
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -208,7 +205,7 @@ class Settings implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Settings::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',
@@ -237,8 +234,8 @@ class Settings implements RouteInterface {
      * @apiEndpointURIFragment int settingId 1
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -247,7 +244,7 @@ class Settings implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Settings::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-z0-9_-]+}/settings/{settingId:[0-9]+}',

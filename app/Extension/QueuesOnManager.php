@@ -15,7 +15,8 @@ trait QueuesOnManager {
     /**
      * Queue work on the "manager" work queue.
      *
-     * @param string $payload Payload to be sent
+     * @param \GearmanClient $gearmanClient
+     * @param string         $payload       Payload to be sent
      *
      * @return bool
      */
@@ -26,6 +27,6 @@ trait QueuesOnManager {
             uniqid('manager-')
         );
 
-        return $gearmanClient->returnCode() == \GEARMAN_SUCCESS;
+        return $gearmanClient->returnCode() === \GEARMAN_SUCCESS;
     }
 }

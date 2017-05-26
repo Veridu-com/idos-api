@@ -39,7 +39,8 @@ interface CandidateInterface extends RepositoryInterface {
     /**
      * Deletes all Candidate entities based on user_id.
      *
-     * @param int $userId
+     * @param int   $userId
+     * @param array $filters
      *
      * @return int
      */

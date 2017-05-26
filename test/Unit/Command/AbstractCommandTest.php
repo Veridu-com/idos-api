@@ -17,7 +17,7 @@ use Test\Unit\AbstractUnit;
 class AbstractCommandTest extends AbstractUnit {
     public function testSetParameter() {
         $abstractMock = $this->getMockBuilder(AbstractCommand::class)
-            ->getMockForAbstractclass();
+            ->getMockForAbstractClass();
         $property = $this->setProtectedMethod($abstractMock, 'setParameter');
         $this->expectedException(\RuntimeException::class);
         $property->invoke($abstractMock, 'prop', 'value');

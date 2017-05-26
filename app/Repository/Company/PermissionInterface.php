@@ -51,7 +51,7 @@ interface PermissionInterface extends RepositoryInterface {
      * @param int    $companyId
      * @param string $routeName
      *
-     * @return \App\Entity\Company\Permission
+     * @return int
      */
     public function deleteOne(int $companyId, string $routeName) : int;
 

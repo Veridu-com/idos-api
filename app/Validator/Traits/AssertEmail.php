@@ -23,7 +23,7 @@ trait AssertEmail {
      *
      * @return void
      */
-    public function assertEmail($email) {
+    public function assertEmail($email) : void {
         Validator::email()
             ->assert($email);
     }

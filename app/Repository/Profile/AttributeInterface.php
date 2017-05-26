@@ -39,7 +39,8 @@ interface AttributeInterface extends RepositoryInterface {
     /**
      * Deletes all Attribute entities based on user_id.
      *
-     * @param int $userId
+     * @param int   $userId
+     * @param array $filters
      *
      * @return int
      */

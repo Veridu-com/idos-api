@@ -14,6 +14,7 @@ use App\Entity\User as UserEntity;
 use App\Entity\User\RoleAccess as RoleAccessEntity;
 use App\Exception\NotAllowed as NotAllowedException;
 use App\Factory\Entity as EntityFactory;
+use App\Middleware\MiddlewareInterface;
 use App\Middleware\UserPermission;
 use App\Repository\DBRoleAccess;
 use App\Repository\User\RoleAccessInterface;
@@ -74,7 +75,7 @@ class UserPermissionTest extends AbstractUnit {
         /*Response */ &$responseMock,
         /*callable */ &$nextMock
     ) {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
         $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('User\RoleAccess');
@@ -155,7 +156,7 @@ class UserPermissionTest extends AbstractUnit {
             ->getMock();
 
         $this->assertInstanceOf(
-            'App\\Middleware\\MiddlewareInterface',
+            MiddlewareInterface::class,
             new UserPermission(
                 $roleAccessRepositoryMock,
                 'test-resource',

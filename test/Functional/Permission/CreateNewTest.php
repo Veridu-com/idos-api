@@ -8,7 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Permission;
 
-use Slim\Http\Response;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 

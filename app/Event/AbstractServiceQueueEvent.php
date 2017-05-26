@@ -44,7 +44,7 @@ abstract class AbstractServiceQueueEvent extends AbstractEvent implements Servic
      *
      * @return void
      */
-    public function setCredential(Credential $credential) {
+    public function setCredential(Credential $credential) : void {
         $this->credential = $credential;
     }
 
@@ -55,7 +55,7 @@ abstract class AbstractServiceQueueEvent extends AbstractEvent implements Servic
      *
      * @return void
      */
-    public function setUser(User $user) {
+    public function setUser(User $user) : void {
         $this->user = $user;
     }
 

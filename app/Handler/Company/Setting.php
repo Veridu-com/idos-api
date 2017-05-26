@@ -106,7 +106,7 @@ class Setting implements HandlerInterface {
      * @see \App\Repository\DBSetting::getAllByCompanyId
      * @see \App\Repository\DBSetting::getAllPublicByCompanyId
      *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
     public function handleListAll(ListAll $command) : array {
         $this->validator->assertCompany($command->company);

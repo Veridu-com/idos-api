@@ -23,7 +23,7 @@ trait AssertTriggerName {
      *
      * @return void
      */
-    public function assertTriggerName($trigger) {
+    public function assertTriggerName($trigger) : void {
         Validator::graph()
             ->length(1, 50)
             ->assert($trigger);

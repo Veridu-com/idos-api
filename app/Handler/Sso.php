@@ -39,6 +39,8 @@ use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use League\Tactician\CommandBus;
+use OAuth\OAuth1\Token\StdOAuth1Token;
+use OAuth\OAuth2\Token\StdOAuth2Token;
 
 /**
  * Handles Sso commands.
@@ -430,7 +432,7 @@ class Sso implements HandlerInterface {
         return $this->createNew(
             'amazon',
             $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
+            StdOAuth2Token::class,
             '/user/profile',
             function ($response) {
                 return $response['user_id'];
@@ -450,7 +452,7 @@ class Sso implements HandlerInterface {
         return $this->createNew(
             'dropbox',
             $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
+            StdOAuth2Token::class,
             '/account/info',
             function ($response) {
                 return $response['uid'];
@@ -470,7 +472,7 @@ class Sso implements HandlerInterface {
         return $this->createNew(
             'facebook',
             $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
+            StdOAuth2Token::class,
             '/me?fields=id',
             function ($response) {
                 return $response['id'];
@@ -490,7 +492,7 @@ class Sso implements HandlerInterface {
         return $this->createNew(
             'google',
             $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
+            StdOAuth2Token::class,
             'https://www.googleapis.com/oauth2/v1/userinfo',
             function ($response) {
                 return $response['id'];
@@ -510,7 +512,7 @@ class Sso implements HandlerInterface {
         return $this->createNew(
             'linkedin',
             $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
+            StdOAuth2Token::class,
             '/people/~:(id)?format=json',
             function ($response) {
                 return $response['id'];
@@ -530,7 +532,7 @@ class Sso implements HandlerInterface {
         return $this->createNew(
             'paypal',
             $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
+            StdOAuth2Token::class,
             '/identity/openidconnect/userinfo/?schema=openid',
             function ($response) {
                 return $response['user_id'];
@@ -550,7 +552,7 @@ class Sso implements HandlerInterface {
         return $this->createNew(
             'spotify',
             $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
+            StdOAuth2Token::class,
             '/me',
             function ($response) {
                 return $response['user_id'];
@@ -570,7 +572,7 @@ class Sso implements HandlerInterface {
         return $this->createNew(
             'twitter',
             $command,
-            'OAuth\OAuth1\Token\StdOAuth1Token',
+            StdOAuth1Token::class,
             '/account/verify_credentials.json?include_entities=false&skip_status=true',
             function ($response) {
                 return $response['id_str'];
@@ -590,7 +592,7 @@ class Sso implements HandlerInterface {
         return $this->createNew(
             'yahoo',
             $command,
-            'OAuth\OAuth2\Token\StdOAuth2Token',
+            StdOAuth2Token::class,
             'https://social.yahooapis.com/v1/me/guid?format=json',
             function ($response) {
                 return $response['guid']['value'];

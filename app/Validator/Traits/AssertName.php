@@ -23,7 +23,7 @@ trait AssertName {
      *
      * @return void
      */
-    public function assertName($name) {
+    public function assertName($name) : void {
         Validator::prnt()
             ->length(1, null)
             ->assert($name);
@@ -38,7 +38,7 @@ trait AssertName {
      *
      * @return void
      */
-    public function assertShortName($name) {
+    public function assertShortName($name) : void {
         Validator::prnt()
             ->length(1, 50)
             ->assert($name);
@@ -53,7 +53,7 @@ trait AssertName {
      *
      * @return void
      */
-    public function assertMediumName($name) {
+    public function assertMediumName($name) : void {
         Validator::prnt()
             ->length(1, 100)
             ->assert($name);
@@ -68,7 +68,7 @@ trait AssertName {
      *
      * @return void
      */
-    public function assertLongName($name) {
+    public function assertLongName($name) : void {
         Validator::prnt()
             ->length(1, 255)
             ->assert($name);

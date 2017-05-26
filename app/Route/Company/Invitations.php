@@ -76,8 +76,8 @@ class Invitations implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -86,7 +86,7 @@ class Invitations implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Invitations::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/companies/{companySlug:[a-z0-9_-]+}/invitations',
@@ -114,8 +114,8 @@ class Invitations implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -124,7 +124,7 @@ class Invitations implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Invitations::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/invitations',
@@ -153,8 +153,8 @@ class Invitations implements RouteInterface {
      * @apiEndpointURIFragment int invitationId 1243
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -163,7 +163,7 @@ class Invitations implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Invitations::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-z0-9_-]+}/invitations/{invitationId:[0-9]+}',
@@ -192,8 +192,8 @@ class Invitations implements RouteInterface {
      * @apiEndpointURIFragment int invitationId 1243
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -202,7 +202,7 @@ class Invitations implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Company\Invitations::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/invitations/{invitationId:[0-9]+}',

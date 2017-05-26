@@ -70,7 +70,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function query( ? string $table = null, ? string $entityName = null) : Builder {
+    protected function query(?string $table = null, ? string $entityName = null) : Builder {
         if ($entityName === null) {
             $entityName = $this->getEntityClassName();
         }
@@ -99,8 +99,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      *
      * @return void
      */
-    public function beginTransaction() {
-        return $this->dbConnection->beginTransaction();
+    public function beginTransaction() : void {
+        $this->dbConnection->beginTransaction();
     }
 
     /**
@@ -110,8 +110,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      *
      * @return void
      */
-    public function commit() {
-        return $this->dbConnection->commit();
+    public function commit() : void {
+        $this->dbConnection->commit();
     }
 
     /**
@@ -121,8 +121,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      *
      * @return void
      */
-    public function rollBack() {
-        return $this->dbConnection->rollBack();
+    public function rollBack() : void {
+        $this->dbConnection->rollBack();
     }
 
     /**
@@ -313,7 +313,6 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @param \App\Entity\EntityInterface $entity         The entity
      * @param array|string                $conflictKeys   The conflict keys, which keys ON CONCLIFCT will trigger.
      * @param array                       $updateArray    The update array
-     * @param string                      $constraintName The constraint name
      *
      * @throws \App\Exception\NotFound
      * @throws \RuntimeException
@@ -421,7 +420,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Delete all entities that matches the given constraints.
      *
-     * @param associative array $constraints ['key' => 'value']
+     * @param array $constraints ['key' => 'value']
      *
      * @return int
      */
@@ -446,7 +445,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Update all entities that matches the given constraints.
      *
-     * @param associative array $constraints ['key' => 'value']
+     * @param array $constraints ['key' => 'value']
+     * @param array $fields
      *
      * @return int
      */
@@ -879,7 +879,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      *
      * @return string|null The relation name (as in the 'relationship' array).
      */
-    protected function getRelationByForeignKey(string $foreignKeyColumn) {
+    protected function getRelationByForeignKey(string $foreignKeyColumn) : ?string {
         foreach ($this->relationships as $relationName => $relationProperties) {
             $relationForeignKeyColumn = null;
             switch ($relationProperties['type']) {
@@ -901,6 +901,8 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                 return $relationName;
             }
         }
+
+        return null;
     }
 
     /**
@@ -948,8 +950,9 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     /**
      * Paginates a query builder instance.
      *
-     * @param \Illuminate\Database\Query\Builder $query   The query
-     * @param array                              $columns The columns to retrieve
+     * @param \Illuminate\Database\Query\Builder $query       The query
+     * @param array                              $queryParams Query parameters
+     * @param array                              $columns     The columns to retrieve
      *
      * @return array
      */

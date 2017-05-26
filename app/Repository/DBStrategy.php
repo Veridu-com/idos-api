@@ -115,7 +115,7 @@ class DBStrategy implements RepositoryStrategyInterface {
         }
 
         switch ($cache[$className]) {
-            case 'App\Repository\AbstractSQLDBRepository':
+            case AbstractSQLDBRepository::class:
                 return new $className(
                     $this->entityFactory,
                     $repositoryFactory,
@@ -124,7 +124,7 @@ class DBStrategy implements RepositoryStrategyInterface {
                     $this->sqlConnection
                 );
 
-            case 'App\Repository\AbstractNoSQLDBRepository':
+            case AbstractNoSQLDBRepository::class:
                 return new $className(
                     $this->entityFactory,
                     $repositoryFactory,

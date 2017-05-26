@@ -71,8 +71,8 @@ class FeatureTest extends AbstractUnit {
         $this->assertTrue(is_int($abstractMock->createdAt));
 
         $this->assertArrayHasKey('updated_at', $array);
-        $this->assertTrue(is_null($array['updated_at']));
-        $this->assertTrue(is_null($abstractMock->updatedAt));
+        $this->assertTrue(null === $array['updated_at']);
+        $this->assertTrue(null === $abstractMock->updatedAt);
     }
 
     public function testToArray() {
@@ -99,7 +99,7 @@ class FeatureTest extends AbstractUnit {
         $this->assertTrue(is_int($array['created_at']));
 
         $this->assertArrayHasKey('updated_at', $array);
-        $this->assertTrue(is_null($array['updated_at']));
+        $this->assertTrue(null === $array['updated_at']);
     }
 
     public function testGetCachedKeysEmptyAttributes() {

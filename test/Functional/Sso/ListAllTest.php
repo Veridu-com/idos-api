@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Sso;
 
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 
 class ListAllTest extends AbstractFunctional {

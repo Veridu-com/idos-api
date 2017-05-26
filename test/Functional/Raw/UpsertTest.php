@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Raw;
 
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\Traits;
 
 class UpsertTest extends AbstractRawFunctional {

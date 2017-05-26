@@ -33,6 +33,8 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @param int $companyId The company identifier
      * @param int $settingId The setting identifier
+     *
+     * @return \App\Entity\Company\Setting
      */
     public function findOneByCompanyAndId(int $companyId, int $settingId) : Setting;
 
@@ -50,6 +52,8 @@ interface SettingInterface extends RepositoryInterface {
      *
      * @param int   $companyId   The company identifier
      * @param array $queryParams The query parameters to filter the collection
+     *
+     * @return array
      */
     public function getPublicByCompanyId(int $companyId, array $queryParams = []) : array;
 

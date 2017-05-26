@@ -41,11 +41,12 @@ class Logout extends AbstractListener {
     /**
      * Deletes raw entry of a user.
      *
-     * @param \League\Event\EventInterface $event
+     * @param \App\Entity\User           $user
+     * @param \App\Entity\Profile\Source $source
      *
      * @return int
      */
-    private function deleteRaw(User $user, Source $source) {
+    private function deleteRaw(User $user, Source $source) : int {
         $command = $this->commandFactory->create('Profile\Raw\DeleteAll');
         $command
             ->setParameter('user', $user)
@@ -82,7 +83,7 @@ class Logout extends AbstractListener {
      * Class constructor.
      *
      * @param \League\Tactician\CommandBus $commandBus
-     * @param \App\Factory\Command         $command
+     * @param \App\Factory\Command         $commandFactory
      *
      * @return void
      */

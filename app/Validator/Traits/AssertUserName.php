@@ -23,7 +23,7 @@ trait AssertUserName {
      *
      * @return void
      */
-    public function assertUserName($userName) {
+    public function assertUserName($userName) : void {
         Validator::alnum()
             ->noWhitespace()
             ->length(1, 50)

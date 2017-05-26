@@ -74,8 +74,8 @@ class Sso implements RouteInterface {
      * @apiGroup SSO
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -84,7 +84,7 @@ class Sso implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Sso::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/sso',
@@ -103,8 +103,8 @@ class Sso implements RouteInterface {
      * @apiEndpointURIFragment string providerName facebook
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -113,7 +113,7 @@ class Sso implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Sso::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/sso/{providerName:[a-zA-Z0-9]+}',
@@ -133,8 +133,8 @@ class Sso implements RouteInterface {
      * @apiGroup SSO
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -143,7 +143,7 @@ class Sso implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Sso::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/sso',

@@ -67,7 +67,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
     public function testConstructorRightInterface() {
         $entityFactory    = new Entity($this->optimus);
         $dbConnectionMock = $this
-            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $abstractDBMock = $this
@@ -82,7 +82,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
         $entityFactory = new Entity($this->optimus);
 
         $dbConnectionMock = $this
-            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $queryMock = $this->getMockBuilder(Builder::class)
@@ -114,7 +114,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
         $entityFactory = new Entity($this->optimus);
 
         $dbConnectionMock = $this
-            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $queryMock = $this->getMockBuilder(Builder::class)
@@ -254,7 +254,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
     public function testDeleteByEmptyConstraintsException() {
         $entityFactory    = new Entity($this->optimus);
         $dbConnectionMock = $this
-            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $abstractDBMock = $this
@@ -270,7 +270,7 @@ class AbstractSQLDBRepositoryTest extends AbstractUnit {
     public function testDeleteBy() {
         $entityFactory    = new Entity($this->optimus);
         $dbConnectionMock = $this
-            ->getMockBuilder('Illuminate\Database\ConnectionInterface')
+            ->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $queryMock = $this

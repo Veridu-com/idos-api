@@ -23,7 +23,7 @@ trait AssertDate {
      *
      * @return void
      */
-    public function assertDate($date) {
+    public function assertDate($date) : void {
         Validator::date()
             ->assert($date);
     }

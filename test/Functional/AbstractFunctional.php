@@ -159,7 +159,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
      * Rollback the SQL database transaction.
      */
     protected function tearDown() {
-        self::$sqlConnection->rollback();
+        self::$sqlConnection->rollBack();
     }
 
     /**
@@ -208,6 +208,8 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         $body     = json_decode((string) $response->getBody(), true);
 
         if ($response->getStatusCode() >= 400) {
+            // var_dump((string) $response->getBody());
+            // throw new \RuntimeException('Failed to retrieve entities!');
             $this->entities = [];
         } else {
             $this->entities = $body['data'];
@@ -227,7 +229,7 @@ abstract class AbstractFunctional extends \PHPUnit_Framework_TestCase {
         }
 
         if ($index === false) {
-            $index = mt_rand(0, (count($this->entities) - 1));
+            $index = random_int(0, (count($this->entities) - 1));
         }
 
         return $this->entities[$index];

@@ -143,7 +143,7 @@ class Auth implements MiddlewareInterface {
      *
      * @return string|null
      */
-    private function extractAuthorization(ServerRequestInterface $request, string $name) {
+    private function extractAuthorization(ServerRequestInterface $request, string $name) : ?string {
         $name  = ucfirst($name);
         $regex = sprintf('/^%s ([a-zA-Z0-9._-]+)$/', $name);
         if (preg_match($regex, $request->getHeaderLine('Authorization'), $matches)) {
@@ -155,6 +155,8 @@ class Auth implements MiddlewareInterface {
         if (isset($queryParams[$name])) {
             return $queryParams[$name];
         }
+
+        return null;
     }
 
     /**
@@ -452,8 +454,8 @@ class Auth implements MiddlewareInterface {
     /**
      * Populates the request with the found companies on the request.
      *
-     * @param string                                   $username The username
-     * @param \Psr\Http\Message\ServerRequestInterface $request  The request object
+     * @param string                                   $companySlug The company slug
+     * @param \Psr\Http\Message\ServerRequestInterface $request     The request object
      *
      * @return \Psr\Http\Message\ServerRequestInterface $request   The modified request object
      */
@@ -489,7 +491,7 @@ class Auth implements MiddlewareInterface {
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \App\Repository\UserInterface               $userRepository
      * @param \App\Repository\CompanyInterface            $companyRepository
-     * @param \App\Repository\IdentityInterface           $identityRepository
+     * @param \App\Repository\HandlerInterface            $handlerRepository
      * @param \Lcobucci\JWT\Parser                        $jwtParser
      * @param \Lcobucci\JWT\ValidationData                $jwtValidation
      * @param \Lcobucci\JWT\Signer\Hmac\Sha256            $jwtSigner

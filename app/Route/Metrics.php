@@ -75,8 +75,8 @@ class Metrics implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -85,7 +85,7 @@ class Metrics implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Metrics::listAllSystem
      */
-    private static function listAllSystem(App $app, callable $auth, callable $permission) {
+    private static function listAllSystem(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/metrics/system',
@@ -113,8 +113,8 @@ class Metrics implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -123,7 +123,7 @@ class Metrics implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Metrics::listAllUser
      */
-    private static function listAllUser(App $app, callable $auth, callable $permission) {
+    private static function listAllUser(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/metrics/user',

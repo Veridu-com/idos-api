@@ -137,5 +137,5 @@ interface UserInterface extends RepositoryInterface {
      *
      * @return void
      */
-    public function assignIdentityToUser(int $userId, int $identityId);
+    public function assignIdentityToUser(int $userId, int $identityId) : void;
 }

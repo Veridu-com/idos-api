@@ -227,6 +227,6 @@ class Metric implements HandlerInterface {
             );
         }
 
-        return $this->gearmanClient->returnCode() == \GEARMAN_SUCCESS;
+        return $this->gearmanClient->returnCode() === \GEARMAN_SUCCESS;
     }
 }

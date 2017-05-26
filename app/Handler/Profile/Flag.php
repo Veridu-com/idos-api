@@ -15,6 +15,7 @@ use App\Entity\Category;
 use App\Entity\Profile\Flag as FlagEntity;
 use App\Exception\AppException;
 use App\Exception\Create;
+use App\Exception\Update;
 use App\Exception\Validate;
 use App\Factory\Event;
 use App\Handler\HandlerInterface;
@@ -203,7 +204,7 @@ class Flag implements HandlerInterface {
      * @see \App\Repository\DBFlag::findOneBySlug
      * @see \App\Repository\DBFlag::delete
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {

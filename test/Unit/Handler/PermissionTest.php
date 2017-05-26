@@ -16,9 +16,11 @@ use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Company\Permission;
+use App\Handler\HandlerInterface;
 use App\Repository\Company\PermissionInterface;
 use App\Repository\DBPermission;
 use App\Validator\Company\Permission as PermissionValidator;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -51,7 +53,7 @@ class PermissionTest extends AbstractUnit {
             ->getMock();
 
         $this->assertInstanceOf(
-            'App\\Handler\\HandlerInterface',
+            HandlerInterface::class,
             new Permission(
                 $repositoryMock,
                 $validatorMock,
@@ -144,7 +146,7 @@ class PermissionTest extends AbstractUnit {
             $this->optimus
         );
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -180,7 +182,7 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testHandleDeleteAllCompanyIdNotFound() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
         $entityFactory = new EntityFactory($this->optimus);
         $entityFactory->create('Company\Permission');
@@ -212,7 +214,7 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testHandleDeleteAll() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -291,7 +293,7 @@ class PermissionTest extends AbstractUnit {
     }
 
     public function testHandleDeleteOne() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);

@@ -16,10 +16,12 @@ use App\Entity\Profile\Feature as FeatureEntity;
 use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
+use App\Handler\HandlerInterface;
 use App\Handler\Profile\Feature;
 use App\Repository\DBFeature;
 use App\Repository\Profile\FeatureInterface;
 use App\Validator\Profile\Feature as FeatureValidator;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -52,7 +54,7 @@ class FeatureTest extends AbstractUnit {
             ->getMock();
 
         $this->assertInstanceOf(
-            'App\\Handler\\HandlerInterface',
+            HandlerInterface::class,
             new Feature(
                 $repositoryMock,
                 $validatorMock,
@@ -167,7 +169,7 @@ class FeatureTest extends AbstractUnit {
             ], $this->optimus
         );
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -234,7 +236,7 @@ class FeatureTest extends AbstractUnit {
     }
 
     public function testHandleDeleteAll() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -309,7 +311,7 @@ class FeatureTest extends AbstractUnit {
         $userId        = 1;
         $featureEntity = new FeatureEntity(['user_id' => $userId], $this->optimus);
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -385,7 +387,7 @@ class FeatureTest extends AbstractUnit {
         $featureSlug   = 'test-slug';
         $featureEntity = new FeatureEntity(['id' => $id, 'user_id' => $userId, 'slug' => $featureSlug], $this->optimus);
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);

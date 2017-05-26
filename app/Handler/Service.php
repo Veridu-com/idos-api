@@ -214,9 +214,9 @@ class Service implements HandlerInterface {
      *
      * @throws \App\Exception\NotFound
      *
-     * @return void
+     * @return int
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         try {
             $this->validator->assertCompany($command->company);
             $this->validator->assertId($command->serviceId);

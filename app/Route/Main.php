@@ -63,7 +63,7 @@ class Main implements RouteInterface {
      * @link docs/listAll.md
      * @see \App\Controller\Main::listAll
      */
-    private static function listAll(App $app, callable $permission) {
+    private static function listAll(App $app, callable $permission) : void {
         $app
             ->get(
                 '/',

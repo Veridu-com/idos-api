@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Factory;
 
+use App\Entity\Company;
 use App\Factory\AbstractFactory;
 use App\Factory\Command;
 use Test\Unit\AbstractUnit;
@@ -56,7 +57,7 @@ class AbstractFactoryTest extends AbstractUnit {
             ->setMethods(['getNamespace'])
             ->getMockForAbstractClass();
 
-        $this->assertInstanceOf(AbstractFactory::class, $abstractMock->register('Company', 'App\Entity\Company'));
+        $this->assertInstanceOf(AbstractFactory::class, $abstractMock->register('Company', Company::class));
     }
 
     public function testCreateNotFound() {

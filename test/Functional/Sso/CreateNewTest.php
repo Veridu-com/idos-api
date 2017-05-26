@@ -11,8 +11,6 @@ namespace Test\Functional\Sso;
 use Interop\Container\ContainerInterface;
 use OAuth\Common\Storage\Memory;
 use OAuth\OAuth2\Service\Facebook;
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 
 class CreateNewTest extends AbstractFunctional {

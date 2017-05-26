@@ -63,7 +63,7 @@ class Health implements RouteInterface {
      * @link docs/health/check.md
      * @see \App\Controller\Health::check
      */
-    private static function check(App $app) {
+    private static function check(App $app) : void {
         $app
             ->get(
                 '/health/check',
@@ -87,7 +87,7 @@ class Health implements RouteInterface {
      * @link docs/health/status.md
      * @see \App\Controller\Health::status
      */
-    private static function status(App $app) {
+    private static function status(App $app) : void {
         $app
             ->get(
                 '/health/status',

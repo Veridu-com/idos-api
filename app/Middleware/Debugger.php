@@ -18,7 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * Allows requests to force a specific error response for development.
  */
 class Debugger implements MiddlewareInterface {
-    private function protectedException($class) {
+    private function protectedException($class) : bool {
         $class = str_replace('\\App\\Exception\\', '', $class);
 
         return in_array(

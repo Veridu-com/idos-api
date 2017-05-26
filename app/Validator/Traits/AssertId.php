@@ -23,7 +23,7 @@ trait AssertId {
      *
      * @return void
      */
-    public function assertId($id) {
+    public function assertId($id) : void {
         Validator::digit()
             ->assert($id);
     }
@@ -37,7 +37,7 @@ trait AssertId {
      *
      * @return void
      */
-    public function assertNullableId($id) {
+    public function assertNullableId($id) : void {
         Validator::oneOf(
             Validator::digit(),
             Validator::nullType()

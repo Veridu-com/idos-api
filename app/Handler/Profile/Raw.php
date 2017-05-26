@@ -96,10 +96,12 @@ class Raw implements HandlerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\RawInterface $repository
-     * @param \App\Validator\Profile\Raw           $validator
-     * @param \App\Factory\Event                   $eventFactory
-     * @param \League\Event\Emitter                $emitter
+     * @param \App\Repository\Profile\RawInterface     $repository
+     * @param \App\Repository\Profile\SourceInterface  $sourceRepository
+     * @param \App\Repository\Profile\ProcessInterface $processRepository
+     * @param \App\Validator\Profile\Raw               $validator
+     * @param \App\Factory\Event                       $eventFactory
+     * @param \League\Event\Emitter                    $emitter
      *
      * @return void
      */

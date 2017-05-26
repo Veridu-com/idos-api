@@ -81,7 +81,7 @@ class ServiceTest extends AbstractUnit {
         $this->assertTrue($array['enabled']);
 
         $this->assertArrayHasKey('access', $array);
-        $this->assertTrue($array['access'] == 0x01);
+        $this->assertEquals($array['access'], 0x01);
 
         $this->assertArrayHasKey('created_at', $array);
         $this->assertTrue(is_int($array['created_at']));

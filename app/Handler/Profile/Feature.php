@@ -102,6 +102,8 @@ class Feature implements HandlerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Profile\FeatureInterface $repository
+     * @param \App\Repository\Profile\SourceInterface  $sourceRepository
+     * @param \App\Repository\Profile\ProcessInterface $processRepository
      * @param \App\Validator\Profile\Feature           $validator
      * @param \App\Factory\Event                       $eventFactory
      * @param \League\Event\Emitter                    $emitter
@@ -336,7 +338,7 @@ class Feature implements HandlerInterface {
     /**
      * Creates or update a feature.
      *
-     * @param \App\Command\Profile\Feature\Upsert $command
+     * @param \App\Command\Profile\Feature\UpsertBulk $command
      *
      * @return bool
      */
@@ -409,7 +411,7 @@ class Feature implements HandlerInterface {
      * @throws \App\Exception\Validate\Profile\FeatureException
      * @throws \App\Exception\NotFound\Profile\FeatureException
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {

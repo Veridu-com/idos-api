@@ -288,7 +288,7 @@ class Score implements HandlerInterface {
      * @throws \App\Exception\Validate\Profile\ScoreException
      * @throws \App\Exception\NotFound\Profile\ScoreException
      *
-     * @return void
+     * @return int
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {

@@ -23,7 +23,7 @@ trait AssertUrl {
      *
      * @return void
      */
-    public function assertUrl($url) {
+    public function assertUrl($url) : void {
         Validator::url()
             ->assert($url);
     }

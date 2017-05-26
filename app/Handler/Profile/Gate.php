@@ -239,9 +239,9 @@ class Gate implements HandlerInterface {
     /**
      * Creates or updates a gate.
      *
-     * @param \App\Command\Profile\Score\Upsert $command
+     * @param \App\Command\Profile\Gate\Upsert $command
      *
-     * @return \App\Entity\Profile\Score
+     * @return \App\Entity\Profile\Gate
      */
     public function handleUpsert(Upsert $command) : GateEntity {
         try {

@@ -8,9 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Sso;
 
-use OAuth\OAuth2\Service\Facebook;
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 
 class GetOneTest extends AbstractFunctional {

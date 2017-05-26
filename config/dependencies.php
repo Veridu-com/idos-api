@@ -435,6 +435,8 @@ $container['jwt'] = function (ContainerInterface $container) : callable {
                 return new JWT\ValidationData();
             case 'signer':
                 return new JWT\Signer\Hmac\Sha256();
+            default:
+                throw new \RuntimeException('Invalid JWT item!');
         }
     };
 };

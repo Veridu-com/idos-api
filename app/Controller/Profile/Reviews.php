@@ -49,6 +49,7 @@ class Reviews implements ControllerInterface {
      * Class constructor.
      *
      * @param \App\Repository\Profile\ReviewInterface $repository
+     * @param \App\Repository\UserInterface           $userRepository
      * @param \League\Tactician\CommandBus            $commandBus
      * @param \App\Factory\Command                    $commandFactory
      *

@@ -427,7 +427,7 @@ class Source implements HandlerInterface {
         }
 
         foreach ($command->tags as $key => $value) {
-            if (substr_compare($key, 'otp_', 0, 4) == 0) {
+            if (substr_compare($key, 'otp_', 0, 4) === 0) {
                 continue;
             }
 

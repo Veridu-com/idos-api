@@ -47,7 +47,7 @@ class Created extends AbstractEvent implements UserIdGetterInterface, ServiceQue
     /**
      * {@inheritdoc}
      */
-    public function getUserId(): int {
+    public function getUserId() : int {
         return $this->gate->userId;
     }
 

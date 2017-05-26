@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace Test\Unit\Factory;
 
+use App\Command\CommandInterface;
 use App\Factory\Command;
 use Test\Unit\AbstractUnit;
 
@@ -21,7 +22,7 @@ class CommandTest extends AbstractUnit {
 
         foreach ($commands as $command) {
             $this->assertInstanceOf(
-                'App\\Command\\CommandInterface',
+                CommandInterface::class,
                 $this->factory->create($command)
             );
         }

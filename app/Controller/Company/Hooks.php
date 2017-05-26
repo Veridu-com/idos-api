@@ -87,7 +87,7 @@ class Hooks implements ControllerInterface {
 
         $credential = $this->credentialRepository->findByPubKey($credentialPubKey);
 
-        if ($credential->companyId != $targetCompany->id) {
+        if ($credential->companyId !== $targetCompany->id) {
             throw new NotFound();
         }
 

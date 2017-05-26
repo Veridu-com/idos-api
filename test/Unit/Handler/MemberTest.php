@@ -19,6 +19,7 @@ use App\Factory\Entity as EntityFactory;
 use App\Factory\Repository;
 use App\Factory\Validator;
 use App\Handler\Company\Member;
+use App\Handler\HandlerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\MemberInterface;
 use App\Repository\DBCredential;
@@ -26,6 +27,7 @@ use App\Repository\DBMember;
 use App\Repository\DBUser;
 use App\Repository\UserInterface;
 use App\Validator\Company\Member as MemberValidator;
+use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
 use League\Event\Emitter;
@@ -105,7 +107,7 @@ class MemberTest extends AbstractUnit {
             ->getMock();
 
         $this->assertInstanceOf(
-            'App\\Handler\\HandlerInterface',
+            HandlerInterface::class,
             new Member(
                 $repositoryMock,
                 $credentialRepositoryMock,
@@ -217,7 +219,7 @@ class MemberTest extends AbstractUnit {
     public function testHandleCreateNew() {
         $memberEntity = $this->getEntity();
 
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -282,7 +284,7 @@ class MemberTest extends AbstractUnit {
 
     public function testHandleUpdateOne() {
         $memberEntity     = $this->getEntity();
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -325,7 +327,7 @@ class MemberTest extends AbstractUnit {
     }
 
     public function testHandleDeleteOne() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);
@@ -363,7 +365,7 @@ class MemberTest extends AbstractUnit {
     }
 
     public function testHandleDeleteAll() {
-        $dbConnectionMock = $this->getMockBuilder('Illuminate\Database\ConnectionInterface')
+        $dbConnectionMock = $this->getMockBuilder(ConnectionInterface::class)
             ->getMock();
 
         $entityFactory = new EntityFactory($this->optimus);

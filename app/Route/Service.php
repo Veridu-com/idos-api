@@ -77,8 +77,8 @@ class Service implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -87,7 +87,7 @@ class Service implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Services::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/services',
@@ -111,8 +111,8 @@ class Service implements RouteInterface {
      * @apiEndpointURIFragment string serviceId 1
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -121,7 +121,7 @@ class Service implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Services::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceId:[0-9]+}',
@@ -144,8 +144,8 @@ class Service implements RouteInterface {
      * @apiEndpointURIFragment string companySlug veridu-ltd
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -154,7 +154,7 @@ class Service implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Services::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/companies/{companySlug:[a-z0-9_-]+}/services',
@@ -178,8 +178,8 @@ class Service implements RouteInterface {
      * @apiEndpointURIFragment  string  serviceId 1
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -188,7 +188,7 @@ class Service implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Services::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceId:[0-9]+}',
@@ -212,8 +212,8 @@ class Service implements RouteInterface {
      * @apiEndpointURIFragment  string  serviceId 1
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -222,7 +222,7 @@ class Service implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Services::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-z0-9_-]+}/services/{serviceId:[0-9]+}',

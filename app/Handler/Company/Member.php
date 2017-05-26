@@ -186,9 +186,9 @@ class Member implements HandlerInterface {
      * @throws \App\Exception\Validate\Company\MemberException
      * @throws \App\Exception\NotFound\Company\MemberException
      *
-     * @return void
+     * @return int
      */
-    public function handleDeleteOne(DeleteOne $command) {
+    public function handleDeleteOne(DeleteOne $command) : int {
         try {
             $this->validator->assertCompany($command->company);
             $this->validator->assertIdentity($command->identity);

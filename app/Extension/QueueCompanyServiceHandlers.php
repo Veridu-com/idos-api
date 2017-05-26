@@ -99,7 +99,7 @@ trait QueueCompanyServiceHandlers {
             uniqid('manager-')
         );
 
-        return $this->gearmanClient->returnCode() == \GEARMAN_SUCCESS;
+        return $this->gearmanClient->returnCode() === \GEARMAN_SUCCESS;
     }
 
     /**

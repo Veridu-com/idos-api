@@ -18,7 +18,7 @@ abstract class AbstractAuthFunctional extends AbstractFunctional {
     protected $middlewarePhinxApp;
     protected $middlewarePhinxTextWrapper;
 
-    public function getApp() : \Slim\App {
+    public function getApp() : App {
         if ((! $this->middlewareApp) || (empty($this->middlewareApp))) {
             $app = new App(
                 ['settings' => $GLOBALS['appSettings']]

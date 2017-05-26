@@ -82,8 +82,8 @@ class RoleAccess implements RouteInterface {
      * @apiAuth header  token userToken  eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -92,7 +92,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $userPermission) {
+    private static function listAll(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->get(
                 '/access/roles',
@@ -114,8 +114,8 @@ class RoleAccess implements RouteInterface {
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -124,7 +124,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $userPermission) {
+    private static function createNew(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->post(
                 '/access/roles',
@@ -146,8 +146,8 @@ class RoleAccess implements RouteInterface {
      * @apiAuth header  token userToken     eyJ0eXAiOiJKV1QiLCJhbGciOiJIU A valid User Token
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -156,7 +156,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::deleteAll
      */
-    private static function deleteAll(App $app, callable $auth, callable $userPermission) {
+    private static function deleteAll(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->delete(
                 '/access/roles',
@@ -179,8 +179,8 @@ class RoleAccess implements RouteInterface {
      * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -189,7 +189,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $userPermission) {
+    private static function getOne(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->get(
                 '/access/roles/{roleAccessId:[0-9]+}',
@@ -212,8 +212,8 @@ class RoleAccess implements RouteInterface {
      * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -222,7 +222,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::getOne
      */
-    private static function updateOne(App $app, callable $auth, callable $userPermission) {
+    private static function updateOne(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->put(
                 '/access/roles/{roleAccessId:[0-9]+}',
@@ -245,8 +245,8 @@ class RoleAccess implements RouteInterface {
      * @apiEndpointURIFragment int roleAccessId 5319 A valid roleAccess id
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $userPermission
+     * @param callable  $auth
+     * @param callable  $userPermission
      *
      * @return void
      *
@@ -255,7 +255,7 @@ class RoleAccess implements RouteInterface {
      * @see \App\Middleware\UserPermission::__invoke
      * @see \App\Controller\User\RoleAccess::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $userPermission) {
+    private static function deleteOne(App $app, callable $auth, callable $userPermission) : void {
         $app
             ->delete(
                 '/access/roles/{roleAccessId:[0-9]+}',

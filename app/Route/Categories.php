@@ -70,7 +70,7 @@ class Categories implements RouteInterface {
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
-     * @param \callable $auth
+     * @param callable  $auth
      *
      * @return void
      *
@@ -79,7 +79,7 @@ class Categories implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Categories::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/system/categories',

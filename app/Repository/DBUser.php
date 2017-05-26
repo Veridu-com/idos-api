@@ -224,7 +224,7 @@ class DBUser extends AbstractSQLDBRepository implements UserInterface {
     /**
      * {@inheritdoc}
      */
-    public function assignIdentityToUser(int $userId, int $identityId) {
+    public function assignIdentityToUser(int $userId, int $identityId) : void {
         $query    = 'INSERT INTO user_identities (identity_id, user_id) VALUES (:identityId, :userId)';
         $bindings = [
             'userId'     => $userId,

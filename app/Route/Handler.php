@@ -78,8 +78,8 @@ class Handler implements RouteInterface {
      * @apiEndpointURIFragment
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -88,7 +88,7 @@ class Handler implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Handlers::listAll
      */
-    private static function listAll(App $app, callable $auth, callable $permission) {
+    private static function listAll(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/handlers',
@@ -111,8 +111,8 @@ class Handler implements RouteInterface {
      * @apiEndpointURIFragment  int  handlerId 1234
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -121,7 +121,7 @@ class Handler implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Handlers::getOne
      */
-    private static function getOne(App $app, callable $auth, callable $permission) {
+    private static function getOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->get(
                 '/companies/{companySlug:[a-z0-9_-]+}/handlers/{handlerId:[0-9]+}',
@@ -143,8 +143,8 @@ class Handler implements RouteInterface {
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -153,7 +153,7 @@ class Handler implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Handlers::createNew
      */
-    private static function createNew(App $app, callable $auth, callable $permission) {
+    private static function createNew(App $app, callable $auth, callable $permission) : void {
         $app
             ->post(
                 '/companies/{companySlug:[a-z0-9_-]+}/handlers',
@@ -176,8 +176,8 @@ class Handler implements RouteInterface {
      * @apiEndpointURIFragment int handlerId 1234
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -186,7 +186,7 @@ class Handler implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Handlers::updateOne
      */
-    private static function updateOne(App $app, callable $auth, callable $permission) {
+    private static function updateOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->patch(
                 '/companies/{companySlug:[a-z0-9_-]+}/handlers/{handlerId:[0-9]+}',
@@ -209,8 +209,8 @@ class Handler implements RouteInterface {
      * @apiEndpointURIFragment int handlerId 1234
      *
      * @param \Slim\App $app
-     * @param \callable $auth
-     * @param \callable $permission
+     * @param callable  $auth
+     * @param callable  $permission
      *
      * @return void
      *
@@ -219,7 +219,7 @@ class Handler implements RouteInterface {
      * @see \App\Middleware\Permission::__invoke
      * @see \App\Controller\Handlers::deleteOne
      */
-    private static function deleteOne(App $app, callable $auth, callable $permission) {
+    private static function deleteOne(App $app, callable $auth, callable $permission) : void {
         $app
             ->delete(
                 '/companies/{companySlug:[a-z0-9_-]+}/handlers/{handlerId:[0-9]+}',

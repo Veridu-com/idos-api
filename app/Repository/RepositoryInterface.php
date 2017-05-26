@@ -38,7 +38,7 @@ interface RepositoryInterface {
      *
      * @param \App\Entity\EntityInterface $entity
      *
-     * @return void
+     * @return \App\Entity\EntityInterface
      */
     public function save(EntityInterface $entity) : EntityInterface;
 
@@ -56,7 +56,9 @@ interface RepositoryInterface {
     /**
      * Find an entity by a key.
      *
-     * @param associative array $constraints ['key' => 'value']
+     * @param array $constraints ['key' => 'value']
+     * @param array $queryParams
+     * @param array $columns
      *
      * @throws \App\Exception\NotFound
      *
@@ -67,7 +69,9 @@ interface RepositoryInterface {
     /**
      * Find entities by keys.
      *
-     * @param associative array $constraints ['key' => 'value']
+     * @param array $constraints ['key' => 'value']
+     * @param array $queryParams
+     * @param array $columns
      *
      * @throws \App\Exception\NotFound
      *
@@ -78,7 +82,8 @@ interface RepositoryInterface {
     /**
      * Delete an entitiy by id.
      *
-     * @param int $id
+     * @param int    $id
+     * @param string $key
      *
      * @return int number of affected rows
      */
@@ -86,6 +91,8 @@ interface RepositoryInterface {
 
     /**
      * Return an entity collection.
+     *
+     * @param array $queryParams
      *
      * @return \Illuminate\Support\Collection
      */

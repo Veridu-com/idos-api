@@ -8,8 +8,6 @@ declare(strict_types = 1);
 
 namespace Test\Functional\Service;
 
-use Slim\Http\Response;
-use Slim\Http\Uri;
 use Test\Functional\AbstractFunctional;
 use Test\Functional\Traits;
 
@@ -18,10 +16,6 @@ class CreateNewTest extends AbstractFunctional {
         Traits\RequiresIdentityToken,
         Traits\RejectsUserToken,
         Traits\RejectsCredentialToken;
-
-    protected function setUp() {
-        parent::setUp();
-    }
 
     public function testSuccess() {
         $handler_service_id = 1321189817;

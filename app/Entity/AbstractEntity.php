@@ -213,7 +213,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 $value = stream_get_contents($value, -1, 0);
             }
 
-            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) != 0)) {
+            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) !== 0)) {
                 $compressed = gzcompress($value);
                 if ($compressed === false) {
                     throw new \RuntimeException('compressed failed');
@@ -233,7 +233,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 $value = stream_get_contents($value, -1, 0);
             }
 
-            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) != 0)) {
+            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) !== 0)) {
                 $value = sprintf(
                     'secure:%s',
                     $this->vault->lock((string) $value)
@@ -375,7 +375,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
     /**
      * Gets the encoded id.
      *
-     * @param int
+     * @return int
      */
     public function getEncodedId() : int {
         return $this->optimus->encode($this->id);
