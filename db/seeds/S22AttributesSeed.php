@@ -4,156 +4,154 @@
  * All rights reserved.
  */
 
-use Phinx\Seed\AbstractSeed;
-
-class S22AttributesSeed extends AbstractSeed {
+class S22AttributesSeed extends Db\AbstractExtendedSeed {
     public function run() {
         $now  = date('Y-m-d H:i:s');
         $data = [
             [
                 'user_id'    => 1,
                 'name'       => 'firstName',
-                'value'      => 'John',
+                'value'      => $this->lock('John'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'name'       => 'fullName',
-                'value'      => 'John Doe',
+                'value'      => $this->lock('John Doe'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
                 'name'       => 'lastName',
-                'value'      => 'Doe',
+                'value'      => $this->lock('Doe'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'fullName',
-                'value'      => 'Janis Joplin',
+                'value'      => $this->lock('Janis Joplin'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ],
             [
                 'user_id'    => 1,
                 'name'       => 'cityName',
-                'value'      => 'Seattle',
+                'value'      => $this->lock('Seattle'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'name'       => 'countryName',
-                'value'      => 'United States',
+                'value'      => $this->lock('United States'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'name'       => 'email',
-                'value'      => 'john.doe@myserver.com',
+                'value'      => $this->lock('john.doe@myserver.com'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'name'       => 'birthDay',
-                'value'      => '13',
+                'value'      => $this->lock('13'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'name'       => 'birthMonth',
-                'value'      => '10',
+                'value'      => $this->lock('10'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'name'       => 'birthYear',
-                'value'      => '1985',
+                'value'      => $this->lock('1985'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 1,
                 'name'       => 'phoneNumber',
-                'value'      => '7345551212',
+                'value'      => $this->lock('7345551212'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'firstName',
-                'value'      => 'Janis',
+                'value'      => $this->lock('Janis'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'middleName',
-                'value'      => 'Lyn',
+                'value'      => $this->lock('Lyn'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'lastName',
-                'value'      => 'Joplin',
+                'value'      => $this->lock('Joplin'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'cityName',
-                'value'      => 'Port Arthur',
+                'value'      => $this->lock('Port Arthur'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'countryName',
-                'value'      => 'United States',
+                'value'      => $this->lock('United States'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'email',
-                'value'      => 'janis.joplin@myserver.com',
+                'value'      => $this->lock('janis.joplin@myserver.com'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'birthDay',
-                'value'      => '19',
+                'value'      => $this->lock('19'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'birthMonth',
-                'value'      => '1',
+                'value'      => $this->lock('1'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'birthYear',
-                'value'      => '1943',
+                'value'      => $this->lock('1943'),
                 'created_at' => $now,
                 'updated_at' => $now
             ],
             [
                 'user_id'    => 2,
                 'name'       => 'phoneNumber',
-                'value'      => '(734) 5551212',
+                'value'      => $this->lock('(734) 5551212'),
                 'created_at' => $now,
                 'updated_at' => $now
             ]

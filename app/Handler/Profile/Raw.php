@@ -72,15 +72,14 @@ class Raw implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Profile\Raw(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\Raw'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\Source'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\Process'),
                 $container
                     ->get('validatorFactory')

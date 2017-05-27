@@ -4,9 +4,7 @@
  * All rights reserved.
  */
 
-use Phinx\Seed\AbstractSeed;
-
-class S11SettingsSeed extends AbstractSeed {
+class S11SettingsSeed extends Db\AbstractExtendedSeed {
     public function run() {
         $faker = Faker\Factory::create();
 
@@ -19,7 +17,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => random_int(1, 2),
                     'section'    => $faker->countryCode,
                     'property'   => $faker->word . '' . $i,
-                    'value'      => $faker->colorName,
+                    'value'      => $this->lock($faker->colorName),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -27,7 +25,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.amazon.key',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -35,7 +33,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.amazon.secret',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -43,7 +41,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.facebook.key',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -51,7 +49,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.facebook.secret',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -59,7 +57,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.google.key',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -67,7 +65,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.google.secret',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -75,7 +73,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.linkedin.key',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -83,7 +81,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.linkedin.secret',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -91,7 +89,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.paypal.key',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -99,7 +97,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.paypal.secret',
-                    'value'      => '',
+                    'value'      => $this->lock(''),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -107,7 +105,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.twitter.key',
-                    'value'      => '***REMOVED***',
+                    'value'      => $this->lock('***REMOVED***'),
                     'created_at' => $now,
                     'updated_at' => null
                 ],
@@ -115,7 +113,7 @@ class S11SettingsSeed extends AbstractSeed {
                     'company_id' => 1,
                     'section'    => 'AppTokens',
                     'property'   => '4c9184f37cff01bcdc32dc486ec36961.twitter.secret',
-                    'value'      => '***REMOVED***',
+                    'value'      => $this->lock('***REMOVED***'),
                     'created_at' => $now,
                     'updated_at' => null
                 ]
@@ -127,7 +125,7 @@ class S11SettingsSeed extends AbstractSeed {
             'company_id' => 1,
             'section'    => 'company.details',
             'property'   => 'dashboardName',
-            'value'      => 'Veridu Dashboard',
+            'value'      => $this->lock('Veridu Dashboard'),
             'created_at' => $now
         ];
 
@@ -136,20 +134,22 @@ class S11SettingsSeed extends AbstractSeed {
             'company_id' => 1,
             'section'    => 'recommendation',
             'property'   => 'ruleset',
-            'value'      => json_encode(
-                [
-                [
-                    'tag'   => 'Default rule',
-                    'tests' => [
+            'value'      => $this->lock(
+                json_encode(
+                    [
                         [
-                            'tag'              => 'default test #1',
-                            'category'         => 'gate',
-                            'slug'             => 'nochargebackgate',
-                            'confidence_level' => 'medium'
+                            'tag'   => 'Default rule',
+                            'tests' => [
+                                [
+                                    'tag'              => 'default test #1',
+                                    'category'         => 'gate',
+                                    'slug'             => 'nochargebackgate',
+                                    'confidence_level' => 'medium'
+                                ]
+                            ]
                         ]
                     ]
-                ]
-                ]
+                )
             ),
             'created_at' => $now
         ];

@@ -70,7 +70,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function query(?string $table = null, ? string $entityName = null) : Builder {
+    protected function query(?string $table = null, ?string $entityName = null) : Builder {
         if ($entityName === null) {
             $entityName = $this->getEntityClassName();
         }
@@ -276,7 +276,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         if (! $entity->id) {
             $id = $this->query()->insertGetId($serialized);
 
-            return $this->create(array_merge(['id' => $id], $entity->serialize()));
+            return $this->load(array_merge(['id' => $id], $entity->serialize()));
         }
 
         $id = $entity->id;
@@ -295,7 +295,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             );
         }
 
-        return $this->create(array_merge(['id' => $id], $entity->serialize()));
+        return $this->load(array_merge(['id' => $id], $entity->serialize()));
     }
 
     /**

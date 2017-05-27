@@ -73,12 +73,12 @@ class Hook implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Company\Hook(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Hook'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Credential'),
                 $container
                     ->get('validatorFactory')

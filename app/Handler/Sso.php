@@ -118,24 +118,20 @@ class Sso implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Sso(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('User'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Credential'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Member'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Invitation'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Identity'),
                 $container
                     ->get('eventFactory'),

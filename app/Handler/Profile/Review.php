@@ -65,12 +65,12 @@ class Review implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Profile\Review(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\Review'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\Recommendation'),
                 $container
                     ->get('validatorFactory')

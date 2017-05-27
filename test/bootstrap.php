@@ -18,8 +18,10 @@ mb_internal_encoding('UTF-8');
 require_once __ROOT__ . '/vendor/autoload.php';
 
 // Loads .env if available
-$dotEnv = new Dotenv\Dotenv(__ROOT__ . '/', '.env.testing');
-$dotEnv->overload();
+if (is_file(__ROOT__ . '/.env.testing')) {
+    $dotEnv = new Dotenv\Dotenv(__ROOT__, '.env.testing');
+    $dotEnv->overload();
+}
 
 // Load application settings
 require_once __ROOT__ . '/config/settings.php';
