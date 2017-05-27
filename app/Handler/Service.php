@@ -64,12 +64,12 @@ class Service implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Service(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Service'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('HandlerService'),
                 $container
                     ->get('validatorFactory')

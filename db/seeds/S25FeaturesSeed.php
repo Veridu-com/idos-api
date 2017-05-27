@@ -4,9 +4,7 @@
  * All rights reserved.
  */
 
-use Phinx\Seed\AbstractSeed;
-
-class S25FeaturesSeed extends AbstractSeed {
+class S25FeaturesSeed extends Db\AbstractExtendedSeed {
     public function run() {
         $data = [
             [
@@ -15,7 +13,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'birthYear',
                 'creator'    => 3,
                 'type'       => 'integer',
-                'value'      => '1985',
+                'value'      => $this->lock('1985'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -25,7 +23,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'birthMonth',
                 'creator'    => 3,
                 'type'       => 'integer',
-                'value'      => '10',
+                'value'      => $this->lock('10'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -35,7 +33,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'birthDay',
                 'creator'    => 3,
                 'type'       => 'integer',
-                'value'      => '13',
+                'value'      => $this->lock('13'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -45,7 +43,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'numOfFriends',
                 'creator'    => 3,
                 'type'       => 'integer',
-                'value'      => '4',
+                'value'      => $this->lock('4'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -55,7 +53,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'isVerified',
                 'creator'    => 3,
                 'type'       => 'boolean',
-                'value'      => 'false',
+                'value'      => $this->lock('false'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -65,7 +63,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'isCelebrity',
                 'creator'    => 3,
                 'type'       => 'boolean',
-                'value'      => '',
+                'value'      => $this->lock(''),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -75,7 +73,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'submittedName',
                 'creator'    => 1,
                 'type'       => 'string',
-                'value'      => 'John Doe',
+                'value'      => $this->lock('John Doe'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],
@@ -85,7 +83,7 @@ class S25FeaturesSeed extends AbstractSeed {
                 'name'       => 'submittedEmail',
                 'creator'    => 1,
                 'type'       => 'string',
-                'value'      => 'johndoe@john.doe',
+                'value'      => $this->lock('johndoe@john.doe'),
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => null
             ],

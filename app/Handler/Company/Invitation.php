@@ -78,18 +78,16 @@ class Invitation implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Company\Invitation(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Invitation'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Credential'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Setting'),
                 $container
                     ->get('validatorFactory')
@@ -174,7 +172,13 @@ class Invitation implements HandlerInterface {
         }
 
         $credential           = $this->credentialRepository->findByPubKey($command->credentialPubKey);
-        $dashboardNameSetting = $this->settingRepository->findByCompanyIdSectionAndProperties($credential->companyId, 'company.details', ['dashboardName'])->first();
+        $dashboardNameSetting = $this->settingRepository->findByCompanyIdSectionAndProperties(
+            $credential->companyId,
+            'company.details',
+            [
+                'dashboardName'
+            ]
+        )->first();
 
         $dashboardName = (! $dashboardNameSetting) ? sprintf('%s idOS Dashboard', $command->company->name) : $dashboardNameSetting->value;
         $signupHash    = md5($command->email . $command->company->id . microtime());
@@ -195,7 +199,15 @@ class Invitation implements HandlerInterface {
 
         try {
             $invitation = $this->repository->save($invitation);
-            $event      = $this->eventFactory->create('Company\\Invitation\\Created', $invitation, $credential, $command->company->name, $dashboardName, $signupHash, $command->identity);
+            $event      = $this->eventFactory->create(
+                'Company\\Invitation\\Created',
+                $invitation,
+                $credential,
+                $command->company->name,
+                $dashboardName,
+                $signupHash,
+                $command->identity
+            );
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Create\Company\InvitationException('Error while trying to create an invitation', 500, $e);

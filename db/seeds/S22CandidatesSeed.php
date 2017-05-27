@@ -4,9 +4,7 @@
  * All rights reserved.
  */
 
-use Phinx\Seed\AbstractSeed;
-
-class S22CandidatesSeed extends AbstractSeed {
+class S22CandidatesSeed extends Db\AbstractExtendedSeed {
     public function run() {
         $now  = date('Y-m-d H:i:s');
         $data = [
@@ -14,7 +12,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'firstName',
-                'value'      => 'John',
+                'value'      => $this->lock('John'),
                 'support'    => 0.8,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -23,7 +21,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'firstName',
-                'value'      => 'Johnny',
+                'value'      => $this->lock('Johnny'),
                 'support'    => 0.2,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -32,7 +30,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'middleName',
-                'value'      => 'Ross',
+                'value'      => $this->lock('Ross'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -41,7 +39,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'lastName',
-                'value'      => 'Doe',
+                'value'      => $this->lock('Doe'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -50,7 +48,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'cityName',
-                'value'      => 'Seattle',
+                'value'      => $this->lock('Seattle'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -59,7 +57,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'countryName',
-                'value'      => 'United States',
+                'value'      => $this->lock('United States'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -68,7 +66,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'email',
-                'value'      => 'john.doe@myserver.com',
+                'value'      => $this->lock('john.doe@myserver.com'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -77,7 +75,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'birthDay',
-                'value'      => '13',
+                'value'      => $this->lock('13'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -86,7 +84,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'birthMonth',
-                'value'      => '10',
+                'value'      => $this->lock('10'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -95,7 +93,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'birthYear',
-                'value'      => '1985',
+                'value'      => $this->lock('1985'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -104,7 +102,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 1,
                 'creator'    => 1,
                 'attribute'  => 'phone',
-                'value'      => '7345551212',
+                'value'      => $this->lock('7345551212'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -113,7 +111,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'firstName',
-                'value'      => 'Janis',
+                'value'      => $this->lock('Janis'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -122,7 +120,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'middleName',
-                'value'      => 'Lyn',
+                'value'      => $this->lock('Lyn'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -131,7 +129,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'lastName',
-                'value'      => 'Joplin',
+                'value'      => $this->lock('Joplin'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -140,7 +138,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'cityName',
-                'value'      => 'Port Arthur',
+                'value'      => $this->lock('Port Arthur'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -149,7 +147,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'countryName',
-                'value'      => 'United States',
+                'value'      => $this->lock('United States'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -158,7 +156,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'email',
-                'value'      => 'janis.joplin@myserver.com',
+                'value'      => $this->lock('janis.joplin@myserver.com'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -167,7 +165,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'birthDay',
-                'value'      => '19',
+                'value'      => $this->lock('19'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -176,7 +174,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'birthMonth',
-                'value'      => '1',
+                'value'      => $this->lock('1'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -185,7 +183,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'birthYear',
-                'value'      => '1943',
+                'value'      => $this->lock('1943'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -194,7 +192,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 1,
                 'attribute'  => 'phone',
-                'value'      => '(734) 5551212',
+                'value'      => $this->lock('(734) 5551212'),
                 'support'    => 1.0,
                 'created_at' => $now,
                 'updated_at' => $now
@@ -203,7 +201,7 @@ class S22CandidatesSeed extends AbstractSeed {
                 'user_id'    => 2,
                 'creator'    => 2,
                 'attribute'  => 'firstName',
-                'value'      => 'Cássio',
+                'value'      => $this->lock('Cássio'),
                 'support'    => 0.0,
                 'created_at' => $now,
                 'updated_at' => $now

@@ -103,21 +103,18 @@ class Source implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Profile\Source(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\Source'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Profile\Process'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Identity'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Setting'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company'),
                 $container
                     ->get('validatorFactory')

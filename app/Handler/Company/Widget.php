@@ -65,12 +65,12 @@ class Widget implements HandlerInterface {
      */
     public static function register(ContainerInterface $container) : void {
         $container[self::class] = function (ContainerInterface $container) : HandlerInterface {
+            $repositoryFactory = $container->get('repositoryFactory');
+
             return new \App\Handler\Company\Widget(
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Widget'),
-                $container
-                    ->get('repositoryFactory')
+                $repositoryFactory
                     ->create('Company\Credential'),
                 $container
                     ->get('validatorFactory')

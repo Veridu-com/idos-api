@@ -36,7 +36,7 @@ class Response implements HandlerInterface {
         int $statusCode = 200
     ) : ResponseInterface {
         unset($body['list'][0]['private_key']);
-        $encodedBody = json_encode($body);
+        $encodedBody = json_encode($body, \JSON_PRESERVE_ZERO_FRACTION);
         $response    = $this->httpCache->withEtag($response, sha1($encodedBody), 'weak');
 
         return $response
@@ -61,7 +61,11 @@ class Response implements HandlerInterface {
         int $statusCode = 200,
         string $callback = 'jsonp'
     ) : ResponseInterface {
-        $encodedBody = sprintf('/**/%s(%s)', $callback, json_encode($body));
+        $encodedBody = sprintf(
+            '/**/%s(%s)',
+            $callback,
+            json_encode($body, \JSON_PRESERVE_ZERO_FRACTION)
+        );
         $response    = $this->httpCache->withEtag($response, sha1($encodedBody), 'weak');
 
         return $response

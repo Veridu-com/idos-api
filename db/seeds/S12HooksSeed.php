@@ -4,15 +4,13 @@
  * All rights reserved.
  */
 
-use Phinx\Seed\AbstractSeed;
-
-class S12HooksSeed extends AbstractSeed {
+class S12HooksSeed extends Db\AbstractExtendedSeed {
     public function run() {
         $data = [
             [
                 'credential_id' => 1,
                 'trigger'       => 'company.create',
-                'url'           => 'http://example.com/callback-create.php',
+                'url'           => $this->lock('http://example.com/callback-create.php'),
                 'subscribed'    => true,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s')
@@ -20,7 +18,7 @@ class S12HooksSeed extends AbstractSeed {
             [
                 'credential_id' => 1,
                 'trigger'       => 'company.update',
-                'url'           => 'http://example.com/callback-update.php',
+                'url'           => $this->lock('http://example.com/callback-update.php'),
                 'subscribed'    => true,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s')
@@ -28,7 +26,7 @@ class S12HooksSeed extends AbstractSeed {
             [
                 'credential_id' => 2,
                 'trigger'       => 'company.deleteAll',
-                'url'           => 'http://example.com/callback-delete-all.php',
+                'url'           => $this->lock('http://example.com/callback-delete-all.php'),
                 'subscribed'    => true,
                 'created_at'    => date('Y-m-d H:i:s'),
                 'updated_at'    => date('Y-m-d H:i:s')

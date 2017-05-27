@@ -62,6 +62,11 @@ class Whitelist implements MiddlewareInterface {
             return $next($request, $response);
         }
 
-        throw new \Exception(sprintf('AccessDenied - You IP Address (%s) has not been whitelisted.' . $request->getIp()));
+        throw new \Exception(
+            sprintf(
+                'AccessDenied - You IP Address (%s) has not been whitelisted.',
+                $request->getIp()
+            )
+        );
     }
 }
