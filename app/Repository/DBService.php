@@ -21,14 +21,12 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
      * @var string
      */
     protected $tableName = 'services';
-
     /**
      * The entity associated with the repository.
      *
      * @var string
      */
     protected $entityName = 'Service';
-
     /**
      * Query attributes, used to fetch attributes from database.
      *
@@ -39,14 +37,12 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
         'handler_services.id as handler_service.id',
         'handler_services.name as handler_service.name',
         'handler_services.url as handler_service.url',
+        'handler_services.handler_id as handler_service.handler_id',
         'handler_services.enabled as handler_service.enabled',
         'handler_services.listens as handler_service.listens',
         'handler_services.created_at as handler_service.created_at',
-        'handler_services.updated_at as handler_service.updated_at',
-        'handlers.auth_password as handler_service.auth_password',
-        'handlers.auth_username as handler_service.auth_username',
+        'handler_services.updated_at as handler_service.updated_at'
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -58,7 +54,6 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
         'type' => 'string',
         'created_at' => 'date'*/
     ];
-
     /**
      * {@inheritdoc}
      */
@@ -72,7 +67,6 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
             'hydrate'    => false,
             'nullable'   => false
         ],
-
         'handler_service' => [
             'type'       => 'MANY_TO_ONE',
             'table'      => 'handler_services',
@@ -83,6 +77,7 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
                 'id',
                 'name',
                 'url',
+                'handler_id',
                 'listens',
                 'enabled',
                 'created_at',
@@ -164,7 +159,6 @@ class DBService extends AbstractSQLDBRepository implements ServiceInterface {
     public function getAllByCompanyIdAndListener(int $companyId, string $event) : Collection {
         $collection = $this->query()
             ->join('handler_services', 'handler_services.id', 'handler_service_id')
-            ->join('handlers', 'handler_services.handler_id', 'handlers.id')
             ->where('services.company_id', $companyId)
             ->where('handler_services.enabled', true)
             ->whereRaw("handler_services.listens::text like '%$event%'")

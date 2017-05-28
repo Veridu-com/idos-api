@@ -50,4 +50,10 @@ class HandlerService extends AbstractEntity {
      * {@inheritdoc}
      */
     protected $json = ['listens'];
+    /**
+     * {@inheritdoc}
+     */
+    // public $relationships = [
+    //     'handler' => 'Handler'
+    // ];
 }

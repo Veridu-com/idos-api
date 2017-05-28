@@ -15,6 +15,7 @@ use App\Listener\AbstractListener;
 use App\Listener\ListenerInterface;
 use App\Repository\Company\CredentialInterface;
 use App\Repository\Company\SettingInterface;
+use App\Repository\HandlerInterface;
 use App\Repository\ServiceInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -38,6 +39,12 @@ class ScrapeScheduler extends AbstractListener {
      * @var \App\Repository\ServiceInterface
      */
     private $serviceRepository;
+    /**
+     * Handler Repository instance.
+     *
+     * @var \App\Repository\HandlerInterface
+     */
+    private $handlerRepository;
     /**
      * Setting Repository instance.
      *
@@ -140,6 +147,8 @@ class ScrapeScheduler extends AbstractListener {
                     ->create('Service'),
                 $repositoryFactory
                     ->create('Company\Setting'),
+                $repositoryFactory
+                    ->create('Handler'),
                 $container
                     ->get('eventFactory'),
                 $container
@@ -156,6 +165,7 @@ class ScrapeScheduler extends AbstractListener {
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \App\Repository\ServiceInterface            $serviceRepository
      * @param \App\Repository\Company\SettingInterface    $settingRepository
+     * @param \App\Repository\HandlerInterface            $handlerRepository
      * @param \App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                       $emitter
      * @param \GearmanClient                              $gearmanClient
@@ -166,6 +176,7 @@ class ScrapeScheduler extends AbstractListener {
         CredentialInterface $credentialRepository,
         ServiceInterface $serviceRepository,
         SettingInterface $settingRepository,
+        HandlerInterface $handlerRepository,
         EventFactory $eventFactory,
         Emitter $emitter,
         \GearmanClient $gearmanClient
@@ -173,6 +184,7 @@ class ScrapeScheduler extends AbstractListener {
         $this->credentialRepository     = $credentialRepository;
         $this->serviceRepository        = $serviceRepository;
         $this->settingRepository        = $settingRepository;
+        $this->handlerRepository        = $handlerRepository;
         $this->eventFactory             = $eventFactory;
         $this->emitter                  = $emitter;
         $this->gearmanClient            = $gearmanClient;

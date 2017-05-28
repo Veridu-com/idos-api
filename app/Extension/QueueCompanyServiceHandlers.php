@@ -19,6 +19,12 @@ trait QueueCompanyServiceHandlers {
      */
     private $serviceRepository;
     /**
+     * Handler Repository instance.
+     *
+     * @var \App\Repository\HandlerInterface
+     */
+    private $handlerRepository;
+    /**
      * Event Factory instance.
      *
      * @var \App\Factory\Event
@@ -62,14 +68,15 @@ trait QueueCompanyServiceHandlers {
 
         $success = true;
         foreach ($services as $service) {
-            $service = $service->handler_service();
+            $handlerService = $service->handler_service();
+            $handler        = $this->handlerRepository->find($handlerService->handlerId);
 
             // create payload
             $payload = [
-                'name'    => $service->name,
-                'user'    => $service->authUsername,
-                'pass'    => $service->authPassword,
-                'url'     => $service->url,
+                'name'    => $handlerService->name,
+                'user'    => $handler->authUsername,
+                'pass'    => $handler->authPassword,
+                'url'     => $handlerService->url,
                 'handler' => $event->getServiceHandlerPayload($mergePayload)
             ];
 

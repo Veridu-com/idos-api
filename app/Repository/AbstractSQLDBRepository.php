@@ -791,7 +791,12 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $relationTableForeignKey = $relationProperties['foreignKey'];
         $relationKey             = $relationProperties['key'];
 
-        $query = $query->join($relationTable, $relationTable . '.' . $relationTableForeignKey, '=', $this->getTableName() . '.' . $relationKey);
+        $query = $query->join(
+            $relationTable,
+            sprintf('%s.%s', $relationTable, $relationTableForeignKey),
+            '=',
+            sprintf('%s.%s', $this->getTableName(), $relationKey)
+        );
 
         return $query;
     }
@@ -853,7 +858,12 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
                 $relationTableForeignKey = $relationProperties['foreignKey'];
                 $tableKey                = $relationProperties['key'];
 
-                $query = $query->join($relationTable, $relationTable . '.' . $relationTableForeignKey, '=', $table . '.' . $tableKey);
+                $query = $query->join(
+                    $relationTable,
+                    sprintf('%s.%s', $relationTable, $relationTableForeignKey),
+                    '=',
+                    sprintf('%s.%s', $table, $tableKey)
+                );
                 break;
             case 'MANY_TO_ONE':
                 $relationTableKey = $relationProperties['key'];
@@ -862,7 +872,12 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
 
                 $joinMethod = $nullable ? 'leftJoin' : 'join';
 
-                $query = $query->$joinMethod($relationTable, $table . '.' . $tableForeignKey, '=', $relationTable . '.' . $relationTableKey);
+                $query = $query->$joinMethod(
+                    $relationTable,
+                    sprintf('%s.%s', $table, $tableForeignKey),
+                    '=',
+                    sprintf('%s.%s', $relationTable, $relationTableKey)
+                );
                 break;
             case 'MANY_TO_MANY':
                 $query = $query->join();
@@ -884,17 +899,16 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             $relationForeignKeyColumn = null;
             switch ($relationProperties['type']) {
                 case 'ONE_TO_ONE':
-                    // FIXME This should throw a RuntimeException if it must be implemented
-                    break;
+                    throw new \RuntimeException('ONE_TO_ONE Relationship not implemented!');
                 case 'ONE_TO_MANY':
-                    // FIXME This should throw a RuntimeException if it must be implemented
-                    break;
+                    throw new \RuntimeException('ONE_TO_MANY Relationship not implemented!');
                 case 'MANY_TO_ONE':
                     $relationForeignKeyColumn = $relationProperties['foreignKey'];
                     break;
                 case 'MANY_TO_MANY':
-                    // FIXME This should throw a RuntimeException if it must be implemented
-                    break;
+                    throw new \RuntimeException('MANY_TO_MANY Relationship not implemented!');
+                default:
+                    throw new \RuntimeException('Invalid Relationship!');
             }
 
             if ($relationForeignKeyColumn === $foreignKeyColumn) {
@@ -932,7 +946,13 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         }
 
         foreach ($columns[$relation] as $column) {
-            $getColumns[] = $relationTable . '.' . $column . ' as ' . $relation . '.' . $column;
+            $getColumns[] = sprintf(
+                '%s.%s as %s.%s',
+                $relationTable,
+                $column,
+                $relation,
+                $column
+            );
         }
 
         return $getColumns;
