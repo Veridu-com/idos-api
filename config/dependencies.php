@@ -550,7 +550,7 @@ $container['gearmanClient'] = function (ContainerInterface $container) : Gearman
         $settings = $container->get('settings');
         $gearman  = new \GearmanClient();
 
-        $gearman->addOptions(\GEARMAN_CLIENT_FREE_TASKS);
+        $gearman->addOptions(\GEARMAN_CLIENT_NON_BLOCKING | \GEARMAN_CLIENT_FREE_TASKS);
 
         if (isset($settings['gearman']['timeout'])) {
             $gearman->setTimeout($settings['gearman']['timeout']);

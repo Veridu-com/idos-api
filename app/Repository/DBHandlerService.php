@@ -26,13 +26,51 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
      * @var string
      */
     protected $entityName = 'HandlerService';
-
+    /**
+     * {@inheritdoc}
+     */
+    // private $queryAttributes = [
+    //     'handler_services.*',
+    //     'handlers.id as handlers.id',
+    //     'handlers.name as handlers.name',
+    //     'handlers.role as handlers.role',
+    //     'handlers.auth_password as handler.auth_password',
+    //     'handlers.auth_username as handler.auth_username',
+    //     'handlers.public as handlers.public',
+    //     'handlers.private as handlers.private',
+    //     'handlers.enabled as handlers.enabled',
+    //     'handlers.created_at as handler.created_at',
+    //     'handlers.updated_at as handler.updated_at'
+    // ];
     /**
      * {@inheritdoc}
      */
     protected $filterableKeys = [
         'name' => 'string'
     ];
+    /**
+     * {@inheritdoc}
+     */
+    // protected $relationships = [
+    //     'handler' => [
+    //         'type'       => 'MANY_TO_ONE',
+    //         'table'      => 'handlers',
+    //         'foreignKey' => 'handler_id',
+    //         'key'        => 'id',
+    //         'entity'     => 'Handler',
+    //         'hydrate'    => [
+    //             'id',
+    //             'name',
+    //             'role',
+    //             'auth_username',
+    //             'auth_password',
+    //             'public',
+    //             'private',
+    //             'enabled'
+    //         ],
+    //         'nullable' => false
+    //     ]
+    // ];
 
     /**
      * Retrieves collection of Handler Services by companyId.
@@ -63,8 +101,9 @@ class DBHandlerService extends AbstractSQLDBRepository implements HandlerService
     public function getByHandlerId(int $handlerId, array $queryParams = []) : Collection {
         return $this->findBy(
             [
-            'handler_id' => $handlerId
-            ], $queryParams
+                'handler_id' => $handlerId
+            ],
+            $queryParams
         );
     }
 

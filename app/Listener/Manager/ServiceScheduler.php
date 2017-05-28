@@ -13,6 +13,7 @@ use App\Factory\Event as EventFactory;
 use App\Listener\AbstractListener;
 use App\Listener\ListenerInterface;
 use App\Repository\Company\CredentialInterface;
+use App\Repository\HandlerInterface;
 use App\Repository\ServiceInterface;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
@@ -42,6 +43,12 @@ class ServiceScheduler extends AbstractListener {
      * @var \App\Repository\ServiceInterface
      */
     private $serviceRepository;
+    /**
+     * Handler Repository interface.
+     *
+     * @var \App\Repository\HandlerInterface
+     */
+    private $handlerRepository;
     /**
      * Event Factory instance.
      *
@@ -73,6 +80,8 @@ class ServiceScheduler extends AbstractListener {
                     ->create('Company\Credential'),
                 $repositoryFactory
                     ->create('Service'),
+                $repositoryFactory
+                    ->create('Handler'),
                 $container
                     ->get('eventFactory'),
                 $container
@@ -88,6 +97,7 @@ class ServiceScheduler extends AbstractListener {
      *
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \App\Repository\ServiceInterface            $serviceRepository
+     * @param \App\Repository\HandlerInterface            $handlerRepository
      * @param \App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                       $emitter
      * @param \GearmanClient                              $gearmanClient
@@ -97,12 +107,14 @@ class ServiceScheduler extends AbstractListener {
     public function __construct(
         CredentialInterface $credentialRepository,
         ServiceInterface $serviceRepository,
+        HandlerInterface $handlerRepository,
         EventFactory $eventFactory,
         Emitter $emitter,
         \GearmanClient $gearmanClient
     ) {
         $this->credentialRepository = $credentialRepository;
         $this->serviceRepository    = $serviceRepository;
+        $this->handlerRepository    = $handlerRepository;
         $this->eventFactory         = $eventFactory;
         $this->emitter              = $emitter;
         $this->gearmanClient        = $gearmanClient;
