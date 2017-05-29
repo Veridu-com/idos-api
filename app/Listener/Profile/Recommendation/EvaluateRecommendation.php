@@ -14,6 +14,7 @@ use App\Factory\Event as EventFactory;
 use App\Listener\AbstractListener;
 use App\Listener\ListenerInterface;
 use App\Repository\Company\SettingInterface;
+use App\Repository\HandlerInterface;
 use App\Repository\ServiceInterface;
 use App\Repository\UserInterface;
 use Interop\Container\ContainerInterface;
@@ -40,6 +41,12 @@ class EvaluateRecommendation extends AbstractListener {
      * @var \App\Repository\ServiceInterface
      */
     private $serviceRepository;
+    /**
+     * Handler Repository instance.
+     *
+     * @var \App\Repository\HandlerInterface
+     */
+    private $handlerRepository;
     /**
      * User Repository.
      *
@@ -85,6 +92,8 @@ class EvaluateRecommendation extends AbstractListener {
                 $repositoryFactory
                     ->create('Service'),
                 $repositoryFactory
+                    ->create('Handler'),
+                $repositoryFactory
                     ->create('User'),
                 $log('Event'),
                 $container
@@ -102,6 +111,7 @@ class EvaluateRecommendation extends AbstractListener {
      *
      * @param \App\Repository\Company\SettingInterface $settingRepository
      * @param \App\Repository\ServiceInterface         $serviceRepository
+     * @param \App\Repository\HandlerInterface         $handlerRepository
      * @param \App\Repository\UserInterface            $userRepository
      * @param \Monolog\Logger                          $logger
      * @param \App\Factory\Event                       $eventFactory
@@ -113,6 +123,7 @@ class EvaluateRecommendation extends AbstractListener {
     public function __construct(
         SettingInterface $settingRepository,
         ServiceInterface $serviceRepository,
+        HandlerInterface $handlerRepository,
         UserInterface $userRepository,
         Logger $logger,
         EventFactory $eventFactory,
@@ -121,6 +132,7 @@ class EvaluateRecommendation extends AbstractListener {
     ) {
         $this->settingRepository = $settingRepository;
         $this->serviceRepository = $serviceRepository;
+        $this->handlerRepository = $handlerRepository;
         $this->userRepository    = $userRepository;
         $this->logger            = $logger;
         $this->eventFactory      = $eventFactory;
@@ -185,12 +197,13 @@ class EvaluateRecommendation extends AbstractListener {
 
         foreach ($services as $service) {
             $handlerService = $service->handler_service();
+            $handler        = $this->handlerRepository->find($handlerService->handlerId);
 
             // create payload
             $payload = [
                 'name'    => $handlerService->name,
-                'user'    => $handlerService->authUsername,
-                'pass'    => $handlerService->authPassword,
+                'user'    => $handler->authUsername,
+                'pass'    => $handler->authPassword,
                 'url'     => $handlerService->url,
                 'handler' => [
                     'username'  => $user->username,
