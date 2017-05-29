@@ -81,17 +81,6 @@ interface FeatureInterface extends RepositoryInterface {
     public function getByUserIdAndNames(int $userId, array $featureNames = []) : Collection;
 
     /**
-     * Upsert a bulk of features.
-     *
-     * @param int   $handlerId The service identifier
-     * @param int   $userId    The user identifier
-     * @param array $features  The features
-     *
-     * @return bool Success of the transaction.
-     */
-    public function upsertBulk(int $handlerId, int $userId, array $features) : bool;
-
-    /**
      * Delete features based on their user id.
      *
      * @param int   $userId

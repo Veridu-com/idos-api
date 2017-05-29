@@ -148,43 +148,6 @@ class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
     /**
      * {@inheritdoc}
      */
-    public function upsertBulk(int $handlerId, int $userId, array $features) : bool {
-        $this->beginTransaction();
-        $success = true;
-
-        foreach ($features as $key => $feature) {
-            if ($feature['type'] === 'array') {
-                $feature['value'] = json_encode($feature['value']);
-            }
-
-            // user_id, source, name, creator(service_id), type, value
-            $success = $success && $this->runRaw(
-                'INSERT INTO features (user_id, source, name, creator, type, value) VALUES (:user_id, :source, :name, :creator, :type, :value)
-                ON CONFLICT (user_id, source, creator, name)
-                DO UPDATE set value = :value, type = :type, updated_at = NOW()',
-                [
-                        'user_id' => $userId,
-                        'source'  => $feature['source'],
-                        'name'    => $feature['name'],
-                        'creator' => $handlerId,
-                        'type'    => $feature['type'],
-                        'value'   => $feature['value']
-                    ]
-            );
-        }
-
-        if ($success) {
-            $this->commit();
-        } else {
-            $this->rollBack();
-        }
-
-        return $success;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function deleteByUserId(int $userId, array $queryParams = []) : int {
         return $this->deleteByKey('user_id', $userId);
     }

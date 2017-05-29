@@ -282,22 +282,29 @@ class Feature implements HandlerInterface {
         try {
             $feature = $this->repository->create(
                 [
-                'user_id'    => $command->user->id,
-                'source'     => $command->source ? $command->source->name : null,
-                'name'       => $command->name,
-                'creator'    => $command->handler->id,
-                'type'       => $command->type,
-                'value'      => $command->value,
-                'created_at' => date('Y-m-d H:i:s')
+                    'user_id'    => $command->user->id,
+                    'source'     => $command->source ? $command->source->name : null,
+                    'name'       => $command->name,
+                    'creator'    => $command->handler->id,
+                    'type'       => $command->type,
+                    'value'      => $command->value,
+                    'created_at' => date('Y-m-d H:i:s')
                 ]
             );
 
             $this->repository->beginTransaction();
             $this->repository->upsert(
-                $feature, ['user_id', 'source', 'creator', 'name'], [
-                'type'       => $command->type,
-                'value'      => $command->value,
-                'updated_at' => date('Y-m-d H:i:s')
+                $feature,
+                [
+                    'user_id',
+                    'source',
+                    'creator',
+                    'name'
+                ],
+                [
+                    'type'       => $command->type,
+                    'value'      => $command->value,
+                    'updated_at' => date('Y-m-d H:i:s')
                 ]
             );
 
@@ -366,38 +373,83 @@ class Feature implements HandlerInterface {
         // next loop will:
         // put "source->name" on the feature register retrieved from a sourceRepository->find
         // add to featuresPerSource so we can send events by source
-        foreach ($features as $key => $feature) {
-            // sourceId => sourceEntity - if source is null add to the index 0
-            $sourceId                       = $feature['source_id'] ?? 0;
-            $featuresPerSource[$sourceId][] = $feature;
-
-            // gets the source name for every feature that has a source
-            if (isset($feature['source_id'])) {
-                if (! isset($sources[$feature['source_id']])) {
-                    $source = $this->sourceRepository->find($feature['decoded_source_id']);
-                } else {
-                    $source = $sources[$feature['source_id']];
+        $this->repository->beginTransaction();
+        try {
+            foreach ($features as $key => &$feature) {
+                if (! isset($feature['source_id'])) {
+                    continue;
                 }
 
-                $features[$key]['source']       = $source->name;
-                $sources[$feature['source_id']] = $source;
-            }
-        }
+                // gets the source name for every feature that has a source
+                if (isset($sources[$feature['source_id']])) {
+                    $source = $sources[$feature['source_id']];
+                } else {
+                    $source                         = $this->sourceRepository->find(
+                        $feature['decoded_source_id']
+                    );
+                    $sources[$feature['source_id']] = $source;
+                }
 
-        $success = $this->repository->upsertBulk($command->handler->id, $command->user->id, $features);
-        if ($success) {
+                $entity = $this->repository->create(
+                    [
+                        'user_id'    => $command->user->id,
+                        'source'     => $source->name,
+                        'name'       => $feature['name'],
+                        'creator'    => $command->handler->id,
+                        'type'       => $feature['type'],
+                        'value'      => $feature['value'],
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]
+                );
+
+                $featuresPerSource[$feature['source_id']][] = $entity;
+
+                $this->repository->upsert(
+                    $entity,
+                    [
+                        'user_id',
+                        'source',
+                        'creator',
+                        'name'
+                    ],
+                    [
+                        'type'       => $feature['type'],
+                        'value'      => $feature['value'],
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]
+                );
+            }
+
+            $this->repository->commit();
+
             // creates 1 event per source
             // sourceId will be 0 to null sources
             foreach ($featuresPerSource as $sourceId => $sourceFeatures) {
                 $source  = ($sourceId ? $sources[$sourceId] : null);
-                $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($source), $source);
+                $process = $this->getRelatedProcess(
+                    $this->processRepository,
+                    $command->user->id,
+                    $this->getProcessEventName($source),
+                    $source
+                );
 
-                $event = $this->eventFactory->create('Profile\\Feature\\CreatedBulk', $sourceFeatures, $command->user, $process, $command->credential, $source);
+                $event = $this->eventFactory->create(
+                    'Profile\\Feature\\CreatedBulk',
+                    $sourceFeatures,
+                    $command->user,
+                    $process,
+                    $command->credential,
+                    $source
+                );
                 $this->emitter->emit($event);
             }
+
+            return true;
+        } catch (\Exception $exception) {
+            $this->repository->rollBack();
         }
 
-        return $success;
+        return false;
     }
     /**
      * Deletes a Feature.
