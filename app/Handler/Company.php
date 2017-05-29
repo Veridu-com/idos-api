@@ -220,7 +220,7 @@ class Company implements HandlerInterface {
 
             return $handlerServices;
         } catch (\Exception $e) {
-            throw new Create\CompanyException('Error while trying to create a company', 500, $e);
+            throw new Create\CompanyException('Error while trying to setup new company', 500, $e);
         }
     }
 

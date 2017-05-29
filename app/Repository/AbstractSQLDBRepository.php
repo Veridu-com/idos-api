@@ -70,7 +70,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function query(?string $table = null, ?string $entityName = null) : Builder {
+    protected function query(?string $table = null, ? string $entityName = null) : Builder {
         if ($entityName === null) {
             $entityName = $this->getEntityClassName();
         }

@@ -45,6 +45,10 @@ class Feature extends AbstractEntity {
     /**
      * {@inheritdoc}
      */
+    // protected $json = ['value'];
+    /**
+     * {@inheritdoc}
+     */
     protected $secure = ['value'];
     /**
      * {@inheritdoc}
@@ -54,20 +58,19 @@ class Feature extends AbstractEntity {
     ];
 
     public function getValueAttribute($value) {
-        if ($this->attributes['type'] === 'integer') {
-            return (int) $value;
-        }
+        switch ($this->attributes['type']) {
+            case 'integer':
+                return (int) $value;
+            case 'boolean':
+                return (bool) $value;
+            case 'double':
+                return (double) $value;
+            case 'array':
+                if (is_array($value)) {
+                    return $value;
+                }
 
-        if ($this->attributes['type'] === 'boolean') {
-            return (bool) $value;
-        }
-
-        if ($this->attributes['type'] === 'double') {
-            return (double) $value;
-        }
-
-        if ($this->attributes['type'] === 'array') {
-            return json_decode($value, true);
+                return json_decode($value, true);
         }
 
         return $value;

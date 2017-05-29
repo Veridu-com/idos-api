@@ -35,8 +35,8 @@ class UpdateOneTest extends AbstractFunctional {
         $request = $this->createRequest(
             $environment, json_encode(
                 [
-                'type'  => 'string',
-                'value' => 'new value'
+                    'type'  => 'string',
+                    'value' => 'new value'
                 ]
             )
         );
@@ -49,6 +49,44 @@ class UpdateOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertSame('string', $body['data']['type']);
         $this->assertSame('new value', $body['data']['value']);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'feature/updateOne.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testArrayValue() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'type'  => 'array',
+                    'value' => ['new', 'value']
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame('array', $body['data']['type']);
+        $this->assertSame(['new', 'value'], $body['data']['value']);
 
         /*
          * Validates Response using the Json Schema.

@@ -75,7 +75,6 @@ class Handler implements RouteInterface {
      * @apiGroup Company
      * @apiAuth header token IdentityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
      * @apiAuth query token identityToken wqxehuwqwsthwosjbxwwsqwsdi A valid Identity Token
-     * @apiEndpointURIFragment
      *
      * @param \Slim\App $app
      * @param callable  $auth

@@ -186,13 +186,14 @@ class UpsertOneTest extends AbstractFunctional {
 
         $name    = 'float-feature';
         $type    = 'double';
+        $value   = 1.2;
         $request = $this->createRequest(
             $environment, json_encode(
                 [
                     'source_id' => 1321189817,
                     'name'      => $name,
                     'type'      => $type,
-                    'value'     => 1.2
+                    'value'     => $value
                 ]
             )
         );
@@ -205,7 +206,7 @@ class UpsertOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertSame($name, $body['data']['name']);
         $this->assertSame($type, $body['data']['type']);
-        $this->assertSame(1.2, $body['data']['value']);
+        $this->assertSame($value, $body['data']['value']);
         /*
          * Validates Response using the Json Schema.
          */
@@ -225,13 +226,14 @@ class UpsertOneTest extends AbstractFunctional {
 
         $name    = 'int-feature';
         $type    = 'integer';
+        $value   = 10;
         $request = $this->createRequest(
             $environment, json_encode(
                 [
                     'source_id' => 1321189817,
                     'name'      => $name,
                     'type'      => $type,
-                    'value'     => 10
+                    'value'     => $value
                 ]
             )
         );
@@ -244,7 +246,87 @@ class UpsertOneTest extends AbstractFunctional {
         $this->assertTrue($body['status']);
         $this->assertSame($name, $body['data']['name']);
         $this->assertSame($type, $body['data']['type']);
-        $this->assertSame(10, $body['data']['value']);
+        $this->assertSame($value, $body['data']['value']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
+    public function testArrayValue() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name    = 'array-feature';
+        $type    = 'array';
+        $value   = ['value1', 'value2'];
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'source_id' => 1321189817,
+                    'name'      => $name,
+                    'type'      => $type,
+                    'value'     => $value
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame($name, $body['data']['name']);
+        $this->assertSame($type, $body['data']['type']);
+        $this->assertSame($value, $body['data']['value']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+    }
+
+    public function testArrayAsObjectValue() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name    = 'array-feature';
+        $type    = 'array';
+        $value   = ['key' => 'value'];
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'source_id' => 1321189817,
+                    'name'      => $name,
+                    'type'      => $type,
+                    'value'     => $value
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame($name, $body['data']['name']);
+        $this->assertSame($type, $body['data']['type']);
+        $this->assertSame($value, $body['data']['value']);
         /*
          * Validates Response using the Json Schema.
          */

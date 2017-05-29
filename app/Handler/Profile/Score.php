@@ -251,7 +251,6 @@ class Score implements HandlerInterface {
                 ]
             );
 
-            $this->repository->beginTransaction();
             $this->repository->upsert(
                 $score, ['user_id', 'creator', 'name'], [
                 'attribute'  => $command->attribute,
@@ -261,7 +260,6 @@ class Score implements HandlerInterface {
             );
 
             $score = $this->repository->findOne($command->name, $command->handler->id, $command->user->id);
-            $this->repository->commit();
 
             if ($score->updatedAt) {
                 $event = $this->eventFactory->create('Profile\\Score\\Updated', $score, $command->credential);

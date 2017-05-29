@@ -163,10 +163,6 @@ class Feature implements HandlerInterface {
             );
         }
 
-        if (is_array($command->value)) {
-            $command->value = json_encode($command->value);
-        }
-
         $feature = $this->repository->create(
             [
                 'user_id'    => $command->user->id,
@@ -222,11 +218,11 @@ class Feature implements HandlerInterface {
             );
         }
 
-        $feature = $this->repository->findOne($command->featureId, $command->handler->id, $command->user->id);
-
-        if (is_array($command->value)) {
-            $command->value = json_encode($command->value);
-        }
+        $feature = $this->repository->findOne(
+            $command->featureId,
+            $command->handler->id,
+            $command->user->id
+        );
 
         $feature->type      = $command->type;
         $feature->value     = $command->value;
@@ -235,9 +231,22 @@ class Feature implements HandlerInterface {
         try {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
-            $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
-            $event = $this->eventFactory->create('Profile\\Feature\\Updated', $feature, $command->user, $process, $command->credential, $command->source);
+            $process = $this->getRelatedProcess(
+                $this->processRepository,
+                $command->user->id,
+                $this->getProcessEventName($command->source),
+                $command->source ? $command->source : null
+            );
+
+            $event = $this->eventFactory->create(
+                'Profile\\Feature\\Updated',
+                $feature,
+                $command->user,
+                $process,
+                $command->credential,
+                $command->source
+            );
             $this->emitter->emit($event);
         } catch (\Exception $e) {
             throw new Update\Profile\FeatureException('Error while trying to update a feature', 500, $e);
@@ -275,10 +284,6 @@ class Feature implements HandlerInterface {
             $sourceName = $command->source->name;
         }
 
-        if (is_array($command->value)) {
-            $command->value = json_encode($command->value);
-        }
-
         try {
             $feature = $this->repository->create(
                 [
@@ -292,7 +297,8 @@ class Feature implements HandlerInterface {
                 ]
             );
 
-            $this->repository->beginTransaction();
+            $serialized = $feature->serialize();
+
             $this->repository->upsert(
                 $feature,
                 [
@@ -302,14 +308,13 @@ class Feature implements HandlerInterface {
                     'name'
                 ],
                 [
-                    'type'       => $command->type,
-                    'value'      => $command->value,
+                    'type'       => $serialized['type'],
+                    'value'      => $serialized['value'],
                     'updated_at' => date('Y-m-d H:i:s')
                 ]
             );
 
             $feature = $this->repository->findOneByName($command->name, $command->handler->id, $command->source ? $command->source->name : null, $command->user->id);
-            $this->repository->commit();
 
             $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
 
@@ -335,6 +340,7 @@ class Feature implements HandlerInterface {
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
+            throw $e;
             throw new Create\Profile\FeatureException('Error while trying to upsert a feature', 404, $e);
         }
 

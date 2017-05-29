@@ -132,7 +132,6 @@ class Widgets implements ControllerInterface {
      * @param \Psr\Http\Message\ResponseInterface      $response
      *
      * @see \App\Handler\Widget::handleCreateNew
-     * @see \/app\
      *
      * @return \Psr\Http\Message\ResponseInterface
      */

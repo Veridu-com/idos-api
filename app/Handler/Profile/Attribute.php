@@ -168,11 +168,30 @@ class Attribute implements HandlerInterface {
             );
         }
 
-        $entity = $this->repository->upsertOne(
-            $command->user->id,
-            $command->name,
-            $command->value
+        $now    = date('Y-m-d H:i:s');
+        $entity = $this->repository->create(
+            [
+                'user_id'    => $command->user->id,
+                'name'       => $command->name,
+                'value'      => $command->value,
+                'created_at' => $now
+            ]
         );
+
+        $serialized = $entity->serialize();
+
+        $this->repository->upsert(
+            $entity,
+            [
+                'user_id',
+                'name'
+            ],
+            [
+                'value'      => $serialized['value'],
+                'updated_at' => $now
+            ]
+        );
+
         $event = $this->eventFactory->create('Profile\\Attribute\\Created', $entity, $command->credential);
         $this->emitter->emit($event);
 
@@ -214,6 +233,8 @@ class Attribute implements HandlerInterface {
             $now = date('Y-m-d H:i:s');
 
             foreach ($entities as $entity) {
+                $serialized = $entity->serialize();
+
                 $this->repository->upsert(
                     $entity,
                     [
@@ -221,7 +242,7 @@ class Attribute implements HandlerInterface {
                         'name'
                     ],
                     [
-                        'value'      => $entity->value,
+                        'value'      => $serialized['value'],
                         'updated_at' => $now
                     ]
                 );
