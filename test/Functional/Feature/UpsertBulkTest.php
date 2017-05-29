@@ -24,7 +24,7 @@ class UpsertBulkTest extends AbstractFunctional {
         $this->uri        = sprintf('/1.0/profiles/%s/features/bulk', $this->userName);
     }
 
-    public function testSuccessNoUpsert() {
+    public function testSuccess() {
         $environment = $this->createEnvironment(
             [
                 'HTTP_CONTENT_TYPE'  => 'application/json',
