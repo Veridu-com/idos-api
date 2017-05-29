@@ -65,8 +65,6 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
      * {@inheritdoc}
      */
     public function upsertOne(int $userId, string $name, string $value) : Attribute {
-        $this->beginTransaction();
-
         $result = $this->runRaw(
             'INSERT INTO "attributes" ("user_id", "name", "value", "created_at") VALUES (:user_id, :name, :value, :created_at)
             ON CONFLICT ("user_id", "name") DO UPDATE SET "value" = :value, "updated_at" = :updated_at',
@@ -80,11 +78,8 @@ class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface 
         );
 
         if (! $result) {
-            $this->rollBack();
             throw new Create\Profile\AttributeException('Error while trying to create an attribute', 500);
         }
-
-        $this->commit();
 
         return $this->findOneByUserIdAndName($userId, $name);
     }

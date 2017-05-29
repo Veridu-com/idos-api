@@ -139,9 +139,9 @@ class Features implements ControllerInterface {
     /**
      * Creates a new Feture for the given user.
      *
-     * @apiEndpointRequiredParam body string name Friend count  Feature name
-     * @apiEndpointRequiredParam body string value 17 Feature value
-     * @apiEndpointRequiredParam body string type 17 Feature type
+     * @apiEndpointRequiredParam body string name  FriendCount Feature name
+     * @apiEndpointRequiredParam body string value 17          Feature value
+     * @apiEndpointRequiredParam body string type  integer     Feature type
      * @apiEndpointParam body int source_id 25367 Feature source_id
      * @apiEndpointResponse 201 schema/feature/createNew.json
      *
@@ -191,9 +191,9 @@ class Features implements ControllerInterface {
     /**
      * Updates one Feature of the User.
      *
-     * @apiEndpointRequiredParam body string name Friend count  Feature name
-     * @apiEndpointRequiredParam body string value 17 Feature value
-     * @apiEndpointRequiredParam body string type 17 Feature type
+     * @apiEndpointRequiredParam body string name FriendCount  Feature name
+     * @apiEndpointRequiredParam body string value 20 Feature value
+     * @apiEndpointRequiredParam body string type integer Feature type
      * @apiEndpointParam body int source_id 25367 Feature source_id
      * @apiEndpointResponse 200 schema/feature/updateOne.json
      *
@@ -237,9 +237,9 @@ class Features implements ControllerInterface {
     /**
      * Creates or updates a feature for the given user.
      *
-     * @apiEndpointRequiredParam body string name Friend count  Feature name
-     * @apiEndpointRequiredParam body string value 17 Feature value
-     * @apiEndpointRequiredParam body string type 17 Feature type
+     * @apiEndpointRequiredParam body string name FriendCount  Feature name
+     * @apiEndpointRequiredParam body string value 10 Feature value
+     * @apiEndpointRequiredParam body string type integer Feature type
      * @apiEndpointParam body int source_id 25367 Feature source_id
      * @apiEndpointResponse 201 schema/feature/createNew.json
      *

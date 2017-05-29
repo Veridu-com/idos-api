@@ -184,6 +184,9 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      */
     protected function setAttribute(string $key, $value) : EntityInterface {
         $key = $this->toSnakeCase($key);
+        if (is_resource($value)) {
+            $value = stream_get_contents($value, -1, 0);
+        }
 
         if ($this->hasSetMutator($key)) {
             $method = sprintf('set%sAttribute', $this->toCamelCase($key));
@@ -209,14 +212,20 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         // Tests if it is a compressed field
         if ((in_array($key, $this->compressed)) && ($value)) {
-            if (is_resource($value)) {
-                $value = stream_get_contents($value, -1, 0);
+            if (is_array($value)) {
+                $encoded = json_encode($value);
+                if ($encoded === false) {
+                    throw new \RuntimeException('pre-compress failed');
+                }
+
+                $value = sprintf('serialized:%s', $encoded);
+                unset($encoded);
             }
 
-            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) !== 0)) {
+            if (substr_compare((string) $value, 'compressed:', 0, 11) !== 0) {
                 $compressed = gzcompress($value);
                 if ($compressed === false) {
-                    throw new \RuntimeException('compressed failed');
+                    throw new \RuntimeException('compress failed');
                 }
 
                 $value = sprintf(
@@ -229,11 +238,17 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
         // Tests if it is a secure field
         if ((in_array($key, $this->secure)) && ($value)) {
-            if (is_resource($value)) {
-                $value = stream_get_contents($value, -1, 0);
+            if (is_array($value)) {
+                $encoded = json_encode($value);
+                if ($encoded === false) {
+                    throw new \RuntimeException('pre-secure failed');
+                }
+
+                $value = sprintf('serialized:%s', $encoded);
+                unset($encoded);
             }
 
-            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) !== 0)) {
+            if (substr_compare((string) $value, 'secure:', 0, 7) !== 0) {
                 $value = sprintf(
                     'secure:%s',
                     $this->vault->lock((string) $value)
@@ -272,11 +287,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
         }
 
         if ((in_array($key, $this->secure)) && ($value)) {
-            if (is_resource($value)) {
-                $value = stream_get_contents($value, -1, 0);
-            }
-
-            if (($value) && (substr_compare((string) $value, 'secure:', 0, 7) === 0)) {
+            if (substr_compare((string) $value, 'secure:', 0, 7) === 0) {
                 $unlocked = $this->vault->unlock(substr($value, 7));
                 if ($unlocked === null) {
                     throw new \RuntimeException('decrypt failed');
@@ -285,14 +296,20 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
                 $value = $unlocked;
                 unset($unlocked);
             }
+
+            if (($value) && (substr_compare((string) $value, 'serialized:', 0, 11) === 0)) {
+                $decoded = json_decode(substr($value, 11), true);
+                if ($decoded === null) {
+                    throw new \RuntimeException('post-secure failed');
+                }
+
+                $value = $decoded;
+                unset($decoded);
+            }
         }
 
         if ((in_array($key, $this->compressed)) && ($value)) {
-            if (is_resource($value)) {
-                $value = stream_get_contents($value, -1, 0);
-            }
-
-            if (($value) && (substr_compare((string) $value, 'compressed:', 0, 11) === 0)) {
+            if (substr_compare((string) $value, 'compressed:', 0, 11) === 0) {
                 $uncompressed = gzuncompress(substr($value, 11));
                 if ($uncompressed === false) {
                     throw new \RuntimeException('uncompress failed');
@@ -300,6 +317,16 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
 
                 $value = $uncompressed;
                 unset($uncompressed);
+            }
+
+            if (($value) && (substr_compare((string) $value, 'serialized:', 0, 11) === 0)) {
+                $decoded = json_decode(substr($value, 11), true);
+                if ($decoded === null) {
+                    throw new \RuntimeException('post-compress failed');
+                }
+
+                $value = $decoded;
+                unset($decoded);
             }
         }
 

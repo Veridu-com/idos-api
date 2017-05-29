@@ -6,7 +6,7 @@
     "properties": {
         "id": {
             "description":"Feature Id",
-            "type": "number", 
+            "type": "number",
             "pattern": ""
         },
         "name": {
@@ -32,7 +32,7 @@
         },
         "value": {
             "description": "Feature value",
-            "type": ["string", "number", "boolean", "null"]
+            "type": ["string", "number", "boolean", "array", "object", "null"]
         },
         "source": {
             "description": "Source name",

@@ -82,6 +82,7 @@ trait QueueCompanyServiceHandlers {
 
             if ($this->queue($payload)) {
                 $this->emitter->emit($this->eventFactory->create('Manager\\WorkQueued', $event));
+
                 continue;
             }
 
