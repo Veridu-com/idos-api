@@ -34,16 +34,40 @@ class UpsertBulkTest extends AbstractFunctional {
 
         $array = [
             [
-                'name'      => 'test',
+                'name'      => 'test1',
                 'source_id' => 1321189817,
                 'type'      => 'string',
                 'value'     => 'testing'
             ],
             [
-                'name'      => 'secondTest',
+                'name'      => 'test2',
                 'source_id' => 1321189817,
-                'type'      => 'string',
-                'value'     => 'testing2'
+                'type'      => 'integer',
+                'value'     => 10
+            ],
+            [
+                'name'      => 'test3',
+                'source_id' => 1321189817,
+                'type'      => 'float',
+                'value'     => 1.2
+            ],
+            [
+                'name'      => 'test4',
+                'source_id' => 1321189817,
+                'type'      => 'boolean',
+                'value'     => false
+            ],
+            [
+                'name'      => 'test5',
+                'source_id' => 1321189817,
+                'type'      => 'array',
+                'value'     => ['a', 'b', 'c']
+            ],
+            [
+                'name'      => 'test6',
+                'source_id' => 1321189817,
+                'type'      => 'array',
+                'value'     => ['a' => 'b']
             ]
         ];
 

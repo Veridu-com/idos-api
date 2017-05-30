@@ -307,18 +307,14 @@ class Features implements ControllerInterface {
             ->setParameter('credential', $credential)
             ->setParameter('handler', $handler);
 
-        $success = $this->commandBus->handle($command);
-
-        $body = [
-            'status' => $success
-        ];
+        $features = $this->commandBus->handle($command);
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
             ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
-            ->setParameter('body', $body);
+            ->setParameter('body', ['data' => $features->toArray()]);
 
         return $this->commandBus->handle($command);
     }
