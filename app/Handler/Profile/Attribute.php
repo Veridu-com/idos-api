@@ -21,6 +21,7 @@ use App\Factory\Event;
 use App\Handler\HandlerInterface;
 use App\Repository\Profile\AttributeInterface;
 use App\Validator\Profile\Attribute as AttributeValidator;
+use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
@@ -208,9 +209,9 @@ class Attribute implements HandlerInterface {
      * @throws \App\Exception\Validate\Profile\AttributeException
      * @throws \App\Exception\Create\Profile\AttributeException
      *
-     * @return array entities
+     * @return \Illuminate\Support\Collection entities
      */
-    public function handleUpsertBulk(UpsertBulk $command) : array {
+    public function handleUpsertBulk(UpsertBulk $command) : Collection {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertAttributeArray($command->attributes);
@@ -223,16 +224,14 @@ class Attribute implements HandlerInterface {
             );
         }
 
-        $entities = [];
-        foreach ($command->attributes as $attribute) {
-            $entities[] = $this->repository->create($attribute);
-        }
-
         try {
-            $this->repository->beginTransaction();
             $now = date('Y-m-d H:i:s');
 
-            foreach ($entities as $entity) {
+            $entities = [];
+            $this->repository->beginTransaction();
+            foreach ($command->attributes as $attribute) {
+                $entity = $this->repository->create($attribute);
+
                 $serialized = $entity->serialize();
 
                 $this->repository->upsert(
@@ -246,18 +245,20 @@ class Attribute implements HandlerInterface {
                         'updated_at' => $now
                     ]
                 );
+
+                $entities[] = $entity;
             }
 
             $event = $this->eventFactory->create('Profile\\Attribute\\UpsertedBulk', $command->attributes, $command->user, $command->credential);
             $this->emitter->emit($event);
 
             $this->repository->commit();
+
+            return new Collection($entities);
         } catch (\Exception $e) {
             $this->repository->rollBack();
             throw new UpsertException('Error while upserting attributes.');
         }
-
-        return $entities;
     }
 
     /**

@@ -18,6 +18,7 @@ use App\Entity\Profile\Feature as FeatureEntity;
 use App\Exception\Create;
 use App\Exception\NotFound;
 use App\Exception\Update;
+use App\Exception\Upsert\Profile\FeatureException as UpsertException;
 use App\Exception\Validate;
 use App\Extension\RetrieveProcess;
 use App\Factory\Event;
@@ -26,6 +27,7 @@ use App\Repository\Profile\FeatureInterface;
 use App\Repository\Profile\ProcessInterface;
 use App\Repository\Profile\SourceInterface;
 use App\Validator\Profile\Feature as FeatureValidator;
+use Illuminate\Support\Collection;
 use Interop\Container\ContainerInterface;
 use League\Event\Emitter;
 use Respect\Validation\Exceptions\ValidationException;
@@ -340,7 +342,6 @@ class Feature implements HandlerInterface {
 
             $this->emitter->emit($event);
         } catch (\Exception $e) {
-            throw $e;
             throw new Create\Profile\FeatureException('Error while trying to upsert a feature', 404, $e);
         }
 
@@ -352,9 +353,9 @@ class Feature implements HandlerInterface {
      *
      * @param \App\Command\Profile\Feature\UpsertBulk $command
      *
-     * @return bool
+     * @return \Illuminate\Support\Collection
      */
-    public function handleUpsertBulk(UpsertBulk $command) : bool {
+    public function handleUpsertBulk(UpsertBulk $command) : Collection {
         try {
             $this->validator->assertUser($command->user);
             $this->validator->assertCredential($command->credential);
@@ -372,16 +373,16 @@ class Feature implements HandlerInterface {
             throw new ValidationException('Your bulk upsert cannot exceed 500 items.');
         }
 
-        $features          = $command->features;
-        $sources           = [];
-        $featuresPerSource = [];
+        $sources   = [];
+        $perSource = [];
 
         // next loop will:
         // put "source->name" on the feature register retrieved from a sourceRepository->find
-        // add to featuresPerSource so we can send events by source
-        $this->repository->beginTransaction();
+        // add to $perSource so we can send events by source
         try {
-            foreach ($features as $key => &$feature) {
+            $features = [];
+            $this->repository->beginTransaction();
+            foreach (array_values($command->features) as $key => $feature) {
                 if (! isset($feature['source_id'])) {
                     continue;
                 }
@@ -408,7 +409,8 @@ class Feature implements HandlerInterface {
                     ]
                 );
 
-                $featuresPerSource[$feature['source_id']][] = $entity;
+                $serialized                         = $entity->serialize();
+                $perSource[$feature['source_id']][] = $entity;
 
                 $this->repository->upsert(
                     $entity,
@@ -419,18 +421,18 @@ class Feature implements HandlerInterface {
                         'name'
                     ],
                     [
-                        'type'       => $feature['type'],
-                        'value'      => $feature['value'],
+                        'type'       => $serialized['type'],
+                        'value'      => $serialized['value'],
                         'updated_at' => date('Y-m-d H:i:s')
                     ]
                 );
-            }
 
-            $this->repository->commit();
+                $features[] = $entity;
+            }
 
             // creates 1 event per source
             // sourceId will be 0 to null sources
-            foreach ($featuresPerSource as $sourceId => $sourceFeatures) {
+            foreach ($perSource as $sourceId => $sourceFeatures) {
                 $source  = ($sourceId ? $sources[$sourceId] : null);
                 $process = $this->getRelatedProcess(
                     $this->processRepository,
@@ -450,12 +452,13 @@ class Feature implements HandlerInterface {
                 $this->emitter->emit($event);
             }
 
-            return true;
+            $this->repository->commit();
+
+            return new Collection($features);
         } catch (\Exception $exception) {
             $this->repository->rollBack();
+            throw new UpsertException('Failed to execute upsert bulk', 500, $exception);
         }
-
-        return false;
     }
     /**
      * Deletes a Feature.
