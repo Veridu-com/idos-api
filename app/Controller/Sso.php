@@ -8,31 +8,29 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Exception\AppException;
 use App\Factory\Command;
+use App\Helper\SocialSettings;
 use App\Repository\Company\CredentialInterface;
-use App\Repository\Company\SettingInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Collection;
 
 /**
  * Handles requests to /sso.
  */
 class Sso implements ControllerInterface {
     /**
-     * Setting Repository instance.
-     *
-     * @var \App\Repository\Company\SettingInterface
-     */
-    private $settingRepository;
-    /**
      * Credential Repository instance.
      *
      * @var \App\Repository\Company\CredentialInterface
      */
     private $credentialRepository;
+    /**
+     * Social Settings Helper instance.
+     *
+     * @var \App\Helper\SocialSettings;
+     */
+    private $socialSettings;
     /**
      * Command Bus instance.
      *
@@ -45,34 +43,25 @@ class Sso implements ControllerInterface {
      * @var \App\Factory\Command
      */
     private $commandFactory;
-    /**
-     * Configurations settings.
-     *
-     * @var \Slim\Collection
-     */
-    private $settings;
 
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Company\SettingInterface    $settingRepository
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
-     * @param \Slim\Collection                            $settings
+     * @param \App\Helper\SocialSettings                  $socialSettings
      * @param \League\Tactician\CommandBus                $commandBus
      * @param \App\Factory\Command                        $commandFactory
      *
      * @return void
      */
     public function __construct(
-        SettingInterface $settingRepository,
         CredentialInterface $credentialRepository,
-        Collection $settings,
+        SocialSettings $socialSettings,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->settingRepository    = $settingRepository;
         $this->credentialRepository = $credentialRepository;
-        $this->settings             = $settings;
+        $this->socialSettings       = $socialSettings;
         $this->commandBus           = $commandBus;
         $this->commandFactory       = $commandFactory;
     }
@@ -90,7 +79,7 @@ class Sso implements ControllerInterface {
      */
     public function listAll(ServerRequestInterface $request, ResponseInterface $response) : ResponseInterface {
         $body = [
-            'data' => $this->settings['sso_providers'],
+            'data' => $this->socialSettings->getProviderList(),
         ];
 
         $command = $this->commandFactory->create('ResponseDispatch');
@@ -117,7 +106,7 @@ class Sso implements ControllerInterface {
             'data' => [
                 'enabled' => in_array(
                     $request->getAttribute('providerName'),
-                    $this->settings['sso_providers']
+                    $this->socialSettings->getProviderList()
                 )
             ]
         ];
@@ -155,22 +144,6 @@ class Sso implements ControllerInterface {
         $credentialPubKey = $request->getParsedBodyParam('credential');
         $credential       = $this->credentialRepository->findByPubKey($credentialPubKey);
 
-        $availableProviders = $this->settings['sso_providers'];
-        if (! in_array($sourceName, $availableProviders)) {
-            throw new AppException('Unsupported Provider', 400);
-        }
-
-        // hosted social application (credential based)
-        $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $sourceName);
-        $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $sourceName);
-        $credentialSettingVer = sprintf('%s.%s.version', $credentialPubKey, $sourceName);
-        // hosted social application (company based)
-        $providerSettingKey = sprintf('%s.key', $sourceName);
-        $providerSettingSec = sprintf('%s.secret', $sourceName);
-        $providerSettingVer = sprintf('%s.version', $sourceName);
-
-        $settings = $this->settingRepository->getSourceTokens($credential->companyId, $credentialPubKey, $sourceName);
-
         switch ($sourceName) {
             case 'amazon':
                 $command = $this->commandFactory->create('Sso\\CreateNewAmazon');
@@ -200,31 +173,15 @@ class Sso implements ControllerInterface {
                 $command = $this->commandFactory->create('Sso\\CreateNewYahoo');
                 break;
             default:
-                throw new \Exception('Invalid provider.');
+                throw new \AppException('Unsupported provider.', 400);
         }
 
-        $socialTokens = $this->settings['social_tokens'][$sourceName] ?? null;
-
-        if ($socialTokens) {
-            $command->setParameter('appKey', $socialTokens['key'] ?? null);
-            $command->setParameter('appSecret', $socialTokens['secret'] ?? null);
-        }
-
-        foreach ($settings as $setting) {
-            if (in_array($setting->property, [$credentialSettingKey, $providerSettingKey])) {
-                $command->setParameter('appKey', $setting->value);
-            }
-
-            if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
-                $command->setParameter('appSecret', $setting->value);
-            }
-
-            if (in_array($setting->property, [$credentialSettingVer, $providerSettingVer])) {
-                $command->setParameter('apiVersion', $setting->value);
-            }
-        }
+        $this->socialSettings->load($credential->companyId, $credentialPubKey, $sourceName);
 
         $command
+            ->setParameter('appKey', $this->socialSettings->getAppKey())
+            ->setParameter('appSecret', $this->socialSettings->getAppSecret())
+            ->setParameter('apiVersion', $this->socialSettings->getApiVersion())
             ->setParameter('ipAddress', $request->getAttribute('ip_address'))
             ->setParameter('accessToken', $request->getParsedBodyParam('access_token'))
             ->setParameter('credentialPubKey', $credentialPubKey);
