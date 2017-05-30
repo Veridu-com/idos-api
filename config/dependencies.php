@@ -58,7 +58,7 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
     return function (
         ServerRequestInterface $request,
         ResponseInterface $response,
-        \Exception $exception
+        \Throwable $exception
     ) use ($container) {
         $settings = $container->get('settings');
         $response = $container
@@ -176,7 +176,9 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
 };
 
 // PHP Error Handler
-$container['phpErrorHandler'] = $container['errorHandler'];
+$container['phpErrorHandler'] = function (ContainerInterface $container) : callable {
+    return $container->errorHandler;
+};
 
 // Slim Not Found Handler
 $container['notFoundHandler'] = function (ContainerInterface $container) : callable {
@@ -549,6 +551,18 @@ $container['ssoAuth'] = function (ContainerInterface $container) : callable {
             $settings['sso_providers_scopes'][$provider]
         );
     };
+};
+
+// Social Settings
+$container['socialSettings'] = function (ContainerInterface $container) : Helper\SocialSettings {
+    $settings = $container->get('settings');
+
+    return new Helper\SocialSettings(
+        $container
+            ->get('repositoryFactory')
+            ->create('Company\\Setting'),
+        $settings['social_tokens']
+    );
 };
 
 // Gearman Client

@@ -11,10 +11,10 @@ namespace App\Listener\Manager;
 use App\Entity\Company\Credential;
 use App\Extension\QueueCompanyServiceHandlers;
 use App\Factory\Event as EventFactory;
+use App\Helper\SocialSettings;
 use App\Listener\AbstractListener;
 use App\Listener\ListenerInterface;
 use App\Repository\Company\CredentialInterface;
-use App\Repository\Company\SettingInterface;
 use App\Repository\HandlerInterface;
 use App\Repository\ServiceInterface;
 use Interop\Container\ContainerInterface;
@@ -46,11 +46,11 @@ class ScrapeScheduler extends AbstractListener {
      */
     private $handlerRepository;
     /**
-     * Setting Repository instance.
+     * Social Settings Helper instance.
      *
-     * @var \App\Repository\Company\SettingInterface
+     * @var \App\Helper\SocialSettings
      */
-    private $settingRepository;
+    private $socialSettings;
     /**
      * Event Factory instance.
      *
@@ -71,69 +71,6 @@ class ScrapeScheduler extends AbstractListener {
     private $gearmanClient;
 
     /**
-     * Loads application Key/Secret and API Version.
-     *
-     * @param \App\Entity\Company\Credential $credential
-     * @param string                         $sourceName
-     *
-     * @return array
-     */
-    private function loadSettings(Credential $credential, string $sourceName) : array {
-        $credentialPubKey = $credential->public;
-
-        // hosted social application (credential based)
-        $credentialSettingKey = sprintf('%s.%s.key', $credentialPubKey, $sourceName);
-        $credentialSettingSec = sprintf('%s.%s.secret', $credentialPubKey, $sourceName);
-        $credentialSettingVer = sprintf('%s.%s.version', $credentialPubKey, $sourceName);
-
-        // hosted social application (company based)
-        $providerSettingKey = sprintf('%s.key', $sourceName);
-        $providerSettingSec = sprintf('%s.secret', $sourceName);
-        $providerSettingVer = sprintf('%s.version', $sourceName);
-
-        $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
-            $credential->companyId,
-            'AppTokens',
-            [
-                $credentialSettingKey,
-                $credentialSettingSec,
-                $credentialSettingVer
-            ]
-        );
-
-        if (count($settings) < 2) {
-            $settings = $this->settingRepository->findByCompanyIdSectionAndProperties(
-                $credential->companyId,
-                'AppTokens',
-                [
-                    $providerSettingKey,
-                    $providerSettingSec,
-                    $providerSettingVer
-                ]
-            );
-        }
-
-        $appKey     = null;
-        $appSecret  = null;
-        $apiVersion = null;
-        foreach ($settings as $setting) {
-            if (in_array($setting->property, [$credentialSettingKey, $providerSettingKey])) {
-                $appKey = $setting->value;
-            }
-
-            if (in_array($setting->property, [$credentialSettingSec, $providerSettingSec])) {
-                $appSecret = $setting->value;
-            }
-
-            if (in_array($setting->property, [$credentialSettingVer, $providerSettingVer])) {
-                $apiVersion = $setting->value;
-            }
-        }
-
-        return [$appKey, $appSecret, $apiVersion];
-    }
-
-    /**
      * {@inheritdoc}
      */
     public static function register(ContainerInterface $container) : void {
@@ -146,9 +83,9 @@ class ScrapeScheduler extends AbstractListener {
                 $repositoryFactory
                     ->create('Service'),
                 $repositoryFactory
-                    ->create('Company\Setting'),
-                $repositoryFactory
                     ->create('Handler'),
+                $container
+                    ->get('socialSettings'),
                 $container
                     ->get('eventFactory'),
                 $container
@@ -164,8 +101,8 @@ class ScrapeScheduler extends AbstractListener {
      *
      * @param \App\Repository\Company\CredentialInterface $credentialRepository
      * @param \App\Repository\ServiceInterface            $serviceRepository
-     * @param \App\Repository\Company\SettingInterface    $settingRepository
      * @param \App\Repository\HandlerInterface            $handlerRepository
+     * @param \App\Repository\Company\SocialSettings      $socialSettings
      * @param \App\Factory\Event                          $eventFactory
      * @param \League\Event\Emitter                       $emitter
      * @param \GearmanClient                              $gearmanClient
@@ -175,16 +112,16 @@ class ScrapeScheduler extends AbstractListener {
     public function __construct(
         CredentialInterface $credentialRepository,
         ServiceInterface $serviceRepository,
-        SettingInterface $settingRepository,
         HandlerInterface $handlerRepository,
+        SocialSettings $socialSettings,
         EventFactory $eventFactory,
         Emitter $emitter,
         \GearmanClient $gearmanClient
     ) {
         $this->credentialRepository     = $credentialRepository;
         $this->serviceRepository        = $serviceRepository;
-        $this->settingRepository        = $settingRepository;
         $this->handlerRepository        = $handlerRepository;
+        $this->socialSettings           = $socialSettings;
         $this->eventFactory             = $eventFactory;
         $this->emitter                  = $emitter;
         $this->gearmanClient            = $gearmanClient;
@@ -206,16 +143,19 @@ class ScrapeScheduler extends AbstractListener {
             return;
         }
 
-        $credential                        = $this->credentialRepository->find($event->user->credentialId);
-        [$appKey, $appSecret, $apiVersion] = $this->loadSettings($credential, $event->source->name);
+        $credential = $this->credentialRepository->find($event->user->credentialId);
 
-        $mergePayload = [
-            'appKey'     => $appKey,
-            'appSecret'  => $appSecret,
-            'apiVersion' => $apiVersion
-        ];
+        $this->socialSettings->load($credential->companyId, $credential->public, $event->source->name);
 
-        $this->queueListeningServices($credential->companyId, $event, $mergePayload);
+        $this->queueListeningServices(
+            $credential->companyId,
+            $event,
+            [
+                'appKey'     => $this->socialSettings->getAppKey(),
+                'appSecret'  => $this->socialSettings->getAppSecret(),
+                'apiVersion' => $this->socialSettings->getApiVersion()
+            ]
+        );
     }
 
     /**
