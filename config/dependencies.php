@@ -14,6 +14,7 @@ use App\Handler;
 use App\Helper;
 use App\Middleware;
 use App\Middleware\Auth;
+use App\Middleware\TransactionMiddleware;
 use App\Repository;
 use GuzzleHttp\Client as HttpClient;
 use Illuminate\Database\Capsule\Manager;
@@ -324,6 +325,9 @@ $container['commandBus'] = function (ContainerInterface $container) : CommandBus
             new LoggerMiddleware(
                 $formatter,
                 $log('CommandBus')
+            ),
+            new TransactionMiddleware(
+                $container->get('sql')
             ),
             $handlerMiddleware
         ]
