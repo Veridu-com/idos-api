@@ -88,14 +88,6 @@ class CreateNew extends AbstractCommand {
             $this->privacy = $parameters['privacy'];
         }
 
-        if (isset($parameters['auth_username'])) {
-            $this->authUsername = $parameters['auth_username'];
-        }
-
-        if (isset($parameters['auth_password'])) {
-            $this->authPassword = $parameters['auth_password'];
-        }
-
         return $this;
     }
 }

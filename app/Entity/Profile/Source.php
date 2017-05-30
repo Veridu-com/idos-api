@@ -66,9 +66,9 @@ class Source extends AbstractEntity {
      * @return self
      */
     public function setTag(string $key, $value) : self {
-        $tags                     = $this->tags;
-        $tags->$key               = $value;
-        $this->attributes['tags'] = json_encode($tags);
+        $tags       = $this->getAttribute('tags');
+        $tags->$key = $value;
+        $this->setAttribute('tags', $tags);
 
         return $this;
     }
