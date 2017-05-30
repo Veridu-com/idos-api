@@ -284,6 +284,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
         $serialized['updated_at'] = date('Y-m-d H:i:s');
         $affectedRows             = $this->query()
             ->where('id', $entity->id)
+            ->lockForUpdate()
             ->update($serialized);
 
         if (! $affectedRows) {
@@ -402,6 +403,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
     public function delete(int $id, string $key = 'id') : int {
         return $this->query()
             ->where($key, $id)
+            ->lockForUpdate()
             ->delete($id);
     }
 
@@ -414,7 +416,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
      * @return int
      */
     protected function deleteByKey(string $key, $value) : int {
-        return $this->deleteBy([$key => $value]);
+        return $this->lockForUpdate()->deleteBy([$key => $value]);
     }
 
     /**
@@ -439,7 +441,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             $query = $query->where($key, $value);
         }
 
-        return $query->delete();
+        return $query->lockForUpdate()->delete();
     }
 
     /**
@@ -465,7 +467,7 @@ abstract class AbstractSQLDBRepository extends AbstractRepository {
             $query = $query->where($key, $value);
         }
 
-        return $query->update($fields);
+        return $query->lockForUpdate()->update($fields);
     }
 
     /**

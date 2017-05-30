@@ -382,7 +382,7 @@ class Feature implements HandlerInterface {
         try {
             $features = [];
             $this->repository->beginTransaction();
-            foreach (array_values($command->features) as $key => $feature) {
+            foreach ($command->features as $feature) {
                 if (! isset($feature['source_id'])) {
                     continue;
                 }

@@ -11,7 +11,7 @@ namespace App\Exception\Upsert\Profile;
 use App\Exception\AppException;
 
 /**
- * Attribute update exception.
+ * Feature upsert exception.
  *
  * @apiEndpointResponse 500 schema/error.json
  */

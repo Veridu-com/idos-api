@@ -212,6 +212,8 @@ class Raw implements HandlerInterface {
         }
 
         try {
+            $affectedRows = 0;
+
             $sourceNameInput = $command->queryParams['source'] ?? null;
 
             if ($sourceNameInput) {
@@ -220,15 +222,14 @@ class Raw implements HandlerInterface {
                 $userSources = $this->sourceRepository->getByUserId($command->user->id);
             }
 
-            $affectedRows = 0;
             foreach ($userSources as $source) {
                 $affectedRows += $this->repository->deleteBySource($source);
             }
+
+            return $affectedRows;
         } catch (NotFound $e) {
             throw new Create\Profile\RawException('Error while trying to delete raw data', 500, $e);
         }
-
-        return $affectedRows;
     }
 
     /**
