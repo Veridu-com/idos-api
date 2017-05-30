@@ -523,9 +523,12 @@ class Source implements HandlerInterface {
             );
         }
 
-        $sources      = $this->repository->getByUserId($command->user->id);
-        $rowsAffected = $this->repository->deleteByUserId($command->user->id);
+        $sources = $this->repository->getByUserId($command->user->id);
+        if ($sources->isEmpty()) {
+            return 0;
+        }
 
+        $rowsAffected = $this->repository->deleteByUserId($command->user->id);
         if ($rowsAffected) {
             $this->emitter->emit(
                 $this->eventFactory->create(
@@ -536,8 +539,10 @@ class Source implements HandlerInterface {
                     $command->credential
                 )
             );
+
+            return $rowsAffected;
         }
 
-        return $rowsAffected;
+        return 0;
     }
 }

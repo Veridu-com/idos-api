@@ -175,6 +175,9 @@ $container['errorHandler'] = function (ContainerInterface $container) : callable
     };
 };
 
+// PHP Error Handler
+$container['phpErrorHandler'] = $container['errorHandler'];
+
 // Slim Not Found Handler
 $container['notFoundHandler'] = function (ContainerInterface $container) : callable {
     return function (

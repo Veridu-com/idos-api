@@ -257,7 +257,7 @@ class Attribute implements HandlerInterface {
             return new Collection($entities);
         } catch (\Exception $e) {
             $this->repository->rollBack();
-            throw new UpsertException('Error while upserting attributes.');
+            throw new UpsertException('Error while upserting attributes.', 500, $e);
         }
     }
 
