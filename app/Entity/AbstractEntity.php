@@ -405,7 +405,7 @@ abstract class AbstractEntity implements EntityInterface, Arrayable {
      * @return int
      */
     public function getEncodedId() : int {
-        return $this->optimus->encode($this->id);
+        return $this->optimus->encode($this->attributes['id']);
     }
 
     /**

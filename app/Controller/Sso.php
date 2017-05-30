@@ -8,6 +8,7 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
+use App\Exception\AppException;
 use App\Factory\Command;
 use App\Helper\SocialSettings;
 use App\Repository\Company\CredentialInterface;
@@ -173,7 +174,7 @@ class Sso implements ControllerInterface {
                 $command = $this->commandFactory->create('Sso\\CreateNewYahoo');
                 break;
             default:
-                throw new \AppException('Unsupported provider.', 400);
+                throw new AppException('Unsupported provider.', 400);
         }
 
         $this->socialSettings->load($credential->companyId, $credentialPubKey, $sourceName);

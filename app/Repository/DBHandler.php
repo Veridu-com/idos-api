@@ -65,13 +65,6 @@ class DBHandler extends AbstractSQLDBRepository implements HandlerInterface {
     /**
      * {@inheritdoc}
      */
-    public function findByPrivKey(string $key) : Handler {
-        return $this->findOneBy(['private' => $key]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function deleteOne(int $handlerId, Company $company) : int {
         $affectedRows = $this->query()
             ->where('id', $handlerId)
