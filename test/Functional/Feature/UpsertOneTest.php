@@ -62,6 +62,86 @@ class UpsertOneTest extends AbstractFunctional {
             $this->validateSchema('feature/upsertOne.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('%s?name=*%s*', $this->uri, $name)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
+        $this->assertSame($name, $body['data'][0]['name']);
+        $this->assertSame($type, $body['data'][0]['type']);
+        $this->assertSame($value, $body['data'][0]['value']);
+    }
+
+    public function testEmptySource() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
+        $name    = 'empty-source';
+        $type    = 'string';
+        $request = $this->createRequest(
+            $environment, json_encode(
+                [
+                    'name'      => $name,
+                    'type'      => $type,
+                    'value'     => null
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertSame($name, $body['data']['name']);
+        $this->assertSame($type, $body['data']['type']);
+        $this->assertNull($body['data']['value']);
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
+            $this->schemaErrors
+        );
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('%s?name=*%s*', $this->uri, $name)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
+        $this->assertSame($name, $body['data'][0]['name']);
+        $this->assertSame($type, $body['data'][0]['type']);
+        $this->assertNull($body['data'][0]['value']);
     }
 
     public function testEmptyName() {
@@ -135,6 +215,27 @@ class UpsertOneTest extends AbstractFunctional {
             $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('%s?name=*%s*', $this->uri, $name)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
+        $this->assertSame($name, $body['data'][0]['name']);
+        $this->assertSame($type, $body['data'][0]['type']);
+        $this->assertNull($body['data'][0]['value']);
     }
 
     public function testBooleanValue() {
@@ -174,6 +275,27 @@ class UpsertOneTest extends AbstractFunctional {
             $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('%s?name=*%s*', $this->uri, $name)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
+        $this->assertSame($name, $body['data'][0]['name']);
+        $this->assertSame($type, $body['data'][0]['type']);
+        $this->assertTrue($body['data'][0]['value']);
     }
 
     public function testFloatValue() {
@@ -214,6 +336,27 @@ class UpsertOneTest extends AbstractFunctional {
             $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('%s?name=*%s*', $this->uri, $name)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
+        $this->assertSame($name, $body['data'][0]['name']);
+        $this->assertSame($type, $body['data'][0]['type']);
+        $this->assertSame($value, $body['data'][0]['value']);
     }
 
     public function testIntValue() {
@@ -254,6 +397,27 @@ class UpsertOneTest extends AbstractFunctional {
             $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('%s?name=*%s*', $this->uri, $name)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
+        $this->assertSame($name, $body['data'][0]['name']);
+        $this->assertSame($type, $body['data'][0]['type']);
+        $this->assertSame($value, $body['data'][0]['value']);
     }
 
     public function testArrayValue() {
@@ -294,6 +458,27 @@ class UpsertOneTest extends AbstractFunctional {
             $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('%s?name=*%s*', $this->uri, $name)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
+        $this->assertSame($name, $body['data'][0]['name']);
+        $this->assertSame($type, $body['data'][0]['type']);
+        $this->assertSame($value, $body['data'][0]['value']);
     }
 
     public function testArrayAsObjectValue() {
@@ -334,6 +519,27 @@ class UpsertOneTest extends AbstractFunctional {
             $this->validateSchema('feature/createNew.json', json_decode((string) $response->getBody())),
             $this->schemaErrors
         );
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('%s?name=*%s*', $this->uri, $name)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(1, $body['data']);
+        $this->assertSame($name, $body['data'][0]['name']);
+        $this->assertSame($type, $body['data'][0]['type']);
+        $this->assertSame($value, $body['data'][0]['value']);
     }
 
     public function testInvalidName() {

@@ -150,18 +150,18 @@ class Feature implements HandlerInterface {
             $this->validator->assertName($command->type);
             $this->validator->assertNullableValue($command->value);
 
-            $sourceName = null;
+            $sourceName = 'profile';
             if ($command->source !== null) {
                 $this->validator->assertSource($command->source);
                 $sourceName = $command->source->name;
             }
 
             $this->validator->assertCredential($command->credential);
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -180,12 +180,24 @@ class Feature implements HandlerInterface {
         try {
             $feature = $this->repository->save($feature);
             $feature = $this->repository->hydrateRelations($feature);
-            $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
+            $process = $this->getRelatedProcess(
+                $this->processRepository,
+                $command->user->id,
+                $this->getProcessEventName($command->source),
+                $command->source ? $command->source : null
+            );
 
-            $event = $this->eventFactory->create('Profile\\Feature\\Created', $feature, $command->user, $process, $command->credential, $command->source);
+            $event = $this->eventFactory->create(
+                'Profile\\Feature\\Created',
+                $feature,
+                $command->user,
+                $process,
+                $command->credential,
+                $command->source
+            );
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\FeatureException('Error while trying to create a feature', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\FeatureException('Error while trying to create a feature', 500, $exception);
         }
 
         return $feature;
@@ -250,8 +262,8 @@ class Feature implements HandlerInterface {
                 $command->source
             );
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Update\Profile\FeatureException('Error while trying to update a feature', 500, $e);
+        } catch (\Exception $exception) {
+            throw new Update\Profile\FeatureException('Error while trying to update a feature', 500, $exception);
         }
 
         return $feature;
@@ -272,15 +284,15 @@ class Feature implements HandlerInterface {
             $this->validator->assertName($command->type);
             $this->validator->assertNullableValue($command->value);
             $this->validator->assertCredential($command->credential);
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
-        $sourceName = null;
+        $sourceName = 'profile';
         if ($command->source !== null) {
             $this->validator->assertSource($command->source);
             $sourceName = $command->source->name;
@@ -290,7 +302,7 @@ class Feature implements HandlerInterface {
             $feature = $this->repository->create(
                 [
                     'user_id'    => $command->user->id,
-                    'source'     => $command->source ? $command->source->name : null,
+                    'source'     => $sourceName,
                     'name'       => $command->name,
                     'creator'    => $command->handler->id,
                     'type'       => $command->type,
@@ -316,9 +328,19 @@ class Feature implements HandlerInterface {
                 ]
             );
 
-            $feature = $this->repository->findOneByName($command->name, $command->handler->id, $command->source ? $command->source->name : null, $command->user->id);
+            $feature = $this->repository->findOneByName(
+                $command->name,
+                $command->handler->id,
+                $sourceName,
+                $command->user->id
+            );
 
-            $process = $this->getRelatedProcess($this->processRepository, $command->user->id, $this->getProcessEventName($command->source), $command->source ? $command->source : null);
+            $process = $this->getRelatedProcess(
+                $this->processRepository,
+                $command->user->id,
+                $this->getProcessEventName($command->source),
+                $command->source ? $command->source : null
+            );
 
             if ($feature->updatedAt) {
                 $event = $this->eventFactory->create(
@@ -341,8 +363,12 @@ class Feature implements HandlerInterface {
             }
 
             $this->emitter->emit($event);
-        } catch (\Exception $e) {
-            throw new Create\Profile\FeatureException('Error while trying to upsert a feature', 404, $e);
+        } catch (\Exception $exception) {
+            throw new Create\Profile\FeatureException(
+                'Error while trying to upsert a feature',
+                404,
+                $exception
+            );
         }
 
         return $feature;
@@ -361,11 +387,11 @@ class Feature implements HandlerInterface {
             $this->validator->assertCredential($command->credential);
             $this->validator->assertHandler($command->handler);
             $this->validator->assertFeatures($command->features);
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -383,24 +409,26 @@ class Feature implements HandlerInterface {
             $features = [];
             $this->repository->beginTransaction();
             foreach ($command->features as $feature) {
-                if (! isset($feature['source_id'])) {
-                    continue;
+                $sourceName = 'profile';
+                if (isset($feature['source_id'])) {
+                    // gets the source name for every feature that has a source
+                    if (isset($sources[$feature['source_id']])) {
+                        $source = $sources[$feature['source_id']];
+                    } else {
+                        $source = $this->sourceRepository->find(
+                            $feature['decoded_source_id']
+                        );
+                        $sources[$feature['source_id']] = $source;
+                    }
+
+                    $sourceName = $source->name;
                 }
 
-                // gets the source name for every feature that has a source
-                if (isset($sources[$feature['source_id']])) {
-                    $source = $sources[$feature['source_id']];
-                } else {
-                    $source                         = $this->sourceRepository->find(
-                        $feature['decoded_source_id']
-                    );
-                    $sources[$feature['source_id']] = $source;
-                }
 
                 $entity = $this->repository->create(
                     [
                         'user_id'    => $command->user->id,
-                        'source'     => $source->name,
+                        'source'     => $sourceName,
                         'name'       => $feature['name'],
                         'creator'    => $command->handler->id,
                         'type'       => $feature['type'],
@@ -410,7 +438,7 @@ class Feature implements HandlerInterface {
                 );
 
                 $serialized                         = $entity->serialize();
-                $perSource[$feature['source_id']][] = $entity;
+                $perSource[$feature['source_id'] ?? 'profile'][] = $entity;
 
                 $this->repository->upsert(
                     $entity,
@@ -433,7 +461,7 @@ class Feature implements HandlerInterface {
             // creates 1 event per source
             // sourceId will be 0 to null sources
             foreach ($perSource as $sourceId => $sourceFeatures) {
-                $source  = ($sourceId ? $sources[$sourceId] : null);
+                $source  = $sources[$sourceId] ?? null;
                 $process = $this->getRelatedProcess(
                     $this->processRepository,
                     $command->user->id,
@@ -479,11 +507,11 @@ class Feature implements HandlerInterface {
             $this->validator->assertHandler($command->handler);
             $this->validator->assertId($command->featureId);
             $this->validator->assertCredential($command->credential);
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -518,11 +546,11 @@ class Feature implements HandlerInterface {
             $this->validator->assertHandler($command->handler);
             $this->validator->assertArray($command->queryParams);
             $this->validator->assertCredential($command->credential);
-        } catch (ValidationException $e) {
+        } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
-                $e->getFullMessage(),
+                $exception->getFullMessage(),
                 400,
-                $e
+                $exception
             );
         }
 
@@ -533,9 +561,11 @@ class Feature implements HandlerInterface {
         );
 
         $affectedRows = 0;
+        $this->repository->beginTransaction();
         foreach ($deletedFeatures as $deletedFeature) {
             $affectedRows += $this->repository->delete($deletedFeature->id);
         }
+        $this->repository->commit();
 
         $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures, $command->credential);
         $this->emitter->emit($event);

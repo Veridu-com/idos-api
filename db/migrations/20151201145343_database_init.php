@@ -39,8 +39,8 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('parent_id', 'companies', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
 
-        $features = $this->table('roles');
-        $features
+        $roles = $this->table('roles');
+        $roles
             ->addColumn('name', 'text', ['null' => false])
             ->addColumn('rank', 'integer', ['null' => false])
             ->addColumn('bit', 'integer', ['null' => false])
@@ -419,6 +419,7 @@ class DatabaseInit extends AbstractMigration {
             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->addForeignKey('creator', 'handlers', 'id', ['delete' => 'CASCADE', 'update' => 'CASCADE'])
             ->create();
+
         // Features
         $features = $this->table('features');
         $features
