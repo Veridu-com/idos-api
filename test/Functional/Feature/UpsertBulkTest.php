@@ -84,44 +84,76 @@ class UpsertBulkTest extends AbstractFunctional {
 
         $this->assertTrue($body['status']);
 
+        $request = $this->createRequest(
+            $environment,
+            json_encode($array)
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+
+        $this->assertTrue($body['status']);
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('/1.0/profiles/%s/features?name=test*', $this->userName)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(count($array), $body['data']);
+        foreach ($array as $index => $item) {
+            $this->assertSame($item['name'], $body['data'][$index]['name']);
+            $this->assertSame($item['type'], $body['data'][$index]['type']);
+            $this->assertSame($item['value'], $body['data'][$index]['value']);
+        }
+    }
+
+    public function testEmptySource() {
+        $environment = $this->createEnvironment(
+            [
+                'HTTP_CONTENT_TYPE'  => 'application/json',
+                'HTTP_AUTHORIZATION' => $this->credentialTokenHeader()
+            ]
+        );
+
         $array = [
             [
-                'name'      => 'test1',
-                'source_id' => 1321189817,
+                'name'      => 'empty-source1',
                 'type'      => 'string',
-                'value'     => 'testing2'
+                'value'     => 'testing'
             ],
             [
-                'name'      => 'test2',
-                'source_id' => 1321189817,
+                'name'      => 'empty-source2',
                 'type'      => 'integer',
-                'value'     => 11
-            ],
-            [
-                'name'      => 'test3',
-                'source_id' => 1321189817,
-                'type'      => 'float',
-                'value'     => 1.3
-            ],
-            [
-                'name'      => 'test4',
-                'source_id' => 1321189817,
-                'type'      => 'boolean',
-                'value'     => true
-            ],
-            [
-                'name'      => 'test5',
-                'source_id' => 1321189817,
-                'type'      => 'array',
-                'value'     => ['d', 'e', 'f']
-            ],
-            [
-                'name'      => 'test6',
-                'source_id' => 1321189817,
-                'type'      => 'array',
-                'value'     => ['c' => 'd']
+                'value'     => 10
             ]
         ];
+
+        $request = $this->createRequest(
+            $environment,
+            json_encode($array)
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+
+        $this->assertTrue($body['status']);
 
         $request = $this->createRequest(
             $environment,
@@ -135,6 +167,29 @@ class UpsertBulkTest extends AbstractFunctional {
         $this->assertNotEmpty($body);
 
         $this->assertTrue($body['status']);
+
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'REQUEST_METHOD'     => 'GET',
+                    'REQUEST_URI'        => sprintf('/1.0/profiles/%s/features?name=empty-source*', $this->userName)
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+        $this->assertSame(200, $response->getStatusCode());
+
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+        $this->assertCount(count($array), $body['data']);
+        foreach ($array as $index => $item) {
+            $this->assertSame($item['name'], $body['data'][$index]['name']);
+            $this->assertSame($item['type'], $body['data'][$index]['type']);
+            $this->assertSame($item['value'], $body['data'][$index]['value']);
+        }
     }
 
     public function testEmptyName() {

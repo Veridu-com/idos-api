@@ -61,10 +61,12 @@ class Feature extends AbstractEntity {
         switch ($this->attributes['type']) {
             case 'integer':
                 return (int) $value;
+            case 'float':
+            case 'double':
+            case 'real':
+                return (float) $value;
             case 'boolean':
                 return (bool) $value;
-            case 'double':
-                return (double) $value;
             case 'array':
                 if (is_array($value)) {
                     return $value;
