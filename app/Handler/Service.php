@@ -116,13 +116,13 @@ class Service implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : ServiceEntity {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->handlerServiceId);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->handlerServiceId, 'handlerServiceId');
             if ($command->listens) {
-                $this->validator->assertArray($command->listens);
+                $this->validator->assertArray($command->listens, 'listens');
             }
 
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\ServiceException(
                 $e->getFullMessage(),
@@ -167,10 +167,10 @@ class Service implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : ServiceEntity {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->serviceId);
-            $this->validator->assertArray($command->listens);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->serviceId, 'serviceId');
+            $this->validator->assertArray($command->listens, 'listens');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\ServiceException(
                 $e->getFullMessage(),
@@ -218,9 +218,9 @@ class Service implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->serviceId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->serviceId, 'serviceId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\ServiceException(
                 $e->getFullMessage(),

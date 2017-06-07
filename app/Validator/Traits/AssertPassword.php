@@ -17,15 +17,17 @@ trait AssertPassword {
     /**
      * Asserts a valid password, minimum 6 chars long, that are graphically represented.
      *
-     * @param mixed $password
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertPassword($password) : void {
+    public function assertPassword($value, string $name = 'password') : void {
         Validator::graph()
             ->length(6, null)
-            ->assert($password);
+            ->setName($name)
+            ->assert($value);
     }
 }

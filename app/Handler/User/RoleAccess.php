@@ -108,10 +108,10 @@ class RoleAccess implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : RoleAccessEntity {
         try {
-            $this->validator->assertRoleName($command->role);
-            $this->validator->assertResource($command->resource);
-            $this->validator->assertAccess($command->access);
-            $this->validator->assertId($command->identityId);
+            $this->validator->assertRoleName($command->role, 'role');
+            $this->validator->assertResource($command->resource, 'resource');
+            $this->validator->assertAccess($command->access, 'access');
+            $this->validator->assertId($command->identityId, 'identityId');
         } catch (ValidationException $e) {
             throw new Validate\User\RoleAccessException(
                 $e->getFullMessage(),
@@ -155,7 +155,7 @@ class RoleAccess implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertId($command->identityId);
+            $this->validator->assertId($command->identityId, 'identityId');
         } catch (ValidationException $e) {
             throw new Validate\User\RoleAccessException(
                 $e->getFullMessage(),
@@ -186,9 +186,9 @@ class RoleAccess implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : RoleAccessEntity {
         try {
-            $this->validator->assertId($command->identityId);
-            $this->validator->assertId($command->roleAccessId);
-            $this->validator->assertAccess($command->access);
+            $this->validator->assertId($command->identityId, 'identityId');
+            $this->validator->assertId($command->roleAccessId, 'roleAccessId');
+            $this->validator->assertAccess($command->access, 'access');
         } catch (ValidationException $e) {
             throw new Validate\User\RoleAccessException(
                 $e->getFullMessage(),
@@ -226,8 +226,8 @@ class RoleAccess implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertId($command->identityId);
-            $this->validator->assertId($command->roleAccessId);
+            $this->validator->assertId($command->identityId, 'identityId');
+            $this->validator->assertId($command->roleAccessId, 'roleAccessId');
         } catch (ValidationException $e) {
             throw new Validate\User\RoleAccessException(
                 $e->getFullMessage(),

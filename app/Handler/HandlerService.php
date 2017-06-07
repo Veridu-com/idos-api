@@ -109,27 +109,27 @@ class HandlerService implements HandlerInterface {
                 'url'        => $command->url
             ];
 
-            $this->validator->assertId($command->handlerId);
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertName($command->name);
-            $this->validator->assertUrl($command->url);
+            $this->validator->assertId($command->handlerId, 'handlerId');
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertUrl($command->url, 'url');
 
             if ($command->privacy !== null) {
-                $this->validator->assertId($command->privacy);
+                $this->validator->assertId($command->privacy, 'privacy');
                 $inputs['privacy'] = $command->privacy;
             }
 
             if ($command->enabled !== null) {
-                $this->validator->assertFlag($command->enabled);
+                $this->validator->assertFlag($command->enabled, 'enabled');
                 $inputs['enabled'] = $command->enabled;
             }
 
             if ($command->listens !== null) {
-                $this->validator->assertArray($command->listens);
+                $this->validator->assertArray($command->listens, 'listens');
                 $inputs['listens'] = $command->listens;
             }
 
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\HandlerServiceException(
                 $e->getFullMessage(),
@@ -161,41 +161,36 @@ class HandlerService implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : HandlerServiceEntity {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->handlerServiceId);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->handlerServiceId, 'handlerServiceId');
 
             $input = [];
             if ($command->name !== null) {
-                $this->validator->assertName($command->name);
+                $this->validator->assertName($command->name, 'name');
                 $input['name'] = $command->name;
             }
 
             if ($command->url !== null) {
-                $this->validator->assertUrl($command->url);
+                $this->validator->assertUrl($command->url, 'url');
                 $input['url'] = $command->url;
             }
 
             if ($command->enabled !== null) {
-                $this->validator->assertFlag($command->enabled);
+                $this->validator->assertFlag($command->enabled, 'enabled');
                 $input['enabled'] = $command->enabled;
             }
 
             if ($command->listens !== null) {
-                $this->validator->assertArray($command->listens);
+                $this->validator->assertArray($command->listens, 'listens');
                 $input['listens'] = $command->listens;
             }
 
-            if ($command->enabled !== null) {
-                $this->validator->assertFlag($command->enabled);
-                $input['enabled'] = $command->enabled;
-            }
-
             if ($command->privacy !== null) {
-                $this->validator->assertId($command->privacy);
+                $this->validator->assertId($command->privacy, 'privacy');
                 $input['privacy'] = $command->privacy;
             }
 
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\HandlerServiceException(
                 $e->getFullMessage(),
@@ -233,9 +228,9 @@ class HandlerService implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->handlerServiceId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->handlerServiceId, 'handlerServiceId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\HandlerServiceException(
                 $e->getFullMessage(),

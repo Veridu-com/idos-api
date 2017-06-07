@@ -17,15 +17,17 @@ trait AssertRouteName {
     /**
      * Asserts a valid name.
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertRouteName($value) : void {
+    public function assertRouteName($value, string $name = 'routeName') : void {
         Validator::regex('/[a-zA-Z]+\:[a-zA-Z]+/')
             ->length(1, 25)
+            ->setName($name)
             ->assert($value);
     }
 }

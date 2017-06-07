@@ -109,8 +109,8 @@ class Setting implements HandlerInterface {
      * @return array
      */
     public function handleListAll(ListAll $command) : array {
-        $this->validator->assertCompany($command->company);
-        $this->validator->assertArray($command->queryParams);
+        $this->validator->assertCompany($command->company, 'company');
+        $this->validator->assertArray($command->queryParams, 'queryParams');
 
         if ($command->hasParentAccess) {
             return $this->repository->getByCompanyId($command->company->id, $command->queryParams);
@@ -132,9 +132,9 @@ class Setting implements HandlerInterface {
      * @return \Illuminate\Support\Collection
      */
     public function handleGetOne(GetOne $command) : SettingEntity {
-        $this->validator->assertIdentity($command->identity);
-        $this->validator->assertCompany($command->company);
-        $this->validator->assertId($command->settingId);
+        $this->validator->assertIdentity($command->identity, 'identity');
+        $this->validator->assertCompany($command->company, 'company');
+        $this->validator->assertId($command->settingId, 'settingId');
 
         $setting = $this->repository->findOneByCompanyAndId($command->company->id, $command->settingId);
 
@@ -157,10 +157,11 @@ class Setting implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : SettingEntity {
         try {
-            $this->validator->assertMediumName($command->section);
-            $this->validator->assertMediumName($command->property);
-            $this->validator->assertId($command->company->id);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertMediumName($command->section, 'section');
+            $this->validator->assertMediumName($command->property, 'property');
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->company->id, 'companyId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\SettingException(
                 $e->getFullMessage(),
@@ -206,9 +207,9 @@ class Setting implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : SettingEntity {
         try {
-            $this->validator->assertId($command->settingId);
-            $this->validator->assertIdentity($command->identity);
-            $this->validator->assertCompany($command->company);
+            $this->validator->assertId($command->settingId, 'settingId');
+            $this->validator->assertIdentity($command->identity, 'identity');
+            $this->validator->assertCompany($command->company, 'company');
         } catch (ValidationException $e) {
             throw new Validate\Company\SettingException(
                 $e->getFullMessage(),
@@ -245,8 +246,8 @@ class Setting implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertId($command->settingId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->settingId, 'settingId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\SettingException(
                 $e->getFullMessage(),

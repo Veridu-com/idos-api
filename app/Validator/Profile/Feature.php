@@ -23,17 +23,37 @@ class Feature implements ValidatorInterface {
         Traits\AssertValue,
         Traits\AssertType;
 
-    public function assertFeatures($features) : void {
-        Validator::arrayType()->assert($features);
-        foreach ($features as $feature) {
-            Validator::key('name')->assert($feature);
-            Validator::key('value')->assert($feature);
-            Validator::key('type')->assert($feature);
-            Validator::key('source_id')->assert($feature);
+    /**
+     * Asserts a valid feature array.
+     *
+     * @param mixed  $values
+     * @param string $name
+     *
+     * @throws \Respect\Validation\Exceptions\ExceptionInterface
+     *
+     * @return void
+     */
+    public function assertFeatureArray($values, string $name = 'features') : void {
+        Validator::arrayType()
+            ->setName($name)
+            ->assert($values);
 
-            $this->assertLongName($feature['name']);
-            $this->assertName($feature['type']);
-            $this->assertId($feature['source_id']);
+        foreach ($values as $index => $value) {
+            Validator::key('name')
+                ->setName(sprintf('%s[%d].name', $name, $index))
+                ->assert($value);
+            Validator::key('value')
+                ->setName(sprintf('%s[%d].value', $name, $index))
+                ->assert($value);
+            Validator::key('type')
+                ->setName(sprintf('%s[%d].type', $name, $index))
+                ->assert($value);
+
+            $this->assertLongName($value['name'], sprintf('%s[%d].name', $name, $index));
+            $this->assertName($value['type'], sprintf('%s[%d].type', $name, $index));
+            if (isset($value['source_id'])) {
+                $this->assertId($value['source_id'], sprintf('%s[%d].source_id', $name, $index));
+            }
         }
     }
 }

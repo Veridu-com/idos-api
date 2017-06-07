@@ -114,12 +114,12 @@ class Score implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : ScoreEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertName($command->attribute);
-            $this->validator->assertName($command->name);
-            $this->validator->assertScore($command->value);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertName($command->attribute, 'attribute');
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertScore($command->value, 'value');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -168,15 +168,15 @@ class Score implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : ScoreEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertName($command->name);
-            $this->validator->assertScore($command->value);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertScore($command->value, 'value');
+            $this->validator->assertCredential($command->credential, 'credential');
 
             // optional parameters
             if ($command->attribute) {
-                $this->validator->assertName($command->attribute);
+                $this->validator->assertName($command->attribute, 'attribute');
             }
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
@@ -225,12 +225,12 @@ class Score implements HandlerInterface {
      */
     public function handleUpsert(Upsert $command) : ScoreEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertName($command->attribute);
-            $this->validator->assertName($command->name);
-            $this->validator->assertScore($command->value);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertName($command->attribute, 'attribute');
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertScore($command->value, 'value');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -290,10 +290,10 @@ class Score implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertName($command->name);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),
@@ -333,9 +333,9 @@ class Score implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ScoreException(
                 $e->getFullMessage(),

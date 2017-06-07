@@ -108,14 +108,14 @@ class Task implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : TaskEntity {
         try {
-            $this->validator->assertName($command->name);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertName($command->event);
-            $this->validator->assertNullableBoolean($command->running);
-            $this->validator->assertNullableBoolean($command->success);
-            $this->validator->assertNullableString($command->message);
-            $this->validator->assertId($command->processId);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertName($command->event, 'event');
+            $this->validator->assertNullableBoolean($command->running, 'running');
+            $this->validator->assertNullableBoolean($command->success, 'success');
+            $this->validator->assertNullableString($command->message, 'message');
+            $this->validator->assertId($command->processId, 'processId');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\TaskException(
                 $e->getFullMessage(),
@@ -163,26 +163,26 @@ class Task implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : TaskEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertId($command->id);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertId($command->id, 'id');
 
             $task = $this->repository->find($command->id);
 
             $updated = false;
             if ($command->running !== null) {
-                $this->validator->assertBoolean($command->running);
+                $this->validator->assertBoolean($command->running, 'running');
                 $task->running = $command->running;
                 $updated       = true;
             }
 
             if ($command->success !== null) {
-                $this->validator->assertBoolean($command->success);
+                $this->validator->assertBoolean($command->success, 'success');
                 $task->success = $command->success;
                 $updated       = true;
             }
 
             if ($command->message !== null) {
-                $this->validator->assertString($command->message);
+                $this->validator->assertString($command->message, 'message');
                 $task->message = $command->message;
                 $updated       = true;
             }
@@ -191,7 +191,7 @@ class Task implements HandlerInterface {
                 return $task;
             }
 
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\TaskException(
                 $e->getFullMessage(),

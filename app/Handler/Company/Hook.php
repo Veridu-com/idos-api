@@ -135,8 +135,8 @@ class Hook implements HandlerInterface {
      */
     public function handleGetOne(GetOne $command) : HookEntity {
         try {
-            $this->validator->assertId($command->hookId);
-            $this->validator->assertCompany($command->company);
+            $this->validator->assertId($command->hookId, 'hookId');
+            $this->validator->assertCompany($command->company, 'company');
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),
@@ -172,10 +172,10 @@ class Hook implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : HookEntity {
         try {
-            $this->validator->assertTriggerName($command->trigger);
-            $this->validator->assertUrl($command->url);
-            $this->validator->assertIdentity($command->identity);
-            $this->validator->assertCompany($command->company);
+            $this->validator->assertTriggerName($command->trigger, 'trigger');
+            $this->validator->assertUrl($command->url, 'url');
+            $this->validator->assertIdentity($command->identity, 'identity');
+            $this->validator->assertCompany($command->company, 'company');
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),
@@ -240,11 +240,11 @@ class Hook implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : HookEntity {
         try {
-            $this->validator->assertId($command->hookId);
-            $this->validator->assertTriggerName($command->trigger);
-            $this->validator->assertUrl($command->url);
-            $this->validator->assertIdentity($command->identity);
-            $this->validator->assertCompany($command->company);
+            $this->validator->assertId($command->hookId, 'hookId');
+            $this->validator->assertTriggerName($command->trigger, 'trigger');
+            $this->validator->assertUrl($command->url, 'url');
+            $this->validator->assertIdentity($command->identity, 'identity');
+            $this->validator->assertCompany($command->company, 'company');
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),
@@ -310,9 +310,9 @@ class Hook implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertId($command->hookId);
-            $this->validator->assertIdentity($command->identity);
-            $this->validator->assertCompany($command->company);
+            $this->validator->assertId($command->hookId, 'hookId');
+            $this->validator->assertIdentity($command->identity, 'identity');
+            $this->validator->assertCompany($command->company, 'company');
         } catch (ValidationException $e) {
             throw new Validate\Company\HookException(
                 $e->getFullMessage(),

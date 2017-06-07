@@ -17,15 +17,17 @@ trait AssertOTPCode {
     /**
      * Asserts a valid otp code, 6 digits long.
      *
-     * @param mixed $code
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertOTPCode($code) : void {
+    public function assertOTPCode($value, string $name = 'code') : void {
         Validator::digit()
             ->length(6, null)
-            ->assert($code);
+            ->setName($name)
+            ->assert($value);
     }
 }

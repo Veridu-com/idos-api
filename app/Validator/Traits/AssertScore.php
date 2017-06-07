@@ -17,18 +17,20 @@ trait AssertScore {
     /**
      * Asserts a valid score, float between 0 and 1.
      *
-     * @param mixed $score
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertScore($score) : void {
+    public function assertScore($value, string $name = 'score') : void {
         Validator::oneOf(
             Validator::intType(),
             Validator::floatType()
         )
             ->between(0, 1, true)
-            ->assert($score);
+            ->setName($name)
+            ->assert($value);
     }
 }

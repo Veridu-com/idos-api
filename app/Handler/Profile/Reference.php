@@ -111,9 +111,9 @@ class Reference implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : ReferenceEntity {
         try {
-            $this->validator->assertName($command->name);
-            $this->validator->assertValue($command->value);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertValue($command->value, 'value');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReferenceException(
                 $e->getFullMessage(),
@@ -159,8 +159,8 @@ class Reference implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : ReferenceEntity {
         try {
-            $this->validator->assertValue($command->value);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertValue($command->value, 'value');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReferenceException(
                 $e->getFullMessage(),
@@ -199,8 +199,8 @@ class Reference implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertName($command->name);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReferenceException(
                 $e->getFullMessage(),

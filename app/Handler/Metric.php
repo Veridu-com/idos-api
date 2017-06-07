@@ -101,8 +101,8 @@ class Metric implements HandlerInterface {
      * @return \Illuminate\Support\Collection
      */
     public function handleListAllSystem(ListAllSystem $command) : Collection {
-        $this->validator->assertArray($command->queryParams);
-        $this->validator->assertCompany($command->targetCompany);
+        $this->validator->assertArray($command->queryParams, 'queryParams');
+        $this->validator->assertCompany($command->targetCompany, 'targetCompany');
 
         $endpoints = [
             'profile:source'
@@ -144,8 +144,8 @@ class Metric implements HandlerInterface {
      * @return \Illuminate\Support\Collection
      */
     public function handleListAllUser(ListAllUser $command) : Collection {
-        $this->validator->assertArray($command->queryParams);
-        $this->validator->assertCompany($command->targetCompany);
+        $this->validator->assertArray($command->queryParams, 'queryParams');
+        $this->validator->assertCompany($command->targetCompany, 'targetCompany');
 
         $from = isset($command->queryParams['from']) ? (int) $command->queryParams['from'] : null;
         $to   = isset($command->queryParams['to']) ? (int) $command->queryParams['to'] : null;
@@ -167,7 +167,7 @@ class Metric implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : bool {
         try {
-            $this->validator->assertEvent($command->event);
+            $this->validator->assertEvent($command->event, 'event');
         } catch (ValidationException $e) {
             throw new Validate\MetricException(
                 $e->getFullMessage(),

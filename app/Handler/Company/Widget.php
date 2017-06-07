@@ -125,9 +125,9 @@ class Widget implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : WidgetEntity {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertString($command->label);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertString($command->label, 'label');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\WidgetException(
                 $e->getFullMessage(),
@@ -184,8 +184,8 @@ class Widget implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : WidgetEntity {
         try {
-            // $this->validator->assertString($command->label);
-            $this->validator->assertIdentity($command->identity);
+            // $this->validator->assertString($command->label, 'label');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\WidgetException(
                 $e->getFullMessage(),
@@ -228,8 +228,8 @@ class Widget implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertName($command->hash);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertName($command->hash, 'hash');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\WidgetException(
                 $e->getFullMessage(),

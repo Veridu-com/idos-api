@@ -135,9 +135,9 @@ class Company implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : CompanyEntity {
         try {
-            $this->validator->assertLongString($command->name);
-            $this->validator->assertNullableId($command->parentId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertLongString($command->name, 'name');
+            $this->validator->assertNullableId($command->parentId, 'parentId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),
@@ -180,8 +180,8 @@ class Company implements HandlerInterface {
      */
     public function handleSetup(Setup $command) : Collection {
         try {
-            $this->validator->assertId($command->companyId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->companyId, 'companyId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),
@@ -236,9 +236,10 @@ class Company implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : CompanyEntity {
         try {
-            $this->validator->assertId($command->company->id);
-            $this->validator->assertMediumString($command->name);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->company->id, 'id');
+            $this->validator->assertMediumString($command->name, 'name');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),
@@ -274,9 +275,9 @@ class Company implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->company->id);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->company->id, 'id');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\CompanyException(
                 $e->getFullMessage(),

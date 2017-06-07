@@ -152,11 +152,11 @@ class Gate implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : GateEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertName($command->name);
-            $this->validator->assertCredential($command->credential);
-            $this->validator->assertMediumName($command->confidenceLevel);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertCredential($command->credential, 'credential');
+            $this->validator->assertMediumName($command->confidenceLevel, 'confidenceLevel');
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -205,11 +205,11 @@ class Gate implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : GateEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertSlug($command->slug);
-            $this->validator->assertCredential($command->credential);
-            $this->validator->assertMediumName($command->confidenceLevel);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertSlug($command->slug, 'slug');
+            $this->validator->assertCredential($command->credential, 'credential');
+            $this->validator->assertMediumName($command->confidenceLevel, 'confidenceLevel');
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -245,10 +245,10 @@ class Gate implements HandlerInterface {
      */
     public function handleUpsert(Upsert $command) : GateEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertName($command->name);
-            $this->validator->assertMediumName($command->confidenceLevel);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertMediumName($command->confidenceLevel, 'confidenceLevel');
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -312,10 +312,10 @@ class Gate implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertSlug($command->slug);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertSlug($command->slug, 'slug');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),
@@ -353,9 +353,9 @@ class Gate implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\GateException(
                 $e->getFullMessage(),

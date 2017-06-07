@@ -17,14 +17,16 @@ trait AssertEmail {
     /**
      * Asserts a valid email.
      *
-     * @param mixed $email
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertEmail($email) : void {
+    public function assertEmail($value, string $name = 'email') : void {
         Validator::email()
-            ->assert($email);
+            ->setName($name)
+            ->assert($value);
     }
 }

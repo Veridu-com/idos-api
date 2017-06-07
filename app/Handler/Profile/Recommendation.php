@@ -99,13 +99,13 @@ class Recommendation implements HandlerInterface {
      */
     public function handleUpsert(Upsert $command) : RecommendationEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertCredential($command->credential);
-            $this->validator->assertString($command->result);
-            $this->validator->assertNullableArray($command->passed);
-            $this->validator->assertNullableArray($command->failed);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertCredential($command->credential, 'credential');
+            $this->validator->assertString($command->result, 'result');
+            $this->validator->assertNullableArray($command->passed, 'passed');
+            $this->validator->assertNullableArray($command->failed, 'failed');
         } catch (ValidationException $e) {
             throw new Validate\Profile\RecommendationException(
                 $e->getFullMessage(),

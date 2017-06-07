@@ -111,10 +111,10 @@ class Attribute implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : AttributeEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertLongName($command->name);
-            $this->validator->assertString($command->value);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertLongName($command->name, 'name');
+            $this->validator->assertString($command->value, 'value');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),
@@ -157,10 +157,10 @@ class Attribute implements HandlerInterface {
      */
     public function handleUpsert(Upsert $command) : AttributeEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertLongName($command->name);
-            $this->validator->assertString($command->value);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertLongName($command->name, 'name');
+            $this->validator->assertString($command->value, 'value');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),
@@ -213,9 +213,9 @@ class Attribute implements HandlerInterface {
      */
     public function handleUpsertBulk(UpsertBulk $command) : Collection {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertAttributeArray($command->attributes);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertAttributeArray($command->attributes, 'attributes');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),
@@ -273,9 +273,9 @@ class Attribute implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertArray($command->queryParams);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertArray($command->queryParams, 'queryParams');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\AttributeException(
                 $e->getFullMessage(),

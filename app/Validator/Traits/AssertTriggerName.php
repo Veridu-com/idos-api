@@ -17,15 +17,17 @@ trait AssertTriggerName {
     /**
      * Asserts a valid trigger, 1-50 chars long.
      *
-     * @param mixed $trigger
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertTriggerName($trigger) : void {
+    public function assertTriggerName($value, string $name = 'trigger') : void {
         Validator::graph()
             ->length(1, 50)
-            ->assert($trigger);
+            ->setName($name)
+            ->assert($value);
     }
 }

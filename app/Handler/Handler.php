@@ -105,12 +105,12 @@ class Handler implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : HandlerEntity {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertName($command->name);
-            $this->validator->assertName($command->authUsername);
-            $this->validator->assertPassword($command->authPassword);
-            $this->validator->assertFlag($command->enabled);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertName($command->authUsername, 'authUsername');
+            $this->validator->assertPassword($command->authPassword, 'authPassword');
+            $this->validator->assertFlag($command->enabled, 'enabled');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\HandlerException(
                 $e->getFullMessage(),
@@ -152,37 +152,32 @@ class Handler implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : HandlerEntity {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->handlerId);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->handlerId, 'handlerId');
 
             $input = [];
 
             if ($command->name !== null) {
-                $this->validator->assertName($command->name);
+                $this->validator->assertName($command->name, 'name');
                 $input['name'] = $command->name;
             }
 
             if ($command->authUsername !== null) {
-                $this->validator->assertName($command->authUsername);
+                $this->validator->assertName($command->authUsername, 'authUsername');
                 $input['auth_username'] = $command->authUsername;
             }
 
             if ($command->authPassword !== null) {
-                $this->validator->assertPassword($command->authPassword);
+                $this->validator->assertPassword($command->authPassword, 'authPassword');
                 $input['auth_password'] = $command->authPassword;
             }
 
             if ($command->enabled !== null) {
-                $this->validator->assertFlag($command->enabled);
+                $this->validator->assertFlag($command->enabled, 'enabled');
                 $input['enabled'] = $command->enabled;
             }
 
-            if ($command->enabled !== null) {
-                $this->validator->assertFlag($command->enabled);
-                $input['enabled'] = $command->enabled;
-            }
-
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\HandlerException(
                 $e->getFullMessage(),
@@ -229,9 +224,9 @@ class Handler implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->handlerId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->handlerId, 'handlerId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\HandlerException(
                 $e->getFullMessage(),
@@ -260,8 +255,8 @@ class Handler implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\HandlerException(
                 $e->getFullMessage(),

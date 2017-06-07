@@ -106,9 +106,9 @@ class Member implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : MemberEntity {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertShortName($command->role);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertShortName($command->role, 'role');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -148,11 +148,11 @@ class Member implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : MemberEntity {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->identity);
-            $this->validator->assertShortName($command->role);
-            $this->validator->assertId($command->memberId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertIdentity($command->identity, 'identity');
+            $this->validator->assertShortName($command->role, 'role');
+            $this->validator->assertId($command->memberId, 'memberId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),
@@ -190,10 +190,10 @@ class Member implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->identity);
-            $this->validator->assertId($command->memberId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertIdentity($command->identity, 'identity');
+            $this->validator->assertId($command->memberId, 'memberId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\MemberException(
                 $e->getFullMessage(),

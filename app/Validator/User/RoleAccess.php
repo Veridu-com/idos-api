@@ -24,12 +24,13 @@ class RoleAccess implements ValidatorInterface {
      * Asserts a valid role name.
      *
      * @param string $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertRoleName(string $value) : void {
+    public function assertRoleName(string $value, string $name = 'roleName') : void {
         Validator::in(
             [
             Role::COMPANY,
@@ -38,43 +39,51 @@ class RoleAccess implements ValidatorInterface {
             Role::USER,
             Role::GUEST
             ]
-        )->assert($value);
+        )
+            ->setName($name)
+            ->assert($value);
     }
 
     /**
      * Asserts a valid access value.
      *
-     * @param int $value
+     * @param int    $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertAccess(int $value) : void {
+    public function assertAccess(int $value, string $name = 'access') : void {
         Validator::digit()->length(1, 1)->in(
             [
-            RoleAccessEntity::ACCESS_NONE,
-            RoleAccessEntity::ACCESS_EXECUTE,
-            RoleAccessEntity::ACCESS_WRITE,
-            RoleAccessEntity::ACCESS_READ,
-            RoleAccessEntity::ACCESS_WRITE | RoleAccessEntity::ACCESS_EXECUTE,
-            RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_EXECUTE,
-            RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE,
-            RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE | RoleAccessEntity::ACCESS_EXECUTE
+                RoleAccessEntity::ACCESS_NONE,
+                RoleAccessEntity::ACCESS_EXECUTE,
+                RoleAccessEntity::ACCESS_WRITE,
+                RoleAccessEntity::ACCESS_READ,
+                RoleAccessEntity::ACCESS_WRITE | RoleAccessEntity::ACCESS_EXECUTE,
+                RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_EXECUTE,
+                RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE,
+                RoleAccessEntity::ACCESS_READ | RoleAccessEntity::ACCESS_WRITE | RoleAccessEntity::ACCESS_EXECUTE
             ]
-        )->assert($value);
+        )
+            ->setName($name)
+            ->assert($value);
     }
 
     /**
      * Asserts a valid resource value.
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertResource($value) : void {
-        Validator::stringType()->assert($value);
+    public function assertResource($value, string $name = 'resource') : void {
+        Validator::stringType()
+            ->setName($name)
+            ->assert($value);
     }
 }

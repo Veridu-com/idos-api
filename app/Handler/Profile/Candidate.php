@@ -107,12 +107,12 @@ class Candidate implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : CandidateEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertLongName($command->attribute);
-            $this->validator->assertValue($command->value);
-            $this->validator->assertScore($command->support);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertLongName($command->attribute, 'attribute');
+            $this->validator->assertValue($command->value, 'value');
+            $this->validator->assertScore($command->support, 'support');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\CandidateException(
                 $e->getFullMessage(),
@@ -161,10 +161,10 @@ class Candidate implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertArray($command->queryParams);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertArray($command->queryParams, 'queryParams');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\CandidateException(
                 $e->getFullMessage(),

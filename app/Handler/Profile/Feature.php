@@ -141,22 +141,18 @@ class Feature implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : FeatureEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertCredential($command->credential);
-
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertLongName($command->name);
-
-            $this->validator->assertName($command->type);
-            $this->validator->assertNullableValue($command->value);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertCredential($command->credential, 'credential');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertLongName($command->name, 'name');
+            $this->validator->assertName($command->type, 'type');
+            $this->validator->assertNullableValue($command->value, 'value');
 
             $sourceName = 'profile';
             if ($command->source !== null) {
-                $this->validator->assertSource($command->source);
+                $this->validator->assertSource($command->source, 'source');
                 $sourceName = $command->source->name;
             }
-
-            $this->validator->assertCredential($command->credential);
         } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
                 $exception->getFullMessage(),
@@ -218,12 +214,12 @@ class Feature implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : FeatureEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertId($command->featureId);
-            $this->validator->assertName($command->type);
-            $this->validator->assertNullableValue($command->value);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertId($command->featureId, 'featureId');
+            $this->validator->assertName($command->type, 'type');
+            $this->validator->assertNullableValue($command->value, 'value');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\FeatureException(
                 $e->getFullMessage(),
@@ -278,24 +274,24 @@ class Feature implements HandlerInterface {
      */
     public function handleUpsert(Upsert $command) : FeatureEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertLongName($command->name);
-            $this->validator->assertName($command->type);
-            $this->validator->assertNullableValue($command->value);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertLongName($command->name, 'name');
+            $this->validator->assertName($command->type, 'type');
+            $this->validator->assertNullableValue($command->value, 'value');
+            $this->validator->assertCredential($command->credential, 'credential');
+
+            $sourceName = 'profile';
+            if ($command->source !== null) {
+                $this->validator->assertSource($command->source, 'source');
+                $sourceName = $command->source->name;
+            }
         } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
                 $exception->getFullMessage(),
                 400,
                 $exception
             );
-        }
-
-        $sourceName = 'profile';
-        if ($command->source !== null) {
-            $this->validator->assertSource($command->source);
-            $sourceName = $command->source->name;
         }
 
         try {
@@ -383,10 +379,10 @@ class Feature implements HandlerInterface {
      */
     public function handleUpsertBulk(UpsertBulk $command) : Collection {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertCredential($command->credential);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertFeatures($command->features);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertCredential($command->credential, 'credential');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertFeatureArray($command->features, 'features');
         } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
                 $exception->getFullMessage(),
@@ -424,7 +420,6 @@ class Feature implements HandlerInterface {
                     $sourceName = $source->name;
                 }
 
-
                 $entity = $this->repository->create(
                     [
                         'user_id'    => $command->user->id,
@@ -437,7 +432,7 @@ class Feature implements HandlerInterface {
                     ]
                 );
 
-                $serialized                         = $entity->serialize();
+                $serialized                                      = $entity->serialize();
                 $perSource[$feature['source_id'] ?? 'profile'][] = $entity;
 
                 $this->repository->upsert(
@@ -503,10 +498,10 @@ class Feature implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertId($command->featureId);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertId($command->featureId, 'featureId');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
                 $exception->getFullMessage(),
@@ -542,10 +537,10 @@ class Feature implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertHandler($command->handler);
-            $this->validator->assertArray($command->queryParams);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertHandler($command->handler, 'handler');
+            $this->validator->assertArray($command->queryParams, 'queryParams');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $exception) {
             throw new Validate\Profile\FeatureException(
                 $exception->getFullMessage(),
@@ -565,6 +560,7 @@ class Feature implements HandlerInterface {
         foreach ($deletedFeatures as $deletedFeature) {
             $affectedRows += $this->repository->delete($deletedFeature->id);
         }
+
         $this->repository->commit();
 
         $event = $this->eventFactory->create('Profile\\Feature\\DeletedMulti', $deletedFeatures, $command->credential);

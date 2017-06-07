@@ -17,60 +17,68 @@ trait AssertName {
     /**
      * Asserts a valid name, minimum 1 char long.
      *
-     * @param mixed $name
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertName($name) : void {
+    public function assertName($value, string $name = 'name') : void {
         Validator::prnt()
             ->length(1, null)
-            ->assert($name);
+            ->setName($name)
+            ->assert($value);
     }
 
     /**
      * Asserts a valid short (1-50 chars long) name.
      *
-     * @param mixed $name
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertShortName($name) : void {
+    public function assertShortName($value, string $name = 'name') : void {
         Validator::prnt()
             ->length(1, 50)
-            ->assert($name);
+            ->setName($name)
+            ->assert($value);
     }
 
     /**
      * Asserts a valid short (1-100 chars long) name.
      *
-     * @param mixed $name
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertMediumName($name) : void {
+    public function assertMediumName($value, string $name = 'name') : void {
         Validator::prnt()
             ->length(1, 100)
-            ->assert($name);
+            ->setName($name)
+            ->assert($value);
     }
 
     /**
      * Asserts a valid long (1-255 chars long) name.
      *
-     * @param mixed $name
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertLongName($name) : void {
+    public function assertLongName($value, string $name = 'name') : void {
         Validator::prnt()
             ->length(1, 255)
-            ->assert($name);
+            ->setName($name)
+            ->assert($value);
     }
 }
