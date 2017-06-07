@@ -143,16 +143,13 @@ class Invitation implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : InvitationEntity {
         try {
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertIdentity($command->identity);
-            $this->validator->assertName($command->credentialPubKey);
-            $this->validator->assertString($command->name);
-            $this->validator->assertEmail($command->email);
-            if ($command->expires) {
-                $this->validator->assertDate($command->expires);
-            }
-
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertIdentity($command->identity, 'identity');
+            $this->validator->assertName($command->credentialPubKey, 'credentialPubKey');
+            $this->validator->assertString($command->name, 'name');
+            $this->validator->assertEmail($command->email, 'email');
+            $this->validator->assertNullableDate($command->expires, 'expires');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\InvitationException(
                 $e->getFullMessage(),
@@ -228,10 +225,8 @@ class Invitation implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : InvitationEntity {
         try {
-            $this->validator->assertId($command->invitationId);
-            if ($command->expires) {
-                $this->validator->assertDate($command->expires);
-            }
+            $this->validator->assertId($command->invitationId, 'invitationId');
+            $this->validator->assertNullableDate($command->expires, 'expires');
         } catch (ValidationException $e) {
             throw new Validate\Company\InvitationException(
                 $e->getFullMessage(),
@@ -309,8 +304,8 @@ class Invitation implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
-            $this->validator->assertId($command->invitationId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->invitationId, 'invitationId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\InvitationException(
                 $e->getFullMessage(),

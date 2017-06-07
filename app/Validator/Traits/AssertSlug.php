@@ -17,15 +17,17 @@ trait AssertSlug {
     /**
      * Asserts a valid slug, 1-15 chars long.
      *
-     * @param mixed $slug
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertSlug($slug) : void {
+    public function assertSlug($value, string $name = 'slug') : void {
         Validator::slug()
             ->length(1, 60)
-            ->assert($slug);
+            ->setName($name)
+            ->assert($value);
     }
 }

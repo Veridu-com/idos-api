@@ -123,10 +123,10 @@ class Review implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : ReviewEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertId($command->gateId);
-            $this->validator->assertFlag($command->positive);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertId($command->gateId, 'gateId');
+            $this->validator->assertFlag($command->positive, 'positive');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReviewException(
                 $e->getMessage(),
@@ -172,10 +172,10 @@ class Review implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : ReviewEntity {
         try {
-            $this->validator->assertId($command->id);
-            $this->validator->assertUser($command->user);
-            $this->validator->assertFlag($command->positive);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->id, 'id');
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertFlag($command->positive, 'positive');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ReviewException(
                 $e->getMessage(),
@@ -213,9 +213,9 @@ class Review implements HandlerInterface {
      */
     public function handleUpsert(Upsert $command) : ReviewEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertFlag($command->positive);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertFlag($command->positive, 'positive');
+            $this->validator->assertIdentity($command->identity, 'identity');
 
             if ((bool) $command->gateId === (bool) $command->recommendationId) {
                 throw new ValidationException('A review should belong to strictly one Gate or Review');

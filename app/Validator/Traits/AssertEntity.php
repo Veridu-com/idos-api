@@ -26,140 +26,160 @@ trait AssertEntity {
     /**
      * Asserts a valid company entity.
      *
-     * @param mixed $company
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertCompany($company) : void {
+    public function assertCompany($entity, string $name = 'company') : void {
         Validator::instance(Company::class)
-            ->assert($company);
+            ->setName($name)
+            ->assert($entity);
     }
 
     /**
      * Asserts a valid identity entity.
      *
-     * @param mixed $identity
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertIdentity($identity) : void {
+    public function assertIdentity($entity, string $name = 'identity') : void {
         Validator::instance(Identity::class)
-            ->assert($identity);
+            ->setName($name)
+            ->assert($entity);
     }
 
     /**
      * Asserts a valid credential entity.
      *
-     * @param mixed $credential
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertCredential($credential) : void {
+    public function assertCredential($entity, string $name = 'credential') : void {
         Validator::instance(Credential::class)
-            ->assert($credential);
+            ->setName($name)
+            ->assert($entity);
     }
 
     /**
      * Asserts a valid hook entity.
      *
-     * @param mixed $hook
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertHook($hook) : void {
+    public function assertHook($entity, string $name = 'hook') : void {
         Validator::instance(Hook::class)
-            ->assert($hook);
+            ->setName($name)
+            ->assert($entity);
     }
 
     /**
      * Asserts a valid source entity.
      *
-     * @param mixed $source
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertSource($source) : void {
+    public function assertSource($entity, string $name = 'source') : void {
         Validator::instance(Source::class)
-            ->assert($source);
+            ->setName($name)
+            ->assert($entity);
     }
 
     /**
      * Asserts a valid user entity.
      *
-     * @param mixed $user
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertUser($user) : void {
+    public function assertUser($entity, string $name = 'user') : void {
         Validator::instance(User::class)
-            ->assert($user);
+            ->setName($name)
+            ->assert($entity);
     }
 
     /**
      * Asserts a valid service entity.
      *
-     * @param mixed $service
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertService($service) : void {
+    public function assertService($entity, string $name = 'service') : void {
         Validator::instance(Service::class)
-            ->assert($service);
+            ->setName($name)
+            ->assert($entity);
     }
 
     /**
      * Asserts a valid handler entity.
      *
-     * @param mixed $handler
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertHandler($handler) : void {
+    public function assertHandler($entity, string $name = 'handler') : void {
         Validator::instance(Handler::class)
-            ->assert($handler);
+            ->setName($name)
+            ->assert($entity);
     }
 
     /**
      * Asserts a valid Service Handler entity.
      *
-     * @param mixed $entity
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertServiceHandler($entity) : void {
+    public function assertServiceHandler($entity, string $name = 'serviceHandler') : void {
         Validator::instance('App\\Entity\\ServiceHandler')
+            ->setName($name)
             ->assert($entity);
     }
 
     /**
      * Asserts a valid Event.
      *
-     * @param mixed $entity
+     * @param mixed  $entity
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertEvent($entity) : void {
+    public function assertEvent($entity, string $name = 'event') : void {
         Validator::instance(EventInterface::class)
+            ->setName($name)
             ->assert($entity);
     }
 }

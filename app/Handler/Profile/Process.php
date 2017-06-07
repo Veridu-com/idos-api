@@ -108,10 +108,10 @@ class Process implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : ProcessEntity {
         try {
-            $this->validator->assertName($command->name);
-            $this->validator->assertName($command->event);
-            $this->validator->assertId($command->userId);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertName($command->event, 'event');
+            $this->validator->assertId($command->userId, 'userId');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ProcessException(
                 $e->getFullMessage(),
@@ -155,10 +155,10 @@ class Process implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : ProcessEntity {
         try {
-            $this->validator->assertName($command->name);
-            $this->validator->assertName($command->event);
-            $this->validator->assertId($command->id);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertName($command->event, 'event');
+            $this->validator->assertId($command->id, 'id');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\ProcessException(
                 $e->getFullMessage(),

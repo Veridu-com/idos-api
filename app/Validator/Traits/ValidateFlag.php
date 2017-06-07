@@ -17,12 +17,14 @@ trait ValidateFlag {
     /**
      * Validates a flag value.
      *
-     * @param mixed $flag
+     * @param mixed  $value
+     * @param string $name
      *
      * @return bool
      */
-    public function validateFlag($flag) : bool {
+    public function validateFlag($value, string $name = 'flag') : bool {
         return Validator::trueVal()
-            ->validate($flag);
+            ->setName($name)
+            ->validate($value);
     }
 }

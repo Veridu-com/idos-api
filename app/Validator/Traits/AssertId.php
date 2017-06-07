@@ -17,30 +17,35 @@ trait AssertId {
     /**
      * Asserts a valid id, digit.
      *
-     * @param mixed $id
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertId($id) : void {
+    public function assertId($value, string $name = 'id') : void {
         Validator::digit()
-            ->assert($id);
+            ->setName($name)
+            ->assert($value);
     }
 
     /**
      * Asserts a valid id or null.
      *
-     * @param mixed $id
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertNullableId($id) : void {
+    public function assertNullableId($value, string $name = 'id') : void {
         Validator::oneOf(
             Validator::digit(),
             Validator::nullType()
-        )->assert($id);
+        )
+            ->setName($name)
+            ->assert($value);
     }
 }

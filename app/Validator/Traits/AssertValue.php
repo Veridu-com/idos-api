@@ -17,29 +17,33 @@ trait AssertValue {
     /**
      * Asserts a valid value, minimum 1 char long.
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertValue($value) : void {
+    public function assertValue($value, string $name = 'value') : void {
         Validator::oneOf(
             Validator::floatVal(),
             Validator::intVal(),
             Validator::stringType()->length(1, null)
-        )->assert($value);
+        )
+            ->setName($name)
+            ->assert($value);
     }
     /**
      * Asserts a valid value, nullable.
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertNullableValue($value) : void {
+    public function assertNullableValue($value, string $name = 'value') : void {
         Validator::oneOf(
             Validator::floatVal(),
             Validator::intVal(),
@@ -47,6 +51,8 @@ trait AssertValue {
             Validator::boolVal(),
             Validator::arrayType(),
             Validator::nullType()
-        )->assert($value);
+        )
+            ->setName($name)
+            ->assert($value);
     }
 }

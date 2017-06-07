@@ -17,19 +17,22 @@ trait AssertAccessMode {
     /**
      * Asserts a valid access mode.
      *
-     * @param mixed $accessMode
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertAccessMode($accessMode) : void {
+    public function assertAccessMode($value, string $name = 'accessMode') : void {
         Validator::intType()->in(
             [
                 0x00,
                 0x01,
                 0x02
             ]
-        )->assert($accessMode);
+        )
+            ->setName($name)
+            ->assert($value);
     }
 }

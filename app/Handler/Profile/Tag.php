@@ -109,8 +109,8 @@ class Tag implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : TagEntity {
         try {
-            $this->validator->assertName($command->name);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Profile\TagException(
                 $e->getFullMessage(),
@@ -155,8 +155,8 @@ class Tag implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertSlug($command->slug);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertSlug($command->slug, 'slug');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Profile\TagException(
                 $e->getFullMessage(),

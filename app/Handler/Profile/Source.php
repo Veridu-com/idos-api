@@ -181,14 +181,14 @@ class Source implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : SourceEntity {
         try {
-            $this->validator->assertShortName($command->name);
-            $this->validator->assertUser($command->user);
-            $this->validator->assertCredential($command->credential);
-            $this->validator->assertId($command->user->id);
-            $this->validator->assertIpAddr($command->ipaddr);
-            $this->validator->assertArray($command->tags);
+            $this->validator->assertShortName($command->name, 'name');
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertCredential($command->credential, 'credential');
+            $this->validator->assertId($command->user->id, 'userId');
+            $this->validator->assertIpAddr($command->ipaddr, 'ipaddr');
+            $this->validator->assertArray($command->tags, 'tags');
             foreach ($command->tags as $key => $value) {
-                $this->validator->assertString($key);
+                $this->validator->assertString($key, sprintf('tags.%s', $key));
             }
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
@@ -210,7 +210,7 @@ class Source implements HandlerInterface {
             }
 
             if (isset($command->tags['email'])) {
-                $this->validator->assertEmail($command->tags['email']);
+                $this->validator->assertEmail($command->tags['email'], 'tags.email');
             }
 
             $command->tags['otp_code']     = random_int(100000, 999999);
@@ -222,7 +222,7 @@ class Source implements HandlerInterface {
         // CRA check
         $sendCRA = false;
         if ((isset($command->tags['cra_check']))
-            && ($this->validator->validateFlag($command->tags['cra_check']))
+            && ($this->validator->validateFlag($command->tags['cra_check'], 'tags.cra_check'))
         ) {
             // Reference code for tracking the CRA Result
             $command->tags['cra_reference'] = md5(
@@ -246,7 +246,11 @@ class Source implements HandlerInterface {
 
         // if it is a social media Source
         if (isset($command->tags['profile_id'], $command->tags['access_token'])) {
-            $keys = $this->settingRepository->getSourceTokens($command->credential->companyId, $command->credential->public, $command->name);
+            $keys = $this->settingRepository->getSourceTokens(
+                $command->credential->companyId,
+                $command->credential->public,
+                $command->name
+            );
             $key  = $keys->where('property', sprintf('%s.%s.key', $command->credential->public, $command->name));
 
             // main variables
@@ -345,18 +349,18 @@ class Source implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : SourceEntity {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertId($command->user->id);
-            $this->validator->assertSource($command->source);
-            $this->validator->assertId($command->source->id);
-            $this->validator->assertIpAddr($command->ipaddr);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertId($command->user->id, 'userId');
+            $this->validator->assertSource($command->source, 'source');
+            $this->validator->assertId($command->source->id, 'sourceId');
+            $this->validator->assertIpAddr($command->ipaddr, 'ipaddr');
 
-            $this->validator->assertArray($command->tags);
+            $this->validator->assertArray($command->tags, 'tags');
             foreach ($command->tags as $key => $value) {
-                $this->validator->assertString($key);
+                $this->validator->assertString($key, sprintf('tags.%s', $key));
             }
 
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),
@@ -377,8 +381,7 @@ class Source implements HandlerInterface {
 
         if (isset($command->otpCode)) {
             try {
-                $this->validator->assertOTPCode($command->otpCode);
-                $this->validator->assertCredential($command->credential);
+                $this->validator->assertOTPCode($command->otpCode, 'otpCode');
             } catch (ValidationException $e) {
                 throw new Validate\Profile\SourceException(
                     $e->getFullMessage(),
@@ -466,12 +469,12 @@ class Source implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertId($command->user->id);
-            $this->validator->assertSource($command->source);
-            $this->validator->assertId($command->source->id);
-            $this->validator->assertIpAddr($command->ipaddr);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertId($command->user->id, 'userId');
+            $this->validator->assertSource($command->source, 'source');
+            $this->validator->assertId($command->source->id, 'sourceId');
+            $this->validator->assertIpAddr($command->ipaddr, 'ipaddr');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),
@@ -511,10 +514,10 @@ class Source implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertUser($command->user);
-            $this->validator->assertId($command->user->id);
-            $this->validator->assertIpAddr($command->ipaddr);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertId($command->user->id, 'userId');
+            $this->validator->assertIpAddr($command->ipaddr, 'ipaddr');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\SourceException(
                 $e->getFullMessage(),

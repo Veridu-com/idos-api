@@ -99,8 +99,8 @@ class Profile implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) : int {
         try {
-            $this->validator->assertId($command->userId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->userId, 'userId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\ProfileException(
                 $e->getFullMessage(),

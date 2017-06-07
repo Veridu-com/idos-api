@@ -136,10 +136,10 @@ class Raw implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : RawEntity {
         try {
-            $this->validator->assertSource($command->source);
-            $this->validator->assertUser($command->user);
-            $this->validator->assertName($command->collection);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertSource($command->source, 'source');
+            $this->validator->assertUser($command->user, 'user');
+            $this->validator->assertName($command->collection, 'collection');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
                 $e->getFullMessage(),
@@ -202,7 +202,7 @@ class Raw implements HandlerInterface {
      */
     public function handleDeleteAll(DeleteAll $command) : int {
         try {
-            $this->validator->assertUser($command->user);
+            $this->validator->assertUser($command->user, 'user');
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
                 $e->getFullMessage(),
@@ -248,9 +248,9 @@ class Raw implements HandlerInterface {
      */
     public function handleUpsert(Upsert $command) : RawEntity {
         try {
-            $this->validator->assertSource($command->source);
-            $this->validator->assertName($command->collection);
-            $this->validator->assertCredential($command->credential);
+            $this->validator->assertSource($command->source, 'source');
+            $this->validator->assertName($command->collection, 'collection');
+            $this->validator->assertCredential($command->credential, 'credential');
         } catch (ValidationException $e) {
             throw new Validate\Profile\RawException(
                 $e->getMessage(),

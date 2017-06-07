@@ -105,9 +105,9 @@ class Permission implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : PermissionEntity {
         try {
-            $this->validator->assertRouteName($command->routeName);
-            $this->validator->assertId($command->companyId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertRouteName($command->routeName, 'routeName');
+            $this->validator->assertId($command->companyId, 'companyId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\PermissionException(
                 $e->getFullMessage(),
@@ -150,9 +150,9 @@ class Permission implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertId($command->companyId);
-            $this->validator->assertRouteName($command->routeName);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->companyId, 'companyId');
+            $this->validator->assertRouteName($command->routeName, 'routeName');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\PermissionException(
                 $e->getFullMessage(),

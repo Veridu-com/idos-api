@@ -17,16 +17,18 @@ trait AssertUserName {
     /**
      * Asserts a valid name, 1-50 chars long, alpha numeric, no white spaces.
      *
-     * @param mixed $userName
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertUserName($userName) : void {
+    public function assertUserName($value, string $name = 'userName') : void {
         Validator::alnum()
             ->noWhitespace()
             ->length(1, 50)
-            ->assert($userName);
+            ->setName($name)
+            ->assert($value);
     }
 }

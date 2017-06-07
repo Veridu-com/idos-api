@@ -103,9 +103,9 @@ class Identity implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : IdentityEntity {
         try {
-            $this->validator->assertString($command->profileId);
-            $this->validator->assertShortName($command->sourceName);
-            $this->validator->assertString($command->appKey);
+            $this->validator->assertString($command->profileId, 'profileId');
+            $this->validator->assertShortName($command->sourceName, 'sourceName');
+            $this->validator->assertString($command->appKey, 'appKey');
         } catch (ValidationException $e) {
             throw new Validate\IdentityException(
                 $e->getFullMessage(),

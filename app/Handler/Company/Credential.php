@@ -107,11 +107,11 @@ class Credential implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : CredentialEntity {
         try {
-            $this->validator->assertName($command->name);
-            $this->validator->assertFlag($command->production);
-            $this->validator->assertCompany($command->company);
-            $this->validator->assertId($command->company->id);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertFlag($command->production, 'production');
+            $this->validator->assertCompany($command->company, 'company');
+            $this->validator->assertId($command->company->id, 'companyId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\CredentialException(
                 $e->getFullMessage(),
@@ -123,7 +123,7 @@ class Credential implements HandlerInterface {
         $credential = $this->repository->create(
             [
                 'name'       => $command->name,
-                'production' => $this->validator->validateFlag($command->production),
+                'production' => $this->validator->validateFlag($command->production, 'production'),
                 'company_id' => $command->company->id,
                 'created_at' => time()
             ]
@@ -167,9 +167,9 @@ class Credential implements HandlerInterface {
      */
     public function handleUpdateOne(UpdateOne $command) : CredentialEntity {
         try {
-            $this->validator->assertId($command->credentialId);
-            $this->validator->assertName($command->name);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->credentialId, 'credentialId');
+            $this->validator->assertName($command->name, 'name');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\CredentialException(
                 $e->getFullMessage(),
@@ -205,8 +205,8 @@ class Credential implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertId($command->credential->id);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->credential->id, 'credentialId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\CredentialException(
                 $e->getFullMessage(),

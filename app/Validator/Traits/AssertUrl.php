@@ -17,14 +17,16 @@ trait AssertUrl {
     /**
      * Asserts a valid url.
      *
-     * @param mixed $url
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertUrl($url) : void {
+    public function assertUrl($value, string $name = 'url') : void {
         Validator::url()
-            ->assert($url);
+            ->setName($name)
+            ->assert($value);
     }
 }

@@ -102,9 +102,9 @@ class User implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : UserEntity {
         try {
-            $this->validator->assertCredential($command->credential);
-            $this->validator->assertId($command->credential->id);
-            $this->validator->assertUserName($command->username);
+            $this->validator->assertCredential($command->credential, 'credential');
+            $this->validator->assertId($command->credential->id, 'credentialId');
+            $this->validator->assertUserName($command->username, 'username');
         } catch (ValidationException $e) {
             throw new Validate\UserException(
                 $e->getFullMessage(),

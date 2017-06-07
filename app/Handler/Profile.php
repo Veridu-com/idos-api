@@ -97,7 +97,7 @@ class Profile implements HandlerInterface {
      * @return \Illuminate\Support\Collection
      */
     public function handleListAll(ListAll $command) : Collection {
-        $this->validator->assertCompany($command->company);
+        $this->validator->assertCompany($command->company, 'company');
 
         return $this->repository->findByCompanyId($command->company->id);
     }

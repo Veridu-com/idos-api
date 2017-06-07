@@ -105,9 +105,9 @@ class Subscription implements HandlerInterface {
      */
     public function handleCreateNew(CreateNew $command) : SubscriptionEntity {
         try {
-            $this->validator->assertString($command->categoryName);
-            $this->validator->assertCredential($command->credential);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertString($command->categoryName, 'categoryName');
+            $this->validator->assertCredential($command->credential, 'credential');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\SubscriptionException(
                 $e->getFullMessage(),
@@ -148,8 +148,8 @@ class Subscription implements HandlerInterface {
      */
     public function handleDeleteOne(DeleteOne $command) {
         try {
-            $this->validator->assertId($command->subscriptionId);
-            $this->validator->assertIdentity($command->identity);
+            $this->validator->assertId($command->subscriptionId, 'subscriptionId');
+            $this->validator->assertIdentity($command->identity, 'identity');
         } catch (ValidationException $e) {
             throw new Validate\Company\SubscriptionException(
                 $e->getFullMessage(),

@@ -17,14 +17,16 @@ trait AssertFlag {
     /**
      * Asserts a valid  flag, boolean.
      *
-     * @param mixed $flag
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertFlag($flag) : void {
+    public function assertFlag($value, string $name = 'flag') : void {
         Validator::boolVal()
-            ->assert($flag);
+            ->setName($name)
+            ->assert($value);
     }
 }

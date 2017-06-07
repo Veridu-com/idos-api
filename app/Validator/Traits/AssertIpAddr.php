@@ -17,14 +17,16 @@ trait AssertIpAddr {
     /**
      * Asserts a valid ip address.
      *
-     * @param mixed $ipAddr
+     * @param mixed  $value
+     * @param string $name
      *
      * @throws \Respect\Validation\Exceptions\ExceptionInterface
      *
      * @return void
      */
-    public function assertIpAddr($ipAddr) : void {
+    public function assertIpAddr($value, string $name = 'ipaddr') : void {
         Validator::ip()
-            ->assert($ipAddr);
+            ->setName($name)
+            ->assert($value);
     }
 }
