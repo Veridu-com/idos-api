@@ -66,7 +66,7 @@ class SocialSettings {
         string $settingVersion
     ) : void {
         foreach ($settings as $setting) {
-            switch ($setting->name) {
+            switch ($setting->property) {
                 case $settingKey:
                     $this->appKey = $setting->value;
                     break;
