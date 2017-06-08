@@ -19,13 +19,14 @@ if (! isset($app)) {
     die('$app is not set!');
 }
 
-$settings = $container->get('settings');
-$logger   = $container->get('log');
+$container = $app->getContainer();
+$settings  = $container->get('settings');
+$logger    = $container->get('log');
 
 $app
     ->add(new IpAddress(true, $settings['trustedProxies']))
-    ->add(new OptimusDecode($app->getContainer()->get('optimus')))
-    ->add(new GateKeeper($app->getContainer()))
+    ->add(new OptimusDecode($container->get('optimus')))
+    ->add(new GateKeeper($container))
     ->add(
         new Cors(
             [
