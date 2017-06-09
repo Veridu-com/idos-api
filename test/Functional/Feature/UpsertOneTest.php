@@ -47,7 +47,7 @@ class UpsertOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -106,7 +106,7 @@ class UpsertOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+        $this->assertSame(200, $response->getStatusCode(), (string) $response->getBody());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -200,7 +200,7 @@ class UpsertOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -260,7 +260,7 @@ class UpsertOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -321,7 +321,7 @@ class UpsertOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -382,7 +382,7 @@ class UpsertOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -443,7 +443,7 @@ class UpsertOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode(), (string) $response->getBody());
+        $this->assertSame(200, $response->getStatusCode(), (string) $response->getBody());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
@@ -504,7 +504,7 @@ class UpsertOneTest extends AbstractFunctional {
         );
 
         $response = $this->process($request);
-        $this->assertSame(201, $response->getStatusCode());
+        $this->assertSame(200, $response->getStatusCode());
 
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);

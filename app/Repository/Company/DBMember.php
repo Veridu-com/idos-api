@@ -13,7 +13,7 @@ use App\Exception\NotFound;
 use App\Factory\Entity;
 use App\Factory\Repository;
 use App\Helper\Vault;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Collection;
 use Jenssegers\Optimus\Optimus;
@@ -21,7 +21,7 @@ use Jenssegers\Optimus\Optimus;
 /**
  * Database-based Member Repository Implementation.
  */
-class DBMember extends AbstractSQLDBRepository implements MemberInterface {
+class DBMember extends AbstractDBRepository implements MemberInterface {
     /**
      * Compay repository.
      *

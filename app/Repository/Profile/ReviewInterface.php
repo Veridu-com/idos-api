@@ -34,7 +34,7 @@ interface ReviewInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $queryParams
      *
-     * @return \Illuminate\Database\Eloquent\Collection|Collection
+     * @return \Illuminate\Support\Collection|Collection
      */
     public function getByUserIdAndIdentityId(int $identityId, int $userId, array $queryParams = []) : Collection;
 
@@ -43,7 +43,7 @@ interface ReviewInterface extends RepositoryInterface {
      *
      * @param int $userId
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByUserId(int $userId) : Collection;
 }

@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Tag;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Tag Repository Implementation.
  */
-class DBTag extends AbstractSQLDBRepository implements TagInterface {
+class DBTag extends AbstractDBRepository implements TagInterface {
     /**
      * The table associated with the repository.
      *

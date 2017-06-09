@@ -11,13 +11,13 @@ namespace App\Repository\Profile;
 use App\Entity\Profile\Attribute;
 use App\Exception\Create;
 use App\Exception\NotFound;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Attribute Repository Implementation.
  */
-class DBAttribute extends AbstractSQLDBRepository implements AttributeInterface {
+class DBAttribute extends AbstractDBRepository implements AttributeInterface {
     /**
      * The table associated with the repository.
      *

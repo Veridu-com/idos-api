@@ -94,7 +94,7 @@ class Recommendation implements ControllerInterface {
      * @apiEndpointRequiredParam body string result pass Recommendation result
      * @apiEndpointRequiredParam body string passed rules-passed The rules that the profile have passed
      * @apiEndpointRequiredParam body string failed rules-failed The rules that the profile have failed to pass
-     * @apiEndpointResponse 201 schema/recommendation/upsert.json
+     * @apiEndpointResponse 200 schema/recommendation/upsert.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -124,7 +124,6 @@ class Recommendation implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', isset($feature->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

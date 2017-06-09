@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Handler Services Repository Implementation.
  */
-class DBHandlerService extends AbstractSQLDBRepository implements HandlerServiceInterface {
+class DBHandlerService extends AbstractDBRepository implements HandlerServiceInterface {
     /**
      * The table associated with the repository.
      *

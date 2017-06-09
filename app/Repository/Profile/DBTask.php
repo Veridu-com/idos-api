@@ -8,12 +8,12 @@ declare(strict_types = 1);
 
 namespace App\Repository\Profile;
 
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 
 /**
  * Database-based Task Repository Implementation.
  */
-class DBTask extends AbstractSQLDBRepository implements TaskInterface {
+class DBTask extends AbstractDBRepository implements TaskInterface {
     /**
      * The table associated with the repository.
      *

@@ -138,7 +138,7 @@ class Scores implements ControllerInterface {
      * @apiEndpointRequiredParam body   string     attribute  firstName Score attribute
      * @apiEndpointRequiredParam body   string     name  overall Score name
      * @apiEndpointRequiredParam body   float     value 0.2 Score value
-     * @apiEndpointResponse 201 schema/score/scoreEntity.json
+     * @apiEndpointResponse 201 schema/score/createNew.json
      *
      * @see \App\Handler\Profile\Score::handleCreateNew
      *
@@ -227,7 +227,7 @@ class Scores implements ControllerInterface {
      * @apiEndpointRequiredParam body   string     attribute  firstName Score attribute
      * @apiEndpointRequiredParam body   string     name  overall Score name
      * @apiEndpointRequiredParam body   float     value 0.2 Score value
-     * @apiEndpointResponse 201 schema/score/createNew.json
+     * @apiEndpointResponse 200 schema/score/upsert.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -255,7 +255,6 @@ class Scores implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', isset($entity->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

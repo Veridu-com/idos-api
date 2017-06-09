@@ -38,7 +38,6 @@ class Health implements RouteInterface {
             return new \App\Controller\Health(
                 $container->get('gearmanClient'),
                 $container->get('sql'),
-                $container->get('nosql'),
                 $container->get('commandBus'),
                 $container->get('commandFactory')
             );

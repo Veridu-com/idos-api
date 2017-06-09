@@ -9,15 +9,14 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Factory\Entity;
-use App\Factory\Repository;
 use App\Helper\Vault;
-use Illuminate\Database\Connection as SQLConnection;
 use Jenssegers\Optimus\Optimus;
+use League\Flysystem\Filesystem;
 
 /**
- * Database-based Repository Strategy.
+ * File-based Repository Strategy.
  */
-class DBStrategy implements RepositoryStrategyInterface {
+class FileStrategy implements RepositoryStrategyInterface {
     /**
      * Entity Factory.
      *
@@ -25,11 +24,11 @@ class DBStrategy implements RepositoryStrategyInterface {
      */
     private $entityFactory;
     /**
-     * SQL Database Connection.
+     * File System instance.
      *
-     * @var \Illuminate\Database\Connection
+     * @var \League\Flysystem\Filesystem
      */
-    private $sqlConnection;
+    private $fileSystem;
     /**
      * Optimus instance.
      *
@@ -46,23 +45,23 @@ class DBStrategy implements RepositoryStrategyInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Factory\Entity             $entityFactory
-     * @param \Jenssegers\Optimus\Optimus     $optimus
-     * @param \App\Helper\Vault               $vault
-     * @param \Illuminate\Database\Connection $sqlConnection
+     * @param \App\Factory\Entity          $entityFactory
+     * @param \League\Flysystem\Filesystem $fileSystem
+     * @param \Jenssegers\Optimus\Optimus  $optimus
+     * @param \App\Helper\Vault            $vault
      *
      * @return void
      */
     public function __construct(
         Entity $entityFactory,
+        Filesystem $fileSystem,
         Optimus $optimus,
-        Vault $vault,
-        SQLConnection $sqlConnection
+        Vault $vault
     ) {
-        $this->entityFactory  = $entityFactory;
-        $this->optimus        = $optimus;
-        $this->vault          = $vault;
-        $this->sqlConnection  = $sqlConnection;
+        $this->entityFactory = $entityFactory;
+        $this->fileSystem    = $fileSystem;
+        $this->optimus       = $optimus;
+        $this->vault         = $vault;
     }
 
     /**
@@ -80,13 +79,13 @@ class DBStrategy implements RepositoryStrategyInterface {
         if (is_array($splitName) && count($splitName) > 1) {
             $name                   = array_pop($splitName);
             $namespace              = implode('\\', $splitName);
-            $formattedName          = sprintf('%s\\DB%s', $namespace, ucfirst($name));
+            $formattedName          = sprintf('%s\\File%s', $namespace, ucfirst($name));
             $cache[$repositoryName] = $formattedName;
 
             return $formattedName;
         }
 
-        $formattedName          = sprintf('DB%s', ucfirst($repositoryName));
+        $formattedName          = sprintf('File%s', ucfirst($repositoryName));
         $cache[$repositoryName] = $formattedName;
 
         return $formattedName;
@@ -96,12 +95,13 @@ class DBStrategy implements RepositoryStrategyInterface {
      * {@inheritdoc}
      */
     public function build(Repository $repositoryFactory, string $className) : RepositoryInterface {
+        static $cache = [];
+
         return new $className(
             $this->entityFactory,
-            $repositoryFactory,
+            $this->fileSystem,
             $this->optimus,
-            $this->vault,
-            $this->sqlConnection
+            $this->vault
         );
     }
 }

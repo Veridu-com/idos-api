@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Flag;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Flag Repository Implementation.
  */
-class DBFlag extends AbstractSQLDBRepository implements FlagInterface {
+class DBFlag extends AbstractDBRepository implements FlagInterface {
     /**
      * The table associated with the repository.
      *

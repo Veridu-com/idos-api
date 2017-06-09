@@ -17,5 +17,6 @@ use App\Validator\ValidatorInterface;
 class Raw implements ValidatorInterface {
     use Traits\AssertEntity,
         Traits\AssertId,
-        Traits\AssertName;
+        Traits\AssertName,
+        Traits\AssertType;
 }

@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Company;
 
 use App\Entity\Company\Invitation;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Invitation Repository Implementation.
  */
-class DBInvitation extends AbstractSQLDBRepository implements InvitationInterface {
+class DBInvitation extends AbstractDBRepository implements InvitationInterface {
     /**
      * The table associated with the repository.
      *

@@ -65,7 +65,7 @@ interface CompanyInterface extends RepositoryInterface {
      *
      * @param int $parentId
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByParentId(int $parentId) : Collection;
 

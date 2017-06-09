@@ -11,7 +11,6 @@ namespace App\Controller\Profile;
 use App\Controller\ControllerInterface;
 use App\Exception\AppException;
 use App\Factory\Command;
-use App\Repository\Profile\RawInterface;
 use App\Repository\Profile\SourceInterface;
 use League\Tactician\CommandBus;
 use Psr\Http\Message\ResponseInterface;
@@ -49,7 +48,6 @@ class Raw implements ControllerInterface {
     /**
      * Class constructor.
      *
-     * @param \App\Repository\Profile\RawInterface    $repository
      * @param \App\Repository\Profile\SourceInterface $sourceRepository
      * @param \League\Tactician\CommandBus            $commandBus
      * @param \App\Factory\Command                    $commandFactory
@@ -57,12 +55,10 @@ class Raw implements ControllerInterface {
      * @return void
      */
     public function __construct(
-        RawInterface $repository,
         SourceInterface $sourceRepository,
         CommandBus $commandBus,
         Command $commandFactory
     ) {
-        $this->repository       = $repository;
         $this->sourceRepository = $sourceRepository;
         $this->commandBus       = $commandBus;
         $this->commandFactory   = $commandFactory;
@@ -88,7 +84,12 @@ class Raw implements ControllerInterface {
         $user        = $request->getAttribute('targetUser');
         $queryParams = $request->getQueryParams();
 
-        $entities = $this->repository->getByUserId($user->id, $queryParams);
+        $command = $this->commandFactory->create('Profile\\Raw\\ListAll');
+        $command
+            ->setParameter('user', $user)
+            ->setParameter('queryParams', $queryParams);
+
+        $entities = $this->commandBus->handle($command);
 
         $body = [
             'data'    => $entities->toArray(),
@@ -146,7 +147,7 @@ class Raw implements ControllerInterface {
     /**
      * Created a new raw data for a given source.
      *
-     * @apiEndpointResponse 201 schema/raw/rawEntity.json
+     * @apiEndpointResponse 201 schema/raw/createNew.json
      * @apiEndpointRequiredParam body string collection collection-name Collection name
      * @apiEndpointRequiredParam body string data data-value Data
      *
@@ -196,7 +197,7 @@ class Raw implements ControllerInterface {
     /**
      * Creates or updates a raw data for a given source.
      *
-     * @apiEndpointResponse 201 schema/raw/rawEntity.json
+     * @apiEndpointResponse 200 schema/raw/upsert.json
      * @apiEndpointRequiredParam body string collection collection-name Collection name
      * @apiEndpointRequiredParam body string data data-value Data
      *
@@ -235,7 +236,6 @@ class Raw implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', isset($entity->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

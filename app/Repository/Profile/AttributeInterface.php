@@ -32,7 +32,7 @@ interface AttributeInterface extends RepositoryInterface {
      * @param int   $userId
      * @param array $filters
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getAllByUserIdAndNames(int $userId, array $filters = []) : Collection;
 

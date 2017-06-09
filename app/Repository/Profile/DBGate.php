@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Gate;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Gate Repository Implementation.
  */
-class DBGate extends AbstractSQLDBRepository implements GateInterface {
+class DBGate extends AbstractDBRepository implements GateInterface {
     /**
      * The table associated with the repository.
      *

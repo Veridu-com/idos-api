@@ -241,7 +241,7 @@ class Features implements ControllerInterface {
      * @apiEndpointRequiredParam body string value 10 Feature value
      * @apiEndpointRequiredParam body string type integer Feature type
      * @apiEndpointParam body int source_id 25367 Feature source_id
-     * @apiEndpointResponse 201 schema/feature/createNew.json
+     * @apiEndpointResponse 200 schema/feature/upsert.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -276,7 +276,6 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', isset($feature->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);
@@ -288,7 +287,7 @@ class Features implements ControllerInterface {
      * Creates or updates features for the given user.
      *
      * @apiEndpointRequiredParam body array features [] Feature features
-     * @apiEndpointResponse 201 schema/feature/createNew.json
+     * @apiEndpointResponse 200 schema/feature/upsertBulk.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -311,7 +310,6 @@ class Features implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', ['data' => $features->toArray()]);

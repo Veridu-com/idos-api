@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Company;
 
 use App\Entity\Company\Widget;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Widget Repository Implementation.
  */
-class DBWidget extends AbstractSQLDBRepository implements WidgetInterface {
+class DBWidget extends AbstractDBRepository implements WidgetInterface {
     /**
      * The table associated with the repository.
      *

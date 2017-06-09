@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Category Repository Implementation.
  */
-class DBCategory extends AbstractSQLDBRepository implements CategoryInterface {
+class DBCategory extends AbstractDBRepository implements CategoryInterface {
     /**
      * The table associated with the repository.
      *

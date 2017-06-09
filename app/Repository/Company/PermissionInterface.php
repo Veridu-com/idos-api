@@ -41,7 +41,7 @@ interface PermissionInterface extends RepositoryInterface {
      *
      * @param int $companyId
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getByCompanyId(int $companyId) : Collection;
 

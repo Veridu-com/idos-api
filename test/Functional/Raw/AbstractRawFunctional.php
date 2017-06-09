@@ -24,7 +24,9 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
                 )
             )
         );*/
-        (self::$noSqlConnection)('facebook')->getMongoDB()->drop();
+
+        $fileSystem = self::$app->getContainer()->get('fileSystem');
+        $fileSystem('raw')->deleteDir('facebook');
 
         $environment = $this->createEnvironment(
             [
@@ -69,6 +71,58 @@ abstract class AbstractRawFunctional extends AbstractFunctional {
                         'source_id'  => 1321189817,
                         'collection' => 'rawTest3',
                         'data'       => ['test' => 'data3']
+                    ]
+                )
+            )
+        );
+
+        $response = $this->process(
+            $this->createRequest(
+                $environment,
+                json_encode(
+                    [
+                        'source_id'  => 517015180,
+                        'collection' => 'rawTestX',
+                        'data'       => ['test' => 'dataX']
+                    ]
+                )
+            )
+        );
+
+        $response = $this->process(
+            $this->createRequest(
+                $environment,
+                json_encode(
+                    [
+                        'source_id'  => 1041008870,
+                        'collection' => 'rawTest1',
+                        'data'       => ['test' => 'data4']
+                    ]
+                )
+            )
+        );
+
+        $response = $this->process(
+            $this->createRequest(
+                $environment,
+                json_encode(
+                    [
+                        'source_id'  => 1041008870,
+                        'collection' => 'rawTest2',
+                        'data'       => ['test' => 'data5']
+                    ]
+                )
+            )
+        );
+
+        $response = $this->process(
+            $this->createRequest(
+                $environment,
+                json_encode(
+                    [
+                        'source_id'  => 1041008870,
+                        'collection' => 'rawTest3',
+                        'data'       => ['test' => 'data6']
                     ]
                 )
             )

@@ -214,7 +214,7 @@ class Gates implements ControllerInterface {
      *
      * @apiEndpointRequiredParam body string name 18+ Gate name
      * @apiEndpointRequiredParam body string confidence_level medium Gate confidence level
-     * @apiEndpointResponse 201 schema/gate/createNew.json
+     * @apiEndpointResponse 200 schema/gate/upsert.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response
@@ -244,7 +244,6 @@ class Gates implements ControllerInterface {
 
         $command = $this->commandFactory->create('ResponseDispatch');
         $command
-            ->setParameter('statusCode', isset($entity->updatedAt) ? 200 : 201)
             ->setParameter('request', $request)
             ->setParameter('response', $response)
             ->setParameter('body', $body);

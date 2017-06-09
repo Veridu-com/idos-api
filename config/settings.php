@@ -25,26 +25,19 @@ $appSettings = [
         'providersCache' => Env::asString('IDOS_PROVIDERS_CACHE', ''),
         'routesCache'    => Env::asString('IDOS_ROUTES_CACHE', '')
     ],
-    'db'                                => [
-        'sql' => [
-            'driver'    => Env::asString('IDOS_SQL_DRIVER', 'pgsql'),
-            'host'      => Env::asString('IDOS_SQL_HOST', 'localhost'),
-            'port'      => Env::asInteger('IDOS_SQL_PORT', 5432),
-            'database'  => Env::asString('IDOS_SQL_NAME', 'idos-api'),
-            'username'  => Env::asString('IDOS_SQL_USER', 'idos-api'),
-            'password'  => Env::asString('IDOS_SQL_PASS', 'idos-api'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'options'   => [
-                \PDO::ATTR_TIMEOUT    => 5,
-                \PDO::ATTR_PERSISTENT => false
-            ]
-        ],
-        'nosql' => [
-            'driver' => Env::asString('IDOS_NOSQL_DRIVER', 'mongodb'),
-            'host'   => Env::asArray('IDOS_NOSQL_HOST', ['localhost']),
-            'port'   => Env::asInteger('IDOS_NOSQL_PORT', 27017)
+    'sql' => [
+        'driver'    => Env::asString('IDOS_SQL_DRIVER', 'pgsql'),
+        'host'      => Env::asString('IDOS_SQL_HOST', 'localhost'),
+        'port'      => Env::asInteger('IDOS_SQL_PORT', 5432),
+        'database'  => Env::asString('IDOS_SQL_NAME', 'idos-api'),
+        'username'  => Env::asString('IDOS_SQL_USER', 'idos-api'),
+        'password'  => Env::asString('IDOS_SQL_PASS', 'idos-api'),
+        'charset'   => 'utf8',
+        'collation' => 'utf8_unicode_ci',
+        'prefix'    => '',
+        'options'   => [
+            \PDO::ATTR_TIMEOUT    => 5,
+            \PDO::ATTR_PERSISTENT => false
         ]
     ],
     'log' => [
@@ -72,6 +65,17 @@ $appSettings = [
     'repository' => [
         'strategy' => 'db',
         'cached'   => false
+    ],
+    'fileSystem' => [
+        'adapter' => Env::asString('IDOS_FS_ADAPTER', ''),
+        'cached'  => Env::asBool('IDOS_FS_CACHED', false),
+        'path'    => Env::asString('IDOS_FS_PATH', '/tmp')
+    ],
+    's3' => [
+        'key'     => Env::asString('IDOS_S3_KEY', ''),
+        'secret'  => Env::asString('IDOS_S3_SECRET', ''),
+        'region'  => Env::asString('IDOS_S3_REGION', ''),
+        'version' => Env::asString('IDOS_S3_VERSION', '')
     ],
     'secure'        => Env::asString('IDOS_SECURE_KEY', ''),
     'sso_providers' => [

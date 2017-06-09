@@ -10,13 +10,13 @@ namespace App\Repository\Metric;
 
 use App\Entity\Company;
 use App\Entity\Company\Credential;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based User Metric Repository Implementation.
  */
-class DBUser extends AbstractSQLDBRepository implements UserInterface {
+class DBUser extends AbstractDBRepository implements UserInterface {
     /**
      * The table associated with the repository.
      *

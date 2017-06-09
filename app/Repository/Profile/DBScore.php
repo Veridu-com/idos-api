@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Score;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Score Repository Implementation.
  */
-class DBScore extends AbstractSQLDBRepository implements ScoreInterface {
+class DBScore extends AbstractDBRepository implements ScoreInterface {
     /**
      * The table associated with the repository.
      *

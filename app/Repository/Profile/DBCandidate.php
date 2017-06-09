@@ -10,13 +10,13 @@ namespace App\Repository\Profile;
 
 use App\Entity\Profile\Candidate;
 use App\Exception\NotFound;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Candidate Repository Implementation.
  */
-class DBCandidate extends AbstractSQLDBRepository implements CandidateInterface {
+class DBCandidate extends AbstractDBRepository implements CandidateInterface {
     /**
      * The table associated with the repository.
      *

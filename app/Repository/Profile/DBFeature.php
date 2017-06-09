@@ -9,13 +9,13 @@ declare(strict_types = 1);
 namespace App\Repository\Profile;
 
 use App\Entity\Profile\Feature;
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Feature Repository Implementation.
  */
-class DBFeature extends AbstractSQLDBRepository implements FeatureInterface {
+class DBFeature extends AbstractDBRepository implements FeatureInterface {
     /**
      * The table associated with the repository.
      *

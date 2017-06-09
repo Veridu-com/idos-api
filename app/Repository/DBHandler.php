@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
 /**
  * Database-based Handler Repository Implementation.
  */
-class DBHandler extends AbstractSQLDBRepository implements HandlerInterface {
+class DBHandler extends AbstractDBRepository implements HandlerInterface {
     /**
      * The table associated with the repository.
      *

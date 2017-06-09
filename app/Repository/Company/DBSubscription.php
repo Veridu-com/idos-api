@@ -8,13 +8,13 @@ declare(strict_types = 1);
 
 namespace App\Repository\Company;
 
-use App\Repository\AbstractSQLDBRepository;
+use App\Repository\AbstractDBRepository;
 use Illuminate\Support\Collection;
 
 /**
  * Database-based Subscription Repository Implementation.
  */
-class DBSubscription extends AbstractSQLDBRepository implements SubscriptionInterface {
+class DBSubscription extends AbstractDBRepository implements SubscriptionInterface {
     /**
      * The table associated with the repository.
      *

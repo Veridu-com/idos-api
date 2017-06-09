@@ -151,7 +151,7 @@ class Hooks implements ControllerInterface {
      * @apiEndpointRequiredParam body string trigger company.create Trigger
      * @apiEndpointRequiredParam body string url http://test.com/example.php Url
      * @apiEndpointRequiredParam body boolean subscribed false Subscribed
-     * @apiEndpointResponse 201 schema/hook/hookEntity.json
+     * @apiEndpointResponse 201 schema/hook/createNew.json
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      * @param \Psr\Http\Message\ResponseInterface      $response

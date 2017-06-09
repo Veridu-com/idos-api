@@ -40,11 +40,25 @@ class ListAllTest extends AbstractRawFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
-        $this->assertCount(3, $body['data']);
+        $this->assertCount(7, $body['data']);
 
         foreach ($body['data'] as $raw) {
-            $this->assertContains($raw['collection'], ['rawTest1', 'rawTest2', 'rawTest3']);
-            $this->assertContains($raw['data'], [['test' => 'data1'], ['test' => 'data2'], ['test' => 'data3']]);
+            $this->assertContains(
+                $raw['collection'],
+                ['rawTest1', 'rawTest2', 'rawTest3', 'rawTestX', 'rawTest4', 'rawTest5', 'rawTest6']
+            );
+            $this->assertContains(
+                $raw['data'],
+                [
+                    ['test' => 'data1'],
+                    ['test' => 'data2'],
+                    ['test' => 'data3'],
+                    ['test' => 'dataX'],
+                    ['test' => 'data4'],
+                    ['test' => 'data5'],
+                    ['test' => 'data6']
+                ]
+            );
         }
 
         /*
@@ -59,7 +73,7 @@ class ListAllTest extends AbstractRawFunctional {
         );
     }
 
-    public function testFilter() {
+    public function testFilter1() {
         $request = $this->createRequest(
             $this->createEnvironment(
                 [
@@ -76,11 +90,81 @@ class ListAllTest extends AbstractRawFunctional {
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
 
-        $this->assertCount(1, $body['data']);
+        $this->assertCount(2, $body['data']);
 
         foreach ($body['data'] as $raw) {
             $this->assertContains($raw['collection'], ['rawTest1']);
-            $this->assertContains($raw['data'], [['test' => 'data1']]);
+            $this->assertContains($raw['data'], [['test' => 'data1'], ['test' => 'data4']]);
+        }
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'raw/listAll.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testFilter2() {
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING'       => 'source:name=amazon'
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+
+        $this->assertSame(200, $response->getStatusCode());
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+
+        $this->assertCount(1, $body['data']);
+
+        $this->assertContains($body['data'][0]['collection'], ['rawTestX']);
+        $this->assertContains($body['data'][0]['data'], [['test' => 'dataX']]);
+
+        /*
+         * Validates Response using the Json Schema.
+         */
+        $this->assertTrue(
+            $this->validateSchema(
+                'raw/listAll.json',
+                json_decode((string) $response->getBody())
+            ),
+            $this->schemaErrors
+        );
+    }
+
+    public function testFilter3() {
+        $request = $this->createRequest(
+            $this->createEnvironment(
+                [
+                    'HTTP_AUTHORIZATION' => $this->credentialTokenHeader(),
+                    'QUERY_STRING'       => 'filter:order=latest&filter:limit=1&source:name=facebook'
+                ]
+            )
+        );
+
+        $response = $this->process($request);
+
+        $this->assertSame(200, $response->getStatusCode());
+        $body = json_decode((string) $response->getBody(), true);
+        $this->assertNotEmpty($body);
+        $this->assertTrue($body['status']);
+
+        $this->assertCount(3, $body['data']);
+
+        foreach ($body['data'] as $raw) {
+            $this->assertContains($raw['collection'], ['rawTest1', 'rawTest2', 'rawTest3']);
+            $this->assertContains($raw['data'], [['test' => 'data4'], ['test' => 'data5'], ['test' => 'data6']]);
         }
 
         /*
@@ -111,11 +195,19 @@ class ListAllTest extends AbstractRawFunctional {
         $body = json_decode((string) $response->getBody(), true);
         $this->assertNotEmpty($body);
         $this->assertTrue($body['status']);
-        $this->assertCount(2, $body['data']);
+        $this->assertCount(4, $body['data']);
 
         foreach ($body['data'] as $raw) {
             $this->assertContains($raw['collection'], ['rawTest1', 'rawTest3']);
-            $this->assertContains($raw['data'], [['test' => 'data1'], ['test' => 'data3']]);
+            $this->assertContains(
+                $raw['data'],
+                [
+                    ['test' => 'data1'],
+                    ['test' => 'data3'],
+                    ['test' => 'data4'],
+                    ['test' => 'data6']
+                ]
+            );
         }
 
         /*
